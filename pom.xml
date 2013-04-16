@@ -64,6 +64,7 @@
     <maven-surefire-plugin.version>2.14.1</maven-surefire-plugin.version>
     <testng.version>6.8.1</testng.version>
     <guava.version>14.0.1</guava.version>
+    <commons-lang3.version>3.1</commons-lang3.version>
   </properties>
 
   <build>
@@ -141,6 +142,11 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>${guava.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${commons-lang3.version}</version>
     </dependency>
   </dependencies>
 </project>

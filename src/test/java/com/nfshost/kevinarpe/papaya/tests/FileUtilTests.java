@@ -34,11 +34,11 @@ import com.nfshost.kevinarpe.papaya.FileUtil;
 public class FileUtilTests {
 
 	@BeforeClass
-	public void oneTimeSetup() {
+	public void classSetup() {
 	}
 	
 	@AfterClass
-	public void oneTimeTearDown() {
+	public void classTearDown() {
 	}
 
 	@Test

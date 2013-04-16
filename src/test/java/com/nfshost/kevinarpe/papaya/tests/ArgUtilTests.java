@@ -71,7 +71,8 @@ public class ArgUtilTests {
 		};
 	}
 	
-	@Test(dataProvider = "_dataForShouldNotCheckAsNotNull", expectedExceptions = NullPointerException.class)
+	@Test(dataProvider = "_dataForShouldNotCheckAsNotNull",
+			expectedExceptions = NullPointerException.class)
 	public void shouldNotCheckAsNotNull(Object x, String argName) {
 		Object value = null;
 		ArgUtil.staticCheckNotNull(value, "value");

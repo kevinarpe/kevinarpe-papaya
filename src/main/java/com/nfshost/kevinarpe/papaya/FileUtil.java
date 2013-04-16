@@ -19,6 +19,7 @@
 
 package com.nfshost.kevinarpe.papaya;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,7 +33,11 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.google.common.base.Joiner;
 
@@ -290,8 +295,181 @@ public final class FileUtil {
 	
 	// TODO: Check NotRegularFile
 	// TODO: Check NotDirectory
-	// TODO: Read file as string, lines, list of maps, array of array, list of list
+	// TODO: Read file as (x) string, (x) lines, list of maps, array of arrays, list of lists, map + list of lists
 	// TODO: Write file...
+	
+	/**
+	 * This is a convenience method for {@link #staticReadTextFileAsString(Path, Charset)}.
+	 */
+	public static String staticReadTextFileAsString(String filePath)
+	throws IOException {
+		ArgUtil.staticCheckStringNotEmpty(filePath, "filePath");
+		Path file = _DEFAULT_FILE_SYSTEM.getPath(filePath);
+		String s = staticReadTextFileAsString(file, _DEFAULT_CHARSET);
+		return s;
+	}
+	
+	/**
+	 * This is a convenience method for {@link #staticReadTextFileAsString(Path, Charset)}.
+	 */
+	public static String staticReadTextFileAsString(Path file)
+	throws IOException {
+		String s = staticReadTextFileAsString(file, _DEFAULT_CHARSET);
+		return s;
+	}
+	
+	/**
+	 * Reads text from a file very safely.
+	 * 
+	 * @param file path for file 
+	 * @param charset characer set to use for decoding
+	 * @return entire file as a single string, including (unconverted) newlines
+	 * @throws NullPointerException if {@code file} or {@code charset} is null
+	 * @throws IOException if failure to open or read from file
+	 */
+	public static String staticReadTextFileAsString(Path file, Charset charset)
+	throws IOException {
+		ArgUtil.staticCheckNotNull(file, "file");
+		ArgUtil.staticCheckNotNull(charset, "charset");
+		byte[] byteArr = null;
+		try {
+			byteArr = Files.readAllBytes(file);
+		}
+		catch (IOException e) {
+			String msg = String.format(
+				"Failed to read to file: '%s'"
+				+ "%n\tCharset: '%s'",
+				file, charset);
+			throw new IOException(msg, e);
+		}
+		String s = new String(byteArr, charset);
+		return s;
+	}
+	
+	/**
+	 * This is a convenience method for {@link #staticReadTextFileAsStringList(Path, Charset)}.
+	 */
+	public static ArrayList<String> staticReadTextFileAsStringList(String filePath)
+	throws IOException {
+		ArgUtil.staticCheckStringNotEmpty(filePath, "filePath");
+		Path file = _DEFAULT_FILE_SYSTEM.getPath(filePath);
+		ArrayList<String> lineList = staticReadTextFileAsStringList(file, _DEFAULT_CHARSET);
+		return lineList;
+	}
+	
+	/**
+	 * This is a convenience method for {@link #staticReadTextFileAsStringList(Path, Charset)}.
+	 */
+	public static ArrayList<String> staticReadTextFileAsStringList(Path file)
+	throws IOException {
+		ArrayList<String> lineList = staticReadTextFileAsStringList(file, _DEFAULT_CHARSET);
+		return lineList;
+	}
+
+	/**
+	 * Reads text from a file very safely.
+	 * 
+	 * @param file path for file 
+	 * @param charset characer set to use for decoding
+	 * @return entire file as a modifiable list of strings, where each line (without newline)
+	 *         is a separate entry
+	 * @throws NullPointerException if {@code file} or {@code charset} is null
+	 * @throws IOException if failure to open or read from file
+	 */
+	public static ArrayList<String> staticReadTextFileAsStringList(Path file, Charset charset)
+	throws IOException {
+		ArgUtil.staticCheckNotNull(file, "file");
+		ArgUtil.staticCheckNotNull(charset, "charset");
+		List<String> lineList = null;
+		try {
+			lineList = Files.readAllLines(file, charset);
+		}
+		catch (IOException e) {
+			String msg = String.format(
+					"Failed to read to file: '%s'"
+					+ "%n\tCharset: '%s'",
+					file, charset);
+			throw new IOException(msg, e);
+		}
+		// Careful: Files.readAllLines() does not guarantee return value is modifiable.
+		if (lineList instanceof ArrayList<?>) {
+			return (ArrayList<String>) lineList;
+		}
+		ArrayList<String> lineList2 = new ArrayList<>(lineList);
+		return lineList2;
+	}
+	
+	public static String[][] staticReadTextFileAsArrayOfArrays(
+			Path file, String delim, Charset charset)
+	throws IOException {
+		ArgUtil.staticCheckNotNull(file, "file");
+		ArgUtil.staticCheckStringNotEmpty(delim, "delim");
+		ArgUtil.staticCheckNotNull(charset, "charset");
+		List<String> lineList = null;
+		try {
+			lineList = Files.readAllLines(file, charset);
+		}
+		catch (IOException e) {
+			String msg = String.format(
+				"Failed to read to file: '%s'"
+				+ "%n\tCharset: '%s'",
+				file, charset);
+			throw new IOException(msg, e);
+		}
+		final String delimRegex = Pattern.quote(delim);
+		final Pattern pattern = Pattern.compile(delimRegex);
+		int size = lineList.size();
+		int columnCount = -1;
+		String[][] tokenArrArr = null;
+		for (int lineIndex = 0; lineIndex < size; ++lineIndex) {
+			String line = lineList.get(lineIndex);
+			String[] tokenArr = pattern.split(line);
+			if (-1 == columnCount) {
+				if (1 == tokenArr.length) {
+					String msg = String.format(
+						"Failed to split first line by delim: '%s'"
+						+ "%nLine: '%s'"
+						+ "%nLine: '%s'",
+						StringEscapeUtils.escapeJava(delim),
+						line,
+						StringEscapeUtils.escapeJava(line));
+					throw new IOException(msg);
+				}
+				columnCount = tokenArr.length;
+				tokenArrArr = new String[size][];
+			}
+			else if (columnCount != tokenArr.length) {
+				String msg = String.format(
+					"Reading line %d from file: '%s':"
+					+ "%nExpected %d tokens, but found %d"
+					+ "%nLine: '%s'"
+					+ "%nLine: '%s'",
+					(1 + lineIndex), file, columnCount, tokenArr.length,
+					line, StringEscapeUtils.escapeJava(line));
+				throw new IOException(msg);
+			}
+			tokenArrArr[lineIndex] = tokenArr;
+		}
+		return tokenArrArr;
+	}
+	
+	/*
+	public static ArrayList<ArrayList<String>> staticReadTextFileAsListOfLists(
+			Path file, String delim, Charset charset) {
+		return null;
+	}
+	*/
+	
+	private static Path _staticGetFilePathParent(Path file)
+	throws IOException {
+		ArgUtil.staticCheckNotNull(file, "file");
+		Path dir = file.getParent();
+		if (null == dir) {
+			throw new IOException(String.format(
+				"File path does not have a parent: '%s'", file));
+		}
+		return dir;
+	}
 
 	/**
 	 * This is a convenience method for
@@ -332,6 +510,7 @@ public final class FileUtil {
 	 * 
 	 * @param file path for file 
 	 * @param text text to write, can be empty, but not null
+	 * @param charset characer set to use for encoding
 	 * @param openOptionArr open list of {@link OpenOption}
 	 * @throws NullPointerException if {@code file}, {@code text}, or {@code charset} is null,
 	 *         or {@code openOptionArr} contains null elements
