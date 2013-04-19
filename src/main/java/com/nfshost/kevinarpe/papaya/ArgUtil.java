@@ -335,66 +335,162 @@ public final class ArgUtil {
 		return ref;
 	}
 	
+	/**
+	 * This is a convenience method for {@link #staticCheckLongPositive(long, String)}.
+	 * 
+	 * @see #staticCheckByteNotPositive(byte, String)
+	 * @see #staticCheckByteNegative(byte, String)
+	 * @see #staticCheckByteNotNegative(byte, String)
+	 */
 	public static byte staticCheckBytePositive(byte value, String argName) {
 		staticCheckLongPositive(value, argName);
 		return value;
 	}
 	
+	/**
+	 * This is a convenience method for {@link #staticCheckLongNotPositive(long, String)}.
+	 * 
+	 * @see #staticCheckBytePositive(byte, String)
+	 * @see #staticCheckByteNegative(byte, String)
+	 * @see #staticCheckByteNotNegative(byte, String)
+	 */
 	public static byte staticCheckByteNotPositive(byte value, String argName) {
 		staticCheckLongNotPositive(value, argName);
 		return value;
 	}
 	
+	/**
+	 * This is a convenience method for {@link #staticCheckLongNegative(long, String)}.
+	 * 
+	 * @see #staticCheckBytePositive(byte, String)
+	 * @see #staticCheckByteNotPositive(byte, String)
+	 * @see #staticCheckByteNotNegative(byte, String)
+	 */
 	public static byte staticCheckByteNegative(byte value, String argName) {
 		staticCheckLongNegative(value, argName);
 		return value;
 	}
 	
+	/**
+	 * This is a convenience method for {@link #staticCheckLongNotNegative(long, String)}.
+	 * 
+	 * @see #staticCheckBytePositive(byte, String)
+	 * @see #staticCheckByteNotPositive(byte, String)
+	 * @see #staticCheckByteNegative(byte, String)
+	 */
 	public static byte staticCheckByteNotNegative(byte value, String argName) {
 		staticCheckLongNotNegative(value, argName);
 		return value;
 	}
 	
+	/**
+	 * This is a convenience method for {@link #staticCheckLongPositive(long, String)}.
+	 * 
+	 * @see #staticCheckShortNotPositive(byte, String)
+	 * @see #staticCheckShortNegative(byte, String)
+	 * @see #staticCheckShortNotNegative(byte, String)
+	 */
 	public static short staticCheckShortPositive(short value, String argName) {
 		staticCheckLongPositive(value, argName);
 		return value;
 	}
 	
+	/**
+	 * This is a convenience method for {@link #staticCheckLongNotPositive(long, String)}.
+	 * 
+	 * @see #staticCheckShortPositive(byte, String)
+	 * @see #staticCheckShortNegative(byte, String)
+	 * @see #staticCheckShortNotNegative(byte, String)
+	 */
 	public static short staticCheckShortNotPositive(short value, String argName) {
 		staticCheckLongNotPositive(value, argName);
 		return value;
 	}
 	
+	/**
+	 * This is a convenience method for {@link #staticCheckLongNegative(long, String)}.
+	 * 
+	 * @see #staticCheckShortPositive(byte, String)
+	 * @see #staticCheckShortNotPositive(byte, String)
+	 * @see #staticCheckShortNotNegative(byte, String)
+	 */
 	public static short staticCheckShortNegative(short value, String argName) {
 		staticCheckLongNegative(value, argName);
 		return value;
 	}
 	
+	/**
+	 * This is a convenience method for {@link #staticCheckLongNotNegative(long, String)}.
+	 * 
+	 * @see #staticCheckShortPositive(byte, String)
+	 * @see #staticCheckShortNotPositive(byte, String)
+	 * @see #staticCheckShortNegative(byte, String)
+	 */
 	public static short staticCheckShortNotNegative(short value, String argName) {
 		staticCheckLongNotNegative(value, argName);
 		return value;
 	}
 	
+	/**
+	 * This is a convenience method for {@link #staticCheckLongPositive(long, String)}.
+	 * 
+	 * @see #staticCheckIntNotPositive(byte, String)
+	 * @see #staticCheckIntNegative(byte, String)
+	 * @see #staticCheckIntNotNegative(byte, String)
+	 */
 	public static int staticCheckIntPositive(int value, String argName) {
 		staticCheckLongPositive(value, argName);
 		return value;
 	}
 	
+	/**
+	 * This is a convenience method for {@link #staticCheckLongNotPositive(long, String)}.
+	 * 
+	 * @see #staticCheckIntPositive(byte, String)
+	 * @see #staticCheckIntNegative(byte, String)
+	 * @see #staticCheckIntNotNegative(byte, String)
+	 */
 	public static int staticCheckIntNotPositive(int value, String argName) {
 		staticCheckLongNotPositive(value, argName);
 		return value;
 	}
 	
+	/**
+	 * This is a convenience method for {@link #staticCheckLongNegative(long, String)}.
+	 * 
+	 * @see #staticCheckIntPositive(byte, String)
+	 * @see #staticCheckIntNotPositive(byte, String)
+	 * @see #staticCheckIntNotNegative(byte, String)
+	 */
 	public static int staticCheckIntNegative(int value, String argName) {
 		staticCheckLongNegative(value, argName);
 		return value;
 	}
 	
+	/**
+	 * This is a convenience method for {@link #staticCheckLongNotNegative(long, String)}.
+	 * 
+	 * @see #staticCheckIntPositive(byte, String)
+	 * @see #staticCheckIntNotPositive(byte, String)
+	 * @see #staticCheckIntNegative(byte, String)
+	 */
 	public static int staticCheckIntNotNegative(int value, String argName) {
 		staticCheckLongNotNegative(value, argName);
 		return value;
 	}
 	
+	/**
+	 * Tests if {@code value > 0}
+	 * 
+	 * @param value a value to test
+	 * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+	 * @return the validated value
+	 * @throws NullPointerException if {@code argName} is null
+	 * @throws IllegalArgumentException if value of {@code value <= 0}
+	 * @see #staticCheckLongNotPositive(long, String)
+	 * @see #staticCheckLongNegative(long, String)
+	 * @see #staticCheckLongNotNegative(long, String)
+	 */
 	public static long staticCheckLongPositive(long value, String argName) {
 		staticCheckNotNull(argName, "argName");
 		if (value <= 0) {
@@ -405,6 +501,18 @@ public final class ArgUtil {
 		return value;
 	}
 	
+	/**
+	 * Tests if {@code value <= 0}
+	 * 
+	 * @param value a value to test
+	 * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+	 * @return the validated value
+	 * @throws NullPointerException if {@code argName} is null
+	 * @throws IllegalArgumentException if value of {@code value > 0}
+	 * @see #staticCheckLongPositive(long, String)
+	 * @see #staticCheckLongNegative(long, String)
+	 * @see #staticCheckLongNotNegative(long, String)
+	 */
 	public static long staticCheckLongNotPositive(long value, String argName) {
 		staticCheckNotNull(argName, "argName");
 		if (value > 0) {
@@ -415,6 +523,18 @@ public final class ArgUtil {
 		return value;
 	}
 	
+	/**
+	 * Tests if {@code value < 0}
+	 * 
+	 * @param value a value to test
+	 * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+	 * @return the validated value
+	 * @throws NullPointerException if {@code argName} is null
+	 * @throws IllegalArgumentException if value of {@code value => 0}
+	 * @see #staticCheckLongPositive(long, String)
+	 * @see #staticCheckLongNotPositive(long, String)
+	 * @see #staticCheckLongNotNegative(long, String)
+	 */
 	public static long staticCheckLongNegative(long value, String argName) {
 		staticCheckNotNull(argName, "argName");
 		if (value >= 0) {
@@ -425,6 +545,18 @@ public final class ArgUtil {
 		return value;
 	}
 	
+	/**
+	 * Tests if {@code value >= 0}
+	 * 
+	 * @param value a value to test
+	 * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+	 * @return the validated value
+	 * @throws NullPointerException if {@code argName} is null
+	 * @throws IllegalArgumentException if value of {@code value < 0}
+	 * @see #staticCheckLongPositive(long, String)
+	 * @see #staticCheckLongNotPositive(long, String)
+	 * @see #staticCheckLongNegative(long, String)
+	 */
 	public static long staticCheckLongNotNegative(long value, String argName) {
 		staticCheckNotNull(argName, "argName");
 		if (value < 0) {
@@ -435,26 +567,66 @@ public final class ArgUtil {
 		return value;
 	}
 	
+	/**
+	 * This is a convenience method for {@link #staticCheckDoublePositive(double, String)}.
+	 * 
+	 * @see #staticCheckFloatNotPositive(double, String)
+	 * @see #staticCheckFloatNegative(double, String)
+	 * @see #staticCheckFloatNotNegative(double, String)
+	 */
 	public static float staticCheckFloatPositive(float value, String argName) {
 		staticCheckDoublePositive(value, argName);
 		return value;
 	}
 	
+	/**
+	 * This is a convenience method for {@link #staticCheckDoubleNotPositive(double, String)}.
+	 * 
+	 * @see #staticCheckFloatPositive(double, String)
+	 * @see #staticCheckFloatNegative(double, String)
+	 * @see #staticCheckFloatNotNegative(double, String)
+	 */
 	public static float staticCheckFloatNotPositive(float value, String argName) {
 		staticCheckDoubleNotPositive(value, argName);
 		return value;
 	}
 	
+	/**
+	 * This is a convenience method for {@link #staticCheckDoubleNegative(double, String)}.
+	 * 
+	 * @see #staticCheckFloatPositive(double, String)
+	 * @see #staticCheckFloatNotPositive(double, String)
+	 * @see #staticCheckFloatNotNegative(double, String)
+	 */
 	public static float staticCheckFloatNegative(float value, String argName) {
 		staticCheckDoubleNegative(value, argName);
 		return value;
 	}
 	
+	/**
+	 * This is a convenience method for {@link #staticCheckDoubleNotNegative(double, String)}.
+	 * 
+	 * @see #staticCheckFloatPositive(double, String)
+	 * @see #staticCheckFloatNotPositive(double, String)
+	 * @see #staticCheckFloatNegative(double, String)
+	 */
 	public static float staticCheckFloatNotNegative(float value, String argName) {
 		staticCheckDoubleNotNegative(value, argName);
 		return value;
 	}
 	
+	/**
+	 * Tests if {@code value > 0.0}
+	 * 
+	 * @param value a value to test
+	 * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+	 * @return the validated value
+	 * @throws NullPointerException if {@code argName} is null
+	 * @throws IllegalArgumentException if value of {@code value <= 0.0}
+	 * @see #staticCheckDoubleNotPositive(double, String)
+	 * @see #staticCheckDoubleNegative(double, String)
+	 * @see #staticCheckDoubleNotNegative(double, String)
+	 */
 	public static double staticCheckDoublePositive(double value, String argName) {
 		staticCheckNotNull(argName, "argName");
 		if (value <= 0.0) {
@@ -465,6 +637,18 @@ public final class ArgUtil {
 		return value;
 	}
 	
+	/**
+	 * Tests if {@code value <= 0.0}
+	 * 
+	 * @param value a value to test
+	 * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+	 * @return the validated value
+	 * @throws NullPointerException if {@code argName} is null
+	 * @throws IllegalArgumentException if value of {@code value > 0.0}
+	 * @see #staticCheckDoublePositive(double, String)
+	 * @see #staticCheckDoubleNegative(double, String)
+	 * @see #staticCheckDoubleNotNegative(double, String)
+	 */
 	public static double staticCheckDoubleNotPositive(double value, String argName) {
 		staticCheckNotNull(argName, "argName");
 		if (value > 0.0) {
@@ -475,6 +659,18 @@ public final class ArgUtil {
 		return value;
 	}
 	
+	/**
+	 * Tests if {@code value < 0.0}
+	 * 
+	 * @param value a value to test
+	 * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+	 * @return the validated value
+	 * @throws NullPointerException if {@code argName} is null
+	 * @throws IllegalArgumentException if value of {@code value => 0.0}
+	 * @see #staticCheckDoublePositive(double, String)
+	 * @see #staticCheckDoubleNotPositive(double, String)
+	 * @see #staticCheckDoubleNotNegative(double, String)
+	 */
 	public static double staticCheckDoubleNegative(double value, String argName) {
 		staticCheckNotNull(argName, "argName");
 		if (value >= 0.0) {
@@ -485,6 +681,18 @@ public final class ArgUtil {
 		return value;
 	}
 	
+	/**
+	 * Tests if {@code value >= 0.0}
+	 * 
+	 * @param value a value to test
+	 * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+	 * @return the validated value
+	 * @throws NullPointerException if {@code argName} is null
+	 * @throws IllegalArgumentException if value of {@code value < 0.0}
+	 * @see #staticCheckDoublePositive(double, String)
+	 * @see #staticCheckDoubleNotPositive(double, String)
+	 * @see #staticCheckDoubleNegative(double, String)
+	 */
 	public static double staticCheckDoubleNotNegative(double value, String argName) {
 		staticCheckNotNull(argName, "argName");
 		if (value < 0.0) {
@@ -895,6 +1103,24 @@ public final class ArgUtil {
 	}
 	
 	/**
+	 * Tests if a collection reference is not null and not empty (size >= 1).
+	 * Size is defined as the number of elements.
+	 * 
+	 * @param ref a collection reference
+	 * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+	 * @throws NullPointerException if {@code ref} or {@code argName} is null
+	 * @throws IllegalArgumentException if number of elements in {@code ref} is zero
+	 * @see #staticCheckCollectionSizeRange(Collection, int, int, String)
+	 * @see #staticCheckCollectionMinSize(Collection, int, String)
+	 */
+	public static <T> void staticCheckCollectionNotEmpty(Collection<T> ref, String argName) {
+		int size = (null == ref ? -1 : ref.size());
+		int minSize = 1;
+		int maxSize = -1;
+		_staticCheckContainerSizeRange(ref, "Collection", size, minSize, maxSize, argName);
+	}
+	
+	/**
 	 * Tests if a collection reference is not null and has a minimum size.
 	 * Size is defined as the number of elements.
 	 * 
@@ -977,6 +1203,25 @@ public final class ArgUtil {
 		staticCheckIntNotNegative(minLen, "minLen");
 		staticCheckIntNotNegative(maxLen, "maxLen");
 		int len = (null == ref ? -1 : ref.length);
+		_staticCheckContainerSizeRange(ref, "Array", len, minLen, maxLen, argName);
+		return ref;
+	}
+	
+	/**
+	 * Tests if an array reference is not null and not empty (size >= 1).
+	 * Length is defined as the number of elements.
+	 * 
+	 * @param ref an array reference
+	 * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+	 * @throws NullPointerException if {@code ref} or {@code argName} is null
+	 * @throws IllegalArgumentException if number of elements in {@code ref} is zero
+	 * @see #staticCheckArrayLengthRange(Collection, int, int, String)
+	 * @see #staticCheckArrayMinLength(Collection, int, String)
+	 */
+	public static <T> T[] staticCheckArrayNotEmpty(T[] ref, String argName) {
+		int len = (null == ref ? -1 : ref.length);
+		int minLen = 1;
+		int maxLen = -1;
 		_staticCheckContainerSizeRange(ref, "Array", len, minLen, maxLen, argName);
 		return ref;
 	}
@@ -1071,8 +1316,8 @@ public final class ArgUtil {
 	 * 
 	 * @param ref a collection reference
 	 * @param index index of element to access.  Must be non-negative.
-	 * @param listArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-	 * @param indexArgName argument name for {@code ref}, e.g., "strListIndex"
+	 * @param collectionArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
 	 * @return the validated index
 	 * @throws NullPointerException if {@code ref}, {@code listArgName},
 	 *         or {@code indexArgName} is null
@@ -1082,10 +1327,10 @@ public final class ArgUtil {
 	 * @see #staticCheckCollectionInsertIndex(Collection, int, String, String)
 	 */
 	public static <T> int staticCheckCollectionAccessIndex(
-			Collection<T> ref, int index, String listArgName, String indexArgName) {
+			Collection<T> ref, int index, String collectionArgName, String indexArgName) {
 		int size = (null == ref ? -1 : ref.size());
 		_staticCheckContainerAccessIndex(
-			ref, "Collection", size, index, listArgName, indexArgName);
+			ref, "Collection", size, index, collectionArgName, indexArgName);
 		return index;
 	}
 	
@@ -1094,8 +1339,8 @@ public final class ArgUtil {
 	 * 
 	 * @param ref a collection reference
 	 * @param index index of element to insert.  Must be non-negative.
-	 * @param listArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-	 * @param indexArgName argument name for {@code ref}, e.g., "strListIndex"
+	 * @param collectionArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
 	 * @return the validated index
 	 * @throws NullPointerException if {@code ref}, {@code listArgName},
 	 *         or {@code indexArgName} is null
@@ -1105,10 +1350,10 @@ public final class ArgUtil {
 	 * @see #staticCheckCollectionAccessIndex(Collection, int, String, String)
 	 */
 	public static <T> int staticCheckCollectionInsertIndex(
-			Collection<T> ref, int index, String listArgName, String indexArgName) {
+			Collection<T> ref, int index, String collectionArgName, String indexArgName) {
 		int size = (null == ref ? -1 : ref.size());
 		_staticCheckContainerInsertIndex(
-			ref, "Collection", size, index, listArgName, indexArgName);
+			ref, "Collection", size, index, collectionArgName, indexArgName);
 		return index;
 	}
 	
@@ -1172,7 +1417,7 @@ public final class ArgUtil {
 	 * @param ref an array reference
 	 * @param index index of element to access.  Must be non-negative.
 	 * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-	 * @param indexArgName argument name for {@code ref}, e.g., "strListIndex"
+	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
 	 * @return the validated index
 	 * @throws NullPointerException if {@code ref}, {@code listArgName},
 	 *         or {@code indexArgName} is null
@@ -1195,7 +1440,7 @@ public final class ArgUtil {
 	 * @param ref an array reference
 	 * @param index index of element to insert.  Must be non-negative.
 	 * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-	 * @param indexArgName argument name for {@code ref}, e.g., "strListIndex"
+	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
 	 * @return the validated index
 	 * @throws NullPointerException if {@code ref}, {@code listArgName},
 	 *         or {@code indexArgName} is null
@@ -1218,7 +1463,7 @@ public final class ArgUtil {
 	 * @param ref an array reference
 	 * @param index index of element to access.  Must be non-negative.
 	 * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-	 * @param indexArgName argument name for {@code ref}, e.g., "strListIndex"
+	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
 	 * @return the validated index
 	 * @throws NullPointerException if {@code ref}, {@code listArgName},
 	 *         or {@code indexArgName} is null
@@ -1240,7 +1485,7 @@ public final class ArgUtil {
 	 * @param ref an array reference
 	 * @param index index of element to access.  Must be non-negative.
 	 * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-	 * @param indexArgName argument name for {@code ref}, e.g., "strListIndex"
+	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
 	 * @return the validated index
 	 * @throws NullPointerException if {@code ref}, {@code listArgName},
 	 *         or {@code indexArgName} is null
@@ -1262,7 +1507,7 @@ public final class ArgUtil {
 	 * @param ref an array reference
 	 * @param index index of element to access.  Must be non-negative.
 	 * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-	 * @param indexArgName argument name for {@code ref}, e.g., "strListIndex"
+	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
 	 * @return the validated index
 	 * @throws NullPointerException if {@code ref}, {@code listArgName},
 	 *         or {@code indexArgName} is null
@@ -1284,7 +1529,7 @@ public final class ArgUtil {
 	 * @param ref an array reference
 	 * @param index index of element to access.  Must be non-negative.
 	 * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-	 * @param indexArgName argument name for {@code ref}, e.g., "strListIndex"
+	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
 	 * @return the validated index
 	 * @throws NullPointerException if {@code ref}, {@code listArgName},
 	 *         or {@code indexArgName} is null
@@ -1306,7 +1551,7 @@ public final class ArgUtil {
 	 * @param ref an array reference
 	 * @param index index of element to access.  Must be non-negative.
 	 * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-	 * @param indexArgName argument name for {@code ref}, e.g., "strListIndex"
+	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
 	 * @return the validated index
 	 * @throws NullPointerException if {@code ref}, {@code listArgName},
 	 *         or {@code indexArgName} is null
@@ -1328,7 +1573,7 @@ public final class ArgUtil {
 	 * @param ref an array reference
 	 * @param index index of element to access.  Must be non-negative.
 	 * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-	 * @param indexArgName argument name for {@code ref}, e.g., "strListIndex"
+	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
 	 * @return the validated index
 	 * @throws NullPointerException if {@code ref}, {@code listArgName},
 	 *         or {@code indexArgName} is null
@@ -1350,7 +1595,7 @@ public final class ArgUtil {
 	 * @param ref an array reference
 	 * @param index index of element to access.  Must be non-negative.
 	 * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-	 * @param indexArgName argument name for {@code ref}, e.g., "strListIndex"
+	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
 	 * @return the validated index
 	 * @throws NullPointerException if {@code ref}, {@code listArgName},
 	 *         or {@code indexArgName} is null
@@ -1372,7 +1617,7 @@ public final class ArgUtil {
 	 * @param ref an array reference
 	 * @param index index of element to access.  Must be non-negative.
 	 * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-	 * @param indexArgName argument name for {@code ref}, e.g., "strListIndex"
+	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
 	 * @return the validated index
 	 * @throws NullPointerException if {@code ref}, {@code listArgName},
 	 *         or {@code indexArgName} is null
@@ -1428,18 +1673,41 @@ public final class ArgUtil {
 		}
 	}
 	
+	/**
+	 * Tests if a collection reference is not null, and an index and count is valid to
+	 * access elements.
+	 * 
+	 * @param ref a collection reference
+	 * @param index index of element to access.  Must be non-negative.
+	 * @param count number of elements to access, starting from {@code index}.
+	 *              Must be non-negative.
+	 * @param collectionArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
+	 * @param countArgName argument name for {@code count}, e.g., "strListCount"
+	 */
 	public static <T> void staticCheckCollectionIndexAndCount(
 			Collection<T> ref,
 			int index,
 			int count,
-			String listArgName,
+			String collectionArgName,
 			String indexArgName,
 			String countArgName) {
 		int size = (null == ref ? -1 : ref.size());
 		_staticCheckContainerIndexAndCount(
-			ref, "Collection", size, index, count, listArgName, indexArgName, countArgName);
+			ref, "Collection", size, index, count, collectionArgName, indexArgName, countArgName);
 	}
-	
+
+	/**
+	 * Tests if an array reference is not null, and an index and count is valid to access elements.
+	 * 
+	 * @param ref an array reference
+	 * @param index index of element to access.  Must be non-negative.
+	 * @param count number of elements to access, starting from {@code index}.
+	 *              Must be non-negative.
+	 * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
+	 * @param countArgName argument name for {@code count}, e.g., "strListCount"
+	 */
 	public static <T> void staticCheckArrayIndexAndCount(
 			T[] ref,
 			int index,
