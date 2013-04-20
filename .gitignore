@@ -15,3 +15,7 @@ out/
 .project
 .settings/
 .metadata/
+
+# TestNG
+test-output/
+

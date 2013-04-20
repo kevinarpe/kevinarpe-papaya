@@ -20,9 +20,10 @@
 package com.nfshost.kevinarpe.papaya;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
 
-import com.google.common.base.Objects;
+import com.nfshost.kevinarpe.papaya.Args.ArrayArgUtil;
+import com.nfshost.kevinarpe.papaya.Args.IntArgUtil;
+import com.nfshost.kevinarpe.papaya.Args.ObjectArgUtil;
 
 public final class ArrayUtil {
 	
@@ -72,7 +73,7 @@ public final class ArrayUtil {
 	 * @throws IllegalArgumentException if {@code index} and {@code count} are invalid
 	 */
 	public static <T> T[] staticRemove(T[] arr, int index, int count) {
-		ArgUtil.staticCheckArrayIndexAndCount(arr, index, count, "arr", "index", "count");
+		ArrayArgUtil.staticCheckIndexAndCount(arr, index, count, "arr", "index", "count");
 		int newLen = arr.length - count;
 		T[] newArr = _staticNewFromExisting(arr, newLen);
 		
@@ -99,8 +100,8 @@ public final class ArrayUtil {
 	}
 	
 	public static <T> T[] staticNew(Class<T> componentClass, int length) {
-		ArgUtil.staticCheckNotNull(componentClass, "componentClass");
-		ArgUtil.staticCheckIntNotNegative(length, "length");
+		ObjectArgUtil.staticCheckNotNull(componentClass, "componentClass");
+		IntArgUtil.staticCheckNotNegative(length, "length");
 		
 		@SuppressWarnings("unchecked")
 		T[] newArr = (T[]) Array.newInstance(componentClass, length);
@@ -140,8 +141,8 @@ public final class ArrayUtil {
 	 */
 	@SafeVarargs
 	public static <T> T[] staticInsert(T[] arr, int index, T newItem, T... newItemArr) {
-		ArgUtil.staticCheckNotNull(arr, "arr");
-		ArgUtil.staticCheckArrayInsertIndex(arr, index, "arr", "index");
+		ObjectArgUtil.staticCheckNotNull(arr, "arr");
+		ArrayArgUtil.staticCheckInsertIndex(arr, index, "arr", "index");
 		
 		int newLen = arr.length + 1 + newItemArr.length;
 		T[] newArr = _staticNewFromExisting(arr, newLen);
