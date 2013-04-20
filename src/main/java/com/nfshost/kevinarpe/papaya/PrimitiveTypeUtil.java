@@ -34,6 +34,11 @@ public final class PrimitiveTypeUtil {
 	public static final Object DEFAULT_OBJECT_VALUE;
 	public static final boolean DEFAULT_BOOLEAN_VALUE;
 	
+	public static final float EPSILON_POSITIVE_FLOAT;
+	public static final float EPSILON_NEGATIVE_FLOAT;
+	public static final double EPSILON_POSITIVE_DOUBLE;
+	public static final double EPSILON_NEGATIVE_DOUBLE;
+	
 	static {
 		DEFAULT_BYTE_VALUE = 0;
 		DEFAULT_SHORT_VALUE = 0;
@@ -45,5 +50,11 @@ public final class PrimitiveTypeUtil {
 		DEFAULT_STRING_VALUE = null;
 		DEFAULT_OBJECT_VALUE = null;
 		DEFAULT_BOOLEAN_VALUE = false;
+		
+		// Ref: http://stackoverflow.com/a/3735931/257299
+		EPSILON_POSITIVE_FLOAT = Math.nextAfter(0.0f, 1.0f);
+		EPSILON_NEGATIVE_FLOAT = Math.nextAfter(0.0f, -1.0f);
+		EPSILON_POSITIVE_DOUBLE = Math.nextAfter(0.0d, 1.0d);
+		EPSILON_NEGATIVE_DOUBLE = Math.nextAfter(0.0d, -1.0d);
 	}
 }

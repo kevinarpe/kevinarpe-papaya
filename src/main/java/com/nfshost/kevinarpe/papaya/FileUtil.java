@@ -19,7 +19,6 @@
 
 package com.nfshost.kevinarpe.papaya;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -40,6 +39,9 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.google.common.base.Joiner;
+import com.nfshost.kevinarpe.papaya.Args.ArrayArgUtil;
+import com.nfshost.kevinarpe.papaya.Args.ObjectArgUtil;
+import com.nfshost.kevinarpe.papaya.Args.StringArgUtil;
 
 public final class FileUtil {
 	
@@ -67,8 +69,8 @@ public final class FileUtil {
 	public static Path staticCheckRegularFileExists(
 			String filePath, LinkOption... linkOptionArr)
 	throws FileNotFoundException {
-		ArgUtil.staticCheckStringNotEmpty(filePath, "filePath");
-		ArgUtil.staticCheckArrayElementsNotNull(linkOptionArr, "linkOptionArr");
+		StringArgUtil.staticCheckNotEmpty(filePath, "filePath");
+		ArrayArgUtil.staticCheckElementsNotNull(linkOptionArr, "linkOptionArr");
 		
 		Path file = _DEFAULT_FILE_SYSTEM.getPath(filePath);
 		BasicFileAttributes fileAttr = null;
@@ -113,8 +115,8 @@ public final class FileUtil {
 	 */
 	public static Path staticCheckDirectoryExists(String dirPath, LinkOption... linkOptionArr)
 	throws FileNotFoundException {
-		ArgUtil.staticCheckStringNotEmpty(dirPath, "path");
-		ArgUtil.staticCheckArrayElementsNotNull(linkOptionArr, "linkOptionArr");
+		StringArgUtil.staticCheckNotEmpty(dirPath, "path");
+		ArrayArgUtil.staticCheckElementsNotNull(linkOptionArr, "linkOptionArr");
 		
 		Path dir = _DEFAULT_FILE_SYSTEM.getPath(dirPath);
 		BasicFileAttributes fileAttr = null;
@@ -141,7 +143,7 @@ public final class FileUtil {
 	 */
 	public static Path staticCreateDirectory(String dirPath, FileAttribute<?>... fileAttrArr)
 	throws IOException {
-		ArgUtil.staticCheckStringNotEmpty(dirPath, "dirPath");
+		StringArgUtil.staticCheckNotEmpty(dirPath, "dirPath");
 		Path dir = _DEFAULT_FILE_SYSTEM.getPath(dirPath);
 		staticCreateDirectory(dir, fileAttrArr);
 		return dir;
@@ -167,8 +169,8 @@ public final class FileUtil {
 	 */
 	public static void staticCreateDirectory(Path dir, FileAttribute<?>... fileAttrArr)
 	throws IOException {
-		ArgUtil.staticCheckNotNull(dir, "dir");
-		ArgUtil.staticCheckArrayElementsNotNull(fileAttrArr, "fileAttrArr");
+		ObjectArgUtil.staticCheckNotNull(dir, "dir");
+		ArrayArgUtil.staticCheckElementsNotNull(fileAttrArr, "fileAttrArr");
 		_staticCreateDirectory(dir, fileAttrArr);
 	}
 	
@@ -253,7 +255,7 @@ public final class FileUtil {
 	 */
 	public static Path staticCreateDirectories(String dirPath, FileAttribute<?>... fileAttrArr)
 	throws IOException {
-		ArgUtil.staticCheckStringNotEmpty(dirPath, "dirPath");
+		StringArgUtil.staticCheckNotEmpty(dirPath, "dirPath");
 		Path dir = _DEFAULT_FILE_SYSTEM.getPath(dirPath);
 		staticCreateDirectories(dir, fileAttrArr);
 		return dir;
@@ -279,8 +281,8 @@ public final class FileUtil {
 	 */
 	public static void staticCreateDirectories(Path dir, FileAttribute<?>... fileAttrArr)
 	throws IOException {
-		ArgUtil.staticCheckNotNull(dir, "dir");
-		ArgUtil.staticCheckArrayElementsNotNull(fileAttrArr, "fileAttrArr");
+		ObjectArgUtil.staticCheckNotNull(dir, "dir");
+		ArrayArgUtil.staticCheckElementsNotNull(fileAttrArr, "fileAttrArr");
 		_staticCreateDirectories(dir, fileAttrArr);
 	}
 	
@@ -303,7 +305,7 @@ public final class FileUtil {
 	 */
 	public static String staticReadTextFileAsString(String filePath)
 	throws IOException {
-		ArgUtil.staticCheckStringNotEmpty(filePath, "filePath");
+		StringArgUtil.staticCheckNotEmpty(filePath, "filePath");
 		Path file = _DEFAULT_FILE_SYSTEM.getPath(filePath);
 		String s = staticReadTextFileAsString(file, _DEFAULT_CHARSET);
 		return s;
@@ -329,8 +331,8 @@ public final class FileUtil {
 	 */
 	public static String staticReadTextFileAsString(Path file, Charset charset)
 	throws IOException {
-		ArgUtil.staticCheckNotNull(file, "file");
-		ArgUtil.staticCheckNotNull(charset, "charset");
+		ObjectArgUtil.staticCheckNotNull(file, "file");
+		ObjectArgUtil.staticCheckNotNull(charset, "charset");
 		byte[] byteArr = null;
 		try {
 			byteArr = Files.readAllBytes(file);
@@ -351,7 +353,7 @@ public final class FileUtil {
 	 */
 	public static ArrayList<String> staticReadTextFileAsStringList(String filePath)
 	throws IOException {
-		ArgUtil.staticCheckStringNotEmpty(filePath, "filePath");
+		StringArgUtil.staticCheckNotEmpty(filePath, "filePath");
 		Path file = _DEFAULT_FILE_SYSTEM.getPath(filePath);
 		ArrayList<String> lineList = staticReadTextFileAsStringList(file, _DEFAULT_CHARSET);
 		return lineList;
@@ -378,8 +380,8 @@ public final class FileUtil {
 	 */
 	public static ArrayList<String> staticReadTextFileAsStringList(Path file, Charset charset)
 	throws IOException {
-		ArgUtil.staticCheckNotNull(file, "file");
-		ArgUtil.staticCheckNotNull(charset, "charset");
+		ObjectArgUtil.staticCheckNotNull(file, "file");
+		ObjectArgUtil.staticCheckNotNull(charset, "charset");
 		List<String> lineList = null;
 		try {
 			lineList = Files.readAllLines(file, charset);
@@ -402,9 +404,9 @@ public final class FileUtil {
 	public static String[][] staticReadTextFileAsArrayOfArrays(
 			Path file, String delim, Charset charset)
 	throws IOException {
-		ArgUtil.staticCheckNotNull(file, "file");
-		ArgUtil.staticCheckStringNotEmpty(delim, "delim");
-		ArgUtil.staticCheckNotNull(charset, "charset");
+		ObjectArgUtil.staticCheckNotNull(file, "file");
+		StringArgUtil.staticCheckNotEmpty(delim, "delim");
+		ObjectArgUtil.staticCheckNotNull(charset, "charset");
 		List<String> lineList = null;
 		try {
 			lineList = Files.readAllLines(file, charset);
@@ -462,7 +464,7 @@ public final class FileUtil {
 	
 	private static Path _staticGetFilePathParent(Path file)
 	throws IOException {
-		ArgUtil.staticCheckNotNull(file, "file");
+		ObjectArgUtil.staticCheckNotNull(file, "file");
 		Path dir = file.getParent();
 		if (null == dir) {
 			throw new IOException(String.format(
@@ -478,7 +480,7 @@ public final class FileUtil {
 	public static void staticWriteTextFile(
 			String filePath, String text, OpenOption... openOptionArr)
 	throws IOException {
-		ArgUtil.staticCheckStringNotEmpty(filePath, "filePath");
+		StringArgUtil.staticCheckNotEmpty(filePath, "filePath");
 		Path file = _DEFAULT_FILE_SYSTEM.getPath(filePath);
 		staticWriteTextFile(file, text, _DEFAULT_CHARSET, openOptionArr);
 	}
@@ -500,7 +502,7 @@ public final class FileUtil {
 	public static void staticWriteTextFile(
 			String filePath, String text, Charset charset, OpenOption... openOptionArr)
 	throws IOException {
-		ArgUtil.staticCheckStringNotEmpty(filePath, "filePath");
+		StringArgUtil.staticCheckNotEmpty(filePath, "filePath");
 		Path file = _DEFAULT_FILE_SYSTEM.getPath(filePath);
 		staticWriteTextFile(file, text, charset, openOptionArr);
 	}
@@ -521,10 +523,10 @@ public final class FileUtil {
 	public static void staticWriteTextFile(
 			Path file, String text, Charset charset, OpenOption... openOptionArr)
 	throws IOException {
-		ArgUtil.staticCheckNotNull(file, "file");
-		ArgUtil.staticCheckNotNull(text, "text");
-		ArgUtil.staticCheckNotNull(charset, "charset");
-		ArgUtil.staticCheckArrayElementsNotNull(openOptionArr, "openOptionArr");
+		ObjectArgUtil.staticCheckNotNull(file, "file");
+		ObjectArgUtil.staticCheckNotNull(text, "text");
+		ObjectArgUtil.staticCheckNotNull(charset, "charset");
+		ArrayArgUtil.staticCheckElementsNotNull(openOptionArr, "openOptionArr");
 		
 		// According to Files.newBufferedWriter() Javadocs, empty openOptionArr implies
 		// three StandardOpenOptions: CREATE, TRUNCATE_EXISTING, and WRITE.

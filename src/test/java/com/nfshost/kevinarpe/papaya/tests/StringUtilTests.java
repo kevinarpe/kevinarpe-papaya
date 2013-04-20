@@ -30,16 +30,21 @@ import com.nfshost.kevinarpe.papaya.StringUtil;
 public class StringUtilTests {
 
 	@BeforeClass
-	public void oneTimeSetup() {
+	public void classSetup() {
 	}
 	
 	@AfterClass
-	public void oneTimeTearDown() {
+	public void classTearDown() {
 	}
 	
 	@DataProvider
-	private static final Object[][] DATA1_staticTrimLeft() {
+	private static final Object[][] _dataForShouldWhitespaceTrimLeft() {
 		return new Object[][] {
+				{ " ", "" },  // ASCII space
+				{ "\t", "" },
+				{ "　", "" },  // wide Japanese space
+				{ " ｹﾋﾞﾝ", "ｹﾋﾞﾝ" },  // narrow Japanese space
+				
 				{ "", "" },
 				{ "a", "a" },
 				{ "A", "A" },
@@ -76,22 +81,26 @@ public class StringUtilTests {
 		};
 	}
 	
-	@Test(dataProvider = "DATA1_staticTrimLeft")
-	public void TEST1_staticTrimLeft(String input, String expectedOutput) {
-		String output = StringUtil.staticTrimLeft(input);
+	@Test(dataProvider = "_dataForShouldWhitespaceTrimLeft")
+	public void shouldWhitespaceTrimLeft(String input, String expectedOutput) {
+		String output = StringUtil.staticWhitespaceTrimLeft(input);
 		Assert.assertEquals(output, expectedOutput);
 	}
 	
 	@Test(expectedExceptions = NullPointerException.class)
-	public void TEST2_staticTrimLeft() {
+	public void shouldNotWhitespaceTrimLeft() {
 		String input = null;
-		@SuppressWarnings("unused")
-		String output = StringUtil.staticTrimLeft(input);
+		StringUtil.staticWhitespaceTrimLeft(input);
 	}
 	
 	@DataProvider
-	private static final Object[][] DATA1_staticTrimRight() {
+	private static final Object[][] _dataForShouldWhitespaceTrimRight() {
 		return new Object[][] {
+				{ " ", "" },  // ASCII space
+				{ "\t", "" },
+				{ "　", "" },  // wide Japanese space
+				{ "ｹﾋﾞﾝ ", "ｹﾋﾞﾝ" },  // narrow Japanese space
+				
 				{ "", "" },
 				{ "a", "a" },
 				{ "A", "A" },
@@ -128,16 +137,15 @@ public class StringUtilTests {
 		};
 	}
 	
-	@Test(dataProvider = "DATA1_staticTrimRight")
-	public void TEST1_staticTrimRight(String input, String expectedOutput) {
-		String output = StringUtil.staticTrimRight(input);
+	@Test(dataProvider = "_dataForShouldWhitespaceTrimRight")
+	public void shouldWhitespaceTrimRight(String input, String expectedOutput) {
+		String output = StringUtil.staticWhitespaceTrimRight(input);
 		Assert.assertEquals(output, expectedOutput);
 	}
 	
 	@Test(expectedExceptions = NullPointerException.class)
-	public void TEST2_staticTrimRight() {
+	public void shouldNotWhitespaceTrimRight() {
 		String input = null;
-		@SuppressWarnings("unused")
-		String output = StringUtil.staticTrimRight(input);
+		StringUtil.staticWhitespaceTrimRight(input);
 	}
 }

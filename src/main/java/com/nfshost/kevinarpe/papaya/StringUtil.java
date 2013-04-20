@@ -22,44 +22,86 @@ package com.nfshost.kevinarpe.papaya;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.nfshost.kevinarpe.papaya.Args.IntArgUtil;
+import com.nfshost.kevinarpe.papaya.Args.ObjectArgUtil;
+
 public final class StringUtil {
 
 	public static final String NEW_LINE;
 	public static final String UNIX_NEW_LINE;
 	public static final String WINDOWS_NEW_LINE;
 	
-	private static final Pattern _LEADING_WHITESPACE_REGEX;
-	private static final Pattern _TRAILING_WHITESPACE_REGEX;
 	private static final Pattern _NEW_LINE_REGEX;
 	
 	static {
 		NEW_LINE = System.lineSeparator();
 		UNIX_NEW_LINE = "\n";
 		WINDOWS_NEW_LINE = "\r\n";
-		
-		_LEADING_WHITESPACE_REGEX = Pattern.compile("^\\s+");
-		_TRAILING_WHITESPACE_REGEX = Pattern.compile("\\s+$");
 		_NEW_LINE_REGEX = Pattern.compile("\r?\n");
 	}
 	
-	public static String staticTrimLeft(String s) {
-		ArgUtil.staticCheckNotNull(s, "s");
-		Matcher m = _LEADING_WHITESPACE_REGEX.matcher(s);
-		String s2 = m.replaceFirst("");
+	public static String staticWhitespaceTrimLeft(String s) {
+		ObjectArgUtil.staticCheckNotNull(s, "s");
+		final int len = s.length();
+		int i = 0;
+		for (; i < len; ++i) {
+			char ch = s.charAt(i);
+			if (!Character.isWhitespace(ch)) {
+				break;
+			}
+		}
+		if (0 == i) {
+			return s;
+		}
+		if (len == i) {
+			return "";
+		}
+		String s2 = s.substring(i);
 		return s2;
 	}
 	
-	public static String staticTrimRight(String s) {
-		ArgUtil.staticCheckNotNull(s, "s");
-		Matcher m = _TRAILING_WHITESPACE_REGEX.matcher(s);
-		String s2 = m.replaceFirst("");
+	public static String staticWhitespaceTrimRight(String s) {
+		ObjectArgUtil.staticCheckNotNull(s, "s");
+		final int len = s.length();
+		int i = len - 1;
+		for (; i >= 0; --i) {
+			char ch = s.charAt(i);
+			if (!Character.isWhitespace(ch)) {
+				break;
+			}
+		}
+		if (len - 1 == i) {
+			return s;
+		}
+		if (-1 == i) {
+			return "";
+		}
+		String s2 = s.substring(0, i + 1);
+		return s2;
+	}
+	
+	public static String staticLeft(String s, int count) {
+		ObjectArgUtil.staticCheckNotNull(s, "s");
+		IntArgUtil.staticCheckNotNegative(count, "count");
+		int len = s.length();
+		count = (count > len ? len : count);
+		String s2 = s.substring(0, count);
+		return s2;
+	}
+	
+	public static String staticRight(String s, int count) {
+		ObjectArgUtil.staticCheckNotNull(s, "s");
+		IntArgUtil.staticCheckNotNegative(count, "count");
+		int len = s.length();
+		count = (count > len ? len : count);
+		String s2 = s.substring(len - count, len);
 		return s2;
 	}
 	
 	public static String staticReplaceAll(String haystack, Pattern regex, String replacement) {
-		ArgUtil.staticCheckNotNull(haystack, "haystack");
-		ArgUtil.staticCheckNotNull(regex, "regex");
-		ArgUtil.staticCheckNotNull(replacement, "replacement");
+		ObjectArgUtil.staticCheckNotNull(haystack, "haystack");
+		ObjectArgUtil.staticCheckNotNull(regex, "regex");
+		ObjectArgUtil.staticCheckNotNull(replacement, "replacement");
 		Matcher m = regex.matcher(haystack);
 		String s2 = m.replaceAll(replacement);
 		return s2;
@@ -67,8 +109,8 @@ public final class StringUtil {
 	
 	// Ref: http://stackoverflow.com/a/6417487/257299
 	public static int staticFindLastPatternMatch(String haystack, Pattern regex) {
-		ArgUtil.staticCheckNotNull(haystack, "haystack");
-		ArgUtil.staticCheckNotNull(regex, "regex");
+		ObjectArgUtil.staticCheckNotNull(haystack, "haystack");
+		ObjectArgUtil.staticCheckNotNull(regex, "regex");
 		Matcher m = regex.matcher(haystack);
 		int haystackLen = haystack.length();
 		int index = _staticFindLastPatternMatchCore(0, haystackLen, m);
@@ -103,4 +145,6 @@ public final class StringUtil {
 	// TODO: Convert new lines
 	// TODO: Add line prefix / suffix
 	// TODO: String insert/replace (like ArrayUtil)
+	
+	
 }
