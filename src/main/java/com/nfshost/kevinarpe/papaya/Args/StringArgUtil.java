@@ -184,4 +184,55 @@ public final class StringArgUtil {
 		_staticCheckLengthRangeCore(ref, exactLen, exactLen, argName);
 		return ref;
 	}
+	
+	/**
+	 * Tests if a string reference is not null and an index is valid to insert an character.
+	 * 
+	 * @param ref an string reference
+	 * @param index index of character to insert.  Must be non-negative.
+	 * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
+	 * @return the validated index
+	 * @throws NullPointerException if {@code ref}, {@code strArgName},
+	 *         or {@code indexArgName} is null
+	 * @throws IndexOutOfBoundsException if {@code index < 0},
+	 *         or {@code index >= ref.length()}
+	 */
+	public static <T extends CharSequence> int staticCheckInsertIndex(
+			T ref, int index, String strArgName, String indexArgName) {
+		int len = (null == ref ? -1 : ref.length());
+		ContainerArgUtil._staticCheckInsertIndex(
+			ref, "String", len, index, strArgName, indexArgName);
+		return index;
+	}
+	
+	/**
+	 * Tests if an string reference is not null, and an index and count is valid to
+	 * access characters.
+	 * 
+	 * @param ref a string reference
+	 * @param index index of character to access.  Must be non-negative.
+	 * @param count number of characters to access, starting from {@code index}.
+	 *              Must be non-negative.
+	 * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
+	 * @param countArgName argument name for {@code count}, e.g., "strListCount"
+	 * @throws NullPointerException if {@code ref}, {@code strArgName}, {@code indexArgName},
+	 *         or {@code countArgName} is null
+	 * @throws IllegalArgumentException if {@code index < 0},
+	 *         or if {@code count < 0}
+	 * @throws IndexOutOfBoundsException if {@code index >= ref.length()},
+	 *         or if {@code index + count > ref.length()}
+	 */
+	public static <T extends CharSequence> void staticCheckIndexAndCount(
+			T ref,
+			int index,
+			int count,
+			String strArgName,
+			String indexArgName,
+			String countArgName) {
+		int len = (null == ref ? -1 : ref.length());
+		ContainerArgUtil._staticCheckIndexAndCount(
+			ref, "String", len, index, count, strArgName, indexArgName, countArgName);
+	}
 }

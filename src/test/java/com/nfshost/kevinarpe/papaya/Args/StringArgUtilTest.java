@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 
 import com.nfshost.kevinarpe.papaya.Args.StringArgUtil;
 
-public class StringArgUtilTests {
+public class StringArgUtilTest {
 
 	@BeforeClass
 	public void classSetup() {
@@ -244,20 +244,6 @@ public class StringArgUtilTests {
 	public void shouldCheckNotMaxLengthWithNullString(String s, int maxLen) {
 		StringArgUtil.staticCheckMaxLength(s, maxLen, "s");
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	@DataProvider
 	private static final Object[][] _dataForShouldCheckExactLength() {

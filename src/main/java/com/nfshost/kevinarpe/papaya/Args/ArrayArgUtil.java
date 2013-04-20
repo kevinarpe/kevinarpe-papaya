@@ -135,12 +135,11 @@ public final class ArrayArgUtil {
 	 * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
 	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
 	 * @return the validated index
-	 * @throws NullPointerException if {@code ref}, {@code listArgName},
+	 * @throws NullPointerException if {@code ref}, {@code arrArgName},
 	 *         or {@code indexArgName} is null
 	 * @throws IndexOutOfBoundsException if {@code index < 0},
 	 *         or {@code index >= ref.length}
 	 * @see #staticCheckInsertIndex(Object[], int, String, String)
-	 * @see #staticCheckAccessIndex(Object[], int, String, String)
 	 */
 	public static <T> int staticCheckAccessIndex(
 			T[] ref, int index, String arrArgName, String indexArgName) {
@@ -158,12 +157,11 @@ public final class ArrayArgUtil {
 	 * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
 	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
 	 * @return the validated index
-	 * @throws NullPointerException if {@code ref}, {@code listArgName},
+	 * @throws NullPointerException if {@code ref}, {@code arrArgName},
 	 *         or {@code indexArgName} is null
 	 * @throws IndexOutOfBoundsException if {@code index < 0},
 	 *         or {@code index >= ref.length}
 	 * @see #staticCheckAccessIndex(Object[], int, String, String)
-	 * @see #staticCheckInsertIndex(Object[], int, String, String)
 	 */
 	public static <T> int staticCheckInsertIndex(
 			T[] ref, int index, String arrArgName, String indexArgName) {
@@ -379,6 +377,12 @@ public final class ArrayArgUtil {
 	 * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
 	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
 	 * @param countArgName argument name for {@code count}, e.g., "strListCount"
+	 * @throws NullPointerException if {@code ref}, {@code arrArgName}, {@code indexArgName},
+	 *         or {@code countArgName} is null
+	 * @throws IllegalArgumentException if {@code index < 0},
+	 *         or if {@code count < 0}
+	 * @throws IndexOutOfBoundsException if {@code index >= ref.length},
+	 *         or if {@code index + count > ref.length}
 	 */
 	public static <T> void staticCheckIndexAndCount(
 			T[] ref,

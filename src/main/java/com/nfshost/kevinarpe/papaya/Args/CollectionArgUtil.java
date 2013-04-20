@@ -205,6 +205,12 @@ public final class CollectionArgUtil {
 	 * @param collectionArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
 	 * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
 	 * @param countArgName argument name for {@code count}, e.g., "strListCount"
+	 * @throws NullPointerException if {@code ref}, {@code collectionArgName},
+	 *         {@code indexArgName}, or {@code countArgName} is null
+	 * @throws IllegalArgumentException if {@code index < 0},
+	 *         or if {@code count < 0}
+	 * @throws IndexOutOfBoundsException if {@code index >= ref.size()},
+	 *         or if {@code index + count > ref.size()}
 	 */
 	public static <T> void staticCheckIndexAndCount(
 			Collection<T> ref,

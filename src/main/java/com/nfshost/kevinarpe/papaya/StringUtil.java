@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 import com.nfshost.kevinarpe.papaya.Args.IntArgUtil;
 import com.nfshost.kevinarpe.papaya.Args.ObjectArgUtil;
+import com.nfshost.kevinarpe.papaya.Args.StringArgUtil;
 
 public final class StringUtil {
 
@@ -80,7 +81,7 @@ public final class StringUtil {
 		return s2;
 	}
 	
-	public static String staticLeft(String s, int count) {
+	public static String staticSubstringLeft(String s, int count) {
 		ObjectArgUtil.staticCheckNotNull(s, "s");
 		IntArgUtil.staticCheckNotNegative(count, "count");
 		int len = s.length();
@@ -89,7 +90,7 @@ public final class StringUtil {
 		return s2;
 	}
 	
-	public static String staticRight(String s, int count) {
+	public static String staticSubstringRight(String s, int count) {
 		ObjectArgUtil.staticCheckNotNull(s, "s");
 		IntArgUtil.staticCheckNotNegative(count, "count");
 		int len = s.length();
@@ -121,7 +122,7 @@ public final class StringUtil {
 		if (start > end) {
 			return -1;
 		}
-		int pivot = ((end - start) / 2) + start;
+		final int pivot = ((end - start) / 2) + start;
 		if (m.find(pivot)) {
 			int index = m.start();
 			if (index + 1 > end) {
@@ -144,7 +145,110 @@ public final class StringUtil {
 	// TODO: Split by new line
 	// TODO: Convert new lines
 	// TODO: Add line prefix / suffix
-	// TODO: String insert/replace (like ArrayUtil)
+	// TODO: String insert/remove/replace (like ArrayUtil)
 	
+	/**
+	 * This is a convenience method for {@link #staticRemove(String, int, int)}
+	 * where {@code count = 1}.
+	 */
+	public static String staticRemove(String s, int index) {
+		final int count = 1;
+		String s2 = staticRemove(s, index, count);
+		return s2;
+	}
 	
+	/**
+	 * Removes characters from a string by creating a new string and copying remaining characters
+	 * from the source string.  To be precise, using the term "remove" is a misnomer, as Java
+	 * strings cannot change size.
+	 * <p>
+	 * If {@code count == 0}, the input string reference is returned.  No copy is made.
+	 * 
+	 * @param str a string reference
+	 * @param index offset to begin removing characters.  Range: 0 to {@code str.length() - 1}
+	 * @param count number of characters to remove.  Must be non-negative.
+	 * @return reference to a string with characters removed
+	 * @throws NullPointerException if {@code str} is null
+	 * @throws IllegalArgumentException if {@code index} and {@code count} are invalid
+	 */
+	public static String staticRemove(String str, int index, int count) {
+		StringArgUtil.staticCheckIndexAndCount(str, index, count, "s", "index", "count");
+		
+		if (0 == count) {
+			return str;
+		}
+		
+		final int len = str.length();
+		String newStr = "";
+		
+		final int countBefore = index;
+		final int countAfter = len - (index + count);
+		
+		if (0 != len && 0 != countBefore) {
+			newStr = str.substring(0, countBefore);
+		}
+		if (0 != len && 0 != countAfter) {
+			String after = str.substring(index + count);
+			newStr += after;
+		}
+		return newStr;
+	}
+	
+	/**
+	 * Insert characters into a string by creating a new string and copying characters from the
+	 * source strings.  To be precise, using the term "insert" is a misnomer, as Java strings
+	 * cannot change size.
+	 * <p>
+	 * If {@code count == 0}, the input string reference is returned.  No copy is made.
+	 * 
+	 * @param str a string reference
+	 * @param index offset to begin inserting characters.  Range: 0 to {@code str.length()}
+	 * @param newText characters to insert
+	 * @return reference to a string with characters inserted
+	 * @throws NullPointerException if {@code str} or {@code newText} is null
+	 * @throws IllegalArgumentException if {@code index} is invalid
+	 */
+	public static String staticInsert(String str, int index, String newText) {
+		StringArgUtil.staticCheckInsertIndex(str, index, "str", "index");
+		ObjectArgUtil.staticCheckNotNull(newText, "newText");
+		
+		if (0 == newText.length()) {
+			return str;
+		}
+		
+		String newStr = "";
+		final int len = str.length();
+		final int countBefore = index;
+		final int countAfter = len - index;
+		
+		if (0 != len && 0 != countBefore) {
+			newStr = str.substring(0, countBefore);
+		}
+		newStr += newText;
+		if (0 != len && 0 != countAfter) {
+			String after = str.substring(index);
+			newStr += after;
+		}
+		return newStr;
+	}
+	
+	/**
+	 * This is a convenience method to combine {@link #staticRemove(String, int, int)}
+	 * and {@link #staticInsert(String, int, String)} where {@code count = 1}.
+	 */
+	public static String staticReplace(String str, int index, String newText) {
+		final int count = 1;
+		String newStr = staticReplace(str, index, count, newText);
+		return newStr;
+	}
+	
+	/**
+	 * This is a convenience method to combine {@link #staticRemove(String, int, int)}
+	 * and {@link #staticInsert(String, int, String)}.
+	 */
+	public static String staticReplace(String str, int index, int count, String newText) {
+		String newStr = staticRemove(str, index, count);
+		String newStr2 = staticInsert(newStr, index, newText);
+		return newStr2;
+	}
 }

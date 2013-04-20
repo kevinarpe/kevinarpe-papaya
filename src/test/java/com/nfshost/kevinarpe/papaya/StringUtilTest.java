@@ -17,7 +17,7 @@
  * along with Papaya.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nfshost.kevinarpe.papaya.tests;
+package com.nfshost.kevinarpe.papaya;
 
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -27,7 +27,7 @@ import org.testng.Assert;
 
 import com.nfshost.kevinarpe.papaya.StringUtil;
 
-public class StringUtilTests {
+public class StringUtilTest {
 
 	@BeforeClass
 	public void classSetup() {

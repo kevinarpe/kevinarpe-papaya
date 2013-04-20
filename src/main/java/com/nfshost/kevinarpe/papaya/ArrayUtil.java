@@ -62,18 +62,22 @@ public final class ArrayUtil {
 	}
 	
 	/**
-	 * Creates a new array and copies remaining elements from source array.
-	 * To be precise, using the term "remove" is a misnomer, as Java array's cannot change size.
+	 * Removes elements from an array by creating a new array and copying remaining elements from
+	 * the source array.  To be precise, using the term "remove" is a misnomer, as Java arrays
+	 * cannot change size.
+	 * <p>
+	 * If {@code count == 0}, the array is fully copied and returned.
 	 * 
 	 * @param arr an array reference
-	 * @param index index to begin removing elements (range: 0 to {@code arr.length - 1})
-	 * @param count number of elements to remove
+	 * @param index index to begin removing elements.  Range: 0 to {@code arr.length - 1}
+	 * @param count number of elements to remove.  Must be non-negative.
 	 * @return reference to newly allocated array
 	 * @throws NullPointerException if {@code arr} is null
 	 * @throws IllegalArgumentException if {@code index} and {@code count} are invalid
 	 */
 	public static <T> T[] staticRemove(T[] arr, int index, int count) {
 		ArrayArgUtil.staticCheckIndexAndCount(arr, index, count, "arr", "index", "count");
+		
 		int newLen = arr.length - count;
 		T[] newArr = _staticNewFromExisting(arr, newLen);
 		
@@ -99,6 +103,16 @@ public final class ArrayUtil {
 		return newArr;
 	}
 	
+	/**
+	 * Dynamically creates a type-safe and type-correct Java array.  Normally, it is non-trivial
+	 * to allocate generic arrays.
+	 * 
+	 * @param componentClass element type in new array
+	 * @param length number of elements in new array.  Must be non-negative.
+	 * @return reference to newly allocated array
+	 * @throws NullPointerException if {@code componentClass} is null
+	 * @throws IllegalArgumentException if {@code length} is negative
+	 */
 	public static <T> T[] staticNew(Class<T> componentClass, int length) {
 		ObjectArgUtil.staticCheckNotNull(componentClass, "componentClass");
 		IntArgUtil.staticCheckNotNegative(length, "length");
@@ -132,16 +146,15 @@ public final class ArrayUtil {
 	 * To be precise, using the term "insert" is a misnomer, as Java array's cannot change size.
 	 * 
 	 * @param arr an array reference
-	 * @param index index to insert new items (range: 0 to {@code arr.length})
+	 * @param index index to insert new items.  Range: 0 to {@code arr.length}
 	 * @param newItem first new item to insert; null is OK
-	 * @param newItemArr optiona list of additional items to insert; nulls are OK
+	 * @param newItemArr optional list of additional items to insert; nulls are OK
 	 * @return reference to newly allocated array
 	 * @throws NullPointerException if {@code arr} is null
 	 * @throws IllegalArgumentException if {@code index} is invalid
 	 */
 	@SafeVarargs
 	public static <T> T[] staticInsert(T[] arr, int index, T newItem, T... newItemArr) {
-		ObjectArgUtil.staticCheckNotNull(arr, "arr");
 		ArrayArgUtil.staticCheckInsertIndex(arr, index, "arr", "index");
 		
 		int newLen = arr.length + 1 + newItemArr.length;

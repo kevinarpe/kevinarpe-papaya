@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 
 import com.nfshost.kevinarpe.papaya.Args.ObjectArgUtil;
 
-public class ObjectArgUtilTests {
+public class ObjectArgUtilTest {
 
 	@BeforeClass
 	public void classSetup() {
@@ -75,6 +75,6 @@ public class ObjectArgUtilTests {
 			expectedExceptions = NullPointerException.class)
 	public void shouldNotCheckAsNotNull(Object x, String argName) {
 		Object value = null;
-		ObjectArgUtil.staticCheckNotNull(value, "value");
+		ObjectArgUtil.staticCheckNotNull(value, argName);
 	}
 }
