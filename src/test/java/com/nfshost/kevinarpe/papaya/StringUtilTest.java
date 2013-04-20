@@ -38,7 +38,7 @@ public class StringUtilTest {
 	}
 	
 	@DataProvider
-	private static final Object[][] _dataForShouldWhitespaceTrimLeft() {
+	private static final Object[][] _dataForShouldWhitespaceTrimPrefix() {
 		return new Object[][] {
 				{ " ", "" },  // ASCII space
 				{ "\t", "" },
@@ -81,20 +81,20 @@ public class StringUtilTest {
 		};
 	}
 	
-	@Test(dataProvider = "_dataForShouldWhitespaceTrimLeft")
+	@Test(dataProvider = "_dataForShouldWhitespaceTrimPrefix")
 	public void shouldWhitespaceTrimLeft(String input, String expectedOutput) {
-		String output = StringUtil.staticWhitespaceTrimLeft(input);
+		String output = StringUtil.staticWhitespaceTrimPrefix(input);
 		Assert.assertEquals(output, expectedOutput);
 	}
 	
 	@Test(expectedExceptions = NullPointerException.class)
-	public void shouldNotWhitespaceTrimLeft() {
+	public void shouldNotWhitespaceTrimPrefix() {
 		String input = null;
-		StringUtil.staticWhitespaceTrimLeft(input);
+		StringUtil.staticWhitespaceTrimPrefix(input);
 	}
 	
 	@DataProvider
-	private static final Object[][] _dataForShouldWhitespaceTrimRight() {
+	private static final Object[][] _dataForShouldWhitespaceTrimSuffix() {
 		return new Object[][] {
 				{ " ", "" },  // ASCII space
 				{ "\t", "" },
@@ -137,15 +137,15 @@ public class StringUtilTest {
 		};
 	}
 	
-	@Test(dataProvider = "_dataForShouldWhitespaceTrimRight")
+	@Test(dataProvider = "_dataForShouldWhitespaceTrimSuffix")
 	public void shouldWhitespaceTrimRight(String input, String expectedOutput) {
-		String output = StringUtil.staticWhitespaceTrimRight(input);
+		String output = StringUtil.staticWhitespaceTrimSuffix(input);
 		Assert.assertEquals(output, expectedOutput);
 	}
 	
 	@Test(expectedExceptions = NullPointerException.class)
-	public void shouldNotWhitespaceTrimRight() {
+	public void shouldNotWhitespaceTrimSuffix() {
 		String input = null;
-		StringUtil.staticWhitespaceTrimRight(input);
+		StringUtil.staticWhitespaceTrimSuffix(input);
 	}
 }

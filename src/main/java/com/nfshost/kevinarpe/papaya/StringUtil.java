@@ -41,27 +41,61 @@ public final class StringUtil {
 		_NEW_LINE_REGEX = Pattern.compile("\r?\n");
 	}
 	
-	public static String staticWhitespaceTrimLeft(String s) {
-		ObjectArgUtil.staticCheckNotNull(s, "s");
-		final int len = s.length();
+	/**
+	 * Creates a copy of the input string, but removes all leading whitespace chars.
+	 * To be precise, "leading" is always defined as starting from index zero.
+	 * This may be backwards for right-to-left languages such as Hebrew and Arabic.
+	 * <p>
+	 * Whitespace is defined as {@link Character#isWhitespace(char)}, which will include all
+	 * Unicode whitespace, such as the Japanese full-width space.
+	 * <p>
+	 * If zero leading whitespace chars are found, the input string reference is returned.
+	 * <p>
+	 * If all characters in input string are whitespace, an empty string is returned.
+	 * 
+	 * @param str a string reference
+	 * @return string reference without leading whitespace chars
+	 * @throws NullPointerException if {@code str} is null
+	 * @see #staticWhitespaceTrimSuffix(String)
+	 */
+	public static String staticWhitespaceTrimPrefix(String str) {
+		ObjectArgUtil.staticCheckNotNull(str, "str");
+		final int len = str.length();
 		int i = 0;
 		for (; i < len; ++i) {
-			char ch = s.charAt(i);
+			char ch = str.charAt(i);
 			if (!Character.isWhitespace(ch)) {
 				break;
 			}
 		}
 		if (0 == i) {
-			return s;
+			return str;
 		}
 		if (len == i) {
 			return "";
 		}
-		String s2 = s.substring(i);
+		String s2 = str.substring(i);
 		return s2;
 	}
 	
-	public static String staticWhitespaceTrimRight(String s) {
+	/**
+	 * Creates a copy of the input string, but removes all trailing whitespace chars.
+	 * To be precise, "trailing" is always defined as starting from the last index.
+	 * This may be backwards for right-to-left languages such as Hebrew and Arabic.
+	 * <p>
+	 * Whitespace is defined as {@link Character#isWhitespace(char)}, which will include all
+	 * Unicode whitespace, such as the Japanese full-width space.
+	 * <p>
+	 * If zero leading whitespace chars are found, the input string reference is returned.
+	 * <p>
+	 * If all characters in input string are whitespace, an empty string is returned.
+	 * 
+	 * @param str a string reference
+	 * @return string reference without leading whitespace chars
+	 * @throws NullPointerException if {@code str} is null
+	 * @see #staticWhitespaceTrimPrefix(String)
+	 */
+	public static String staticWhitespaceTrimSuffix(String s) {
 		ObjectArgUtil.staticCheckNotNull(s, "s");
 		final int len = s.length();
 		int i = len - 1;
@@ -81,7 +115,7 @@ public final class StringUtil {
 		return s2;
 	}
 	
-	public static String staticSubstringLeft(String s, int count) {
+	public static String staticSubstringPrefix(String s, int count) {
 		ObjectArgUtil.staticCheckNotNull(s, "s");
 		IntArgUtil.staticCheckNotNegative(count, "count");
 		int len = s.length();
@@ -90,7 +124,7 @@ public final class StringUtil {
 		return s2;
 	}
 	
-	public static String staticSubstringRight(String s, int count) {
+	public static String staticSubstringSuffix(String s, int count) {
 		ObjectArgUtil.staticCheckNotNull(s, "s");
 		IntArgUtil.staticCheckNotNegative(count, "count");
 		int len = s.length();
@@ -145,7 +179,6 @@ public final class StringUtil {
 	// TODO: Split by new line
 	// TODO: Convert new lines
 	// TODO: Add line prefix / suffix
-	// TODO: String insert/remove/replace (like ArrayUtil)
 	
 	/**
 	 * This is a convenience method for {@link #staticRemove(String, int, int)}
