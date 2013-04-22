@@ -21,9 +21,9 @@ package com.nfshost.kevinarpe.papaya;
 
 import java.lang.reflect.Array;
 
-import com.nfshost.kevinarpe.papaya.Args.ArrayArgUtil;
-import com.nfshost.kevinarpe.papaya.Args.IntArgUtil;
-import com.nfshost.kevinarpe.papaya.Args.ObjectArgUtil;
+import com.nfshost.kevinarpe.papaya.Args.ArrayArgs;
+import com.nfshost.kevinarpe.papaya.Args.IntArgs;
+import com.nfshost.kevinarpe.papaya.Args.ObjectArgs;
 
 public final class ArrayUtil {
 	
@@ -76,7 +76,7 @@ public final class ArrayUtil {
 	 * @throws IllegalArgumentException if {@code index} and {@code count} are invalid
 	 */
 	public static <T> T[] staticRemove(T[] arr, int index, int count) {
-		ArrayArgUtil.staticCheckIndexAndCount(arr, index, count, "arr", "index", "count");
+		ArrayArgs.staticCheckIndexAndCount(arr, index, count, "arr", "index", "count");
 		
 		int newLen = arr.length - count;
 		T[] newArr = _staticNewFromExisting(arr, newLen);
@@ -114,8 +114,8 @@ public final class ArrayUtil {
 	 * @throws IllegalArgumentException if {@code length} is negative
 	 */
 	public static <T> T[] staticNew(Class<T> componentClass, int length) {
-		ObjectArgUtil.staticCheckNotNull(componentClass, "componentClass");
-		IntArgUtil.staticCheckNotNegative(length, "length");
+		ObjectArgs.staticCheckNotNull(componentClass, "componentClass");
+		IntArgs.staticCheckNotNegative(length, "length");
 		
 		@SuppressWarnings("unchecked")
 		T[] newArr = (T[]) Array.newInstance(componentClass, length);
@@ -155,7 +155,7 @@ public final class ArrayUtil {
 	 */
 	@SafeVarargs
 	public static <T> T[] staticInsert(T[] arr, int index, T newItem, T... newItemArr) {
-		ArrayArgUtil.staticCheckInsertIndex(arr, index, "arr", "index");
+		ArrayArgs.staticCheckInsertIndex(arr, index, "arr", "index");
 		
 		int newLen = arr.length + 1 + newItemArr.length;
 		T[] newArr = _staticNewFromExisting(arr, newLen);

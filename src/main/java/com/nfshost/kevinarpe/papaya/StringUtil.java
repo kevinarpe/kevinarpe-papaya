@@ -22,9 +22,9 @@ package com.nfshost.kevinarpe.papaya;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.nfshost.kevinarpe.papaya.Args.IntArgUtil;
-import com.nfshost.kevinarpe.papaya.Args.ObjectArgUtil;
-import com.nfshost.kevinarpe.papaya.Args.StringArgUtil;
+import com.nfshost.kevinarpe.papaya.Args.IntArgs;
+import com.nfshost.kevinarpe.papaya.Args.ObjectArgs;
+import com.nfshost.kevinarpe.papaya.Args.StringArgs;
 
 public final class StringUtil {
 
@@ -59,7 +59,7 @@ public final class StringUtil {
 	 * @see #staticWhitespaceTrimSuffix(String)
 	 */
 	public static String staticWhitespaceTrimPrefix(String str) {
-		ObjectArgUtil.staticCheckNotNull(str, "str");
+		ObjectArgs.staticCheckNotNull(str, "str");
 		final int len = str.length();
 		int i = 0;
 		for (; i < len; ++i) {
@@ -96,7 +96,7 @@ public final class StringUtil {
 	 * @see #staticWhitespaceTrimPrefix(String)
 	 */
 	public static String staticWhitespaceTrimSuffix(String s) {
-		ObjectArgUtil.staticCheckNotNull(s, "s");
+		ObjectArgs.staticCheckNotNull(s, "s");
 		final int len = s.length();
 		int i = len - 1;
 		for (; i >= 0; --i) {
@@ -116,8 +116,8 @@ public final class StringUtil {
 	}
 	
 	public static String staticSubstringPrefix(String s, int count) {
-		ObjectArgUtil.staticCheckNotNull(s, "s");
-		IntArgUtil.staticCheckNotNegative(count, "count");
+		ObjectArgs.staticCheckNotNull(s, "s");
+		IntArgs.staticCheckNotNegative(count, "count");
 		int len = s.length();
 		count = (count > len ? len : count);
 		String s2 = s.substring(0, count);
@@ -125,8 +125,8 @@ public final class StringUtil {
 	}
 	
 	public static String staticSubstringSuffix(String s, int count) {
-		ObjectArgUtil.staticCheckNotNull(s, "s");
-		IntArgUtil.staticCheckNotNegative(count, "count");
+		ObjectArgs.staticCheckNotNull(s, "s");
+		IntArgs.staticCheckNotNegative(count, "count");
 		int len = s.length();
 		count = (count > len ? len : count);
 		String s2 = s.substring(len - count, len);
@@ -134,9 +134,9 @@ public final class StringUtil {
 	}
 	
 	public static String staticReplaceAll(String haystack, Pattern regex, String replacement) {
-		ObjectArgUtil.staticCheckNotNull(haystack, "haystack");
-		ObjectArgUtil.staticCheckNotNull(regex, "regex");
-		ObjectArgUtil.staticCheckNotNull(replacement, "replacement");
+		ObjectArgs.staticCheckNotNull(haystack, "haystack");
+		ObjectArgs.staticCheckNotNull(regex, "regex");
+		ObjectArgs.staticCheckNotNull(replacement, "replacement");
 		Matcher m = regex.matcher(haystack);
 		String s2 = m.replaceAll(replacement);
 		return s2;
@@ -144,8 +144,8 @@ public final class StringUtil {
 	
 	// Ref: http://stackoverflow.com/a/6417487/257299
 	public static int staticFindLastPatternMatch(String haystack, Pattern regex) {
-		ObjectArgUtil.staticCheckNotNull(haystack, "haystack");
-		ObjectArgUtil.staticCheckNotNull(regex, "regex");
+		ObjectArgs.staticCheckNotNull(haystack, "haystack");
+		ObjectArgs.staticCheckNotNull(regex, "regex");
 		Matcher m = regex.matcher(haystack);
 		int haystackLen = haystack.length();
 		int index = _staticFindLastPatternMatchCore(0, haystackLen, m);
@@ -205,7 +205,7 @@ public final class StringUtil {
 	 * @throws IllegalArgumentException if {@code index} and {@code count} are invalid
 	 */
 	public static String staticRemove(String str, int index, int count) {
-		StringArgUtil.staticCheckIndexAndCount(str, index, count, "s", "index", "count");
+		StringArgs.staticCheckIndexAndCount(str, index, count, "s", "index", "count");
 		
 		if (0 == count) {
 			return str;
@@ -242,8 +242,8 @@ public final class StringUtil {
 	 * @throws IllegalArgumentException if {@code index} is invalid
 	 */
 	public static String staticInsert(String str, int index, String newText) {
-		StringArgUtil.staticCheckInsertIndex(str, index, "str", "index");
-		ObjectArgUtil.staticCheckNotNull(newText, "newText");
+		StringArgs.staticCheckInsertIndex(str, index, "str", "index");
+		ObjectArgs.staticCheckNotNull(newText, "newText");
 		
 		if (0 == newText.length()) {
 			return str;

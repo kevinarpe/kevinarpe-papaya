@@ -56,5 +56,6 @@ public final class PrimitiveTypeUtil {
 		EPSILON_NEGATIVE_FLOAT = Math.nextAfter(0.0f, -1.0f);
 		EPSILON_POSITIVE_DOUBLE = Math.nextAfter(0.0d, 1.0d);
 		EPSILON_NEGATIVE_DOUBLE = Math.nextAfter(0.0d, -1.0d);
+		{ int dummy = 0; }  // debug breakpoint
 	}
 }

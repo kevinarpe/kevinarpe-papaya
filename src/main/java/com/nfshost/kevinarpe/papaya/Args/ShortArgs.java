@@ -19,41 +19,41 @@
 
 package com.nfshost.kevinarpe.papaya.Args;
 
-public final class ShortArgUtil {
+public final class ShortArgs {
 
 	/**
-	 * This is a convenience method for {@link LongArgUtil#staticCheckPositive(long, String)}.
+	 * This is a convenience method for {@link LongArgs#staticCheckPositive(long, String)}.
 	 * 
 	 * @see #staticCheckNotPositive(byte, String)
 	 * @see #staticCheckNegative(byte, String)
 	 * @see #staticCheckNotNegative(byte, String)
 	 */
 	public static short staticCheckPositive(short value, String argName) {
-		LongArgUtil.staticCheckPositive(value, argName);
+		LongArgs.staticCheckPositive(value, argName);
 		return value;
 	}
 	
 	/**
-	 * This is a convenience method for {@link LongArgUtil#staticCheckNotPositive(long, String)}.
+	 * This is a convenience method for {@link LongArgs#staticCheckNotPositive(long, String)}.
 	 * 
 	 * @see #staticCheckPositive(byte, String)
 	 * @see #staticCheckNegative(byte, String)
 	 * @see #staticCheckNotNegative(byte, String)
 	 */
 	public static short staticCheckNotPositive(short value, String argName) {
-		LongArgUtil.staticCheckNotPositive(value, argName);
+		LongArgs.staticCheckNotPositive(value, argName);
 		return value;
 	}
 	
 	/**
-	 * This is a convenience method for {@link LongArgUtil#staticCheckNegative(long, String)}.
+	 * This is a convenience method for {@link LongArgs#staticCheckNegative(long, String)}.
 	 * 
 	 * @see #staticCheckPositive(byte, String)
 	 * @see #staticCheckNotPositive(byte, String)
 	 * @see #staticCheckNotNegative(byte, String)
 	 */
 	public static short staticCheckNegative(short value, String argName) {
-		LongArgUtil.staticCheckNegative(value, argName);
+		LongArgs.staticCheckNegative(value, argName);
 		return value;
 	}
 	
@@ -65,61 +65,61 @@ public final class ShortArgUtil {
 	 * @see #staticCheckNegative(byte, String)
 	 */
 	public static short staticCheckNotNegative(short value, String argName) {
-		LongArgUtil.staticCheckNotNegative(value, argName);
+		LongArgs.staticCheckNotNegative(value, argName);
 		return value;
 	}
 	
 	/**
 	 * Convenience method to call
-	 * {@link ComparableArgUtil#staticCheckRange(Comparable, Comparable, Comparable, String)}.
+	 * {@link ComparableArgs#staticCheckValueRange(Comparable, Comparable, Comparable, String)}.
 	 * 
 	 * @see #staticCheckMinValue(short, short, String)
 	 * @see #staticCheckMaxValue(short, short, String)
 	 * @see #staticCheckExactValue(short, short, String)
 	 */
-	public static short staticCheckRange(
+	public static short staticCheckValueRange(
 			short value, short minValue, short maxValue, String argName) {
-		ComparableArgUtil.staticCheckRange(value, minValue, maxValue, argName);
+		ComparableArgs.staticCheckValueRange(value, minValue, maxValue, argName);
 		return value;
 	}
 	
 	/**
 	 * Convenience method to call
-	 * {@link ComparableArgUtil#staticCheckMinValue(Comparable, Comparable, String)}.
+	 * {@link ComparableArgs#staticCheckMinValue(Comparable, Comparable, String)}.
 	 * 
-	 * @see #staticCheckRange(short, short, short, String)
+	 * @see #staticCheckValueRange(short, short, short, String)
 	 * @see #staticCheckMaxValue(short, short, String)
 	 * @see #staticCheckExactValue(short, short, String)
 	 */
 	public static short staticCheckMinValue(short value, short minValue, String argName) {
-		ComparableArgUtil.staticCheckMinValue(value, minValue, argName);
+		ComparableArgs.staticCheckMinValue(value, minValue, argName);
 		return value;
 	}
 	
 	/**
 	 * Convenience method to call
-	 * {@link ComparableArgUtil#staticCheckMaxValue(Comparable, Comparable, String)}.
+	 * {@link ComparableArgs#staticCheckMaxValue(Comparable, Comparable, String)}.
 	 * 
-	 * @see #staticCheckRange(short, short, short, String)
+	 * @see #staticCheckValueRange(short, short, short, String)
 	 * @see #staticCheckMinValue(short, short, String)
 	 * @see #staticCheckExactValue(short, short, String)
 	 */
 	public static short staticCheckMaxValue(short value, short maxValue, String argName) {
-		ComparableArgUtil.staticCheckMaxValue(value, maxValue, argName);
+		ComparableArgs.staticCheckMaxValue(value, maxValue, argName);
 		return value;
 	}
 	
 	/**
 	 * Convenience method to call
-	 * {@link ComparableArgUtil#staticCheckExactValue(Comparable, Comparable, String)}
+	 * {@link ComparableArgs#staticCheckExactValue(Comparable, Comparable, String)}
 	 * where {@code minValue = null} and {@code maxValue = null}.
 	 * 
-	 * @see #staticCheckRange(short, short, short, String)
+	 * @see #staticCheckValueRange(short, short, short, String)
 	 * @see #staticCheckMinValue(short, short, String)
 	 * @see #staticCheckMaxValue(short, short, String)
 	 */
 	public static short staticCheckExactValue(short value, short exactValue, String argName) {
-		ComparableArgUtil.staticCheckExactValue(value, exactValue, argName);
+		ComparableArgs.staticCheckExactValue(value, exactValue, argName);
 		return value;
 	}
 }

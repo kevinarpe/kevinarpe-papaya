@@ -37,7 +37,7 @@ package com.nfshost.kevinarpe.papaya.Args;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public final class ObjectArgUtil {
+public final class ObjectArgs {
 
 	/**
 	 * Tests if an object reference passed as an argument is not null.

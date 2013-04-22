@@ -19,7 +19,7 @@
 
 package com.nfshost.kevinarpe.papaya.Args;
 
-public class DoubleArgUtil {
+public class DoubleArgs {
 
 	/**
 	 * Tests if {@code value > 0.0}
@@ -34,7 +34,7 @@ public class DoubleArgUtil {
 	 * @see #staticCheckNotNegative(double, String)
 	 */
 	public static double staticCheckPositive(double value, String argName) {
-		ObjectArgUtil.staticCheckNotNull(argName, "argName");
+		ObjectArgs.staticCheckNotNull(argName, "argName");
 		if (value <= 0.0) {
 			throw new IllegalArgumentException(String.format(
 					"Argument '%s': value is not positive: %f",
@@ -56,7 +56,7 @@ public class DoubleArgUtil {
 	 * @see #staticCheckNotNegative(double, String)
 	 */
 	public static double staticCheckNotPositive(double value, String argName) {
-		ObjectArgUtil.staticCheckNotNull(argName, "argName");
+		ObjectArgs.staticCheckNotNull(argName, "argName");
 		if (value > 0.0) {
 			throw new IllegalArgumentException(String.format(
 					"Argument '%s': value is positive: %f",
@@ -78,7 +78,7 @@ public class DoubleArgUtil {
 	 * @see #staticCheckNotNegative(double, String)
 	 */
 	public static double staticCheckNegative(double value, String argName) {
-		ObjectArgUtil.staticCheckNotNull(argName, "argName");
+		ObjectArgs.staticCheckNotNull(argName, "argName");
 		if (value >= 0.0) {
 			throw new IllegalArgumentException(String.format(
 					"Argument '%s': value is not negative: %f",
@@ -100,7 +100,7 @@ public class DoubleArgUtil {
 	 * @see #staticCheckNegative(double, String)
 	 */
 	public static double staticCheckNotNegative(double value, String argName) {
-		ObjectArgUtil.staticCheckNotNull(argName, "argName");
+		ObjectArgs.staticCheckNotNull(argName, "argName");
 		if (value < 0.0) {
 			throw new IllegalArgumentException(String.format(
 					"Argument '%s': value is negative: %f",
@@ -111,55 +111,55 @@ public class DoubleArgUtil {
 	
 	/**
 	 * Convenience method to call
-	 * {@link ComparableArgUtil#staticCheckRange(Comparable, Comparable, Comparable, String)}.
+	 * {@link ComparableArgs#staticCheckValueRange(Comparable, Comparable, Comparable, String)}.
 	 * 
 	 * @see #staticCheckDoubleMinValue(double, double, String)
 	 * @see #staticCheckDoubleMaxValue(double, double, String)
 	 * @see #staticCheckDoubleExactValue(double, double, String)
 	 */
-	public static double staticCheckDoubleRange(
+	public static double staticCheckValueRange(
 			double value, double minValue, double maxValue, String argName) {
-		ComparableArgUtil.staticCheckRange(value, minValue, maxValue, argName);
+		ComparableArgs.staticCheckValueRange(value, minValue, maxValue, argName);
 		return value;
 	}
 	
 	/**
 	 * Convenience method to call
-	 * {@link ComparableArgUtil#staticCheckMinValue(Comparable, Comparable, String)}.
+	 * {@link ComparableArgs#staticCheckMinValue(Comparable, Comparable, String)}.
 	 * 
-	 * @see #staticCheckDoubleRange(double, double, double, String)
+	 * @see #staticCheckValueRange(double, double, double, String)
 	 * @see #staticCheckDoubleMaxValue(double, double, String)
 	 * @see #staticCheckDoubleExactValue(double, double, String)
 	 */
 	public static double staticCheckDoubleMinValue(double value, double minValue, String argName) {
-		ComparableArgUtil.staticCheckMinValue(value, minValue, argName);
+		ComparableArgs.staticCheckMinValue(value, minValue, argName);
 		return value;
 	}
 	
 	/**
 	 * Convenience method to call
-	 * {@link ComparableArgUtil#staticCheckMaxValue(Comparable, Comparable, String)}.
+	 * {@link ComparableArgs#staticCheckMaxValue(Comparable, Comparable, String)}.
 	 * 
-	 * @see #staticCheckDoubleRange(double, double, double, String)
+	 * @see #staticCheckValueRange(double, double, double, String)
 	 * @see #staticCheckDoubleMinValue(double, double, String)
 	 * @see #staticCheckDoubleExactValue(double, double, String)
 	 */
 	public static double staticCheckDoubleMaxValue(double value, double maxValue, String argName) {
-		ComparableArgUtil.staticCheckMaxValue(value, maxValue, argName);
+		ComparableArgs.staticCheckMaxValue(value, maxValue, argName);
 		return value;
 	}
 	
 	/**
 	 * Convenience method to call
-	 * {@link ComparableArgUtil#staticCheckExactValue(Comparable, Comparable, String)}.
+	 * {@link ComparableArgs#staticCheckExactValue(Comparable, Comparable, String)}.
 	 * 
-	 * @see #staticCheckDoubleRange(double, double, double, String)
+	 * @see #staticCheckValueRange(double, double, double, String)
 	 * @see #staticCheckDoubleMinValue(double, double, String)
 	 * @see #staticCheckDoubleMaxValue(double, double, String)
 	 */
 	public static double staticCheckDoubleExactValue(
 			double value, double exactValue, String argName) {
-		ComparableArgUtil.staticCheckExactValue(value, exactValue, argName);
+		ComparableArgs.staticCheckExactValue(value, exactValue, argName);
 		return value;
 	}
 }

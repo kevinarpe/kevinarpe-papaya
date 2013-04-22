@@ -17,7 +17,7 @@
  * along with Papaya.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nfshost.kevinarpe.papaya.tests;
+package com.nfshost.kevinarpe.papaya;
 
 import java.util.Arrays;
 
@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 
 import com.nfshost.kevinarpe.papaya.ArrayUtil;
 
-public class ArrayUtilTests {
+public class ArrayUtilTest {
 
 	@BeforeClass
 	public void oneTimeSetup() {

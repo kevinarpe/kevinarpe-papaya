@@ -19,7 +19,7 @@
 
 package com.nfshost.kevinarpe.papaya.Args;
 
-public final class StringArgUtil {
+public final class StringArgs {
 
 	/**
 	 * Tests if a string reference is neither null nor empty.
@@ -29,11 +29,11 @@ public final class StringArgUtil {
 	 * @return the validated string reference
 	 * @throws NullPointerException if {@code ref} or {@code argName} is null
 	 * @throws IllegalArgumentException if {@code ref} is empty
-	 * @see ObjectArgUtil#staticCheckNotNull(Object, String)
+	 * @see ObjectArgs#staticCheckNotNull(Object, String)
 	 * @see #staticCheckNotEmptyOrWhitespace(CharSequence, String)
 	 */
 	public static <T extends CharSequence> T staticCheckNotEmpty(T ref, String argName) {
-		ObjectArgUtil.staticCheckNotNull(ref, argName);
+		ObjectArgs.staticCheckNotNull(ref, argName);
 		int len = ref.length();
 		if (0 == len) {
 			throw new IllegalArgumentException(String.format(
@@ -53,7 +53,7 @@ public final class StringArgUtil {
 	 * @return the validated string reference
 	 * @throws NullPointerException if {@code ref} or {@code argName} is null
 	 * @throws IllegalArgumentException if {@code ref} is empty or only whitespace
-	 * @see ObjectArgUtil#staticCheckNotNull(Object, String)
+	 * @see ObjectArgs#staticCheckNotNull(Object, String)
 	 * @see #staticCheckNotEmpty(CharSequence, String)
 	 */
 	public static <T extends CharSequence> T staticCheckNotEmptyOrWhitespace(
@@ -85,7 +85,7 @@ public final class StringArgUtil {
 	 *         or if {@code maxLen < 0},
 	 *         or if {@code minLen > maxLen}, 
 	 *         or if number of chars in {@code ref} is outside allowed range
-	 * @see ObjectArgUtil#staticCheckNotNull(Object, String)
+	 * @see ObjectArgs#staticCheckNotNull(Object, String)
 	 * @see #staticCheckNotEmpty(CharSequence, String)
 	 * @see #staticCheckNotEmptyOrWhitespace(CharSequence, String)
 	 * @see #staticCheckMinLength(CharSequence, int, String)
@@ -94,15 +94,15 @@ public final class StringArgUtil {
 	 */
 	public static <T extends CharSequence> T staticCheckLengthRange(
 			T ref, int minLen, int maxLen, String argName) {
-		IntArgUtil.staticCheckNotNegative(minLen, "minLen");
-		IntArgUtil.staticCheckNotNegative(maxLen, "maxLen");
+		IntArgs.staticCheckNotNegative(minLen, "minLen");
+		IntArgs.staticCheckNotNegative(maxLen, "maxLen");
 		_staticCheckLengthRangeCore(ref, minLen, maxLen, argName);
 		return ref;
 	}
 	
 	private static <T extends CharSequence> void _staticCheckLengthRangeCore(
 			T ref, int minLen, int maxLen, String argName) {
-		ObjectArgUtil.staticCheckNotNull(ref, argName);
+		ObjectArgs.staticCheckNotNull(ref, argName);
 		if (-1 != minLen && -1 != maxLen && minLen > maxLen) {
 			throw new IllegalArgumentException(String.format(
 				"Argument '%s': 'minLen' > 'maxLen': %d > %d", argName, minLen, maxLen));
@@ -136,7 +136,7 @@ public final class StringArgUtil {
 	 */
 	public static <T extends CharSequence> T staticCheckMinLength(
 			T ref, int minLen, String argName) {
-		IntArgUtil.staticCheckNotNegative(minLen, "minLen");
+		IntArgs.staticCheckNotNegative(minLen, "minLen");
 		int maxLen = -1;
 		_staticCheckLengthRangeCore(ref, minLen, maxLen, argName);
 		return ref;
@@ -158,7 +158,7 @@ public final class StringArgUtil {
 	 */
 	public static <T extends CharSequence> T staticCheckMaxLength(
 			T ref, int maxLen, String argName) {
-		IntArgUtil.staticCheckNotNegative(maxLen, "maxLen");
+		IntArgs.staticCheckNotNegative(maxLen, "maxLen");
 		int minLen = -1;
 		_staticCheckLengthRangeCore(ref, minLen, maxLen, argName);
 		return ref;
@@ -180,7 +180,7 @@ public final class StringArgUtil {
 	 */
 	public static <T extends CharSequence> T staticCheckExactLength(
 			T ref, int exactLen, String argName) {
-		IntArgUtil.staticCheckNotNegative(exactLen, "exactLen");
+		IntArgs.staticCheckNotNegative(exactLen, "exactLen");
 		_staticCheckLengthRangeCore(ref, exactLen, exactLen, argName);
 		return ref;
 	}
@@ -201,7 +201,7 @@ public final class StringArgUtil {
 	public static <T extends CharSequence> int staticCheckInsertIndex(
 			T ref, int index, String strArgName, String indexArgName) {
 		int len = (null == ref ? -1 : ref.length());
-		ContainerArgUtil._staticCheckInsertIndex(
+		ContainerArgs._staticCheckInsertIndex(
 			ref, "String", len, index, strArgName, indexArgName);
 		return index;
 	}
@@ -232,7 +232,7 @@ public final class StringArgUtil {
 			String indexArgName,
 			String countArgName) {
 		int len = (null == ref ? -1 : ref.length());
-		ContainerArgUtil._staticCheckIndexAndCount(
+		ContainerArgs._staticCheckIndexAndCount(
 			ref, "String", len, index, count, strArgName, indexArgName, countArgName);
 	}
 }

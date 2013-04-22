@@ -19,7 +19,7 @@
 
 package com.nfshost.kevinarpe.papaya.Args;
 
-public final class ComparableArgUtil {
+public final class ComparableArgs {
 
 	/**
 	 * Tests if a Comparable reference is not null and its value within specified range.
@@ -33,22 +33,22 @@ public final class ComparableArgUtil {
 	 *         or {@code argName} is null
 	 * @throws IllegalArgumentException if {@code minValue > maxValue},
 	 *         or if value of {@code ref} is outside allowed range
-	 * @see ObjectArgUtil#staticCheckNotNull(Object, String)
+	 * @see ObjectArgs#staticCheckNotNull(Object, String)
 	 * @see #staticCheckMinValue(Comparable, Comparable, String)
 	 * @see #staticCheckMaxValue(Comparable, Comparable, String)
 	 * @see #staticCheckExactValue(Comparable, Comparable, String)
 	 */
-	public static <T extends Comparable<T>> T staticCheckRange(
+	public static <T extends Comparable<T>> T staticCheckValueRange(
 			T ref, T minValue, T maxValue, String argName) {
-		ObjectArgUtil.staticCheckNotNull(minValue, "minValue");
-		ObjectArgUtil.staticCheckNotNull(maxValue, "maxValue");
+		ObjectArgs.staticCheckNotNull(minValue, "minValue");
+		ObjectArgs.staticCheckNotNull(maxValue, "maxValue");
 		_staticCheckRangeCore(ref, minValue, maxValue, argName);		
 		return ref;
 	}
 	
 	private static <T extends Comparable<T>> void _staticCheckRangeCore(
 			T ref, T optMinValue, T optMaxValue, String argName) {
-		ObjectArgUtil.staticCheckNotNull(ref, argName);
+		ObjectArgs.staticCheckNotNull(ref, argName);
 		if (null != optMinValue &&
 				null != optMaxValue &&
 				optMinValue.compareTo(optMaxValue) > 0) {
@@ -78,11 +78,11 @@ public final class ComparableArgUtil {
 	 * @throws NullPointerException if {@code ref}, {@code minValue},
 	 *         or {@code argName} is null
 	 * @throws IllegalArgumentException if value of {@code ref} is outside allowed range
-	 * @see #staticCheckRange(Comparable, Comparable, Comparable, String)
+	 * @see #staticCheckValueRange(Comparable, Comparable, Comparable, String)
 	 */
 	public static <T extends Comparable<T>> T staticCheckMinValue(
 			T ref, T minValue, String argName) {
-		ObjectArgUtil.staticCheckNotNull(minValue, "minValue");
+		ObjectArgs.staticCheckNotNull(minValue, "minValue");
 		T maxValue = null;
 		_staticCheckRangeCore(ref, minValue, maxValue, argName);		
 		return ref;
@@ -98,11 +98,11 @@ public final class ComparableArgUtil {
 	 * @throws NullPointerException if {@code ref}, {@code maxValue},
 	 *         or {@code argName} is null
 	 * @throws IllegalArgumentException if value of {@code ref} is outside allowed range
-	 * @see #staticCheckRange(Comparable, Comparable, Comparable, String)
+	 * @see #staticCheckValueRange(Comparable, Comparable, Comparable, String)
 	 */
 	public static <T extends Comparable<T>> T staticCheckMaxValue(
 			T ref, T maxValue, String argName) {
-		ObjectArgUtil.staticCheckNotNull(maxValue, "maxValue");
+		ObjectArgs.staticCheckNotNull(maxValue, "maxValue");
 		T minValue = null;
 		_staticCheckRangeCore(ref, minValue, maxValue, argName);		
 		return ref;
@@ -118,11 +118,11 @@ public final class ComparableArgUtil {
 	 * @throws NullPointerException if {@code ref}, {@code maxValue},
 	 *         or {@code argName} is null
 	 * @throws IllegalArgumentException if value of {@code ref} is outside allowed range
-	 * @see #staticCheckRange(Comparable, Comparable, Comparable, String)
+	 * @see #staticCheckValueRange(Comparable, Comparable, Comparable, String)
 	 */
 	public static <T extends Comparable<T>> T staticCheckExactValue(
 			T ref, T exactValue, String argName) {
-		ObjectArgUtil.staticCheckNotNull(exactValue, "exactValue");
+		ObjectArgs.staticCheckNotNull(exactValue, "exactValue");
 		_staticCheckRangeCore(ref, exactValue, exactValue, argName);		
 		return ref;
 	}

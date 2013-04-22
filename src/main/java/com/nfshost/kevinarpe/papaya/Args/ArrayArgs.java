@@ -19,7 +19,7 @@
 
 package com.nfshost.kevinarpe.papaya.Args;
 
-public final class ArrayArgUtil {
+public final class ArrayArgs {
 
 	/**
 	 * Tests if an array reference is not null and its length within specified range.
@@ -34,17 +34,17 @@ public final class ArrayArgUtil {
 	 *         or if {@code maxLen < 0},
 	 *         or if {@code minLen > maxLen}, 
 	 *         or if number of elements in {@code ref} is outside allowed range
-	 * @see ObjectArgUtil#staticCheckNotNull(Object, String)
+	 * @see ObjectArgs#staticCheckNotNull(Object, String)
 	 * @see #staticCheckMinLength(Object[], int, String)
 	 * @see #staticCheckMaxLength(Object[], int, String)
 	 * @see #staticCheckExactLength(Object[], int, String)
 	 */
 	public static <T> T[] staticCheckLengthRange(
 			T[] ref, int minLen, int maxLen, String argName) {
-		IntArgUtil.staticCheckNotNegative(minLen, "minLen");
-		IntArgUtil.staticCheckNotNegative(maxLen, "maxLen");
+		IntArgs.staticCheckNotNegative(minLen, "minLen");
+		IntArgs.staticCheckNotNegative(maxLen, "maxLen");
 		int len = (null == ref ? -1 : ref.length);
-		ContainerArgUtil._staticCheckSizeRange(ref, "Array", len, minLen, maxLen, argName);
+		ContainerArgs._staticCheckSizeRange(ref, "Array", len, minLen, maxLen, argName);
 		return ref;
 	}
 	
@@ -63,7 +63,7 @@ public final class ArrayArgUtil {
 		int len = (null == ref ? -1 : ref.length);
 		int minLen = 1;
 		int maxLen = -1;
-		ContainerArgUtil._staticCheckSizeRange(ref, "Array", len, minLen, maxLen, argName);
+		ContainerArgs._staticCheckSizeRange(ref, "Array", len, minLen, maxLen, argName);
 		return ref;
 	}
 	
@@ -80,10 +80,10 @@ public final class ArrayArgUtil {
 	 * @see #staticCheckLengthRange(Object[], int, int, String)
 	 */
 	public static <T> T[] staticCheckMinLength(T[] ref, int minLen, String argName) {
-		IntArgUtil.staticCheckNotNegative(minLen, "minLen");
+		IntArgs.staticCheckNotNegative(minLen, "minLen");
 		int len = (null == ref ? -1 : ref.length);
 		int maxLen = -1;
-		ContainerArgUtil._staticCheckSizeRange(ref, "Array", len, minLen, maxLen, argName);
+		ContainerArgs._staticCheckSizeRange(ref, "Array", len, minLen, maxLen, argName);
 		return ref;
 	}
 	
@@ -101,10 +101,10 @@ public final class ArrayArgUtil {
 	 * @see #staticCheckLengthRange(Object[], int, int, String)
 	 */
 	public static <T> T[] staticCheckMaxLength(T[] ref, int maxLen, String argName) {
-		IntArgUtil.staticCheckNotNegative(maxLen, "maxLen");
+		IntArgs.staticCheckNotNegative(maxLen, "maxLen");
 		int len = (null == ref ? -1 : ref.length);
 		int minLen = -1;
-		ContainerArgUtil._staticCheckSizeRange(ref, "Array", len, minLen, maxLen, argName);
+		ContainerArgs._staticCheckSizeRange(ref, "Array", len, minLen, maxLen, argName);
 		return ref;
 	}
 	
@@ -121,9 +121,9 @@ public final class ArrayArgUtil {
 	 * @see #staticCheckLengthRange(Object[], int, int, String)
 	 */
 	public static <T> T[] staticCheckExactLength(T[] ref, int exactLen, String argName) {
-		IntArgUtil.staticCheckNotNegative(exactLen, "exactLen");
+		IntArgs.staticCheckNotNegative(exactLen, "exactLen");
 		int len = (null == ref ? -1 : ref.length);
-		ContainerArgUtil._staticCheckSizeRange(ref, "Array", len, exactLen, exactLen, argName);
+		ContainerArgs._staticCheckSizeRange(ref, "Array", len, exactLen, exactLen, argName);
 		return ref;
 	}
 	
@@ -144,7 +144,7 @@ public final class ArrayArgUtil {
 	public static <T> int staticCheckAccessIndex(
 			T[] ref, int index, String arrArgName, String indexArgName) {
 		int len = (null == ref ? -1 : ref.length);
-		ContainerArgUtil._staticCheckAccessIndex(
+		ContainerArgs._staticCheckAccessIndex(
 			ref, "Array", len, index, arrArgName, indexArgName);
 		return index;
 	}
@@ -166,7 +166,7 @@ public final class ArrayArgUtil {
 	public static <T> int staticCheckInsertIndex(
 			T[] ref, int index, String arrArgName, String indexArgName) {
 		int len = (null == ref ? -1 : ref.length);
-		ContainerArgUtil._staticCheckInsertIndex(
+		ContainerArgs._staticCheckInsertIndex(
 			ref, "Array", len, index, arrArgName, indexArgName);
 		return index;
 	}
@@ -188,7 +188,7 @@ public final class ArrayArgUtil {
 	public static int staticCheckAccessIndex(
 			byte[] ref, int index, String arrArgName, String indexArgName) {
 		int len = (null == ref ? -1 : ref.length);
-		ContainerArgUtil._staticCheckAccessIndex(
+		ContainerArgs._staticCheckAccessIndex(
 			ref, "Array", len, index, arrArgName, indexArgName);
 		return index;
 	}
@@ -210,7 +210,7 @@ public final class ArrayArgUtil {
 	public static int staticCheckAccessIndex(
 			short[] ref, int index, String arrArgName, String indexArgName) {
 		int len = (null == ref ? -1 : ref.length);
-		ContainerArgUtil._staticCheckAccessIndex(
+		ContainerArgs._staticCheckAccessIndex(
 			ref, "Array", len, index, arrArgName, indexArgName);
 		return index;
 	}
@@ -232,7 +232,7 @@ public final class ArrayArgUtil {
 	public static int staticCheckAccessIndex(
 			int[] ref, int index, String arrArgName, String indexArgName) {
 		int len = (null == ref ? -1 : ref.length);
-		ContainerArgUtil._staticCheckAccessIndex(
+		ContainerArgs._staticCheckAccessIndex(
 			ref, "Array", len, index, arrArgName, indexArgName);
 		return index;
 	}
@@ -254,7 +254,7 @@ public final class ArrayArgUtil {
 	public static int staticCheckAccessIndex(
 			long[] ref, int index, String arrArgName, String indexArgName) {
 		int len = (null == ref ? -1 : ref.length);
-		ContainerArgUtil._staticCheckAccessIndex(
+		ContainerArgs._staticCheckAccessIndex(
 			ref, "Array", len, index, arrArgName, indexArgName);
 		return index;
 	}
@@ -276,7 +276,7 @@ public final class ArrayArgUtil {
 	public static int staticCheckAccessIndex(
 			float[] ref, int index, String arrArgName, String indexArgName) {
 		int len = (null == ref ? -1 : ref.length);
-		ContainerArgUtil._staticCheckAccessIndex(
+		ContainerArgs._staticCheckAccessIndex(
 			ref, "Array", len, index, arrArgName, indexArgName);
 		return index;
 	}
@@ -298,7 +298,7 @@ public final class ArrayArgUtil {
 	public static int staticCheckAccessIndex(
 			double[] ref, int index, String arrArgName, String indexArgName) {
 		int len = (null == ref ? -1 : ref.length);
-		ContainerArgUtil._staticCheckAccessIndex(
+		ContainerArgs._staticCheckAccessIndex(
 			ref, "Array", len, index, arrArgName, indexArgName);
 		return index;
 	}
@@ -320,7 +320,7 @@ public final class ArrayArgUtil {
 	public static int staticCheckAccessIndex(
 			char[] ref, int index, String arrArgName, String indexArgName) {
 		int len = (null == ref ? -1 : ref.length);
-		ContainerArgUtil._staticCheckAccessIndex(
+		ContainerArgs._staticCheckAccessIndex(
 			ref, "Array", len, index, arrArgName, indexArgName);
 		return index;
 	}
@@ -342,7 +342,7 @@ public final class ArrayArgUtil {
 	public static int staticCheckAccessIndex(
 			boolean[] ref, int index, String arrArgName, String indexArgName) {
 		int len = (null == ref ? -1 : ref.length);
-		ContainerArgUtil._staticCheckAccessIndex(
+		ContainerArgs._staticCheckAccessIndex(
 			ref, "Array", len, index, arrArgName, indexArgName);
 		return index;
 	}
@@ -352,12 +352,12 @@ public final class ArrayArgUtil {
 	 * 
 	 * @param ref an array reference
 	 * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-	 * @see ObjectArgUtil#staticCheckNotNull(Object, String)
-	 * @see CollectionArgUtil#staticCheckElementsNotNull(java.util.Collection, String)
+	 * @see ObjectArgs#staticCheckNotNull(Object, String)
+	 * @see CollectionArgs#staticCheckElementsNotNull(java.util.Collection, String)
 	 * @throws NullPointerException if {@code ref} (or any element) or {@code argName} is null
 	 */
 	public static <T> void staticCheckElementsNotNull(T[] ref, String argName) {
-		ObjectArgUtil.staticCheckNotNull(ref, argName);
+		ObjectArgs.staticCheckNotNull(ref, argName);
 		for (int i = 0; i < ref.length; ++i) {
 			T item = ref[i];
 			if (null == item) {
@@ -392,7 +392,7 @@ public final class ArrayArgUtil {
 			String indexArgName,
 			String countArgName) {
 		int len = (null == ref ? -1 : ref.length);
-		ContainerArgUtil._staticCheckIndexAndCount(
+		ContainerArgs._staticCheckIndexAndCount(
 			ref, "Array", len, index, count, arrArgName, indexArgName, countArgName);
 	}
 }

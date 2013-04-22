@@ -19,7 +19,7 @@
 
 package com.nfshost.kevinarpe.papaya.Args;
 
-final class ContainerArgUtil {
+final class ContainerArgs {
 
 	static void _staticCheckSizeRange(
 			Object container,
@@ -28,7 +28,7 @@ final class ContainerArgUtil {
 			int minSize,
 			int maxSize,
 			String containerArgName) {
-		ObjectArgUtil.staticCheckNotNull(container, containerArgName);
+		ObjectArgs.staticCheckNotNull(container, containerArgName);
 		if (-1 != minSize && -1 != maxSize && minSize > maxSize) {
 			throw new IllegalArgumentException(String.format(
 				"%s argument '%s': 'minSize' > 'maxSize': %d > %d",
@@ -53,8 +53,8 @@ final class ContainerArgUtil {
 			int index,
 			String containerArgName,
 			String indexArgName) {
-		ObjectArgUtil.staticCheckNotNull(container, containerArgName);
-		ObjectArgUtil.staticCheckNotNull(indexArgName, "indexArgName");
+		ObjectArgs.staticCheckNotNull(container, containerArgName);
+		ObjectArgs.staticCheckNotNull(indexArgName, "indexArgName");
 		_staticCheckIndexNotNegative(containerType, containerArgName, indexArgName, index);
 		if (index >= containerSize) {
 			throw new IndexOutOfBoundsException(String.format(
@@ -74,8 +74,8 @@ final class ContainerArgUtil {
 			int index,
 			String containerArgName,
 			String indexArgName) {
-		ObjectArgUtil.staticCheckNotNull(container, containerArgName);
-		ObjectArgUtil.staticCheckNotNull(indexArgName, "indexArgName");
+		ObjectArgs.staticCheckNotNull(container, containerArgName);
+		ObjectArgs.staticCheckNotNull(indexArgName, "indexArgName");
 		_staticCheckIndexNotNegative(containerType, containerArgName, indexArgName, index);
 		if (index > containerSize) {
 			throw new IndexOutOfBoundsException(String.format(
@@ -109,10 +109,10 @@ final class ContainerArgUtil {
 			String containerArgName,
 			String indexArgName,
 			String countArgName) {
-		ObjectArgUtil.staticCheckNotNull(container, containerArgName);
-		ObjectArgUtil.staticCheckNotNull(indexArgName, "indexArgName");
+		ObjectArgs.staticCheckNotNull(container, containerArgName);
+		ObjectArgs.staticCheckNotNull(indexArgName, "indexArgName");
 		_staticCheckIndexNotNegative(containerType, containerArgName, indexArgName, index);
-		IntArgUtil.staticCheckNotNegative(count, countArgName);
+		IntArgs.staticCheckNotNegative(count, countArgName);
 		if (index >= containerSize) {
 			throw new IndexOutOfBoundsException(String.format(
 					"%s '%s': Index '%s' too large: %d >= %d",

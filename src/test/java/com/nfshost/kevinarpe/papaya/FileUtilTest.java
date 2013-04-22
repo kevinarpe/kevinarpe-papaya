@@ -17,7 +17,7 @@
  * along with Papaya.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nfshost.kevinarpe.papaya.tests;
+package com.nfshost.kevinarpe.papaya;
 
 import java.io.IOException;
 import java.nio.file.FileSystem;
@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 import com.nfshost.kevinarpe.papaya.FileUtil;
 
-public class FileUtilTests {
+public class FileUtilTest {
 
 	@BeforeClass
 	public void classSetup() {

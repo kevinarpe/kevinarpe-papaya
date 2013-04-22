@@ -19,106 +19,106 @@
 
 package com.nfshost.kevinarpe.papaya.Args;
 
-public class FloatArgUtil {
+public class FloatArgs {
 
 	/**
-	 * This is a convenience method for {@link DoubleArgUtil#staticCheckPositive(double, String)}.
+	 * This is a convenience method for {@link DoubleArgs#staticCheckPositive(double, String)}.
 	 * 
 	 * @see #staticCheckNotPositive(double, String)
 	 * @see #staticCheckNegative(double, String)
 	 * @see #staticCheckNotNegative(double, String)
 	 */
 	public static float staticCheckPositive(float value, String argName) {
-		DoubleArgUtil.staticCheckPositive(value, argName);
+		DoubleArgs.staticCheckPositive(value, argName);
 		return value;
 	}
 	
 	/**
-	 * This is a convenience method for {@link DoubleArgUtil#staticCheckNotPositive(double, String)}.
+	 * This is a convenience method for {@link DoubleArgs#staticCheckNotPositive(double, String)}.
 	 * 
 	 * @see #staticCheckPositive(double, String)
 	 * @see #staticCheckNegative(double, String)
 	 * @see #staticCheckNotNegative(double, String)
 	 */
 	public static float staticCheckNotPositive(float value, String argName) {
-		DoubleArgUtil.staticCheckNotPositive(value, argName);
+		DoubleArgs.staticCheckNotPositive(value, argName);
 		return value;
 	}
 	
 	/**
-	 * This is a convenience method for {@link DoubleArgUtil#staticCheckNegative(double, String)}.
+	 * This is a convenience method for {@link DoubleArgs#staticCheckNegative(double, String)}.
 	 * 
 	 * @see #staticCheckPositive(double, String)
 	 * @see #staticCheckNotPositive(double, String)
 	 * @see #staticCheckNotNegative(double, String)
 	 */
 	public static float staticCheckNegative(float value, String argName) {
-		DoubleArgUtil.staticCheckNegative(value, argName);
+		DoubleArgs.staticCheckNegative(value, argName);
 		return value;
 	}
 	
 	/**
-	 * This is a convenience method for {@link DoubleArgUtil#staticCheckNotNegative(double, String)}.
+	 * This is a convenience method for {@link DoubleArgs#staticCheckNotNegative(double, String)}.
 	 * 
 	 * @see #staticCheckPositive(double, String)
 	 * @see #staticCheckNotPositive(double, String)
 	 * @see #staticCheckNegative(double, String)
 	 */
 	public static float staticCheckNotNegative(float value, String argName) {
-		DoubleArgUtil.staticCheckNotNegative(value, argName);
+		DoubleArgs.staticCheckNotNegative(value, argName);
 		return value;
 	}
 	
 	/**
 	 * Convenience method to call
-	 * {@link ComparableArgUtil#staticCheckRange(Comparable, Comparable, Comparable, String)}.
+	 * {@link ComparableArgs#staticCheckValueRange(Comparable, Comparable, Comparable, String)}.
 	 * 
 	 * @see #staticCheckMinValue(float, float, String)
 	 * @see #staticCheckMaxValue(float, float, String)
 	 * @see #staticCheckExactValue(float, float, String)
 	 */
-	public static float staticCheckRange(
+	public static float staticCheckValueRange(
 			float value, float minValue, float maxValue, String argName) {
-		ComparableArgUtil.staticCheckRange(value, minValue, maxValue, argName);
+		ComparableArgs.staticCheckValueRange(value, minValue, maxValue, argName);
 		return value;
 	}
 	
 	/**
 	 * Convenience method to call
-	 * {@link ComparableArgUtil#staticCheckMinValue(Comparable, Comparable, String)}.
+	 * {@link ComparableArgs#staticCheckMinValue(Comparable, Comparable, String)}.
 	 * 
-	 * @see #staticCheckRange(float, float, float, String)
+	 * @see #staticCheckValueRange(float, float, float, String)
 	 * @see #staticCheckMaxValue(float, float, String)
 	 * @see #staticCheckExactValue(float, float, String)
 	 */
 	public static float staticCheckMinValue(float value, float minValue, String argName) {
-		ComparableArgUtil.staticCheckMinValue(value, minValue, argName);
+		ComparableArgs.staticCheckMinValue(value, minValue, argName);
 		return value;
 	}
 	
 	/**
 	 * Convenience method to call
-	 * {@link ComparableArgUtil#staticCheckMaxValue(Comparable, Comparable, String)}.
+	 * {@link ComparableArgs#staticCheckMaxValue(Comparable, Comparable, String)}.
 	 * 
-	 * @see #staticCheckRange(float, float, float, String)
+	 * @see #staticCheckValueRange(float, float, float, String)
 	 * @see #staticCheckMinValue(float, float, String)
 	 * @see #staticCheckExactValue(float, float, String)
 	 */
 	public static float staticCheckMaxValue(float value, float maxValue, String argName) {
-		ComparableArgUtil.staticCheckMaxValue(value, maxValue, argName);
+		ComparableArgs.staticCheckMaxValue(value, maxValue, argName);
 		return value;
 	}
 	
 	/**
 	 * Convenience method to call
-	 * {@link ComparableArgUtil#staticCheckExactValue(Comparable, Comparable, String)}.
+	 * {@link ComparableArgs#staticCheckExactValue(Comparable, Comparable, String)}.
 	 * 
-	 * @see #staticCheckRange(float, float, float, String)
+	 * @see #staticCheckValueRange(float, float, float, String)
 	 * @see #staticCheckMinValue(float, float, String)
 	 * @see #staticCheckMaxValue(float, float, String)
 	 */
 	public static float staticCheckExactValue(float value, float exactValue, String argName) {
-		ComparableArgUtil.staticCheckRange(value, exactValue, exactValue, argName);
+		ComparableArgs.staticCheckValueRange(value, exactValue, exactValue, argName);
 		return value;
 	}
 }

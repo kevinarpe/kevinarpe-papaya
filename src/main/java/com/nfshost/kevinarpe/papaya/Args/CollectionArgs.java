@@ -21,7 +21,7 @@ package com.nfshost.kevinarpe.papaya.Args;
 
 import java.util.Collection;
 
-public final class CollectionArgUtil {
+public final class CollectionArgs {
 
 	/**
 	 * Tests if a collection reference is not null and its size within specified range.
@@ -36,17 +36,17 @@ public final class CollectionArgUtil {
 	 *         or if {@code maxSize < 0},
 	 *         or if {@code minSize > maxSize}, 
 	 *         or if number of elements in {@code ref} is outside allowed range
-	 * @see ObjectArgUtil#staticCheckNotNull(Object, String)
+	 * @see ObjectArgs#staticCheckNotNull(Object, String)
 	 * @see #staticCheckMinSize(Collection, int, String)
 	 * @see #staticCheckMaxSize(Collection, int, String)
 	 * @see #staticCheckExactSize(Collection, int, String)
 	 */
 	public static <T> void staticCheckSizeRange(
 			Collection<T> ref, int minSize, int maxSize, String argName) {
-		IntArgUtil.staticCheckNotNegative(minSize, "minSize");
-		IntArgUtil.staticCheckNotNegative(maxSize, "maxSize");
+		IntArgs.staticCheckNotNegative(minSize, "minSize");
+		IntArgs.staticCheckNotNegative(maxSize, "maxSize");
 		int size = (null == ref ? -1 : ref.size());
-		ContainerArgUtil._staticCheckSizeRange(ref, "Collection", size, minSize, maxSize, argName);
+		ContainerArgs._staticCheckSizeRange(ref, "Collection", size, minSize, maxSize, argName);
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public final class CollectionArgUtil {
 		int size = (null == ref ? -1 : ref.size());
 		int minSize = 1;
 		int maxSize = -1;
-		ContainerArgUtil._staticCheckSizeRange(ref, "Collection", size, minSize, maxSize, argName);
+		ContainerArgs._staticCheckSizeRange(ref, "Collection", size, minSize, maxSize, argName);
 	}
 	
 	/**
@@ -81,10 +81,10 @@ public final class CollectionArgUtil {
 	 */
 	public static <T> void staticCheckMinSize(
 			Collection<T> ref, int minSize, String argName) {
-		IntArgUtil.staticCheckNotNegative(minSize, "minSize");
+		IntArgs.staticCheckNotNegative(minSize, "minSize");
 		int size = (null == ref ? -1 : ref.size());
 		int maxSize = -1;
-		ContainerArgUtil._staticCheckSizeRange(ref, "Collection", size, minSize, maxSize, argName);
+		ContainerArgs._staticCheckSizeRange(ref, "Collection", size, minSize, maxSize, argName);
 	}
 	
 	/**
@@ -101,10 +101,10 @@ public final class CollectionArgUtil {
 	 */
 	public static <T> void staticCheckMaxSize(
 			Collection<T> ref, int maxSize, String argName) {
-		IntArgUtil.staticCheckNotNegative(maxSize, "maxSize");
+		IntArgs.staticCheckNotNegative(maxSize, "maxSize");
 		int size = (null == ref ? -1 : ref.size());
 		int minSize = -1;
-		ContainerArgUtil._staticCheckSizeRange(ref, "Collection", size, minSize, maxSize, argName);
+		ContainerArgs._staticCheckSizeRange(ref, "Collection", size, minSize, maxSize, argName);
 	}
 	
 	/**
@@ -121,9 +121,9 @@ public final class CollectionArgUtil {
 	 */
 	public static <T> void staticCheckExactSize(
 			Collection<T> ref, int exactSize, String argName) {
-		IntArgUtil.staticCheckNotNegative(exactSize, "exactSize");
+		IntArgs.staticCheckNotNegative(exactSize, "exactSize");
 		int size = (null == ref ? -1 : ref.size());
-		ContainerArgUtil._staticCheckSizeRange(ref, "Collection", size, exactSize, exactSize, argName);
+		ContainerArgs._staticCheckSizeRange(ref, "Collection", size, exactSize, exactSize, argName);
 	}
 	
 	/**
@@ -138,13 +138,13 @@ public final class CollectionArgUtil {
 	 *         or {@code indexArgName} is null
 	 * @throws IndexOutOfBoundsException if {@code index < 0},
 	 *         or {@code index >= ref.size()}
-	 * @see ObjectArgUtil#staticCheckNotNull(Object, String)
+	 * @see ObjectArgs#staticCheckNotNull(Object, String)
 	 * @see #staticCheckInsertIndex(Collection, int, String, String)
 	 */
 	public static <T> int staticCheckAccessIndex(
 			Collection<T> ref, int index, String collectionArgName, String indexArgName) {
 		int size = (null == ref ? -1 : ref.size());
-		ContainerArgUtil._staticCheckAccessIndex(
+		ContainerArgs._staticCheckAccessIndex(
 			ref, "Collection", size, index, collectionArgName, indexArgName);
 		return index;
 	}
@@ -161,13 +161,13 @@ public final class CollectionArgUtil {
 	 *         or {@code indexArgName} is null
 	 * @throws IndexOutOfBoundsException if {@code index < 0},
 	 *         or {@code index > ref.size()}
-	 * @see ObjectArgUtil#staticCheckNotNull(Object, String)
+	 * @see ObjectArgs#staticCheckNotNull(Object, String)
 	 * @see #staticCheckAccessIndex(Collection, int, String, String)
 	 */
 	public static <T> int staticCheckInsertIndex(
 			Collection<T> ref, int index, String collectionArgName, String indexArgName) {
 		int size = (null == ref ? -1 : ref.size());
-		ContainerArgUtil._staticCheckInsertIndex(
+		ContainerArgs._staticCheckInsertIndex(
 			ref, "Collection", size, index, collectionArgName, indexArgName);
 		return index;
 	}
@@ -177,13 +177,13 @@ public final class CollectionArgUtil {
 	 * 
 	 * @param ref a collection reference
 	 * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-	 * @see ObjectArgUtil#staticCheckNotNull(Object, String)
-	 * @see ArrayArgUtil#staticCheckElementsNotNull(Object[], String)
+	 * @see ObjectArgs#staticCheckNotNull(Object, String)
+	 * @see ArrayArgs#staticCheckElementsNotNull(Object[], String)
 	 * @throws NullPointerException if {@code ref} (or any element) or {@code argName} is null
 	 */
 	public static <T> void staticCheckElementsNotNull(
 			Collection<T> ref, String argName) {
-		ObjectArgUtil.staticCheckNotNull(ref, argName);
+		ObjectArgs.staticCheckNotNull(ref, argName);
 		int count = 0;
 		for (T item: ref) {
 			if (null == item) {
@@ -220,7 +220,7 @@ public final class CollectionArgUtil {
 			String indexArgName,
 			String countArgName) {
 		int size = (null == ref ? -1 : ref.size());
-		ContainerArgUtil._staticCheckIndexAndCount(
+		ContainerArgs._staticCheckIndexAndCount(
 			ref, "Collection", size, index, count, collectionArgName, indexArgName, countArgName);
 	}
 }
