@@ -39,21 +39,21 @@ package com.nfshost.kevinarpe.papaya.Args;
  */
 public final class ObjectArgs {
 
-	/**
-	 * Tests if an object reference passed as an argument is not null.
-	 * 
-	 * @param ref an object reference
-	 * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-	 * @return the validated object reference
-	 * @throws NullPointerException if {@code ref} or {@code argName} is null
-	 */
-	public static <T> T staticCheckNotNull(T ref, String argName) {
-		if (null == argName) {
-			throw new NullPointerException(String.format("Argument name (argName) is null"));
-		}
-		if (null == ref) {
-			throw new NullPointerException(String.format("Argument '%s' is null", argName));
-		}
-		return ref;
-	}
+    /**
+     * Tests if an object reference passed as an argument is not null.
+     * 
+     * @param ref an object reference
+     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @return the validated object reference
+     * @throws NullPointerException if {@code ref} or {@code argName} is null
+     */
+    public static <T> T staticCheckNotNull(T ref, String argName) {
+        if (null == argName) {
+            throw new NullPointerException(String.format("Argument name (argName) is null"));
+        }
+        if (null == ref) {
+            throw new NullPointerException(String.format("Argument '%s' is null", argName));
+        }
+        return ref;
+    }
 }

@@ -21,117 +21,117 @@ package com.nfshost.kevinarpe.papaya.Args;
 
 final class ContainerArgs {
 
-	static void _staticCheckSizeRange(
-			Object container,
-			String containerType,
-			int size,
-			int minSize,
-			int maxSize,
-			String containerArgName) {
-		ObjectArgs.staticCheckNotNull(container, containerArgName);
-		if (-1 != minSize && -1 != maxSize && minSize > maxSize) {
-			throw new IllegalArgumentException(String.format(
-				"%s argument '%s': 'minSize' > 'maxSize': %d > %d",
-				containerType, containerArgName, minSize, maxSize));
-		}
-		if (-1 != minSize && size < minSize) {
-			throw new IllegalArgumentException(String.format(
-				"%s argument '%s': size < 'minSize': %d < %d",
-				containerType, containerArgName, size, minSize));
-		}
-		if (-1 != maxSize && size > maxSize) {
-			throw new IllegalArgumentException(String.format(
-				"%s argument '%s': size > 'maxSize': %d > %d",
-				containerType, containerArgName, size, maxSize));
-		}
-	}
-	
-	static void _staticCheckAccessIndex(
-			Object container,
-			String containerType,
-			int containerSize,
-			int index,
-			String containerArgName,
-			String indexArgName) {
-		ObjectArgs.staticCheckNotNull(container, containerArgName);
-		ObjectArgs.staticCheckNotNull(indexArgName, "indexArgName");
-		_staticCheckIndexNotNegative(containerType, containerArgName, indexArgName, index);
-		if (index >= containerSize) {
-			throw new IndexOutOfBoundsException(String.format(
-					"%s '%s': Index '%s' for access too large: %d >= %d",
-					containerType,
-					containerArgName,
-					indexArgName,
-					index,
-					containerSize));
-		}
-	}
-	
-	static void _staticCheckInsertIndex(
-			Object container,
-			String containerType,
-			int containerSize,
-			int index,
-			String containerArgName,
-			String indexArgName) {
-		ObjectArgs.staticCheckNotNull(container, containerArgName);
-		ObjectArgs.staticCheckNotNull(indexArgName, "indexArgName");
-		_staticCheckIndexNotNegative(containerType, containerArgName, indexArgName, index);
-		if (index > containerSize) {
-			throw new IndexOutOfBoundsException(String.format(
-					"%s '%s': Index '%s' for insert too large: %d > %d",
-					containerType,
-					containerArgName,
-					indexArgName,
-					index,
-					containerSize));
-		}
-	}
+    static void _staticCheckSizeRange(
+            Object container,
+            String containerType,
+            int size,
+            int minSize,
+            int maxSize,
+            String containerArgName) {
+        ObjectArgs.staticCheckNotNull(container, containerArgName);
+        if (-1 != minSize && -1 != maxSize && minSize > maxSize) {
+            throw new IllegalArgumentException(String.format(
+                "%s argument '%s': 'minSize' > 'maxSize': %d > %d",
+                containerType, containerArgName, minSize, maxSize));
+        }
+        if (-1 != minSize && size < minSize) {
+            throw new IllegalArgumentException(String.format(
+                "%s argument '%s': size < 'minSize': %d < %d",
+                containerType, containerArgName, size, minSize));
+        }
+        if (-1 != maxSize && size > maxSize) {
+            throw new IllegalArgumentException(String.format(
+                "%s argument '%s': size > 'maxSize': %d > %d",
+                containerType, containerArgName, size, maxSize));
+        }
+    }
+    
+    static void _staticCheckAccessIndex(
+            Object container,
+            String containerType,
+            int containerSize,
+            int index,
+            String containerArgName,
+            String indexArgName) {
+        ObjectArgs.staticCheckNotNull(container, containerArgName);
+        ObjectArgs.staticCheckNotNull(indexArgName, "indexArgName");
+        _staticCheckIndexNotNegative(containerType, containerArgName, indexArgName, index);
+        if (index >= containerSize) {
+            throw new IndexOutOfBoundsException(String.format(
+                    "%s '%s': Index '%s' for access too large: %d >= %d",
+                    containerType,
+                    containerArgName,
+                    indexArgName,
+                    index,
+                    containerSize));
+        }
+    }
+    
+    static void _staticCheckInsertIndex(
+            Object container,
+            String containerType,
+            int containerSize,
+            int index,
+            String containerArgName,
+            String indexArgName) {
+        ObjectArgs.staticCheckNotNull(container, containerArgName);
+        ObjectArgs.staticCheckNotNull(indexArgName, "indexArgName");
+        _staticCheckIndexNotNegative(containerType, containerArgName, indexArgName, index);
+        if (index > containerSize) {
+            throw new IndexOutOfBoundsException(String.format(
+                    "%s '%s': Index '%s' for insert too large: %d > %d",
+                    containerType,
+                    containerArgName,
+                    indexArgName,
+                    index,
+                    containerSize));
+        }
+    }
 
-	static void _staticCheckIndexNotNegative(
-			String containerType, String containerArgName, String indexArgName, int index) {
-		if (index < 0) {
-			throw new IndexOutOfBoundsException(String.format(
-				"%s '%s': Index '%s' is negative: %d",
-				containerType,
-				containerArgName,
-				indexArgName,
-				index));
-		}
-	}
-	
-	static void _staticCheckIndexAndCount(
-			Object container,
-			String containerType,
-			int containerSize,
-			int index,
-			int count,
-			String containerArgName,
-			String indexArgName,
-			String countArgName) {
-		ObjectArgs.staticCheckNotNull(container, containerArgName);
-		ObjectArgs.staticCheckNotNull(indexArgName, "indexArgName");
-		_staticCheckIndexNotNegative(containerType, containerArgName, indexArgName, index);
-		IntArgs.staticCheckNotNegative(count, countArgName);
-		if (index >= containerSize) {
-			throw new IndexOutOfBoundsException(String.format(
-					"%s '%s': Index '%s' too large: %d >= %d",
-					containerType,
-					containerArgName,
-					indexArgName,
-					index,
-					containerSize));
-		}
-		if (index + count > containerSize) {
-			throw new IndexOutOfBoundsException(String.format(
-					"%s '%s': Index '%s' and count '%s' too large: %d + %d > %d",
-					containerType,
-					containerArgName,
-					indexArgName,
-					countArgName,
-					index,
-					count,
-					containerSize));
-		}
-	}
+    static void _staticCheckIndexNotNegative(
+            String containerType, String containerArgName, String indexArgName, int index) {
+        if (index < 0) {
+            throw new IndexOutOfBoundsException(String.format(
+                "%s '%s': Index '%s' is negative: %d",
+                containerType,
+                containerArgName,
+                indexArgName,
+                index));
+        }
+    }
+    
+    static void _staticCheckIndexAndCount(
+            Object container,
+            String containerType,
+            int containerSize,
+            int index,
+            int count,
+            String containerArgName,
+            String indexArgName,
+            String countArgName) {
+        ObjectArgs.staticCheckNotNull(container, containerArgName);
+        ObjectArgs.staticCheckNotNull(indexArgName, "indexArgName");
+        _staticCheckIndexNotNegative(containerType, containerArgName, indexArgName, index);
+        IntArgs.staticCheckNotNegative(count, countArgName);
+        if (index >= containerSize) {
+            throw new IndexOutOfBoundsException(String.format(
+                    "%s '%s': Index '%s' too large: %d >= %d",
+                    containerType,
+                    containerArgName,
+                    indexArgName,
+                    index,
+                    containerSize));
+        }
+        if (index + count > containerSize) {
+            throw new IndexOutOfBoundsException(String.format(
+                    "%s '%s': Index '%s' and count '%s' too large: %d + %d > %d",
+                    containerType,
+                    containerArgName,
+                    indexArgName,
+                    countArgName,
+                    index,
+                    count,
+                    containerSize));
+        }
+    }
 }

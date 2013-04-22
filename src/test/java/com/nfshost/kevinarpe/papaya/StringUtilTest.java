@@ -29,123 +29,123 @@ import com.nfshost.kevinarpe.papaya.StringUtil;
 
 public class StringUtilTest {
 
-	@BeforeClass
-	public void classSetup() {
-	}
-	
-	@AfterClass
-	public void classTearDown() {
-	}
-	
-	@DataProvider
-	private static final Object[][] _dataForShouldWhitespaceTrimPrefix() {
-		return new Object[][] {
-				{ " ", "" },  // ASCII space
-				{ "\t", "" },
-				{ "　", "" },  // wide Japanese space
-				{ " ｹﾋﾞﾝ", "ｹﾋﾞﾝ" },  // narrow Japanese space
-				
-				{ "", "" },
-				{ "a", "a" },
-				{ "A", "A" },
-				
-				{ "aa", "aa" },
-				{ "AA", "AA" },
-				{ "aAa", "aAa" },
-				{ "AaA", "AaA" },
-				{ " aAa", "aAa" },
-				{ "  AaA", "AaA" },
-				{ " 	  aAa", "aAa" },
-				{ "  	  AaA", "AaA" },
-				{ "aAa ", "aAa " },
-				{ "AaA  ", "AaA  " },
-				{ " aAa ", "aAa " },
-				{ "  AaA  ", "AaA  " },
-				{ " 	  aAa 	  ", "aAa 	  " },
-				{ "  	  AaA  	  ", "AaA  	  " },
-				
-				{ "a a", "a a" },
-				{ "A A", "A A" },
-				{ "a Aa", "a Aa" },
-				{ "A aA", "A aA" },
-				{ " a Aa", "a Aa" },
-				{ "  A aA", "A aA" },
-				{ " 	  a Aa", "a Aa" },
-				{ "  	  A aA", "A aA" },
-				{ "a Aa ", "a Aa " },
-				{ "A aA  ", "A aA  " },
-				{ " a Aa ", "a Aa " },
-				{ "  A aA  ", "A aA  " },
-				{ " 	  a Aa 	  ", "a Aa 	  " },
-				{ "  	  A aA  	  ", "A aA  	  " },
-		};
-	}
-	
-	@Test(dataProvider = "_dataForShouldWhitespaceTrimPrefix")
-	public void shouldWhitespaceTrimLeft(String input, String expectedOutput) {
-		String output = StringUtil.staticWhitespaceTrimPrefix(input);
-		Assert.assertEquals(output, expectedOutput);
-	}
-	
-	@Test(expectedExceptions = NullPointerException.class)
-	public void shouldNotWhitespaceTrimPrefix() {
-		String input = null;
-		StringUtil.staticWhitespaceTrimPrefix(input);
-	}
-	
-	@DataProvider
-	private static final Object[][] _dataForShouldWhitespaceTrimSuffix() {
-		return new Object[][] {
-				{ " ", "" },  // ASCII space
-				{ "\t", "" },
-				{ "　", "" },  // wide Japanese space
-				{ "ｹﾋﾞﾝ ", "ｹﾋﾞﾝ" },  // narrow Japanese space
-				
-				{ "", "" },
-				{ "a", "a" },
-				{ "A", "A" },
-				
-				{ "aa", "aa" },
-				{ "AA", "AA" },
-				{ "aAa", "aAa" },
-				{ "AaA", "AaA" },
-				{ " aAa", " aAa" },
-				{ "  AaA", "  AaA" },
-				{ " 	  aAa", " 	  aAa" },
-				{ "  	  AaA", "  	  AaA" },
-				{ "aAa ", "aAa" },
-				{ "AaA  ", "AaA" },
-				{ " aAa ", " aAa" },
-				{ "  AaA  ", "  AaA" },
-				{ " 	  aAa 	  ", " 	  aAa" },
-				{ "  	  AaA  	  ", "  	  AaA" },
-				
-				{ "a a", "a a" },
-				{ "A A", "A A" },
-				{ "a Aa", "a Aa" },
-				{ "A aA", "A aA" },
-				{ " a Aa", " a Aa" },
-				{ "  A aA", "  A aA" },
-				{ " 	  a Aa", " 	  a Aa" },
-				{ "  	  A aA", "  	  A aA" },
-				{ "a Aa ", "a Aa" },
-				{ "A aA  ", "A aA" },
-				{ " a Aa ", " a Aa" },
-				{ "  A aA  ", "  A aA" },
-				{ " 	  a Aa 	  ", " 	  a Aa" },
-				{ "  	  A aA  	  ", "  	  A aA" },
-		};
-	}
-	
-	@Test(dataProvider = "_dataForShouldWhitespaceTrimSuffix")
-	public void shouldWhitespaceTrimRight(String input, String expectedOutput) {
-		String output = StringUtil.staticWhitespaceTrimSuffix(input);
-		Assert.assertEquals(output, expectedOutput);
-	}
-	
-	@Test(expectedExceptions = NullPointerException.class)
-	public void shouldNotWhitespaceTrimSuffix() {
-		String input = null;
-		StringUtil.staticWhitespaceTrimSuffix(input);
-	}
+    @BeforeClass
+    public void classSetup() {
+    }
+    
+    @AfterClass
+    public void classTearDown() {
+    }
+    
+    @DataProvider
+    private static final Object[][] _dataForShouldWhitespaceTrimPrefix() {
+        return new Object[][] {
+                { " ", "" },  // ASCII space
+                { "\t", "" },
+                { "　", "" },  // wide Japanese space
+                { " ｹﾋﾞﾝ", "ｹﾋﾞﾝ" },  // narrow Japanese space
+                
+                { "", "" },
+                { "a", "a" },
+                { "A", "A" },
+                
+                { "aa", "aa" },
+                { "AA", "AA" },
+                { "aAa", "aAa" },
+                { "AaA", "AaA" },
+                { " aAa", "aAa" },
+                { "  AaA", "AaA" },
+                { "       aAa", "aAa" },
+                { "        AaA", "AaA" },
+                { "aAa ", "aAa " },
+                { "AaA  ", "AaA  " },
+                { " aAa ", "aAa " },
+                { "  AaA  ", "AaA  " },
+                { "       aAa       ", "aAa       " },
+                { "        AaA        ", "AaA        " },
+                
+                { "a a", "a a" },
+                { "A A", "A A" },
+                { "a Aa", "a Aa" },
+                { "A aA", "A aA" },
+                { " a Aa", "a Aa" },
+                { "  A aA", "A aA" },
+                { "       a Aa", "a Aa" },
+                { "        A aA", "A aA" },
+                { "a Aa ", "a Aa " },
+                { "A aA  ", "A aA  " },
+                { " a Aa ", "a Aa " },
+                { "  A aA  ", "A aA  " },
+                { "       a Aa       ", "a Aa       " },
+                { "        A aA        ", "A aA        " },
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldWhitespaceTrimPrefix")
+    public void shouldWhitespaceTrimLeft(String input, String expectedOutput) {
+        String output = StringUtil.staticWhitespaceTrimPrefix(input);
+        Assert.assertEquals(output, expectedOutput);
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void shouldNotWhitespaceTrimPrefix() {
+        String input = null;
+        StringUtil.staticWhitespaceTrimPrefix(input);
+    }
+    
+    @DataProvider
+    private static final Object[][] _dataForShouldWhitespaceTrimSuffix() {
+        return new Object[][] {
+                { " ", "" },  // ASCII space
+                { "\t", "" },
+                { "　", "" },  // wide Japanese space
+                { "ｹﾋﾞﾝ ", "ｹﾋﾞﾝ" },  // narrow Japanese space
+                
+                { "", "" },
+                { "a", "a" },
+                { "A", "A" },
+                
+                { "aa", "aa" },
+                { "AA", "AA" },
+                { "aAa", "aAa" },
+                { "AaA", "AaA" },
+                { " aAa", " aAa" },
+                { "  AaA", "  AaA" },
+                { "       aAa", "       aAa" },
+                { "        AaA", "        AaA" },
+                { "aAa ", "aAa" },
+                { "AaA  ", "AaA" },
+                { " aAa ", " aAa" },
+                { "  AaA  ", "  AaA" },
+                { "       aAa       ", "       aAa" },
+                { "        AaA        ", "        AaA" },
+                
+                { "a a", "a a" },
+                { "A A", "A A" },
+                { "a Aa", "a Aa" },
+                { "A aA", "A aA" },
+                { " a Aa", " a Aa" },
+                { "  A aA", "  A aA" },
+                { "       a Aa", "       a Aa" },
+                { "        A aA", "        A aA" },
+                { "a Aa ", "a Aa" },
+                { "A aA  ", "A aA" },
+                { " a Aa ", " a Aa" },
+                { "  A aA  ", "  A aA" },
+                { "       a Aa       ", "       a Aa" },
+                { "        A aA        ", "        A aA" },
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldWhitespaceTrimSuffix")
+    public void shouldWhitespaceTrimRight(String input, String expectedOutput) {
+        String output = StringUtil.staticWhitespaceTrimSuffix(input);
+        Assert.assertEquals(output, expectedOutput);
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void shouldNotWhitespaceTrimSuffix() {
+        String input = null;
+        StringUtil.staticWhitespaceTrimSuffix(input);
+    }
 }

@@ -21,18 +21,18 @@ package com.nfshost.kevinarpe.papaya;
 
 public final class ObjectUtil {
 
-	// Replaced with Objects.equals()
-	/*
-	public static boolean staticEquals(Object x, Object y) {
-		if (null == x && null == y) {
-			return true;
-		}
-		if ((null == x && null != y)
-				|| (null != x && null == y)) {
-			return false;
-		}
-		boolean b = x.equals(y);
-		return b;
-	}
-	*/
+    // Replaced with Objects.equals()
+    /*
+    public static boolean staticEquals(Object x, Object y) {
+        if (null == x && null == y) {
+            return true;
+        }
+        if ((null == x && null != y)
+                || (null != x && null == y)) {
+            return false;
+        }
+        boolean b = x.equals(y);
+        return b;
+    }
+    */
 }

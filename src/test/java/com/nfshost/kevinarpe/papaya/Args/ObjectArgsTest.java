@@ -30,51 +30,51 @@ import com.nfshost.kevinarpe.papaya.Args.ObjectArgs;
 
 public class ObjectArgsTest {
 
-	@BeforeClass
-	public void classSetup() {
-	}
-	
-	@AfterClass
-	public void classTearDown() {
-	}
-	
-	@DataProvider
-	private static final Object[][] _dataForShouldCheckAsNotNull() {
-		return new Object[][] {
-				{ (byte)7 },
-				{ (short)7 },
-				{ (int)7 },
-				{ (long)7 },
-				{ (float)7 },
-				{ (double)7 },
-				{ (char)7 },
-				{ "" },
-				{ "abc" },
-				{ new Object() },
-				{ new ArrayList<Integer>() },
-				{ (boolean)true },
-				{ (boolean)false },
-		};
-	}
-	
-	@Test(dataProvider = "_dataForShouldCheckAsNotNull")
-	public void shouldCheckAsNotNull(Object x) {
-		ObjectArgs.staticCheckNotNull(x, "x");
-	}
-	
-	@DataProvider
-	private static final Object[][] _dataForShouldNotCheckAsNotNull() {
-		return new Object[][] {
-				{ null, null },
-				{ null, "value" },
-				{ 123, null },
-		};
-	}
-	
-	@Test(dataProvider = "_dataForShouldNotCheckAsNotNull",
-			expectedExceptions = NullPointerException.class)
-	public void shouldNotCheckAsNotNull(Object x, String argName) {
-		Object value = null;
-		ObjectArgs.staticCheckNotNull(value, argName);
-	}
+    @BeforeClass
+    public void classSetup() {
+    }
+    
+    @AfterClass
+    public void classTearDown() {
+    }
+    
+    @DataProvider
+    private static final Object[][] _dataForShouldCheckAsNotNull() {
+        return new Object[][] {
+                { (byte)7 },
+                { (short)7 },
+                { (int)7 },
+                { (long)7 },
+                { (float)7 },
+                { (double)7 },
+                { (char)7 },
+                { "" },
+                { "abc" },
+                { new Object() },
+                { new ArrayList<Integer>() },
+                { (boolean)true },
+                { (boolean)false },
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldCheckAsNotNull")
+    public void shouldCheckAsNotNull(Object x) {
+        ObjectArgs.staticCheckNotNull(x, "x");
+    }
+    
+    @DataProvider
+    private static final Object[][] _dataForShouldNotCheckAsNotNull() {
+        return new Object[][] {
+                { null, null },
+                { null, "value" },
+                { 123, null },
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckAsNotNull",
+            expectedExceptions = NullPointerException.class)
+    public void shouldNotCheckAsNotNull(Object x, String argName) {
+        Object value = null;
+        ObjectArgs.staticCheckNotNull(value, argName);
+    }
 }

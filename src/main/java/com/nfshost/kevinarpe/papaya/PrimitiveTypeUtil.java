@@ -21,41 +21,41 @@ package com.nfshost.kevinarpe.papaya;
 
 public final class PrimitiveTypeUtil {
 
-	// Ref: http://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
-	
-	public static final byte DEFAULT_BYTE_VALUE;
-	public static final short DEFAULT_SHORT_VALUE;
-	public static final int DEFAULT_INT_VALUE;
-	public static final long DEFAULT_LONG_VALUE;
-	public static final float DEFAULT_FLOAT_VALUE;
-	public static final double DEFAULT_DOUBLE_VALUE;
-	public static final char DEFAULT_CHAR_VALUE;
-	public static final String DEFAULT_STRING_VALUE;
-	public static final Object DEFAULT_OBJECT_VALUE;
-	public static final boolean DEFAULT_BOOLEAN_VALUE;
-	
-	public static final float EPSILON_POSITIVE_FLOAT;
-	public static final float EPSILON_NEGATIVE_FLOAT;
-	public static final double EPSILON_POSITIVE_DOUBLE;
-	public static final double EPSILON_NEGATIVE_DOUBLE;
-	
-	static {
-		DEFAULT_BYTE_VALUE = 0;
-		DEFAULT_SHORT_VALUE = 0;
-		DEFAULT_INT_VALUE = 0;
-		DEFAULT_LONG_VALUE = 0L;
-		DEFAULT_FLOAT_VALUE = 0.0f;
-		DEFAULT_DOUBLE_VALUE = 0.0d;
-		DEFAULT_CHAR_VALUE = '\u0000';
-		DEFAULT_STRING_VALUE = null;
-		DEFAULT_OBJECT_VALUE = null;
-		DEFAULT_BOOLEAN_VALUE = false;
-		
-		// Ref: http://stackoverflow.com/a/3735931/257299
-		EPSILON_POSITIVE_FLOAT = Math.nextAfter(0.0f, 1.0f);
-		EPSILON_NEGATIVE_FLOAT = Math.nextAfter(0.0f, -1.0f);
-		EPSILON_POSITIVE_DOUBLE = Math.nextAfter(0.0d, 1.0d);
-		EPSILON_NEGATIVE_DOUBLE = Math.nextAfter(0.0d, -1.0d);
-		{ int dummy = 0; }  // debug breakpoint
-	}
+    // Ref: http://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
+    
+    public static final byte DEFAULT_BYTE_VALUE;
+    public static final short DEFAULT_SHORT_VALUE;
+    public static final int DEFAULT_INT_VALUE;
+    public static final long DEFAULT_LONG_VALUE;
+    public static final float DEFAULT_FLOAT_VALUE;
+    public static final double DEFAULT_DOUBLE_VALUE;
+    public static final char DEFAULT_CHAR_VALUE;
+    public static final String DEFAULT_STRING_VALUE;
+    public static final Object DEFAULT_OBJECT_VALUE;
+    public static final boolean DEFAULT_BOOLEAN_VALUE;
+    
+    public static final float EPSILON_POSITIVE_FLOAT;
+    public static final float EPSILON_NEGATIVE_FLOAT;
+    public static final double EPSILON_POSITIVE_DOUBLE;
+    public static final double EPSILON_NEGATIVE_DOUBLE;
+    
+    static {
+        DEFAULT_BYTE_VALUE = 0;
+        DEFAULT_SHORT_VALUE = 0;
+        DEFAULT_INT_VALUE = 0;
+        DEFAULT_LONG_VALUE = 0L;
+        DEFAULT_FLOAT_VALUE = 0.0f;
+        DEFAULT_DOUBLE_VALUE = 0.0d;
+        DEFAULT_CHAR_VALUE = '\u0000';
+        DEFAULT_STRING_VALUE = null;
+        DEFAULT_OBJECT_VALUE = null;
+        DEFAULT_BOOLEAN_VALUE = false;
+        
+        // Ref: http://stackoverflow.com/a/3735931/257299
+        EPSILON_POSITIVE_FLOAT = Math.nextAfter(0.0f, 1.0f);
+        EPSILON_NEGATIVE_FLOAT = Math.nextAfter(0.0f, -1.0f);
+        EPSILON_POSITIVE_DOUBLE = Math.nextAfter(0.0d, 1.0d);
+        EPSILON_NEGATIVE_DOUBLE = Math.nextAfter(0.0d, -1.0d);
+        { int dummy = 0; }  // debug breakpoint
+    }
 }
