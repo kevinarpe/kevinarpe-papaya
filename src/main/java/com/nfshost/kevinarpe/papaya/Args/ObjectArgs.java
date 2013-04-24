@@ -28,7 +28,7 @@ package com.nfshost.kevinarpe.papaya.Args;
  * 
  * <pre>
  *     public void myMethod(List<String> strList) {
- *         ArgUtil.Objects.staticCheckNotNull(strList, "strList");
+ *         ArgUtil.Objects.checkNotNull(strList, "strList");
  *         // Do work here.
  *     }</pre>
  * 
@@ -47,7 +47,7 @@ public final class ObjectArgs {
      * @return the validated object reference
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      */
-    public static <T> T staticCheckNotNull(T ref, String argName) {
+    public static <T> T checkNotNull(T ref, String argName) {
         if (null == argName) {
             throw new NullPointerException(String.format("Argument name (argName) is null"));
         }

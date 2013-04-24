@@ -19,58 +19,61 @@
 
 package com.nfshost.kevinarpe.papaya.Args;
 
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public class CharArgs {
 
     /**
      * Convenience method to call
-     * {@link ComparableArgs#staticCheckValueRange(Comparable, Comparable, Comparable, String)}.
+     * {@link ComparableArgs#checkValueRange(Comparable, Comparable, Comparable, String)}.
      * 
-     * @see #staticCheckMinValue(char, char, String)
-     * @see #staticCheckMaxValue(char, char, String)
-     * @see #staticCheckExactValue(char, char, String)
+     * @see #checkMinValue(char, char, String)
+     * @see #checkMaxValue(char, char, String)
+     * @see #checkExactValue(char, char, String)
      */
-    public static char staticCheckValueRange(
+    public static char checkValueRange(
             char value, char minValue, char maxValue, String argName) {
-        ComparableArgs.staticCheckValueRange(value, minValue, maxValue, argName);
+        ComparableArgs.checkValueRange(value, minValue, maxValue, argName);
         return value;
     }
     
     /**
      * Convenience method to call
-     * {@link ComparableArgs#staticCheckMinValue(Comparable, Comparable, String)}.
+     * {@link ComparableArgs#checkMinValue(Comparable, Comparable, String)}.
      * 
-     * @see #staticCheckValueRange(char, char, char, String)
-     * @see #staticCheckMaxValue(char, char, String)
-     * @see #staticCheckExactValue(char, char, String)
+     * @see #checkValueRange(char, char, char, String)
+     * @see #checkMaxValue(char, char, String)
+     * @see #checkExactValue(char, char, String)
      */
-    public static char staticCheckMinValue(char value, char minValue, String argName) {
-        ComparableArgs.staticCheckMinValue(value, minValue, argName);
+    public static char checkMinValue(char value, char minValue, String argName) {
+        ComparableArgs.checkMinValue(value, minValue, argName);
         return value;
     }
     
     /**
      * Convenience method to call
-     * {@link ComparableArgs#staticCheckMaxValue(Comparable, Comparable, String)}.
+     * {@link ComparableArgs#checkMaxValue(Comparable, Comparable, String)}.
      * 
-     * @see #staticCheckValueRange(char, char, char, String)
-     * @see #staticCheckMinValue(char, char, String)
-     * @see #staticCheckExactValue(char, char, String)
+     * @see #checkValueRange(char, char, char, String)
+     * @see #checkMinValue(char, char, String)
+     * @see #checkExactValue(char, char, String)
      */
-    public static char staticCheckMaxValue(char value, char maxValue, String argName) {
-        ComparableArgs.staticCheckMaxValue(value, maxValue, argName);
+    public static char checkMaxValue(char value, char maxValue, String argName) {
+        ComparableArgs.checkMaxValue(value, maxValue, argName);
         return value;
     }
     
     /**
      * Convenience method to call
-     * {@link ComparableArgs#staticCheckExactValue(Comparable, Comparable, String)}.
+     * {@link ComparableArgs#checkExactValue(Comparable, Comparable, String)}.
      * 
-     * @see #staticCheckValueRange(char, char, char, String)
-     * @see #staticCheckMinValue(char, char, String)
-     * @see #staticCheckMaxValue(char, char, String)
+     * @see #checkValueRange(char, char, char, String)
+     * @see #checkMinValue(char, char, String)
+     * @see #checkMaxValue(char, char, String)
      */
-    public static char staticCheckExactValue(char value, char exactValue, String argName) {
-        ComparableArgs.staticCheckExactValue(value, exactValue, argName);
+    public static char checkExactValue(char value, char exactValue, String argName) {
+        ComparableArgs.checkExactValue(value, exactValue, argName);
         return value;
     }
 }

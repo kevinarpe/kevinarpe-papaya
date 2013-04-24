@@ -29,6 +29,9 @@ import org.testng.annotations.Test;
 
 import com.nfshost.kevinarpe.papaya.ArrayUtil;
 
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public class ArrayUtilTest {
 
     @BeforeClass
@@ -61,10 +64,10 @@ public class ArrayUtilTest {
                     manualArr[j] = arr[count + j];
                 }
                 if (1 == count) {
-                    Object[] arr2 = ArrayUtil.staticRemove(arr, index);
+                    Object[] arr2 = ArrayUtil.remove(arr, index);
                     Assert.assertEquals(Arrays.equals(manualArr, arr2), true);
                 }
-                Object[] arr3 = ArrayUtil.staticRemove(arr, index, count);
+                Object[] arr3 = ArrayUtil.remove(arr, index, count);
                 Assert.assertEquals(Arrays.equals(manualArr, arr3), true);
             }
         }

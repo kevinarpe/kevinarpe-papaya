@@ -19,6 +19,9 @@
 
 package com.nfshost.kevinarpe.papaya.Args;
 
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public final class StringArgs {
 
     /**
@@ -29,11 +32,11 @@ public final class StringArgs {
      * @return the validated string reference
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code ref} is empty
-     * @see ObjectArgs#staticCheckNotNull(Object, String)
-     * @see #staticCheckNotEmptyOrWhitespace(CharSequence, String)
+     * @see ObjectArgs#checkNotNull(Object, String)
+     * @see #checkNotEmptyOrWhitespace(CharSequence, String)
      */
-    public static <T extends CharSequence> T staticCheckNotEmpty(T ref, String argName) {
-        ObjectArgs.staticCheckNotNull(ref, argName);
+    public static <T extends CharSequence> T checkNotEmpty(T ref, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
         int len = ref.length();
         if (0 == len) {
             throw new IllegalArgumentException(String.format(
@@ -53,12 +56,12 @@ public final class StringArgs {
      * @return the validated string reference
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code ref} is empty or only whitespace
-     * @see ObjectArgs#staticCheckNotNull(Object, String)
-     * @see #staticCheckNotEmpty(CharSequence, String)
+     * @see ObjectArgs#checkNotNull(Object, String)
+     * @see #checkNotEmpty(CharSequence, String)
      */
-    public static <T extends CharSequence> T staticCheckNotEmptyOrWhitespace(
+    public static <T extends CharSequence> T checkNotEmptyOrWhitespace(
             T ref, String argName) {
-        staticCheckNotEmpty(ref, argName);
+        checkNotEmpty(ref, argName);
         int len = ref.length();
         for (int i = 0; i < len; ++i) {
             char ch = ref.charAt(i);
@@ -85,24 +88,24 @@ public final class StringArgs {
      *         or if {@code maxLen < 0},
      *         or if {@code minLen > maxLen}, 
      *         or if number of chars in {@code ref} is outside allowed range
-     * @see ObjectArgs#staticCheckNotNull(Object, String)
-     * @see #staticCheckNotEmpty(CharSequence, String)
-     * @see #staticCheckNotEmptyOrWhitespace(CharSequence, String)
-     * @see #staticCheckMinLength(CharSequence, int, String)
-     * @see #staticCheckMaxLength(CharSequence, int, String)
-     * @see #staticCheckExactLength(CharSequence, int, String)
+     * @see ObjectArgs#checkNotNull(Object, String)
+     * @see #checkNotEmpty(CharSequence, String)
+     * @see #checkNotEmptyOrWhitespace(CharSequence, String)
+     * @see #checkMinLength(CharSequence, int, String)
+     * @see #checkMaxLength(CharSequence, int, String)
+     * @see #checkExactLength(CharSequence, int, String)
      */
-    public static <T extends CharSequence> T staticCheckLengthRange(
+    public static <T extends CharSequence> T checkLengthRange(
             T ref, int minLen, int maxLen, String argName) {
-        IntArgs.staticCheckNotNegative(minLen, "minLen");
-        IntArgs.staticCheckNotNegative(maxLen, "maxLen");
-        _staticCheckLengthRangeCore(ref, minLen, maxLen, argName);
+        IntArgs.checkNotNegative(minLen, "minLen");
+        IntArgs.checkNotNegative(maxLen, "maxLen");
+        _checkLengthRangeCore(ref, minLen, maxLen, argName);
         return ref;
     }
     
-    private static <T extends CharSequence> void _staticCheckLengthRangeCore(
+    private static <T extends CharSequence> void _checkLengthRangeCore(
             T ref, int minLen, int maxLen, String argName) {
-        ObjectArgs.staticCheckNotNull(ref, argName);
+        ObjectArgs.checkNotNull(ref, argName);
         if (-1 != minLen && -1 != maxLen && minLen > maxLen) {
             throw new IllegalArgumentException(String.format(
                 "Argument '%s': 'minLen' > 'maxLen': %d > %d", argName, minLen, maxLen));
@@ -132,13 +135,13 @@ public final class StringArgs {
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code minLen < 0},
      *         or if number of chars in {@code ref} is outside allowed range
-     * @see #staticCheckLengthRange(CharSequence, int, int, String)
+     * @see #checkLengthRange(CharSequence, int, int, String)
      */
-    public static <T extends CharSequence> T staticCheckMinLength(
+    public static <T extends CharSequence> T checkMinLength(
             T ref, int minLen, String argName) {
-        IntArgs.staticCheckNotNegative(minLen, "minLen");
+        IntArgs.checkNotNegative(minLen, "minLen");
         int maxLen = -1;
-        _staticCheckLengthRangeCore(ref, minLen, maxLen, argName);
+        _checkLengthRangeCore(ref, minLen, maxLen, argName);
         return ref;
     }
     
@@ -154,13 +157,13 @@ public final class StringArgs {
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code maxLen < 0},
      *         or if number of chars in {@code ref} is outside allowed range
-     * @see #staticCheckLengthRange(CharSequence, int, int, String)
+     * @see #checkLengthRange(CharSequence, int, int, String)
      */
-    public static <T extends CharSequence> T staticCheckMaxLength(
+    public static <T extends CharSequence> T checkMaxLength(
             T ref, int maxLen, String argName) {
-        IntArgs.staticCheckNotNegative(maxLen, "maxLen");
+        IntArgs.checkNotNegative(maxLen, "maxLen");
         int minLen = -1;
-        _staticCheckLengthRangeCore(ref, minLen, maxLen, argName);
+        _checkLengthRangeCore(ref, minLen, maxLen, argName);
         return ref;
     }
     
@@ -176,12 +179,12 @@ public final class StringArgs {
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code exactLen < 0},
      *         or if number of chars in {@code ref} is outside allowed range
-     * @see #staticCheckLengthRange(CharSequence, int, int, String)
+     * @see #checkLengthRange(CharSequence, int, int, String)
      */
-    public static <T extends CharSequence> T staticCheckExactLength(
+    public static <T extends CharSequence> T checkExactLength(
             T ref, int exactLen, String argName) {
-        IntArgs.staticCheckNotNegative(exactLen, "exactLen");
-        _staticCheckLengthRangeCore(ref, exactLen, exactLen, argName);
+        IntArgs.checkNotNegative(exactLen, "exactLen");
+        _checkLengthRangeCore(ref, exactLen, exactLen, argName);
         return ref;
     }
     
@@ -190,19 +193,19 @@ public final class StringArgs {
      * 
      * @param ref an string reference
      * @param index index of character to insert.  Must be non-negative.
-     * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param refArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
      * @return the validated index
-     * @throws NullPointerException if {@code ref}, {@code strArgName},
+     * @throws NullPointerException if {@code ref}, {@code refArgName},
      *         or {@code indexArgName} is null
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length()}
      */
-    public static <T extends CharSequence> int staticCheckInsertIndex(
-            T ref, int index, String strArgName, String indexArgName) {
+    public static <T extends CharSequence> int checkInsertIndex(
+            T ref, int index, String refArgName, String indexArgName) {
         int len = (null == ref ? -1 : ref.length());
-        ContainerArgs._staticCheckInsertIndex(
-            ref, "String", len, index, strArgName, indexArgName);
+        ContainerArgs._checkInsertIndex(
+            ref, "String", len, index, refArgName, indexArgName);
         return index;
     }
     
@@ -214,25 +217,25 @@ public final class StringArgs {
      * @param index index of character to access.  Must be non-negative.
      * @param count number of characters to access, starting from {@code index}.
      *              Must be non-negative.
-     * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param refArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
      * @param countArgName argument name for {@code count}, e.g., "strListCount"
-     * @throws NullPointerException if {@code ref}, {@code strArgName}, {@code indexArgName},
+     * @throws NullPointerException if {@code ref}, {@code refArgName}, {@code indexArgName},
      *         or {@code countArgName} is null
      * @throws IllegalArgumentException if {@code index < 0},
      *         or if {@code count < 0}
      * @throws IndexOutOfBoundsException if {@code index >= ref.length()},
      *         or if {@code index + count > ref.length()}
      */
-    public static <T extends CharSequence> void staticCheckIndexAndCount(
+    public static <T extends CharSequence> void checkIndexAndCount(
             T ref,
             int index,
             int count,
-            String strArgName,
+            String refArgName,
             String indexArgName,
             String countArgName) {
         int len = (null == ref ? -1 : ref.length());
-        ContainerArgs._staticCheckIndexAndCount(
-            ref, "String", len, index, count, strArgName, indexArgName, countArgName);
+        ContainerArgs._checkIndexAndCount(
+            ref, "String", len, index, count, refArgName, indexArgName, countArgName);
     }
 }

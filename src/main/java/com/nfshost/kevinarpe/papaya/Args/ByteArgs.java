@@ -19,106 +19,109 @@
 
 package com.nfshost.kevinarpe.papaya.Args;
 
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public final class ByteArgs {
 
     /**
-     * This is a convenience method for {@link LongArgs#staticCheckPositive(long, String)}.
+     * This is a convenience method for {@link LongArgs#checkPositive(long, String)}.
      * 
-     * @see #staticCheckByteNotPositive(byte, String)
-     * @see #staticCheckByteNegative(byte, String)
-     * @see #staticCheckByteNotNegative(byte, String)
+     * @see #checkByteNotPositive(byte, String)
+     * @see #checkByteNegative(byte, String)
+     * @see #checkByteNotNegative(byte, String)
      */
-    public static byte staticCheckBytePositive(byte value, String argName) {
-        LongArgs.staticCheckPositive(value, argName);
+    public static byte checkBytePositive(byte value, String argName) {
+        LongArgs.checkPositive(value, argName);
         return value;
     }
     
     /**
-     * This is a convenience method for {@link LongArgs#staticCheckNotPositive(long, String)}.
+     * This is a convenience method for {@link LongArgs#checkNotPositive(long, String)}.
      * 
-     * @see #staticCheckBytePositive(byte, String)
-     * @see #staticCheckByteNegative(byte, String)
-     * @see #staticCheckByteNotNegative(byte, String)
+     * @see #checkBytePositive(byte, String)
+     * @see #checkByteNegative(byte, String)
+     * @see #checkByteNotNegative(byte, String)
      */
-    public static byte staticCheckByteNotPositive(byte value, String argName) {
-        LongArgs.staticCheckNotPositive(value, argName);
+    public static byte checkByteNotPositive(byte value, String argName) {
+        LongArgs.checkNotPositive(value, argName);
         return value;
     }
     
     /**
-     * This is a convenience method for {@link LongArgs#staticCheckNegative(long, String)}.
+     * This is a convenience method for {@link LongArgs#checkNegative(long, String)}.
      * 
-     * @see #staticCheckBytePositive(byte, String)
-     * @see #staticCheckByteNotPositive(byte, String)
-     * @see #staticCheckByteNotNegative(byte, String)
+     * @see #checkBytePositive(byte, String)
+     * @see #checkByteNotPositive(byte, String)
+     * @see #checkByteNotNegative(byte, String)
      */
-    public static byte staticCheckByteNegative(byte value, String argName) {
-        LongArgs.staticCheckNegative(value, argName);
+    public static byte checkByteNegative(byte value, String argName) {
+        LongArgs.checkNegative(value, argName);
         return value;
     }
     
     /**
-     * This is a convenience method for {@link LongArgs#staticCheckNotNegative(long, String)}.
+     * This is a convenience method for {@link LongArgs#checkNotNegative(long, String)}.
      * 
-     * @see #staticCheckBytePositive(byte, String)
-     * @see #staticCheckByteNotPositive(byte, String)
-     * @see #staticCheckByteNegative(byte, String)
+     * @see #checkBytePositive(byte, String)
+     * @see #checkByteNotPositive(byte, String)
+     * @see #checkByteNegative(byte, String)
      */
-    public static byte staticCheckByteNotNegative(byte value, String argName) {
-        LongArgs.staticCheckNotNegative(value, argName);
+    public static byte checkByteNotNegative(byte value, String argName) {
+        LongArgs.checkNotNegative(value, argName);
         return value;
     }
     
     /**
      * Convenience method to call
-     * {@link ComparableArgs#staticCheckValueRange(Comparable, Comparable, Comparable, String)}.
+     * {@link ComparableArgs#checkValueRange(Comparable, Comparable, Comparable, String)}.
      * 
-     * @see #staticCheckMinValue(byte, byte, String)
-     * @see #staticCheckMaxValue(byte, byte, String)
-     * @see #staticCheckExactValue(byte, byte, String)
+     * @see #checkMinValue(byte, byte, String)
+     * @see #checkMaxValue(byte, byte, String)
+     * @see #checkExactValue(byte, byte, String)
      */
-    public static byte staticCheckValueRange(
+    public static byte checkValueRange(
             byte value, byte minValue, byte maxValue, String argName) {
-        ComparableArgs.staticCheckValueRange(value, minValue, maxValue, argName);
+        ComparableArgs.checkValueRange(value, minValue, maxValue, argName);
         return value;
     }
     
     /**
      * Convenience method to call
-     * {@link ComparableArgs#staticCheckMinValue(Comparable, Comparable, String)}.
+     * {@link ComparableArgs#checkMinValue(Comparable, Comparable, String)}.
      * 
-     * @see #staticCheckValueRange(byte, byte, byte, String)
-     * @see #staticCheckMaxValue(byte, byte, String)
-     * @see #staticCheckExactValue(byte, byte, String)
+     * @see #checkValueRange(byte, byte, byte, String)
+     * @see #checkMaxValue(byte, byte, String)
+     * @see #checkExactValue(byte, byte, String)
      */
-    public static byte staticCheckMinValue(byte value, byte minValue, String argName) {
-        ComparableArgs.staticCheckMinValue(value, minValue, argName);
+    public static byte checkMinValue(byte value, byte minValue, String argName) {
+        ComparableArgs.checkMinValue(value, minValue, argName);
         return value;
     }
     
     /**
      * Convenience method to call
-     * {@link ComparableArgs#staticCheckMaxValue(Comparable, Comparable, String)}.
+     * {@link ComparableArgs#checkMaxValue(Comparable, Comparable, String)}.
      * 
-     * @see #staticCheckValueRange(byte, byte, byte, String)
-     * @see #staticCheckMinValue(byte, byte, String)
-     * @see #staticCheckExactValue(byte, byte, String)
+     * @see #checkValueRange(byte, byte, byte, String)
+     * @see #checkMinValue(byte, byte, String)
+     * @see #checkExactValue(byte, byte, String)
      */
-    public static byte staticCheckMaxValue(byte value, byte maxValue, String argName) {
-        ComparableArgs.staticCheckMaxValue(value, maxValue, argName);
+    public static byte checkMaxValue(byte value, byte maxValue, String argName) {
+        ComparableArgs.checkMaxValue(value, maxValue, argName);
         return value;
     }
     
     /**
      * Convenience method to call
-     * {@link ComparableArgs#staticCheckExactValue(Comparable, Comparable, String)}.
+     * {@link ComparableArgs#checkExactValue(Comparable, Comparable, String)}.
      * 
-     * @see #staticCheckValueRange(byte, byte, byte, String)
-     * @see #staticCheckMinValue(byte, byte, String)
-     * @see #staticCheckMaxValue(byte, byte, String)
+     * @see #checkValueRange(byte, byte, byte, String)
+     * @see #checkMinValue(byte, byte, String)
+     * @see #checkMaxValue(byte, byte, String)
      */
-    public static byte staticCheckExactValue(byte value, byte exactValue, String argName) {
-        ComparableArgs.staticCheckExactValue(value, exactValue, argName);
+    public static byte checkExactValue(byte value, byte exactValue, String argName) {
+        ComparableArgs.checkExactValue(value, exactValue, argName);
         return value;
     }
 }

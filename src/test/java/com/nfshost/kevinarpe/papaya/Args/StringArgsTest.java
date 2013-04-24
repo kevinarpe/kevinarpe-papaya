@@ -26,6 +26,9 @@ import org.testng.annotations.Test;
 
 import com.nfshost.kevinarpe.papaya.Args.StringArgs;
 
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public class StringArgsTest {
 
     @BeforeClass
@@ -37,7 +40,7 @@ public class StringArgsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringArgs.staticCheckNotEmpty
+    // StringArgs.checkNotEmpty
     //
 
     @DataProvider
@@ -54,7 +57,7 @@ public class StringArgsTest {
     
     @Test(dataProvider = "_dataForShouldCheckAsNotEmpty")
     public void shouldCheckAsNotEmpty(String s) {
-        StringArgs.staticCheckNotEmpty(s, "s");
+        StringArgs.checkNotEmpty(s, "s");
     }
     
     @DataProvider
@@ -69,7 +72,7 @@ public class StringArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyOrWhitespaceWithNullInputs",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckAsNotEmptyWithNullInputs(String s, String argName) {
-        StringArgs.staticCheckNotEmpty(s, argName);
+        StringArgs.checkNotEmpty(s, argName);
     }
     
     @DataProvider
@@ -82,11 +85,11 @@ public class StringArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyWithEmptyInput",
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckAsNotEmptyWithEmptyInput(String s) {
-        StringArgs.staticCheckNotEmpty(s, "s");
+        StringArgs.checkNotEmpty(s, "s");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringArgs.staticCheckNotEmptyOrWhitespace
+    // StringArgs.checkNotEmptyOrWhitespace
     //
     
     @DataProvider
@@ -103,13 +106,13 @@ public class StringArgsTest {
     
     @Test(dataProvider = "_dataForShouldCheckNotEmptyOrWhitespace")
     public void shouldCheckNotEmptyOrWhitespace(String s) {
-        StringArgs.staticCheckNotEmptyOrWhitespace(s, "s");
+        StringArgs.checkNotEmptyOrWhitespace(s, "s");
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyOrWhitespaceWithNullInputs",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckNotEmptyOrWhitespace(String s, String argName) {
-        StringArgs.staticCheckNotEmptyOrWhitespace(s, argName);
+        StringArgs.checkNotEmptyOrWhitespace(s, argName);
     }
     
     @DataProvider
@@ -125,11 +128,11 @@ public class StringArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyOrWhitespace2",
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckNotEmptyOrWhitespace2(String s) {
-        StringArgs.staticCheckNotEmptyOrWhitespace(s, "s");
+        StringArgs.checkNotEmptyOrWhitespace(s, "s");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringArgs.staticCheckLengthRange
+    // StringArgs.checkLengthRange
     //
     
     @DataProvider
@@ -148,7 +151,7 @@ public class StringArgsTest {
     
     @Test(dataProvider = "_dataForShouldCheckLengthRange")
     public void shouldCheckLengthRange(String s, int minLen, int maxLen) {
-        StringArgs.staticCheckLengthRange(s, minLen, maxLen, "s");
+        StringArgs.checkLengthRange(s, minLen, maxLen, "s");
     }
     
     @DataProvider
@@ -168,7 +171,7 @@ public class StringArgsTest {
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckLengthRangeWithInvalidMinOrMaxLen(
             String s, int minLen, int maxLen) {
-        StringArgs.staticCheckLengthRange(s, minLen, maxLen, "s");
+        StringArgs.checkLengthRange(s, minLen, maxLen, "s");
     }
     
     @DataProvider
@@ -184,11 +187,11 @@ public class StringArgsTest {
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckLengthRangeWithNullString(
             String s, int minLen, int maxLen) {
-        StringArgs.staticCheckLengthRange(s, minLen, maxLen, "s");
+        StringArgs.checkLengthRange(s, minLen, maxLen, "s");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringArgs.staticCheckMinLength
+    // StringArgs.checkMinLength
     //
     
     @DataProvider
@@ -204,7 +207,7 @@ public class StringArgsTest {
     
     @Test(dataProvider = "_dataForShouldCheckMinLength")
     public void shouldCheckMinLength(String s, int minLen) {
-        StringArgs.staticCheckMinLength(s, minLen, "s");
+        StringArgs.checkMinLength(s, minLen, "s");
     }
     
     @DataProvider
@@ -220,7 +223,7 @@ public class StringArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckMinLengthWithInvalidMinLen",
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckMinLengthWithInvalidMinLen(String s, int minLen) {
-        StringArgs.staticCheckMinLength(s, minLen, "s");
+        StringArgs.checkMinLength(s, minLen, "s");
     }
     
     @DataProvider
@@ -235,11 +238,11 @@ public class StringArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckMinLengthWithNullString",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckMinLengthWithNullString(String s, int minLen) {
-        StringArgs.staticCheckMinLength(s, minLen, "s");
+        StringArgs.checkMinLength(s, minLen, "s");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringArgs.staticCheckMaxLength
+    // StringArgs.checkMaxLength
     //
     
     @DataProvider
@@ -256,7 +259,7 @@ public class StringArgsTest {
     
     @Test(dataProvider = "_dataForShouldCheckMaxLength")
     public void shouldCheckMaxLength(String s, int maxLen) {
-        StringArgs.staticCheckMaxLength(s, maxLen, "s");
+        StringArgs.checkMaxLength(s, maxLen, "s");
     }
     
     @DataProvider
@@ -273,7 +276,7 @@ public class StringArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckMaxLengthWithInvalidMaxLen",
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckMaxLengthWithInvalidMaxLen(String s, int maxLen) {
-        StringArgs.staticCheckMaxLength(s, maxLen, "s");
+        StringArgs.checkMaxLength(s, maxLen, "s");
     }
     
     @DataProvider
@@ -288,11 +291,11 @@ public class StringArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckMaxLengthWithNullString",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckMaxLengthWithNullString(String s, int maxLen) {
-        StringArgs.staticCheckMaxLength(s, maxLen, "s");
+        StringArgs.checkMaxLength(s, maxLen, "s");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringArgs.staticCheckExactLength
+    // StringArgs.checkExactLength
     //
     
     @DataProvider
@@ -306,7 +309,7 @@ public class StringArgsTest {
     
     @Test(dataProvider = "_dataForShouldCheckExactLength")
     public void shouldCheckExactLength(String s, int len) {
-        StringArgs.staticCheckExactLength(s, len, "s");
+        StringArgs.checkExactLength(s, len, "s");
     }
     
     @DataProvider
@@ -322,7 +325,7 @@ public class StringArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckExactLengthWithInvalidExactLen",
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckExactLengthWithInvalidExactLen(String s, int len) {
-        StringArgs.staticCheckExactLength(s, len, "s");
+        StringArgs.checkExactLength(s, len, "s");
     }
     
     @DataProvider
@@ -337,11 +340,11 @@ public class StringArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckExactLengthWithNullString",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckExactLengthWithNullString(String s, int len) {
-        StringArgs.staticCheckExactLength(s, len, "s");
+        StringArgs.checkExactLength(s, len, "s");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringArgs.staticCheckInsertIndex
+    // StringArgs.checkInsertIndex
     //
     
     @DataProvider
@@ -360,7 +363,7 @@ public class StringArgsTest {
     
     @Test(dataProvider = "_dataForShouldCheckInsertIndex")
     public void shouldCheckInsertIndex(String s, int index) {
-        StringArgs.staticCheckInsertIndex(s, index, "s", "index");
+        StringArgs.checkInsertIndex(s, index, "s", "index");
     }
     
     @DataProvider
@@ -376,7 +379,7 @@ public class StringArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckInsertIndexWithInvalidIndex",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void shouldNotCheckInsertIndexWithInvalidIndex(String s, int index) {
-        StringArgs.staticCheckInsertIndex(s, index, "s", "index");
+        StringArgs.checkInsertIndex(s, index, "s", "index");
     }
     
     @DataProvider
@@ -391,11 +394,11 @@ public class StringArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckInsertIndexWithNullString",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckInsertIndexWithNullString(String s, int index) {
-        StringArgs.staticCheckInsertIndex(s, index, "s", "index");
+        StringArgs.checkInsertIndex(s, index, "s", "index");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringArgs.staticCheckIndexAndCount
+    // StringArgs.checkIndexAndCount
     //
     
     @DataProvider
@@ -420,7 +423,7 @@ public class StringArgsTest {
     
     @Test(dataProvider = "_dataForShouldCheckIndexAndCount")
     public void shouldCheckIndexAndCount(String s, int index, int count) {
-        StringArgs.staticCheckIndexAndCount(s, index, count, "s", "index", "count");
+        StringArgs.checkIndexAndCount(s, index, count, "s", "index", "count");
     }
     
     @DataProvider
@@ -437,7 +440,7 @@ public class StringArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckIndexAndCountWithInvalidIndex",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void shouldNotCheckIndexAndCountWithInvalidIndex(String s, int index, int count) {
-        StringArgs.staticCheckIndexAndCount(s, index, count, "s", "index", "count");
+        StringArgs.checkIndexAndCount(s, index, count, "s", "index", "count");
     }
     
     @DataProvider
@@ -451,7 +454,7 @@ public class StringArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckIndexAndCountWithNegativeCount",
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckIndexAndCountWithNegativeCount(String s, int index, int count) {
-        StringArgs.staticCheckIndexAndCount(s, index, count, "s", "index", "count");
+        StringArgs.checkIndexAndCount(s, index, count, "s", "index", "count");
     }
     
     @DataProvider
@@ -465,7 +468,7 @@ public class StringArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckIndexAndCountWithInvalidCount",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void shouldNotCheckIndexAndCountWithInvalidCount(String s, int index, int count) {
-        StringArgs.staticCheckIndexAndCount(s, index, count, "s", "index", "count");
+        StringArgs.checkIndexAndCount(s, index, count, "s", "index", "count");
     }
     
     
@@ -481,6 +484,6 @@ public class StringArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckIndexAndCountWithNullString",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckIndexAndCountWithNullString(String s, int index, int count) {
-        StringArgs.staticCheckIndexAndCount(s, index, count, "s", "index", "count");
+        StringArgs.checkIndexAndCount(s, index, count, "s", "index", "count");
     }
 }

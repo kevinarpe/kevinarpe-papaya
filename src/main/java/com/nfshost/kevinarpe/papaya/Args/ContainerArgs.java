@@ -19,16 +19,19 @@
 
 package com.nfshost.kevinarpe.papaya.Args;
 
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 final class ContainerArgs {
 
-    static void _staticCheckSizeRange(
+    static void _checkSizeRange(
             Object container,
             String containerType,
             int size,
             int minSize,
             int maxSize,
             String containerArgName) {
-        ObjectArgs.staticCheckNotNull(container, containerArgName);
+        ObjectArgs.checkNotNull(container, containerArgName);
         if (-1 != minSize && -1 != maxSize && minSize > maxSize) {
             throw new IllegalArgumentException(String.format(
                 "%s argument '%s': 'minSize' > 'maxSize': %d > %d",
@@ -46,16 +49,16 @@ final class ContainerArgs {
         }
     }
     
-    static void _staticCheckAccessIndex(
+    static void _checkAccessIndex(
             Object container,
             String containerType,
             int containerSize,
             int index,
             String containerArgName,
             String indexArgName) {
-        ObjectArgs.staticCheckNotNull(container, containerArgName);
-        ObjectArgs.staticCheckNotNull(indexArgName, "indexArgName");
-        _staticCheckIndexNotNegative(containerType, containerArgName, indexArgName, index);
+        ObjectArgs.checkNotNull(container, containerArgName);
+        ObjectArgs.checkNotNull(indexArgName, "indexArgName");
+        _checkIndexNotNegative(containerType, containerArgName, indexArgName, index);
         if (index >= containerSize) {
             throw new IndexOutOfBoundsException(String.format(
                     "%s '%s': Index '%s' for access too large: %d >= %d",
@@ -67,16 +70,16 @@ final class ContainerArgs {
         }
     }
     
-    static void _staticCheckInsertIndex(
+    static void _checkInsertIndex(
             Object container,
             String containerType,
             int containerSize,
             int index,
             String containerArgName,
             String indexArgName) {
-        ObjectArgs.staticCheckNotNull(container, containerArgName);
-        ObjectArgs.staticCheckNotNull(indexArgName, "indexArgName");
-        _staticCheckIndexNotNegative(containerType, containerArgName, indexArgName, index);
+        ObjectArgs.checkNotNull(container, containerArgName);
+        ObjectArgs.checkNotNull(indexArgName, "indexArgName");
+        _checkIndexNotNegative(containerType, containerArgName, indexArgName, index);
         if (index > containerSize) {
             throw new IndexOutOfBoundsException(String.format(
                     "%s '%s': Index '%s' for insert too large: %d > %d",
@@ -88,7 +91,7 @@ final class ContainerArgs {
         }
     }
 
-    static void _staticCheckIndexNotNegative(
+    static void _checkIndexNotNegative(
             String containerType, String containerArgName, String indexArgName, int index) {
         if (index < 0) {
             throw new IndexOutOfBoundsException(String.format(
@@ -100,7 +103,7 @@ final class ContainerArgs {
         }
     }
     
-    static void _staticCheckIndexAndCount(
+    static void _checkIndexAndCount(
             Object container,
             String containerType,
             int containerSize,
@@ -109,10 +112,10 @@ final class ContainerArgs {
             String containerArgName,
             String indexArgName,
             String countArgName) {
-        ObjectArgs.staticCheckNotNull(container, containerArgName);
-        ObjectArgs.staticCheckNotNull(indexArgName, "indexArgName");
-        _staticCheckIndexNotNegative(containerType, containerArgName, indexArgName, index);
-        IntArgs.staticCheckNotNegative(count, countArgName);
+        ObjectArgs.checkNotNull(container, containerArgName);
+        ObjectArgs.checkNotNull(indexArgName, "indexArgName");
+        _checkIndexNotNegative(containerType, containerArgName, indexArgName, index);
+        IntArgs.checkNotNegative(count, countArgName);
         if (index >= containerSize) {
             throw new IndexOutOfBoundsException(String.format(
                     "%s '%s': Index '%s' too large: %d >= %d",

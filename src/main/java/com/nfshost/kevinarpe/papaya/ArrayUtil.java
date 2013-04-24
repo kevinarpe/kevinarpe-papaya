@@ -31,7 +31,7 @@ public final class ArrayUtil {
     
     // @see Arrays#equals(Object[], Object[])
     /*
-    public static <T> boolean staticEquals(T[] arr1, T[] arr2) {
+    public static <T> boolean equals(T[] arr1, T[] arr2) {
         if (null == arr1 && null == arr2) {
             return true;
         }
@@ -52,12 +52,12 @@ public final class ArrayUtil {
     */
     
     /**
-     * This is a convenience method for {@link #staticRemove(Object[], int, int)}
+     * This is a convenience method for {@link #remove(Object[], int, int)}
      * where {@code count = 1}.
      */
-    public static <T> T[] staticRemove(T[] arr, int index) {
+    public static <T> T[] remove(T[] arr, int index) {
         int count = 1;
-        T[] newArr = staticRemove(arr, index, count);
+        T[] newArr = remove(arr, index, count);
         return newArr;
     }
     
@@ -75,11 +75,11 @@ public final class ArrayUtil {
      * @throws NullPointerException if {@code arr} is null
      * @throws IllegalArgumentException if {@code index} and {@code count} are invalid
      */
-    public static <T> T[] staticRemove(T[] arr, int index, int count) {
-        ArrayArgs.staticCheckIndexAndCount(arr, index, count, "arr", "index", "count");
+    public static <T> T[] remove(T[] arr, int index, int count) {
+        ArrayArgs.checkIndexAndCount(arr, index, count, "arr", "index", "count");
         
         int newLen = arr.length - count;
-        T[] newArr = _staticNewFromExisting(arr, newLen);
+        T[] newArr = _newGenericArrayFromExisting(arr, newLen);
         
         int countBefore = index;
         int countAfter = arr.length - (index + count);
@@ -113,31 +113,31 @@ public final class ArrayUtil {
      * @throws NullPointerException if {@code componentClass} is null
      * @throws IllegalArgumentException if {@code length} is negative
      */
-    public static <T> T[] staticNew(Class<T> componentClass, int length) {
-        ObjectArgs.staticCheckNotNull(componentClass, "componentClass");
-        IntArgs.staticCheckNotNegative(length, "length");
+    public static <T> T[] newGenericArray(Class<T> componentClass, int length) {
+        ObjectArgs.checkNotNull(componentClass, "componentClass");
+        IntArgs.checkNotNegative(length, "length");
         
         @SuppressWarnings("unchecked")
         T[] newArr = (T[]) Array.newInstance(componentClass, length);
         return newArr;
     }
     
-    private static <T> T[] _staticNewFromExisting(T[] arr, int length) {
+    private static <T> T[] _newGenericArrayFromExisting(T[] arr, int length) {
         @SuppressWarnings("unchecked")
         Class<T[]> arrClass = (Class<T[]>) arr.getClass();
         @SuppressWarnings("unchecked")
         Class<T> arrComponentClass = (Class<T>) arrClass.getComponentType();
-        T[] newArr = staticNew(arrComponentClass, length);
+        T[] newArr = newGenericArray(arrComponentClass, length);
         return newArr;
     }
     
     /**
-     * This is a convenience method for {@link #staticInsert(Object[], int, Object, Object...)}.
+     * This is a convenience method for {@link #insert(Object[], int, Object, Object...)}.
      */
-    @SafeVarargs
-    public static <T> T[] staticAppend(T[] arr, T newItem, T... newItemArr) {
+    //Java 7: @SafeVarargs
+    public static <T> T[] append(T[] arr, T newItem, T... newItemArr) {
         int index = (null == arr ? -1 : arr.length);
-        T[] newArr = staticInsert(arr, index, newItem, newItemArr);
+        T[] newArr = insert(arr, index, newItem, newItemArr);
         return newArr;
     }
     
@@ -153,12 +153,12 @@ public final class ArrayUtil {
      * @throws NullPointerException if {@code arr} is null
      * @throws IllegalArgumentException if {@code index} is invalid
      */
-    @SafeVarargs
-    public static <T> T[] staticInsert(T[] arr, int index, T newItem, T... newItemArr) {
-        ArrayArgs.staticCheckInsertIndex(arr, index, "arr", "index");
+    //Java 7: @SafeVarargs
+    public static <T> T[] insert(T[] arr, int index, T newItem, T... newItemArr) {
+        ArrayArgs.checkInsertIndex(arr, index, "arr", "index");
         
         int newLen = arr.length + 1 + newItemArr.length;
-        T[] newArr = _staticNewFromExisting(arr, newLen);
+        T[] newArr = _newGenericArrayFromExisting(arr, newLen);
         
         int countBeforeInsert = index;
         int countAfterInsert = arr.length - index;

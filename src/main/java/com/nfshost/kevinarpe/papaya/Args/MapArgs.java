@@ -2,6 +2,9 @@ package com.nfshost.kevinarpe.papaya.Args;
 
 import java.util.Map;
 
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public final class MapArgs {
 
     /**
@@ -9,14 +12,14 @@ public final class MapArgs {
      * 
      * @param ref a map reference
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-     * @see ObjectArgs#staticCheckNotNull(Object, String)
-     * @see #staticCheckKeysNotNull(Map, String)
-     * @see #staticCheckValuesNotNull(Map, String)
+     * @see ObjectArgs#checkNotNull(Object, String)
+     * @see #checkKeysNotNull(Map, String)
+     * @see #checkValuesNotNull(Map, String)
      * @throws NullPointerException if {@code ref} (or any key or value) or {@code argName} is null
      */
-    public static <TKey, TValue> void staticCheckKeysAndValuesNotNull(
+    public static <TKey, TValue> void checkKeysAndValuesNotNull(
             Map<TKey, TValue> ref, String argName) {
-        ObjectArgs.staticCheckNotNull(ref, argName);
+        ObjectArgs.checkNotNull(ref, argName);
         for (Map.Entry<TKey, TValue> entry: ref.entrySet()) {
             TKey key = entry.getKey();
             TValue value = entry.getValue();
@@ -40,14 +43,14 @@ public final class MapArgs {
      * 
      * @param ref a map reference
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-     * @see ObjectArgs#staticCheckNotNull(Object, String)
-     * @see #staticCheckKeysAndValuesNotNull(Map, String)
-     * @see #staticCheckValuesNotNull(Map, String)
+     * @see ObjectArgs#checkNotNull(Object, String)
+     * @see #checkKeysAndValuesNotNull(Map, String)
+     * @see #checkValuesNotNull(Map, String)
      * @throws NullPointerException if {@code ref} (or any key) or {@code argName} is null
      */
-    public static <TKey, TValue> void staticCheckKeysNotNull(
+    public static <TKey, TValue> void checkKeysNotNull(
             Map<TKey, TValue> ref, String argName) {
-        ObjectArgs.staticCheckNotNull(ref, argName);
+        ObjectArgs.checkNotNull(ref, argName);
         for (Map.Entry<TKey, TValue> entry: ref.entrySet()) {
             TKey key = entry.getKey();
             if (null == key) {
@@ -63,14 +66,14 @@ public final class MapArgs {
      * 
      * @param ref a map reference
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-     * @see ObjectArgs#staticCheckNotNull(Object, String)
-     * @see #staticCheckKeysAndValuesNotNull(Map, String)
-     * @see #staticCheckKeysNotNull(Map, String)
+     * @see ObjectArgs#checkNotNull(Object, String)
+     * @see #checkKeysAndValuesNotNull(Map, String)
+     * @see #checkKeysNotNull(Map, String)
      * @throws NullPointerException if {@code ref} (or any value) or {@code argName} is null
      */
-    public static <TKey, TValue> void staticCheckValuesNotNull(
+    public static <TKey, TValue> void checkValuesNotNull(
             Map<TKey, TValue> ref, String argName) {
-        ObjectArgs.staticCheckNotNull(ref, argName);
+        ObjectArgs.checkNotNull(ref, argName);
         for (Map.Entry<TKey, TValue> entry: ref.entrySet()) {
             TValue value = entry.getValue();
             if (null == value) {

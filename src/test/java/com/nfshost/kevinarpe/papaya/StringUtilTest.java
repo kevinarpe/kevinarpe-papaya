@@ -27,6 +27,9 @@ import org.testng.Assert;
 
 import com.nfshost.kevinarpe.papaya.StringUtil;
 
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public class StringUtilTest {
 
     @BeforeClass
@@ -83,14 +86,14 @@ public class StringUtilTest {
     
     @Test(dataProvider = "_dataForShouldWhitespaceTrimPrefix")
     public void shouldWhitespaceTrimLeft(String input, String expectedOutput) {
-        String output = StringUtil.staticWhitespaceTrimPrefix(input);
+        String output = StringUtil.trimWhitespacePrefix(input);
         Assert.assertEquals(output, expectedOutput);
     }
     
     @Test(expectedExceptions = NullPointerException.class)
     public void shouldNotWhitespaceTrimPrefix() {
         String input = null;
-        StringUtil.staticWhitespaceTrimPrefix(input);
+        StringUtil.trimWhitespacePrefix(input);
     }
     
     @DataProvider
@@ -139,13 +142,13 @@ public class StringUtilTest {
     
     @Test(dataProvider = "_dataForShouldWhitespaceTrimSuffix")
     public void shouldWhitespaceTrimRight(String input, String expectedOutput) {
-        String output = StringUtil.staticWhitespaceTrimSuffix(input);
+        String output = StringUtil.trimWhitespaceSuffix(input);
         Assert.assertEquals(output, expectedOutput);
     }
     
     @Test(expectedExceptions = NullPointerException.class)
     public void shouldNotWhitespaceTrimSuffix() {
         String input = null;
-        StringUtil.staticWhitespaceTrimSuffix(input);
+        StringUtil.trimWhitespaceSuffix(input);
     }
 }

@@ -35,7 +35,7 @@ public final class StringUtil {
     private static final Pattern _NEW_LINE_REGEX;
     
     static {
-        NEW_LINE = System.lineSeparator();
+        NEW_LINE = System.getProperty("line.separator");
         UNIX_NEW_LINE = "\n";
         WINDOWS_NEW_LINE = "\r\n";
         _NEW_LINE_REGEX = Pattern.compile("\r?\n");
@@ -56,10 +56,10 @@ public final class StringUtil {
      * @param str a string reference
      * @return string reference without leading whitespace chars
      * @throws NullPointerException if {@code str} is null
-     * @see #staticWhitespaceTrimSuffix(String)
+     * @see #trimWhitespaceSuffix(String)
      */
-    public static String staticWhitespaceTrimPrefix(String str) {
-        ObjectArgs.staticCheckNotNull(str, "str");
+    public static String trimWhitespacePrefix(String str) {
+        ObjectArgs.checkNotNull(str, "str");
         final int len = str.length();
         int i = 0;
         for (; i < len; ++i) {
@@ -78,6 +78,9 @@ public final class StringUtil {
         return s2;
     }
     
+    // TODO: trimPrefixByCallback
+    // TODO: trimSuffixByCallback
+    
     /**
      * Creates a copy of the input string, but removes all trailing whitespace chars.
      * To be precise, "trailing" is always defined as starting from the last index.
@@ -93,66 +96,66 @@ public final class StringUtil {
      * @param str a string reference
      * @return string reference without leading whitespace chars
      * @throws NullPointerException if {@code str} is null
-     * @see #staticWhitespaceTrimPrefix(String)
+     * @see #trimWhitespacePrefix(String)
      */
-    public static String staticWhitespaceTrimSuffix(String s) {
-        ObjectArgs.staticCheckNotNull(s, "s");
-        final int len = s.length();
+    public static String trimWhitespaceSuffix(String str) {
+        ObjectArgs.checkNotNull(str, "s");
+        final int len = str.length();
         int i = len - 1;
         for (; i >= 0; --i) {
-            char ch = s.charAt(i);
+            char ch = str.charAt(i);
             if (!Character.isWhitespace(ch)) {
                 break;
             }
         }
         if (len - 1 == i) {
-            return s;
+            return str;
         }
         if (-1 == i) {
             return "";
         }
-        String s2 = s.substring(0, i + 1);
+        String s2 = str.substring(0, i + 1);
         return s2;
     }
     
-    public static String staticSubstringPrefix(String s, int count) {
-        ObjectArgs.staticCheckNotNull(s, "s");
-        IntArgs.staticCheckNotNegative(count, "count");
-        int len = s.length();
+    public static String substringPrefix(String str, int count) {
+        ObjectArgs.checkNotNull(str, "s");
+        IntArgs.checkNotNegative(count, "count");
+        int len = str.length();
         count = (count > len ? len : count);
-        String s2 = s.substring(0, count);
+        String s2 = str.substring(0, count);
         return s2;
     }
     
-    public static String staticSubstringSuffix(String s, int count) {
-        ObjectArgs.staticCheckNotNull(s, "s");
-        IntArgs.staticCheckNotNegative(count, "count");
-        int len = s.length();
+    public static String substringSuffix(String str, int count) {
+        ObjectArgs.checkNotNull(str, "s");
+        IntArgs.checkNotNegative(count, "count");
+        int len = str.length();
         count = (count > len ? len : count);
-        String s2 = s.substring(len - count, len);
+        String s2 = str.substring(len - count, len);
         return s2;
     }
     
-    public static String staticReplaceAll(String haystack, Pattern regex, String replacement) {
-        ObjectArgs.staticCheckNotNull(haystack, "haystack");
-        ObjectArgs.staticCheckNotNull(regex, "regex");
-        ObjectArgs.staticCheckNotNull(replacement, "replacement");
+    public static String replaceAll(String haystack, Pattern regex, String replacement) {
+        ObjectArgs.checkNotNull(haystack, "haystack");
+        ObjectArgs.checkNotNull(regex, "regex");
+        ObjectArgs.checkNotNull(replacement, "replacement");
         Matcher m = regex.matcher(haystack);
         String s2 = m.replaceAll(replacement);
         return s2;
     }
     
     // Ref: http://stackoverflow.com/a/6417487/257299
-    public static int staticFindLastPatternMatch(String haystack, Pattern regex) {
-        ObjectArgs.staticCheckNotNull(haystack, "haystack");
-        ObjectArgs.staticCheckNotNull(regex, "regex");
+    public static int findLastPatternMatch(String haystack, Pattern regex) {
+        ObjectArgs.checkNotNull(haystack, "haystack");
+        ObjectArgs.checkNotNull(regex, "regex");
         Matcher m = regex.matcher(haystack);
         int haystackLen = haystack.length();
-        int index = _staticFindLastPatternMatchCore(0, haystackLen, m);
+        int index = _findLastPatternMatchCore(0, haystackLen, m);
         return index;
     }
     
-    private static int _staticFindLastPatternMatchCore(int start, int end, Matcher m) {
+    private static int _findLastPatternMatchCore(int start, int end, Matcher m) {
         if (start > end) {
             return -1;
         }
@@ -162,7 +165,7 @@ public final class StringUtil {
             if (index + 1 > end) {
                 return index;
             }
-            int result = _staticFindLastPatternMatchCore(1 + index, end, m);
+            int result = _findLastPatternMatchCore(1 + index, end, m);
             return (-1 == result ? index : result);
         }
         else if (m.find(start)) {
@@ -170,7 +173,7 @@ public final class StringUtil {
             if (index + 1 > pivot) {
                 return index;
             }
-            int result = _staticFindLastPatternMatchCore(1 + index, pivot, m);
+            int result = _findLastPatternMatchCore(1 + index, pivot, m);
             return (-1 == result ? index : result);
         }
         return -1;
@@ -181,12 +184,12 @@ public final class StringUtil {
     // TODO: Add line prefix / suffix
     
     /**
-     * This is a convenience method for {@link #staticRemove(String, int, int)}
+     * This is a convenience method for {@link #remove(String, int, int)}
      * where {@code count = 1}.
      */
-    public static String staticRemove(String s, int index) {
+    public static String remove(String s, int index) {
         final int count = 1;
-        String s2 = staticRemove(s, index, count);
+        String s2 = remove(s, index, count);
         return s2;
     }
     
@@ -204,8 +207,8 @@ public final class StringUtil {
      * @throws NullPointerException if {@code str} is null
      * @throws IllegalArgumentException if {@code index} and {@code count} are invalid
      */
-    public static String staticRemove(String str, int index, int count) {
-        StringArgs.staticCheckIndexAndCount(str, index, count, "s", "index", "count");
+    public static String remove(String str, int index, int count) {
+        StringArgs.checkIndexAndCount(str, index, count, "s", "index", "count");
         
         if (0 == count) {
             return str;
@@ -241,9 +244,9 @@ public final class StringUtil {
      * @throws NullPointerException if {@code str} or {@code newText} is null
      * @throws IllegalArgumentException if {@code index} is invalid
      */
-    public static String staticInsert(String str, int index, String newText) {
-        StringArgs.staticCheckInsertIndex(str, index, "str", "index");
-        ObjectArgs.staticCheckNotNull(newText, "newText");
+    public static String insert(String str, int index, String newText) {
+        StringArgs.checkInsertIndex(str, index, "str", "index");
+        ObjectArgs.checkNotNull(newText, "newText");
         
         if (0 == newText.length()) {
             return str;
@@ -266,22 +269,22 @@ public final class StringUtil {
     }
     
     /**
-     * This is a convenience method to combine {@link #staticRemove(String, int, int)}
-     * and {@link #staticInsert(String, int, String)} where {@code count = 1}.
+     * This is a convenience method to combine {@link #remove(String, int, int)}
+     * and {@link #insert(String, int, String)} where {@code count = 1}.
      */
-    public static String staticReplace(String str, int index, String newText) {
+    public static String replace(String str, int index, String newText) {
         final int count = 1;
-        String newStr = staticReplace(str, index, count, newText);
+        String newStr = replace(str, index, count, newText);
         return newStr;
     }
     
     /**
-     * This is a convenience method to combine {@link #staticRemove(String, int, int)}
-     * and {@link #staticInsert(String, int, String)}.
+     * This is a convenience method to combine {@link #remove(String, int, int)}
+     * and {@link #insert(String, int, String)}.
      */
-    public static String staticReplace(String str, int index, int count, String newText) {
-        String newStr = staticRemove(str, index, count);
-        String newStr2 = staticInsert(newStr, index, newText);
+    public static String replace(String str, int index, int count, String newText) {
+        String newStr = remove(str, index, count);
+        String newStr2 = insert(newStr, index, newText);
         return newStr2;
     }
 }

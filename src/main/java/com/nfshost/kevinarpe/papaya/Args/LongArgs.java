@@ -19,6 +19,9 @@
 
 package com.nfshost.kevinarpe.papaya.Args;
 
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public final class LongArgs {
 
     /**
@@ -29,12 +32,12 @@ public final class LongArgs {
      * @return the validated value
      * @throws NullPointerException if {@code argName} is null
      * @throws IllegalArgumentException if value of {@code value <= 0}
-     * @see #staticCheckNotPositive(long, String)
-     * @see #staticCheckNegative(long, String)
-     * @see #staticCheckNotNegative(long, String)
+     * @see #checkNotPositive(long, String)
+     * @see #checkNegative(long, String)
+     * @see #checkNotNegative(long, String)
      */
-    public static long staticCheckPositive(long value, String argName) {
-        ObjectArgs.staticCheckNotNull(argName, "argName");
+    public static long checkPositive(long value, String argName) {
+        ObjectArgs.checkNotNull(argName, "argName");
         if (value <= 0) {
             throw new IllegalArgumentException(String.format(
                     "Argument '%s': value is not positive: %d",
@@ -51,12 +54,12 @@ public final class LongArgs {
      * @return the validated value
      * @throws NullPointerException if {@code argName} is null
      * @throws IllegalArgumentException if value of {@code value > 0}
-     * @see #staticCheckPositive(long, String)
-     * @see #staticCheckNegative(long, String)
-     * @see #staticCheckNotNegative(long, String)
+     * @see #checkPositive(long, String)
+     * @see #checkNegative(long, String)
+     * @see #checkNotNegative(long, String)
      */
-    public static long staticCheckNotPositive(long value, String argName) {
-        ObjectArgs.staticCheckNotNull(argName, "argName");
+    public static long checkNotPositive(long value, String argName) {
+        ObjectArgs.checkNotNull(argName, "argName");
         if (value > 0) {
             throw new IllegalArgumentException(String.format(
                     "Argument '%s': value is positive: %d",
@@ -73,12 +76,12 @@ public final class LongArgs {
      * @return the validated value
      * @throws NullPointerException if {@code argName} is null
      * @throws IllegalArgumentException if value of {@code value => 0}
-     * @see #staticCheckPositive(long, String)
-     * @see #staticCheckNotPositive(long, String)
-     * @see #staticCheckNotNegative(long, String)
+     * @see #checkPositive(long, String)
+     * @see #checkNotPositive(long, String)
+     * @see #checkNotNegative(long, String)
      */
-    public static long staticCheckNegative(long value, String argName) {
-        ObjectArgs.staticCheckNotNull(argName, "argName");
+    public static long checkNegative(long value, String argName) {
+        ObjectArgs.checkNotNull(argName, "argName");
         if (value >= 0) {
             throw new IllegalArgumentException(String.format(
                     "Argument '%s': value is not negative: %d",
@@ -95,12 +98,12 @@ public final class LongArgs {
      * @return the validated value
      * @throws NullPointerException if {@code argName} is null
      * @throws IllegalArgumentException if value of {@code value < 0}
-     * @see #staticCheckPositive(long, String)
-     * @see #staticCheckNotPositive(long, String)
-     * @see #staticCheckNegative(long, String)
+     * @see #checkPositive(long, String)
+     * @see #checkNotPositive(long, String)
+     * @see #checkNegative(long, String)
      */
-    public static long staticCheckNotNegative(long value, String argName) {
-        ObjectArgs.staticCheckNotNull(argName, "argName");
+    public static long checkNotNegative(long value, String argName) {
+        ObjectArgs.checkNotNull(argName, "argName");
         if (value < 0) {
             throw new IllegalArgumentException(String.format(
                     "Argument '%s': value is negative: %d",
@@ -111,54 +114,54 @@ public final class LongArgs {
     
     /**
      * Convenience method to call
-     * {@link ComparableArgs#staticCheckValueRange(Comparable, Comparable, Comparable, String)}.
+     * {@link ComparableArgs#checkValueRange(Comparable, Comparable, Comparable, String)}.
      * 
-     * @see #staticCheckMinValue(long, long, String)
-     * @see #staticCheckMaxValue(long, long, String)
-     * @see #staticCheckExactValue(long, long, String)
+     * @see #checkMinValue(long, long, String)
+     * @see #checkMaxValue(long, long, String)
+     * @see #checkExactValue(long, long, String)
      */
-    public static long staticCheckValueRange(
+    public static long checkValueRange(
             long value, long minValue, long maxValue, String argName) {
-        ComparableArgs.staticCheckValueRange(value, minValue, maxValue, argName);
+        ComparableArgs.checkValueRange(value, minValue, maxValue, argName);
         return value;
     }
     
     /**
      * Convenience method to call
-     * {@link ComparableArgs#staticCheckMinValue(Comparable, Comparable, String)}.
+     * {@link ComparableArgs#checkMinValue(Comparable, Comparable, String)}.
      * 
-     * @see #staticCheckValueRange(long, long, long, String)
-     * @see #staticCheckMaxValue(long, long, String)
-     * @see #staticCheckExactValue(long, long, String)
+     * @see #checkValueRange(long, long, long, String)
+     * @see #checkMaxValue(long, long, String)
+     * @see #checkExactValue(long, long, String)
      */
-    public static long staticCheckMinValue(long value, long minValue, String argName) {
-        ComparableArgs.staticCheckMinValue(value, minValue, argName);
+    public static long checkMinValue(long value, long minValue, String argName) {
+        ComparableArgs.checkMinValue(value, minValue, argName);
         return value;
     }
     
     /**
      * Convenience method to call
-     * {@link ComparableArgs#staticCheckMaxValue(Comparable, Comparable, String)}.
+     * {@link ComparableArgs#checkMaxValue(Comparable, Comparable, String)}.
      * 
-     * @see #staticCheckValueRange(long, long, long, String)
-     * @see #staticCheckMinValue(long, long, String)
-     * @see #staticCheckExactValue(long, long, String)
+     * @see #checkValueRange(long, long, long, String)
+     * @see #checkMinValue(long, long, String)
+     * @see #checkExactValue(long, long, String)
      */
-    public static long staticCheckMaxValue(long value, long maxValue, String argName) {
-        ComparableArgs.staticCheckMaxValue(value, maxValue, argName);
+    public static long checkMaxValue(long value, long maxValue, String argName) {
+        ComparableArgs.checkMaxValue(value, maxValue, argName);
         return value;
     }
 
     /**
      * Convenience method to call
-     * {@link ComparableArgs#staticCheckExactValue(Comparable, Comparable, String)}.
+     * {@link ComparableArgs#checkExactValue(Comparable, Comparable, String)}.
      * 
-     * @see #staticCheckValueRange(long, long, long, String)
-     * @see #staticCheckMinValue(long, long, String)
-     * @see #staticCheckMaxValue(long, long, String)
+     * @see #checkValueRange(long, long, long, String)
+     * @see #checkMinValue(long, long, String)
+     * @see #checkMaxValue(long, long, String)
      */
-    public static long staticCheckExactValue(long value, long exactValue, String argName) {
-        ComparableArgs.staticCheckExactValue(value, exactValue, argName);
+    public static long checkExactValue(long value, long exactValue, String argName) {
+        ComparableArgs.checkExactValue(value, exactValue, argName);
         return value;
     }
 }

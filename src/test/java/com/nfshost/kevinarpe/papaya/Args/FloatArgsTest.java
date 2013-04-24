@@ -26,6 +26,9 @@ import org.testng.annotations.Test;
 
 import com.nfshost.kevinarpe.papaya.PrimitiveTypeUtil;
 
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public class FloatArgsTest {
     
     @BeforeClass
@@ -37,7 +40,7 @@ public class FloatArgsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // FloatArgs.staticCheckPositive
+    // FloatArgs.checkPositive
     //
 
     @DataProvider
@@ -52,7 +55,7 @@ public class FloatArgsTest {
     
     @Test(dataProvider = "_dataForShouldCheckAsPositive")
     public void shouldCheckAsPositive(float i) {
-        FloatArgs.staticCheckPositive(i, "i");
+        FloatArgs.checkPositive(i, "i");
     }
 
     @DataProvider
@@ -65,7 +68,7 @@ public class FloatArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckAsPositiveWithNullArgName",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckAsPositiveWithNullArgName(float i, String argName) {
-        FloatArgs.staticCheckPositive(i, argName);
+        FloatArgs.checkPositive(i, argName);
     }
 
     @DataProvider
@@ -81,11 +84,11 @@ public class FloatArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckAsPositiveWithNonPositiveInput",
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckAsPositiveWithNonPositiveInput(float i) {
-        FloatArgs.staticCheckPositive(i, "i");
+        FloatArgs.checkPositive(i, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // FloatArgs.staticCheckNotPositive
+    // FloatArgs.checkNotPositive
     //
 
     @DataProvider
@@ -100,7 +103,7 @@ public class FloatArgsTest {
     
     @Test(dataProvider = "_dataForShouldCheckAsNotPositive")
     public void shouldCheckAsNotPositive(float i) {
-        FloatArgs.staticCheckNotPositive(i, "i");
+        FloatArgs.checkNotPositive(i, "i");
     }
 
     @DataProvider
@@ -113,7 +116,7 @@ public class FloatArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckAsNotPositiveWithNullArgName",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckAsNotPositiveWithNullArgName(float i, String argName) {
-        FloatArgs.staticCheckNotPositive(i, argName);
+        FloatArgs.checkNotPositive(i, argName);
     }
     
     @DataProvider
@@ -127,11 +130,11 @@ public class FloatArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckAsNotPositiveWithPositiveInput",
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckAsNotPositiveWithPositiveInput(float i) {
-        FloatArgs.staticCheckNotPositive(i, "i");
+        FloatArgs.checkNotPositive(i, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // FloatArgs.staticCheckNegative
+    // FloatArgs.checkNegative
     //
 
     @DataProvider
@@ -147,7 +150,7 @@ public class FloatArgsTest {
     
     @Test(dataProvider = "_dataForShouldCheckAsNegative")
     public void shouldCheckAsNegative(float i) {
-        FloatArgs.staticCheckNegative(i, "i");
+        FloatArgs.checkNegative(i, "i");
     }
     
     @DataProvider
@@ -160,7 +163,7 @@ public class FloatArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckAsNegativeWithNullArgName",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckAsNegativeWithNullArgName(float i, String argName) {
-        FloatArgs.staticCheckNegative(i, argName);
+        FloatArgs.checkNegative(i, argName);
     }
 
     @DataProvider
@@ -175,11 +178,11 @@ public class FloatArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckAsNegativeWithNonNegativeInput",
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckAsNegativeWithNonNegativeInput(float i) {
-        FloatArgs.staticCheckNegative(i, "i");
+        FloatArgs.checkNegative(i, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // FloatArgs.staticCheckNotNegative
+    // FloatArgs.checkNotNegative
     //
 
     @DataProvider
@@ -193,7 +196,7 @@ public class FloatArgsTest {
     
     @Test(dataProvider = "_dataForShouldCheckAsNotNegative")
     public void shouldCheckAsNotNegative(float i) {
-        FloatArgs.staticCheckNotNegative(i, "i");
+        FloatArgs.checkNotNegative(i, "i");
     }
 
     @DataProvider
@@ -206,7 +209,7 @@ public class FloatArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckAsNotNegativeWithNullArgName",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckAsNotNegativeWithNullArgName(float i, String argName) {
-        FloatArgs.staticCheckNotNegative(i, argName);
+        FloatArgs.checkNotNegative(i, argName);
     }
     
     @DataProvider
@@ -221,11 +224,11 @@ public class FloatArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckAsNotNegativeWithNegativeInput",
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckAsNotNegativeWithNegativeInput(float i) {
-        FloatArgs.staticCheckNotNegative(i, "i");
+        FloatArgs.checkNotNegative(i, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // FloatArgs.staticCheckValueRange
+    // FloatArgs.checkValueRange
     //
 
     @DataProvider
@@ -242,7 +245,7 @@ public class FloatArgsTest {
     
     @Test(dataProvider = "_dataForShouldCheckValueRangeAsValid")
     public void shouldCheckValueRangeAsValid(float i, float minValue, float maxValue) {
-        FloatArgs.staticCheckValueRange(i, minValue, maxValue, "i");
+        FloatArgs.checkValueRange(i, minValue, maxValue, "i");
     }
     
     @DataProvider
@@ -256,7 +259,7 @@ public class FloatArgsTest {
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckValueRangeAsValidWithNullArgName(
             float i, float minValue, float maxValue, String argName) {
-        FloatArgs.staticCheckValueRange(i, minValue, maxValue, argName);
+        FloatArgs.checkValueRange(i, minValue, maxValue, argName);
     }
     
     @DataProvider
@@ -282,11 +285,11 @@ public class FloatArgsTest {
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckValueRangeAsValidWithInvalidInput(
             float i, float minValue, float maxValue) {
-        FloatArgs.staticCheckValueRange(i, minValue, maxValue, "i");
+        FloatArgs.checkValueRange(i, minValue, maxValue, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // FloatArgs.staticCheckMinValue
+    // FloatArgs.checkMinValue
     //
 
     @DataProvider
@@ -304,7 +307,7 @@ public class FloatArgsTest {
     
     @Test(dataProvider = "_dataForShouldCheckMinValueAsValid")
     public void shouldCheckMinValueAsValid(float i, float minValue) {
-        FloatArgs.staticCheckMinValue(i, minValue, "i");
+        FloatArgs.checkMinValue(i, minValue, "i");
     }
     
     @DataProvider
@@ -318,7 +321,7 @@ public class FloatArgsTest {
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckMinValueAsValidWithNullArgName(
             float i, float minValue, String argName) {
-        FloatArgs.staticCheckMinValue(i, minValue, argName);
+        FloatArgs.checkMinValue(i, minValue, argName);
     }
     
     @DataProvider
@@ -334,11 +337,11 @@ public class FloatArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckMinValueAsValidWithInvalidInput",
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckMinValueAsValidWithInvalidInput(float i, float minValue) {
-        FloatArgs.staticCheckMinValue(i, minValue, "i");
+        FloatArgs.checkMinValue(i, minValue, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // FloatArgs.staticCheckMaxValue
+    // FloatArgs.checkMaxValue
     //
 
     @DataProvider
@@ -356,7 +359,7 @@ public class FloatArgsTest {
     
     @Test(dataProvider = "_dataForShouldCheckMaxValueAsValid")
     public void shouldCheckMaxValueAsValid(float i, float maxValue) {
-        FloatArgs.staticCheckMaxValue(i, maxValue, "i");
+        FloatArgs.checkMaxValue(i, maxValue, "i");
     }
     
     @DataProvider
@@ -370,7 +373,7 @@ public class FloatArgsTest {
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckMaxValueAsValidWithNullArgName(
             float i, float maxValue, String argName) {
-        FloatArgs.staticCheckMaxValue(i, maxValue, argName);
+        FloatArgs.checkMaxValue(i, maxValue, argName);
     }
     
     @DataProvider
@@ -386,11 +389,11 @@ public class FloatArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckMaxValueAsValidWithInvalidInput",
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckMaxValueAsValidWithInvalidInput(float i, float maxValue) {
-        FloatArgs.staticCheckMaxValue(i, maxValue, "i");
+        FloatArgs.checkMaxValue(i, maxValue, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // FloatArgs.staticCheckExactValue
+    // FloatArgs.checkExactValue
     //
 
     @DataProvider
@@ -408,7 +411,7 @@ public class FloatArgsTest {
     
     @Test(dataProvider = "_dataForShouldCheckExactValueAsValid")
     public void shouldCheckExactValueAsValid(float i, float value) {
-        FloatArgs.staticCheckExactValue(i, value, "i");
+        FloatArgs.checkExactValue(i, value, "i");
     }
     
     @DataProvider
@@ -422,7 +425,7 @@ public class FloatArgsTest {
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckExactValueAsValidWithNullArgName(
             float i, float value, String argName) {
-        FloatArgs.staticCheckExactValue(i, value, argName);
+        FloatArgs.checkExactValue(i, value, argName);
     }
     
     @DataProvider
@@ -438,6 +441,6 @@ public class FloatArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckExactValueAsValidWithInvalidInput",
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckExactValueAsValidWithInvalidInput(float i, float value) {
-        FloatArgs.staticCheckMaxValue(i, value, "i");
+        FloatArgs.checkMaxValue(i, value, "i");
     }
 }

@@ -19,6 +19,9 @@
 
 package com.nfshost.kevinarpe.papaya.Args;
 
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public final class ArrayArgs {
 
     /**
@@ -34,17 +37,17 @@ public final class ArrayArgs {
      *         or if {@code maxLen < 0},
      *         or if {@code minLen > maxLen}, 
      *         or if number of elements in {@code ref} is outside allowed range
-     * @see ObjectArgs#staticCheckNotNull(Object, String)
-     * @see #staticCheckMinLength(Object[], int, String)
-     * @see #staticCheckMaxLength(Object[], int, String)
-     * @see #staticCheckExactLength(Object[], int, String)
+     * @see ObjectArgs#checkNotNull(Object, String)
+     * @see #checkMinLength(Object[], int, String)
+     * @see #checkMaxLength(Object[], int, String)
+     * @see #checkExactLength(Object[], int, String)
      */
-    public static <T> T[] staticCheckLengthRange(
+    public static <T> T[] checkLengthRange(
             T[] ref, int minLen, int maxLen, String argName) {
-        IntArgs.staticCheckNotNegative(minLen, "minLen");
-        IntArgs.staticCheckNotNegative(maxLen, "maxLen");
+        IntArgs.checkNotNegative(minLen, "minLen");
+        IntArgs.checkNotNegative(maxLen, "maxLen");
         int len = (null == ref ? -1 : ref.length);
-        ContainerArgs._staticCheckSizeRange(ref, "Array", len, minLen, maxLen, argName);
+        ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
         return ref;
     }
     
@@ -56,14 +59,14 @@ public final class ArrayArgs {
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if number of elements in {@code ref} is zero
-     * @see #staticCheckLengthRange(Object[], int, int, String)
-     * @see #staticCheckMinLength(Object[], int, String)
+     * @see #checkLengthRange(Object[], int, int, String)
+     * @see #checkMinLength(Object[], int, String)
      */
-    public static <T> T[] staticCheckNotEmpty(T[] ref, String argName) {
+    public static <T> T[] checkNotEmpty(T[] ref, String argName) {
         int len = (null == ref ? -1 : ref.length);
         int minLen = 1;
         int maxLen = -1;
-        ContainerArgs._staticCheckSizeRange(ref, "Array", len, minLen, maxLen, argName);
+        ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
         return ref;
     }
     
@@ -77,13 +80,13 @@ public final class ArrayArgs {
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code minLen < 0},
      *         or if number of elements in {@code ref} is outside allowed range
-     * @see #staticCheckLengthRange(Object[], int, int, String)
+     * @see #checkLengthRange(Object[], int, int, String)
      */
-    public static <T> T[] staticCheckMinLength(T[] ref, int minLen, String argName) {
-        IntArgs.staticCheckNotNegative(minLen, "minLen");
+    public static <T> T[] checkMinLength(T[] ref, int minLen, String argName) {
+        IntArgs.checkNotNegative(minLen, "minLen");
         int len = (null == ref ? -1 : ref.length);
         int maxLen = -1;
-        ContainerArgs._staticCheckSizeRange(ref, "Array", len, minLen, maxLen, argName);
+        ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
         return ref;
     }
     
@@ -92,19 +95,18 @@ public final class ArrayArgs {
      * Length is defined as the number of elements.
      * 
      * @param ref an array reference
-     * @param minLen minimum number of elements (inclusive).  Must be non-negative.
      * @param maxLen maximum number of elements (inclusive).  Must be non-negative.
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code maxLen < 0},
      *         or if number of elements in {@code ref} is outside allowed range
-     * @see #staticCheckLengthRange(Object[], int, int, String)
+     * @see #checkLengthRange(Object[], int, int, String)
      */
-    public static <T> T[] staticCheckMaxLength(T[] ref, int maxLen, String argName) {
-        IntArgs.staticCheckNotNegative(maxLen, "maxLen");
+    public static <T> T[] checkMaxLength(T[] ref, int maxLen, String argName) {
+        IntArgs.checkNotNegative(maxLen, "maxLen");
         int len = (null == ref ? -1 : ref.length);
         int minLen = -1;
-        ContainerArgs._staticCheckSizeRange(ref, "Array", len, minLen, maxLen, argName);
+        ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
         return ref;
     }
     
@@ -118,12 +120,12 @@ public final class ArrayArgs {
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code exactLen < 0},
      *         or if number of elements in {@code ref} is outside allowed range
-     * @see #staticCheckLengthRange(Object[], int, int, String)
+     * @see #checkLengthRange(Object[], int, int, String)
      */
-    public static <T> T[] staticCheckExactLength(T[] ref, int exactLen, String argName) {
-        IntArgs.staticCheckNotNegative(exactLen, "exactLen");
+    public static <T> T[] checkExactLength(T[] ref, int exactLen, String argName) {
+        IntArgs.checkNotNegative(exactLen, "exactLen");
         int len = (null == ref ? -1 : ref.length);
-        ContainerArgs._staticCheckSizeRange(ref, "Array", len, exactLen, exactLen, argName);
+        ContainerArgs._checkSizeRange(ref, "Array", len, exactLen, exactLen, argName);
         return ref;
     }
     
@@ -139,12 +141,12 @@ public final class ArrayArgs {
      *         or {@code indexArgName} is null
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
-     * @see #staticCheckInsertIndex(Object[], int, String, String)
+     * @see #checkInsertIndex(Object[], int, String, String)
      */
-    public static <T> int staticCheckAccessIndex(
+    public static <T> int checkAccessIndex(
             T[] ref, int index, String arrArgName, String indexArgName) {
         int len = (null == ref ? -1 : ref.length);
-        ContainerArgs._staticCheckAccessIndex(
+        ContainerArgs._checkAccessIndex(
             ref, "Array", len, index, arrArgName, indexArgName);
         return index;
     }
@@ -161,12 +163,12 @@ public final class ArrayArgs {
      *         or {@code indexArgName} is null
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
-     * @see #staticCheckAccessIndex(Object[], int, String, String)
+     * @see #checkAccessIndex(Object[], int, String, String)
      */
-    public static <T> int staticCheckInsertIndex(
+    public static <T> int checkInsertIndex(
             T[] ref, int index, String arrArgName, String indexArgName) {
         int len = (null == ref ? -1 : ref.length);
-        ContainerArgs._staticCheckInsertIndex(
+        ContainerArgs._checkInsertIndex(
             ref, "Array", len, index, arrArgName, indexArgName);
         return index;
     }
@@ -183,12 +185,12 @@ public final class ArrayArgs {
      *         or {@code indexArgName} is null
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
-     * @see #staticCheckAccessIndex(Object[], int, String, String)
+     * @see #checkAccessIndex(Object[], int, String, String)
      */
-    public static int staticCheckAccessIndex(
+    public static int checkAccessIndex(
             byte[] ref, int index, String arrArgName, String indexArgName) {
         int len = (null == ref ? -1 : ref.length);
-        ContainerArgs._staticCheckAccessIndex(
+        ContainerArgs._checkAccessIndex(
             ref, "Array", len, index, arrArgName, indexArgName);
         return index;
     }
@@ -205,12 +207,12 @@ public final class ArrayArgs {
      *         or {@code indexArgName} is null
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
-     * @see #staticCheckAccessIndex(Object[], int, String, String)
+     * @see #checkAccessIndex(Object[], int, String, String)
      */
-    public static int staticCheckAccessIndex(
+    public static int checkAccessIndex(
             short[] ref, int index, String arrArgName, String indexArgName) {
         int len = (null == ref ? -1 : ref.length);
-        ContainerArgs._staticCheckAccessIndex(
+        ContainerArgs._checkAccessIndex(
             ref, "Array", len, index, arrArgName, indexArgName);
         return index;
     }
@@ -227,12 +229,12 @@ public final class ArrayArgs {
      *         or {@code indexArgName} is null
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
-     * @see #staticCheckAccessIndex(Object[], int, String, String)
+     * @see #checkAccessIndex(Object[], int, String, String)
      */
-    public static int staticCheckAccessIndex(
+    public static int checkAccessIndex(
             int[] ref, int index, String arrArgName, String indexArgName) {
         int len = (null == ref ? -1 : ref.length);
-        ContainerArgs._staticCheckAccessIndex(
+        ContainerArgs._checkAccessIndex(
             ref, "Array", len, index, arrArgName, indexArgName);
         return index;
     }
@@ -249,12 +251,12 @@ public final class ArrayArgs {
      *         or {@code indexArgName} is null
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
-     * @see #staticCheckAccessIndex(Object[], int, String, String)
+     * @see #checkAccessIndex(Object[], int, String, String)
      */
-    public static int staticCheckAccessIndex(
+    public static int checkAccessIndex(
             long[] ref, int index, String arrArgName, String indexArgName) {
         int len = (null == ref ? -1 : ref.length);
-        ContainerArgs._staticCheckAccessIndex(
+        ContainerArgs._checkAccessIndex(
             ref, "Array", len, index, arrArgName, indexArgName);
         return index;
     }
@@ -271,12 +273,12 @@ public final class ArrayArgs {
      *         or {@code indexArgName} is null
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
-     * @see #staticCheckAccessIndex(Object[], int, String, String)
+     * @see #checkAccessIndex(Object[], int, String, String)
      */
-    public static int staticCheckAccessIndex(
+    public static int checkAccessIndex(
             float[] ref, int index, String arrArgName, String indexArgName) {
         int len = (null == ref ? -1 : ref.length);
-        ContainerArgs._staticCheckAccessIndex(
+        ContainerArgs._checkAccessIndex(
             ref, "Array", len, index, arrArgName, indexArgName);
         return index;
     }
@@ -293,12 +295,12 @@ public final class ArrayArgs {
      *         or {@code indexArgName} is null
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
-     * @see #staticCheckAccessIndex(Object[], int, String, String)
+     * @see #checkAccessIndex(Object[], int, String, String)
      */
-    public static int staticCheckAccessIndex(
+    public static int checkAccessIndex(
             double[] ref, int index, String arrArgName, String indexArgName) {
         int len = (null == ref ? -1 : ref.length);
-        ContainerArgs._staticCheckAccessIndex(
+        ContainerArgs._checkAccessIndex(
             ref, "Array", len, index, arrArgName, indexArgName);
         return index;
     }
@@ -315,12 +317,12 @@ public final class ArrayArgs {
      *         or {@code indexArgName} is null
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
-     * @see #staticCheckAccessIndex(Object[], int, String, String)
+     * @see #checkAccessIndex(Object[], int, String, String)
      */
-    public static int staticCheckAccessIndex(
+    public static int checkAccessIndex(
             char[] ref, int index, String arrArgName, String indexArgName) {
         int len = (null == ref ? -1 : ref.length);
-        ContainerArgs._staticCheckAccessIndex(
+        ContainerArgs._checkAccessIndex(
             ref, "Array", len, index, arrArgName, indexArgName);
         return index;
     }
@@ -337,12 +339,12 @@ public final class ArrayArgs {
      *         or {@code indexArgName} is null
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
-     * @see #staticCheckAccessIndex(Object[], int, String, String)
+     * @see #checkAccessIndex(Object[], int, String, String)
      */
-    public static int staticCheckAccessIndex(
+    public static int checkAccessIndex(
             boolean[] ref, int index, String arrArgName, String indexArgName) {
         int len = (null == ref ? -1 : ref.length);
-        ContainerArgs._staticCheckAccessIndex(
+        ContainerArgs._checkAccessIndex(
             ref, "Array", len, index, arrArgName, indexArgName);
         return index;
     }
@@ -352,12 +354,12 @@ public final class ArrayArgs {
      * 
      * @param ref an array reference
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-     * @see ObjectArgs#staticCheckNotNull(Object, String)
-     * @see CollectionArgs#staticCheckElementsNotNull(java.util.Collection, String)
+     * @see ObjectArgs#checkNotNull(Object, String)
+     * @see CollectionArgs#checkElementsNotNull(java.util.Collection, String)
      * @throws NullPointerException if {@code ref} (or any element) or {@code argName} is null
      */
-    public static <T> void staticCheckElementsNotNull(T[] ref, String argName) {
-        ObjectArgs.staticCheckNotNull(ref, argName);
+    public static <T> void checkElementsNotNull(T[] ref, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
         for (int i = 0; i < ref.length; ++i) {
             T item = ref[i];
             if (null == item) {
@@ -384,7 +386,7 @@ public final class ArrayArgs {
      * @throws IndexOutOfBoundsException if {@code index >= ref.length},
      *         or if {@code index + count > ref.length}
      */
-    public static <T> void staticCheckIndexAndCount(
+    public static <T> void checkIndexAndCount(
             T[] ref,
             int index,
             int count,
@@ -392,7 +394,7 @@ public final class ArrayArgs {
             String indexArgName,
             String countArgName) {
         int len = (null == ref ? -1 : ref.length);
-        ContainerArgs._staticCheckIndexAndCount(
+        ContainerArgs._checkIndexAndCount(
             ref, "Array", len, index, count, arrArgName, indexArgName, countArgName);
     }
 }
