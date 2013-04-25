@@ -40,8 +40,8 @@ public final class LongArgs {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value <= 0) {
             throw new IllegalArgumentException(String.format(
-                    "Argument '%s': value is not positive: %d",
-                    argName, value));
+                "Argument '%s': value is not positive: %d",
+                argName, value));
         }
         return value;
     }
@@ -62,8 +62,8 @@ public final class LongArgs {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value > 0) {
             throw new IllegalArgumentException(String.format(
-                    "Argument '%s': value is positive: %d",
-                    argName, value));
+                "Argument '%s': value is positive: %d",
+                argName, value));
         }
         return value;
     }
@@ -84,8 +84,8 @@ public final class LongArgs {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value >= 0) {
             throw new IllegalArgumentException(String.format(
-                    "Argument '%s': value is not negative: %d",
-                    argName, value));
+                "Argument '%s': value is not negative: %d",
+                argName, value));
         }
         return value;
     }
@@ -106,8 +106,8 @@ public final class LongArgs {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value < 0) {
             throw new IllegalArgumentException(String.format(
-                    "Argument '%s': value is negative: %d",
-                    argName, value));
+                "Argument '%s': value is negative: %d",
+                argName, value));
         }
         return value;
     }

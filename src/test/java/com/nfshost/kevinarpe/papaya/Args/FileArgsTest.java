@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
@@ -34,10 +35,10 @@ public class FileArgsTest {
         String absFilePath = absFile.getPath();
         file.createNewFile();
         try {
-        	FileArgs.checkRegularFileExists(file);
-        	FileArgs.checkRegularFileExists(filePath);
-        	FileArgs.checkRegularFileExists(absFile);
-        	FileArgs.checkRegularFileExists(absFilePath);
+        	FileArgs.checkRegularFileExists(file, "file");
+        	FileArgs.checkRegularFileExists(filePath, "filePath");
+        	FileArgs.checkRegularFileExists(absFile, "absFile");
+        	FileArgs.checkRegularFileExists(absFilePath, "absFilePath");
         }
         finally {
         	file.delete();
@@ -48,12 +49,9 @@ public class FileArgsTest {
     public void shouldNotCheckDirectoryExistsAsRegularFile()
 	throws FileNotFoundException {
         File dir = new File("test_dir");
-        String dirPath = dir.getPath();
-        File absDir = dir.getAbsoluteFile();
-        String absDirPath = absDir.getPath();
         dir.mkdir();
         try {
-            FileArgs.checkRegularFileExists(dir);
+            FileArgs.checkRegularFileExists(dir, "dir");
         }
         finally {
         	dir.delete();
@@ -65,11 +63,9 @@ public class FileArgsTest {
 	throws FileNotFoundException {
         File dir = new File("test_dir");
         String dirPath = dir.getPath();
-        File absDir = dir.getAbsoluteFile();
-        String absDirPath = absDir.getPath();
         dir.mkdir();
         try {
-            FileArgs.checkRegularFileExists(dirPath);
+            FileArgs.checkRegularFileExists(dirPath, "dirPath");
         }
         finally {
         	dir.delete();
@@ -80,12 +76,10 @@ public class FileArgsTest {
     public void shouldNotCheckDirectoryExistsAsRegularFile3()
 	throws FileNotFoundException {
         File dir = new File("test_dir");
-        String dirPath = dir.getPath();
         File absDir = dir.getAbsoluteFile();
-        String absDirPath = absDir.getPath();
         dir.mkdir();
         try {
-            FileArgs.checkRegularFileExists(absDir);
+            FileArgs.checkRegularFileExists(absDir, "absDir");
         }
         finally {
         	dir.delete();
@@ -96,12 +90,11 @@ public class FileArgsTest {
     public void shouldNotCheckDirectoryExistsAsRegularFile4()
 	throws FileNotFoundException {
         File dir = new File("test_dir");
-        String dirPath = dir.getPath();
         File absDir = dir.getAbsoluteFile();
         String absDirPath = absDir.getPath();
         dir.mkdir();
         try {
-            FileArgs.checkRegularFileExists(absDirPath);
+            FileArgs.checkRegularFileExists(absDirPath, "absDirPath");
         }
         finally {
         	dir.delete();
@@ -112,10 +105,7 @@ public class FileArgsTest {
     public void shouldNotCheckRegularFileExists()
 	throws FileNotFoundException {
         File file = new File("test_file.txt");
-        String filePath = file.getPath();
-        File absFile = file.getAbsoluteFile();
-        String absFilePath = absFile.getPath();
-    	FileArgs.checkRegularFileExists(file);
+    	FileArgs.checkRegularFileExists(file, "file");
     }
     
     @Test(expectedExceptions = FileNotFoundException.class)
@@ -123,43 +113,54 @@ public class FileArgsTest {
 	throws FileNotFoundException {
         File file = new File("test_file.txt");
         String filePath = file.getPath();
-        File absFile = file.getAbsoluteFile();
-        String absFilePath = absFile.getPath();
-    	FileArgs.checkRegularFileExists(filePath);
+    	FileArgs.checkRegularFileExists(filePath, "filePath");
     }
     
     @Test(expectedExceptions = FileNotFoundException.class)
     public void shouldNotCheckRegularFileExists3()
 	throws FileNotFoundException {
         File file = new File("test_file.txt");
-        String filePath = file.getPath();
         File absFile = file.getAbsoluteFile();
-        String absFilePath = absFile.getPath();
-    	FileArgs.checkRegularFileExists(absFile);
+    	FileArgs.checkRegularFileExists(absFile, "absFile");
     }
     
     @Test(expectedExceptions = FileNotFoundException.class)
     public void shouldNotCheckRegularFileExists4()
 	throws FileNotFoundException {
         File file = new File("test_file.txt");
-        String filePath = file.getPath();
         File absFile = file.getAbsoluteFile();
         String absFilePath = absFile.getPath();
-    	FileArgs.checkRegularFileExists(absFilePath);
+    	FileArgs.checkRegularFileExists(absFilePath, "absFilePath");
     }
     
-    @Test(expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckRegularFileExistsWithNullInput()
-	throws FileNotFoundException {
-    	String filePath = null;
-    	FileArgs.checkRegularFileExists(filePath);
+    @DataProvider
+    private static Object[][] _dataForShouldNotCheckRegularFileExistsWithNullInputs() {
+        return new Object[][] {
+                { null, "filePath" },
+                { "file.txt", null },
+        };
     }
     
-    @Test(expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckRegularFileExistsWithNullInput2()
+    @Test(dataProvider = "_dataForShouldNotCheckRegularFileExistsWithNullInputs",
+    		expectedExceptions = NullPointerException.class)
+    public void shouldNotCheckRegularFileExistsWithNullInputs(String filePath, String argName)
 	throws FileNotFoundException {
-    	File file = null;
-    	FileArgs.checkRegularFileExists(file);
+    	FileArgs.checkRegularFileExists(filePath, argName);
+    }
+    
+    @DataProvider
+    private static Object[][] _dataForShouldNotCheckRegularFileExistsWithNullInputs2() {
+        return new Object[][] {
+                { null, "filePath" },
+                { new File("file.txt"), null },
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckRegularFileExistsWithNullInputs2",
+    		expectedExceptions = NullPointerException.class)
+    public void shouldNotCheckRegularFileExistsWithNullInputs2(File file, String argName)
+	throws FileNotFoundException {
+    	FileArgs.checkRegularFileExists(file, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -175,10 +176,10 @@ public class FileArgsTest {
         String absDirPath = absDir.getPath();
         dir.mkdir();
         try {
-        	FileArgs.checkDirectoryExists(dir);
-        	FileArgs.checkDirectoryExists(dirPath);
-        	FileArgs.checkDirectoryExists(absDir);
-        	FileArgs.checkDirectoryExists(absDirPath);
+        	FileArgs.checkDirectoryExists(dir, "dir");
+        	FileArgs.checkDirectoryExists(dirPath, "dirPath");
+        	FileArgs.checkDirectoryExists(absDir, "absDir");
+        	FileArgs.checkDirectoryExists(absDirPath, "absDirPath");
         }
         finally {
         	dir.delete();
@@ -189,12 +190,9 @@ public class FileArgsTest {
     public void shouldNotCheckRegularFilesExistsAsDirectory()
 	throws IOException {
         File file = new File("test_file.txt");
-        String filePath = file.getPath();
-        File absFile = file.getAbsoluteFile();
-        String absFilePath = absFile.getPath();
         file.createNewFile();
         try {
-        	FileArgs.checkDirectoryExists(file);
+        	FileArgs.checkDirectoryExists(file, "file");
         }
         finally {
         	file.delete();
@@ -206,11 +204,9 @@ public class FileArgsTest {
 	throws IOException {
         File file = new File("test_file.txt");
         String filePath = file.getPath();
-        File absFile = file.getAbsoluteFile();
-        String absFilePath = absFile.getPath();
         file.createNewFile();
         try {
-        	FileArgs.checkDirectoryExists(filePath);
+        	FileArgs.checkDirectoryExists(filePath, "filePath");
         }
         finally {
         	file.delete();
@@ -221,12 +217,10 @@ public class FileArgsTest {
     public void shouldNotCheckRegularFilesExistsAsDirectory3()
 	throws IOException {
         File file = new File("test_file.txt");
-        String filePath = file.getPath();
         File absFile = file.getAbsoluteFile();
-        String absFilePath = absFile.getPath();
         file.createNewFile();
         try {
-        	FileArgs.checkDirectoryExists(absFile);
+        	FileArgs.checkDirectoryExists(absFile, "absFile");
         }
         finally {
         	file.delete();
@@ -237,12 +231,11 @@ public class FileArgsTest {
     public void shouldNotCheckRegularFilesExistsAsDirectory4()
 	throws IOException {
         File file = new File("test_file.txt");
-        String filePath = file.getPath();
         File absFile = file.getAbsoluteFile();
         String absFilePath = absFile.getPath();
         file.createNewFile();
         try {
-        	FileArgs.checkDirectoryExists(absFilePath);
+        	FileArgs.checkDirectoryExists(absFilePath, "absFilePath");
         }
         finally {
         	file.delete();
@@ -253,10 +246,7 @@ public class FileArgsTest {
     public void shouldNotCheckDirectoryExists()
 	throws IOException {
         File dir = new File("test_dir");
-        String dirPath = dir.getPath();
-        File absDir = dir.getAbsoluteFile();
-        String absDirPath = absDir.getPath();
-    	FileArgs.checkDirectoryExists(dir);
+    	FileArgs.checkDirectoryExists(dir, "dir");
     }
     
     @Test(expectedExceptions = FileNotFoundException.class)
@@ -264,42 +254,53 @@ public class FileArgsTest {
 	throws IOException {
         File dir = new File("test_dir");
         String dirPath = dir.getPath();
-        File absDir = dir.getAbsoluteFile();
-        String absDirPath = absDir.getPath();
-    	FileArgs.checkDirectoryExists(dirPath);
+    	FileArgs.checkDirectoryExists(dirPath, "dirPath");
     }
     
     @Test(expectedExceptions = FileNotFoundException.class)
     public void shouldNotCheckDirectoryExists3()
 	throws IOException {
         File dir = new File("test_dir");
-        String dirPath = dir.getPath();
         File absDir = dir.getAbsoluteFile();
-        String absDirPath = absDir.getPath();
-    	FileArgs.checkDirectoryExists(absDir);
+    	FileArgs.checkDirectoryExists(absDir, "absDir");
     }
     
     @Test(expectedExceptions = FileNotFoundException.class)
     public void shouldNotCheckDirectoryExists4()
 	throws IOException {
         File dir = new File("test_dir");
-        String dirPath = dir.getPath();
         File absDir = dir.getAbsoluteFile();
         String absDirPath = absDir.getPath();
-    	FileArgs.checkDirectoryExists(absDirPath);
+    	FileArgs.checkDirectoryExists(absDirPath, "absDirPath");
     }
     
-    @Test(expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckDirectoryExistsWithNullInput()
-    throws FileNotFoundException {
-    	String dirPath = null;
-    	FileArgs.checkDirectoryExists(dirPath);
+    @DataProvider
+    private static Object[][] _dataForShouldNotCheckDirectoryExistsWithNullInputs() {
+        return new Object[][] {
+                { null, "filePath" },
+                { "file.txt", null },
+        };
     }
     
-    @Test(expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckDirectoryExistsWithNullInput2()
+    @Test(dataProvider = "_dataForShouldNotCheckDirectoryExistsWithNullInputs",
+    		expectedExceptions = NullPointerException.class)
+    public void shouldNotCheckDirectoryExistsWithNullInputs(String dirPath, String argName)
     throws FileNotFoundException {
-    	File dir = null;
-    	FileArgs.checkDirectoryExists(dir);
+    	FileArgs.checkDirectoryExists(dirPath, argName);
+    }
+    
+    @DataProvider
+    private static Object[][] _dataForShouldNotCheckDirectoryExistsWithNullInputs2() {
+        return new Object[][] {
+                { null, "filePath" },
+                { new File("file.txt"), null },
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckDirectoryExistsWithNullInputs2",
+    		expectedExceptions = NullPointerException.class)
+    public void shouldNotCheckDirectoryExistsWithNullInputs2(File dir, String argName)
+    throws FileNotFoundException {
+    	FileArgs.checkDirectoryExists(dir, argName);
     }
 }

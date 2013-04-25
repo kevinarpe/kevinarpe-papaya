@@ -27,11 +27,11 @@ public final class ByteArgs {
     /**
      * This is a convenience method for {@link LongArgs#checkPositive(long, String)}.
      * 
-     * @see #checkByteNotPositive(byte, String)
-     * @see #checkByteNegative(byte, String)
-     * @see #checkByteNotNegative(byte, String)
+     * @see #checkNotPositive(byte, String)
+     * @see #checkNegative(byte, String)
+     * @see #checkNotNegative(byte, String)
      */
-    public static byte checkBytePositive(byte value, String argName) {
+    public static byte checkPositive(byte value, String argName) {
         LongArgs.checkPositive(value, argName);
         return value;
     }
@@ -39,11 +39,11 @@ public final class ByteArgs {
     /**
      * This is a convenience method for {@link LongArgs#checkNotPositive(long, String)}.
      * 
-     * @see #checkBytePositive(byte, String)
-     * @see #checkByteNegative(byte, String)
-     * @see #checkByteNotNegative(byte, String)
+     * @see #checkPositive(byte, String)
+     * @see #checkNegative(byte, String)
+     * @see #checkNotNegative(byte, String)
      */
-    public static byte checkByteNotPositive(byte value, String argName) {
+    public static byte checkNotPositive(byte value, String argName) {
         LongArgs.checkNotPositive(value, argName);
         return value;
     }
@@ -51,11 +51,11 @@ public final class ByteArgs {
     /**
      * This is a convenience method for {@link LongArgs#checkNegative(long, String)}.
      * 
-     * @see #checkBytePositive(byte, String)
-     * @see #checkByteNotPositive(byte, String)
-     * @see #checkByteNotNegative(byte, String)
+     * @see #checkPositive(byte, String)
+     * @see #checkNotPositive(byte, String)
+     * @see #checkNotNegative(byte, String)
      */
-    public static byte checkByteNegative(byte value, String argName) {
+    public static byte checkNegative(byte value, String argName) {
         LongArgs.checkNegative(value, argName);
         return value;
     }
@@ -63,11 +63,11 @@ public final class ByteArgs {
     /**
      * This is a convenience method for {@link LongArgs#checkNotNegative(long, String)}.
      * 
-     * @see #checkBytePositive(byte, String)
-     * @see #checkByteNotPositive(byte, String)
-     * @see #checkByteNegative(byte, String)
+     * @see #checkPositive(byte, String)
+     * @see #checkNotPositive(byte, String)
+     * @see #checkNegative(byte, String)
      */
-    public static byte checkByteNotNegative(byte value, String argName) {
+    public static byte checkNotNegative(byte value, String argName) {
         LongArgs.checkNotNegative(value, argName);
         return value;
     }
