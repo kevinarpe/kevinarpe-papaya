@@ -71,6 +71,7 @@ public class StringArgsTest {
         return new Object[][] {
                 { null, null },
                 { null, "value" },
+                { "", null },
         };
     }
     
@@ -91,6 +92,27 @@ public class StringArgsTest {
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckAsNotEmptyWithEmptyInput(String s) {
         StringArgs.checkNotEmpty(s, "s");
+    }
+    
+    @DataProvider
+    private static final Object[][] _dataForShouldNotCheckAsNotEmptyWithInvalidArgName() {
+        return new Object[][] {
+                { null, "" },
+                { null, "   " },  // ASCII spaces
+                { null, "　　　" },  // wide Japanese spaces
+                { null, "   " },  // narrow Japanese spaces
+                
+                { "", "" },
+                { "", "   " },  // ASCII spaces
+                { "", "　　　" },  // wide Japanese spaces
+                { "", "   " },  // narrow Japanese spaces
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyWithInvalidArgName",
+            expectedExceptions = IllegalArgumentException.class)
+    public void shouldNotCheckAsNotEmptyWithInvalidArgName(String s, String argName) {
+        StringArgs.checkNotEmpty(s, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -124,9 +146,10 @@ public class StringArgsTest {
     private static final Object[][] _dataForShouldNotCheckAsNotEmptyOrWhitespace2() {
         return new Object[][] {
                 { "" },
-                { " " },  // ASCII space
                 { "\t" },
-                { "　" },  // wide Japanese space
+                { "   " },  // ASCII spaces
+                { "　　　" },  // wide Japanese spaces
+                { "   " },  // narrow Japanese spaces
         };
     }
     

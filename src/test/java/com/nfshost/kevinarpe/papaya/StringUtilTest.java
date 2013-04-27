@@ -47,7 +47,7 @@ public class StringUtilTest {
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldWhitespaceTrimPrefix() {
+    private static final Object[][] _dataForShouldTrimWhitespacePrefix() {
         return new Object[][] {
                 { " ", "" },  // ASCII space
                 { "\t", "" },
@@ -90,25 +90,25 @@ public class StringUtilTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldWhitespaceTrimPrefix")
-    public void shouldWhitespaceTrimLeft(String input, String expectedOutput) {
+    @Test(dataProvider = "_dataForShouldTrimWhitespacePrefix")
+    public void shouldTrimWhitespacePrefix(String input, String expectedOutput) {
         String output = StringUtil.trimWhitespacePrefix(input);
         Assert.assertEquals(output, expectedOutput);
     }
     
     @Test(expectedExceptions = NullPointerException.class)
-    public void shouldNotWhitespaceTrimPrefix() {
+    public void shouldNotTrimWhitespacePrefix() {
         String input = null;
         StringUtil.trimWhitespacePrefix(input);
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldWhitespaceTrimSuffix() {
+    private static final Object[][] _dataForShouldTrimWhitespaceSuffix() {
         return new Object[][] {
                 { " ", "" },  // ASCII space
                 { "\t", "" },
                 { "　", "" },  // wide Japanese space
-                { "ｹﾋﾞﾝ ", "ｹﾋﾞﾝ" },  // narrow Japanese space
+                	{ "ｹﾋﾞﾝ ", "ｹﾋﾞﾝ" },  // narrow Japanese space
                 
                 { "", "" },
                 { "a", "a" },
@@ -146,14 +146,14 @@ public class StringUtilTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldWhitespaceTrimSuffix")
-    public void shouldWhitespaceTrimRight(String input, String expectedOutput) {
+    @Test(dataProvider = "_dataForShouldTrimWhitespaceSuffix")
+    public void shouldTrimWhitespaceRight(String input, String expectedOutput) {
         String output = StringUtil.trimWhitespaceSuffix(input);
         Assert.assertEquals(output, expectedOutput);
     }
     
     @Test(expectedExceptions = NullPointerException.class)
-    public void shouldNotWhitespaceTrimSuffix() {
+    public void shouldNotTrimWhitespaceSuffix() {
         String input = null;
         StringUtil.trimWhitespaceSuffix(input);
     }

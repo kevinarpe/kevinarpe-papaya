@@ -86,4 +86,21 @@ public class ObjectArgsTest {
         Object value = null;
         ObjectArgs.checkNotNull(value, argName);
     }
+    
+    @DataProvider
+    private static final Object[][] _dataForShouldNotCheckAsNotNullWithInvalidArgName() {
+        return new Object[][] {
+                { null, "" },
+                { null, "   " },  // ASCII spaces
+                { null, "　　　" },  // wide Japanese spaces
+                { null, "   " },  // narrow Japanese spaces
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckAsNotNullWithInvalidArgName",
+            expectedExceptions = IllegalArgumentException.class)
+    public void shouldNotCheckAsNotNullWithInvalidArgName(Object x, String argName) {
+        Object value = null;
+        ObjectArgs.checkNotNull(value, argName);
+    }
 }

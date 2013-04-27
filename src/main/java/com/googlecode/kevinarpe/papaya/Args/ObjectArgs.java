@@ -28,8 +28,8 @@ package com.googlecode.kevinarpe.papaya.Args;
 /**
  * This is a collection of static methods to check arguments received in methods.
  * The goal is provide a wide range of checks that produce readable, detailed errors.
- * 
- * <p>Unless noted, all methods throw unchecked exceptions -- {@link RuntimeException}
+ * <p>
+ * Unless noted, all methods throw unchecked exceptions -- {@link RuntimeException}
  * and its subclasses.  Most frequently, {@link IllegalArgumentException} is thrown.
  * 
  * <pre>
