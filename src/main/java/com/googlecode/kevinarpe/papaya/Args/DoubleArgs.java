@@ -37,7 +37,8 @@ public class DoubleArgs {
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
      * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value <= 0.0d}
+     * @throws IllegalArgumentException if value of {@code value <= 0.0d},
+     *         or if {@code argName} is empty or whitespace
      * @see #checkNotPositive(double, String)
      * @see #checkNegative(double, String)
      * @see #checkNotNegative(double, String)
@@ -45,6 +46,7 @@ public class DoubleArgs {
     public static double checkPositive(double value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value <= 0.0d) {
+        	StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                     "Argument '%s': value is not positive: %f",
                     argName, value));
@@ -59,7 +61,8 @@ public class DoubleArgs {
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
      * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value > 0.0d}
+     * @throws IllegalArgumentException if value of {@code value > 0.0d},
+     *         or if {@code argName} is empty or whitespace
      * @see #checkPositive(double, String)
      * @see #checkNegative(double, String)
      * @see #checkNotNegative(double, String)
@@ -67,6 +70,7 @@ public class DoubleArgs {
     public static double checkNotPositive(double value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value > 0.0d) {
+        	StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                     "Argument '%s': value is positive: %f",
                     argName, value));
@@ -81,7 +85,8 @@ public class DoubleArgs {
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
      * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value => 0.0d}
+     * @throws IllegalArgumentException if value of {@code value => 0.0d},
+     *         or if {@code argName} is empty or whitespace
      * @see #checkPositive(double, String)
      * @see #checkNotPositive(double, String)
      * @see #checkNotNegative(double, String)
@@ -89,6 +94,7 @@ public class DoubleArgs {
     public static double checkNegative(double value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value >= 0.0d) {
+        	StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                     "Argument '%s': value is not negative: %f",
                     argName, value));
@@ -103,7 +109,8 @@ public class DoubleArgs {
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
      * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value < 0.0d}
+     * @throws IllegalArgumentException if value of {@code value < 0.0d},
+     *         or if {@code argName} is empty or whitespace
      * @see #checkPositive(double, String)
      * @see #checkNotPositive(double, String)
      * @see #checkNegative(double, String)
@@ -111,6 +118,7 @@ public class DoubleArgs {
     public static double checkNotNegative(double value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value < 0.0d) {
+        	StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                     "Argument '%s': value is negative: %f",
                     argName, value));

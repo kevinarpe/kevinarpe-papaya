@@ -260,7 +260,8 @@ public class DoubleArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckValueRangeAsValidWithNullArgName() {
         return new Object[][] {
-                { 1.0d, 1.0d, 1.0d, null },
+                { 1.0d, 2.0d, 1.0d, null },
+                { 1.0d, 2.0d, 3.0d, null },
         };
     }
     
@@ -322,7 +323,7 @@ public class DoubleArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckMinValueAsValidWithNullArgName() {
         return new Object[][] {
-                { 1.0d, 1.0d, null },
+                { 1.0d, 2.0d, null },
         };
     }
     
@@ -374,7 +375,7 @@ public class DoubleArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckMaxValueAsValidWithNullArgName() {
         return new Object[][] {
-                { 1.0d, 1.0d, null },
+                { 1.0d, 0.0d, null },
         };
     }
     
@@ -426,7 +427,7 @@ public class DoubleArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckExactValueAsValidWithNullArgName() {
         return new Object[][] {
-                { 1.0d, 1.0d, null },
+                { 1.0d, 2.0d, null },
         };
     }
     

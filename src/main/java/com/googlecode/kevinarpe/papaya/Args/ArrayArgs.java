@@ -42,7 +42,8 @@ public final class ArrayArgs {
      * @throws IllegalArgumentException if {@code minLen < 0},
      *         or if {@code maxLen < 0},
      *         or if {@code minLen > maxLen}, 
-     *         or if number of elements in {@code ref} is outside allowed range
+     *         or if number of elements in {@code ref} is outside allowed range,
+     *         or if {@code argName} is empty or whitespace
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see #checkMinLength(Object[], int, String)
      * @see #checkMaxLength(Object[], int, String)
@@ -64,7 +65,8 @@ public final class ArrayArgs {
      * @param ref an array reference
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @throws NullPointerException if {@code ref} or {@code argName} is null
-     * @throws IllegalArgumentException if number of elements in {@code ref} is zero
+     * @throws IllegalArgumentException if number of elements in {@code ref} is zero,
+     *         or if {@code argName} is empty or whitespace
      * @see #checkLengthRange(Object[], int, int, String)
      * @see #checkMinLength(Object[], int, String)
      */
@@ -85,7 +87,8 @@ public final class ArrayArgs {
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code minLen < 0},
-     *         or if number of elements in {@code ref} is outside allowed range
+     *         or if number of elements in {@code ref} is outside allowed range,
+     *         or if {@code argName} is empty or whitespace
      * @see #checkLengthRange(Object[], int, int, String)
      */
     public static <T> T[] checkMinLength(T[] ref, int minLen, String argName) {
@@ -105,7 +108,8 @@ public final class ArrayArgs {
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code maxLen < 0},
-     *         or if number of elements in {@code ref} is outside allowed range
+     *         or if number of elements in {@code ref} is outside allowed range,
+     *         or if {@code argName} is empty or whitespace
      * @see #checkLengthRange(Object[], int, int, String)
      */
     public static <T> T[] checkMaxLength(T[] ref, int maxLen, String argName) {
@@ -125,7 +129,8 @@ public final class ArrayArgs {
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code exactLen < 0},
-     *         or if number of elements in {@code ref} is outside allowed range
+     *         or if number of elements in {@code ref} is outside allowed range,
+     *         or if {@code argName} is empty or whitespace
      * @see #checkLengthRange(Object[], int, int, String)
      */
     public static <T> T[] checkExactLength(T[] ref, int exactLen, String argName) {
@@ -145,6 +150,8 @@ public final class ArrayArgs {
      * @return the validated index
      * @throws NullPointerException if {@code ref}, {@code arrArgName},
      *         or {@code indexArgName} is null
+     * @throws IllegalArgumentException if {@code arrArgName} or {@code indexArgName} is empty
+     *         or whitespace
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
      * @see #checkInsertIndex(Object[], int, String, String)
@@ -167,6 +174,8 @@ public final class ArrayArgs {
      * @return the validated index
      * @throws NullPointerException if {@code ref}, {@code arrArgName},
      *         or {@code indexArgName} is null
+     * @throws IllegalArgumentException if {@code arrArgName} or {@code indexArgName} is empty
+     *         or whitespace
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
      * @see #checkAccessIndex(Object[], int, String, String)
@@ -189,6 +198,8 @@ public final class ArrayArgs {
      * @return the validated index
      * @throws NullPointerException if {@code ref}, {@code listArgName},
      *         or {@code indexArgName} is null
+     * @throws IllegalArgumentException if {@code arrArgName} or {@code indexArgName} is empty
+     *         or whitespace
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
      * @see #checkAccessIndex(Object[], int, String, String)
@@ -211,6 +222,8 @@ public final class ArrayArgs {
      * @return the validated index
      * @throws NullPointerException if {@code ref}, {@code listArgName},
      *         or {@code indexArgName} is null
+     * @throws IllegalArgumentException if {@code arrArgName} or {@code indexArgName} is empty
+     *         or whitespace
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
      * @see #checkAccessIndex(Object[], int, String, String)
@@ -233,6 +246,8 @@ public final class ArrayArgs {
      * @return the validated index
      * @throws NullPointerException if {@code ref}, {@code listArgName},
      *         or {@code indexArgName} is null
+     * @throws IllegalArgumentException if {@code arrArgName} or {@code indexArgName} is empty
+     *         or whitespace
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
      * @see #checkAccessIndex(Object[], int, String, String)
@@ -255,6 +270,8 @@ public final class ArrayArgs {
      * @return the validated index
      * @throws NullPointerException if {@code ref}, {@code listArgName},
      *         or {@code indexArgName} is null
+     * @throws IllegalArgumentException if {@code arrArgName} or {@code indexArgName} is empty
+     *         or whitespace
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
      * @see #checkAccessIndex(Object[], int, String, String)
@@ -277,6 +294,8 @@ public final class ArrayArgs {
      * @return the validated index
      * @throws NullPointerException if {@code ref}, {@code listArgName},
      *         or {@code indexArgName} is null
+     * @throws IllegalArgumentException if {@code arrArgName} or {@code indexArgName} is empty
+     *         or whitespace
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
      * @see #checkAccessIndex(Object[], int, String, String)
@@ -299,6 +318,8 @@ public final class ArrayArgs {
      * @return the validated index
      * @throws NullPointerException if {@code ref}, {@code listArgName},
      *         or {@code indexArgName} is null
+     * @throws IllegalArgumentException if {@code arrArgName} or {@code indexArgName} is empty
+     *         or whitespace
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
      * @see #checkAccessIndex(Object[], int, String, String)
@@ -321,6 +342,8 @@ public final class ArrayArgs {
      * @return the validated index
      * @throws NullPointerException if {@code ref}, {@code listArgName},
      *         or {@code indexArgName} is null
+     * @throws IllegalArgumentException if {@code arrArgName} or {@code indexArgName} is empty
+     *         or whitespace
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
      * @see #checkAccessIndex(Object[], int, String, String)
@@ -343,6 +366,8 @@ public final class ArrayArgs {
      * @return the validated index
      * @throws NullPointerException if {@code ref}, {@code listArgName},
      *         or {@code indexArgName} is null
+     * @throws IllegalArgumentException if {@code arrArgName} or {@code indexArgName} is empty
+     *         or whitespace
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length}
      * @see #checkAccessIndex(Object[], int, String, String)
@@ -363,6 +388,7 @@ public final class ArrayArgs {
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see CollectionArgs#checkElementsNotNull(java.util.Collection, String)
      * @throws NullPointerException if {@code ref} (or any element) or {@code argName} is null
+     * @throws IllegalArgumentException if {@code argName} is empty or whitespace
      */
     public static <T> void checkElementsNotNull(T[] ref, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
@@ -388,7 +414,9 @@ public final class ArrayArgs {
      * @throws NullPointerException if {@code ref}, {@code arrArgName}, {@code indexArgName},
      *         or {@code countArgName} is null
      * @throws IllegalArgumentException if {@code index < 0},
-     *         or if {@code count < 0}
+     *         or if {@code count < 0},
+     *         or if {@code arrArgName}, {@code indexArgName}, or  {@code countArgName} is empty
+     *         or whitespace
      * @throws IndexOutOfBoundsException if {@code index >= ref.length},
      *         or if {@code index + count > ref.length}
      */

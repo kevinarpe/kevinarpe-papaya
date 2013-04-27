@@ -70,7 +70,6 @@ public class StringArgsTest {
     private static final Object[][] _dataForShouldNotCheckAsNotEmptyOrWhitespaceWithNullInputs() {
         return new Object[][] {
                 { null, null },
-                { "abc", null },
                 { null, "value" },
         };
     }

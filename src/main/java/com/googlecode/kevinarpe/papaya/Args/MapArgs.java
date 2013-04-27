@@ -41,6 +41,7 @@ public final class MapArgs {
      * @see #checkKeysNotNull(Map, String)
      * @see #checkValuesNotNull(Map, String)
      * @throws NullPointerException if {@code ref} (or any key or value) or {@code argName} is null
+     * @throws IllegalArgumentException if {@code argName} is empty or whitespace
      */
     public static <TKey, TValue> void checkKeysAndValuesNotNull(
             Map<TKey, TValue> ref, String argName) {
@@ -49,14 +50,17 @@ public final class MapArgs {
             TKey key = entry.getKey();
             TValue value = entry.getValue();
             if (null == key && null != value) {
+            	StringArgs._checkArgNameValid(argName, "argName");
                 throw new NullPointerException(String.format(
                     "Map argument '%s': Key is null where value is '%s'", argName, value));
             }
             else if (null != key && null == value) {
+            	StringArgs._checkArgNameValid(argName, "argName");
                 throw new NullPointerException(String.format(
                     "Map argument '%s': Value is null where key is '%s'", argName, key));
             }
             else if (null == key && null == value) {
+            	StringArgs._checkArgNameValid(argName, "argName");
                 throw new NullPointerException(String.format(
                     "Map argument '%s': Both key and value are null", argName));
             }
@@ -72,6 +76,7 @@ public final class MapArgs {
      * @see #checkKeysAndValuesNotNull(Map, String)
      * @see #checkValuesNotNull(Map, String)
      * @throws NullPointerException if {@code ref} (or any key) or {@code argName} is null
+     * @throws IllegalArgumentException if {@code argName} is empty or whitespace
      */
     public static <TKey, TValue> void checkKeysNotNull(
             Map<TKey, TValue> ref, String argName) {
@@ -80,6 +85,7 @@ public final class MapArgs {
             TKey key = entry.getKey();
             if (null == key) {
                 TValue value = entry.getValue();
+            	StringArgs._checkArgNameValid(argName, "argName");
                 throw new NullPointerException(String.format(
                     "Map argument '%s': Key is null where value is '%s'", argName, value));
             }
@@ -95,6 +101,7 @@ public final class MapArgs {
      * @see #checkKeysAndValuesNotNull(Map, String)
      * @see #checkKeysNotNull(Map, String)
      * @throws NullPointerException if {@code ref} (or any value) or {@code argName} is null
+     * @throws IllegalArgumentException if {@code argName} is empty or whitespace
      */
     public static <TKey, TValue> void checkValuesNotNull(
             Map<TKey, TValue> ref, String argName) {
@@ -103,6 +110,7 @@ public final class MapArgs {
             TValue value = entry.getValue();
             if (null == value) {
                 TKey key = entry.getKey();
+            	StringArgs._checkArgNameValid(argName, "argName");
                 throw new NullPointerException(String.format(
                     "Map argument '%s': Value is null where key is '%s'", argName, key));
             }

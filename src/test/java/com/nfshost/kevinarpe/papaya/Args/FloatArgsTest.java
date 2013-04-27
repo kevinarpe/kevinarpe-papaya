@@ -258,7 +258,8 @@ public class FloatArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckValueRangeAsValidWithNullArgName() {
         return new Object[][] {
-                { 1.0f, 1.0f, 1.0f, null },
+                { 1.0f, 2.0f, 1.0f, null },
+                { 1.0f, 2.0f, 3.0f, null },
         };
     }
     
@@ -320,7 +321,7 @@ public class FloatArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckMinValueAsValidWithNullArgName() {
         return new Object[][] {
-                { 1.0f, 1.0f, null },
+                { 1.0f, 2.0f, null },
         };
     }
     
@@ -372,7 +373,7 @@ public class FloatArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckMaxValueAsValidWithNullArgName() {
         return new Object[][] {
-                { 1.0f, 1.0f, null },
+                { 1.0f, 0.0f, null },
         };
     }
     
@@ -424,7 +425,7 @@ public class FloatArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckExactValueAsValidWithNullArgName() {
         return new Object[][] {
-                { 1.0f, 1.0f, null },
+                { 1.0f, 2.0f, null },
         };
     }
     

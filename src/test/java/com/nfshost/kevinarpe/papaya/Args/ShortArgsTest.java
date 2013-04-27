@@ -251,7 +251,8 @@ public class ShortArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckValueRangeAsValidWithNullArgName() {
         return new Object[][] {
-                { (short) 1, (short) 1, (short) 1, null },
+                { (short) 1, (short) 2, (short) 1, null },
+                { (short) 1, (short) 2, (short) 3, null },
         };
     }
     
@@ -313,7 +314,7 @@ public class ShortArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckMinValueAsValidWithNullArgName() {
         return new Object[][] {
-                { (short) 1, (short) 1, null },
+                { (short) 1, (short) 2, null },
         };
     }
     
@@ -365,7 +366,7 @@ public class ShortArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckMaxValueAsValidWithNullArgName() {
         return new Object[][] {
-                { (short) 1, (short) 1, null },
+                { (short) 1, (short) 0, null },
         };
     }
     
@@ -415,7 +416,7 @@ public class ShortArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckExactValueAsValidWithNullArgName() {
         return new Object[][] {
-                { (short) 1, (short) 1, null },
+                { (short) 1, (short) 2, null },
         };
     }
     

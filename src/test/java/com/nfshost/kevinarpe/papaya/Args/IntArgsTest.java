@@ -251,7 +251,8 @@ public class IntArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckValueRangeAsValidWithNullArgName() {
         return new Object[][] {
-                { 1, 1, 1, null },
+                { 1, 2, 1, null },
+                { 1, 2, 3, null },
         };
     }
     
@@ -313,7 +314,7 @@ public class IntArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckMinValueAsValidWithNullArgName() {
         return new Object[][] {
-                { 1, 1, null },
+                { 1, 2, null },
         };
     }
     
@@ -365,7 +366,7 @@ public class IntArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckMaxValueAsValidWithNullArgName() {
         return new Object[][] {
-                { 1, 1, null },
+                { 1, 0, null },
         };
     }
     
@@ -415,7 +416,7 @@ public class IntArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckExactValueAsValidWithNullArgName() {
         return new Object[][] {
-                { 1, 1, null },
+                { 1, 2, null },
         };
     }
     

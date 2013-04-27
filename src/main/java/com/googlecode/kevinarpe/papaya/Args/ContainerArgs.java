@@ -39,16 +39,22 @@ final class ContainerArgs {
             String containerArgName) {
         ObjectArgs.checkNotNull(container, containerArgName);
         if (-1 != minSize && -1 != maxSize && minSize > maxSize) {
+        	StringArgs.checkNotEmptyOrWhitespace(containerType, "containerType");
+        	StringArgs._checkArgNameValid(containerArgName, "containerArgName");
             throw new IllegalArgumentException(String.format(
                 "%s argument '%s': 'minSize' > 'maxSize': %d > %d",
                 containerType, containerArgName, minSize, maxSize));
         }
         if (-1 != minSize && size < minSize) {
+        	StringArgs.checkNotEmptyOrWhitespace(containerType, "containerType");
+        	StringArgs._checkArgNameValid(containerArgName, "containerArgName");
             throw new IllegalArgumentException(String.format(
                 "%s argument '%s': size < 'minSize': %d < %d",
                 containerType, containerArgName, size, minSize));
         }
         if (-1 != maxSize && size > maxSize) {
+        	StringArgs.checkNotEmptyOrWhitespace(containerType, "containerType");
+        	StringArgs._checkArgNameValid(containerArgName, "containerArgName");
             throw new IllegalArgumentException(String.format(
                 "%s argument '%s': size > 'maxSize': %d > %d",
                 containerType, containerArgName, size, maxSize));
@@ -66,6 +72,9 @@ final class ContainerArgs {
         ObjectArgs.checkNotNull(indexArgName, "indexArgName");
         _checkIndexNotNegative(containerType, containerArgName, indexArgName, index);
         if (index >= containerSize) {
+        	StringArgs.checkNotEmptyOrWhitespace(containerType, "containerType");
+        	StringArgs._checkArgNameValid(containerArgName, "containerArgName");
+        	StringArgs._checkArgNameValid(indexArgName, "indexArgName");
             throw new IndexOutOfBoundsException(String.format(
                     "%s '%s': Index '%s' for access too large: %d >= %d",
                     containerType,
@@ -87,6 +96,9 @@ final class ContainerArgs {
         ObjectArgs.checkNotNull(indexArgName, "indexArgName");
         _checkIndexNotNegative(containerType, containerArgName, indexArgName, index);
         if (index > containerSize) {
+        	StringArgs.checkNotEmptyOrWhitespace(containerType, "containerType");
+        	StringArgs._checkArgNameValid(containerArgName, "containerArgName");
+        	StringArgs._checkArgNameValid(indexArgName, "indexArgName");
             throw new IndexOutOfBoundsException(String.format(
                     "%s '%s': Index '%s' for insert too large: %d > %d",
                     containerType,
@@ -100,6 +112,9 @@ final class ContainerArgs {
     static void _checkIndexNotNegative(
             String containerType, String containerArgName, String indexArgName, int index) {
         if (index < 0) {
+        	StringArgs.checkNotEmptyOrWhitespace(containerType, "containerType");
+        	StringArgs._checkArgNameValid(containerArgName, "containerArgName");
+        	StringArgs._checkArgNameValid(indexArgName, "indexArgName");
             throw new IndexOutOfBoundsException(String.format(
                 "%s '%s': Index '%s' is negative: %d",
                 containerType,
@@ -118,11 +133,13 @@ final class ContainerArgs {
             String containerArgName,
             String indexArgName,
             String countArgName) {
-        ObjectArgs.checkNotNull(container, containerArgName);
-        ObjectArgs.checkNotNull(indexArgName, "indexArgName");
+    	ObjectArgs.checkNotNull(container, containerArgName);
         _checkIndexNotNegative(containerType, containerArgName, indexArgName, index);
         IntArgs.checkNotNegative(count, countArgName);
         if (index >= containerSize) {
+        	StringArgs.checkNotEmptyOrWhitespace(containerType, "containerType");
+        	StringArgs._checkArgNameValid(containerArgName, "containerArgName");
+        	StringArgs._checkArgNameValid(indexArgName, "indexArgName");
             throw new IndexOutOfBoundsException(String.format(
                     "%s '%s': Index '%s' too large: %d >= %d",
                     containerType,
@@ -132,6 +149,10 @@ final class ContainerArgs {
                     containerSize));
         }
         if (index + count > containerSize) {
+        	StringArgs.checkNotEmptyOrWhitespace(containerType, "containerType");
+        	StringArgs._checkArgNameValid(containerArgName, "containerArgName");
+        	StringArgs._checkArgNameValid(indexArgName, "indexArgName");
+        	StringArgs._checkArgNameValid(countArgName, "countArgName");
             throw new IndexOutOfBoundsException(String.format(
                     "%s '%s': Index '%s' and count '%s' too large: %d + %d > %d",
                     containerType,

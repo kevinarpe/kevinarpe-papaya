@@ -37,7 +37,8 @@ public final class LongArgs {
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
      * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value <= 0}
+     * @throws IllegalArgumentException if value of {@code value <= 0},
+     *         if {@code argName} is empty or whitespace
      * @see #checkNotPositive(long, String)
      * @see #checkNegative(long, String)
      * @see #checkNotNegative(long, String)
@@ -45,8 +46,9 @@ public final class LongArgs {
     public static long checkPositive(long value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value <= 0) {
+        	StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                "Argument '%s': value is not positive: %d",
+                "Argument '%s': Value is not positive: %d",
                 argName, value));
         }
         return value;
@@ -59,7 +61,8 @@ public final class LongArgs {
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
      * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value > 0}
+     * @throws IllegalArgumentException if value of {@code value > 0},
+     *         if {@code argName} is empty or whitespace
      * @see #checkPositive(long, String)
      * @see #checkNegative(long, String)
      * @see #checkNotNegative(long, String)
@@ -67,8 +70,9 @@ public final class LongArgs {
     public static long checkNotPositive(long value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value > 0) {
+        	StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                "Argument '%s': value is positive: %d",
+                "Argument '%s': Value is positive: %d",
                 argName, value));
         }
         return value;
@@ -81,7 +85,8 @@ public final class LongArgs {
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
      * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value => 0}
+     * @throws IllegalArgumentException if value of {@code value => 0},
+     *         if {@code argName} is empty or whitespace
      * @see #checkPositive(long, String)
      * @see #checkNotPositive(long, String)
      * @see #checkNotNegative(long, String)
@@ -89,8 +94,9 @@ public final class LongArgs {
     public static long checkNegative(long value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value >= 0) {
+        	StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                "Argument '%s': value is not negative: %d",
+                "Argument '%s': Value is not negative: %d",
                 argName, value));
         }
         return value;
@@ -103,7 +109,8 @@ public final class LongArgs {
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
      * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value < 0}
+     * @throws IllegalArgumentException if value of {@code value < 0},
+     *         if {@code argName} is empty or whitespace
      * @see #checkPositive(long, String)
      * @see #checkNotPositive(long, String)
      * @see #checkNegative(long, String)
@@ -111,8 +118,9 @@ public final class LongArgs {
     public static long checkNotNegative(long value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value < 0) {
+        	StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                "Argument '%s': value is negative: %d",
+                "Argument '%s': Value is negative: %d",
                 argName, value));
         }
         return value;

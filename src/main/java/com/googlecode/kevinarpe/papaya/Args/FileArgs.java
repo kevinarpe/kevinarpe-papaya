@@ -55,7 +55,7 @@ public final class FileArgs {
      * @param argName argument name for {@code file}, e.g., "outputFile" or "inputFile"
      * @return File input file
      * @throws NullPointerException if {@code file} or {@code argName} is null
-     * @throws IllegalArgumentException if {@code argName} is empty
+     * @throws IllegalArgumentException if {@code argName} is empty or whitespace
      * @throws FileNotFoundException if {@code file} does not exist,
      *         or if {@code file} exists but is not a regular file
      * @see #checkRegularFileExists(String, String)
@@ -64,18 +64,19 @@ public final class FileArgs {
     public static File checkRegularFileExists(File file, String argName)
     throws FileNotFoundException {
         ObjectArgs.checkNotNull(file, "file");
-        StringArgs.checkNotEmpty(argName, "argName");
         if (!file.exists()) {
-            String s = String.format(
+        	StringArgs._checkArgNameValid(argName, "argName");
+            String msg = String.format(
                 "Argument '%s': Regular file does not exist: '%s'%nAbsolute Path: '%s'",
                 argName, file, file.getAbsolutePath());
-            throw new FileNotFoundException(s);
+            throw new FileNotFoundException(msg);
         }
         if (!file.isFile()) {
-            String s = String.format(
+        	StringArgs._checkArgNameValid(argName, "argName");
+            String msg = String.format(
                 "Argument '%s': Path exists, but is not a regular file: '%s'%nAbsolute Path: '%s'",
                 argName, file, file.getAbsolutePath());
-            throw new FileNotFoundException(s);
+            throw new FileNotFoundException(msg);
         }
         return file;
     }
@@ -102,7 +103,7 @@ public final class FileArgs {
      * @param argName argument name for {@code dir}, e.g., "outputDir" or "inputDir"
      * @return File input file
      * @throws NullPointerException if {@code dir} or {@code argName} is null
-     * @throws IllegalArgumentException if {@code argName} is empty
+     * @throws IllegalArgumentException if {@code argName} is empty or whitespace
      * @throws FileNotFoundException if {@code dir} does not exist,
      *         or if {@code dir} exists but is not a directory
      * @see #checkDirectoryExists(String, String)
@@ -113,16 +114,18 @@ public final class FileArgs {
         ObjectArgs.checkNotNull(dir, "dir");
         StringArgs.checkNotEmpty(argName, "argName");
         if (!dir.exists()) {
-            String s = String.format(
+        	StringArgs._checkArgNameValid(argName, "argName");
+            String msg = String.format(
                 "Argument '%s': Directory does not exist: '%s'%nAbsolute Path: '%s'",
                 argName, dir, dir.getAbsolutePath());
-            throw new FileNotFoundException(s);
+            throw new FileNotFoundException(msg);
         }
         if (!dir.isDirectory()) {
-            String s = String.format(
+        	StringArgs._checkArgNameValid(argName, "argName");
+            String msg = String.format(
                 "Argument '%s': Path exists, but is not a directory: '%s'%nAbsolute Path: '%s'",
                 argName, dir, dir.getAbsolutePath());
-            throw new FileNotFoundException(s);
+            throw new FileNotFoundException(msg);
         }
         return dir;
     }

@@ -52,12 +52,11 @@ public final class ObjectArgs {
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @return the validated object reference
      * @throws NullPointerException if {@code ref} or {@code argName} is null
+     * @throws IllegalArgumentException if {@code argName} is empty or whitespace
      */
     public static <T> T checkNotNull(T ref, String argName) {
-        if (null == argName) {
-            throw new NullPointerException(String.format("Argument name (argName) is null"));
-        }
         if (null == ref) {
+        	StringArgs._checkArgNameValid(argName, "argName");
             throw new NullPointerException(String.format("Argument '%s' is null", argName));
         }
         return ref;

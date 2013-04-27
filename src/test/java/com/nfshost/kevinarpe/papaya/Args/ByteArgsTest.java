@@ -251,7 +251,8 @@ public class ByteArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckValueRangeAsValidWithNullArgName() {
         return new Object[][] {
-                { (byte) 1, (byte) 1, (byte) 1, null },
+                { (byte) 1, (byte) 2, (byte) 1, null },
+                { (byte) 1, (byte) 2, (byte) 3, null },
         };
     }
     
@@ -313,7 +314,7 @@ public class ByteArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckMinValueAsValidWithNullArgName() {
         return new Object[][] {
-                { (byte) 1, (byte) 1, null },
+                { (byte) 1, (byte) 2, null },
         };
     }
     
@@ -365,7 +366,7 @@ public class ByteArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckMaxValueAsValidWithNullArgName() {
         return new Object[][] {
-                { (byte) 1, (byte) 1, null },
+                { (byte) 1, (byte) 0, null },
         };
     }
     
@@ -415,7 +416,7 @@ public class ByteArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckExactValueAsValidWithNullArgName() {
         return new Object[][] {
-                { (byte) 1, (byte) 1, null },
+                { (byte) 1, (byte) 2, null },
         };
     }
     

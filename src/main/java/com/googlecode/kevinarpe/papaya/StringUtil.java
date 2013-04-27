@@ -124,8 +124,20 @@ public final class StringUtil {
         return s2;
     }
     
+    public static <T extends CharSequence> boolean isWhitespace(String str) {
+        ObjectArgs.checkNotNull(str, "str");
+        int len = str.length();
+        for (int i = 0; i < len; ++i) {
+            char ch = str.charAt(i);
+            if (!Character.isWhitespace(ch)) {
+            	return false;
+            }
+        }
+        return true;
+    }
+    
     public static String substringPrefix(String str, int count) {
-        ObjectArgs.checkNotNull(str, "s");
+        ObjectArgs.checkNotNull(str, "str");
         IntArgs.checkNotNegative(count, "count");
         int len = str.length();
         count = (count > len ? len : count);
@@ -134,7 +146,7 @@ public final class StringUtil {
     }
     
     public static String substringSuffix(String str, int count) {
-        ObjectArgs.checkNotNull(str, "s");
+        ObjectArgs.checkNotNull(str, "str");
         IntArgs.checkNotNegative(count, "count");
         int len = str.length();
         count = (count > len ? len : count);

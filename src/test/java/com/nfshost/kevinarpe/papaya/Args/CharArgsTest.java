@@ -69,7 +69,8 @@ public class CharArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckValueRangeAsValidWithNullArgName() {
         return new Object[][] {
-                { (char) 1, (char) 1, (char) 1, null },
+                { (char) 1, (char) 2, (char) 1, null },
+                { (char) 1, (char) 2, (char) 3, null },
         };
     }
     
@@ -131,7 +132,7 @@ public class CharArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckMinValueAsValidWithNullArgName() {
         return new Object[][] {
-                { (char) 1, (char) 1, null },
+                { (char) 1, (char) 2, null },
         };
     }
     
@@ -183,7 +184,7 @@ public class CharArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckMaxValueAsValidWithNullArgName() {
         return new Object[][] {
-                { (char) 1, (char) 1, null },
+                { (char) 1, (char) 0, null },
         };
     }
     
@@ -233,7 +234,7 @@ public class CharArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckExactValueAsValidWithNullArgName() {
         return new Object[][] {
-                { (char) 1, (char) 1, null },
+                { (char) 1, (char) 2, null },
         };
     }
     

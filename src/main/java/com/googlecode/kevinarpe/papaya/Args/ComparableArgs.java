@@ -41,7 +41,8 @@ public final class ComparableArgs {
      * @throws NullPointerException if {@code ref}, {@code minValue}, {@code maxValue},
      *         or {@code argName} is null
      * @throws IllegalArgumentException if {@code minValue > maxValue},
-     *         or if value of {@code ref} is outside allowed range
+     *         or if value of {@code ref} is outside allowed range,
+     *         or if {@code argName} is empty or whitespace
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see #checkMinValue(Comparable, Comparable, String)
      * @see #checkMaxValue(Comparable, Comparable, String)
@@ -61,16 +62,19 @@ public final class ComparableArgs {
         if (null != optMinValue &&
                 null != optMaxValue &&
                 optMinValue.compareTo(optMaxValue) > 0) {
+        	StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                 "Argument '%s': 'minValue' > 'maxValue': %s > %s",
                 argName, optMinValue, optMaxValue));
         }
         if (null != optMinValue && ref.compareTo(optMinValue) < 0) {
+        	StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                 "Argument '%s': value < 'minValue': %s < %s",
                 argName, ref, optMinValue));
         }
         if (null != optMaxValue && ref.compareTo(optMaxValue) > 0) {
+        	StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                 "Argument '%s': value > 'maxValue': %s > %s",
                 argName, ref, optMaxValue));
@@ -86,7 +90,8 @@ public final class ComparableArgs {
      * @return the validated object reference
      * @throws NullPointerException if {@code ref}, {@code minValue},
      *         or {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code ref} is outside allowed range
+     * @throws IllegalArgumentException if value of {@code ref} is outside allowed range,
+     *         or if {@code argName} is empty or whitespace
      * @see #checkValueRange(Comparable, Comparable, Comparable, String)
      */
     public static <T extends Comparable<T>> T checkMinValue(
@@ -106,7 +111,8 @@ public final class ComparableArgs {
      * @return the validated object reference
      * @throws NullPointerException if {@code ref}, {@code maxValue},
      *         or {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code ref} is outside allowed range
+     * @throws IllegalArgumentException if value of {@code ref} is outside allowed range,
+     *         or if {@code argName} is empty or whitespace
      * @see #checkValueRange(Comparable, Comparable, Comparable, String)
      */
     public static <T extends Comparable<T>> T checkMaxValue(
@@ -126,7 +132,8 @@ public final class ComparableArgs {
      * @return the validated object reference
      * @throws NullPointerException if {@code ref}, {@code maxValue},
      *         or {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code ref} is outside allowed range
+     * @throws IllegalArgumentException if value of {@code ref} is outside allowed range,
+     *         or if {@code argName} is empty or whitespace
      * @see #checkValueRange(Comparable, Comparable, Comparable, String)
      */
     public static <T extends Comparable<T>> T checkExactValue(
