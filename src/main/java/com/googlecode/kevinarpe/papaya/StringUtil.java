@@ -48,9 +48,33 @@ public final class StringUtil {
     }
     
     /**
+     * Strictly converts a string to a boolean value.  Ignoring case, only {@code "true"} and
+     * {@code "false"} are accepted as valid values.  The built-in Java method,
+     * {@link Boolean#parseBoolean(String)}, is more lenient, treating {@code "true"} (or case
+     * variants) as {@code true} and all other values, including {@code null}, as {@code false}.
+     * 
+     * @param str input value
+     * @return boolean value
+     * @throws NullPointerException if {@code str} is null
+     * @throws IllegalArgumentException if {@code str} is not "true" or "false", ignoring case
+     * @see FuncUtil#PARSE_BOOLEAN_FROM_STRING
+     */
+    public static boolean parseBoolean(String str) {
+    	ObjectArgs.checkNotNull(str, "str");
+    	if (str.equalsIgnoreCase("true")) {
+    		return true;
+    	}
+    	if (str.equalsIgnoreCase("false")) {
+    		return false;
+    	}
+    	throw new IllegalArgumentException(String.format(
+			"Failed to convert string to boolean: '%s'", str));
+    }
+    
+    /**
      * Creates a copy of the input string, but removes all leading whitespace chars.
      * To be precise, "leading" is always defined as starting from index zero.
-     * This may be backwards for right-to-left languages such as Hebrew and Arabic.
+     * This terminology may be backwards for right-to-left languages such as Hebrew and Arabic.
      * <p>
      * Whitespace is defined as {@link Character#isWhitespace(char)}, which will include all
      * Unicode whitespace, such as the Japanese full-width space.
@@ -90,7 +114,7 @@ public final class StringUtil {
     /**
      * Creates a copy of the input string, but removes all trailing whitespace chars.
      * To be precise, "trailing" is always defined as starting from the last index.
-     * This may be backwards for right-to-left languages such as Hebrew and Arabic.
+     * This terminology may be backwards for right-to-left languages such as Hebrew and Arabic.
      * <p>
      * Whitespace is defined as {@link Character#isWhitespace(char)}, which will include all
      * Unicode whitespace, such as the Japanese full-width space.
@@ -124,6 +148,15 @@ public final class StringUtil {
         return s2;
     }
     
+    /**
+     * Tests if an input string is only whitespace.
+     * <p>
+     * Whitespace is defined as {@link Character#isWhitespace(char)}.
+     * 
+     * @param str input string
+     * @return true if empty or all whitespace 
+     * @throws NullPointerException if {@code str} is null
+     */
     public static <T extends CharSequence> boolean isWhitespace(String str) {
         ObjectArgs.checkNotNull(str, "str");
         int len = str.length();
@@ -136,22 +169,60 @@ public final class StringUtil {
         return true;
     }
     
+    /**
+     * This method is modeled after Left() from Visual Basic.
+     * Copies a specified number of leading chars from a string.
+     * To be precise, "leading" is always defined as starting from index zero.
+     * This terminology may be backwards for right-to-left languages such as Hebrew and Arabic.
+     * <p>
+     * If {@count == 0}, the empty string is retured.
+     * <p>
+     * If {@count >= str.length()}, the input string reference is returned.
+     * 
+     * @param str input string reference to process
+     * @param count number of chars to copy starting from first index.
+     *        Must be >= 0, and may be greater than input length
+     * @return string reference created from leading chars
+     * @throws NullPointerException if {@code str} is null
+     * @throws IllegalArgumentException if {@code count} is negative
+     */
     public static String substringPrefix(String str, int count) {
         ObjectArgs.checkNotNull(str, "str");
         IntArgs.checkNotNegative(count, "count");
         int len = str.length();
-        count = (count > len ? len : count);
-        String s2 = str.substring(0, count);
-        return s2;
+        if (count >= len) {
+        	return str;
+        }
+        String str2 = str.substring(0, count);
+        return str2;
     }
     
+    /**
+     * This method is modeled after Right() from Visual Basic.
+     * Copies a specified number of trailing chars from a string.
+     * To be precise, "trailing" is always defined as starting from the last index.
+     * This terminology may be backwards for right-to-left languages such as Hebrew and Arabic.
+     * <p>
+     * If {@count == 0}, the empty string is retured.
+     * <p>
+     * If {@count >= str.length()}, the input string reference is returned.
+     * 
+     * @param str input string reference to process
+     * @param count number of chars to copy starting from last index.
+     *        Must be >= 0, and may be greater than input length
+     * @return string reference created from trailing chars
+     * @throws NullPointerException if {@code str} is null
+     * @throws IllegalArgumentException if {@code count} is negative
+     */
     public static String substringSuffix(String str, int count) {
         ObjectArgs.checkNotNull(str, "str");
         IntArgs.checkNotNegative(count, "count");
         int len = str.length();
-        count = (count > len ? len : count);
-        String s2 = str.substring(len - count, len);
-        return s2;
+        if (count >= len) {
+        	return str;
+        }
+        String str2 = str.substring(len - count, len);
+        return str2;
     }
     
     public static String replaceAll(String haystack, Pattern regex, String replacement) {
@@ -162,6 +233,10 @@ public final class StringUtil {
         String s2 = m.replaceAll(replacement);
         return s2;
     }
+    
+    // TODO: replaceFirstN
+    // TODO: replaceLast
+    // TODO: replaceLastN
     
     // Ref: http://stackoverflow.com/a/6417487/257299
     public static int findLastPatternMatch(String haystack, Pattern regex) {
