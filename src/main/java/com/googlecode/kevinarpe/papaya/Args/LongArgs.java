@@ -46,7 +46,7 @@ public final class LongArgs {
     public static long checkPositive(long value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value <= 0) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                 "Argument '%s': Value is not positive: %d",
                 argName, value));
@@ -70,7 +70,7 @@ public final class LongArgs {
     public static long checkNotPositive(long value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value > 0) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                 "Argument '%s': Value is positive: %d",
                 argName, value));
@@ -94,7 +94,7 @@ public final class LongArgs {
     public static long checkNegative(long value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value >= 0) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                 "Argument '%s': Value is not negative: %d",
                 argName, value));
@@ -118,7 +118,7 @@ public final class LongArgs {
     public static long checkNotNegative(long value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value < 0) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                 "Argument '%s': Value is negative: %d",
                 argName, value));

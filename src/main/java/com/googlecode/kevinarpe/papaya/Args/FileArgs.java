@@ -65,14 +65,14 @@ public final class FileArgs {
     throws FileNotFoundException {
         ObjectArgs.checkNotNull(file, "file");
         if (!file.exists()) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             String msg = String.format(
                 "Argument '%s': Regular file does not exist: '%s'%nAbsolute Path: '%s'",
                 argName, file, file.getAbsolutePath());
             throw new FileNotFoundException(msg);
         }
         if (!file.isFile()) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             String msg = String.format(
                 "Argument '%s': Path exists, but is not a regular file: '%s'%nAbsolute Path: '%s'",
                 argName, file, file.getAbsolutePath());
@@ -114,14 +114,14 @@ public final class FileArgs {
         ObjectArgs.checkNotNull(dir, "dir");
         StringArgs.checkNotEmpty(argName, "argName");
         if (!dir.exists()) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             String msg = String.format(
                 "Argument '%s': Directory does not exist: '%s'%nAbsolute Path: '%s'",
                 argName, dir, dir.getAbsolutePath());
             throw new FileNotFoundException(msg);
         }
         if (!dir.isDirectory()) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             String msg = String.format(
                 "Argument '%s': Path exists, but is not a directory: '%s'%nAbsolute Path: '%s'",
                 argName, dir, dir.getAbsolutePath());

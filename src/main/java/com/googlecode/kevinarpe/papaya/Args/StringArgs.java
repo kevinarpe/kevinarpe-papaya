@@ -32,18 +32,18 @@ public final class StringArgs {
 
     static <T extends CharSequence> void _checkArgNameValid(
             T ref, String argName) {
-    	if (null == argName) {
+        if (null == argName) {
             throw new NullPointerException("Internal error: Argument 'argName' is null");
-    	}
-    	if (null == ref) {
+        }
+        if (null == ref) {
             throw new NullPointerException(String.format("Argument name '%s' is null", argName));
-    	}
-    	if (0 == ref.length()) {
+        }
+        if (0 == ref.length()) {
             throw new IllegalArgumentException(String.format(
-        		"Argument name '%s' is empty", argName));
-    	}
+                "Argument name '%s' is empty", argName));
+        }
         if (!_isWhitespace(ref)) {
-        	return;
+            return;
         }
         throw new IllegalArgumentException(String.format(
             "Argument name '%s' is all whitespace: '%s'", argName, ref));
@@ -76,7 +76,7 @@ public final class StringArgs {
         ObjectArgs.checkNotNull(ref, argName);
         int len = ref.length();
         if (0 == len) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                 "Argument '%s' is an empty string", argName));
         }
@@ -102,9 +102,9 @@ public final class StringArgs {
             T ref, String argName) {
         checkNotEmpty(ref, argName);
         if (!_isWhitespace(ref)) {
-        	return ref;
+            return ref;
         }
-    	StringArgs._checkArgNameValid(argName, "argName");
+        StringArgs._checkArgNameValid(argName, "argName");
         throw new IllegalArgumentException(String.format(
             "Argument '%s' is all whitespace: '%s'", argName, ref));
     }
@@ -144,19 +144,19 @@ public final class StringArgs {
             T ref, int minLen, int maxLen, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
         if (-1 != minLen && -1 != maxLen && minLen > maxLen) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                 "Argument '%s': 'minLen' > 'maxLen': %d > %d", argName, minLen, maxLen));
         }
         int len = ref.length();
         if (-1 != minLen && len < minLen) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                 "Argument '%s': length() < 'minLen': %d < %d%n\tValue: [%s]",
                 argName, len, minLen, ref));
         }
         if (-1 != maxLen && len > maxLen) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                 "Argument '%s': length() > 'maxLen': %d > %d%n\tValue: [%s]",
                 argName, len, maxLen, ref));

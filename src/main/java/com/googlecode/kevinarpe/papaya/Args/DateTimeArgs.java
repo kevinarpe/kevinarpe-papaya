@@ -33,60 +33,60 @@ import org.joda.time.ReadableInstant;
  */
 public final class DateTimeArgs {
 
-	/**
+    /**
      * Convenience method to call
      * {@link ComparableArgs#checkValueRange(Comparable, Comparable, Comparable, String)}.
-	 * 
-	 * @see #checkMinValue(DateTime, DateTime, String)
-	 * @see #checkMaxValue(DateTime, DateTime, String)
-	 * @see #checkExactValue(DateTime, DateTime, String)
-	 */
-	public static DateTime checkValueRange(
-			DateTime dt, DateTime minDt, DateTime maxDt, String argName) {
+     * 
+     * @see #checkMinValue(DateTime, DateTime, String)
+     * @see #checkMaxValue(DateTime, DateTime, String)
+     * @see #checkExactValue(DateTime, DateTime, String)
+     */
+    public static DateTime checkValueRange(
+            DateTime dt, DateTime minDt, DateTime maxDt, String argName) {
         ComparableArgs.checkValueRange(
-    		(ReadableInstant) dt, (ReadableInstant) minDt, (ReadableInstant) maxDt, argName);
-		return dt;
-	}
+            (ReadableInstant) dt, (ReadableInstant) minDt, (ReadableInstant) maxDt, argName);
+        return dt;
+    }
 
-	/**
+    /**
      * Convenience method to call
      * {@link ComparableArgs#checkMinValue(Comparable, Comparable, String)}.
-	 * 
-	 * @see #checkValueRange(DateTime, DateTime, DateTime, String)
-	 * @see #checkMaxValue(DateTime, DateTime, String)
-	 * @see #checkExactValue(DateTime, DateTime, String)
-	 */
-	public static DateTime checkMinValue(
-			DateTime dt, DateTime minDt, String argName) {
+     * 
+     * @see #checkValueRange(DateTime, DateTime, DateTime, String)
+     * @see #checkMaxValue(DateTime, DateTime, String)
+     * @see #checkExactValue(DateTime, DateTime, String)
+     */
+    public static DateTime checkMinValue(
+            DateTime dt, DateTime minDt, String argName) {
         ComparableArgs.checkMinValue((ReadableInstant) dt, (ReadableInstant) minDt, argName);
-		return dt;
-	}
+        return dt;
+    }
 
-	/**
+    /**
      * Convenience method to call
      * {@link ComparableArgs#checkMaxValue(Comparable, Comparable, String)}.
-	 * 
-	 * @see #checkValueRange(DateTime, DateTime, DateTime, String)
-	 * @see #checkMinValue(DateTime, DateTime, String)
-	 * @see #checkExactValue(DateTime, DateTime, String)
-	 */
-	public static DateTime checkMaxValue(
-			DateTime dt, DateTime maxDt, String argName) {
+     * 
+     * @see #checkValueRange(DateTime, DateTime, DateTime, String)
+     * @see #checkMinValue(DateTime, DateTime, String)
+     * @see #checkExactValue(DateTime, DateTime, String)
+     */
+    public static DateTime checkMaxValue(
+            DateTime dt, DateTime maxDt, String argName) {
         ComparableArgs.checkMaxValue((ReadableInstant) dt, (ReadableInstant) maxDt, argName);
-		return dt;
-	}
+        return dt;
+    }
 
-	/**
+    /**
      * Convenience method to call
      * {@link ComparableArgs#checkExactValue(Comparable, Comparable, String)}.
-	 * 
-	 * @see #checkValueRange(DateTime, DateTime, DateTime, String)
-	 * @see #checkMinValue(DateTime, DateTime, String)
-	 * @see #checkMaxValue(DateTime, DateTime, String)
-	 */
-	public static DateTime checkExactValue(
-			DateTime dt, DateTime exactDt, String argName) {
+     * 
+     * @see #checkValueRange(DateTime, DateTime, DateTime, String)
+     * @see #checkMinValue(DateTime, DateTime, String)
+     * @see #checkMaxValue(DateTime, DateTime, String)
+     */
+    public static DateTime checkExactValue(
+            DateTime dt, DateTime exactDt, String argName) {
         ComparableArgs.checkExactValue((ReadableInstant) dt, (ReadableInstant) exactDt, argName);
-		return dt;
-	}
+        return dt;
+    }
 }

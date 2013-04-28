@@ -56,7 +56,7 @@ public final class ObjectArgs {
      */
     public static <T> T checkNotNull(T ref, String argName) {
         if (null == ref) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             throw new NullPointerException(String.format("Argument '%s' is null", argName));
         }
         return ref;

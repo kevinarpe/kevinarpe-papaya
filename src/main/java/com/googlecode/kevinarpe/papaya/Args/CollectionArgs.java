@@ -141,6 +141,31 @@ public final class CollectionArgs {
     }
     
     /**
+     * Tests if a collection reference is not null and each element is not null.  An empty
+     * collection will pass this test.
+     * 
+     * @param ref a collection reference
+     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @see ObjectArgs#checkNotNull(Object, String)
+     * @see ArrayArgs#checkElementsNotNull(Object[], String)
+     * @throws NullPointerException if {@code ref} (or any element) or {@code argName} is null
+     * @throws IllegalArgumentException if {@code argName} is empty or whitespace
+     */
+    public static <T> void checkElementsNotNull(
+            Collection<T> ref, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+        int count = 0;
+        for (T item: ref) {
+            if (null == item) {
+                StringArgs._checkArgNameValid(argName, "argName");
+                throw new NullPointerException(String.format(
+                    "Collection argument '%s': Item at index %d is null", argName, count));
+            }
+            ++count;
+        }
+    }
+    
+    /**
      * Tests if a collection reference is not null and an index is valid to access an element.
      * 
      * @param ref a collection reference
@@ -186,30 +211,6 @@ public final class CollectionArgs {
         ContainerArgs._checkInsertIndex(
             ref, "Collection", size, index, collectionArgName, indexArgName);
         return index;
-    }
-    
-    /**
-     * Tests if a collection reference is not null and each element is not null.
-     * 
-     * @param ref a collection reference
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-     * @see ObjectArgs#checkNotNull(Object, String)
-     * @see ArrayArgs#checkElementsNotNull(Object[], String)
-     * @throws NullPointerException if {@code ref} (or any element) or {@code argName} is null
-     * @throws IllegalArgumentException if {@code argName} is empty or whitespace
-     */
-    public static <T> void checkElementsNotNull(
-            Collection<T> ref, String argName) {
-        ObjectArgs.checkNotNull(ref, argName);
-        int count = 0;
-        for (T item: ref) {
-            if (null == item) {
-            	StringArgs._checkArgNameValid(argName, "argName");
-                throw new NullPointerException(String.format(
-                    "Collection argument '%s': Item at index %d is null", argName, count));
-            }
-            ++count;
-        }
     }
     
     /**

@@ -33,42 +33,8 @@ import java.util.Map;
 public final class MapArgs {
 
     /**
-     * Tests if a map reference is not null and each key and value is not null.
-     * 
-     * @param ref a map reference
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-     * @see ObjectArgs#checkNotNull(Object, String)
-     * @see #checkKeysNotNull(Map, String)
-     * @see #checkValuesNotNull(Map, String)
-     * @throws NullPointerException if {@code ref} (or any key or value) or {@code argName} is null
-     * @throws IllegalArgumentException if {@code argName} is empty or whitespace
-     */
-    public static <TKey, TValue> void checkKeysAndValuesNotNull(
-            Map<TKey, TValue> ref, String argName) {
-        ObjectArgs.checkNotNull(ref, argName);
-        for (Map.Entry<TKey, TValue> entry: ref.entrySet()) {
-            TKey key = entry.getKey();
-            TValue value = entry.getValue();
-            if (null == key && null != value) {
-            	StringArgs._checkArgNameValid(argName, "argName");
-                throw new NullPointerException(String.format(
-                    "Map argument '%s': Key is null where value is '%s'", argName, value));
-            }
-            else if (null != key && null == value) {
-            	StringArgs._checkArgNameValid(argName, "argName");
-                throw new NullPointerException(String.format(
-                    "Map argument '%s': Value is null where key is '%s'", argName, key));
-            }
-            else if (null == key && null == value) {
-            	StringArgs._checkArgNameValid(argName, "argName");
-                throw new NullPointerException(String.format(
-                    "Map argument '%s': Both key and value are null", argName));
-            }
-        }
-    }
-
-    /**
-     * Tests if a map reference is not null and each key is not null.
+     * Tests if a map reference is not null and each key is not null.  An empty map will pass
+     * this test.
      * 
      * @param ref a map reference
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
@@ -81,19 +47,18 @@ public final class MapArgs {
     public static <TKey, TValue> void checkKeysNotNull(
             Map<TKey, TValue> ref, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
-        for (Map.Entry<TKey, TValue> entry: ref.entrySet()) {
-            TKey key = entry.getKey();
-            if (null == key) {
-                TValue value = entry.getValue();
-            	StringArgs._checkArgNameValid(argName, "argName");
-                throw new NullPointerException(String.format(
-                    "Map argument '%s': Key is null where value is '%s'", argName, value));
-            }
+        if (ref.containsKey(null)) {
+            TValue value = ref.get(null);
+            String valueStr = (null == value ? "null" : String.format("'%s'", value));
+            StringArgs._checkArgNameValid(argName, "argName");
+            throw new NullPointerException(String.format(
+                "Map argument '%s': Key is null where value is %s", argName, valueStr));
         }
     }
 
     /**
-     * Tests if a map reference is not null and each value is not null.
+     * Tests if a map reference is not null and each value is not null.  An empty map will pass
+     * this test.
      * 
      * @param ref a map reference
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
@@ -110,10 +75,30 @@ public final class MapArgs {
             TValue value = entry.getValue();
             if (null == value) {
                 TKey key = entry.getKey();
-            	StringArgs._checkArgNameValid(argName, "argName");
+                String keyStr = (null == key ? "null" : String.format("'%s'", key));
+                StringArgs._checkArgNameValid(argName, "argName");
                 throw new NullPointerException(String.format(
-                    "Map argument '%s': Value is null where key is '%s'", argName, key));
+                    "Map argument '%s': Value is null where key is %s", argName, keyStr));
             }
         }
+    }
+
+    /**
+     * Tests if a map reference is not null and each key and value is not null.  An empty map will
+     * pass this test.
+     * 
+     * @param ref a map reference
+     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @see ObjectArgs#checkNotNull(Object, String)
+     * @see #checkKeysNotNull(Map, String)
+     * @see #checkValuesNotNull(Map, String)
+     * @throws NullPointerException if {@code ref} (or any key or value) or {@code argName} is null
+     * @throws IllegalArgumentException if {@code argName} is empty or whitespace
+     */
+    public static <TKey, TValue> void checkKeysAndValuesNotNull(
+            Map<TKey, TValue> ref, String argName) {
+        checkKeysNotNull(ref, argName);
+        checkValuesNotNull(ref, argName);
+        ObjectArgs.checkNotNull(ref, argName);
     }
 }

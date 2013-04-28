@@ -60,15 +60,15 @@ public final class StringUtil {
      * @see FuncUtil#PARSE_BOOLEAN_FROM_STRING
      */
     public static boolean parseBoolean(String str) {
-    	ObjectArgs.checkNotNull(str, "str");
-    	if (str.equalsIgnoreCase("true")) {
-    		return true;
-    	}
-    	if (str.equalsIgnoreCase("false")) {
-    		return false;
-    	}
-    	throw new IllegalArgumentException(String.format(
-			"Failed to convert string to boolean: '%s'", str));
+        ObjectArgs.checkNotNull(str, "str");
+        if (str.equalsIgnoreCase("true")) {
+            return true;
+        }
+        if (str.equalsIgnoreCase("false")) {
+            return false;
+        }
+        throw new IllegalArgumentException(String.format(
+            "Failed to convert string to boolean: '%s'", str));
     }
     
     /**
@@ -163,7 +163,7 @@ public final class StringUtil {
         for (int i = 0; i < len; ++i) {
             char ch = str.charAt(i);
             if (!Character.isWhitespace(ch)) {
-            	return false;
+                return false;
             }
         }
         return true;
@@ -191,7 +191,7 @@ public final class StringUtil {
         IntArgs.checkNotNegative(count, "count");
         int len = str.length();
         if (count >= len) {
-        	return str;
+            return str;
         }
         String str2 = str.substring(0, count);
         return str2;
@@ -219,7 +219,7 @@ public final class StringUtil {
         IntArgs.checkNotNegative(count, "count");
         int len = str.length();
         if (count >= len) {
-        	return str;
+            return str;
         }
         String str2 = str.substring(len - count, len);
         return str2;

@@ -62,19 +62,19 @@ public final class ComparableArgs {
         if (null != optMinValue &&
                 null != optMaxValue &&
                 optMinValue.compareTo(optMaxValue) > 0) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                 "Argument '%s': 'minValue' > 'maxValue': %s > %s",
                 argName, optMinValue, optMaxValue));
         }
         if (null != optMinValue && ref.compareTo(optMinValue) < 0) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                 "Argument '%s': value < 'minValue': %s < %s",
                 argName, ref, optMinValue));
         }
         if (null != optMaxValue && ref.compareTo(optMaxValue) > 0) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                 "Argument '%s': value > 'maxValue': %s > %s",
                 argName, ref, optMaxValue));

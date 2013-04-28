@@ -46,7 +46,7 @@ public class DoubleArgs {
     public static double checkPositive(double value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value <= 0.0d) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                     "Argument '%s': value is not positive: %f",
                     argName, value));
@@ -70,7 +70,7 @@ public class DoubleArgs {
     public static double checkNotPositive(double value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value > 0.0d) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                     "Argument '%s': value is positive: %f",
                     argName, value));
@@ -94,7 +94,7 @@ public class DoubleArgs {
     public static double checkNegative(double value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value >= 0.0d) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                     "Argument '%s': value is not negative: %f",
                     argName, value));
@@ -118,7 +118,7 @@ public class DoubleArgs {
     public static double checkNotNegative(double value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value < 0.0d) {
-        	StringArgs._checkArgNameValid(argName, "argName");
+            StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
                     "Argument '%s': value is negative: %f",
                     argName, value));
