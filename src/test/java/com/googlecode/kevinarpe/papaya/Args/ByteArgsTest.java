@@ -1,4 +1,4 @@
-package com.nfshost.kevinarpe.papaya.Args;
+package com.googlecode.kevinarpe.papaya.Args;
 
 /*
  * #%L
@@ -30,13 +30,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.PrimitiveTypeUtil;
-import com.googlecode.kevinarpe.papaya.Args.FloatArgs;
+import com.googlecode.kevinarpe.papaya.Args.ByteArgs;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class FloatArgsTest {
+public class ByteArgsTest {
     
     @BeforeClass
     public void classSetup() {
@@ -47,408 +46,400 @@ public class FloatArgsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // FloatArgs.checkPositive
+    // ByteArgs.checkPositive
     //
 
     @DataProvider
     private static final Object[][] _dataForShouldCheckAsPositive() {
         return new Object[][] {
-                { 1.0f },
-                { 99.0f },
-                { Float.MAX_VALUE },
-                { PrimitiveTypeUtil.EPSILON_POSITIVE_FLOAT, },
+                { (byte) 1 },
+                { (byte) 99 },
+                { Byte.MAX_VALUE },
         };
     }
     
     @Test(dataProvider = "_dataForShouldCheckAsPositive")
-    public void shouldCheckAsPositive(float i) {
-        FloatArgs.checkPositive(i, "i");
+    public void shouldCheckAsPositive(byte i) {
+        ByteArgs.checkPositive(i, "i");
     }
 
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckAsPositiveWithNullArgName() {
         return new Object[][] {
-                { 1.0f, null },
+                { (byte) 1, null },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckAsPositiveWithNullArgName",
             expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckAsPositiveWithNullArgName(float i, String argName) {
-        FloatArgs.checkPositive(i, argName);
+    public void shouldNotCheckAsPositiveWithNullArgName(byte i, String argName) {
+        ByteArgs.checkPositive(i, argName);
     }
 
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckAsPositiveWithNonPositiveInput() {
         return new Object[][] {
-                { 0.0f },
-                { -1.0f },
-                { -Float.MIN_VALUE },
-                { -Float.MAX_VALUE },
+                { (byte) 0 },
+                { (byte) -1 },
+                { Byte.MIN_VALUE },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckAsPositiveWithNonPositiveInput",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckAsPositiveWithNonPositiveInput(float i) {
-        FloatArgs.checkPositive(i, "i");
+    public void shouldNotCheckAsPositiveWithNonPositiveInput(byte i) {
+        ByteArgs.checkPositive(i, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // FloatArgs.checkNotPositive
+    // ByteArgs.checkNotPositive
     //
 
     @DataProvider
     private static final Object[][] _dataForShouldCheckAsNotPositive() {
         return new Object[][] {
-                { 0.0f },
-                { -99.0f },
-                { -Float.MIN_VALUE },
-                { -Float.MAX_VALUE },
+                { (byte) 0 },
+                { (byte) -99 },
+                { Byte.MIN_VALUE },
         };
     }
     
     @Test(dataProvider = "_dataForShouldCheckAsNotPositive")
-    public void shouldCheckAsNotPositive(float i) {
-        FloatArgs.checkNotPositive(i, "i");
+    public void shouldCheckAsNotPositive(byte i) {
+        ByteArgs.checkNotPositive(i, "i");
     }
 
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckAsNotPositiveWithNullArgName() {
         return new Object[][] {
-                { 1.0f, null },
+                { (byte) 1, null },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckAsNotPositiveWithNullArgName",
             expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckAsNotPositiveWithNullArgName(float i, String argName) {
-        FloatArgs.checkNotPositive(i, argName);
+    public void shouldNotCheckAsNotPositiveWithNullArgName(byte i, String argName) {
+        ByteArgs.checkNotPositive(i, argName);
     }
     
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckAsNotPositiveWithPositiveInput() {
         return new Object[][] {
-                { 1.0f },
-                { Float.MAX_VALUE },
+                { (byte) 1 },
+                { Byte.MAX_VALUE },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckAsNotPositiveWithPositiveInput",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckAsNotPositiveWithPositiveInput(float i) {
-        FloatArgs.checkNotPositive(i, "i");
+    public void shouldNotCheckAsNotPositiveWithPositiveInput(byte i) {
+        ByteArgs.checkNotPositive(i, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // FloatArgs.checkNegative
+    // ByteArgs.checkNegative
     //
 
     @DataProvider
     private static final Object[][] _dataForShouldCheckAsNegative() {
         return new Object[][] {
-                { -1.0f },
-                { -99.0f },
-                { -Float.MIN_VALUE },
-                { -Float.MAX_VALUE },
-                { PrimitiveTypeUtil.EPSILON_NEGATIVE_FLOAT, },
+                { (byte) -1 },
+                { (byte) -99 },
+                { Byte.MIN_VALUE },
         };
     }
     
     @Test(dataProvider = "_dataForShouldCheckAsNegative")
-    public void shouldCheckAsNegative(float i) {
-        FloatArgs.checkNegative(i, "i");
+    public void shouldCheckAsNegative(byte i) {
+        ByteArgs.checkNegative(i, "i");
     }
     
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckAsNegativeWithNullArgName() {
         return new Object[][] {
-                { 1.0f, null },
+                { (byte) 1, null },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckAsNegativeWithNullArgName",
             expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckAsNegativeWithNullArgName(float i, String argName) {
-        FloatArgs.checkNegative(i, argName);
+    public void shouldNotCheckAsNegativeWithNullArgName(byte i, String argName) {
+        ByteArgs.checkNegative(i, argName);
     }
 
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckAsNegativeWithNonNegativeInput() {
         return new Object[][] {
-                { 0.0f },
-                { 1.0f },
-                { Float.MAX_VALUE },
+                { (byte) 0 },
+                { (byte) 1 },
+                { Byte.MAX_VALUE },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckAsNegativeWithNonNegativeInput",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckAsNegativeWithNonNegativeInput(float i) {
-        FloatArgs.checkNegative(i, "i");
+    public void shouldNotCheckAsNegativeWithNonNegativeInput(byte i) {
+        ByteArgs.checkNegative(i, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // FloatArgs.checkNotNegative
+    // ByteArgs.checkNotNegative
     //
 
     @DataProvider
     private static final Object[][] _dataForShouldCheckAsNotNegative() {
         return new Object[][] {
-                { 0.0f },
-                { 99.0f },
-                { Float.MAX_VALUE },
+                { (byte) 0 },
+                { (byte) 99 },
+                { Byte.MAX_VALUE },
         };
     }
     
     @Test(dataProvider = "_dataForShouldCheckAsNotNegative")
-    public void shouldCheckAsNotNegative(float i) {
-        FloatArgs.checkNotNegative(i, "i");
+    public void shouldCheckAsNotNegative(byte i) {
+        ByteArgs.checkNotNegative(i, "i");
     }
 
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckAsNotNegativeWithNullArgName() {
         return new Object[][] {
-                { 1.0f, null },
+                { (byte) 1, null },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckAsNotNegativeWithNullArgName",
             expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckAsNotNegativeWithNullArgName(float i, String argName) {
-        FloatArgs.checkNotNegative(i, argName);
+    public void shouldNotCheckAsNotNegativeWithNullArgName(byte i, String argName) {
+        ByteArgs.checkNotNegative(i, argName);
     }
     
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckAsNotNegativeWithNegativeInput() {
         return new Object[][] {
-                { -1.0f },
-                { -Float.MIN_VALUE },
-                { -Float.MAX_VALUE },
+                { (byte) -1 },
+                { Byte.MIN_VALUE },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckAsNotNegativeWithNegativeInput",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckAsNotNegativeWithNegativeInput(float i) {
-        FloatArgs.checkNotNegative(i, "i");
+    public void shouldNotCheckAsNotNegativeWithNegativeInput(byte i) {
+        ByteArgs.checkNotNegative(i, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // FloatArgs.checkValueRange
+    // ByteArgs.checkValueRange
     //
 
     @DataProvider
     private static final Object[][] _dataForShouldCheckValueRangeAsValid() {
         return new Object[][] {
-                { 1.0f, -1.0f, 2.0f },
-                { 1.0f, -1.0f, 1.0f },
-                { 1.0f, 0.0f, 1.0f },
-                { 1.0f, 0.0f, 2.0f },
-                { 1.0f, 1.0f, 1.0f },
-                { 1.0f, 1.0f, 2.0f },
+                { (byte) 1, (byte) -1, (byte) 2 },
+                { (byte) 1, (byte) -1, (byte) 1 },
+                { (byte) 1, (byte) 0, (byte) 1 },
+                { (byte) 1, (byte) 0, (byte) 2 },
+                { (byte) 1, (byte) 1, (byte) 1 },
+                { (byte) 1, (byte) 1, (byte) 2 },
         };
     }
     
     @Test(dataProvider = "_dataForShouldCheckValueRangeAsValid")
-    public void shouldCheckValueRangeAsValid(float i, float minValue, float maxValue) {
-        FloatArgs.checkValueRange(i, minValue, maxValue, "i");
+    public void shouldCheckValueRangeAsValid(byte i, byte minValue, byte maxValue) {
+        ByteArgs.checkValueRange(i, minValue, maxValue, "i");
     }
     
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckValueRangeAsValidWithNullArgName() {
         return new Object[][] {
-                { 1.0f, 2.0f, 1.0f, null },
-                { 1.0f, 2.0f, 3.0f, null },
+                { (byte) 1, (byte) 2, (byte) 1, null },
+                { (byte) 1, (byte) 2, (byte) 3, null },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckValueRangeAsValidWithNullArgName",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckValueRangeAsValidWithNullArgName(
-            float i, float minValue, float maxValue, String argName) {
-        FloatArgs.checkValueRange(i, minValue, maxValue, argName);
+            byte i, byte minValue, byte maxValue, String argName) {
+        ByteArgs.checkValueRange(i, minValue, maxValue, argName);
     }
     
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckValueRangeAsValidWithInvalidInput() {
         return new Object[][] {
-                { 1.0f, -1.0f, 0.0f },
-                { 1.0f, 0.0f, 0.0f },
-                { 1.0f, 2.0f, 2.0f },
-                { 1.0f, 2.0f, 1.0f },
-                { 1.0f, -1.0f, -2.0f },
-                { 1.0f, -2.0f, -1.0f },
+                { 1, -1, 0 },
+                { 1, 0, 0 },
+                { 1, 2, 2 },
+                { 1, 2, 1 },
+                { 1, -1, -2 },
+                { 1, -2, -1 },
                 
-                { -1.0f, 1.0f, 0.0f },
-                { -1.0f, 0.0f, 0.0f },
-                { -1.0f, -2.0f, -2.0f },
-                { -1.0f, -1.0f, -2.0f },
-                { -1.0f, 1.0f, 2.0f },
-                { -1.0f, 2.0f, 1.0f },
+                { -1, 1, 0 },
+                { -1, 0, 0 },
+                { -1, -2, -2 },
+                { -1, -1, -2 },
+                { -1, 1, 2 },
+                { -1, 2, 1 },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckValueRangeAsValidWithInvalidInput",
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckValueRangeAsValidWithInvalidInput(
-            float i, float minValue, float maxValue) {
-        FloatArgs.checkValueRange(i, minValue, maxValue, "i");
+            byte i, byte minValue, byte maxValue) {
+        ByteArgs.checkValueRange(i, minValue, maxValue, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // FloatArgs.checkMinValue
+    // ByteArgs.checkMinValue
     //
 
     @DataProvider
     private static final Object[][] _dataForShouldCheckMinValueAsValid() {
         return new Object[][] {
-                { 1.0f, -1.0f },
-                { 1.0f, 0.0f },
-                { 1.0f, 1.0f },
+                { (byte) 1, (byte) -1 },
+                { (byte) 1, (byte) 0 },
+                { (byte) 1, (byte) 1 },
                 
-                { -1.0f, -1.0f },
-                { -1.0f, -2.0f },
-                { -1.0f, -3.0f },
+                { (byte) -1, (byte) -1 },
+                { (byte) -1, (byte) -2 },
+                { (byte) -1, (byte) -3 },
         };
     }
     
     @Test(dataProvider = "_dataForShouldCheckMinValueAsValid")
-    public void shouldCheckMinValueAsValid(float i, float minValue) {
-        FloatArgs.checkMinValue(i, minValue, "i");
+    public void shouldCheckMinValueAsValid(byte i, byte minValue) {
+        ByteArgs.checkMinValue(i, minValue, "i");
     }
     
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckMinValueAsValidWithNullArgName() {
         return new Object[][] {
-                { 1.0f, 2.0f, null },
+                { (byte) 1, (byte) 2, null },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckMinValueAsValidWithNullArgName",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckMinValueAsValidWithNullArgName(
-            float i, float minValue, String argName) {
-        FloatArgs.checkMinValue(i, minValue, argName);
+            byte i, byte minValue, String argName) {
+        ByteArgs.checkMinValue(i, minValue, argName);
     }
     
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckMinValueAsValidWithInvalidInput() {
         return new Object[][] {
-                { 1.0f, 2.0f },
-                { 1.0f, 3.0f },
-                { -1.0f, 0.0f },
-                { -1.0f, 1.0f },
+                { (byte) 1, (byte) 2 },
+                { (byte) 1, (byte) 3 },
+                { (byte) -1, (byte) 0 },
+                { (byte) -1, (byte) 1 },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckMinValueAsValidWithInvalidInput",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckMinValueAsValidWithInvalidInput(float i, float minValue) {
-        FloatArgs.checkMinValue(i, minValue, "i");
+    public void shouldNotCheckMinValueAsValidWithInvalidInput(byte i, byte minValue) {
+        ByteArgs.checkMinValue(i, minValue, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // FloatArgs.checkMaxValue
+    // ByteArgs.checkMaxValue
     //
 
     @DataProvider
     private static final Object[][] _dataForShouldCheckMaxValueAsValid() {
         return new Object[][] {
-                { 1.0f, 1.0f },
-                { 1.0f, 2.0f },
-                { 1.0f, 3.0f },
+                { (byte) 1, (byte) 1 },
+                { (byte) 1, (byte) 2 },
+                { (byte) 1, (byte) 3 },
                 
-                { -1.0f, -1.0f },
-                { -1.0f, 0.0f },
-                { -1.0f, 1.0f },
+                { (byte) -1, (byte) -1 },
+                { (byte) -1, (byte) 0 },
+                { (byte) -1, (byte) 1 },
         };
     }
     
     @Test(dataProvider = "_dataForShouldCheckMaxValueAsValid")
-    public void shouldCheckMaxValueAsValid(float i, float maxValue) {
-        FloatArgs.checkMaxValue(i, maxValue, "i");
+    public void shouldCheckMaxValueAsValid(byte i, byte maxValue) {
+        ByteArgs.checkMaxValue(i, maxValue, "i");
     }
     
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckMaxValueAsValidWithNullArgName() {
         return new Object[][] {
-                { 1.0f, 0.0f, null },
+                { (byte) 1, (byte) 0, null },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckMaxValueAsValidWithNullArgName",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckMaxValueAsValidWithNullArgName(
-            float i, float maxValue, String argName) {
-        FloatArgs.checkMaxValue(i, maxValue, argName);
+            byte i, byte maxValue, String argName) {
+        ByteArgs.checkMaxValue(i, maxValue, argName);
     }
     
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckMaxValueAsValidWithInvalidInput() {
         return new Object[][] {
-                { 1.0f, 0.0f },
-                { 1.0f, -1.0f },
-                { -1.0f, -2.0f },
-                { -1.0f, -3.0f },
+                { (byte) 1, (byte) 0 },
+                { (byte) 1, (byte) -1 },
+                { (byte) -1, (byte) -2 },
+                { (byte) -1, (byte) -3 },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckMaxValueAsValidWithInvalidInput",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckMaxValueAsValidWithInvalidInput(float i, float maxValue) {
-        FloatArgs.checkMaxValue(i, maxValue, "i");
+    public void shouldNotCheckMaxValueAsValidWithInvalidInput(byte i, byte maxValue) {
+        ByteArgs.checkMaxValue(i, maxValue, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // FloatArgs.checkExactValue
+    // ByteArgs.checkExactValue
     //
 
     @DataProvider
     private static final Object[][] _dataForShouldCheckExactValueAsValid() {
         return new Object[][] {
-                { 1.0f, 1.0f },
-                { 0.0f, 0.0f },
-                { -1.0f, -1.0f },
-                { Float.MAX_VALUE, Float.MAX_VALUE },
-                { -Float.MAX_VALUE, -Float.MAX_VALUE },
-                { Float.MIN_VALUE, Float.MIN_VALUE },
-                { -Float.MIN_VALUE, -Float.MIN_VALUE },
+                { (byte) 1, (byte) 1 },
+                { (byte) 0, (byte) 0 },
+                { (byte) -1, (byte) -1 },
+                { Byte.MAX_VALUE, Byte.MAX_VALUE },
+                { Byte.MIN_VALUE, Byte.MIN_VALUE },
         };
     }
     
     @Test(dataProvider = "_dataForShouldCheckExactValueAsValid")
-    public void shouldCheckExactValueAsValid(float i, float value) {
-        FloatArgs.checkExactValue(i, value, "i");
+    public void shouldCheckExactValueAsValid(byte i, byte value) {
+        ByteArgs.checkExactValue(i, value, "i");
     }
     
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckExactValueAsValidWithNullArgName() {
         return new Object[][] {
-                { 1.0f, 2.0f, null },
+                { (byte) 1, (byte) 2, null },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckExactValueAsValidWithNullArgName",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckExactValueAsValidWithNullArgName(
-            float i, float value, String argName) {
-        FloatArgs.checkExactValue(i, value, argName);
+            byte i, byte value, String argName) {
+        ByteArgs.checkExactValue(i, value, argName);
     }
     
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckExactValueAsValidWithInvalidInput() {
         return new Object[][] {
-                { 1.0f, 0.0f },
-                { 1.0f, -1.0f },
-                { -1.0f, -2.0f },
-                { -1.0f, -3.0f },
+                { (byte) 1, (byte) 0 },
+                { (byte) 1, (byte) -1 },
+                { (byte) -1, (byte) -2 },
+                { (byte) -1, (byte) -3 },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckExactValueAsValidWithInvalidInput",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckExactValueAsValidWithInvalidInput(float i, float value) {
-        FloatArgs.checkMaxValue(i, value, "i");
+    public void shouldNotCheckExactValueAsValidWithInvalidInput(byte i, byte value) {
+        ByteArgs.checkMaxValue(i, value, "i");
     }
 }

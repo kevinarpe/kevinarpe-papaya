@@ -175,9 +175,9 @@ public final class StringUtil {
      * To be precise, "leading" is always defined as starting from index zero.
      * This terminology may be backwards for right-to-left languages such as Hebrew and Arabic.
      * <p>
-     * If {@count == 0}, the empty string is retured.
+     * If {@code count == 0}, the empty string is retured.
      * <p>
-     * If {@count >= str.length()}, the input string reference is returned.
+     * If {@code count >= str.length()}, the input string reference is returned.
      * 
      * @param str input string reference to process
      * @param count number of chars to copy starting from first index.
@@ -203,9 +203,9 @@ public final class StringUtil {
      * To be precise, "trailing" is always defined as starting from the last index.
      * This terminology may be backwards for right-to-left languages such as Hebrew and Arabic.
      * <p>
-     * If {@count == 0}, the empty string is retured.
+     * If {@code count == 0}, the empty string is retured.
      * <p>
-     * If {@count >= str.length()}, the input string reference is returned.
+     * If {@code count >= str.length()}, the input string reference is returned.
      * 
      * @param str input string reference to process
      * @param count number of chars to copy starting from last index.

@@ -1,4 +1,4 @@
-package com.nfshost.kevinarpe.papaya.Args;
+package com.googlecode.kevinarpe.papaya.Args;
 
 /*
  * #%L
@@ -30,13 +30,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.PrimitiveTypeUtil;
-import com.googlecode.kevinarpe.papaya.Args.LongArgs;
+import com.googlecode.kevinarpe.papaya.Args.IntArgs;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class LongArgsTest {
+public class IntArgsTest {
     
     @BeforeClass
     public void classSetup() {
@@ -47,7 +46,7 @@ public class LongArgsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // LongArgs.checkPositive
+    // IntArgs.checkPositive
     //
 
     @DataProvider
@@ -55,17 +54,13 @@ public class LongArgsTest {
         return new Object[][] {
                 { 1 },
                 { 99 },
-                { Long.MAX_VALUE },
-                { (long)(1.0f + PrimitiveTypeUtil.EPSILON_POSITIVE_FLOAT), },
-                { (long)(1.0f - PrimitiveTypeUtil.EPSILON_POSITIVE_FLOAT), },
-                { (long)(1.0d + PrimitiveTypeUtil.EPSILON_POSITIVE_DOUBLE), },
-                { (long)(1.0d - PrimitiveTypeUtil.EPSILON_POSITIVE_DOUBLE), },
+                { Integer.MAX_VALUE },
         };
     }
     
     @Test(dataProvider = "_dataForShouldCheckAsPositive")
-    public void shouldCheckAsPositive(long i) {
-        LongArgs.checkPositive(i, "i");
+    public void shouldCheckAsPositive(int i) {
+        IntArgs.checkPositive(i, "i");
     }
 
     @DataProvider
@@ -77,8 +72,8 @@ public class LongArgsTest {
     
     @Test(dataProvider = "_dataForShouldNotCheckAsPositiveWithNullArgName",
             expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckAsPositiveWithNullArgName(long i, String argName) {
-        LongArgs.checkPositive(i, argName);
+    public void shouldNotCheckAsPositiveWithNullArgName(int i, String argName) {
+        IntArgs.checkPositive(i, argName);
     }
 
     @DataProvider
@@ -86,18 +81,18 @@ public class LongArgsTest {
         return new Object[][] {
                 { 0 },
                 { -1 },
-                { Long.MIN_VALUE },
+                { Integer.MIN_VALUE },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckAsPositiveWithNonPositiveInput",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckAsPositiveWithNonPositiveInput(long i) {
-        LongArgs.checkPositive(i, "i");
+    public void shouldNotCheckAsPositiveWithNonPositiveInput(int i) {
+        IntArgs.checkPositive(i, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // LongArgs.checkNotPositive
+    // IntArgs.checkNotPositive
     //
 
     @DataProvider
@@ -105,13 +100,13 @@ public class LongArgsTest {
         return new Object[][] {
                 { 0 },
                 { -99 },
-                { Long.MIN_VALUE },
+                { Integer.MIN_VALUE },
         };
     }
     
     @Test(dataProvider = "_dataForShouldCheckAsNotPositive")
-    public void shouldCheckAsNotPositive(long i) {
-        LongArgs.checkNotPositive(i, "i");
+    public void shouldCheckAsNotPositive(int i) {
+        IntArgs.checkNotPositive(i, "i");
     }
 
     @DataProvider
@@ -123,26 +118,26 @@ public class LongArgsTest {
     
     @Test(dataProvider = "_dataForShouldNotCheckAsNotPositiveWithNullArgName",
             expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckAsNotPositiveWithNullArgName(long i, String argName) {
-        LongArgs.checkNotPositive(i, argName);
+    public void shouldNotCheckAsNotPositiveWithNullArgName(int i, String argName) {
+        IntArgs.checkNotPositive(i, argName);
     }
     
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckAsNotPositiveWithPositiveInput() {
         return new Object[][] {
                 { 1 },
-                { Long.MAX_VALUE },
+                { Integer.MAX_VALUE },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckAsNotPositiveWithPositiveInput",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckAsNotPositiveWithPositiveInput(long i) {
-        LongArgs.checkNotPositive(i, "i");
+    public void shouldNotCheckAsNotPositiveWithPositiveInput(int i) {
+        IntArgs.checkNotPositive(i, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // LongArgs.checkNegative
+    // IntArgs.checkNegative
     //
 
     @DataProvider
@@ -150,13 +145,13 @@ public class LongArgsTest {
         return new Object[][] {
                 { -1 },
                 { -99 },
-                { Long.MIN_VALUE },
+                { Integer.MIN_VALUE },
         };
     }
     
     @Test(dataProvider = "_dataForShouldCheckAsNegative")
-    public void shouldCheckAsNegative(long i) {
-        LongArgs.checkNegative(i, "i");
+    public void shouldCheckAsNegative(int i) {
+        IntArgs.checkNegative(i, "i");
     }
     
     @DataProvider
@@ -168,8 +163,8 @@ public class LongArgsTest {
     
     @Test(dataProvider = "_dataForShouldNotCheckAsNegativeWithNullArgName",
             expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckAsNegativeWithNullArgName(long i, String argName) {
-        LongArgs.checkNegative(i, argName);
+    public void shouldNotCheckAsNegativeWithNullArgName(int i, String argName) {
+        IntArgs.checkNegative(i, argName);
     }
 
     @DataProvider
@@ -177,18 +172,18 @@ public class LongArgsTest {
         return new Object[][] {
                 { 0 },
                 { 1 },
-                { Long.MAX_VALUE },
+                { Integer.MAX_VALUE },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckAsNegativeWithNonNegativeInput",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckAsNegativeWithNonNegativeInput(long i) {
-        LongArgs.checkNegative(i, "i");
+    public void shouldNotCheckAsNegativeWithNonNegativeInput(int i) {
+        IntArgs.checkNegative(i, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // LongArgs.checkNotNegative
+    // IntArgs.checkNotNegative
     //
 
     @DataProvider
@@ -196,13 +191,13 @@ public class LongArgsTest {
         return new Object[][] {
                 { 0 },
                 { 99 },
-                { Long.MAX_VALUE },
+                { Integer.MAX_VALUE },
         };
     }
     
     @Test(dataProvider = "_dataForShouldCheckAsNotNegative")
-    public void shouldCheckAsNotNegative(long i) {
-        LongArgs.checkNotNegative(i, "i");
+    public void shouldCheckAsNotNegative(int i) {
+        IntArgs.checkNotNegative(i, "i");
     }
 
     @DataProvider
@@ -214,26 +209,26 @@ public class LongArgsTest {
     
     @Test(dataProvider = "_dataForShouldNotCheckAsNotNegativeWithNullArgName",
             expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckAsNotNegativeWithNullArgName(long i, String argName) {
-        LongArgs.checkNotNegative(i, argName);
+    public void shouldNotCheckAsNotNegativeWithNullArgName(int i, String argName) {
+        IntArgs.checkNotNegative(i, argName);
     }
     
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckAsNotNegativeWithNegativeInput() {
         return new Object[][] {
                 { -1 },
-                { Long.MIN_VALUE },
+                { Integer.MIN_VALUE },
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckAsNotNegativeWithNegativeInput",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckAsNotNegativeWithNegativeInput(long i) {
-        LongArgs.checkNotNegative(i, "i");
+    public void shouldNotCheckAsNotNegativeWithNegativeInput(int i) {
+        IntArgs.checkNotNegative(i, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // LongArgs.checkValueRange
+    // IntArgs.checkValueRange
     //
 
     @DataProvider
@@ -249,8 +244,8 @@ public class LongArgsTest {
     }
     
     @Test(dataProvider = "_dataForShouldCheckValueRangeAsValid")
-    public void shouldCheckValueRangeAsValid(long i, long minValue, long maxValue) {
-        LongArgs.checkValueRange(i, minValue, maxValue, "i");
+    public void shouldCheckValueRangeAsValid(int i, int minValue, int maxValue) {
+        IntArgs.checkValueRange(i, minValue, maxValue, "i");
     }
     
     @DataProvider
@@ -264,8 +259,8 @@ public class LongArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckValueRangeAsValidWithNullArgName",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckValueRangeAsValidWithNullArgName(
-            long i, long minValue, long maxValue, String argName) {
-        LongArgs.checkValueRange(i, minValue, maxValue, argName);
+            int i, int minValue, int maxValue, String argName) {
+        IntArgs.checkValueRange(i, minValue, maxValue, argName);
     }
     
     @DataProvider
@@ -290,12 +285,12 @@ public class LongArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckValueRangeAsValidWithInvalidInput",
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckValueRangeAsValidWithInvalidInput(
-            long i, long minValue, long maxValue) {
-        LongArgs.checkValueRange(i, minValue, maxValue, "i");
+            int i, int minValue, int maxValue) {
+        IntArgs.checkValueRange(i, minValue, maxValue, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // LongArgs.checkMinValue
+    // IntArgs.checkMinValue
     //
 
     @DataProvider
@@ -312,8 +307,8 @@ public class LongArgsTest {
     }
     
     @Test(dataProvider = "_dataForShouldCheckMinValueAsValid")
-    public void shouldCheckMinValueAsValid(long i, long minValue) {
-        LongArgs.checkMinValue(i, minValue, "i");
+    public void shouldCheckMinValueAsValid(int i, int minValue) {
+        IntArgs.checkMinValue(i, minValue, "i");
     }
     
     @DataProvider
@@ -326,8 +321,8 @@ public class LongArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckMinValueAsValidWithNullArgName",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckMinValueAsValidWithNullArgName(
-            long i, long minValue, String argName) {
-        LongArgs.checkMinValue(i, minValue, argName);
+            int i, int minValue, String argName) {
+        IntArgs.checkMinValue(i, minValue, argName);
     }
     
     @DataProvider
@@ -342,12 +337,12 @@ public class LongArgsTest {
     
     @Test(dataProvider = "_dataForShouldNotCheckMinValueAsValidWithInvalidInput",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckMinValueAsValidWithInvalidInput(long i, long minValue) {
-        LongArgs.checkMinValue(i, minValue, "i");
+    public void shouldNotCheckMinValueAsValidWithInvalidInput(int i, int minValue) {
+        IntArgs.checkMinValue(i, minValue, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // LongArgs.checkMaxValue
+    // IntArgs.checkMaxValue
     //
 
     @DataProvider
@@ -364,8 +359,8 @@ public class LongArgsTest {
     }
     
     @Test(dataProvider = "_dataForShouldCheckMaxValueAsValid")
-    public void shouldCheckMaxValueAsValid(long i, long maxValue) {
-        LongArgs.checkMaxValue(i, maxValue, "i");
+    public void shouldCheckMaxValueAsValid(int i, int maxValue) {
+        IntArgs.checkMaxValue(i, maxValue, "i");
     }
     
     @DataProvider
@@ -378,8 +373,8 @@ public class LongArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckMaxValueAsValidWithNullArgName",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckMaxValueAsValidWithNullArgName(
-            long i, long maxValue, String argName) {
-        LongArgs.checkMaxValue(i, maxValue, argName);
+            int i, int maxValue, String argName) {
+        IntArgs.checkMaxValue(i, maxValue, argName);
     }
     
     @DataProvider
@@ -394,12 +389,12 @@ public class LongArgsTest {
     
     @Test(dataProvider = "_dataForShouldNotCheckMaxValueAsValidWithInvalidInput",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckMaxValueAsValidWithInvalidInput(long i, long maxValue) {
-        LongArgs.checkMaxValue(i, maxValue, "i");
+    public void shouldNotCheckMaxValueAsValidWithInvalidInput(int i, int maxValue) {
+        IntArgs.checkMaxValue(i, maxValue, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // LongArgs.checkExactValue
+    // IntArgs.checkExactValue
     //
 
     @DataProvider
@@ -408,14 +403,14 @@ public class LongArgsTest {
                 { 1, 1 },
                 { 0, 0 },
                 { -1, -1 },
-                { Long.MAX_VALUE, Long.MAX_VALUE },
-                { Long.MIN_VALUE, Long.MIN_VALUE },
+                { Integer.MAX_VALUE, Integer.MAX_VALUE },
+                { Integer.MIN_VALUE, Integer.MIN_VALUE },
         };
     }
     
     @Test(dataProvider = "_dataForShouldCheckExactValueAsValid")
-    public void shouldCheckExactValueAsValid(long i, long value) {
-        LongArgs.checkExactValue(i, value, "i");
+    public void shouldCheckExactValueAsValid(int i, int value) {
+        IntArgs.checkExactValue(i, value, "i");
     }
     
     @DataProvider
@@ -428,8 +423,8 @@ public class LongArgsTest {
     @Test(dataProvider = "_dataForShouldNotCheckExactValueAsValidWithNullArgName",
             expectedExceptions = NullPointerException.class)
     public void shouldNotCheckExactValueAsValidWithNullArgName(
-            long i, long value, String argName) {
-        LongArgs.checkExactValue(i, value, argName);
+            int i, int value, String argName) {
+        IntArgs.checkExactValue(i, value, argName);
     }
     
     @DataProvider
@@ -444,7 +439,7 @@ public class LongArgsTest {
     
     @Test(dataProvider = "_dataForShouldNotCheckExactValueAsValidWithInvalidInput",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckExactValueAsValidWithInvalidInput(long i, long value) {
-        LongArgs.checkMaxValue(i, value, "i");
+    public void shouldNotCheckExactValueAsValidWithInvalidInput(int i, int value) {
+        IntArgs.checkMaxValue(i, value, "i");
     }
 }

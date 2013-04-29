@@ -1,4 +1,4 @@
-package com.nfshost.kevinarpe.papaya;
+package com.googlecode.kevinarpe.papaya;
 
 /*
  * #%L

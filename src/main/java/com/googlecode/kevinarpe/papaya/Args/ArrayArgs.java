@@ -141,6 +141,28 @@ public final class ArrayArgs {
     }
     
     /**
+     * Tests if an array reference is not null and each element is not null.
+     * 
+     * @param ref an array reference
+     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @see ObjectArgs#checkNotNull(Object, String)
+     * @see CollectionArgs#checkElementsNotNull(java.util.Collection, String)
+     * @throws NullPointerException if {@code ref} (or any element) or {@code argName} is null
+     * @throws IllegalArgumentException if {@code argName} is empty or whitespace
+     */
+    public static <T> void checkElementsNotNull(T[] ref, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+        for (int i = 0; i < ref.length; ++i) {
+            T item = ref[i];
+            if (null == item) {
+                StringArgs._checkArgNameValid(argName, "argName");
+                throw new NullPointerException(String.format(
+                    "Array argument '%s': Item at index %d is null", argName, i));
+            }
+        }
+    }
+    
+    /**
      * Tests if an array reference is not null and an index is valid to access an element.
      * 
      * @param ref an array reference
@@ -378,27 +400,6 @@ public final class ArrayArgs {
         ContainerArgs._checkAccessIndex(
             ref, "Array", len, index, arrArgName, indexArgName);
         return index;
-    }
-    
-    /**
-     * Tests if an array reference is not null and each element is not null.
-     * 
-     * @param ref an array reference
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-     * @see ObjectArgs#checkNotNull(Object, String)
-     * @see CollectionArgs#checkElementsNotNull(java.util.Collection, String)
-     * @throws NullPointerException if {@code ref} (or any element) or {@code argName} is null
-     * @throws IllegalArgumentException if {@code argName} is empty or whitespace
-     */
-    public static <T> void checkElementsNotNull(T[] ref, String argName) {
-        ObjectArgs.checkNotNull(ref, argName);
-        for (int i = 0; i < ref.length; ++i) {
-            T item = ref[i];
-            if (null == item) {
-                throw new NullPointerException(String.format(
-                    "Array argument '%s': Item at index %d is null", argName, i));
-            }
-        }
     }
     
     /**
