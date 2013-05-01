@@ -33,6 +33,9 @@ import java.util.Map;
 
 import com.googlecode.kevinarpe.papaya.Args.ObjectArgs;
 
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public final class MapUtils {
 
 	// Disable default constructor
@@ -260,7 +263,7 @@ public final class MapUtils {
 		int keyListSize = keyList.size();
 		int mapSize = map.size();
 		HashSet<TKey> keySet = (0 == mapSize ? null : new HashSet<TKey>(keyListSize));
-        for (int i = 0; i < keyListSize; i += 2) {
+        for (int i = 0; i < keyListSize; ++i) {
             Object key = keyList.get(i);
             Object value = valueList.get(i);
             TKey castKey = null;
