@@ -31,7 +31,11 @@ import com.googlecode.kevinarpe.papaya.Args.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.Args.IntArgs;
 import com.googlecode.kevinarpe.papaya.Args.ObjectArgs;
 
-public final class ArrayUtil {
+public final class ArrayUtils {
+
+	// Disable default constructor
+	private ArrayUtils() {
+	}
     
     // TODO: Iterable over one or more arrays
     

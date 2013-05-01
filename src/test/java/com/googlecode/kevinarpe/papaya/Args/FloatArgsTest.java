@@ -30,7 +30,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.PrimitiveTypeUtil;
+import com.googlecode.kevinarpe.papaya.PrimitiveTypeUtils;
 import com.googlecode.kevinarpe.papaya.Args.FloatArgs;
 
 /**
@@ -56,7 +56,7 @@ public class FloatArgsTest {
                 { 1.0f },
                 { 99.0f },
                 { Float.MAX_VALUE },
-                { PrimitiveTypeUtil.EPSILON_POSITIVE_FLOAT, },
+                { PrimitiveTypeUtils.EPSILON_POSITIVE_FLOAT, },
         };
     }
     
@@ -151,7 +151,7 @@ public class FloatArgsTest {
                 { -99.0f },
                 { -Float.MIN_VALUE },
                 { -Float.MAX_VALUE },
-                { PrimitiveTypeUtil.EPSILON_NEGATIVE_FLOAT, },
+                { PrimitiveTypeUtils.EPSILON_NEGATIVE_FLOAT, },
         };
     }
     

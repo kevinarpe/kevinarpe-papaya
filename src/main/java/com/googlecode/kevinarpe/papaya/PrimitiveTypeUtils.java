@@ -25,7 +25,11 @@ package com.googlecode.kevinarpe.papaya;
  * #L%
  */
 
-public final class PrimitiveTypeUtil {
+public final class PrimitiveTypeUtils {
+
+	// Disable default constructor
+	private PrimitiveTypeUtils() {
+	}
 
     // Ref: http://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
     

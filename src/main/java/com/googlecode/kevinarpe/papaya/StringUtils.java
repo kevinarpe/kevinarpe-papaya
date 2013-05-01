@@ -32,7 +32,11 @@ import com.googlecode.kevinarpe.papaya.Args.IntArgs;
 import com.googlecode.kevinarpe.papaya.Args.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.Args.StringArgs;
 
-public final class StringUtil {
+public final class StringUtils {
+
+	// Disable default constructor
+	private StringUtils() {
+	}
 
     public static final String NEW_LINE;
     public static final String UNIX_NEW_LINE;
@@ -57,7 +61,7 @@ public final class StringUtil {
      * @return boolean value
      * @throws NullPointerException if {@code str} is null
      * @throws IllegalArgumentException if {@code str} is not "true" or "false", ignoring case
-     * @see FuncUtil#PARSE_BOOLEAN_FROM_STRING
+     * @see FuncUtils#PARSE_BOOLEAN_FROM_STRING
      */
     public static boolean parseBoolean(String str) {
         ObjectArgs.checkNotNull(str, "str");

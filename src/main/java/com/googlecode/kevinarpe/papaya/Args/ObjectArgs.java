@@ -45,6 +45,10 @@ package com.googlecode.kevinarpe.papaya.Args;
  */
 public final class ObjectArgs {
 
+	// Disable default constructor
+	private ObjectArgs() {
+	}
+
     /**
      * Tests if an object reference passed as an argument is not null.
      * 

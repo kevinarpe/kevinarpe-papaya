@@ -30,7 +30,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.PrimitiveTypeUtil;
+import com.googlecode.kevinarpe.papaya.PrimitiveTypeUtils;
 import com.googlecode.kevinarpe.papaya.Args.DoubleArgs;
 
 /**
@@ -56,8 +56,8 @@ public class DoubleArgsTest {
                 { 1.0d },
                 { 99.0d },
                 { Double.MAX_VALUE },
-                { (double)PrimitiveTypeUtil.EPSILON_POSITIVE_FLOAT, },
-                { PrimitiveTypeUtil.EPSILON_POSITIVE_DOUBLE, },
+                { (double)PrimitiveTypeUtils.EPSILON_POSITIVE_FLOAT, },
+                { PrimitiveTypeUtils.EPSILON_POSITIVE_DOUBLE, },
         };
     }
     
@@ -152,8 +152,8 @@ public class DoubleArgsTest {
                 { -99.0d },
                 { -Double.MIN_VALUE },
                 { -Double.MAX_VALUE },
-                { (double)PrimitiveTypeUtil.EPSILON_NEGATIVE_FLOAT, },
-                { PrimitiveTypeUtil.EPSILON_NEGATIVE_DOUBLE, },
+                { (double)PrimitiveTypeUtils.EPSILON_NEGATIVE_FLOAT, },
+                { PrimitiveTypeUtils.EPSILON_NEGATIVE_DOUBLE, },
         };
     }
     

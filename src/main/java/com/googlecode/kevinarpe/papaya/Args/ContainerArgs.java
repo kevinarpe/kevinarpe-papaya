@@ -30,6 +30,25 @@ package com.googlecode.kevinarpe.papaya.Args;
  */
 final class ContainerArgs {
 
+	// Disable default constructor
+	private ContainerArgs() {
+	}
+	
+	static void _checkNotEmpty(
+			Object container,
+            String containerType,
+            int size,
+            String containerArgName) {
+        ObjectArgs.checkNotNull(container, containerArgName);
+        if (0 == size) {
+            StringArgs.checkNotEmptyOrWhitespace(containerType, "containerType");
+            StringArgs._checkArgNameValid(containerArgName, "containerArgName");
+            throw new IllegalArgumentException(String.format(
+                "%s argument '%s' is empty",
+                containerType, containerArgName));
+        }
+	}
+
     static void _checkSizeRange(
             Object container,
             String containerType,
@@ -42,21 +61,21 @@ final class ContainerArgs {
             StringArgs.checkNotEmptyOrWhitespace(containerType, "containerType");
             StringArgs._checkArgNameValid(containerArgName, "containerArgName");
             throw new IllegalArgumentException(String.format(
-                "%s argument '%s': 'minSize' > 'maxSize': %d > %d",
+                "%s argument '%s': minSize > maxSize: %d > %d",
                 containerType, containerArgName, minSize, maxSize));
         }
         if (-1 != minSize && size < minSize) {
             StringArgs.checkNotEmptyOrWhitespace(containerType, "containerType");
             StringArgs._checkArgNameValid(containerArgName, "containerArgName");
             throw new IllegalArgumentException(String.format(
-                "%s argument '%s': size < 'minSize': %d < %d",
+                "%s argument '%s': size < minSize: %d < %d",
                 containerType, containerArgName, size, minSize));
         }
         if (-1 != maxSize && size > maxSize) {
             StringArgs.checkNotEmptyOrWhitespace(containerType, "containerType");
             StringArgs._checkArgNameValid(containerArgName, "containerArgName");
             throw new IllegalArgumentException(String.format(
-                "%s argument '%s': size > 'maxSize': %d > %d",
+                "%s argument '%s': size > maxSize: %d > %d",
                 containerType, containerArgName, size, maxSize));
         }
     }

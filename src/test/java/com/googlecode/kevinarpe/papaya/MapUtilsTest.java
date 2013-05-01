@@ -25,15 +25,16 @@ package com.googlecode.kevinarpe.papaya;
  * #L%
  */
 
+import java.util.Arrays;
+import java.util.HashMap;
+
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.Args.ArrayArgs;
-
-public class FuncUtilTest {
+public class MapUtilsTest {
 
     @BeforeClass
     public void classSetup() {
@@ -42,34 +43,29 @@ public class FuncUtilTest {
     @AfterClass
     public void classTearDown() {
     }
-
+    
     ///////////////////////////////////////////////////////////////////////////
-    // FuncUtil.PARSE_BOOLEAN_FROM_STRING
+    // MapUtil.asHashMap
     //
-
+    
     @DataProvider
-    private static final Object[][] _dataForShouldParseBooleanFromString() {
+    private static final Object[][] _dataForShouldCreateHashMap() {
         return new Object[][] {
-                { "true", true },
-                { "True", true },
-                { "tRue", true },
-                { "trUe", true },
-                { "truE", true },
-                { "TRUE", true },
-                
-                { "false", false },
-                { "False", false },
-                { "fAlse", false },
-                { "faLse", false },
-                { "falSe", false },
-                { "falsE", false },
-                { "FALSE", false },
+        		{ "abc", 123 },
+        		{ "abc", 123, "def", 456 },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldParseBooleanFromString")
-    public void shouldParseBooleanFromString(String input, boolean expectedOutput) {
-    	boolean output = FuncUtil.PARSE_BOOLEAN_FROM_STRING.call(input);
-    	Assert.assertEquals(output, expectedOutput);
+    @Test(dataProvider = "_dataForShouldCreateHashMap")
+    public void shouldCreateHashMap(Object... keyAndValueArr) {
+    	HashMap<?, ?> map = MapUtils.asHashMap2(Arrays.asList(keyAndValueArr));
+    	Assert.assertEquals(keyAndValueArr.length / 2, map.size());
+    	for (int i = 0; i < keyAndValueArr.length; i += 2) {
+    		Object key = keyAndValueArr[i];
+    		Object value = keyAndValueArr[1 + i];
+    		Assert.assertTrue(map.containsKey(key));
+    		Object valueForKey = map.get(key);
+    		Assert.assertEquals(value, valueForKey);
+    	}
     }
 }

@@ -30,6 +30,10 @@ package com.googlecode.kevinarpe.papaya.Args;
  */
 public class FloatArgs {
 
+	// Disable default constructor
+	private FloatArgs() {
+	}
+
     /**
      * This is a convenience method for {@link DoubleArgs#checkPositive(double, String)}.
      * 

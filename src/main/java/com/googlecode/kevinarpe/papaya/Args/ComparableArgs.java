@@ -30,6 +30,10 @@ package com.googlecode.kevinarpe.papaya.Args;
  */
 public final class ComparableArgs {
 
+	// Disable default constructor
+	private ComparableArgs() {
+	}
+
     /**
      * Tests if a Comparable reference is not null and its value within specified range.
      * 

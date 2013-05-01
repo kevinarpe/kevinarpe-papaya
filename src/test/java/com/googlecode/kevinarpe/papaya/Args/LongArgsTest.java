@@ -30,7 +30,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.PrimitiveTypeUtil;
+import com.googlecode.kevinarpe.papaya.PrimitiveTypeUtils;
 import com.googlecode.kevinarpe.papaya.Args.LongArgs;
 
 /**
@@ -56,10 +56,10 @@ public class LongArgsTest {
                 { 1 },
                 { 99 },
                 { Long.MAX_VALUE },
-                { (long)(1.0f + PrimitiveTypeUtil.EPSILON_POSITIVE_FLOAT), },
-                { (long)(1.0f - PrimitiveTypeUtil.EPSILON_POSITIVE_FLOAT), },
-                { (long)(1.0d + PrimitiveTypeUtil.EPSILON_POSITIVE_DOUBLE), },
-                { (long)(1.0d - PrimitiveTypeUtil.EPSILON_POSITIVE_DOUBLE), },
+                { (long)(1.0f + PrimitiveTypeUtils.EPSILON_POSITIVE_FLOAT), },
+                { (long)(1.0f - PrimitiveTypeUtils.EPSILON_POSITIVE_FLOAT), },
+                { (long)(1.0d + PrimitiveTypeUtils.EPSILON_POSITIVE_DOUBLE), },
+                { (long)(1.0d - PrimitiveTypeUtils.EPSILON_POSITIVE_DOUBLE), },
         };
     }
     

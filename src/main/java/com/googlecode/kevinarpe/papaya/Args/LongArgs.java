@@ -30,6 +30,10 @@ package com.googlecode.kevinarpe.papaya.Args;
  */
 public final class LongArgs {
 
+	// Disable default constructor
+	private LongArgs() {
+	}
+
     /**
      * Tests if {@code value > 0}
      * 

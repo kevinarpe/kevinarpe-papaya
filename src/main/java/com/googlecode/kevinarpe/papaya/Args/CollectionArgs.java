@@ -32,8 +32,12 @@ import java.util.Collection;
  */
 public final class CollectionArgs {
 
+	// Disable default constructor
+	private CollectionArgs() {
+	}
+
     /**
-     * Tests if a collection reference is not null and its size within specified range.
+     * Tests if a {@link Collection} reference is not null and its size within specified range.
      * Size is defined as the number of elements.
      * 
      * @param ref a collection reference
@@ -60,7 +64,7 @@ public final class CollectionArgs {
     }
     
     /**
-     * Tests if a collection reference is not null and not empty (size >= 1).
+     * Tests if a {@link Collection} reference is not null and not empty (size >= 1).
      * Size is defined as the number of elements.
      * 
      * @param ref a collection reference
@@ -73,13 +77,11 @@ public final class CollectionArgs {
      */
     public static <T> void checkNotEmpty(Collection<T> ref, String argName) {
         int size = (null == ref ? -1 : ref.size());
-        int minSize = 1;
-        int maxSize = -1;
-        ContainerArgs._checkSizeRange(ref, "Collection", size, minSize, maxSize, argName);
+        ContainerArgs._checkNotEmpty(ref, "Collection", size, argName);
     }
     
     /**
-     * Tests if a collection reference is not null and has a minimum size.
+     * Tests if a {@link Collection} reference is not null and has a minimum size.
      * Size is defined as the number of elements.
      * 
      * @param ref a collection reference
@@ -100,7 +102,7 @@ public final class CollectionArgs {
     }
     
     /**
-     * Tests if a collection reference is not null and has a maximum size.
+     * Tests if a {@link Collection} reference is not null and has a maximum size.
      * Size is defined as the number of elements.
      * 
      * @param ref a collection reference
@@ -121,7 +123,7 @@ public final class CollectionArgs {
     }
     
     /**
-     * Tests if a collection reference is not null and has an exact size.
+     * Tests if a {@link Collection} reference is not null and has an exact size.
      * Size is defined as the number of elements.
      * 
      * @param ref a collection reference
@@ -141,7 +143,7 @@ public final class CollectionArgs {
     }
     
     /**
-     * Tests if a collection reference is not null and each element is not null.  An empty
+     * Tests if a {@link Collection} reference is not null and each element is not null.  An empty
      * collection will pass this test.
      * 
      * @param ref a collection reference
@@ -166,7 +168,17 @@ public final class CollectionArgs {
     }
     
     /**
-     * Tests if a collection reference is not null and an index is valid to access an element.
+     * This is a convenience method for {@link #checkNotEmpty(Collection, String)}
+     * and {@link #checkElementsNotNull(Collection, String)}.
+     */
+    public static <T> void checkNotEmptyAndElementsNotNull(Collection<T> ref, String argName) {
+    	checkNotEmpty(ref, argName);
+    	checkElementsNotNull(ref, argName);
+    }
+    
+    /**
+     * Tests if a {@link Collection} reference is not null and an index is valid to access
+     * an element.
      * 
      * @param ref a collection reference
      * @param index index of element to access.  Must be non-negative.
@@ -190,7 +202,8 @@ public final class CollectionArgs {
     }
     
     /**
-     * Tests if a collection reference is not null and an index is valid to insert an element.
+     * Tests if a {@link Collection} reference is not null and an index is valid to insert
+     * an element.
      * 
      * @param ref a collection reference
      * @param index index of element to insert.  Must be non-negative.
@@ -214,7 +227,7 @@ public final class CollectionArgs {
     }
     
     /**
-     * Tests if a collection reference is not null, and an index and count is valid to
+     * Tests if a {@link Collection} reference is not null, and an index and count is valid to
      * access elements.
      * 
      * @param ref a collection reference

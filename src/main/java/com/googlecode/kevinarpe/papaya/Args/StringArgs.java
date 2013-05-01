@@ -30,6 +30,10 @@ package com.googlecode.kevinarpe.papaya.Args;
  */
 public final class StringArgs {
 
+	// Disable default constructor
+	private StringArgs() {
+	}
+
     static <T extends CharSequence> void _checkArgNameValid(
             T ref, String argName) {
         if (null == argName) {

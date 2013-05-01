@@ -33,6 +33,10 @@ import org.joda.time.ReadableInstant;
  */
 public final class DateTimeArgs {
 
+	// Disable default constructor
+	private DateTimeArgs() {
+	}
+
     /**
      * Convenience method to call
      * {@link ComparableArgs#checkValueRange(Comparable, Comparable, Comparable, String)}.

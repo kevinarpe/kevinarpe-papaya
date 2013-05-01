@@ -30,9 +30,27 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+
 import com.googlecode.kevinarpe.papaya.Args.ObjectArgs;
 
-public final class MapUtil {
+public final class MapUtils {
+
+	// Disable default constructor
+	private MapUtils() {
+	}
+	
+	/**
+     * Convenience method to call {@link #asHashMap2(List)}.
+     * 
+     * @see #asHashMap3(List, List)
+     * @see #putKeysAndValues(Map, Object...)
+	 */
+    public static <TKey, TValue> HashMap<TKey, TValue> asHashMap(
+    		Object... keyAndValueArr) {
+    	List<Object> x = Arrays.asList(keyAndValueArr);
+    	HashMap<TKey, TValue> map = asHashMap2(x);
+    	return map;
+    }
 	
 	/**
 	 * Creates a new {@link HashMap} from a list of keys and values.  Duplicate keys are
@@ -40,6 +58,9 @@ public final class MapUtil {
 	 * <p>
 	 * If you want to convert many arguments to a {@link List}, see
 	 * {@link Arrays#asList(Object...)}.
+	 * <p>
+	 * The name of this method is set to prevent accidental method signature conflicts with
+	 * {@link #asHashMap(Object...)} and {@link #asHashMap3(List, List)}.
 	 * 
 	 * @param keyAndValueList list of references: key, then value (repeat).
 	 *        Keys or values may be {@code null}.  List may be empty.
@@ -49,20 +70,39 @@ public final class MapUtil {
 	 *         or a key cannot be cast to type {@code TKey},
 	 *         or a value cannot be cast to type {@code TValue},
 	 *         or a duplicate key exists
+	 * @see #asHashMap(Object...)
+	 * @see #asHashMap3(List, List)
+	 * @see #putKeysAndValues2(Map, List)
 	 */
-    public static <TKey, TValue> HashMap<TKey, TValue> asHashMap(List<?> keyAndValueList) {
+    public static <TKey, TValue> HashMap<TKey, TValue> asHashMap2(List<?> keyAndValueList) {
 		_checkKeyAndValueList(keyAndValueList);
         final int capacity = keyAndValueList.size() / 2;
         HashMap<TKey, TValue> map = new HashMap<TKey, TValue>(capacity);
-    	_putKeysAndValues(map, keyAndValueList);
+    	_putKeysAndValues2(map, keyAndValueList);
     	return map;
     }
+    
+	/**
+     * Convenience method to call {@link #putKeysAndValues2(Map, List)}.
+     * 
+     * @see #putKeysAndValues3(Map, List, List)
+     * @see #asHashMap(Object...)
+	 */
+	public static <TKey, TValue> Map<TKey, TValue> putKeysAndValues(
+			Map<TKey, TValue> map, Object... keyAndValueArr) {
+    	List<Object> x = Arrays.asList(keyAndValueArr);
+    	putKeysAndValues2(map, x);
+    	return map;
+	}
 	
 	/**
 	 * Adds key-value pairs to an existing {@link Map} reference.  Duplicate keys are not allowed.
 	 * <p>
 	 * If you want to convert many arguments to a {@link List}, see
 	 * {@link Arrays#asList(Object...)}.
+	 * <p>
+	 * The name of this method is set to prevent accidental method signature conflicts with
+	 * {@link #putKeysAndValues(Map, Object...)} and {@link #putKeysAndValues3(Map, List, List)}.
 	 *
 	 * @param map reference to add key-value pairs
 	 * @param keyAndValueList list of references: key, then value (repeat).
@@ -73,12 +113,15 @@ public final class MapUtil {
 	 *         or a key cannot be cast to type {@code TKey},
 	 *         or a value cannot be cast to type {@code TValue},
 	 *         or a duplicate key exists
+	 * @see #putKeysAndValues(Map, Object...)
+	 * @see #putKeysAndValues3(Map, List, List)
+	 * @see #asHashMap2(List)
 	 */
-	public static <TKey, TValue> Map<TKey, TValue> putKeysAndValues(
+	public static <TKey, TValue> Map<TKey, TValue> putKeysAndValues2(
 			Map<TKey, TValue> map, List<?> keyAndValueList) {
 		ObjectArgs.checkNotNull(map, "map");
 		_checkKeyAndValueList(keyAndValueList);
-    	_putKeysAndValues(map, keyAndValueList);
+    	_putKeysAndValues2(map, keyAndValueList);
     	return map;
 	}
 	
@@ -92,7 +135,7 @@ public final class MapUtil {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private static <TKey, TValue> Map<TKey, TValue> _putKeysAndValues(
+	private static <TKey, TValue> Map<TKey, TValue> _putKeysAndValues2(
 			Map<TKey, TValue> map, List<?> keyAndValueList) {
 		int keyCount = keyAndValueList.size() / 2;
 		int mapSize = map.size();
@@ -139,6 +182,9 @@ public final class MapUtil {
 	 * <p>
 	 * If you want to convert many arguments to a {@link List}, see
 	 * {@link Arrays#asList(Object...)}.
+	 * <p>
+	 * The name of this method is set to prevent accidental method signature conflicts with
+	 * {@link #asHashMap(Object...)} and {@link #asHashMap2(List)}.
 	 * 
 	 * @param keyList list of references for keys.  Keys may be {@code null}.
 	 *        List may be empty.
@@ -150,13 +196,16 @@ public final class MapUtil {
 	 *         or a key cannot be cast to type {@code TKey},
 	 *         or a value cannot be cast to type {@code TValue},
 	 *         or a duplicate key exists
+	 * @see #asHashMap(Object...)
+	 * @see #asHashMap2(List)
+	 * @see #putKeysAndValues3(Map, List, List)
 	 */
-    public static <TKey, TValue> HashMap<TKey, TValue> asHashMap(
+    public static <TKey, TValue> HashMap<TKey, TValue> asHashMap3(
     		List<?> keyList, List<?> valueList) {
     	_checkKeyAndValueLists(keyList, valueList);
         final int capacity = keyList.size();
         HashMap<TKey, TValue> map = new HashMap<TKey, TValue>(capacity);
-    	_putKeysAndValues(map, keyList, valueList);
+    	_putKeysAndValues3(map, keyList, valueList);
     	return map;
     }
 	
@@ -165,6 +214,9 @@ public final class MapUtil {
 	 * <p>
 	 * If you want to convert many arguments to a {@link List}, see
 	 * {@link Arrays#asList(Object...)}.
+	 * <p>
+	 * The name of this method is set to prevent accidental method signature conflicts with
+	 * {@link #putKeysAndValues(Map, Object...)} and {@link #putKeysAndValues2(Map, List)}.
      * 
 	 * @param map reference to add key-value pairs
 	 * @param keyList list of references for keys.  Keys may be {@code null}.
@@ -177,11 +229,14 @@ public final class MapUtil {
 	 *         or a key cannot be cast to type {@code TKey},
 	 *         or a value cannot be cast to type {@code TValue},
 	 *         or a duplicate key exists
+	 * @see #putKeysAndValues(Map, Object...)
+	 * @see #putKeysAndValues2(Map, List)
+	 * @see #asHashMap3(List, List)
      */
-	public static <TKey, TValue> Map<TKey, TValue> putKeysAndValues(
+	public static <TKey, TValue> Map<TKey, TValue> putKeysAndValues3(
 			Map<TKey, TValue> map, List<?> keyList, List<?> valueList) {
     	_checkKeyAndValueLists(keyList, valueList);
-    	_putKeysAndValues(map, keyList, valueList);
+    	_putKeysAndValues3(map, keyList, valueList);
     	return map;
 	}
 	
@@ -198,7 +253,7 @@ public final class MapUtil {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private static <TKey, TValue> Map<TKey, TValue> _putKeysAndValues(
+	private static <TKey, TValue> Map<TKey, TValue> _putKeysAndValues3(
 			Map<TKey, TValue> map,
 			List<?> keyList,
 			List<?> valueList) {

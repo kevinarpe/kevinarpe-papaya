@@ -33,6 +33,10 @@ import java.io.FileNotFoundException;
  */
 public final class FileArgs {
 
+	// Disable default constructor
+	private FileArgs() {
+	}
+
     /**
      * This is a convenience method for {@link #checkRegularFileExists(File, String)}.
      * 

@@ -30,6 +30,10 @@ package com.googlecode.kevinarpe.papaya.Args;
  */
 public final class ByteArgs {
 
+	// Disable default constructor
+	private ByteArgs() {
+	}
+
     /**
      * This is a convenience method for {@link LongArgs#checkPositive(long, String)}.
      * 

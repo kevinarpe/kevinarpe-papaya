@@ -28,7 +28,11 @@ package com.googlecode.kevinarpe.papaya;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public final class FuncUtil {
+public final class FuncUtils {
+
+	// Disable default constructor
+	private FuncUtils() {
+	}
 	
 	/**
 	 * Useful for instanceof tests 
@@ -60,7 +64,7 @@ public final class FuncUtil {
     // Yada, yada...
     
     /**
-     * Calls {@link StringUtil#parseBoolean(String)}.
+     * Calls {@link StringUtils#parseBoolean(String)}.
      */
     public static final Func1<Boolean, String> PARSE_BOOLEAN_FROM_STRING;
     
@@ -99,7 +103,7 @@ public final class FuncUtil {
 
             @Override
             public Boolean call(String str) {
-                boolean b = StringUtil.parseBoolean(str);
+                boolean b = StringUtils.parseBoolean(str);
                 return b;
             }
         };

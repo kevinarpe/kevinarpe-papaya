@@ -30,6 +30,10 @@ package com.googlecode.kevinarpe.papaya.Args;
  */
 public class CharArgs {
 
+	// Disable default constructor
+	private CharArgs() {
+	}
+
     /**
      * Convenience method to call
      * {@link ComparableArgs#checkValueRange(Comparable, Comparable, Comparable, String)}.

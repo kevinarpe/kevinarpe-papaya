@@ -31,12 +31,12 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.Assert;
 
-import com.googlecode.kevinarpe.papaya.StringUtil;
+import com.googlecode.kevinarpe.papaya.StringUtils;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class StringUtilTest {
+public class StringUtilsTest {
 
     @BeforeClass
     public void classSetup() {
@@ -96,14 +96,14 @@ public class StringUtilTest {
     
     @Test(dataProvider = "_dataForShouldCorrectlyTrimWhitespacePrefix")
     public void shouldCorrectlyTrimWhitespacePrefix(String input, String expectedOutput) {
-        String output = StringUtil.trimWhitespacePrefix(input);
+        String output = StringUtils.trimWhitespacePrefix(input);
         Assert.assertEquals(output, expectedOutput);
     }
     
     @Test(expectedExceptions = NullPointerException.class)
     public void shouldNotTrimWhitespacePrefixWithNullInput() {
         String input = null;
-        StringUtil.trimWhitespacePrefix(input);
+        StringUtils.trimWhitespacePrefix(input);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -156,14 +156,14 @@ public class StringUtilTest {
     
     @Test(dataProvider = "_dataForShouldCorrectlyTrimWhitespaceSuffix")
     public void shouldCorrectlyTrimWhitespaceRight(String input, String expectedOutput) {
-        String output = StringUtil.trimWhitespaceSuffix(input);
+        String output = StringUtils.trimWhitespaceSuffix(input);
         Assert.assertEquals(output, expectedOutput);
     }
     
     @Test(expectedExceptions = NullPointerException.class)
     public void shouldNotTrimWhitespaceSuffixWithNullInput() {
         String input = null;
-        StringUtil.trimWhitespaceSuffix(input);
+        StringUtils.trimWhitespaceSuffix(input);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -192,14 +192,14 @@ public class StringUtilTest {
     
     @Test(dataProvider = "_dataForShouldParseBoolean")
     public void shouldParseBoolean(String input, boolean expectedOutput) {
-        boolean output = StringUtil.parseBoolean(input);
+        boolean output = StringUtils.parseBoolean(input);
         Assert.assertEquals(output, expectedOutput);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void shouldNotParseBooleanWithNullInput() {
         String input = null;
-        StringUtil.parseBoolean(input);
+        StringUtils.parseBoolean(input);
     }
 
     @DataProvider
@@ -224,7 +224,7 @@ public class StringUtilTest {
     @Test(dataProvider = "_dataForShouldNotParseBooleanWithInvalidInput",
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotParseBooleanWithInvalidInput(String input) {
-        StringUtil.parseBoolean(input);
+        StringUtils.parseBoolean(input);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -249,14 +249,14 @@ public class StringUtilTest {
     
     @Test(dataProvider = "_dataForShouldRunIsWhiteSpaceWithoutException")
     public void shouldRunIsWhiteSpaceWithoutException(String input, boolean expectedOutput) {
-        boolean output = StringUtil.isWhitespace(input);
+        boolean output = StringUtils.isWhitespace(input);
         Assert.assertEquals(output, expectedOutput);
     }
     
     @Test(expectedExceptions = NullPointerException.class)
     public void shouldRunIsWhiteSpaceWithException() {
         String input = null;
-        StringUtil.isWhitespace(input);
+        StringUtils.isWhitespace(input);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -296,7 +296,7 @@ public class StringUtilTest {
     
     @Test(dataProvider = "_dataForShouldCorrectlySubstringPrefix")
     public void shouldCorrectlySubstringPrefix(String input, int count, String expectedOutput) {
-        String output = StringUtil.substringPrefix(input, count);
+        String output = StringUtils.substringPrefix(input, count);
         Assert.assertEquals(output, expectedOutput);
     }
     
@@ -314,7 +314,7 @@ public class StringUtilTest {
     @Test(dataProvider = "_dataForShouldNotSubstringPrefixWithNullInput",
             expectedExceptions = NullPointerException.class)
     public void shouldNotSubstringPrefixWithNullInput(String input, int count) {
-        StringUtil.substringPrefix(input, count);
+        StringUtils.substringPrefix(input, count);
     }
     
     @DataProvider
@@ -330,7 +330,7 @@ public class StringUtilTest {
     @Test(dataProvider = "_dataForShouldNotSubstringPrefixWithInvalidCount",
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotSubstringPrefixWithInvalidCount(String input, int count) {
-        StringUtil.substringPrefix(input, count);
+        StringUtils.substringPrefix(input, count);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -375,7 +375,7 @@ public class StringUtilTest {
     
     @Test(dataProvider = "_dataForShouldCorrectlySubstringSuffix")
     public void shouldCorrectlySubstringSuffix(String input, int count, String expectedOutput) {
-        String output = StringUtil.substringSuffix(input, count);
+        String output = StringUtils.substringSuffix(input, count);
         Assert.assertEquals(output, expectedOutput);
     }
     
@@ -393,7 +393,7 @@ public class StringUtilTest {
     @Test(dataProvider = "_dataForShouldNotSubstringSuffixWithNullInput",
             expectedExceptions = NullPointerException.class)
     public void shouldNotSubstringSuffixWithNullInput(String input, int count) {
-        StringUtil.substringSuffix(input, count);
+        StringUtils.substringSuffix(input, count);
     }
     
     @DataProvider
@@ -409,6 +409,6 @@ public class StringUtilTest {
     @Test(dataProvider = "_dataForShouldNotSubstringSuffixWithInvalidCount",
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotSubstringSuffixWithInvalidCount(String input, int count) {
-        StringUtil.substringSuffix(input, count);
+        StringUtils.substringSuffix(input, count);
     }
 }

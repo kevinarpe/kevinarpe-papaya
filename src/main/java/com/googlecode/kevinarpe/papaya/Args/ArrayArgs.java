@@ -30,6 +30,10 @@ package com.googlecode.kevinarpe.papaya.Args;
  */
 public final class ArrayArgs {
 
+	// Disable default constructor
+	private ArrayArgs() {
+	}
+
     /**
      * Tests if an array reference is not null and its length within specified range.
      * Length is defined as the number of elements.
@@ -38,6 +42,7 @@ public final class ArrayArgs {
      * @param minLen minimum number of elements (inclusive).  Must be non-negative.
      * @param maxLen maximum number of elements (inclusive).  Must be non-negative.
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @return the validated array reference
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code minLen < 0},
      *         or if {@code maxLen < 0},
@@ -64,6 +69,7 @@ public final class ArrayArgs {
      * 
      * @param ref an array reference
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @return the validated array reference
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if number of elements in {@code ref} is zero,
      *         or if {@code argName} is empty or whitespace
@@ -72,9 +78,7 @@ public final class ArrayArgs {
      */
     public static <T> T[] checkNotEmpty(T[] ref, String argName) {
         int len = (null == ref ? -1 : ref.length);
-        int minLen = 1;
-        int maxLen = -1;
-        ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
+        ContainerArgs._checkNotEmpty(ref, "Array", len, argName);
         return ref;
     }
     
@@ -85,6 +89,7 @@ public final class ArrayArgs {
      * @param ref an array reference
      * @param minLen minimum number of elements (inclusive).  Must be non-negative.
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @return the validated array reference
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code minLen < 0},
      *         or if number of elements in {@code ref} is outside allowed range,
@@ -106,6 +111,7 @@ public final class ArrayArgs {
      * @param ref an array reference
      * @param maxLen maximum number of elements (inclusive).  Must be non-negative.
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @return the validated array reference
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code maxLen < 0},
      *         or if number of elements in {@code ref} is outside allowed range,
@@ -127,6 +133,7 @@ public final class ArrayArgs {
      * @param ref an array reference
      * @param exactLen exact number of elements (inclusive).  Must be non-negative.
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @return the validated array reference
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code exactLen < 0},
      *         or if number of elements in {@code ref} is outside allowed range,
@@ -145,12 +152,13 @@ public final class ArrayArgs {
      * 
      * @param ref an array reference
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @return the validated array reference
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see CollectionArgs#checkElementsNotNull(java.util.Collection, String)
      * @throws NullPointerException if {@code ref} (or any element) or {@code argName} is null
      * @throws IllegalArgumentException if {@code argName} is empty or whitespace
      */
-    public static <T> void checkElementsNotNull(T[] ref, String argName) {
+    public static <T> T[] checkElementsNotNull(T[] ref, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
         for (int i = 0; i < ref.length; ++i) {
             T item = ref[i];
@@ -160,6 +168,19 @@ public final class ArrayArgs {
                     "Array argument '%s': Item at index %d is null", argName, i));
             }
         }
+        return ref;
+    }
+    
+    /**
+     * This is a convenience method for {@link #checkNotEmpty(Object[], String)}
+     * and {@link #checkElementsNotNull(Object[], String)}.
+     * 
+     * This method is useful to check variable argument lists (var args).
+     */
+    public static <T> T[] checkNotEmptyAndElementsNotNull(T[] ref, String argName) {
+    	checkNotEmpty(ref, argName);
+    	checkElementsNotNull(ref, argName);
+    	return ref;
     }
     
     /**

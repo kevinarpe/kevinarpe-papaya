@@ -30,6 +30,10 @@ package com.googlecode.kevinarpe.papaya.Args;
  */
 public class DoubleArgs {
 
+	// Disable default constructor
+	private DoubleArgs() {
+	}
+
     /**
      * Tests if {@code value > 0.0d}
      * 

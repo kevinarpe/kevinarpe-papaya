@@ -30,6 +30,10 @@ package com.googlecode.kevinarpe.papaya.Args;
  */
 public final class IntArgs {
 
+	// Disable default constructor
+	private IntArgs() {
+	}
+
     /**
      * This is a convenience method for {@link LongArgs#checkPositive(long, String)}.
      * 

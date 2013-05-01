@@ -33,12 +33,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.ArrayUtil;
+import com.googlecode.kevinarpe.papaya.ArrayUtils;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class ArrayUtilTest {
+public class ArrayUtilsTest {
 
     @BeforeClass
     public void oneTimeSetup() {
@@ -70,10 +70,10 @@ public class ArrayUtilTest {
                     manualArr[j] = arr[count + j];
                 }
                 if (1 == count) {
-                    Object[] arr2 = ArrayUtil.remove(arr, index);
+                    Object[] arr2 = ArrayUtils.remove(arr, index);
                     Assert.assertEquals(Arrays.equals(manualArr, arr2), true);
                 }
-                Object[] arr3 = ArrayUtil.remove(arr, index, count);
+                Object[] arr3 = ArrayUtils.remove(arr, index, count);
                 Assert.assertEquals(Arrays.equals(manualArr, arr3), true);
             }
         }
