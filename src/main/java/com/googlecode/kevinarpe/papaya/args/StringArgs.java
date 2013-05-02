@@ -1,4 +1,6 @@
-package com.googlecode.kevinarpe.papaya.Args;
+package com.googlecode.kevinarpe.papaya.args;
+
+import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 
 /*
  * #%L
@@ -26,6 +28,8 @@ package com.googlecode.kevinarpe.papaya.Args;
  */
 
 /**
+ * See {@link ObjectArgs} for an overview.
+ * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public final class StringArgs {
@@ -76,6 +80,7 @@ public final class StringArgs {
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see #checkNotEmptyOrWhitespace(CharSequence, String)
      */
+    @FullyTested
     public static <T extends CharSequence> T checkNotEmpty(T ref, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
         int len = ref.length();
@@ -102,6 +107,7 @@ public final class StringArgs {
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see #checkNotEmpty(CharSequence, String)
      */
+    @FullyTested
     public static <T extends CharSequence> T checkNotEmptyOrWhitespace(
             T ref, String argName) {
         checkNotEmpty(ref, argName);
@@ -136,6 +142,7 @@ public final class StringArgs {
      * @see #checkMaxLength(CharSequence, int, String)
      * @see #checkExactLength(CharSequence, int, String)
      */
+    @FullyTested
     public static <T extends CharSequence> T checkLengthRange(
             T ref, int minLen, int maxLen, String argName) {
         IntArgs.checkNotNegative(minLen, "minLen");
@@ -182,6 +189,7 @@ public final class StringArgs {
      *         or if {@code argName} is empty or whitespace
      * @see #checkLengthRange(CharSequence, int, int, String)
      */
+    @FullyTested
     public static <T extends CharSequence> T checkMinLength(
             T ref, int minLen, String argName) {
         IntArgs.checkNotNegative(minLen, "minLen");
@@ -205,6 +213,7 @@ public final class StringArgs {
      *         or if {@code argName} is empty or whitespace
      * @see #checkLengthRange(CharSequence, int, int, String)
      */
+    @FullyTested
     public static <T extends CharSequence> T checkMaxLength(
             T ref, int maxLen, String argName) {
         IntArgs.checkNotNegative(maxLen, "maxLen");
@@ -228,6 +237,7 @@ public final class StringArgs {
      *         or if {@code argName} is empty or whitespace
      * @see #checkLengthRange(CharSequence, int, int, String)
      */
+    @FullyTested
     public static <T extends CharSequence> T checkExactLength(
             T ref, int exactLen, String argName) {
         IntArgs.checkNotNegative(exactLen, "exactLen");
@@ -250,6 +260,7 @@ public final class StringArgs {
      * @throws IndexOutOfBoundsException if {@code index < 0},
      *         or {@code index >= ref.length()}
      */
+    @FullyTested
     public static <T extends CharSequence> int checkInsertIndex(
             T ref, int index, String refArgName, String indexArgName) {
         int len = (null == ref ? -1 : ref.length());
@@ -278,6 +289,7 @@ public final class StringArgs {
      * @throws IndexOutOfBoundsException if {@code index >= ref.length()},
      *         or if {@code index + count > ref.length()}
      */
+    @FullyTested
     public static <T extends CharSequence> void checkIndexAndCount(
             T ref,
             int index,

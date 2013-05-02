@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.Args;
+package com.googlecode.kevinarpe.papaya.args;
 
 /*
  * #%L
@@ -26,6 +26,8 @@ package com.googlecode.kevinarpe.papaya.Args;
  */
 
 /**
+ * See {@link ObjectArgs} for an overview.
+ * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public final class ComparableArgs {

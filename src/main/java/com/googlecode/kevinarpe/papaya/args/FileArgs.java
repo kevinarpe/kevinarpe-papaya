@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.Args;
+package com.googlecode.kevinarpe.papaya.args;
 
 /*
  * #%L
@@ -29,6 +29,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 /**
+ * See {@link ObjectArgs} for an overview.
+ * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public final class FileArgs {

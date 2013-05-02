@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.Args;
+package com.googlecode.kevinarpe.papaya.args;
 
 /*
  * #%L
@@ -26,106 +26,108 @@ package com.googlecode.kevinarpe.papaya.Args;
  */
 
 /**
+ * See {@link ObjectArgs} for an overview.
+ * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public final class LongArgs {
+public class DoubleArgs {
 
 	// Disable default constructor
-	private LongArgs() {
+	private DoubleArgs() {
 	}
 
     /**
-     * Tests if {@code value > 0}
+     * Tests if {@code value > 0.0d}
      * 
      * @param value a value to test
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
      * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value <= 0},
-     *         if {@code argName} is empty or whitespace
-     * @see #checkNotPositive(long, String)
-     * @see #checkNegative(long, String)
-     * @see #checkNotNegative(long, String)
+     * @throws IllegalArgumentException if value of {@code value <= 0.0d},
+     *         or if {@code argName} is empty or whitespace
+     * @see #checkNotPositive(double, String)
+     * @see #checkNegative(double, String)
+     * @see #checkNotNegative(double, String)
      */
-    public static long checkPositive(long value, String argName) {
+    public static double checkPositive(double value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
-        if (value <= 0) {
+        if (value <= 0.0d) {
             StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                "Argument '%s': Value is not positive: %d",
-                argName, value));
+                    "Argument '%s': value is not positive: %f",
+                    argName, value));
         }
         return value;
     }
     
     /**
-     * Tests if {@code value <= 0}
+     * Tests if {@code value <= 0.0d}
      * 
      * @param value a value to test
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
      * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value > 0},
-     *         if {@code argName} is empty or whitespace
-     * @see #checkPositive(long, String)
-     * @see #checkNegative(long, String)
-     * @see #checkNotNegative(long, String)
+     * @throws IllegalArgumentException if value of {@code value > 0.0d},
+     *         or if {@code argName} is empty or whitespace
+     * @see #checkPositive(double, String)
+     * @see #checkNegative(double, String)
+     * @see #checkNotNegative(double, String)
      */
-    public static long checkNotPositive(long value, String argName) {
+    public static double checkNotPositive(double value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
-        if (value > 0) {
+        if (value > 0.0d) {
             StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                "Argument '%s': Value is positive: %d",
-                argName, value));
+                    "Argument '%s': value is positive: %f",
+                    argName, value));
         }
         return value;
     }
     
     /**
-     * Tests if {@code value < 0}
+     * Tests if {@code value < 0.0d}
      * 
      * @param value a value to test
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
      * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value => 0},
-     *         if {@code argName} is empty or whitespace
-     * @see #checkPositive(long, String)
-     * @see #checkNotPositive(long, String)
-     * @see #checkNotNegative(long, String)
+     * @throws IllegalArgumentException if value of {@code value => 0.0d},
+     *         or if {@code argName} is empty or whitespace
+     * @see #checkPositive(double, String)
+     * @see #checkNotPositive(double, String)
+     * @see #checkNotNegative(double, String)
      */
-    public static long checkNegative(long value, String argName) {
+    public static double checkNegative(double value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
-        if (value >= 0) {
+        if (value >= 0.0d) {
             StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                "Argument '%s': Value is not negative: %d",
-                argName, value));
+                    "Argument '%s': value is not negative: %f",
+                    argName, value));
         }
         return value;
     }
     
     /**
-     * Tests if {@code value >= 0}
+     * Tests if {@code value >= 0.0d}
      * 
      * @param value a value to test
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
      * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value < 0},
-     *         if {@code argName} is empty or whitespace
-     * @see #checkPositive(long, String)
-     * @see #checkNotPositive(long, String)
-     * @see #checkNegative(long, String)
+     * @throws IllegalArgumentException if value of {@code value < 0.0d},
+     *         or if {@code argName} is empty or whitespace
+     * @see #checkPositive(double, String)
+     * @see #checkNotPositive(double, String)
+     * @see #checkNegative(double, String)
      */
-    public static long checkNotNegative(long value, String argName) {
+    public static double checkNotNegative(double value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
-        if (value < 0) {
+        if (value < 0.0d) {
             StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                "Argument '%s': Value is negative: %d",
-                argName, value));
+                    "Argument '%s': value is negative: %f",
+                    argName, value));
         }
         return value;
     }
@@ -134,12 +136,12 @@ public final class LongArgs {
      * Convenience method to call
      * {@link ComparableArgs#checkValueRange(Comparable, Comparable, Comparable, String)}.
      * 
-     * @see #checkMinValue(long, long, String)
-     * @see #checkMaxValue(long, long, String)
-     * @see #checkExactValue(long, long, String)
+     * @see #checkMinValue(double, double, String)
+     * @see #checkMaxValue(double, double, String)
+     * @see #checkExactValue(double, double, String)
      */
-    public static long checkValueRange(
-            long value, long minValue, long maxValue, String argName) {
+    public static double checkValueRange(
+            double value, double minValue, double maxValue, String argName) {
         ComparableArgs.checkValueRange(value, minValue, maxValue, argName);
         return value;
     }
@@ -148,11 +150,11 @@ public final class LongArgs {
      * Convenience method to call
      * {@link ComparableArgs#checkMinValue(Comparable, Comparable, String)}.
      * 
-     * @see #checkValueRange(long, long, long, String)
-     * @see #checkMaxValue(long, long, String)
-     * @see #checkExactValue(long, long, String)
+     * @see #checkValueRange(double, double, double, String)
+     * @see #checkMaxValue(double, double, String)
+     * @see #checkExactValue(double, double, String)
      */
-    public static long checkMinValue(long value, long minValue, String argName) {
+    public static double checkMinValue(double value, double minValue, String argName) {
         ComparableArgs.checkMinValue(value, minValue, argName);
         return value;
     }
@@ -161,24 +163,25 @@ public final class LongArgs {
      * Convenience method to call
      * {@link ComparableArgs#checkMaxValue(Comparable, Comparable, String)}.
      * 
-     * @see #checkValueRange(long, long, long, String)
-     * @see #checkMinValue(long, long, String)
-     * @see #checkExactValue(long, long, String)
+     * @see #checkValueRange(double, double, double, String)
+     * @see #checkMinValue(double, double, String)
+     * @see #checkExactValue(double, double, String)
      */
-    public static long checkMaxValue(long value, long maxValue, String argName) {
+    public static double checkMaxValue(double value, double maxValue, String argName) {
         ComparableArgs.checkMaxValue(value, maxValue, argName);
         return value;
     }
-
+    
     /**
      * Convenience method to call
      * {@link ComparableArgs#checkExactValue(Comparable, Comparable, String)}.
      * 
-     * @see #checkValueRange(long, long, long, String)
-     * @see #checkMinValue(long, long, String)
-     * @see #checkMaxValue(long, long, String)
+     * @see #checkValueRange(double, double, double, String)
+     * @see #checkMinValue(double, double, String)
+     * @see #checkMaxValue(double, double, String)
      */
-    public static long checkExactValue(long value, long exactValue, String argName) {
+    public static double checkExactValue(
+            double value, double exactValue, String argName) {
         ComparableArgs.checkExactValue(value, exactValue, argName);
         return value;
     }

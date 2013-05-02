@@ -27,9 +27,9 @@ package com.googlecode.kevinarpe.papaya;
 
 import java.lang.reflect.Array;
 
-import com.googlecode.kevinarpe.papaya.Args.ArrayArgs;
-import com.googlecode.kevinarpe.papaya.Args.IntArgs;
-import com.googlecode.kevinarpe.papaya.Args.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.args.ArrayArgs;
+import com.googlecode.kevinarpe.papaya.args.IntArgs;
+import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 
 public final class ArrayUtils {
 

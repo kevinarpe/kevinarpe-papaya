@@ -31,7 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import com.googlecode.kevinarpe.papaya.Args.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -137,7 +137,7 @@ public final class MapUtils {
         }
 	}
 	
-	@SuppressWarnings("unchecked")
+	//@SuppressWarnings("unchecked")
 	private static <TKey, TValue> Map<TKey, TValue> _putKeysAndValues2(
 			Map<TKey, TValue> map, List<?> keyAndValueList) {
 		int keyCount = keyAndValueList.size() / 2;

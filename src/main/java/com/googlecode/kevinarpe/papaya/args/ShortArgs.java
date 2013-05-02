@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.Args;
+package com.googlecode.kevinarpe.papaya.args;
 
 /*
  * #%L
@@ -26,22 +26,24 @@ package com.googlecode.kevinarpe.papaya.Args;
  */
 
 /**
+ * See {@link ObjectArgs} for an overview.
+ * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public final class IntArgs {
+public final class ShortArgs {
 
 	// Disable default constructor
-	private IntArgs() {
+	private ShortArgs() {
 	}
 
     /**
      * This is a convenience method for {@link LongArgs#checkPositive(long, String)}.
      * 
-     * @see #checkNotPositive(int, String)
-     * @see #checkNegative(int, String)
-     * @see #checkNotNegative(int, String)
+     * @see #checkNotPositive(short, String)
+     * @see #checkNegative(short, String)
+     * @see #checkNotNegative(short, String)
      */
-    public static int checkPositive(int value, String argName) {
+    public static short checkPositive(short value, String argName) {
         LongArgs.checkPositive(value, argName);
         return value;
     }
@@ -49,11 +51,11 @@ public final class IntArgs {
     /**
      * This is a convenience method for {@link LongArgs#checkNotPositive(long, String)}.
      * 
-     * @see #checkPositive(int, String)
-     * @see #checkNegative(int, String)
-     * @see #checkNotNegative(int, String)
+     * @see #checkPositive(short, String)
+     * @see #checkNegative(short, String)
+     * @see #checkNotNegative(short, String)
      */
-    public static int checkNotPositive(int value, String argName) {
+    public static short checkNotPositive(short value, String argName) {
         LongArgs.checkNotPositive(value, argName);
         return value;
     }
@@ -61,11 +63,11 @@ public final class IntArgs {
     /**
      * This is a convenience method for {@link LongArgs#checkNegative(long, String)}.
      * 
-     * @see #checkPositive(int, String)
-     * @see #checkNotPositive(int, String)
-     * @see #checkNotNegative(int, String)
+     * @see #checkPositive(short, String)
+     * @see #checkNotPositive(short, String)
+     * @see #checkNotNegative(short, String)
      */
-    public static int checkNegative(int value, String argName) {
+    public static short checkNegative(short value, String argName) {
         LongArgs.checkNegative(value, argName);
         return value;
     }
@@ -73,11 +75,11 @@ public final class IntArgs {
     /**
      * This is a convenience method for {@link LongArgs#checkNotNegative(long, String)}.
      * 
-     * @see #checkPositive(int, String)
-     * @see #checkNotPositive(int, String)
-     * @see #checkNegative(int, String)
+     * @see #checkPositive(short, String)
+     * @see #checkNotPositive(short, String)
+     * @see #checkNegative(short, String)
      */
-    public static int checkNotNegative(int value, String argName) {
+    public static short checkNotNegative(short value, String argName) {
         LongArgs.checkNotNegative(value, argName);
         return value;
     }
@@ -86,12 +88,12 @@ public final class IntArgs {
      * Convenience method to call
      * {@link ComparableArgs#checkValueRange(Comparable, Comparable, Comparable, String)}.
      * 
-     * @see #checkMinValue(int, int, String)
-     * @see #checkMaxValue(int, int, String)
-     * @see #checkExactValue(int, int, String)
+     * @see #checkMinValue(short, short, String)
+     * @see #checkMaxValue(short, short, String)
+     * @see #checkExactValue(short, short, String)
      */
-    public static int checkValueRange(
-            int value, int minValue, int maxValue, String argName) {
+    public static short checkValueRange(
+            short value, short minValue, short maxValue, String argName) {
         ComparableArgs.checkValueRange(value, minValue, maxValue, argName);
         return value;
     }
@@ -100,11 +102,11 @@ public final class IntArgs {
      * Convenience method to call
      * {@link ComparableArgs#checkMinValue(Comparable, Comparable, String)}.
      * 
-     * @see #checkValueRange(int, int, int, String)
-     * @see #checkMaxValue(int, int, String)
-     * @see #checkExactValue(int, int, String)
+     * @see #checkValueRange(short, short, short, String)
+     * @see #checkMaxValue(short, short, String)
+     * @see #checkExactValue(short, short, String)
      */
-    public static int checkMinValue(int value, int minValue, String argName) {
+    public static short checkMinValue(short value, short minValue, String argName) {
         ComparableArgs.checkMinValue(value, minValue, argName);
         return value;
     }
@@ -113,24 +115,25 @@ public final class IntArgs {
      * Convenience method to call
      * {@link ComparableArgs#checkMaxValue(Comparable, Comparable, String)}.
      * 
-     * @see #checkValueRange(int, int, int, String)
-     * @see #checkMinValue(int, int, String)
-     * @see #checkExactValue(int, int, String)
+     * @see #checkValueRange(short, short, short, String)
+     * @see #checkMinValue(short, short, String)
+     * @see #checkExactValue(short, short, String)
      */
-    public static int checkMaxValue(int value, int maxValue, String argName) {
+    public static short checkMaxValue(short value, short maxValue, String argName) {
         ComparableArgs.checkMaxValue(value, maxValue, argName);
         return value;
     }
     
     /**
      * Convenience method to call
-     * {@link ComparableArgs#checkExactValue(Comparable, Comparable, String)}.
+     * {@link ComparableArgs#checkExactValue(Comparable, Comparable, String)}
+     * where {@code minValue = null} and {@code maxValue = null}.
      * 
-     * @see #checkValueRange(int, int, int, String)
-     * @see #checkMinValue(int, int, String)
-     * @see #checkMaxValue(int, int, String)
+     * @see #checkValueRange(short, short, short, String)
+     * @see #checkMinValue(short, short, String)
+     * @see #checkMaxValue(short, short, String)
      */
-    public static int checkExactValue(int value, int exactValue, String argName) {
+    public static short checkExactValue(short value, short exactValue, String argName) {
         ComparableArgs.checkExactValue(value, exactValue, argName);
         return value;
     }

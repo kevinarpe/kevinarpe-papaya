@@ -32,7 +32,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.Args.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -93,7 +93,6 @@ public class ObjectArgsTest {
                 { null, "" },
                 { null, "   " },  // ASCII spaces
                 { null, "　　　" },  // wide Japanese spaces
-                { null, "   " },  // narrow Japanese spaces
         };
     }
     

@@ -38,7 +38,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.googlecode.kevinarpe.papaya.MapUtils;
-import com.googlecode.kevinarpe.papaya.Args.MapArgs;
+import com.googlecode.kevinarpe.papaya.args.MapArgs;
 
 public class MapArgsTest {
 
