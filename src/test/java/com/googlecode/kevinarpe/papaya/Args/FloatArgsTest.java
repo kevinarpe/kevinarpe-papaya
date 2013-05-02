@@ -31,7 +31,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.googlecode.kevinarpe.papaya.PrimitiveTypeUtils;
-import com.googlecode.kevinarpe.papaya.Args.FloatArgs;
+import com.googlecode.kevinarpe.papaya.args.FloatArgs;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)

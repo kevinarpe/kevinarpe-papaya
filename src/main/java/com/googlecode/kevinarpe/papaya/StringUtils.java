@@ -28,18 +28,44 @@ package com.googlecode.kevinarpe.papaya;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.googlecode.kevinarpe.papaya.Args.IntArgs;
-import com.googlecode.kevinarpe.papaya.Args.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.Args.StringArgs;
+import com.googlecode.kevinarpe.papaya.args.IntArgs;
+import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.args.StringArgs;
 
+/**
+ * This is a collection of methods to manipulate {@link String} references.
+ * 
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public final class StringUtils {
 
 	// Disable default constructor
 	private StringUtils() {
 	}
 
+	/**
+	 * This is the current newline: {@code System.getProperty("line.separator")}.  This will differ
+	 * between operating systems, such as UNIX variants and Microsoft Windows.
+	 * <p>
+	 * It is also available when calling {@link String#format(String, Object...)} and using
+	 * {@code %n} in the format string.
+	 * 
+	 * @see #NEW_LINE
+	 * @see #UNIX_NEW_LINE
+	 * @see #WINDOWS_NEW_LINE
+	 */
     public static final String NEW_LINE;
+    
+    /**
+     * This is the newline used by UNIX variants: "\n".  This value will never differ between
+     * operating systems.
+     */
     public static final String UNIX_NEW_LINE;
+    
+    /**
+     * This is the newline used by Microsoft Windows: "\r\n".  This value will never differ between
+     * operating systems.
+     */
     public static final String WINDOWS_NEW_LINE;
     
     private static final Pattern _NEW_LINE_REGEX;
@@ -59,7 +85,7 @@ public final class StringUtils {
      * 
      * @param str input value
      * @return boolean value
-     * @throws NullPointerException if {@code str} is null
+     * @throws NullPointerException if {@code str} is {@code null}
      * @throws IllegalArgumentException if {@code str} is not "true" or "false", ignoring case
      * @see FuncUtils#PARSE_BOOLEAN_FROM_STRING
      */
@@ -89,7 +115,7 @@ public final class StringUtils {
      * 
      * @param str a string reference
      * @return string reference without leading whitespace chars
-     * @throws NullPointerException if {@code str} is null
+     * @throws NullPointerException if {@code str} is {@code null}
      * @see #trimWhitespaceSuffix(String)
      */
     public static String trimWhitespacePrefix(String str) {
@@ -129,7 +155,7 @@ public final class StringUtils {
      * 
      * @param str a string reference
      * @return string reference without leading whitespace chars
-     * @throws NullPointerException if {@code str} is null
+     * @throws NullPointerException if {@code str} is {@code null}
      * @see #trimWhitespacePrefix(String)
      */
     public static String trimWhitespaceSuffix(String str) {
@@ -159,7 +185,7 @@ public final class StringUtils {
      * 
      * @param str input string
      * @return true if empty or all whitespace 
-     * @throws NullPointerException if {@code str} is null
+     * @throws NullPointerException if {@code str} is {@code null}
      */
     public static <T extends CharSequence> boolean isWhitespace(String str) {
         ObjectArgs.checkNotNull(str, "str");
@@ -187,7 +213,7 @@ public final class StringUtils {
      * @param count number of chars to copy starting from first index.
      *        Must be >= 0, and may be greater than input length
      * @return string reference created from leading chars
-     * @throws NullPointerException if {@code str} is null
+     * @throws NullPointerException if {@code str} is {@code null}
      * @throws IllegalArgumentException if {@code count} is negative
      */
     public static String substringPrefix(String str, int count) {
@@ -215,7 +241,7 @@ public final class StringUtils {
      * @param count number of chars to copy starting from last index.
      *        Must be >= 0, and may be greater than input length
      * @return string reference created from trailing chars
-     * @throws NullPointerException if {@code str} is null
+     * @throws NullPointerException if {@code str} is {@code null}
      * @throws IllegalArgumentException if {@code count} is negative
      */
     public static String substringSuffix(String str, int count) {
@@ -301,7 +327,7 @@ public final class StringUtils {
      * @param index offset to begin removing characters.  Range: 0 to {@code str.length() - 1}
      * @param count number of characters to remove.  Must be non-negative.
      * @return reference to a string with characters removed
-     * @throws NullPointerException if {@code str} is null
+     * @throws NullPointerException if {@code str} is {@code null}
      * @throws IllegalArgumentException if {@code index} and {@code count} are invalid
      */
     public static String remove(String str, int index, int count) {
@@ -338,7 +364,7 @@ public final class StringUtils {
      * @param index offset to begin inserting characters.  Range: 0 to {@code str.length()}
      * @param newText characters to insert
      * @return reference to a string with characters inserted
-     * @throws NullPointerException if {@code str} or {@code newText} is null
+     * @throws NullPointerException if {@code str} or {@code newText} is {@code null}
      * @throws IllegalArgumentException if {@code index} is invalid
      */
     public static String insert(String str, int index, String newText) {

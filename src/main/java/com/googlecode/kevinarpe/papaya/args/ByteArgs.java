@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.Args;
+package com.googlecode.kevinarpe.papaya.args;
 
 /*
  * #%L
@@ -26,22 +26,24 @@ package com.googlecode.kevinarpe.papaya.Args;
  */
 
 /**
+ * See {@link ObjectArgs} for an overview.
+ * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public final class ShortArgs {
+public final class ByteArgs {
 
 	// Disable default constructor
-	private ShortArgs() {
+	private ByteArgs() {
 	}
 
     /**
      * This is a convenience method for {@link LongArgs#checkPositive(long, String)}.
      * 
-     * @see #checkNotPositive(short, String)
-     * @see #checkNegative(short, String)
-     * @see #checkNotNegative(short, String)
+     * @see #checkNotPositive(byte, String)
+     * @see #checkNegative(byte, String)
+     * @see #checkNotNegative(byte, String)
      */
-    public static short checkPositive(short value, String argName) {
+    public static byte checkPositive(byte value, String argName) {
         LongArgs.checkPositive(value, argName);
         return value;
     }
@@ -49,11 +51,11 @@ public final class ShortArgs {
     /**
      * This is a convenience method for {@link LongArgs#checkNotPositive(long, String)}.
      * 
-     * @see #checkPositive(short, String)
-     * @see #checkNegative(short, String)
-     * @see #checkNotNegative(short, String)
+     * @see #checkPositive(byte, String)
+     * @see #checkNegative(byte, String)
+     * @see #checkNotNegative(byte, String)
      */
-    public static short checkNotPositive(short value, String argName) {
+    public static byte checkNotPositive(byte value, String argName) {
         LongArgs.checkNotPositive(value, argName);
         return value;
     }
@@ -61,11 +63,11 @@ public final class ShortArgs {
     /**
      * This is a convenience method for {@link LongArgs#checkNegative(long, String)}.
      * 
-     * @see #checkPositive(short, String)
-     * @see #checkNotPositive(short, String)
-     * @see #checkNotNegative(short, String)
+     * @see #checkPositive(byte, String)
+     * @see #checkNotPositive(byte, String)
+     * @see #checkNotNegative(byte, String)
      */
-    public static short checkNegative(short value, String argName) {
+    public static byte checkNegative(byte value, String argName) {
         LongArgs.checkNegative(value, argName);
         return value;
     }
@@ -73,11 +75,11 @@ public final class ShortArgs {
     /**
      * This is a convenience method for {@link LongArgs#checkNotNegative(long, String)}.
      * 
-     * @see #checkPositive(short, String)
-     * @see #checkNotPositive(short, String)
-     * @see #checkNegative(short, String)
+     * @see #checkPositive(byte, String)
+     * @see #checkNotPositive(byte, String)
+     * @see #checkNegative(byte, String)
      */
-    public static short checkNotNegative(short value, String argName) {
+    public static byte checkNotNegative(byte value, String argName) {
         LongArgs.checkNotNegative(value, argName);
         return value;
     }
@@ -86,12 +88,12 @@ public final class ShortArgs {
      * Convenience method to call
      * {@link ComparableArgs#checkValueRange(Comparable, Comparable, Comparable, String)}.
      * 
-     * @see #checkMinValue(short, short, String)
-     * @see #checkMaxValue(short, short, String)
-     * @see #checkExactValue(short, short, String)
+     * @see #checkMinValue(byte, byte, String)
+     * @see #checkMaxValue(byte, byte, String)
+     * @see #checkExactValue(byte, byte, String)
      */
-    public static short checkValueRange(
-            short value, short minValue, short maxValue, String argName) {
+    public static byte checkValueRange(
+            byte value, byte minValue, byte maxValue, String argName) {
         ComparableArgs.checkValueRange(value, minValue, maxValue, argName);
         return value;
     }
@@ -100,11 +102,11 @@ public final class ShortArgs {
      * Convenience method to call
      * {@link ComparableArgs#checkMinValue(Comparable, Comparable, String)}.
      * 
-     * @see #checkValueRange(short, short, short, String)
-     * @see #checkMaxValue(short, short, String)
-     * @see #checkExactValue(short, short, String)
+     * @see #checkValueRange(byte, byte, byte, String)
+     * @see #checkMaxValue(byte, byte, String)
+     * @see #checkExactValue(byte, byte, String)
      */
-    public static short checkMinValue(short value, short minValue, String argName) {
+    public static byte checkMinValue(byte value, byte minValue, String argName) {
         ComparableArgs.checkMinValue(value, minValue, argName);
         return value;
     }
@@ -113,25 +115,24 @@ public final class ShortArgs {
      * Convenience method to call
      * {@link ComparableArgs#checkMaxValue(Comparable, Comparable, String)}.
      * 
-     * @see #checkValueRange(short, short, short, String)
-     * @see #checkMinValue(short, short, String)
-     * @see #checkExactValue(short, short, String)
+     * @see #checkValueRange(byte, byte, byte, String)
+     * @see #checkMinValue(byte, byte, String)
+     * @see #checkExactValue(byte, byte, String)
      */
-    public static short checkMaxValue(short value, short maxValue, String argName) {
+    public static byte checkMaxValue(byte value, byte maxValue, String argName) {
         ComparableArgs.checkMaxValue(value, maxValue, argName);
         return value;
     }
     
     /**
      * Convenience method to call
-     * {@link ComparableArgs#checkExactValue(Comparable, Comparable, String)}
-     * where {@code minValue = null} and {@code maxValue = null}.
+     * {@link ComparableArgs#checkExactValue(Comparable, Comparable, String)}.
      * 
-     * @see #checkValueRange(short, short, short, String)
-     * @see #checkMinValue(short, short, String)
-     * @see #checkMaxValue(short, short, String)
+     * @see #checkValueRange(byte, byte, byte, String)
+     * @see #checkMinValue(byte, byte, String)
+     * @see #checkMaxValue(byte, byte, String)
      */
-    public static short checkExactValue(short value, short exactValue, String argName) {
+    public static byte checkExactValue(byte value, byte exactValue, String argName) {
         ComparableArgs.checkExactValue(value, exactValue, argName);
         return value;
     }

@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.Args;
+package com.googlecode.kevinarpe.papaya.args;
 
 /*
  * #%L
@@ -26,22 +26,24 @@ package com.googlecode.kevinarpe.papaya.Args;
  */
 
 /**
+ * See {@link ObjectArgs} for an overview.
+ * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public final class ByteArgs {
+public final class IntArgs {
 
 	// Disable default constructor
-	private ByteArgs() {
+	private IntArgs() {
 	}
 
     /**
      * This is a convenience method for {@link LongArgs#checkPositive(long, String)}.
      * 
-     * @see #checkNotPositive(byte, String)
-     * @see #checkNegative(byte, String)
-     * @see #checkNotNegative(byte, String)
+     * @see #checkNotPositive(int, String)
+     * @see #checkNegative(int, String)
+     * @see #checkNotNegative(int, String)
      */
-    public static byte checkPositive(byte value, String argName) {
+    public static int checkPositive(int value, String argName) {
         LongArgs.checkPositive(value, argName);
         return value;
     }
@@ -49,11 +51,11 @@ public final class ByteArgs {
     /**
      * This is a convenience method for {@link LongArgs#checkNotPositive(long, String)}.
      * 
-     * @see #checkPositive(byte, String)
-     * @see #checkNegative(byte, String)
-     * @see #checkNotNegative(byte, String)
+     * @see #checkPositive(int, String)
+     * @see #checkNegative(int, String)
+     * @see #checkNotNegative(int, String)
      */
-    public static byte checkNotPositive(byte value, String argName) {
+    public static int checkNotPositive(int value, String argName) {
         LongArgs.checkNotPositive(value, argName);
         return value;
     }
@@ -61,11 +63,11 @@ public final class ByteArgs {
     /**
      * This is a convenience method for {@link LongArgs#checkNegative(long, String)}.
      * 
-     * @see #checkPositive(byte, String)
-     * @see #checkNotPositive(byte, String)
-     * @see #checkNotNegative(byte, String)
+     * @see #checkPositive(int, String)
+     * @see #checkNotPositive(int, String)
+     * @see #checkNotNegative(int, String)
      */
-    public static byte checkNegative(byte value, String argName) {
+    public static int checkNegative(int value, String argName) {
         LongArgs.checkNegative(value, argName);
         return value;
     }
@@ -73,11 +75,11 @@ public final class ByteArgs {
     /**
      * This is a convenience method for {@link LongArgs#checkNotNegative(long, String)}.
      * 
-     * @see #checkPositive(byte, String)
-     * @see #checkNotPositive(byte, String)
-     * @see #checkNegative(byte, String)
+     * @see #checkPositive(int, String)
+     * @see #checkNotPositive(int, String)
+     * @see #checkNegative(int, String)
      */
-    public static byte checkNotNegative(byte value, String argName) {
+    public static int checkNotNegative(int value, String argName) {
         LongArgs.checkNotNegative(value, argName);
         return value;
     }
@@ -86,12 +88,12 @@ public final class ByteArgs {
      * Convenience method to call
      * {@link ComparableArgs#checkValueRange(Comparable, Comparable, Comparable, String)}.
      * 
-     * @see #checkMinValue(byte, byte, String)
-     * @see #checkMaxValue(byte, byte, String)
-     * @see #checkExactValue(byte, byte, String)
+     * @see #checkMinValue(int, int, String)
+     * @see #checkMaxValue(int, int, String)
+     * @see #checkExactValue(int, int, String)
      */
-    public static byte checkValueRange(
-            byte value, byte minValue, byte maxValue, String argName) {
+    public static int checkValueRange(
+            int value, int minValue, int maxValue, String argName) {
         ComparableArgs.checkValueRange(value, minValue, maxValue, argName);
         return value;
     }
@@ -100,11 +102,11 @@ public final class ByteArgs {
      * Convenience method to call
      * {@link ComparableArgs#checkMinValue(Comparable, Comparable, String)}.
      * 
-     * @see #checkValueRange(byte, byte, byte, String)
-     * @see #checkMaxValue(byte, byte, String)
-     * @see #checkExactValue(byte, byte, String)
+     * @see #checkValueRange(int, int, int, String)
+     * @see #checkMaxValue(int, int, String)
+     * @see #checkExactValue(int, int, String)
      */
-    public static byte checkMinValue(byte value, byte minValue, String argName) {
+    public static int checkMinValue(int value, int minValue, String argName) {
         ComparableArgs.checkMinValue(value, minValue, argName);
         return value;
     }
@@ -113,11 +115,11 @@ public final class ByteArgs {
      * Convenience method to call
      * {@link ComparableArgs#checkMaxValue(Comparable, Comparable, String)}.
      * 
-     * @see #checkValueRange(byte, byte, byte, String)
-     * @see #checkMinValue(byte, byte, String)
-     * @see #checkExactValue(byte, byte, String)
+     * @see #checkValueRange(int, int, int, String)
+     * @see #checkMinValue(int, int, String)
+     * @see #checkExactValue(int, int, String)
      */
-    public static byte checkMaxValue(byte value, byte maxValue, String argName) {
+    public static int checkMaxValue(int value, int maxValue, String argName) {
         ComparableArgs.checkMaxValue(value, maxValue, argName);
         return value;
     }
@@ -126,11 +128,11 @@ public final class ByteArgs {
      * Convenience method to call
      * {@link ComparableArgs#checkExactValue(Comparable, Comparable, String)}.
      * 
-     * @see #checkValueRange(byte, byte, byte, String)
-     * @see #checkMinValue(byte, byte, String)
-     * @see #checkMaxValue(byte, byte, String)
+     * @see #checkValueRange(int, int, int, String)
+     * @see #checkMinValue(int, int, String)
+     * @see #checkMaxValue(int, int, String)
      */
-    public static byte checkExactValue(byte value, byte exactValue, String argName) {
+    public static int checkExactValue(int value, int exactValue, String argName) {
         ComparableArgs.checkExactValue(value, exactValue, argName);
         return value;
     }

@@ -28,8 +28,8 @@ package com.googlecode.kevinarpe.papaya;
 import java.io.File;
 import java.io.IOException;
 
-import com.googlecode.kevinarpe.papaya.Args.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.Args.StringArgs;
+import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.args.StringArgs;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)

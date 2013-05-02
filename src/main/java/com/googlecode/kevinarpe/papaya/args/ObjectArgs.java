@@ -1,4 +1,6 @@
-package com.googlecode.kevinarpe.papaya.Args;
+package com.googlecode.kevinarpe.papaya.args;
+
+import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 
 /*
  * #%L
@@ -26,20 +28,21 @@ package com.googlecode.kevinarpe.papaya.Args;
  */
 
 /**
- * This is a collection of static methods to check arguments received in methods.
- * The goal is provide a wide range of checks that produce readable, detailed errors.
+ * This is a collection of static methods to check arguments received by methods.  The goal is to
+ * provide a wide range of checks that produce readable, detailed errors.
  * <p>
- * Unless noted, all methods throw unchecked exceptions -- {@link RuntimeException}
- * and its subclasses.  Most frequently, {@link IllegalArgumentException} is thrown.
+ * With the exception of {@link FileArgs} (and possibly a few others), all methods throw unchecked
+ * exceptions -- {@link RuntimeException} and its subclasses.  Most frequently,
+ * {@link IllegalArgumentException} is thrown.
  * 
  * <pre>
- *     public void myMethod(List<String> strList) {
- *         ArgUtil.Objects.checkNotNull(strList, "strList");
+ *     public void myMethod(List&lt;String> strList) {
+ *         ObjectsArgs.checkNotNull(strList, "strList");
  *         // Do work here.
  *     }</pre>
  * 
- * I have written similiar libraries in Perl, Python, VBA, C, C++, Java, and C# over the years.
- * It's time to put this into open source.
+ * I have written similiar argument checking routines libraries in C, C++, Perl, Python,
+ * JavaScript, VBA, C#, and Java over the years.  It's time to put these ideas into open source.
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
@@ -58,6 +61,7 @@ public final class ObjectArgs {
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code argName} is empty or whitespace
      */
+	@FullyTested
     public static <T> T checkNotNull(T ref, String argName) {
         if (null == ref) {
             StringArgs._checkArgNameValid(argName, "argName");

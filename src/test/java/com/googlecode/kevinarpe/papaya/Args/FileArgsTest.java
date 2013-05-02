@@ -34,7 +34,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.Args.FileArgs;
+import com.googlecode.kevinarpe.papaya.args.FileArgs;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)

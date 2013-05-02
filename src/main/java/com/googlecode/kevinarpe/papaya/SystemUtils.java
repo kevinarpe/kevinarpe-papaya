@@ -26,10 +26,12 @@ package com.googlecode.kevinarpe.papaya;
  */
 
 import com.google.common.base.Joiner;
-import com.googlecode.kevinarpe.papaya.Args.ArrayArgs;
-import com.googlecode.kevinarpe.papaya.Args.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.args.ArrayArgs;
+import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 
 /**
+ * This is a collection of methods regarding the current operating system.
+ * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public class SystemUtils {

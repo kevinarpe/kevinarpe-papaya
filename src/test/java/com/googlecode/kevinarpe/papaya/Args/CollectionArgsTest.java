@@ -38,7 +38,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.googlecode.kevinarpe.papaya.Args.CollectionArgs;
+import com.googlecode.kevinarpe.papaya.args.CollectionArgs;
 
 public class CollectionArgsTest {
 
@@ -137,7 +137,6 @@ public class CollectionArgsTest {
                 { null, 4, 3, "" },
                 { null, 4, 3, "   " },  // ASCII spaces
                 { null, 6, 7, "　　　" },  // wide Japanese spaces
-                { null, 0, 1, "   " },  // narrow Japanese spaces
         };
     }
     
