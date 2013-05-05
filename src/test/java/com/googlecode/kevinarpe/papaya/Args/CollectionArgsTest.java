@@ -210,7 +210,6 @@ public class CollectionArgsTest {
                 { new ArrayList<String>(), "" },
                 { new ArrayList<String>(), "   " },  // ASCII spaces
                 { new ArrayList<String>(), "　　　" },  // wide Japanese spaces
-                { new ArrayList<String>(), "   " },  // narrow Japanese spaces
         };
     }
     
@@ -294,7 +293,6 @@ public class CollectionArgsTest {
                 { null, 4, "" },
                 { null, 4, "   " },  // ASCII spaces
                 { null, 6, "　　　" },  // wide Japanese spaces
-                { null, 0, "   " },  // narrow Japanese spaces
         };
     }
     
@@ -378,7 +376,6 @@ public class CollectionArgsTest {
                 { null, 4, "" },
                 { null, 4, "   " },  // ASCII spaces
                 { null, 6, "　　　" },  // wide Japanese spaces
-                { null, 0, "   " },  // narrow Japanese spaces
         };
     }
     
@@ -462,7 +459,6 @@ public class CollectionArgsTest {
                 { null, 4, "" },
                 { null, 4, "   " },  // ASCII spaces
                 { null, 6, "　　　" },  // wide Japanese spaces
-                { null, 0, "   " },  // narrow Japanese spaces
         };
     }
     
@@ -667,16 +663,6 @@ public class CollectionArgsTest {
                 { null, -6, "　　　", "　　　" },
                 { L, 6, "　　　", "　　　" },
                 { L, -6, "　　　", "　　　" },
-                
-                // narrow Japanese spaces
-                { null, 4, "   ", "index" },
-                { null, -4, "   ", "index" },
-                { L, 4, "ref", "   " },
-                { L, -4, "ref", "   " },
-                { null, 6, "   ", "   " },
-                { null, -6, "   ", "   " },
-                { L, 6, "   ", "   " },
-                { L, -6, "   ", "   " },
         };
     }
     
@@ -798,16 +784,6 @@ public class CollectionArgsTest {
                 { null, -6, "　　　", "　　　" },
                 { L, 6, "　　　", "　　　" },
                 { L, -6, "　　　", "　　　" },
-                
-                // narrow Japanese spaces
-                { null, 4, "   ", "index" },
-                { null, -4, "   ", "index" },
-                { L, 4, "ref", "   " },
-                { L, -4, "ref", "   " },
-                { null, 6, "   ", "   " },
-                { null, -6, "   ", "   " },
-                { L, 6, "   ", "   " },
-                { L, -6, "   ", "   " },
         };
     }
     

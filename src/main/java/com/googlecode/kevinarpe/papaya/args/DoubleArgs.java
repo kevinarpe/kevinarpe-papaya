@@ -1,5 +1,7 @@
 package com.googlecode.kevinarpe.papaya.args;
 
+import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
+
 /*
  * #%L
  * This file is part of Papaya.
@@ -30,6 +32,7 @@ package com.googlecode.kevinarpe.papaya.args;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public class DoubleArgs {
 
 	// Disable default constructor
@@ -49,6 +52,7 @@ public class DoubleArgs {
      * @see #checkNegative(double, String)
      * @see #checkNotNegative(double, String)
      */
+	@FullyTested
     public static double checkPositive(double value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value <= 0.0d) {
@@ -73,6 +77,7 @@ public class DoubleArgs {
      * @see #checkNegative(double, String)
      * @see #checkNotNegative(double, String)
      */
+	@FullyTested
     public static double checkNotPositive(double value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value > 0.0d) {
@@ -97,6 +102,7 @@ public class DoubleArgs {
      * @see #checkNotPositive(double, String)
      * @see #checkNotNegative(double, String)
      */
+	@FullyTested
     public static double checkNegative(double value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value >= 0.0d) {
@@ -121,6 +127,7 @@ public class DoubleArgs {
      * @see #checkNotPositive(double, String)
      * @see #checkNegative(double, String)
      */
+	@FullyTested
     public static double checkNotNegative(double value, String argName) {
         ObjectArgs.checkNotNull(argName, "argName");
         if (value < 0.0d) {
@@ -140,6 +147,7 @@ public class DoubleArgs {
      * @see #checkMaxValue(double, double, String)
      * @see #checkExactValue(double, double, String)
      */
+	@FullyTested
     public static double checkValueRange(
             double value, double minValue, double maxValue, String argName) {
         ComparableArgs.checkValueRange(value, minValue, maxValue, argName);
@@ -154,6 +162,7 @@ public class DoubleArgs {
      * @see #checkMaxValue(double, double, String)
      * @see #checkExactValue(double, double, String)
      */
+	@FullyTested
     public static double checkMinValue(double value, double minValue, String argName) {
         ComparableArgs.checkMinValue(value, minValue, argName);
         return value;
@@ -167,6 +176,7 @@ public class DoubleArgs {
      * @see #checkMinValue(double, double, String)
      * @see #checkExactValue(double, double, String)
      */
+	@FullyTested
     public static double checkMaxValue(double value, double maxValue, String argName) {
         ComparableArgs.checkMaxValue(value, maxValue, argName);
         return value;
@@ -180,6 +190,7 @@ public class DoubleArgs {
      * @see #checkMinValue(double, double, String)
      * @see #checkMaxValue(double, double, String)
      */
+	@FullyTested
     public static double checkExactValue(
             double value, double exactValue, String argName) {
         ComparableArgs.checkExactValue(value, exactValue, argName);

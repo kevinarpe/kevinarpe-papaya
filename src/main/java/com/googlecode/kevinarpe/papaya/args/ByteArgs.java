@@ -1,5 +1,7 @@
 package com.googlecode.kevinarpe.papaya.args;
 
+import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
+
 /*
  * #%L
  * This file is part of Papaya.
@@ -30,6 +32,7 @@ package com.googlecode.kevinarpe.papaya.args;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public final class ByteArgs {
 
 	// Disable default constructor
@@ -43,6 +46,7 @@ public final class ByteArgs {
      * @see #checkNegative(byte, String)
      * @see #checkNotNegative(byte, String)
      */
+	@FullyTested
     public static byte checkPositive(byte value, String argName) {
         LongArgs.checkPositive(value, argName);
         return value;
@@ -55,6 +59,7 @@ public final class ByteArgs {
      * @see #checkNegative(byte, String)
      * @see #checkNotNegative(byte, String)
      */
+	@FullyTested
     public static byte checkNotPositive(byte value, String argName) {
         LongArgs.checkNotPositive(value, argName);
         return value;
@@ -67,6 +72,7 @@ public final class ByteArgs {
      * @see #checkNotPositive(byte, String)
      * @see #checkNotNegative(byte, String)
      */
+	@FullyTested
     public static byte checkNegative(byte value, String argName) {
         LongArgs.checkNegative(value, argName);
         return value;
@@ -79,6 +85,7 @@ public final class ByteArgs {
      * @see #checkNotPositive(byte, String)
      * @see #checkNegative(byte, String)
      */
+	@FullyTested
     public static byte checkNotNegative(byte value, String argName) {
         LongArgs.checkNotNegative(value, argName);
         return value;
@@ -92,6 +99,7 @@ public final class ByteArgs {
      * @see #checkMaxValue(byte, byte, String)
      * @see #checkExactValue(byte, byte, String)
      */
+	@FullyTested
     public static byte checkValueRange(
             byte value, byte minValue, byte maxValue, String argName) {
         ComparableArgs.checkValueRange(value, minValue, maxValue, argName);
@@ -106,6 +114,7 @@ public final class ByteArgs {
      * @see #checkMaxValue(byte, byte, String)
      * @see #checkExactValue(byte, byte, String)
      */
+	@FullyTested
     public static byte checkMinValue(byte value, byte minValue, String argName) {
         ComparableArgs.checkMinValue(value, minValue, argName);
         return value;
@@ -119,6 +128,7 @@ public final class ByteArgs {
      * @see #checkMinValue(byte, byte, String)
      * @see #checkExactValue(byte, byte, String)
      */
+	@FullyTested
     public static byte checkMaxValue(byte value, byte maxValue, String argName) {
         ComparableArgs.checkMaxValue(value, maxValue, argName);
         return value;
@@ -132,6 +142,7 @@ public final class ByteArgs {
      * @see #checkMinValue(byte, byte, String)
      * @see #checkMaxValue(byte, byte, String)
      */
+	@FullyTested
     public static byte checkExactValue(byte value, byte exactValue, String argName) {
         ComparableArgs.checkExactValue(value, exactValue, argName);
         return value;

@@ -1,5 +1,7 @@
 package com.googlecode.kevinarpe.papaya.args;
 
+import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
+
 /*
  * #%L
  * This file is part of Papaya.
@@ -30,6 +32,7 @@ package com.googlecode.kevinarpe.papaya.args;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public final class IntArgs {
 
 	// Disable default constructor
@@ -43,6 +46,7 @@ public final class IntArgs {
      * @see #checkNegative(int, String)
      * @see #checkNotNegative(int, String)
      */
+	@FullyTested
     public static int checkPositive(int value, String argName) {
         LongArgs.checkPositive(value, argName);
         return value;
@@ -55,6 +59,7 @@ public final class IntArgs {
      * @see #checkNegative(int, String)
      * @see #checkNotNegative(int, String)
      */
+	@FullyTested
     public static int checkNotPositive(int value, String argName) {
         LongArgs.checkNotPositive(value, argName);
         return value;
@@ -67,6 +72,7 @@ public final class IntArgs {
      * @see #checkNotPositive(int, String)
      * @see #checkNotNegative(int, String)
      */
+	@FullyTested
     public static int checkNegative(int value, String argName) {
         LongArgs.checkNegative(value, argName);
         return value;
@@ -79,6 +85,7 @@ public final class IntArgs {
      * @see #checkNotPositive(int, String)
      * @see #checkNegative(int, String)
      */
+	@FullyTested
     public static int checkNotNegative(int value, String argName) {
         LongArgs.checkNotNegative(value, argName);
         return value;
@@ -92,6 +99,7 @@ public final class IntArgs {
      * @see #checkMaxValue(int, int, String)
      * @see #checkExactValue(int, int, String)
      */
+	@FullyTested
     public static int checkValueRange(
             int value, int minValue, int maxValue, String argName) {
         ComparableArgs.checkValueRange(value, minValue, maxValue, argName);
@@ -106,6 +114,7 @@ public final class IntArgs {
      * @see #checkMaxValue(int, int, String)
      * @see #checkExactValue(int, int, String)
      */
+	@FullyTested
     public static int checkMinValue(int value, int minValue, String argName) {
         ComparableArgs.checkMinValue(value, minValue, argName);
         return value;
@@ -119,6 +128,7 @@ public final class IntArgs {
      * @see #checkMinValue(int, int, String)
      * @see #checkExactValue(int, int, String)
      */
+	@FullyTested
     public static int checkMaxValue(int value, int maxValue, String argName) {
         ComparableArgs.checkMaxValue(value, maxValue, argName);
         return value;
@@ -132,6 +142,7 @@ public final class IntArgs {
      * @see #checkMinValue(int, int, String)
      * @see #checkMaxValue(int, int, String)
      */
+	@FullyTested
     public static int checkExactValue(int value, int exactValue, String argName) {
         ComparableArgs.checkExactValue(value, exactValue, argName);
         return value;

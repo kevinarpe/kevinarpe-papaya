@@ -27,11 +27,14 @@ package com.googlecode.kevinarpe.papaya.args;
 
 import java.util.Collection;
 
+import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
+
 /**
  * See {@link ObjectArgs} for an overview.
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public final class CollectionArgs {
 
 	// Disable default constructor
@@ -57,6 +60,7 @@ public final class CollectionArgs {
      * @see #checkMaxSize(Collection, int, String)
      * @see #checkExactSize(Collection, int, String)
      */
+	@FullyTested
     public static <T> void checkSizeRange(
             Collection<T> ref, int minSize, int maxSize, String argName) {
         IntArgs.checkNotNegative(minSize, "minSize");
@@ -77,6 +81,7 @@ public final class CollectionArgs {
      * @see #checkSizeRange(Collection, int, int, String)
      * @see #checkMinSize(Collection, int, String)
      */
+	@FullyTested
     public static <T> void checkNotEmpty(Collection<T> ref, String argName) {
         int size = (null == ref ? -1 : ref.size());
         ContainerArgs._checkNotEmpty(ref, "Collection", size, argName);
@@ -95,6 +100,7 @@ public final class CollectionArgs {
      *         or if {@code argName} is empty or whitespace
      * @see #checkSizeRange(Collection, int, int, String)
      */
+	@FullyTested
     public static <T> void checkMinSize(
             Collection<T> ref, int minSize, String argName) {
         IntArgs.checkNotNegative(minSize, "minSize");
@@ -116,6 +122,7 @@ public final class CollectionArgs {
      *         or if {@code argName} is empty or whitespace
      * @see #checkSizeRange(Collection, int, int, String)
      */
+	@FullyTested
     public static <T> void checkMaxSize(
             Collection<T> ref, int maxSize, String argName) {
         IntArgs.checkNotNegative(maxSize, "maxSize");
@@ -137,6 +144,7 @@ public final class CollectionArgs {
      *         or if {@code argName} is empty or whitespace
      * @see #checkSizeRange(Collection, int, int, String)
      */
+	@FullyTested
     public static <T> void checkExactSize(
             Collection<T> ref, int exactSize, String argName) {
         IntArgs.checkNotNegative(exactSize, "exactSize");
@@ -155,6 +163,7 @@ public final class CollectionArgs {
      * @throws NullPointerException if {@code ref} (or any element) or {@code argName} is null
      * @throws IllegalArgumentException if {@code argName} is empty or whitespace
      */
+	@FullyTested
     public static <T> void checkElementsNotNull(
             Collection<T> ref, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
@@ -173,6 +182,7 @@ public final class CollectionArgs {
      * This is a convenience method for {@link #checkNotEmpty(Collection, String)}
      * and {@link #checkElementsNotNull(Collection, String)}.
      */
+	@FullyTested
     public static <T> void checkNotEmptyAndElementsNotNull(Collection<T> ref, String argName) {
     	checkNotEmpty(ref, argName);
     	checkElementsNotNull(ref, argName);
@@ -195,6 +205,7 @@ public final class CollectionArgs {
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see #checkInsertIndex(Collection, int, String, String)
      */
+	@FullyTested
     public static <T> int checkAccessIndex(
             Collection<T> ref, int index, String collectionArgName, String indexArgName) {
         int size = (null == ref ? -1 : ref.size());
@@ -220,6 +231,7 @@ public final class CollectionArgs {
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see #checkAccessIndex(Collection, int, String, String)
      */
+	@FullyTested
     public static <T> int checkInsertIndex(
             Collection<T> ref, int index, String collectionArgName, String indexArgName) {
         int size = (null == ref ? -1 : ref.size());
@@ -247,6 +259,7 @@ public final class CollectionArgs {
      * @throws IndexOutOfBoundsException if {@code index >= ref.size()},
      *         or if {@code index + count > ref.size()}
      */
+	@FullyTested
     public static <T> void checkIndexAndCount(
             Collection<T> ref,
             int index,

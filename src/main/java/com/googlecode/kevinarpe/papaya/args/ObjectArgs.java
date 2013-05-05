@@ -46,6 +46,7 @@ import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public final class ObjectArgs {
 
 	// Disable default constructor

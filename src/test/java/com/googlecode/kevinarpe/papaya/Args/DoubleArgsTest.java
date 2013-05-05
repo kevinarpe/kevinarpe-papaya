@@ -21,7 +21,7 @@ package com.googlecode.kevinarpe.papaya.Args;
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with Papaya.  If not, see <http://www.gnu.org/licenses/>.
+ * adouble with Papaya.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
 
@@ -67,19 +67,6 @@ public class DoubleArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsPositiveWithNullArgName() {
-        return new Object[][] {
-                { 1.0d, null },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsPositiveWithNullArgName",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckAsPositiveWithNullArgName(double i, String argName) {
-        DoubleArgs.checkPositive(i, argName);
-    }
-
-    @DataProvider
     private static final Object[][] _dataForShouldNotCheckAsPositiveWithNonPositiveInput() {
         return new Object[][] {
                 { 0.0d },
@@ -93,6 +80,27 @@ public class DoubleArgsTest {
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckAsPositiveWithNonPositiveInput(double i) {
         DoubleArgs.checkPositive(i, "i");
+    }
+
+    @Test(dataProvider = "_dataForShouldNotCheckAsPositiveWithNonPositiveInput",
+            expectedExceptions = NullPointerException.class)
+    public void shouldNotCheckAsPositiveWithNullArgName(double i) {
+        DoubleArgs.checkPositive(i, null);
+    }
+    
+    @DataProvider
+    private static final Object[][] _dataForShouldNotCheckAsPositiveWithInvalidArgName() {
+        return new Object[][] {
+                { 0.0d, "" },
+                { -1.0d, "   " },  // ASCII spaces
+                { -Double.MIN_VALUE, "　　　" },  // wide Japanese spaces
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckAsPositiveWithInvalidArgName",
+            expectedExceptions = IllegalArgumentException.class)
+    public void shouldNotCheckAsPositiveWithInvalidArgName(double i, String argName) {
+        DoubleArgs.checkPositive(i, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -113,19 +121,6 @@ public class DoubleArgsTest {
     public void shouldCheckAsNotPositive(double i) {
         DoubleArgs.checkNotPositive(i, "i");
     }
-
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotPositiveWithNullArgName() {
-        return new Object[][] {
-                { 1.0d, null },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotPositiveWithNullArgName",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckAsNotPositiveWithNullArgName(double i, String argName) {
-        DoubleArgs.checkNotPositive(i, argName);
-    }
     
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckAsNotPositiveWithPositiveInput() {
@@ -141,6 +136,27 @@ public class DoubleArgsTest {
         DoubleArgs.checkNotPositive(i, "i");
     }
     
+    @Test(dataProvider = "_dataForShouldNotCheckAsNotPositiveWithPositiveInput",
+            expectedExceptions = NullPointerException.class)
+    public void shouldNotCheckAsNotPositiveWithNullArgName(double i) {
+        DoubleArgs.checkNotPositive(i, null);
+    }
+    
+    @DataProvider
+    private static final Object[][] _dataForShouldNotCheckAsNotPositiveWithInvalidArgName() {
+        return new Object[][] {
+                { 1.0d, "" },
+                { 99.0d, "   " },  // ASCII spaces
+                { Double.MAX_VALUE, "　　　" },  // wide Japanese spaces
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckAsNotPositiveWithInvalidArgName",
+            expectedExceptions = IllegalArgumentException.class)
+    public void shouldNotCheckAsNotPositiveWithInvalidArgName(double i, String argName) {
+        DoubleArgs.checkNotPositive(i, argName);
+    }
+    
     ///////////////////////////////////////////////////////////////////////////
     // DoubleArgs.checkNegative
     //
@@ -151,28 +167,12 @@ public class DoubleArgsTest {
                 { -1.0d },
                 { -99.0d },
                 { -Double.MIN_VALUE },
-                { -Double.MAX_VALUE },
-                { (double)PrimitiveTypeUtils.EPSILON_NEGATIVE_FLOAT, },
-                { PrimitiveTypeUtils.EPSILON_NEGATIVE_DOUBLE, },
         };
     }
     
     @Test(dataProvider = "_dataForShouldCheckAsNegative")
     public void shouldCheckAsNegative(double i) {
         DoubleArgs.checkNegative(i, "i");
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNegativeWithNullArgName() {
-        return new Object[][] {
-                { 1.0d, null },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNegativeWithNullArgName",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckAsNegativeWithNullArgName(double i, String argName) {
-        DoubleArgs.checkNegative(i, argName);
     }
 
     @DataProvider
@@ -188,6 +188,27 @@ public class DoubleArgsTest {
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckAsNegativeWithNonNegativeInput(double i) {
         DoubleArgs.checkNegative(i, "i");
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckAsNegativeWithNonNegativeInput",
+            expectedExceptions = NullPointerException.class)
+    public void shouldNotCheckAsNegativeWithNullArgName(double i) {
+        DoubleArgs.checkNegative(i, null);
+    }
+    
+    @DataProvider
+    private static final Object[][] _dataForShouldNotCheckAsNegativeWithInvalidArgName() {
+        return new Object[][] {
+                { 1.0d, "" },
+                { 99.0d, "   " },  // ASCII spaces
+                { Double.MAX_VALUE, "　　　" },  // wide Japanese spaces
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckAsNegativeWithInvalidArgName",
+            expectedExceptions = IllegalArgumentException.class)
+    public void shouldNotCheckAsNegativeWithInvalidArgName(double i, String argName) {
+        DoubleArgs.checkNegative(i, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -209,24 +230,10 @@ public class DoubleArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotNegativeWithNullArgName() {
-        return new Object[][] {
-                { 1.0d, null },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotNegativeWithNullArgName",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckAsNotNegativeWithNullArgName(double i, String argName) {
-        DoubleArgs.checkNotNegative(i, argName);
-    }
-    
-    @DataProvider
     private static final Object[][] _dataForShouldNotCheckAsNotNegativeWithNegativeInput() {
         return new Object[][] {
                 { -1.0d },
                 { -Double.MIN_VALUE },
-                { -Double.MAX_VALUE },
         };
     }
     
@@ -234,6 +241,27 @@ public class DoubleArgsTest {
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckAsNotNegativeWithNegativeInput(double i) {
         DoubleArgs.checkNotNegative(i, "i");
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckAsNotNegativeWithNegativeInput",
+            expectedExceptions = NullPointerException.class)
+    public void shouldNotCheckAsNotNegativeWithNullArgName(double i) {
+        DoubleArgs.checkNotNegative(i, null);
+    }
+    
+    @DataProvider
+    private static final Object[][] _dataForShouldNotCheckAsNotNegativeWithInvalidArgName() {
+        return new Object[][] {
+                { -1.0d, "" },
+                { -99.0d, "   " },  // ASCII spaces
+                { -Double.MIN_VALUE, "　　　" },  // wide Japanese spaces
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckAsNotNegativeWithInvalidArgName",
+            expectedExceptions = IllegalArgumentException.class)
+    public void shouldNotCheckAsNotNegativeWithInvalidArgName(double i, String argName) {
+        DoubleArgs.checkNotNegative(i, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -255,21 +283,6 @@ public class DoubleArgsTest {
     @Test(dataProvider = "_dataForShouldCheckValueRangeAsValid")
     public void shouldCheckValueRangeAsValid(double i, double minValue, double maxValue) {
         DoubleArgs.checkValueRange(i, minValue, maxValue, "i");
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckValueRangeAsValidWithNullArgName() {
-        return new Object[][] {
-                { 1.0d, 2.0d, 1.0d, null },
-                { 1.0d, 2.0d, 3.0d, null },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckValueRangeAsValidWithNullArgName",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckValueRangeAsValidWithNullArgName(
-            double i, double minValue, double maxValue, String argName) {
-        DoubleArgs.checkValueRange(i, minValue, maxValue, argName);
     }
     
     @DataProvider
@@ -298,6 +311,39 @@ public class DoubleArgsTest {
         DoubleArgs.checkValueRange(i, minValue, maxValue, "i");
     }
     
+    @Test(dataProvider = "_dataForShouldNotCheckValueRangeAsValidWithInvalidInput",
+            expectedExceptions = NullPointerException.class)
+    public void shouldNotCheckValueRangeAsValidWithNullArgName(
+            double i, double minValue, double maxValue) {
+        DoubleArgs.checkValueRange(i, minValue, maxValue, null);
+    }
+    
+    @DataProvider
+    private static final Object[][] _dataForShouldNotCheckValueRangeAsValidWithInvalidArgName() {
+        return new Object[][] {
+                { 1.0d, -1.0d, 0.0d, "" },
+                { 1.0d, 0.0d, 0.0d, "   " },  // ASCII spaces
+                { 1.0d, 2.0d, 2.0d, "　　　" },  // wide Japanese spaces
+                { 1.0d, 2.0d, 1.0d, "" },
+                { 1.0d, -1.0d, -2.0d, "   " },  // ASCII spaces
+                { 1.0d, -2.0d, -1.0d, "　　　" },  // wide Japanese spaces
+                
+                { -1.0d, 1.0d, 0.0d, "" },
+                { -1.0d, 0.0d, 0.0d, "   " },  // ASCII spaces
+                { -1.0d, -2.0d, -2.0d, "　　　" },  // wide Japanese spaces
+                { -1.0d, -1.0d, -2.0d, "" },
+                { -1.0d, 1.0d, 2.0d, "   " },  // ASCII spaces
+                { -1.0d, 2.0d, 1.0d, "　　　" },  // wide Japanese spaces
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckValueRangeAsValidWithInvalidArgName",
+            expectedExceptions = IllegalArgumentException.class)
+    public void shouldNotCheckValueRangeAsValidWithInvalidArgName(
+            double i, double minValue, double maxValue, String argName) {
+        DoubleArgs.checkValueRange(i, minValue, maxValue, argName);
+    }
+    
     ///////////////////////////////////////////////////////////////////////////
     // DoubleArgs.checkMinValue
     //
@@ -321,20 +367,6 @@ public class DoubleArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinValueAsValidWithNullArgName() {
-        return new Object[][] {
-                { 1.0d, 2.0d, null },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMinValueAsValidWithNullArgName",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckMinValueAsValidWithNullArgName(
-            double i, double minValue, String argName) {
-        DoubleArgs.checkMinValue(i, minValue, argName);
-    }
-    
-    @DataProvider
     private static final Object[][] _dataForShouldNotCheckMinValueAsValidWithInvalidInput() {
         return new Object[][] {
                 { 1.0d, 2.0d },
@@ -348,6 +380,28 @@ public class DoubleArgsTest {
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckMinValueAsValidWithInvalidInput(double i, double minValue) {
         DoubleArgs.checkMinValue(i, minValue, "i");
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckMinValueAsValidWithInvalidInput",
+            expectedExceptions = NullPointerException.class)
+    public void shouldNotCheckMinValueAsValidWithNullArgName(double i, double minValue) {
+        DoubleArgs.checkMinValue(i, minValue, null);
+    }
+    
+    @DataProvider
+    private static final Object[][] _dataForShouldNotCheckMinValueAsValidWithInvalidArgName() {
+        return new Object[][] {
+                { 1.0d, 2.0d, "" },
+                { 1.0d, 3.0d, "   " },  // ASCII spaces
+                { -1.0d, 0.0d, "　　　" },  // wide Japanese spaces
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckMinValueAsValidWithInvalidArgName",
+            expectedExceptions = IllegalArgumentException.class)
+    public void shouldNotCheckMinValueAsValidWithInvalidArgName(
+            double i, double minValue, String argName) {
+        DoubleArgs.checkMinValue(i, minValue, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -373,20 +427,6 @@ public class DoubleArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxValueAsValidWithNullArgName() {
-        return new Object[][] {
-                { 1.0d, 0.0d, null },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMaxValueAsValidWithNullArgName",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckMaxValueAsValidWithNullArgName(
-            double i, double maxValue, String argName) {
-        DoubleArgs.checkMaxValue(i, maxValue, argName);
-    }
-    
-    @DataProvider
     private static final Object[][] _dataForShouldNotCheckMaxValueAsValidWithInvalidInput() {
         return new Object[][] {
                 { 1.0d, 0.0d },
@@ -400,6 +440,28 @@ public class DoubleArgsTest {
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckMaxValueAsValidWithInvalidInput(double i, double maxValue) {
         DoubleArgs.checkMaxValue(i, maxValue, "i");
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckMaxValueAsValidWithInvalidInput",
+            expectedExceptions = NullPointerException.class)
+    public void shouldNotCheckMaxValueAsValidWithNullArgName(double i, double maxValue) {
+        DoubleArgs.checkMaxValue(i, maxValue, null);
+    }
+    
+    @DataProvider
+    private static final Object[][] _dataForShouldNotCheckMaxValueAsValidWithInvalidArgName() {
+        return new Object[][] {
+                { 1.0d, 0.0d, "" },
+                { 1.0d, -1.0d, "   " },  // ASCII spaces
+                { -1.0d, -2.0d, "　　　" },  // wide Japanese spaces
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckMaxValueAsValidWithInvalidArgName",
+            expectedExceptions = IllegalArgumentException.class)
+    public void shouldNotCheckMaxValueAsValidWithInvalidArgName(
+            double i, double maxValue, String argName) {
+        DoubleArgs.checkMaxValue(i, maxValue, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -425,20 +487,6 @@ public class DoubleArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactValueAsValidWithNullArgName() {
-        return new Object[][] {
-                { 1.0d, 2.0d, null },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckExactValueAsValidWithNullArgName",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckExactValueAsValidWithNullArgName(
-            double i, double value, String argName) {
-        DoubleArgs.checkExactValue(i, value, argName);
-    }
-    
-    @DataProvider
     private static final Object[][] _dataForShouldNotCheckExactValueAsValidWithInvalidInput() {
         return new Object[][] {
                 { 1.0d, 0.0d },
@@ -452,5 +500,27 @@ public class DoubleArgsTest {
             expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCheckExactValueAsValidWithInvalidInput(double i, double value) {
         DoubleArgs.checkMaxValue(i, value, "i");
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckExactValueAsValidWithInvalidInput",
+            expectedExceptions = NullPointerException.class)
+    public void shouldNotCheckExactValueAsValidWithNullArgName(double i, double value) {
+        DoubleArgs.checkExactValue(i, value, null);
+    }
+    
+    @DataProvider
+    private static final Object[][] _dataForShouldNotCheckExactValueAsValidWithInvalidArgName() {
+        return new Object[][] {
+                { 1.0d, 0.0d, "" },
+                { 1.0d, -1.0d, "   " },  // ASCII spaces
+                { -1.0d, -2.0d, "　　　" },  // wide Japanese spaces
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckExactValueAsValidWithInvalidArgName",
+            expectedExceptions = IllegalArgumentException.class)
+    public void shouldNotCheckExactValueAsValidWithInvalidArgName(
+            double i, double value, String argName) {
+        DoubleArgs.checkExactValue(i, value, argName);
     }
 }

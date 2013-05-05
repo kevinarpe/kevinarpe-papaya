@@ -1,5 +1,7 @@
 package com.googlecode.kevinarpe.papaya.args;
 
+import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
+
 /*
  * #%L
  * This file is part of Papaya.
@@ -30,6 +32,7 @@ package com.googlecode.kevinarpe.papaya.args;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public final class LongArgs {
 
 	// Disable default constructor
@@ -49,8 +52,8 @@ public final class LongArgs {
      * @see #checkNegative(long, String)
      * @see #checkNotNegative(long, String)
      */
+	@FullyTested
     public static long checkPositive(long value, String argName) {
-        ObjectArgs.checkNotNull(argName, "argName");
         if (value <= 0) {
             StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
@@ -73,8 +76,8 @@ public final class LongArgs {
      * @see #checkNegative(long, String)
      * @see #checkNotNegative(long, String)
      */
+	@FullyTested
     public static long checkNotPositive(long value, String argName) {
-        ObjectArgs.checkNotNull(argName, "argName");
         if (value > 0) {
             StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
@@ -97,8 +100,8 @@ public final class LongArgs {
      * @see #checkNotPositive(long, String)
      * @see #checkNotNegative(long, String)
      */
+	@FullyTested
     public static long checkNegative(long value, String argName) {
-        ObjectArgs.checkNotNull(argName, "argName");
         if (value >= 0) {
             StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
@@ -121,8 +124,8 @@ public final class LongArgs {
      * @see #checkNotPositive(long, String)
      * @see #checkNegative(long, String)
      */
+	@FullyTested
     public static long checkNotNegative(long value, String argName) {
-        ObjectArgs.checkNotNull(argName, "argName");
         if (value < 0) {
             StringArgs._checkArgNameValid(argName, "argName");
             throw new IllegalArgumentException(String.format(
@@ -140,6 +143,7 @@ public final class LongArgs {
      * @see #checkMaxValue(long, long, String)
      * @see #checkExactValue(long, long, String)
      */
+	@FullyTested
     public static long checkValueRange(
             long value, long minValue, long maxValue, String argName) {
         ComparableArgs.checkValueRange(value, minValue, maxValue, argName);
@@ -154,6 +158,7 @@ public final class LongArgs {
      * @see #checkMaxValue(long, long, String)
      * @see #checkExactValue(long, long, String)
      */
+	@FullyTested
     public static long checkMinValue(long value, long minValue, String argName) {
         ComparableArgs.checkMinValue(value, minValue, argName);
         return value;
@@ -167,6 +172,7 @@ public final class LongArgs {
      * @see #checkMinValue(long, long, String)
      * @see #checkExactValue(long, long, String)
      */
+	@FullyTested
     public static long checkMaxValue(long value, long maxValue, String argName) {
         ComparableArgs.checkMaxValue(value, maxValue, argName);
         return value;
@@ -180,6 +186,7 @@ public final class LongArgs {
      * @see #checkMinValue(long, long, String)
      * @see #checkMaxValue(long, long, String)
      */
+	@FullyTested
     public static long checkExactValue(long value, long exactValue, String argName) {
         ComparableArgs.checkExactValue(value, exactValue, argName);
         return value;

@@ -190,6 +190,29 @@ public class FileArgsTest {
         FileArgs.checkRegularFileExists(file, argName);
     }
     
+    @DataProvider
+    private static Object[][] _dataForShouldNotCheckRegularFileExistsWithInvalidArgName() {
+        return new Object[][] {
+                { null, "" },
+                { null, "   " },  // ASCII spaces
+                { null, "　　　" },  // wide Japanese spaces
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckRegularFileExistsWithInvalidArgName",
+            expectedExceptions = NullPointerException.class)
+    public void shouldNotCheckRegularFileExistsWithInvalidArgName(String filePath, String argName)
+    throws FileNotFoundException {
+        FileArgs.checkRegularFileExists(filePath, argName);
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckRegularFileExistsWithInvalidArgName",
+            expectedExceptions = NullPointerException.class)
+    public void shouldNotCheckRegularFileExistsWithInvalidArgName2(File file, String argName)
+    throws FileNotFoundException {
+        FileArgs.checkRegularFileExists(file, argName);
+    }
+    
     ///////////////////////////////////////////////////////////////////////////
     // FileArgs.checkDirectoryExists
     //
@@ -329,5 +352,28 @@ public class FileArgsTest {
     public void shouldNotCheckDirectoryExistsWithNullInputs2(File dir, String argName)
     throws FileNotFoundException {
         FileArgs.checkDirectoryExists(dir, argName);
+    }
+    
+    @DataProvider
+    private static Object[][] _dataForShouldNotCheckDirectoryExistsWithInvalidArgName() {
+        return new Object[][] {
+                { null, "" },
+                { null, "   " },  // ASCII spaces
+                { null, "　　　" },  // wide Japanese spaces
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckDirectoryExistsWithInvalidArgName",
+            expectedExceptions = NullPointerException.class)
+    public void shouldNotCheckDirectoryExistsWithInvalidArgName(String filePath, String argName)
+    throws FileNotFoundException {
+        FileArgs.checkDirectoryExists(filePath, argName);
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckDirectoryExistsWithInvalidArgName",
+            expectedExceptions = NullPointerException.class)
+    public void shouldNotCheckDirectoryExistsWithInvalidArgName2(File file, String argName)
+    throws FileNotFoundException {
+        FileArgs.checkDirectoryExists(file, argName);
     }
 }

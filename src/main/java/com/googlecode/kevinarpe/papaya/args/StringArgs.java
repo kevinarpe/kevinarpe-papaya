@@ -32,6 +32,7 @@ import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public final class StringArgs {
 
 	// Disable default constructor
@@ -69,7 +70,8 @@ public final class StringArgs {
     }
     
     /**
-     * Tests if a string reference is neither null nor empty.
+     * Tests if a string reference is neither null nor empty, where empty is defined as
+     * {@code 0 == ref.length()}.
      * 
      * @param ref a string reference
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"

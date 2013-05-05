@@ -1,5 +1,7 @@
 package com.googlecode.kevinarpe.papaya.args;
 
+import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
+
 /*
  * #%L
  * This file is part of Papaya.
@@ -30,6 +32,7 @@ package com.googlecode.kevinarpe.papaya.args;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public class CharArgs {
 
 	// Disable default constructor
@@ -44,6 +47,7 @@ public class CharArgs {
      * @see #checkMaxValue(char, char, String)
      * @see #checkExactValue(char, char, String)
      */
+	@FullyTested
     public static char checkValueRange(
             char value, char minValue, char maxValue, String argName) {
         ComparableArgs.checkValueRange(value, minValue, maxValue, argName);
@@ -58,6 +62,7 @@ public class CharArgs {
      * @see #checkMaxValue(char, char, String)
      * @see #checkExactValue(char, char, String)
      */
+	@FullyTested
     public static char checkMinValue(char value, char minValue, String argName) {
         ComparableArgs.checkMinValue(value, minValue, argName);
         return value;
@@ -71,6 +76,7 @@ public class CharArgs {
      * @see #checkMinValue(char, char, String)
      * @see #checkExactValue(char, char, String)
      */
+	@FullyTested
     public static char checkMaxValue(char value, char maxValue, String argName) {
         ComparableArgs.checkMaxValue(value, maxValue, argName);
         return value;
@@ -84,6 +90,7 @@ public class CharArgs {
      * @see #checkMinValue(char, char, String)
      * @see #checkMaxValue(char, char, String)
      */
+	@FullyTested
     public static char checkExactValue(char value, char exactValue, String argName) {
         ComparableArgs.checkExactValue(value, exactValue, argName);
         return value;

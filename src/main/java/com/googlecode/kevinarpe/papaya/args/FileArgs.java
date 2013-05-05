@@ -28,11 +28,14 @@ package com.googlecode.kevinarpe.papaya.args;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
+
 /**
  * See {@link ObjectArgs} for an overview.
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public final class FileArgs {
 
 	// Disable default constructor
@@ -45,6 +48,7 @@ public final class FileArgs {
      * @throws NullPointerException if {@code filePath} is null
      * @throws IllegalArgumentException if {@code filePath} is empty
      */
+	@FullyTested
     public static File checkRegularFileExists(String filePath, String argName)
     throws FileNotFoundException {
         StringArgs.checkNotEmpty(filePath, "filePath");
@@ -67,6 +71,7 @@ public final class FileArgs {
      * @see #checkRegularFileExists(String, String)
      * @see #checkDirectoryExists(File, String)
      */
+	@FullyTested
     public static File checkRegularFileExists(File file, String argName)
     throws FileNotFoundException {
         ObjectArgs.checkNotNull(file, "file");
@@ -93,6 +98,7 @@ public final class FileArgs {
      * @throws NullPointerException if {@code dirPath} is null
      * @throws IllegalArgumentException if {@code dirPath} is empty
      */
+	@FullyTested
     public static File checkDirectoryExists(String dirPath, String argName)
     throws FileNotFoundException {
         StringArgs.checkNotEmpty(dirPath, "dirPath");
@@ -115,6 +121,7 @@ public final class FileArgs {
      * @see #checkDirectoryExists(String, String)
      * @see #checkRegularFileExists(File, String)
      */
+	@FullyTested
     public static File checkDirectoryExists(File dir, String argName)
     throws FileNotFoundException {
         ObjectArgs.checkNotNull(dir, "dir");
