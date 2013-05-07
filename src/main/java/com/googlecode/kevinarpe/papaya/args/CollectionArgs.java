@@ -49,6 +49,7 @@ public final class CollectionArgs {
      * @param minSize minimum number of elements (inclusive).  Must be non-negative.
      * @param maxSize maximum number of elements (inclusive).  Must be non-negative.
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @return the validated collection reference
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code minSize < 0},
      *         or if {@code maxSize < 0},
@@ -61,12 +62,13 @@ public final class CollectionArgs {
      * @see #checkExactSize(Collection, int, String)
      */
 	@FullyTested
-    public static <T> void checkSizeRange(
-            Collection<T> ref, int minSize, int maxSize, String argName) {
+    public static <TValue, TCollection extends Collection<TValue>>
+	TCollection checkSizeRange(TCollection ref, int minSize, int maxSize, String argName) {
         IntArgs.checkNotNegative(minSize, "minSize");
         IntArgs.checkNotNegative(maxSize, "maxSize");
         int size = (null == ref ? -1 : ref.size());
         ContainerArgs._checkSizeRange(ref, "Collection", size, minSize, maxSize, argName);
+        return ref;
     }
     
     /**
@@ -75,6 +77,7 @@ public final class CollectionArgs {
      * 
      * @param ref a collection reference
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @return the validated collection reference
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if number of elements in {@code ref} is zero,
      *         or if {@code argName} is empty or whitespace
@@ -82,9 +85,11 @@ public final class CollectionArgs {
      * @see #checkMinSize(Collection, int, String)
      */
 	@FullyTested
-    public static <T> void checkNotEmpty(Collection<T> ref, String argName) {
+    public static <TValue, TCollection extends Collection<TValue>>
+	TCollection checkNotEmpty(TCollection ref, String argName) {
         int size = (null == ref ? -1 : ref.size());
         ContainerArgs._checkNotEmpty(ref, "Collection", size, argName);
+        return ref;
     }
     
     /**
@@ -94,6 +99,7 @@ public final class CollectionArgs {
      * @param ref a collection reference
      * @param minSize minimum number of elements (inclusive).  Must be non-negative.
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @return the validated collection reference
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code minSize < 0},
      *         or if number of elements in {@code ref} is outside allowed range,
@@ -101,12 +107,13 @@ public final class CollectionArgs {
      * @see #checkSizeRange(Collection, int, int, String)
      */
 	@FullyTested
-    public static <T> void checkMinSize(
-            Collection<T> ref, int minSize, String argName) {
+    public static <TValue, TCollection extends Collection<TValue>>
+	TCollection checkMinSize(TCollection ref, int minSize, String argName) {
         IntArgs.checkNotNegative(minSize, "minSize");
         int size = (null == ref ? -1 : ref.size());
         int maxSize = -1;
         ContainerArgs._checkSizeRange(ref, "Collection", size, minSize, maxSize, argName);
+        return ref;
     }
     
     /**
@@ -116,6 +123,7 @@ public final class CollectionArgs {
      * @param ref a collection reference
      * @param maxSize maximum number of elements (inclusive).  Must be non-negative.
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @return the validated collection reference
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code maxSize < 0},
      *         or if number of elements in {@code ref} is outside allowed range,
@@ -123,12 +131,13 @@ public final class CollectionArgs {
      * @see #checkSizeRange(Collection, int, int, String)
      */
 	@FullyTested
-    public static <T> void checkMaxSize(
-            Collection<T> ref, int maxSize, String argName) {
+    public static <TValue, TCollection extends Collection<TValue>>
+	TCollection checkMaxSize(TCollection ref, int maxSize, String argName) {
         IntArgs.checkNotNegative(maxSize, "maxSize");
         int size = (null == ref ? -1 : ref.size());
         int minSize = -1;
         ContainerArgs._checkSizeRange(ref, "Collection", size, minSize, maxSize, argName);
+        return ref;
     }
     
     /**
@@ -138,6 +147,7 @@ public final class CollectionArgs {
      * @param ref a collection reference
      * @param exactSize exact number of elements (inclusive).  Must be non-negative.
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @return the validated collection reference
      * @throws NullPointerException if {@code ref} or {@code argName} is null
      * @throws IllegalArgumentException if {@code exactSize < 0},
      *         or if number of elements in {@code ref} is outside allowed range,
@@ -145,11 +155,12 @@ public final class CollectionArgs {
      * @see #checkSizeRange(Collection, int, int, String)
      */
 	@FullyTested
-    public static <T> void checkExactSize(
-            Collection<T> ref, int exactSize, String argName) {
+    public static <TValue, TCollection extends Collection<TValue>>
+	TCollection checkExactSize(TCollection ref, int exactSize, String argName) {
         IntArgs.checkNotNegative(exactSize, "exactSize");
         int size = (null == ref ? -1 : ref.size());
         ContainerArgs._checkSizeRange(ref, "Collection", size, exactSize, exactSize, argName);
+        return ref;
     }
     
     /**
@@ -158,17 +169,18 @@ public final class CollectionArgs {
      * 
      * @param ref a collection reference
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @return the validated collection reference
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see ArrayArgs#checkElementsNotNull(Object[], String)
      * @throws NullPointerException if {@code ref} (or any element) or {@code argName} is null
      * @throws IllegalArgumentException if {@code argName} is empty or whitespace
      */
 	@FullyTested
-    public static <T> void checkElementsNotNull(
-            Collection<T> ref, String argName) {
+    public static <TValue, TCollection extends Collection<TValue>>
+	TCollection checkElementsNotNull(TCollection ref, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
         int count = 0;
-        for (T item: ref) {
+        for (TValue item: ref) {
             if (null == item) {
                 StringArgs._checkArgNameValid(argName, "argName");
                 throw new NullPointerException(String.format(
@@ -176,6 +188,7 @@ public final class CollectionArgs {
             }
             ++count;
         }
+        return ref;
     }
     
     /**
@@ -183,9 +196,11 @@ public final class CollectionArgs {
      * and {@link #checkElementsNotNull(Collection, String)}.
      */
 	@FullyTested
-    public static <T> void checkNotEmptyAndElementsNotNull(Collection<T> ref, String argName) {
+    public static <TValue, TCollection extends Collection<TValue>>
+	TCollection checkNotEmptyAndElementsNotNull(TCollection ref, String argName) {
     	checkNotEmpty(ref, argName);
     	checkElementsNotNull(ref, argName);
+    	return ref;
     }
     
     /**

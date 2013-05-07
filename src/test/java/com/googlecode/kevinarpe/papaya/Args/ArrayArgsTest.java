@@ -107,16 +107,7 @@ public class ArrayArgsTest {
     	ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
     }
 
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckLengthRangeAsValidWithNullArgName() {
-        return new Object[][] {
-                { null, 4, 3 },
-                { null, 6, 7 },
-                { null, 0, 1 },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckLengthRangeAsValidWithNullArgName",
+    @Test(dataProvider = "_dataForShouldNotCheckLengthRangeAsValidWithNullArray",
             expectedExceptions = NullPointerException.class)
     public <T> void shouldCheckLengthRangeAsValidWithNullArgName(
             T[] ref, int minLen, int maxLen) {
@@ -129,7 +120,6 @@ public class ArrayArgsTest {
                 { null, 4, 3, "" },
                 { null, 4, 3, "   " },  // ASCII spaces
                 { null, 6, 7, "　　　" },  // wide Japanese spaces
-                { null, 0, 1, "   " },  // narrow Japanese spaces
         };
     }
     
@@ -178,15 +168,7 @@ public class ArrayArgsTest {
         ArrayArgs.checkNotEmpty(ref, "ref");
     }
     
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotEmptyWithNullArgName() {
-        return new Object[][] {
-                { new String[] { } },
-                { new Object[] { } },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyWithNullArgName",
+    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyWithEmptyArray",
             expectedExceptions = NullPointerException.class)
     public <T> void shouldNotCheckAsNotEmptyWithNullArgName(T[] ref) {
         String argName = null;
@@ -199,7 +181,6 @@ public class ArrayArgsTest {
                 { new String[] { }, "" },
                 { new String[] { }, "   " },  // ASCII spaces
                 { new String[] { }, "　　　" },  // wide Japanese spaces
-                { new String[] { }, "   " },  // narrow Japanese spaces
         };
     }
     
@@ -261,16 +242,7 @@ public class ArrayArgsTest {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
     }
     
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinLengthAsValidWithNullArgName() {
-        return new Object[][] {
-                { null, 4 },
-                { null, 6 },
-                { null, 0 },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMinLengthAsValidWithNullArgName",
+    @Test(dataProvider = "_dataForShouldNotCheckMinLengthAsValidWithNullArray",
             expectedExceptions = NullPointerException.class)
     public <T> void shouldCheckMinLengthAsValidWithNullArgName(
             T[] ref, int minLen) {
@@ -283,7 +255,6 @@ public class ArrayArgsTest {
                 { null, 4, "" },
                 { null, 4, "   " },  // ASCII spaces
                 { null, 6, "　　　" },  // wide Japanese spaces
-                { null, 0, "   " },  // narrow Japanese spaces
         };
     }
     
@@ -345,16 +316,7 @@ public class ArrayArgsTest {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
     }
     
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxLengthAsValidWithNullArgName() {
-        return new Object[][] {
-                { null, 4 },
-                { null, 6 },
-                { null, 0 },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMaxLengthAsValidWithNullArgName",
+    @Test(dataProvider = "_dataForShouldNotCheckMaxLengthAsValidWithNullArray",
             expectedExceptions = NullPointerException.class)
     public <T> void shouldCheckMaxLengthAsValidWithNullArgName(
             T[] ref, int maxLen) {
@@ -367,7 +329,6 @@ public class ArrayArgsTest {
                 { null, 4, "" },
                 { null, 4, "   " },  // ASCII spaces
                 { null, 6, "　　　" },  // wide Japanese spaces
-                { null, 0, "   " },  // narrow Japanese spaces
         };
     }
     
@@ -429,16 +390,7 @@ public class ArrayArgsTest {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
     }
     
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactLengthAsValidWithNullArgName() {
-        return new Object[][] {
-                { null, 4 },
-                { null, 6 },
-                { null, 0 },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckExactLengthAsValidWithNullArgName",
+    @Test(dataProvider = "_dataForShouldNotCheckExactLengthAsValidWithNullArray",
             expectedExceptions = NullPointerException.class)
     public <T> void shouldCheckExactLengthAsValidWithNullArgName(
             T[] ref, int exactLen) {
@@ -451,7 +403,6 @@ public class ArrayArgsTest {
                 { null, 4, "" },
                 { null, 4, "   " },  // ASCII spaces
                 { null, 6, "　　　" },  // wide Japanese spaces
-                { null, 0, "   " },  // narrow Japanese spaces
         };
     }
     
@@ -536,10 +487,6 @@ public class ArrayArgsTest {
                 { null, "　　　" },
                 { new String[] { null }, "　　　" },
                 { new String[] { "a", null }, "　　　" },
-                
-                { null, "   " },
-                { new String[] { null }, "   " },
-                { new String[] { "a", null }, "   " },
         };
     }
     
@@ -656,16 +603,6 @@ public class ArrayArgsTest {
                 { null, -6, "　　　", "　　　" },
                 { L, 6, "　　　", "　　　" },
                 { L, -6, "　　　", "　　　" },
-                
-                // narrow Japanese spaces
-                { null, 4, "   ", "index" },
-                { null, -4, "   ", "index" },
-                { L, 4, "ref", "   " },
-                { L, -4, "ref", "   " },
-                { null, 6, "   ", "   " },
-                { null, -6, "   ", "   " },
-                { L, 6, "   ", "   " },
-                { L, -6, "   ", "   " },
         };
     }
     
@@ -787,16 +724,6 @@ public class ArrayArgsTest {
                 { null, -6, "　　　", "　　　" },
                 { L, 6, "　　　", "　　　" },
                 { L, -6, "　　　", "　　　" },
-                
-                // narrow Japanese spaces
-                { null, 4, "   ", "index" },
-                { null, -4, "   ", "index" },
-                { L, 4, "ref", "   " },
-                { L, -4, "ref", "   " },
-                { null, 6, "   ", "   " },
-                { null, -6, "   ", "   " },
-                { L, 6, "   ", "   " },
-                { L, -6, "   ", "   " },
         };
     }
     
@@ -923,10 +850,6 @@ public class ArrayArgsTest {
                 { new String[] { "a" }, 0, 2, "　　　", "index", "count" },
                 { new String[] { "a" }, 0, 99, "ref", "　　　", "count" },
                 { new String[] { "a", "b" }, 0, 3, "ref", "index", "　　　" },
-                
-                { new String[] { "a" }, 0, 2, "   ", "index", "count" },
-                { new String[] { "a" }, 0, 99, "ref", "   ", "count" },
-                { new String[] { "a", "b" }, 0, 3, "ref", "index", "   " },
         };
     }
     

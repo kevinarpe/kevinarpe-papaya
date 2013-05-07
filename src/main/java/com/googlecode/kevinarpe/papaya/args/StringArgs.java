@@ -72,6 +72,19 @@ public final class StringArgs {
     /**
      * Tests if a string reference is neither null nor empty, where empty is defined as
      * {@code 0 == ref.length()}.
+     * <p>
+     * Examples that fail:
+     * <ul>
+     *   <li>{@code null}</li>
+     *   <li>{@code ""} (empty)</li>
+     * </ul>
+     * <p>
+     * Examples that pass:
+     * <ul>
+     *   <li>{@code "  "} (whitespace)</li>
+     *   <li>{@code "abc"}</li>
+     *   <li>{@code "大阪"}</li>
+     * </ul>
      * 
      * @param ref a string reference
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
@@ -95,10 +108,24 @@ public final class StringArgs {
     }
     
     /**
-     * Tests if a string reference is neither (a) null, (b) empty, nor (c) only whitespace.
+     * Tests if a string reference is neither (a) null, (b) empty, nor (c) one or more
+     * whitespace chars.
      * <p>
      * Whitespace is defined by {@link Character#isWhitespace(char)}, which includes all special
      * whitespace chars used in East Asian languages.
+     * <p>
+     * Examples that fail:
+     * <ul>
+     *   <li>{@code null}</li>
+     *   <li>{@code ""} (empty)</li>
+     *   <li>{@code "  "} (whitespace)</li>
+     * </ul>
+     * <p>
+     * Examples that pass:
+     * <ul>
+     *   <li>{@code "abc"}</li>
+     *   <li>{@code "大阪"}</li>
+     * </ul>
      * 
      * @param ref a string reference
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"

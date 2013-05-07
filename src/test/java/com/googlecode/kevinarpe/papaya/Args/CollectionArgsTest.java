@@ -115,16 +115,7 @@ public class CollectionArgsTest {
         CollectionArgs.checkSizeRange(ref, minSize, maxSize, "ref");
     }
 
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckSizeRangeAsValidWithNullArgName() {
-        return new Object[][] {
-                { null, 4, 3 },
-                { null, 6, 7 },
-                { null, 0, 1 },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckSizeRangeAsValidWithNullArgName",
+    @Test(dataProvider = "_dataForShouldNotCheckSizeRangeAsValidWithNullCollection",
             expectedExceptions = NullPointerException.class)
     public <T> void shouldCheckSizeRangeAsValidWithNullArgName(
             Collection<T> ref, int minSize, int maxSize) {
@@ -187,17 +178,7 @@ public class CollectionArgsTest {
         CollectionArgs.checkNotEmpty(ref, "ref");
     }
     
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotEmptyWithNullArgName() {
-        return new Object[][] {
-                { ImmutableList.of() },
-                { ImmutableSet.of() },
-                { new ArrayList<String>() },
-                { new HashSet<String>() },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyWithNullArgName",
+    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyWithEmptyCollection",
             expectedExceptions = NullPointerException.class)
     public <T> void shouldNotCheckAsNotEmptyWithNullArgName(Collection<T> ref) {
         String argName = null;
@@ -271,16 +252,7 @@ public class CollectionArgsTest {
         CollectionArgs.checkMinSize(ref, minSize, "ref");
     }
     
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinSizeAsValidWithNullArgName() {
-        return new Object[][] {
-                { null, 4 },
-                { null, 6 },
-                { null, 0 },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMinSizeAsValidWithNullArgName",
+    @Test(dataProvider = "_dataForShouldNotCheckMinSizeAsValidWithNullCollection",
             expectedExceptions = NullPointerException.class)
     public <T> void shouldCheckMinSizeAsValidWithNullArgName(
             Collection<T> ref, int minSize) {
@@ -354,16 +326,7 @@ public class CollectionArgsTest {
         CollectionArgs.checkMaxSize(ref, maxSize, "ref");
     }
     
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxSizeAsValidWithNullArgName() {
-        return new Object[][] {
-                { null, 4 },
-                { null, 6 },
-                { null, 0 },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMaxSizeAsValidWithNullArgName",
+    @Test(dataProvider = "_dataForShouldNotCheckMaxSizeAsValidWithNullCollection",
             expectedExceptions = NullPointerException.class)
     public <T> void shouldCheckMaxSizeAsValidWithNullArgName(
             Collection<T> ref, int maxSize) {
@@ -437,16 +400,7 @@ public class CollectionArgsTest {
         CollectionArgs.checkExactSize(ref, exactSize, "ref");
     }
     
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactSizeAsValidWithNullArgName() {
-        return new Object[][] {
-                { null, 4 },
-                { null, 6 },
-                { null, 0 },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckExactSizeAsValidWithNullArgName",
+    @Test(dataProvider = "_dataForShouldNotCheckExactSizeAsValidWithNullCollection",
             expectedExceptions = NullPointerException.class)
     public <T> void shouldCheckExactSizeAsValidWithNullArgName(
             Collection<T> ref, int exactSize) {
@@ -555,6 +509,96 @@ public class CollectionArgsTest {
     public <T> void shouldNotCheckElementsAsNotNullWithInvalidArgName(
             Collection<T> ref, String argName) {
         CollectionArgs.checkElementsNotNull(ref, argName);
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // CollectionArgs.checkNotEmptyAndElementsNotNull
+    //
+
+    @DataProvider
+    private static final Object[][] _dataForShouldCheckAsNotEmptyAndElementsAsNotNull() {
+        return new Object[][] {
+                { ImmutableList.of("a") },
+                { ImmutableList.of("a", "b") },
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldCheckAsNotEmptyAndElementsAsNotNull")
+    public <T> void shouldCheckAsNotEmptyAndElementsAsNotNull(Collection<T> ref) {
+        CollectionArgs.checkNotEmptyAndElementsNotNull(ref, "ref");
+    }
+    
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public <T> void shouldNotCheckAsNotEmptyWithEmptyCollection() {
+        CollectionArgs.checkNotEmptyAndElementsNotNull(new ArrayList<String>(), "ref");
+    }
+
+    @DataProvider
+    private static final Object[][] _dataForShouldNotCheckAsNotEmptyAndElementsAsNotNullWithNullElements() {
+        return new Object[][] {
+        		{ null },
+                { Arrays.asList(new Object[] { null }) },
+                { Arrays.asList("a", null) },
+                { Arrays.asList(null, "a") },
+                { Arrays.asList(null, "a", "b") },
+                { Arrays.asList("a", null, "b") },
+                { Arrays.asList("a", "b", null) },
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyAndElementsAsNotNullWithNullElements",
+            expectedExceptions = NullPointerException.class)
+    public <T> void shouldNotCheckAsNotEmptyAndElementsAsNotNullWithNullElements(
+    		Collection<T> ref) {
+        CollectionArgs.checkNotEmptyAndElementsNotNull(ref, "ref");
+    }
+
+    @DataProvider
+    private static final Object[][] _dataForShouldNotCheckAsNotEmptyAndElementsAsNotNullWithNullArgName() {
+        return new Object[][] {
+                { null },
+        		{ new ArrayList<String>() },
+                { Arrays.asList(new Object[] { null }) },
+                { Arrays.asList("a", null) },
+                { Arrays.asList(null, "a") },
+                { Arrays.asList(null, "a", "b") },
+                { Arrays.asList("a", null, "b") },
+                { Arrays.asList("a", "b", null) },
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyAndElementsAsNotNullWithNullArgName",
+            expectedExceptions = NullPointerException.class)
+    public <T> void shouldNotCheckAsNotEmptyAndElementsAsNotNullWithNullArgName(
+    		Collection<T> ref) {
+        CollectionArgs.checkNotEmptyAndElementsNotNull(ref, null);
+    }
+
+    @DataProvider
+    private static final Object[][] _dataForShouldNotCheckAsNotEmptyAndElementsAsNotNullWithInvalidArgName() {
+        return new Object[][] {
+                { null, "" },
+                { new ArrayList<String>(), "" },
+                { Arrays.asList(new Object[] { null }), "" },
+                { Arrays.asList("a", null), "" },
+                
+                { null, "   " },
+                { new ArrayList<String>(), "   " },
+                { Arrays.asList(new Object[] { null }), "   " },
+                { Arrays.asList("a", null), "   " },
+                
+                { null, "　　　" },
+                { new ArrayList<String>(), "　　　" },
+                { Arrays.asList(new Object[] { null }), "　　　" },
+                { Arrays.asList("a", null), "　　　" },
+        };
+    }
+    
+    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyAndElementsAsNotNullWithInvalidArgName",
+            expectedExceptions = IllegalArgumentException.class)
+    public <T> void shouldNotCheckAsNotEmptyAndElementsAsNotNullWithInvalidArgName(
+            Collection<T> ref, String argName) {
+        CollectionArgs.checkNotEmptyAndElementsNotNull(ref, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////

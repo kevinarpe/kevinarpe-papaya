@@ -27,8 +27,10 @@ package com.googlecode.kevinarpe.papaya.args;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
+import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 
 /**
  * See {@link ObjectArgs} for an overview.
@@ -41,7 +43,42 @@ public final class FileArgs {
 	// Disable default constructor
 	private FileArgs() {
 	}
-
+	
+	/**
+	 * Tests if a resource exists.  Resources are usually a configuration file embedded in the JAR
+	 * file accessible with a UNIX-like path.
+	 * <p>
+	 * Example: Imagine you store Internet proxy settings in a properties file.  This file is then
+	 * embedded in the JAR and accessible as: {@code "src/main/resources/proxy.properties"}
+	 * 
+	 * @param clazz ref to class object to find resource
+	 * @param resourceName path to resource, e.g., {@code "src/main/resources/proxy.properties"}
+     * @param argName argument name for {@code resourceName}, e.g., "outputFile" or "inputFile"
+	 * @return result from {@link Class#getResourceAsStream(String)}
+	 * @throws NullPointerException if {@code clazz}, {@code resourceName},
+	 *         or {@code argName} are null
+	 * @throws IllegalArgumentException if {@code resourceName} is empty or whitespace
+	 * @throws FileNotFoundException if resource is not found
+	 */
+	@NotFullyTested
+	public static <T> InputStream checkResourceAsStreamExists(
+			Class<T> clazz, String resourceName, String argName)
+	throws FileNotFoundException {
+		ObjectArgs.checkNotNull(clazz, "clazz");
+		StringArgs.checkNotEmptyOrWhitespace(resourceName, "resourceName");
+		InputStream istream = clazz.getResourceAsStream(resourceName);
+		if (null == istream) {
+			StringArgs._checkArgNameValid(argName, "argName");
+			String msg = String.format(
+				"Argument '%s': Resource does not exist: '%s'"
+				+ "%n\tClass: %s.%s",
+				argName, resourceName,
+				clazz.getPackage().getName(), clazz.getSimpleName());
+			throw new FileNotFoundException(msg);
+		}
+		return istream;
+	}
+	
     /**
      * This is a convenience method for {@link #checkRegularFileExists(File, String)}.
      * 

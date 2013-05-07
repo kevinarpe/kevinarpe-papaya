@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.Args;
  * #L%
  */
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -116,16 +117,7 @@ public class MapArgsTest {
         MapArgs.checkSizeRange(ref, minSize, maxSize, "ref");
     }
 
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckSizeRangeAsValidWithNullArgName() {
-        return new Object[][] {
-                { null, 4, 3 },
-                { null, 6, 7 },
-                { null, 0, 1 },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckSizeRangeAsValidWithNullArgName",
+    @Test(dataProvider = "_dataForShouldNotCheckSizeRangeAsValidWithNullMap",
             expectedExceptions = NullPointerException.class)
     public <TKey, TValue> void shouldCheckSizeRangeAsValidWithNullArgName(
             Map<TKey, TValue> ref, int minSize, int maxSize) {
@@ -138,7 +130,6 @@ public class MapArgsTest {
                 { null, 4, 3, "" },
                 { null, 4, 3, "   " },  // ASCII spaces
                 { null, 6, 7, "　　　" },  // wide Japanese spaces
-                { null, 0, 1, "   " },  // narrow Japanese spaces
         };
     }
     
@@ -170,10 +161,8 @@ public class MapArgsTest {
     @DataProvider
     private static final Object[][] _dataForShouldNotCheckAsNotEmptyWithEmptyMap() {
         return new Object[][] {
-                { ImmutableList.of() },
-                { ImmutableSet.of() },
+        		{ ImmutableMap.of() },
                 { new HashMap<String, String>() },
-                { new HashSet<String>() },
         };
     }
     
@@ -189,19 +178,10 @@ public class MapArgsTest {
         MapArgs.checkNotEmpty(ref, "ref");
     }
     
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotEmptyWithNullArgName() {
-        return new Object[][] {
-                { ImmutableMap.of() },
-                { new HashMap<String, String>() },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyWithNullArgName",
+    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyWithEmptyMap",
             expectedExceptions = NullPointerException.class)
     public <TKey, TValue> void shouldNotCheckAsNotEmptyWithNullArgName(Map<TKey, TValue> ref) {
-        String argName = null;
-        MapArgs.checkNotEmpty(ref, argName);
+        MapArgs.checkNotEmpty(ref, null);
     }
     
     @DataProvider
@@ -210,13 +190,13 @@ public class MapArgsTest {
                 { new HashMap<String, String>(), "" },
                 { new HashMap<String, String>(), "   " },  // ASCII spaces
                 { new HashMap<String, String>(), "　　　" },  // wide Japanese spaces
-                { new HashMap<String, String>(), "   " },  // narrow Japanese spaces
         };
     }
     
     @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyWithInvalidArgName",
             expectedExceptions = IllegalArgumentException.class)
-    public <TKey, TValue> void shouldNotCheckAsNotEmptyWithInvalidArgName(Map<TKey, TValue> ref, String argName) {
+    public <TKey, TValue> void shouldNotCheckAsNotEmptyWithInvalidArgName(
+    		Map<TKey, TValue> ref, String argName) {
         MapArgs.checkNotEmpty(ref, argName);
     }
     
@@ -253,7 +233,8 @@ public class MapArgsTest {
     
     @Test(dataProvider = "_dataForShouldNotCheckMinSizeAsValidWithInvalidMinLen",
             expectedExceptions = IllegalArgumentException.class)
-    public <TKey, TValue> void shouldNotCheckMinSizeAsValidWithInvalidMinLen(Map<TKey, TValue> ref, int minSize) {
+    public <TKey, TValue> void shouldNotCheckMinSizeAsValidWithInvalidMinLen(
+    		Map<TKey, TValue> ref, int minSize) {
         MapArgs.checkMinSize(ref, minSize, "ref");
     }
     
@@ -268,20 +249,12 @@ public class MapArgsTest {
     
     @Test(dataProvider = "_dataForShouldNotCheckMinSizeAsValidWithNullMap",
             expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldCheckMinSizeAsValidWithNullMap(Map<TKey, TValue> ref, int minSize) {
+    public <TKey, TValue> void shouldCheckMinSizeAsValidWithNullMap(
+    		Map<TKey, TValue> ref, int minSize) {
         MapArgs.checkMinSize(ref, minSize, "ref");
     }
     
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinSizeAsValidWithNullArgName() {
-        return new Object[][] {
-                { null, 4 },
-                { null, 6 },
-                { null, 0 },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMinSizeAsValidWithNullArgName",
+    @Test(dataProvider = "_dataForShouldNotCheckMinSizeAsValidWithNullMap",
             expectedExceptions = NullPointerException.class)
     public <TKey, TValue> void shouldCheckMinSizeAsValidWithNullArgName(
             Map<TKey, TValue> ref, int minSize) {
@@ -294,7 +267,6 @@ public class MapArgsTest {
                 { null, 4, "" },
                 { null, 4, "   " },  // ASCII spaces
                 { null, 6, "　　　" },  // wide Japanese spaces
-                { null, 0, "   " },  // narrow Japanese spaces
         };
     }
     
@@ -337,7 +309,8 @@ public class MapArgsTest {
     
     @Test(dataProvider = "_dataForShouldNotCheckMaxSizeAsValidWithInvalidMaxLen",
             expectedExceptions = IllegalArgumentException.class)
-    public <TKey, TValue> void shouldNotCheckMaxSizeAsValidWithInvalidMaxLen(Map<TKey, TValue> ref, int maxSize) {
+    public <TKey, TValue> void shouldNotCheckMaxSizeAsValidWithInvalidMaxLen(
+    		Map<TKey, TValue> ref, int maxSize) {
         MapArgs.checkMaxSize(ref, maxSize, "ref");
     }
     
@@ -352,20 +325,12 @@ public class MapArgsTest {
     
     @Test(dataProvider = "_dataForShouldNotCheckMaxSizeAsValidWithNullMap",
             expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldCheckMaxSizeAsValidWithNullMap(Map<TKey, TValue> ref, int maxSize) {
+    public <TKey, TValue> void shouldCheckMaxSizeAsValidWithNullMap(
+    		Map<TKey, TValue> ref, int maxSize) {
         MapArgs.checkMaxSize(ref, maxSize, "ref");
     }
     
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxSizeAsValidWithNullArgName() {
-        return new Object[][] {
-                { null, 4 },
-                { null, 6 },
-                { null, 0 },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMaxSizeAsValidWithNullArgName",
+    @Test(dataProvider = "_dataForShouldNotCheckMaxSizeAsValidWithNullMap",
             expectedExceptions = NullPointerException.class)
     public <TKey, TValue> void shouldCheckMaxSizeAsValidWithNullArgName(
             Map<TKey, TValue> ref, int maxSize) {
@@ -378,7 +343,6 @@ public class MapArgsTest {
                 { null, 4, "" },
                 { null, 4, "   " },  // ASCII spaces
                 { null, 6, "　　　" },  // wide Japanese spaces
-                { null, 0, "   " },  // narrow Japanese spaces
         };
     }
     
@@ -440,16 +404,7 @@ public class MapArgsTest {
         MapArgs.checkExactSize(ref, exactSize, "ref");
     }
     
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactSizeAsValidWithNullArgName() {
-        return new Object[][] {
-                { null, 4 },
-                { null, 6 },
-                { null, 0 },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckExactSizeAsValidWithNullArgName",
+    @Test(dataProvider = "_dataForShouldNotCheckExactSizeAsValidWithNullMap",
             expectedExceptions = NullPointerException.class)
     public <TKey, TValue> void shouldCheckExactSizeAsValidWithNullArgName(
             Map<TKey, TValue> ref, int exactSize) {
@@ -462,7 +417,6 @@ public class MapArgsTest {
                 { null, 4, "" },
                 { null, 4, "   " },  // ASCII spaces
                 { null, 6, "　　　" },  // wide Japanese spaces
-                { null, 0, "   " },  // narrow Japanese spaces
         };
     }
     
@@ -558,14 +512,6 @@ public class MapArgsTest {
                 { MapUtils.asHashMap(null, 123, "abc", 456), "　　　" },
                 { MapUtils.asHashMap("abc", 123, null, 456), "　　　" },
                 { MapUtils.asHashMap("abc", null, null, 456), "　　　" },
-                
-                // narrow Japanese spaces
-                { null, "   " },
-                { MapUtils.asHashMap(null, 123), "   " },
-                { MapUtils.asHashMap(null, null), "   " },
-                { MapUtils.asHashMap(null, 123, "abc", 456), "   " },
-                { MapUtils.asHashMap("abc", 123, null, 456), "   " },
-                { MapUtils.asHashMap("abc", null, null, 456), "   " },
         };
     }
     
@@ -662,14 +608,6 @@ public class MapArgsTest {
                 { MapUtils.asHashMap(123, null, 456, "abc"), "　　　" },
                 { MapUtils.asHashMap(123, "abc", 456, null), "　　　" },
                 { MapUtils.asHashMap(null, "abc", 456, null), "　　　" },
-                
-                // narrow Japanese spaces
-                { null, "   " },
-                { MapUtils.asHashMap(123, null), "   " },
-                { MapUtils.asHashMap(null, null), "   " },
-                { MapUtils.asHashMap(123, null, 456, "abc"), "   " },
-                { MapUtils.asHashMap(123, "abc", 456, null), "   " },
-                { MapUtils.asHashMap(null, "abc", 456, null), "   " },
         };
     }
     
@@ -765,14 +703,6 @@ public class MapArgsTest {
                 { MapUtils.asHashMap(null, 123, "abc", 456), "　　　" },
                 { MapUtils.asHashMap("abc", 123, null, 456), "　　　" },
                 { MapUtils.asHashMap("abc", null, null, 456), "　　　" },
-                
-                // narrow Japanese spaces
-                { null, "   " },
-                { MapUtils.asHashMap(null, 123), "   " },
-                { MapUtils.asHashMap(null, null), "   " },
-                { MapUtils.asHashMap(null, 123, "abc", 456), "   " },
-                { MapUtils.asHashMap("abc", 123, null, 456), "   " },
-                { MapUtils.asHashMap("abc", null, null, 456), "   " },
         };
     }
     

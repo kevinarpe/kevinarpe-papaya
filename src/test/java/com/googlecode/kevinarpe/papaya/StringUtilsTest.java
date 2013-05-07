@@ -249,14 +249,14 @@ public class StringUtilsTest {
     
     @Test(dataProvider = "_dataForShouldRunIsWhiteSpaceWithoutException")
     public void shouldRunIsWhiteSpaceWithoutException(String input, boolean expectedOutput) {
-        boolean output = StringUtils.isWhitespace(input);
+        boolean output = StringUtils.isEmptyOrWhitespace(input);
         Assert.assertEquals(output, expectedOutput);
     }
     
     @Test(expectedExceptions = NullPointerException.class)
     public void shouldRunIsWhiteSpaceWithException() {
         String input = null;
-        StringUtils.isWhitespace(input);
+        StringUtils.isEmptyOrWhitespace(input);
     }
     
     ///////////////////////////////////////////////////////////////////////////

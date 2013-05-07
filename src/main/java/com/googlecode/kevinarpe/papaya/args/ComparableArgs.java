@@ -1,5 +1,7 @@
 package com.googlecode.kevinarpe.papaya.args;
 
+import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
+
 /*
  * #%L
  * This file is part of Papaya.
@@ -30,6 +32,7 @@ package com.googlecode.kevinarpe.papaya.args;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public final class ComparableArgs {
 
 	// Disable default constructor
@@ -54,6 +57,7 @@ public final class ComparableArgs {
      * @see #checkMaxValue(Comparable, Comparable, String)
      * @see #checkExactValue(Comparable, Comparable, String)
      */
+	@FullyTested
     public static <T extends Comparable<T>> T checkValueRange(
             T ref, T minValue, T maxValue, String argName) {
         ObjectArgs.checkNotNull(minValue, "minValue");
@@ -100,6 +104,7 @@ public final class ComparableArgs {
      *         or if {@code argName} is empty or whitespace
      * @see #checkValueRange(Comparable, Comparable, Comparable, String)
      */
+    @FullyTested
     public static <T extends Comparable<T>> T checkMinValue(
             T ref, T minValue, String argName) {
         ObjectArgs.checkNotNull(minValue, "minValue");
@@ -121,6 +126,7 @@ public final class ComparableArgs {
      *         or if {@code argName} is empty or whitespace
      * @see #checkValueRange(Comparable, Comparable, Comparable, String)
      */
+    @FullyTested
     public static <T extends Comparable<T>> T checkMaxValue(
             T ref, T maxValue, String argName) {
         ObjectArgs.checkNotNull(maxValue, "maxValue");
@@ -142,6 +148,7 @@ public final class ComparableArgs {
      *         or if {@code argName} is empty or whitespace
      * @see #checkValueRange(Comparable, Comparable, Comparable, String)
      */
+    @FullyTested
     public static <T extends Comparable<T>> T checkExactValue(
             T ref, T exactValue, String argName) {
         ObjectArgs.checkNotNull(exactValue, "exactValue");

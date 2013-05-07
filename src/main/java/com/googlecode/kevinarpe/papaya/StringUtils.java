@@ -146,8 +146,8 @@ public final class StringUtils {
      * To be precise, "trailing" is always defined as starting from the last index.
      * This terminology may be backwards for right-to-left languages such as Hebrew and Arabic.
      * <p>
-     * Whitespace is defined as {@link Character#isWhitespace(char)}, which will include all
-     * Unicode whitespace, such as the Japanese full-width space.
+     * Whitespace is defined by {@link Character#isWhitespace(char)}, which includes all special
+     * whitespace chars used in East Asian languages.
      * <p>
      * If zero leading whitespace chars are found, the input string reference is returned.
      * <p>
@@ -179,15 +179,37 @@ public final class StringUtils {
     }
     
     /**
-     * Tests if an input string is only whitespace.
+     * Tests if an input string is one or more whitespace chars.  Empty strings are not
+     * considered whitespace.
      * <p>
-     * Whitespace is defined as {@link Character#isWhitespace(char)}.
+     * Whitespace is defined by {@link Character#isWhitespace(char)}, which includes all special
+     * whitespace chars used in East Asian languages.
+     * 
+     * @param str input string
+     * @return true if only whitespace 
+     * @throws NullPointerException if {@code str} is {@code null}
+     */
+    public static <T extends CharSequence> boolean isOnlyWhitespace(String str) {
+    	ObjectArgs.checkNotNull(str, "str");
+        int len = str.length();
+        if (0 == len) {
+        	return false;
+        }
+        boolean b = isEmptyOrWhitespace(str);
+        return b;
+    }
+    
+    /**
+     * Tests if an input string is empty or one or more whitespace chars.
+     * <p>
+     * Whitespace is defined by {@link Character#isWhitespace(char)}, which includes all special
+     * whitespace chars used in East Asian languages.
      * 
      * @param str input string
      * @return true if empty or all whitespace 
      * @throws NullPointerException if {@code str} is {@code null}
      */
-    public static <T extends CharSequence> boolean isWhitespace(String str) {
+    public static <T extends CharSequence> boolean isEmptyOrWhitespace(String str) {
         ObjectArgs.checkNotNull(str, "str");
         int len = str.length();
         for (int i = 0; i < len; ++i) {

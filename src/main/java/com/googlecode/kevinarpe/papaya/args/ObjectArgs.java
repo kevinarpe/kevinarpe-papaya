@@ -1,5 +1,6 @@
 package com.googlecode.kevinarpe.papaya.args;
 
+import com.google.common.base.Preconditions;
 import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 
 /*
@@ -31,13 +32,15 @@ import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
  * This is a collection of static methods to check arguments received by methods.  The goal is to
  * provide a wide range of checks that produce readable, detailed errors.
  * <p>
+ * Like {@link Preconditions}, most methods return the validated input.
+ * <p>
  * With the exception of {@link FileArgs} (and possibly a few others), all methods throw unchecked
  * exceptions -- {@link RuntimeException} and its subclasses.  Most frequently,
  * {@link IllegalArgumentException} is thrown.
- * 
+ * <p>
  * <pre>
  *     public void myMethod(List&lt;String> strList) {
- *         ObjectsArgs.checkNotNull(strList, "strList");
+ *         this._strList = ObjectsArgs.checkNotNull(strList, "strList");
  *         // Do work here.
  *     }</pre>
  * 

@@ -1,5 +1,8 @@
 package com.googlecode.kevinarpe.papaya.args;
 
+import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
+import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
+
 /*
  * #%L
  * This file is part of Papaya.
@@ -30,6 +33,7 @@ package com.googlecode.kevinarpe.papaya.args;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@NotFullyTested
 public final class ArrayArgs {
 
 	// Disable default constructor
@@ -56,6 +60,7 @@ public final class ArrayArgs {
      * @see #checkMaxLength(Object[], int, String)
      * @see #checkExactLength(Object[], int, String)
      */
+	@FullyTested
     public static <T> T[] checkLengthRange(
             T[] ref, int minLen, int maxLen, String argName) {
         IntArgs.checkNotNegative(minLen, "minLen");
@@ -78,6 +83,7 @@ public final class ArrayArgs {
      * @see #checkLengthRange(Object[], int, int, String)
      * @see #checkMinLength(Object[], int, String)
      */
+	@FullyTested
     public static <T> T[] checkNotEmpty(T[] ref, String argName) {
         int len = (null == ref ? -1 : ref.length);
         ContainerArgs._checkNotEmpty(ref, "Array", len, argName);
@@ -98,6 +104,7 @@ public final class ArrayArgs {
      *         or if {@code argName} is empty or whitespace
      * @see #checkLengthRange(Object[], int, int, String)
      */
+	@FullyTested
     public static <T> T[] checkMinLength(T[] ref, int minLen, String argName) {
         IntArgs.checkNotNegative(minLen, "minLen");
         int len = (null == ref ? -1 : ref.length);
@@ -120,6 +127,7 @@ public final class ArrayArgs {
      *         or if {@code argName} is empty or whitespace
      * @see #checkLengthRange(Object[], int, int, String)
      */
+	@FullyTested
     public static <T> T[] checkMaxLength(T[] ref, int maxLen, String argName) {
         IntArgs.checkNotNegative(maxLen, "maxLen");
         int len = (null == ref ? -1 : ref.length);
@@ -142,6 +150,7 @@ public final class ArrayArgs {
      *         or if {@code argName} is empty or whitespace
      * @see #checkLengthRange(Object[], int, int, String)
      */
+	@FullyTested
     public static <T> T[] checkExactLength(T[] ref, int exactLen, String argName) {
         IntArgs.checkNotNegative(exactLen, "exactLen");
         int len = (null == ref ? -1 : ref.length);
@@ -160,6 +169,7 @@ public final class ArrayArgs {
      * @throws NullPointerException if {@code ref} (or any element) or {@code argName} is null
      * @throws IllegalArgumentException if {@code argName} is empty or whitespace
      */
+	@FullyTested
     public static <T> T[] checkElementsNotNull(T[] ref, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
         for (int i = 0; i < ref.length; ++i) {
@@ -179,6 +189,7 @@ public final class ArrayArgs {
      * 
      * This method is useful to check variable argument lists (var args).
      */
+	@NotFullyTested
     public static <T> T[] checkNotEmptyAndElementsNotNull(T[] ref, String argName) {
     	checkNotEmpty(ref, argName);
     	checkElementsNotNull(ref, argName);
@@ -201,6 +212,7 @@ public final class ArrayArgs {
      *         or {@code index >= ref.length}
      * @see #checkInsertIndex(Object[], int, String, String)
      */
+	@FullyTested
     public static <T> int checkAccessIndex(
             T[] ref, int index, String arrArgName, String indexArgName) {
         int len = (null == ref ? -1 : ref.length);
@@ -225,6 +237,7 @@ public final class ArrayArgs {
      *         or {@code index >= ref.length}
      * @see #checkAccessIndex(Object[], int, String, String)
      */
+	@FullyTested
     public static <T> int checkInsertIndex(
             T[] ref, int index, String arrArgName, String indexArgName) {
         int len = (null == ref ? -1 : ref.length);
@@ -444,6 +457,7 @@ public final class ArrayArgs {
      * @throws IndexOutOfBoundsException if {@code index >= ref.length},
      *         or if {@code index + count > ref.length}
      */
+	@FullyTested
     public static <T> void checkIndexAndCount(
             T[] ref,
             int index,
