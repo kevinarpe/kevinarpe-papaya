@@ -461,7 +461,7 @@ public class CollectionArgsTest {
     
     @Test(expectedExceptions = NullPointerException.class)
     public void shouldNotCheckElementsAsNotNullWithNullCollection() {
-        CollectionArgs.checkElementsNotNull(null, "ref");
+        CollectionArgs.checkElementsNotNull((Collection<Object>) null, "ref");
     }
 
     @DataProvider

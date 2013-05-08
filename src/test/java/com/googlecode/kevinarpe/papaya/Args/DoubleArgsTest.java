@@ -21,7 +21,7 @@ package com.googlecode.kevinarpe.papaya.Args;
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * adouble with Papaya.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Papaya.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
 

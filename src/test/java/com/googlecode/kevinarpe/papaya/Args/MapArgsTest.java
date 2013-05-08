@@ -25,9 +25,7 @@ package com.googlecode.kevinarpe.papaya.Args;
  * #L%
  */
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 import org.testng.annotations.AfterClass;
@@ -35,9 +33,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.googlecode.kevinarpe.papaya.MapUtils;
 import com.googlecode.kevinarpe.papaya.args.MapArgs;
 
@@ -465,8 +461,8 @@ public class MapArgsTest {
     }
     
     @Test(expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldNotCheckKeysAsNotNullWithNullMap() {
-        MapArgs.checkKeysNotNull(null, "ref");
+    public void shouldNotCheckKeysAsNotNullWithNullMap() {
+        MapArgs.checkKeysNotNull((Map<Object, Object>) null, "ref");
     }
     
     @DataProvider
@@ -560,8 +556,8 @@ public class MapArgsTest {
     }
     
     @Test(expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldNotCheckValuesAsNotNullWithNullMap() {
-        MapArgs.checkValuesNotNull(null, "ref");
+    public void shouldNotCheckValuesAsNotNullWithNullMap() {
+        MapArgs.checkValuesNotNull((Map<Object, Object>) null, "ref");
     }
     
     @DataProvider
@@ -656,7 +652,7 @@ public class MapArgsTest {
     
     @Test(expectedExceptions = NullPointerException.class)
     public <TKey, TValue> void shouldNotCheckKeysAndValuesAsNotNullWithNullMap() {
-        MapArgs.checkKeysAndValuesNotNull(null, "ref");
+        MapArgs.checkKeysAndValuesNotNull((Map<Object, Object>) null, "ref");
     }
     
     @DataProvider
