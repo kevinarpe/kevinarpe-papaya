@@ -28,12 +28,14 @@ package com.googlecode.kevinarpe.papaya;
 import java.io.File;
 import java.io.IOException;
 
+import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.args.StringArgs;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@NotFullyTested
 public final class FileUtils {
 
 	// Disable default constructor

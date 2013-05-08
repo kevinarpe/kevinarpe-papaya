@@ -1,5 +1,7 @@
 package com.googlecode.kevinarpe.papaya;
 
+import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
+
 /*
  * #%L
  * This file is part of Papaya.
@@ -28,6 +30,7 @@ package com.googlecode.kevinarpe.papaya;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@NotFullyTested
 public final class FuncUtils {
 
 	// Disable default constructor

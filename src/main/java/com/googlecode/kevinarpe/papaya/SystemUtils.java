@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya;
  */
 
 import com.google.common.base.Joiner;
+import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 import com.googlecode.kevinarpe.papaya.args.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 
@@ -34,6 +35,7 @@ import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public class SystemUtils {
 	
 	private static final OperatingSystem _CURRENT_OPERATING_SYSTEM;
@@ -65,6 +67,7 @@ public class SystemUtils {
 	 * @see OperatingSystem
 	 * @see OperatingSystem#getCategory()
 	 */
+	@FullyTested
 	public enum OperatingSystemCategory {
 		UNKNOWN,
 		UNIX,
@@ -86,6 +89,7 @@ public class SystemUtils {
 	 * @see OperatingSystemCategory
 	 * @see <a href="http://lopica.sourceforge.net/os.html">Source</a>
 	 */
+	@FullyTested
 	public enum OperatingSystem {
 		
 		/**
@@ -147,6 +151,7 @@ public class SystemUtils {
 	 * @see OperatingSystemCategory
 	 * @see #checkCurrentOperatingSystemCategory(OperatingSystemCategory...)
 	 */
+	@FullyTested
 	public static OperatingSystem getCurrentOperatingSystem() {
 		return _CURRENT_OPERATING_SYSTEM;
 	}
@@ -167,6 +172,7 @@ public class SystemUtils {
 	 * @see #getCurrentOperatingSystem()
 	 * @see #checkCurrentOperatingSystemCategory(OperatingSystemCategory...)
 	 */
+	@FullyTested
 	public static OperatingSystem checkCurrentOperatingSystem(OperatingSystem... osArr) {
 		ArrayArgs.checkNotEmptyAndElementsNotNull(osArr, "osArr");
 		for (OperatingSystem os: osArr) {
@@ -195,6 +201,7 @@ public class SystemUtils {
 	 * @see #getCurrentOperatingSystem()
 	 * @see #checkCurrentOperatingSystem(OperatingSystem...)
 	 */
+	@FullyTested
 	public static OperatingSystemCategory checkCurrentOperatingSystemCategory(
 			OperatingSystemCategory... catArr) {
 		ArrayArgs.checkNotEmptyAndElementsNotNull(catArr, "catArr");

@@ -1,5 +1,7 @@
 package com.googlecode.kevinarpe.papaya;
 
+import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
+
 /*
  * #%L
  * This file is part of Papaya.
@@ -25,6 +27,10 @@ package com.googlecode.kevinarpe.papaya;
  * #L%
  */
 
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
+@NotFullyTested
 public final class PrimitiveTypeUtils {
 
 	// Disable default constructor

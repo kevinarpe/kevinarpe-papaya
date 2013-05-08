@@ -28,6 +28,12 @@ package com.googlecode.kevinarpe.papaya;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
+
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
+@NotFullyTested
 public final class ListUtils {
 
 	// Disable default constructor

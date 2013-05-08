@@ -28,6 +28,7 @@ package com.googlecode.kevinarpe.papaya;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.args.IntArgs;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.args.StringArgs;
@@ -37,6 +38,7 @@ import com.googlecode.kevinarpe.papaya.args.StringArgs;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@NotFullyTested
 public final class StringUtils {
 
 	// Disable default constructor

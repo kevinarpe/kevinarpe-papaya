@@ -31,11 +31,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@NotFullyTested
 public final class MapUtils {
 
 	// Disable default constructor

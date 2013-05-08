@@ -27,10 +27,12 @@ package com.googlecode.kevinarpe.papaya;
 
 import java.lang.reflect.Array;
 
+import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.args.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.args.IntArgs;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 
+@NotFullyTested
 public final class ArrayUtils {
 
 	// Disable default constructor
