@@ -25,9 +25,11 @@ package com.googlecode.kevinarpe.papaya;
  * #L%
  */
 
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +45,168 @@ public final class MapUtils {
 	// Disable default constructor
 	private MapUtils() {
 	}
+
+	public static class MapInserter<TKey, TValue, TMap extends Map<TKey, TValue>> {
+		
+		private final TMap _map;
+		private final List<TKey> _keyList;
+		private final List<TValue> _valueList;
+		private final List<Map.Entry<TKey, TValue>> _entryList;
+		
+		public MapInserter(TMap map) {
+			_map = ObjectArgs.checkNotNull(map, "map");
+			_keyList = new LinkedList<TKey>();
+			_valueList = new LinkedList<TValue>();
+			_entryList = new LinkedList<Map.Entry<TKey, TValue>>();
+		}
+		
+		public MapInserter<TKey, TValue, TMap> put(TKey key, TValue value) {
+			_entryList.add(new AbstractMap.SimpleEntry<TKey, TValue>(key, value));
+			return this;
+		}
+		
+		public MapInserter<TKey, TValue, TMap> addEntries(Map.Entry<TKey, TValue>... entryArr) {
+			if (0 != entryArr.length) {
+				addEntries(Arrays.asList(entryArr));
+			}
+			return this;
+		}
+		
+		public MapInserter<TKey, TValue, TMap> addEntries(
+				Iterable<Map.Entry<TKey, TValue>> entryIterable) {
+			ObjectArgs.checkNotNull(entryIterable, "entryIterable");
+			for (Map.Entry<TKey, TValue> entry: entryIterable) {
+				_entryList.add(entry);
+			}
+			return this;
+		}
+		
+		public MapInserter<TKey, TValue, TMap> addKeys(TKey... keyArr) {
+			if (0 != keyArr.length) {
+				addKeys(Arrays.asList(keyArr));
+			}
+			return this;
+		}
+		
+		public MapInserter<TKey, TValue, TMap> addKeys(Iterable<TKey> keyIterable) {
+			for (TKey key: keyIterable) {
+				_keyList.add(key);
+			}
+			return this;
+		}
+		
+		public MapInserter<TKey, TValue, TMap> addValues(TValue... valueArr) {
+			if (0 != valueArr.length) {
+				addValues(Arrays.asList(valueArr));
+			}
+			return this;
+		}
+		
+		public MapInserter<TKey, TValue, TMap> addValues(Iterable<TValue> valueIterable) {
+			for (TValue value: valueIterable) {
+				_valueList.add(value);
+			}
+			return this;
+		}
+		
+		public TMap insert() {
+			// TODO
+			return _map;
+		}
+	}
 	
+	public static class HashMapBuilder<TKey, TValue>
+	extends MapInserter<TKey, TValue, HashMap<TKey, TValue>> {
+		
+		public HashMapBuilder() {
+			super(new HashMap<TKey, TValue>());
+		}
+	}
+	
+	/**
+     * Convenience method to call {@link #asHashMap2(Class, Class, List)}.
+     * 
+     * @see #asHashMap3(List, List)
+     * @see #putKeysAndValues(Map, Object...)
+	 */
+    public static <TKey, TValue> HashMap<TKey, TValue> asHashMap(
+    		Class<TKey> keyClass, Class<TValue> valueClass, Object... keyAndValueArr) {
+    	List<Object> x = Arrays.asList(keyAndValueArr);
+    	HashMap<TKey, TValue> map = asHashMap2(x);
+    	return map;
+    }
+
+    /**
+	 * Creates a new {@link HashMap} from a list of keys and values.  Class references are used to
+	 * for runtime type checking.  Duplicate keys are <b>not</b> allowed.
+	 * <p>
+	 * If you want to convert many arguments to a {@link List}, see
+	 * {@link Arrays#asList(Object...)}.
+	 * <p>
+	 * The name of this method is set to prevent accidental method signature conflicts with
+	 * {@link #asHashMap(Object...)} and {@link #asHashMap3(List, List)}.
+	 * 
+     * @param keyClass ref to class object for key, e.g., {@code String.class}.
+     *        Keys must be assignable to this type.
+     *        Example: {@link StringBuilder} is assignable to {@link CharSequence}
+     * @param valueClass ref to class object for value, e.g., {@code Integer.class}
+     *        Values must be assignable to this type. 
+	 * @param keyAndValueList list of references: key, then value (repeat).
+	 *        Keys or values may be {@code null}.  List may be empty.
+	 * @return ref to new HashMap with key-value pairs inserted
+	 * @throws NullPointerException if {@code keyAndValueList} is null
+	 * @throws IllegalArgumentException if {@code keyAndValueList.size()} is not even,
+	 *         or a key is not assignable to type defined by {@code keyClass},
+	 *         or a value is not assignable to type defined by {@code valueClass},
+	 *         or a duplicate key exists
+	 * @see #asHashMap(Class, Class, Object...)
+	 * @see #asHashMap3(List, List)
+	 * @see #putKeysAndValues2(Map, List)
+     */
+    public static <TKey, TValue> HashMap<TKey, TValue> asHashMap2(
+    		Class<TKey> keyClass, Class<TValue> valueClass, List<?> keyAndValueList) {
+		_checkKeyAndValueList(keyClass, valueClass, keyAndValueList);
+        final int capacity = keyAndValueList.size() / 2;
+        HashMap<TKey, TValue> map = new HashMap<TKey, TValue>(capacity);
+    	_putKeysAndValues2(map, keyAndValueList);
+    	return map;
+    }
+	
+	private static <TKey, TValue> void _checkKeyAndValueList(
+			Class<TKey> keyClass, Class<TValue> valueClass, List<?> keyAndValueList) {
+		ObjectArgs.checkNotNull(keyClass, "keyClass");
+		ObjectArgs.checkNotNull(valueClass, "valueClass");
+		ObjectArgs.checkNotNull(keyAndValueList, "keyAndValueList");
+		
+        if (1 == (keyAndValueList.size() % 2)) {
+        	String msg = String.format(
+                "Key-Value list size is not even: %d", keyAndValueList.size());
+            throw new IllegalArgumentException(msg);
+        }
+        int size = keyAndValueList.size();
+        for (int i = 0; i < size; i += 2) {
+        	Object key = keyAndValueList.get(0 + i);
+        	_checkIsAssignableFrom("Key", (0 + i), keyClass, key);
+        	Object value = keyAndValueList.get(1 + i);
+        	_checkIsAssignableFrom("Value", (1 + i), valueClass, value);
+        }
+	}
+	
+	private static <TExpected> void _checkIsAssignableFrom(
+			String desc, int index, Class<TExpected> expectedClass, Object ref) {
+		if (null != ref) {
+			Class<?> actualClass = ref.getClass();
+			if (!expectedClass.isAssignableFrom(actualClass)) {
+    			String msg = String.format(
+					"%s at index %d has type %s, but is not assignable to type %s",
+					index,
+					ClassUtils.getFullName(actualClass),
+					ClassUtils.getFullName(expectedClass));
+    			throw new IllegalArgumentException(msg);
+			}
+		}
+	}
+    
 	/**
      * Convenience method to call {@link #asHashMap2(List)}.
      * 

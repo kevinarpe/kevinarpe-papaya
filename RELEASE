@@ -1,0 +1,18 @@
+This document contains notes about how to release this software:
+
+* mvn install
+** Any compiler errors or failed/skipped tests must be cleaned-up.
+* git commit -a
+* mvn release:clean
+* mvn release:prepare
+* git push --tags origin master
+* mvn release:perform
+* https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide#SonatypeOSSMavenRepositoryUsageGuide-8a.ReleaseIt
+** Do the Nexus dance to push the staged release.
+* cd ../kevinarpe-papaya.docs
+* rm -Rf *
+* cp ../kevinarpe-papaya/target/apidocs/* .
+* git commit -a
+* Update project homepage with new Maven Central Repo dependency details:
+    http://code.google.com/p/kevinarpe-papaya/ 
+
