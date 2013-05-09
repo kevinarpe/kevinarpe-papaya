@@ -1,6 +1,5 @@
 package com.googlecode.kevinarpe.papaya.args;
 
-import com.google.common.base.Preconditions;
 import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 
 /*
@@ -29,10 +28,20 @@ import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
  */
 
 /**
- * This is a collection of static methods to check arguments received by methods.  The goal is to
- * provide a wide range of checks that produce readable, detailed errors.
+ * This is a collection of static methods to check arguments received by methods.  They range from
+ * the very simple but venerable {@link #checkNotNull(Object, String)} to much more complex.
+ * The goal is to provide a wide range of checks that produce readable, detailed errors.
  * <p>
- * Like {@link Preconditions}, most methods return the validated input.
+ * A few examples:
+ * <ul>
+ *   <li>{@link CollectionArgs#checkIndexAndCount(java.util.Collection, int, int, String, String, String)}</li>
+ *   <li>{@link ArrayArgs#checkNotEmptyAndElementsNotNull(Object[], String)}
+ *   <li>{@link MapArgs#checkKeysAndValuesNotNull(java.util.Map, String)}</li>
+ * </ul>
+ * <p>
+ * Like {@link com.google.common.base.Preconditions}, most methods return the validated input.
+ * Javadocs carefully document all exceptions, both checked and unchecked, that may be
+ * thrown under various scenarios.
  * <p>
  * With the exception of {@link FileArgs} (and possibly a few others), all methods throw unchecked
  * exceptions -- {@link RuntimeException} and its subclasses.  Most frequently,
