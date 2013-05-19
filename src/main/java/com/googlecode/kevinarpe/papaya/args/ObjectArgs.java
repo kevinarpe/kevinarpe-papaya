@@ -169,7 +169,7 @@ public final class ObjectArgs {
      * Tests if a type can be safely cast to another type.  If you have an object reference, see
      * {@link #checkInstanceOfType(Object, Class, String, String)}.
      * <p>
-     * Type cast rules are defined by {@link Class#isAssignableFrom(Object)}.
+     * Type cast rules are defined by {@link Class#isAssignableFrom(Class)}.
      * <p>
      * For examples of valid and invalid type casts, see
      * {@link #checkInstanceOfType(Object, Class, String, String)}.
