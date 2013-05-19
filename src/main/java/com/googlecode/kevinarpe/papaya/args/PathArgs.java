@@ -36,6 +36,8 @@ import com.googlecode.kevinarpe.papaya.exceptions.RegularFileNotFoundException;
 import com.googlecode.kevinarpe.papaya.exceptions.ClassResourceNotFoundException;
 
 /**
+ * Static methods to check {@link File} (path) arguments.
+ * <p>
  * See {@link ObjectArgs} for an overview.
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)

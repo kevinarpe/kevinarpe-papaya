@@ -28,6 +28,8 @@ import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
  */
 
 /**
+ * Static methods to check {@code char} arguments.
+ * <p>
  * See {@link ObjectArgs} for an overview.
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)

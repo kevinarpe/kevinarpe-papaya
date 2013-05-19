@@ -1,5 +1,7 @@
 package com.googlecode.kevinarpe.papaya.args;
 
+import java.util.Collection;
+
 /*
  * #%L
  * This file is part of Papaya.
@@ -26,6 +28,8 @@ package com.googlecode.kevinarpe.papaya.args;
  */
 
 /**
+ * Static methods to check array and {@link Collection} arguments.
+ * <p>
  * See {@link ObjectArgs} for an overview.
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)

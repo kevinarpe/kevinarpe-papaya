@@ -31,6 +31,8 @@ import org.joda.time.ReadableInstant;
 import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 
 /**
+ * Static methods to check {@link DateTime} arguments.
+ * <p>
  * See {@link ObjectArgs} for an overview.
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)

@@ -30,6 +30,8 @@ import java.util.Map;
 import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 
 /**
+ * Static methods to check {@link Map} arguments.
+ * <p>
  * See {@link ObjectArgs} for an overview.
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)

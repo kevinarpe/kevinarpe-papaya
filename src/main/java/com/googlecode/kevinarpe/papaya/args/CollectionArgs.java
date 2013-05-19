@@ -31,6 +31,8 @@ import java.util.List;
 import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 
 /**
+ * Static methods to check {@link Collection} arguments.
+ * <p>
  * See {@link ObjectArgs} for an overview.
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)

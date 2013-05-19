@@ -31,6 +31,8 @@ import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
  */
 
 /**
+ * Static methods to check array arguments.
+ * <p>
  * See {@link ObjectArgs} for an overview.
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
