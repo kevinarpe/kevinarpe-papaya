@@ -47,8 +47,12 @@ public class ObjectArgsTest {
     public void classTearDown() {
     }
     
+    ///////////////////////////////////////////////////////////////////////////
+    // ObjectArgs.checkNotNull
+    //
+    
     @DataProvider
-    private static final Object[][] _dataForShouldCheckAsNotNull() {
+    private static final Object[][] _checkNotNull_Pass_Data() {
         return new Object[][] {
                 { (byte)7 },
                 { (short)7 },
@@ -66,40 +70,156 @@ public class ObjectArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckAsNotNull")
-    public void shouldCheckAsNotNull(Object x) {
+    @Test(dataProvider = "_checkNotNull_Pass_Data")
+    public void checkNotNull_Pass(Object x) {
         ObjectArgs.checkNotNull(x, "x");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotNull() {
+    private static final Object[][] _checkNotNull_FailWithNull_Data() {
         return new Object[][] {
                 { null, null },
                 { null, "value" },
-                { 123, null },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotNull",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckAsNotNull(Object x, String argName) {
-        Object value = null;
-        ObjectArgs.checkNotNull(value, argName);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotNullWithInvalidArgName() {
-        return new Object[][] {
                 { null, "" },
                 { null, "   " },  // ASCII spaces
                 { null, "　　　" },  // wide Japanese spaces
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotNullWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckAsNotNullWithInvalidArgName(Object x, String argName) {
-        Object value = null;
-        ObjectArgs.checkNotNull(value, argName);
+    @Test(dataProvider = "_checkNotNull_FailWithNull_Data",
+            expectedExceptions = NullPointerException.class)
+    public void checkNotNull_FailWithNull(Object x, String argName) {
+        ObjectArgs.checkNotNull(x, argName);
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // ObjectArgs.checkInstanceOfType
+    //
+    
+    @DataProvider
+    private static final Object[][] _checkInstanceOfType_Pass_Data() {
+        return new Object[][] {
+                { new String(), String.class },
+                { new String(), CharSequence.class },
+                { new String(), Comparable.class },
+                { new Integer(0), Integer.class },
+                { new Integer(0), Number.class },
+                { new Integer(0), Comparable.class },
+        };
+    }
+    
+    @Test(dataProvider = "_checkInstanceOfType_Pass_Data")
+    public void checkInstanceOfType_Pass(Object ref, Class<?> destClass) {
+        ObjectArgs.checkInstanceOfType(ref, destClass, "refArgName", "destClassArgName");
+        ObjectArgs.checkInstanceOfType(ref, destClass, "refArgName");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkInstanceOfType_FailWithInvalidDestClass_Data() {
+        return new Object[][] {
+                { new String(), Integer.class },
+                { new StringBuilder(), String.class },
+        };
+    }
+    
+    @Test(dataProvider = "_checkInstanceOfType_FailWithInvalidDestClass_Data",
+            expectedExceptions = ClassCastException.class)
+    public void checkInstanceOfType_FailWithInvalidDestClass(Object ref, Class<?> destClass) {
+        ObjectArgs.checkInstanceOfType(ref, destClass, "refArgName", "destClassArgName");
+    }
+    
+    @Test(dataProvider = "_checkInstanceOfType_FailWithInvalidDestClass_Data",
+            expectedExceptions = ClassCastException.class)
+    public void checkInstanceOfType_FailWithInvalidDestClass2(Object ref, Class<?> destClass) {
+        ObjectArgs.checkInstanceOfType(ref, destClass, "refArgName");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkInstanceOfType_FailWithNulls_Data() {
+        return new Object[][] {
+                { null, null },
+                { null, String.class },
+                { new String(), null },
+        };
+    }
+    
+    @Test(dataProvider = "_checkInstanceOfType_FailWithNulls_Data",
+            expectedExceptions = NullPointerException.class)
+    public void checkInstanceOfType_FailWithNulls(Object ref, Class<?> destClass) {
+        ObjectArgs.checkInstanceOfType(ref, destClass, "refArgName", "destClassArgName");
+    }
+    
+    @Test(dataProvider = "_checkInstanceOfType_FailWithNulls_Data",
+            expectedExceptions = NullPointerException.class)
+    public void checkInstanceOfType_FailWithNulls2(Object ref, Class<?> destClass) {
+        ObjectArgs.checkInstanceOfType(ref, destClass, "refArgName");
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // ObjectArgs.checkAssignableToType
+    //
+    
+    @DataProvider
+    private static final Object[][] _checkAssignableToType_Pass_Data() {
+        return new Object[][] {
+                { String.class, String.class },
+                { String.class, CharSequence.class },
+                { String.class, Comparable.class },
+                { Integer.class, Integer.class },
+                { Integer.class, Number.class },
+                { Integer.class, Comparable.class },
+        };
+    }
+    
+    @Test(dataProvider = "_checkAssignableToType_Pass_Data")
+    public void checkAssignableToType_Pass(Class<?> srcClass, Class<?> destClass) {
+        ObjectArgs.checkAssignableToType(
+            srcClass, destClass, "srcClassArgName", "destClassArgName");
+        ObjectArgs.checkAssignableToType(srcClass, destClass, "srcClassArgName");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkAssignableToType_FailWithInvalidDestClass_Data() {
+        return new Object[][] {
+                { String.class, Integer.class },
+                { StringBuilder.class, String.class },
+        };
+    }
+    
+    @Test(dataProvider = "_checkAssignableToType_FailWithInvalidDestClass_Data",
+            expectedExceptions = ClassCastException.class)
+    public void checkAssignableToType_FailWithInvalidDestClass(
+            Class<?> srcClass, Class<?> destClass) {
+        ObjectArgs.checkAssignableToType(
+            srcClass, destClass, "srcClassArgName", "destClassArgName");
+    }
+    
+    @Test(dataProvider = "_checkAssignableToType_FailWithInvalidDestClass_Data",
+            expectedExceptions = ClassCastException.class)
+    public void checkAssignableToType_FailWithInvalidDestClass2(
+            Class<?> srcClass, Class<?> destClass) {
+        ObjectArgs.checkAssignableToType(srcClass, destClass, "srcClassArgName");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkAssignableToType_FailWithNulls_Data() {
+        return new Object[][] {
+                { null, null },
+                { null, String.class },
+                { String.class, null },
+        };
+    }
+    
+    @Test(dataProvider = "_checkAssignableToType_FailWithNulls_Data",
+            expectedExceptions = NullPointerException.class)
+    public void checkAssignableToType_FailWithNulls(Class<?> srcClass, Class<?> destClass) {
+        ObjectArgs.checkAssignableToType(
+            srcClass, destClass, "srcClassArgName", "destClassArgName");
+    }
+    
+    @Test(dataProvider = "_checkAssignableToType_FailWithNulls_Data",
+            expectedExceptions = NullPointerException.class)
+    public void checkAssignableToType_FailWithNulls2(Class<?> srcClass, Class<?> destClass) {
+        ObjectArgs.checkAssignableToType(srcClass, destClass, "srcClassArgName");
     }
 }

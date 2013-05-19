@@ -30,12 +30,11 @@ import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@NotFullyTested
 public final class PrimitiveTypeUtils {
 
-	// Disable default constructor
-	private PrimitiveTypeUtils() {
-	}
+    // Disable default constructor
+    private PrimitiveTypeUtils() {
+    }
 
     // Ref: http://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
     

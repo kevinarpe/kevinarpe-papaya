@@ -30,19 +30,18 @@ import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@NotFullyTested
 public final class FuncUtils {
 
-	// Disable default constructor
-	private FuncUtils() {
-	}
-	
-	/**
-	 * Useful for instanceof tests 
-	 */
-	public static interface Func {
-		// empty
-	}
+    // Disable default constructor
+    private FuncUtils() {
+    }
+    
+    /**
+     * Useful for instanceof tests 
+     */
+    public static interface Func {
+        // empty
+    }
 
     public static interface Func0<TResult>
     extends Func {

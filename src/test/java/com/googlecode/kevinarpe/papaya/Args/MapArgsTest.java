@@ -34,7 +34,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableMap;
-import com.googlecode.kevinarpe.papaya.MapUtils;
 import com.googlecode.kevinarpe.papaya.args.MapArgs;
 
 public class MapArgsTest {
@@ -52,53 +51,57 @@ public class MapArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckSizeRangeAsValid() {
+    private static final Object[][] _checkSizeRange_Pass_Data() {
         return new Object[][] {
                 { new HashMap<Object, Object>(), 0, 10 },
                 { new HashMap<Object, Object>(), 0, 0 },
-                { MapUtils.asHashMap("a", 1), 0, 10 },
-                { MapUtils.asHashMap("a", 1), 1, 10 },
-                { MapUtils.asHashMap("a", 1), 0, 1 },
-                { MapUtils.asHashMap("a", 1), 1, 1 },
-                { MapUtils.asHashMap("a", 1, "b", 2), 0, 10 },
-                { MapUtils.asHashMap("a", 1, "b", 2), 2, 10 },
-                { MapUtils.asHashMap("a", 1, "b", 2), 0, 2 },
-                { MapUtils.asHashMap("a", 1, "b", 2), 2, 2 },
-                { MapUtils.asHashMap("a", 1, "b", 2, "c", 3), 0, 10 },
-                { MapUtils.asHashMap("a", 1, "b", 2, "c", 3), 3, 10 },
-                { MapUtils.asHashMap("a", 1, "b", 2, "c", 3), 0, 3 },
-                { MapUtils.asHashMap("a", 1, "b", 2, "c", 3), 3, 3 },
+                { _asMap("a", 1), 0, 10 },
+                { _asMap("a", 1), 1, 10 },
+                { _asMap("a", 1), 0, 1 },
+                { _asMap("a", 1), 1, 1 },
+                { _asMap("a", 1, "b", 2), 0, 10 },
+                { _asMap("a", 1, "b", 2), 2, 10 },
+                { _asMap("a", 1, "b", 2), 0, 2 },
+                { _asMap("a", 1, "b", 2), 2, 2 },
+                { _asMap("a", 1, "b", 2, "c", 3), 0, 10 },
+                { _asMap("a", 1, "b", 2, "c", 3), 3, 10 },
+                { _asMap("a", 1, "b", 2, "c", 3), 0, 3 },
+                { _asMap("a", 1, "b", 2, "c", 3), 3, 3 },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckSizeRangeAsValid")
-    public <TKey, TValue> void shouldCheckSizeRangeAsValid(
-    		Map<TKey, TValue> ref, int minSize, int maxSize) {
+    @Test(dataProvider = "_checkSizeRange_Pass_Data")
+    public <TKey, TValue> void checkSizeRange_Pass(
+            Map<TKey, TValue> ref, int minSize, int maxSize) {
         MapArgs.checkSizeRange(ref, minSize, maxSize, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        MapArgs.checkSizeRange(ref, minSize, maxSize, null);
+        MapArgs.checkSizeRange(ref, minSize, maxSize, "");
+        MapArgs.checkSizeRange(ref, minSize, maxSize, "   ");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckSizeRangeAsValidWithInvalidMinOrMaxLen() {
+    private static final Object[][] _checkSizeRange_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { new HashMap<Object, Object>(), 3, 4 },
-                { MapUtils.asHashMap("a", 1), -3, 3 },
-                { MapUtils.asHashMap("a", 1, "b", 2), 1, -3 },
-                { MapUtils.asHashMap("a", 1), -3, -4 },
-                { MapUtils.asHashMap("a", 1), 4, 3 },
-                { MapUtils.asHashMap("a", 1, "b", 2, "c", 3), 6, 7 },
-                { MapUtils.asHashMap("a", 1, "b", 2, "c", 3), 0, 1 },
+                { _asMap("a", 1), -3, 3 },
+                { _asMap("a", 1, "b", 2), 1, -3 },
+                { _asMap("a", 1), -3, -4 },
+                { _asMap("a", 1), 4, 3 },
+                { _asMap("a", 1, "b", 2, "c", 3), 6, 7 },
+                { _asMap("a", 1, "b", 2, "c", 3), 0, 1 },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckSizeRangeAsValidWithInvalidMinOrMaxLen",
+    @Test(dataProvider = "_checkSizeRange_FailWithInvalidMinOrMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public <TKey, TValue> void shouldCheckSizeRangeAsValidWithInvalidMinOrMaxLen(
+    public <TKey, TValue> void checkSizeRange_FailWithInvalidMinOrMaxLen(
             Map<TKey, TValue> ref, int minSize, int maxSize) {
         MapArgs.checkSizeRange(ref, minSize, maxSize, "ref");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckSizeRangeAsValidWithNullMap() {
+    private static final Object[][] _checkSizeRange_FailWithNullMap_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -106,34 +109,11 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckSizeRangeAsValidWithNullMap",
+    @Test(dataProvider = "_checkSizeRange_FailWithNullMap_Data",
             expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldCheckSizeRangeAsValidWithNullMap(
+    public <TKey, TValue> void checkSizeRange_FailWithNullMap(
             Map<TKey, TValue> ref, int minSize, int maxSize) {
         MapArgs.checkSizeRange(ref, minSize, maxSize, "ref");
-    }
-
-    @Test(dataProvider = "_dataForShouldNotCheckSizeRangeAsValidWithNullMap",
-            expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldCheckSizeRangeAsValidWithNullArgName(
-            Map<TKey, TValue> ref, int minSize, int maxSize) {
-        MapArgs.checkSizeRange(ref, minSize, maxSize, null);
-    }
-
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckSizeRangeAsValidWithInvalidArgName() {
-        return new Object[][] {
-                { null, 4, 3, "" },
-                { null, 4, 3, "   " },  // ASCII spaces
-                { null, 6, 7, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckSizeRangeAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <TKey, TValue> void shouldCheckSizeRangeAsValidWithInvalidArgName(
-            Map<TKey, TValue> ref, int minSize, int maxSize, String argName) {
-        MapArgs.checkSizeRange(ref, minSize, maxSize, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -141,30 +121,34 @@ public class MapArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckAsNotEmpty() {
+    private static final Object[][] _checkNotEmpty_Pass_Data() {
         return new Object[][] {
-                { MapUtils.asHashMap("a", 1) },
-                { MapUtils.asHashMap("a", 1, "b", 2) },
-                { MapUtils.asHashMap("a", 1, "b", 2, "c", 3) },
+                { _asMap("a", 1) },
+                { _asMap("a", 1, "b", 2) },
+                { _asMap("a", 1, "b", 2, "c", 3) },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckAsNotEmpty")
-    public <TKey, TValue> void shouldCheckAsNotEmpty(Map<TKey, TValue> ref) {
+    @Test(dataProvider = "_checkNotEmpty_Pass_Data")
+    public <TKey, TValue> void checkNotEmpty_Pass(Map<TKey, TValue> ref) {
         MapArgs.checkNotEmpty(ref, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        MapArgs.checkNotEmpty(ref, null);
+        MapArgs.checkNotEmpty(ref, "");
+        MapArgs.checkNotEmpty(ref, "   ");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotEmptyWithEmptyMap() {
+    private static final Object[][] _checkNotEmpty_FailWithEmptyMap_Data() {
         return new Object[][] {
-        		{ ImmutableMap.of() },
+                { ImmutableMap.of() },
                 { new HashMap<String, String>() },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyWithEmptyMap",
+    @Test(dataProvider = "_checkNotEmpty_FailWithEmptyMap_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public <TKey, TValue> void shouldNotCheckAsNotEmptyWithEmptyMap(Map<TKey, TValue> ref) {
+    public <TKey, TValue> void checkNotEmpty_FailWithEmptyMap(Map<TKey, TValue> ref) {
         MapArgs.checkNotEmpty(ref, "ref");
     }
     
@@ -174,68 +158,50 @@ public class MapArgsTest {
         MapArgs.checkNotEmpty(ref, "ref");
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyWithEmptyMap",
-            expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldNotCheckAsNotEmptyWithNullArgName(Map<TKey, TValue> ref) {
-        MapArgs.checkNotEmpty(ref, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotEmptyWithInvalidArgName() {
-        return new Object[][] {
-                { new HashMap<String, String>(), "" },
-                { new HashMap<String, String>(), "   " },  // ASCII spaces
-                { new HashMap<String, String>(), "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <TKey, TValue> void shouldNotCheckAsNotEmptyWithInvalidArgName(
-    		Map<TKey, TValue> ref, String argName) {
-        MapArgs.checkNotEmpty(ref, argName);
-    }
-    
     ///////////////////////////////////////////////////////////////////////////
     // MapArgs.checkMinSize
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckMinSizeAsValid() {
+    private static final Object[][] _checkMinSize_Pass_Data() {
         return new Object[][] {
                 { new HashMap<String, String>(), 0 },
-                { MapUtils.asHashMap("a", 1), 0 },
-                { MapUtils.asHashMap("a", 1), 1 },
-                { MapUtils.asHashMap("a", 1, "b", 2), 0 },
-                { MapUtils.asHashMap("a", 1, "b", 2), 1 },
-                { MapUtils.asHashMap("a", 1, "b", 2), 2 },
+                { _asMap("a", 1), 0 },
+                { _asMap("a", 1), 1 },
+                { _asMap("a", 1, "b", 2), 0 },
+                { _asMap("a", 1, "b", 2), 1 },
+                { _asMap("a", 1, "b", 2), 2 },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckMinSizeAsValid")
-    public <TKey, TValue> void shouldCheckMinSizeAsValid(Map<TKey, TValue> ref, int minSize) {
+    @Test(dataProvider = "_checkMinSize_Pass_Data")
+    public <TKey, TValue> void checkMinSize_Pass(Map<TKey, TValue> ref, int minSize) {
         MapArgs.checkMinSize(ref, minSize, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        MapArgs.checkMinSize(ref, minSize, null);
+        MapArgs.checkMinSize(ref, minSize, "");
+        MapArgs.checkMinSize(ref, minSize, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinSizeAsValidWithInvalidMinLen() {
+    private static final Object[][] _checkMinSize_FailWithInvalidMinLen_Data() {
         return new Object[][] {
                 { new HashMap<String, String>(), -2 },
                 { new HashMap<String, String>(), 2 },
-                { MapUtils.asHashMap("a", 1), -3 },
-                { MapUtils.asHashMap("a", 1), 3 },
+                { _asMap("a", 1), -3 },
+                { _asMap("a", 1), 3 },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckMinSizeAsValidWithInvalidMinLen",
+    @Test(dataProvider = "_checkMinSize_FailWithInvalidMinLen_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public <TKey, TValue> void shouldNotCheckMinSizeAsValidWithInvalidMinLen(
-    		Map<TKey, TValue> ref, int minSize) {
+    public <TKey, TValue> void checkMinSize_FailWithInvalidMinLen(
+            Map<TKey, TValue> ref, int minSize) {
         MapArgs.checkMinSize(ref, minSize, "ref");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinSizeAsValidWithNullMap() {
+    private static final Object[][] _checkMinSize_FailWithNullMap_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -243,34 +209,11 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckMinSizeAsValidWithNullMap",
+    @Test(dataProvider = "_checkMinSize_FailWithNullMap_Data",
             expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldCheckMinSizeAsValidWithNullMap(
-    		Map<TKey, TValue> ref, int minSize) {
-        MapArgs.checkMinSize(ref, minSize, "ref");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMinSizeAsValidWithNullMap",
-            expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldCheckMinSizeAsValidWithNullArgName(
+    public <TKey, TValue> void checkMinSize_FailWithNullMap(
             Map<TKey, TValue> ref, int minSize) {
-        MapArgs.checkMinSize(ref, minSize, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinSizeAsValidWithInvalidArgName() {
-        return new Object[][] {
-                { null, 4, "" },
-                { null, 4, "   " },  // ASCII spaces
-                { null, 6, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMinSizeAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <TKey, TValue> void shouldCheckMinSizeAsValidWithInvalidArgName(
-            Map<TKey, TValue> ref, int minSize, String argName) {
-        MapArgs.checkMinSize(ref, minSize, argName);
+        MapArgs.checkMinSize(ref, minSize, "ref");
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -278,40 +221,44 @@ public class MapArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckMaxSizeAsValid() {
+    private static final Object[][] _checkMaxSize_Pass_Data() {
         return new Object[][] {
                 { new HashMap<String, String>(), 0 },
                 { new HashMap<String, String>(), 99 },
-                { MapUtils.asHashMap("a", 1), 1 },
-                { MapUtils.asHashMap("a", 1), 99 },
-                { MapUtils.asHashMap("a", 1, "b", 2), 2 },
-                { MapUtils.asHashMap("a", 1, "b", 2), 99 },
+                { _asMap("a", 1), 1 },
+                { _asMap("a", 1), 99 },
+                { _asMap("a", 1, "b", 2), 2 },
+                { _asMap("a", 1, "b", 2), 99 },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckMaxSizeAsValid")
-    public <TKey, TValue> void shouldCheckMaxSizeAsValid(Map<TKey, TValue> ref, int maxSize) {
+    @Test(dataProvider = "_checkMaxSize_Pass_Data")
+    public <TKey, TValue> void checkMaxSize_Pass(Map<TKey, TValue> ref, int maxSize) {
         MapArgs.checkMaxSize(ref, maxSize, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        MapArgs.checkMaxSize(ref, maxSize, null);
+        MapArgs.checkMaxSize(ref, maxSize, "");
+        MapArgs.checkMaxSize(ref, maxSize, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxSizeAsValidWithInvalidMaxLen() {
+    private static final Object[][] _checkMaxSize_FailWithInvalidMaxLen_Data() {
         return new Object[][] {
                 { new HashMap<String, String>(), -2 },
-                { MapUtils.asHashMap("a", 1), -3 },
-                { MapUtils.asHashMap("a", 1), 0 },
+                { _asMap("a", 1), -3 },
+                { _asMap("a", 1), 0 },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckMaxSizeAsValidWithInvalidMaxLen",
+    @Test(dataProvider = "_checkMaxSize_FailWithInvalidMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public <TKey, TValue> void shouldNotCheckMaxSizeAsValidWithInvalidMaxLen(
-    		Map<TKey, TValue> ref, int maxSize) {
+    public <TKey, TValue> void checkMaxSize_FailWithInvalidMaxLen(
+            Map<TKey, TValue> ref, int maxSize) {
         MapArgs.checkMaxSize(ref, maxSize, "ref");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxSizeAsValidWithNullMap() {
+    private static final Object[][] _checkMaxSize_FailWithNullMap_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -319,34 +266,11 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckMaxSizeAsValidWithNullMap",
+    @Test(dataProvider = "_checkMaxSize_FailWithNullMap_Data",
             expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldCheckMaxSizeAsValidWithNullMap(
-    		Map<TKey, TValue> ref, int maxSize) {
-        MapArgs.checkMaxSize(ref, maxSize, "ref");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMaxSizeAsValidWithNullMap",
-            expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldCheckMaxSizeAsValidWithNullArgName(
+    public <TKey, TValue> void checkMaxSize_FailWithNullMap(
             Map<TKey, TValue> ref, int maxSize) {
-        MapArgs.checkMaxSize(ref, maxSize, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxSizeAsValidWithInvalidArgName() {
-        return new Object[][] {
-                { null, 4, "" },
-                { null, 4, "   " },  // ASCII spaces
-                { null, 6, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMaxSizeAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <TKey, TValue> void shouldCheckMaxSizeAsValidWithInvalidArgName(
-            Map<TKey, TValue> ref, int maxSize, String argName) {
-        MapArgs.checkMaxSize(ref, maxSize, argName);
+        MapArgs.checkMaxSize(ref, maxSize, "ref");
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -354,38 +278,42 @@ public class MapArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckExactSizeAsValid() {
+    private static final Object[][] _checkExactSize_Pass_Data() {
         return new Object[][] {
                 { new HashMap<String, String>(), 0 },
-                { MapUtils.asHashMap("a", 1), 1 },
-                { MapUtils.asHashMap("a", 1, "b", 2), 2 },
+                { _asMap("a", 1), 1 },
+                { _asMap("a", 1, "b", 2), 2 },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckExactSizeAsValid")
-    public <TKey, TValue> void shouldCheckExactSizeAsValid(Map<TKey, TValue> ref, int exactSize) {
+    @Test(dataProvider = "_checkExactSize_Pass_Data")
+    public <TKey, TValue> void checkExactSize_Pass(Map<TKey, TValue> ref, int exactSize) {
         MapArgs.checkExactSize(ref, exactSize, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        MapArgs.checkExactSize(ref, exactSize, null);
+        MapArgs.checkExactSize(ref, exactSize, "");
+        MapArgs.checkExactSize(ref, exactSize, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactSizeAsValidWithInvalidExactLen() {
+    private static final Object[][] _checkExactSize_FailWithInvalidExactLen_Data() {
         return new Object[][] {
                 { new HashMap<String, String>(), -2 },
                 { new HashMap<String, String>(), 2 },
-                { MapUtils.asHashMap("a", 1), -3 },
-                { MapUtils.asHashMap("a", 1), 3 },
+                { _asMap("a", 1), -3 },
+                { _asMap("a", 1), 3 },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckExactSizeAsValidWithInvalidExactLen",
+    @Test(dataProvider = "_checkExactSize_FailWithInvalidExactLen_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public <TKey, TValue> void shouldNotCheckExactSizeAsValidWithInvalidExactLen(
+    public <TKey, TValue> void checkExactSize_FailWithInvalidExactLen(
             Map<TKey, TValue> ref, int exactSize) {
         MapArgs.checkExactSize(ref, exactSize, "ref");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactSizeAsValidWithNullMap() {
+    private static final Object[][] _checkExactSize_FailWithNullMap_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -393,129 +321,57 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckExactSizeAsValidWithNullMap",
+    @Test(dataProvider = "_checkExactSize_FailWithNullMap_Data",
             expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldCheckExactSizeAsValidWithNullMap(
+    public <TKey, TValue> void checkExactSize_FailWithNullMap(
             Map<TKey, TValue> ref, int exactSize) {
         MapArgs.checkExactSize(ref, exactSize, "ref");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckExactSizeAsValidWithNullMap",
-            expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldCheckExactSizeAsValidWithNullArgName(
-            Map<TKey, TValue> ref, int exactSize) {
-        MapArgs.checkExactSize(ref, exactSize, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactSizeAsValidWithInvalidArgName() {
-        return new Object[][] {
-                { null, 4, "" },
-                { null, 4, "   " },  // ASCII spaces
-                { null, 6, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckExactSizeAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <TKey, TValue> void shouldCheckExactSizeAsValidWithInvalidArgName(
-            Map<TKey, TValue> ref, int exactSize, String argName) {
-        MapArgs.checkExactSize(ref, exactSize, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
     // MapArgs.checkKeysNotNull
     //
     
-	@DataProvider
-    private static final Object[][] _dataForShouldCheckKeysAsNotNull() {
+    @DataProvider
+    private static final Object[][] _checkKeysNotNull_Pass_Data() {
         return new Object[][] {
-        		{ new HashMap<Object, Object>() },
-                { MapUtils.asHashMap("abc", 123) },
-                { MapUtils.asHashMap("abc", null) },
-                { MapUtils.asHashMap("abc", 123, "def", 456) },
-                { MapUtils.asHashMap("abc", 123, "def", null) },
+                { new HashMap<Object, Object>() },
+                { _asMap("abc", 123) },
+                { _asMap("abc", null) },
+                { _asMap("abc", 123, "def", 456) },
+                { _asMap("abc", 123, "def", null) },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckKeysAsNotNull")
-    public <TKey, TValue> void shouldCheckKeysAsNotNull(Map<TKey, TValue> ref) {
+    @Test(dataProvider = "_checkKeysNotNull_Pass_Data")
+    public <TKey, TValue> void checkKeysNotNull_Pass(Map<TKey, TValue> ref) {
         MapArgs.checkKeysNotNull(ref, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        MapArgs.checkKeysNotNull(ref, null);
+        MapArgs.checkKeysNotNull(ref, "");
+        MapArgs.checkKeysNotNull(ref, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckKeysAsNotNullWithNullKey() {
+    private static final Object[][] _checkKeysNotNull_FailWithNullKey_Data() {
         return new Object[][] {
-                { MapUtils.asHashMap(null, 123) },
-                { MapUtils.asHashMap(null, null) },
-                { MapUtils.asHashMap(null, 123, "abc", 456) },
-                { MapUtils.asHashMap("abc", 123, null, 456) },
-                { MapUtils.asHashMap("abc", null, null, 456) },
+                { _asMap(null, 123) },
+                { _asMap(null, null) },
+                { _asMap(null, 123, "abc", 456) },
+                { _asMap("abc", 123, null, 456) },
+                { _asMap("abc", null, null, 456) },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckKeysAsNotNullWithNullKey",
+    @Test(dataProvider = "_checkKeysNotNull_FailWithNullKey_Data",
             expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldNotCheckKeysAsNotNullWithNullKey(Map<TKey, TValue> ref) {
+    public <TKey, TValue> void checkKeysNotNull_FailWithNullKey(Map<TKey, TValue> ref) {
         MapArgs.checkKeysNotNull(ref, "ref");
     }
     
     @Test(expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckKeysAsNotNullWithNullMap() {
+    public void checkKeysNotNull_FailWithNullMap() {
         MapArgs.checkKeysNotNull((Map<Object, Object>) null, "ref");
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckKeysAsNotNullWithNullArgName() {
-        return new Object[][] {
-                { null },
-                { MapUtils.asHashMap(null, 123) },
-                { MapUtils.asHashMap(null, null) },
-                { MapUtils.asHashMap(null, 123, "abc", 456) },
-                { MapUtils.asHashMap("abc", 123, null, 456) },
-                { MapUtils.asHashMap("abc", null, null, 456) },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckKeysAsNotNullWithNullArgName",
-            expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldNotCheckKeysAsNotNullWithNullArgName(Map<TKey, TValue> ref) {
-        MapArgs.checkKeysNotNull(ref, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckKeysAsNotNullWithInvalidArgName() {
-        return new Object[][] {
-                { null, "" },
-                { MapUtils.asHashMap(null, 123), "" },
-                { MapUtils.asHashMap(null, null), "" },
-                { MapUtils.asHashMap(null, 123, "abc", 456), "" },
-                { MapUtils.asHashMap("abc", 123, null, 456), "" },
-                { MapUtils.asHashMap("abc", null, null, 456), "" },
-                
-                // ASCII spaces
-                { null, "   " },
-                { MapUtils.asHashMap(null, 123), "   " },
-                { MapUtils.asHashMap(null, null), "   " },
-                { MapUtils.asHashMap(null, 123, "abc", 456), "   " },
-                { MapUtils.asHashMap("abc", 123, null, 456), "   " },
-                { MapUtils.asHashMap("abc", null, null, 456), "   " },
-                
-                // wide Japanese spaces
-                { null, "　　　" },
-                { MapUtils.asHashMap(null, 123), "　　　" },
-                { MapUtils.asHashMap(null, null), "　　　" },
-                { MapUtils.asHashMap(null, 123, "abc", 456), "　　　" },
-                { MapUtils.asHashMap("abc", 123, null, 456), "　　　" },
-                { MapUtils.asHashMap("abc", null, null, 456), "　　　" },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckKeysAsNotNullWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <TKey, TValue> void shouldNotCheckKeysAsNotInvalidWithNullArgName(
-            Map<TKey, TValue> ref, String argName) {
-        MapArgs.checkKeysNotNull(ref, argName);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -523,95 +379,45 @@ public class MapArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _dataForShouldCheckValuesAsNotNull() {
+    private static final Object[][] _checkValuesNotNull_Pass_Data() {
         return new Object[][] {
                 { new HashMap<Object, Object>() },
-                { MapUtils.asHashMap("abc", 123) },
-                { MapUtils.asHashMap(null, 123) },
-                { MapUtils.asHashMap("abc", 123, "def", 456) },
-                { MapUtils.asHashMap("abc", 123, null, 456) },
+                { _asMap("abc", 123) },
+                { _asMap(null, 123) },
+                { _asMap("abc", 123, "def", 456) },
+                { _asMap("abc", 123, null, 456) },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckValuesAsNotNull")
-    public <TKey, TValue> void shouldCheckValuesAsNotNull(Map<TKey, TValue> ref) {
+    @Test(dataProvider = "_checkValuesNotNull_Pass_Data")
+    public <TKey, TValue> void checkValuesNotNull_Pass(Map<TKey, TValue> ref) {
         MapArgs.checkValuesNotNull(ref, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        MapArgs.checkValuesNotNull(ref, null);
+        MapArgs.checkValuesNotNull(ref, "");
+        MapArgs.checkValuesNotNull(ref, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckValuesAsNotNullWithNullValue() {
+    private static final Object[][] _checkValuesNotNull_FailWithNullValue_Data() {
         return new Object[][] {
-                { MapUtils.asHashMap(123, null) },
-                { MapUtils.asHashMap(null, null) },
-                { MapUtils.asHashMap(123, null, 456, "abc") },
-                { MapUtils.asHashMap(123, "abc", 456, null) },
-                { MapUtils.asHashMap(null, "abc", 456, null) },
+                { _asMap(123, null) },
+                { _asMap(null, null) },
+                { _asMap(123, null, 456, "abc") },
+                { _asMap(123, "abc", 456, null) },
+                { _asMap(null, "abc", 456, null) },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckValuesAsNotNullWithNullValue",
+    @Test(dataProvider = "_checkValuesNotNull_FailWithNullValue_Data",
             expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldNotCheckValuesAsNotNullWithNullValue(Map<TKey, TValue> ref) {
+    public <TKey, TValue> void checkValuesNotNull_FailWithNullValue(Map<TKey, TValue> ref) {
         MapArgs.checkValuesNotNull(ref, "ref");
     }
     
     @Test(expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckValuesAsNotNullWithNullMap() {
+    public void checkValuesNotNull_FailWithNullMap() {
         MapArgs.checkValuesNotNull((Map<Object, Object>) null, "ref");
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckValuesAsNotNullWithNullArgName() {
-        return new Object[][] {
-                { null },
-                { MapUtils.asHashMap(123, null) },
-                { MapUtils.asHashMap(null, null) },
-                { MapUtils.asHashMap(123, null, 456, "abc") },
-                { MapUtils.asHashMap(123, "abc", 456, null) },
-                { MapUtils.asHashMap(null, "abc", 456, null) },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckValuesAsNotNullWithNullArgName",
-            expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldNotCheckValuesAsNotNullWithNullArgName(
-    		Map<TKey, TValue> ref) {
-        MapArgs.checkValuesNotNull(ref, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckValuesAsNotNullWithInvalidArgName() {
-        return new Object[][] {
-                { null, "" },
-                { MapUtils.asHashMap(123, null), "" },
-                { MapUtils.asHashMap(null, null), "" },
-                { MapUtils.asHashMap(123, null, 456, "abc"), "" },
-                { MapUtils.asHashMap(123, "abc", 456, null), "" },
-                { MapUtils.asHashMap(null, "abc", 456, null), "" },
-                
-                // ASCII spaces
-                { null, "   " },
-                { MapUtils.asHashMap(123, null), "   " },
-                { MapUtils.asHashMap(null, null), "   " },
-                { MapUtils.asHashMap(123, null, 456, "abc"), "   " },
-                { MapUtils.asHashMap(123, "abc", 456, null), "   " },
-                { MapUtils.asHashMap(null, "abc", 456, null), "   " },
-                
-                // wide Japanese spaces
-                { null, "　　　" },
-                { MapUtils.asHashMap(123, null), "　　　" },
-                { MapUtils.asHashMap(null, null), "　　　" },
-                { MapUtils.asHashMap(123, null, 456, "abc"), "　　　" },
-                { MapUtils.asHashMap(123, "abc", 456, null), "　　　" },
-                { MapUtils.asHashMap(null, "abc", 456, null), "　　　" },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckValuesAsNotNullWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <TKey, TValue> void shouldNotCheckValuesAsNotInvalidWithNullArgName(
-            Map<TKey, TValue> ref, String argName) {
-        MapArgs.checkValuesNotNull(ref, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -619,93 +425,236 @@ public class MapArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _dataForShouldCheckKeysAndValuesAsNotNull() {
+    private static final Object[][] _checkKeysAndValuesNotNull_Pass_Data() {
         return new Object[][] {
                 { new HashMap<Object, Object>() },
-                { MapUtils.asHashMap("abc", 123) },
-                { MapUtils.asHashMap("abc", 123, "def", 456) },
+                { _asMap("abc", 123) },
+                { _asMap("abc", 123, "def", 456) },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckKeysAndValuesAsNotNull")
-    public <TKey, TValue> void shouldCheckKeysAndValuesAsNotNull(Map<TKey, TValue> ref) {
+    @Test(dataProvider = "_checkKeysAndValuesNotNull_Pass_Data")
+    public <TKey, TValue> void checkKeysAndValuesNotNull_Pass(Map<TKey, TValue> ref) {
         MapArgs.checkKeysAndValuesNotNull(ref, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        MapArgs.checkKeysAndValuesNotNull(ref, null);
+        MapArgs.checkKeysAndValuesNotNull(ref, "");
+        MapArgs.checkKeysAndValuesNotNull(ref, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckKeysAndValuesAsNotNullWithNullKeyOrValue() {
+    private static final Object[][] _checkKeysAndValuesNotNull_FailWithNullKeyOrValue_Data() {
         return new Object[][] {
-                { MapUtils.asHashMap(null, 123) },
-                { MapUtils.asHashMap(null, null) },
-                { MapUtils.asHashMap(null, 123, "abc", 456) },
-                { MapUtils.asHashMap("abc", 123, null, 456) },
-                { MapUtils.asHashMap("abc", null, null, 456) },
+                { _asMap(null, 123) },
+                { _asMap(null, null) },
+                { _asMap(null, 123, "abc", 456) },
+                { _asMap("abc", 123, null, 456) },
+                { _asMap("abc", null, null, 456) },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckKeysAndValuesAsNotNullWithNullKeyOrValue",
+    private static Map<Object, Object> _asMap(Object... argArr) {
+        Map<Object, Object> map = new HashMap<Object, Object>();
+        for (int i = 0; i < argArr.length; i += 2) {
+            map.put(argArr[i], argArr[1 + i]);
+        }
+        return map;
+    }
+    
+    @Test(dataProvider = "_checkKeysAndValuesNotNull_FailWithNullKeyOrValue_Data",
             expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldNotCheckKeysAndValuesAsNotNullWithNullKeyOrValue(
-    		Map<TKey, TValue> ref) {
+    public <TKey, TValue> void checkKeysAndValuesNotNull_FailWithNullKeyOrValue(
+            Map<TKey, TValue> ref) {
         MapArgs.checkKeysAndValuesNotNull(ref, "ref");
     }
     
     @Test(expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldNotCheckKeysAndValuesAsNotNullWithNullMap() {
+    public <TKey, TValue> void checkKeysAndValuesNotNull_FailWithNullMap() {
         MapArgs.checkKeysAndValuesNotNull((Map<Object, Object>) null, "ref");
     }
     
+    ///////////////////////////////////////////////////////////////////////////
+    // MapArgs.checkNotEmptyAndKeysNotNull
+    //
+    
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckKeysAndValuesAsNotNullWithNullArgName() {
+    private static final Object[][] _checkNotEmptyAndKeysNotNull_Pass_Data() {
         return new Object[][] {
-                { null },
-                { MapUtils.asHashMap(null, 123) },
-                { MapUtils.asHashMap(null, null) },
-                { MapUtils.asHashMap(null, 123, "abc", 456) },
-                { MapUtils.asHashMap("abc", 123, null, 456) },
-                { MapUtils.asHashMap("abc", null, null, 456) },
+                { _asMap("abc", 123) },
+                { _asMap("abc", null) },
+                { _asMap("abc", 123, "def", 456) },
+                { _asMap("abc", 123, "def", null) },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckKeysAndValuesAsNotNullWithNullArgName",
+    @Test(dataProvider = "_checkNotEmptyAndKeysNotNull_Pass_Data")
+    public <TKey, TValue> void checkNotEmptyAndKeysNotNull_Pass(Map<TKey, TValue> ref) {
+        MapArgs.checkNotEmptyAndKeysNotNull(ref, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        MapArgs.checkNotEmptyAndKeysNotNull(ref, null);
+        MapArgs.checkNotEmptyAndKeysNotNull(ref, "");
+        MapArgs.checkNotEmptyAndKeysNotNull(ref, "   ");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkNotEmptyAndKeysNotNull_FailWithNullKey_Data() {
+        return new Object[][] {
+                { _asMap(null, 123) },
+                { _asMap(null, null) },
+                { _asMap(null, 123, "abc", 456) },
+                { _asMap("abc", 123, null, 456) },
+                { _asMap("abc", null, null, 456) },
+        };
+    }
+    
+    @Test(dataProvider = "_checkNotEmptyAndKeysNotNull_FailWithNullKey_Data",
             expectedExceptions = NullPointerException.class)
-    public <TKey, TValue> void shouldNotCheckKeysAndValuesAsNotNullWithNullArgName(
-    		Map<TKey, TValue> ref) {
-        MapArgs.checkKeysAndValuesNotNull(ref, null);
+    public <TKey, TValue> void checkNotEmptyAndKeysNotNull_FailWithNullKey(Map<TKey, TValue> ref) {
+        MapArgs.checkNotEmptyAndKeysNotNull(ref, "ref");
     }
-    
+
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckKeysAndValuesAsNotNullWithInvalidArgName() {
+    private static final Object[][] _checkNotEmptyAndKeysNotNull_FailWithEmptyMap_Data() {
         return new Object[][] {
-                { null, "" },
-                { MapUtils.asHashMap(null, 123), "" },
-                { MapUtils.asHashMap(null, null), "" },
-                { MapUtils.asHashMap(null, 123, "abc", 456), "" },
-                { MapUtils.asHashMap("abc", 123, null, 456), "" },
-                { MapUtils.asHashMap("abc", null, null, 456), "" },
-                
-                // ASCII spaces
-                { null, "   " },
-                { MapUtils.asHashMap(null, 123), "   " },
-                { MapUtils.asHashMap(null, null), "   " },
-                { MapUtils.asHashMap(null, 123, "abc", 456), "   " },
-                { MapUtils.asHashMap("abc", 123, null, 456), "   " },
-                { MapUtils.asHashMap("abc", null, null, 456), "   " },
-                
-                // wide Japanese spaces
-                { null, "　　　" },
-                { MapUtils.asHashMap(null, 123), "　　　" },
-                { MapUtils.asHashMap(null, null), "　　　" },
-                { MapUtils.asHashMap(null, 123, "abc", 456), "　　　" },
-                { MapUtils.asHashMap("abc", 123, null, 456), "　　　" },
-                { MapUtils.asHashMap("abc", null, null, 456), "　　　" },
+                { ImmutableMap.of() },
+                { new HashMap<String, String>() },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckKeysAndValuesAsNotNullWithInvalidArgName",
+    @Test(dataProvider = "_checkNotEmptyAndKeysNotNull_FailWithEmptyMap_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public <TKey, TValue> void shouldNotCheckKeysAndValuesAsNotInvalidWithNullArgName(
-            Map<TKey, TValue> ref, String argName) {
-        MapArgs.checkKeysAndValuesNotNull(ref, argName);
+    public <TKey, TValue> void checkNotEmptyAndKeysNotNull_FailWithEmptyMap(
+            Map<TKey, TValue> ref) {
+        MapArgs.checkNotEmptyAndKeysNotNull(ref, "ref");
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void checkNotEmptyAndKeysNotNull_FailWithNullMap() {
+        MapArgs.checkNotEmptyAndKeysNotNull((Map<Object, Object>) null, "ref");
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // MapArgs.checkNotEmptyAndValuesNotNull
+    //
+    
+    @DataProvider
+    private static final Object[][] _checkNotEmptyAndValuesNotNull_Pass_Data() {
+        return new Object[][] {
+                { _asMap("abc", 123) },
+                { _asMap(null, 123) },
+                { _asMap("abc", 123, "def", 456) },
+                { _asMap("abc", 123, null, 456) },
+        };
+    }
+    
+    @Test(dataProvider = "_checkNotEmptyAndValuesNotNull_Pass_Data")
+    public <TKey, TValue> void checkNotEmptyAndValuesNotNull_Pass(Map<TKey, TValue> ref) {
+        MapArgs.checkNotEmptyAndValuesNotNull(ref, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        MapArgs.checkNotEmptyAndValuesNotNull(ref, null);
+        MapArgs.checkNotEmptyAndValuesNotNull(ref, "");
+        MapArgs.checkNotEmptyAndValuesNotNull(ref, "   ");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkNotEmptyAndValuesNotNull_FailWithNullValue_Data() {
+        return new Object[][] {
+                { _asMap(123, null) },
+                { _asMap(null, null) },
+                { _asMap(123, null, 456, "abc") },
+                { _asMap(123, "abc", 456, null) },
+                { _asMap(null, "abc", 456, null) },
+        };
+    }
+    
+    @Test(dataProvider = "_checkNotEmptyAndValuesNotNull_FailWithNullValue_Data",
+            expectedExceptions = NullPointerException.class)
+    public <TKey, TValue> void checkNotEmptyAndValuesNotNull_FailWithNullValue(
+            Map<TKey, TValue> ref) {
+        MapArgs.checkNotEmptyAndValuesNotNull(ref, "ref");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkNotEmptyAndValuesNotNull_FailWithEmptyMap_Data() {
+        return new Object[][] {
+                { ImmutableMap.of() },
+                { new HashMap<String, String>() },
+        };
+    }
+    
+    @Test(dataProvider = "_checkNotEmptyAndValuesNotNull_FailWithEmptyMap_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <TKey, TValue> void checkNotEmptyAndValuesNotNull_FailWithEmptyMap(
+            Map<TKey, TValue> ref) {
+        MapArgs.checkNotEmptyAndValuesNotNull(ref, "ref");
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void checkNotEmptyAndValuesNotNull_FailWithNullMap() {
+        MapArgs.checkNotEmptyAndValuesNotNull((Map<Object, Object>) null, "ref");
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // MapArgs.checkNotEmptyAndKeysAndValuesNotNull
+    //
+    
+    @DataProvider
+    private static final Object[][] _checkNotEmptyAndKeysAndValuesNotNull_Pass_Data() {
+        return new Object[][] {
+                { _asMap("abc", 123) },
+                { _asMap("abc", 123, "def", 456) },
+        };
+    }
+    
+    @Test(dataProvider = "_checkNotEmptyAndKeysAndValuesNotNull_Pass_Data")
+    public <TKey, TValue> void checkNotEmptyAndKeysAndValuesNotNull_Pass(Map<TKey, TValue> ref) {
+        MapArgs.checkNotEmptyAndKeysAndValuesNotNull(ref, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        MapArgs.checkNotEmptyAndKeysAndValuesNotNull(ref, null);
+        MapArgs.checkNotEmptyAndKeysAndValuesNotNull(ref, "");
+        MapArgs.checkNotEmptyAndKeysAndValuesNotNull(ref, "   ");
+    }
+    
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public <TKey, TValue> void checkNotEmptyAndKeysAndValuesNotNull_FailWithEmptyMap() {
+        MapArgs.checkNotEmptyAndKeysAndValuesNotNull(new HashMap<Object, Object>(), "ref");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkNotEmptyAndKeysAndValuesNotNull_FailWithNullKeyOrValue_Data() {
+        return new Object[][] {
+                { _asMap(null, 123) },
+                { _asMap(null, null) },
+                { _asMap(null, 123, "abc", 456) },
+                { _asMap("abc", 123, null, 456) },
+                { _asMap("abc", null, null, 456) },
+        };
+    }
+    
+    @Test(dataProvider = "_checkNotEmptyAndKeysAndValuesNotNull_FailWithNullKeyOrValue_Data",
+            expectedExceptions = NullPointerException.class)
+    public <TKey, TValue> void checkNotEmptyAndKeysAndValuesNotNull_FailWithNullKeyOrValue(
+            Map<TKey, TValue> ref) {
+        MapArgs.checkNotEmptyAndKeysAndValuesNotNull(ref, "ref");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkNotEmptyAndKeysAndValuesNotNull_FailWithEmptyMap_Data() {
+        return new Object[][] {
+                { ImmutableMap.of() },
+                { new HashMap<String, String>() },
+        };
+    }
+    
+    @Test(dataProvider = "_checkNotEmptyAndKeysAndValuesNotNull_FailWithEmptyMap_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <TKey, TValue> void checkNotEmptyAndKeysAndValuesNotNull_FailWithEmptyMap(
+            Map<TKey, TValue> ref) {
+        MapArgs.checkNotEmptyAndKeysAndValuesNotNull(ref, "ref");
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public <TKey, TValue> void checkNotEmptyAndKeysAndValuesNotNull_FailWithNullMap() {
+        MapArgs.checkNotEmptyAndKeysAndValuesNotNull((Map<Object, Object>) null, "ref");
     }
 }

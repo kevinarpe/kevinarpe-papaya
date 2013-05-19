@@ -35,9 +35,9 @@ import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 @FullyTested
 public class FloatArgs {
 
-	// Disable default constructor
-	private FloatArgs() {
-	}
+    // Disable default constructor
+    private FloatArgs() {
+    }
 
     /**
      * This is a convenience method for {@link DoubleArgs#checkPositive(double, String)}.
@@ -46,7 +46,7 @@ public class FloatArgs {
      * @see #checkNegative(float, String)
      * @see #checkNotNegative(float, String)
      */
-	@FullyTested
+    @FullyTested
     public static float checkPositive(float value, String argName) {
         DoubleArgs.checkPositive(value, argName);
         return value;
@@ -59,7 +59,7 @@ public class FloatArgs {
      * @see #checkNegative(float, String)
      * @see #checkNotNegative(float, String)
      */
-	@FullyTested
+    @FullyTested
     public static float checkNotPositive(float value, String argName) {
         DoubleArgs.checkNotPositive(value, argName);
         return value;
@@ -72,7 +72,7 @@ public class FloatArgs {
      * @see #checkNotPositive(float, String)
      * @see #checkNotNegative(float, String)
      */
-	@FullyTested
+    @FullyTested
     public static float checkNegative(float value, String argName) {
         DoubleArgs.checkNegative(value, argName);
         return value;
@@ -85,7 +85,7 @@ public class FloatArgs {
      * @see #checkNotPositive(float, String)
      * @see #checkNegative(float, String)
      */
-	@FullyTested
+    @FullyTested
     public static float checkNotNegative(float value, String argName) {
         DoubleArgs.checkNotNegative(value, argName);
         return value;
@@ -99,7 +99,7 @@ public class FloatArgs {
      * @see #checkMaxValue(float, float, String)
      * @see #checkExactValue(float, float, String)
      */
-	@FullyTested
+    @FullyTested
     public static float checkValueRange(
             float value, float minValue, float maxValue, String argName) {
         ComparableArgs.checkValueRange(value, minValue, maxValue, argName);
@@ -114,7 +114,7 @@ public class FloatArgs {
      * @see #checkMaxValue(float, float, String)
      * @see #checkExactValue(float, float, String)
      */
-	@FullyTested
+    @FullyTested
     public static float checkMinValue(float value, float minValue, String argName) {
         ComparableArgs.checkMinValue(value, minValue, argName);
         return value;
@@ -128,7 +128,7 @@ public class FloatArgs {
      * @see #checkMinValue(float, float, String)
      * @see #checkExactValue(float, float, String)
      */
-	@FullyTested
+    @FullyTested
     public static float checkMaxValue(float value, float maxValue, String argName) {
         ComparableArgs.checkMaxValue(value, maxValue, argName);
         return value;
@@ -142,7 +142,7 @@ public class FloatArgs {
      * @see #checkMinValue(float, float, String)
      * @see #checkMaxValue(float, float, String)
      */
-	@FullyTested
+    @FullyTested
     public static float checkExactValue(float value, float exactValue, String argName) {
         ComparableArgs.checkValueRange(value, exactValue, exactValue, argName);
         return value;

@@ -35,30 +35,58 @@ import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 @FullyTested
 public final class StringArgs {
 
-	// Disable default constructor
-	private StringArgs() {
-	}
+    // Disable default constructor
+    private StringArgs() {
+    }
 
-    static <T extends CharSequence> void _checkArgNameValid(
-            T ref, String argName) {
-        if (null == argName) {
-            throw new NullPointerException("Internal error: Argument 'argName' is null");
-        }
-        if (null == ref) {
-            throw new NullPointerException(String.format("Argument name '%s' is null", argName));
-        }
-        if (0 == ref.length()) {
-            throw new IllegalArgumentException(String.format(
-                "Argument name '%s' is empty", argName));
-        }
-        if (!_isWhitespace(ref)) {
-            return;
-        }
-        throw new IllegalArgumentException(String.format(
-            "Argument name '%s' is all whitespace: '%s'", argName, ref));
+    private static final String _WARNING_PREFIX = String.format("%nWARNING: ");
+    
+    static String _getArgNameWarning(String ref, String argName) {
+        String x = _getIdentifierWarning("Argument name", ref, argName);
+        return x;
     }
     
-    static <T extends CharSequence> boolean _isWhitespace(T ref) {
+    static String _getIdentifierWarning(String idType, String id, String argName) {
+        if (null == idType) {
+            return String.format("%sArgument 'idType' is null", _WARNING_PREFIX);
+        }
+        if (null == argName) {
+            return String.format("%sArgument 'argName' is null", _WARNING_PREFIX);
+        }
+        if (null == id) {
+            return String.format("%s%s '%s' is null",
+                _WARNING_PREFIX, idType, argName);
+        }
+        if (id.isEmpty()) {
+            return String.format("%s%s '%s' is empty",
+                _WARNING_PREFIX, idType, argName);
+        }
+        if (_isOnlyWhitespace(id)) {
+            return String.format("%s%s '%s' is only whitespace: '%s'",
+                _WARNING_PREFIX, idType, argName, id);
+        }
+        return "";
+    }
+
+//    static <T extends CharSequence> void _checkArgNameValid(T ref, String argName) {
+//        if (null == argName) {
+//            throw new NullPointerException("Internal error: Argument 'argName' is null");
+//        }
+//        if (null == ref) {
+//            throw new NullPointerException(String.format("Argument name '%s' is null", argName));
+//        }
+//        if (0 == ref.length()) {
+//            throw new IllegalArgumentException(String.format(
+//                "Argument name '%s' is empty", argName));
+//        }
+//        if (!_isOnlyWhitespace(ref)) {
+//            return;
+//        }
+//        throw new IllegalArgumentException(String.format(
+//            "Argument name '%s' is all whitespace: '%s'", argName, ref));
+//    }
+    
+    static <T extends CharSequence> boolean _isOnlyWhitespace(T ref) {
         int len = ref.length();
         for (int i = 0; i < len; ++i) {
             char ch = ref.charAt(i);
@@ -89,9 +117,8 @@ public final class StringArgs {
      * @param ref a string reference
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @return the validated string reference
-     * @throws NullPointerException if {@code ref} or {@code argName} is null
-     * @throws IllegalArgumentException if {@code ref} is empty,
-     *         or if {@code argName} is empty or whitespace
+     * @throws NullPointerException if {@code ref} is {@code null}
+     * @throws IllegalArgumentException if {@code ref} is empty
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see #checkNotEmptyOrWhitespace(CharSequence, String)
      */
@@ -100,9 +127,9 @@ public final class StringArgs {
         ObjectArgs.checkNotNull(ref, argName);
         int len = ref.length();
         if (0 == len) {
-            StringArgs._checkArgNameValid(argName, "argName");
+            String w = StringArgs._getArgNameWarning(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                "Argument '%s' is an empty string", argName));
+                "Argument '%s' is an empty string%s", argName, w));
         }
         return ref;
     }
@@ -130,22 +157,20 @@ public final class StringArgs {
      * @param ref a string reference
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @return the validated string reference
-     * @throws NullPointerException if {@code ref} or {@code argName} is null
-     * @throws IllegalArgumentException if {@code ref} is empty or only whitespace,
-     *         or if {@code argName} is empty or whitespace
+     * @throws NullPointerException if {@code ref} is {@code null}
+     * @throws IllegalArgumentException if {@code ref} is empty or only whitespace
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see #checkNotEmpty(CharSequence, String)
      */
     @FullyTested
-    public static <T extends CharSequence> T checkNotEmptyOrWhitespace(
-            T ref, String argName) {
+    public static <T extends CharSequence> T checkNotEmptyOrWhitespace(T ref, String argName) {
         checkNotEmpty(ref, argName);
-        if (!_isWhitespace(ref)) {
+        if (!_isOnlyWhitespace(ref)) {
             return ref;
         }
-        StringArgs._checkArgNameValid(argName, "argName");
+        String w = StringArgs._getArgNameWarning(argName, "argName");
         throw new IllegalArgumentException(String.format(
-            "Argument '%s' is all whitespace: '%s'", argName, ref));
+            "Argument '%s' is all whitespace: '%s'%s", argName, ref, w));
     }
     
     /**
@@ -158,12 +183,11 @@ public final class StringArgs {
      * @param maxLen maximum number of chars (inclusive).  Must be non-negative.
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @return the validated string reference
-     * @throws NullPointerException if {@code ref} or {@code argName} is null
+     * @throws NullPointerException if {@code ref} is {@code null}
      * @throws IllegalArgumentException if {@code minLen < 0},
-     *         or if {@code maxLen < 0},
-     *         or if {@code minLen > maxLen}, 
-     *         or if number of chars in {@code ref} is outside allowed range,
-     *         or if {@code argName} is empty or whitespace
+     *         <br>or if {@code maxLen < 0},
+     *         <br>or if {@code minLen > maxLen}, 
+     *         <br>or if number of chars in {@code ref} is outside allowed range
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see #checkNotEmpty(CharSequence, String)
      * @see #checkNotEmptyOrWhitespace(CharSequence, String)
@@ -184,22 +208,23 @@ public final class StringArgs {
             T ref, int minLen, int maxLen, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
         if (-1 != minLen && -1 != maxLen && minLen > maxLen) {
-            StringArgs._checkArgNameValid(argName, "argName");
+            String w = StringArgs._getArgNameWarning(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                "Argument '%s': 'minLen' > 'maxLen': %d > %d", argName, minLen, maxLen));
+                "Argument '%s': 'minLen' > 'maxLen': %d > %d%s",
+                argName, minLen, maxLen, w));
         }
         int len = ref.length();
         if (-1 != minLen && len < minLen) {
-            StringArgs._checkArgNameValid(argName, "argName");
+            String w = StringArgs._getArgNameWarning(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                "Argument '%s': length() < 'minLen': %d < %d%n\tValue: [%s]",
-                argName, len, minLen, ref));
+                "Argument '%s': length() < 'minLen': %d < %d%n\tValue: [%s]%s",
+                argName, len, minLen, ref, w));
         }
         if (-1 != maxLen && len > maxLen) {
-            StringArgs._checkArgNameValid(argName, "argName");
+            String w = StringArgs._getArgNameWarning(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                "Argument '%s': length() > 'maxLen': %d > %d%n\tValue: [%s]",
-                argName, len, maxLen, ref));
+                "Argument '%s': length() > 'maxLen': %d > %d%n\tValue: [%s]%s",
+                argName, len, maxLen, ref, w));
         }
     }
     
@@ -212,10 +237,9 @@ public final class StringArgs {
      * @param minLen minimum number of chars (inclusive).  Must be non-negative. 
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @return the validated string reference
-     * @throws NullPointerException if {@code ref} or {@code argName} is null
+     * @throws NullPointerException if {@code ref} is {@code null}
      * @throws IllegalArgumentException if {@code minLen < 0},
-     *         or if number of chars in {@code ref} is outside allowed range,
-     *         or if {@code argName} is empty or whitespace
+     *         <br>or if number of chars in {@code ref} is outside allowed range
      * @see #checkLengthRange(CharSequence, int, int, String)
      */
     @FullyTested
@@ -236,10 +260,9 @@ public final class StringArgs {
      * @param maxLen maximum number of chars (inclusive).  Must be non-negative.
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @return the validated string reference
-     * @throws NullPointerException if {@code ref} or {@code argName} is null
+     * @throws NullPointerException if {@code ref} is {@code null}
      * @throws IllegalArgumentException if {@code maxLen < 0},
-     *         or if number of chars in {@code ref} is outside allowed range,
-     *         or if {@code argName} is empty or whitespace
+     *         <br>or if number of chars in {@code ref} is outside allowed range
      * @see #checkLengthRange(CharSequence, int, int, String)
      */
     @FullyTested
@@ -260,10 +283,9 @@ public final class StringArgs {
      * @param exactLen exact number of chars (inclusive).  Must be non-negative. 
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @return the validated string reference
-     * @throws NullPointerException if {@code ref} or {@code argName} is null
+     * @throws NullPointerException if {@code ref} is {@code null}
      * @throws IllegalArgumentException if {@code exactLen < 0},
-     *         or if number of chars in {@code ref} is outside allowed range,
-     *         or if {@code argName} is empty or whitespace
+     *         <br>or if number of chars in {@code ref} is outside allowed range
      * @see #checkLengthRange(CharSequence, int, int, String)
      */
     @FullyTested
@@ -282,12 +304,9 @@ public final class StringArgs {
      * @param refArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
      * @return the validated index
-     * @throws NullPointerException if {@code ref}, {@code refArgName},
-     *         or {@code indexArgName} is null
-     * @throws IllegalArgumentException if {@code refArgName} or {@code indexArgName} is empty
-     *         or whitespace
+     * @throws NullPointerException if {@code ref} is {@code null}
      * @throws IndexOutOfBoundsException if {@code index < 0},
-     *         or {@code index >= ref.length()}
+     *         <br>or {@code index >= ref.length()}
      */
     @FullyTested
     public static <T extends CharSequence> int checkInsertIndex(
@@ -309,14 +328,11 @@ public final class StringArgs {
      * @param refArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
      * @param countArgName argument name for {@code count}, e.g., "strListCount"
-     * @throws NullPointerException if {@code ref}, {@code refArgName}, {@code indexArgName},
-     *         or {@code countArgName} is null
+     * @throws NullPointerException if {@code ref} is {@code null}
      * @throws IllegalArgumentException if {@code index < 0},
-     *         or if {@code count < 0},
-     *         or if {@code refArgName}, {@code indexArgName}, or {@code countArgName} is empty
-     *         or whitespace
+     *         <br>or if {@code count < 0}
      * @throws IndexOutOfBoundsException if {@code index >= ref.length()},
-     *         or if {@code index + count > ref.length()}
+     *         <br>or if {@code index + count > ref.length()}
      */
     @FullyTested
     public static <T extends CharSequence> void checkIndexAndCount(

@@ -33,21 +33,20 @@ import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@NotFullyTested
 public final class ListUtils {
 
-	// Disable default constructor
-	private ListUtils() {
-	}
-	
-	/**
-	 * Creates a new {@link ArrayList} from a list of items.  Null items are allowed.
-	 * 
-	 * @param itemArr list of items.  May be empty.
-	 * @return new modifiable list with items
-	 */
-	public static <T> ArrayList<T> asArrayList(T... itemArr) {
-		ArrayList<T> x = new ArrayList<T>(Arrays.asList(itemArr));
-		return x;
-	}
+    // Disable default constructor
+    private ListUtils() {
+    }
+    
+    /**
+     * Creates a new {@link ArrayList} from a list of items.  Null items are allowed.
+     * 
+     * @param itemArr list of items.  May be empty.
+     * @return new modifiable list with items
+     */
+    public static <T> ArrayList<T> asArrayList(T... itemArr) {
+        ArrayList<T> x = new ArrayList<T>(Arrays.asList(itemArr));
+        return x;
+    }
 }

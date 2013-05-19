@@ -38,14 +38,14 @@ import org.testng.annotations.Test;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public class FileUtilsTest {
-	
-	private static SystemUtils.OperatingSystemCategory _cat;
+    
+    private static SystemUtils.OperatingSystemCategory _cat;
 
     @BeforeClass
     public void oneTimeSetup() {
-    	_cat = SystemUtils.checkCurrentOperatingSystemCategory(
-			SystemUtils.OperatingSystemCategory.WINDOWS,
-			SystemUtils.OperatingSystemCategory.UNIX);
+        _cat = SystemUtils.checkCurrentOperatingSystemCategory(
+            SystemUtils.OperatingSystemCategory.WINDOWS,
+            SystemUtils.OperatingSystemCategory.UNIX);
     }
     
     @AfterClass
@@ -53,14 +53,14 @@ public class FileUtilsTest {
     }
     
     private static String _convertPath(String unixPath) {
-    	if (_cat.equals(SystemUtils.OperatingSystemCategory.WINDOWS)) {
-    		String winPath = unixPath.replace('/', '\\');
-    		if (winPath.startsWith("\\")) {
-    			winPath = "C:" + winPath;
-    		}
-    		return winPath;
-    	}
-    	return unixPath;
+        if (_cat.equals(SystemUtils.OperatingSystemCategory.WINDOWS)) {
+            String winPath = unixPath.replace('/', '\\');
+            if (winPath.startsWith("\\")) {
+                winPath = "C:" + winPath;
+            }
+            return winPath;
+        }
+        return unixPath;
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -69,8 +69,8 @@ public class FileUtilsTest {
 
     @DataProvider
     private static final Object[][] _dataForShouldTestIsRootDirectoryCorrectly() {
-    	String relativeDirPath = FileUtilsTest.class.getPackage().getName().replace('.', '/');
-    	return new Object[][] {
+        String relativeDirPath = FileUtilsTest.class.getPackage().getName().replace('.', '/');
+        return new Object[][] {
                 { _convertPath(relativeDirPath), false },
                 { _convertPath("."), false },
                 { _convertPath("/"), true },
@@ -82,26 +82,26 @@ public class FileUtilsTest {
     
     @Test(dataProvider = "_dataForShouldTestIsRootDirectoryCorrectly")
     public void shouldTestIsRootDirectoryCorrectly(String dirPath, boolean expectedResult) {
-    	boolean result = FileUtils.isRootDirectory(dirPath);
-    	Assert.assertEquals(result, expectedResult);
-    	File dir = new File(dirPath);
-    	result = FileUtils.isRootDirectory(dir);
-    	Assert.assertEquals(result, expectedResult);
+        boolean result = FileUtils.isRootDirectory(dirPath);
+        Assert.assertEquals(result, expectedResult);
+        File dir = new File(dirPath);
+        result = FileUtils.isRootDirectory(dir);
+        Assert.assertEquals(result, expectedResult);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void shouldNotTestIsRootDirectoryCorrectlyWithNullPath() {
-    	FileUtils.isRootDirectory((String) null);
+        FileUtils.isRootDirectory((String) null);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void shouldNotTestIsRootDirectoryCorrectlyWithNullPath2() {
-    	FileUtils.isRootDirectory((File) null);
+        FileUtils.isRootDirectory((File) null);
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void shouldNotTestIsRootDirectoryCorrectlyWithInvalidPath() {
-    	FileUtils.isRootDirectory("");
+        FileUtils.isRootDirectory("");
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -110,7 +110,7 @@ public class FileUtilsTest {
 
     @DataProvider
     private static final Object[][] _dataForShouldCreateDirectory() {
-    	return new Object[][] {
+        return new Object[][] {
                 { "test_dir" },
                 { "test_dir   " },
                 { "   " },
@@ -119,36 +119,36 @@ public class FileUtilsTest {
     
     @Test(dataProvider = "_dataForShouldCreateDirectory")
     public void shouldCreateDirectory(String dirName)
-	throws IOException {
-		File dir = new File(dirName);
-		if (!dir.delete() && dir.exists()) {
-			throw new IOException(String.format("Test dir name already exists: '%s'", dirName));
-		}
-    	try {
-    		FileUtils.createDirectory(dirName);
-    		dir.delete();
-    		FileUtils.createDirectory(dir);
-    	}
-    	finally {
-    		dir.delete();
-    	}
+    throws IOException {
+        File dir = new File(dirName);
+        if (!dir.delete() && dir.exists()) {
+            throw new IOException(String.format("Test dir name already exists: '%s'", dirName));
+        }
+        try {
+            FileUtils.createDirectory(dirName);
+            dir.delete();
+            FileUtils.createDirectory(dir);
+        }
+        finally {
+            dir.delete();
+        }
     }
     
     @Test(expectedExceptions = NullPointerException.class)
     public void shouldNotCreateDirectoryWithNullName()
-	throws IOException {
-		FileUtils.createDirectory((String) null);
+    throws IOException {
+        FileUtils.createDirectory((String) null);
     }
     
     @Test(expectedExceptions = NullPointerException.class)
     public void shouldNotCreateDirectoryWithNullName2()
-	throws IOException {
-		FileUtils.createDirectory((File) null);
+    throws IOException {
+        FileUtils.createDirectory((File) null);
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void shouldNotCreateDirectoryWithWithInvalidName()
-	throws IOException {
-    	FileUtils.createDirectory("");
+    throws IOException {
+        FileUtils.createDirectory("");
     }
 }

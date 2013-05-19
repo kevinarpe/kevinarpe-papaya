@@ -35,9 +35,9 @@ import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 @FullyTested
 public class DoubleArgs {
 
-	// Disable default constructor
-	private DoubleArgs() {
-	}
+    // Disable default constructor
+    private DoubleArgs() {
+    }
 
     /**
      * Tests if {@code value > 0.0d}
@@ -45,21 +45,18 @@ public class DoubleArgs {
      * @param value a value to test
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
-     * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value <= 0.0d},
-     *         or if {@code argName} is empty or whitespace
+     * @throws IllegalArgumentException if value of {@code value <= 0.0d}
      * @see #checkNotPositive(double, String)
      * @see #checkNegative(double, String)
      * @see #checkNotNegative(double, String)
      */
-	@FullyTested
+    @FullyTested
     public static double checkPositive(double value, String argName) {
-        ObjectArgs.checkNotNull(argName, "argName");
         if (value <= 0.0d) {
-            StringArgs._checkArgNameValid(argName, "argName");
+            String w = StringArgs._getArgNameWarning(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                    "Argument '%s': value is not positive: %f",
-                    argName, value));
+                    "Argument '%s': Value is not positive: %f%s",
+                    argName, value, w));
         }
         return value;
     }
@@ -70,21 +67,18 @@ public class DoubleArgs {
      * @param value a value to test
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
-     * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value > 0.0d},
-     *         or if {@code argName} is empty or whitespace
+     * @throws IllegalArgumentException if value of {@code value > 0.0d}
      * @see #checkPositive(double, String)
      * @see #checkNegative(double, String)
      * @see #checkNotNegative(double, String)
      */
-	@FullyTested
+    @FullyTested
     public static double checkNotPositive(double value, String argName) {
-        ObjectArgs.checkNotNull(argName, "argName");
         if (value > 0.0d) {
-            StringArgs._checkArgNameValid(argName, "argName");
+            String w = StringArgs._getArgNameWarning(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                    "Argument '%s': value is positive: %f",
-                    argName, value));
+                    "Argument '%s': Value is positive: %f%s",
+                    argName, value, w));
         }
         return value;
     }
@@ -95,21 +89,18 @@ public class DoubleArgs {
      * @param value a value to test
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
-     * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value => 0.0d},
-     *         or if {@code argName} is empty or whitespace
+     * @throws IllegalArgumentException if value of {@code value => 0.0d}
      * @see #checkPositive(double, String)
      * @see #checkNotPositive(double, String)
      * @see #checkNotNegative(double, String)
      */
-	@FullyTested
+    @FullyTested
     public static double checkNegative(double value, String argName) {
-        ObjectArgs.checkNotNull(argName, "argName");
         if (value >= 0.0d) {
-            StringArgs._checkArgNameValid(argName, "argName");
+            String w = StringArgs._getArgNameWarning(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                    "Argument '%s': value is not negative: %f",
-                    argName, value));
+                    "Argument '%s': Value is not negative: %f%s",
+                    argName, value, w));
         }
         return value;
     }
@@ -120,21 +111,18 @@ public class DoubleArgs {
      * @param value a value to test
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
-     * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value < 0.0d},
-     *         or if {@code argName} is empty or whitespace
+     * @throws IllegalArgumentException if value of {@code value < 0.0d}
      * @see #checkPositive(double, String)
      * @see #checkNotPositive(double, String)
      * @see #checkNegative(double, String)
      */
-	@FullyTested
+    @FullyTested
     public static double checkNotNegative(double value, String argName) {
-        ObjectArgs.checkNotNull(argName, "argName");
         if (value < 0.0d) {
-            StringArgs._checkArgNameValid(argName, "argName");
+            String w = StringArgs._getArgNameWarning(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                    "Argument '%s': value is negative: %f",
-                    argName, value));
+                    "Argument '%s': Value is negative: %f%s",
+                    argName, value, w));
         }
         return value;
     }
@@ -147,7 +135,7 @@ public class DoubleArgs {
      * @see #checkMaxValue(double, double, String)
      * @see #checkExactValue(double, double, String)
      */
-	@FullyTested
+    @FullyTested
     public static double checkValueRange(
             double value, double minValue, double maxValue, String argName) {
         ComparableArgs.checkValueRange(value, minValue, maxValue, argName);
@@ -162,7 +150,7 @@ public class DoubleArgs {
      * @see #checkMaxValue(double, double, String)
      * @see #checkExactValue(double, double, String)
      */
-	@FullyTested
+    @FullyTested
     public static double checkMinValue(double value, double minValue, String argName) {
         ComparableArgs.checkMinValue(value, minValue, argName);
         return value;
@@ -176,7 +164,7 @@ public class DoubleArgs {
      * @see #checkMinValue(double, double, String)
      * @see #checkExactValue(double, double, String)
      */
-	@FullyTested
+    @FullyTested
     public static double checkMaxValue(double value, double maxValue, String argName) {
         ComparableArgs.checkMaxValue(value, maxValue, argName);
         return value;
@@ -190,7 +178,7 @@ public class DoubleArgs {
      * @see #checkMinValue(double, double, String)
      * @see #checkMaxValue(double, double, String)
      */
-	@FullyTested
+    @FullyTested
     public static double checkExactValue(
             double value, double exactValue, String argName) {
         ComparableArgs.checkExactValue(value, exactValue, argName);

@@ -50,7 +50,7 @@ public class ByteArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckAsPositive() {
+    private static final Object[][] _checkPositive_Pass_Data() {
         return new Object[][] {
                 { (byte) 1 },
                 { (byte) 99 },
@@ -58,13 +58,17 @@ public class ByteArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckAsPositive")
-    public void shouldCheckAsPositive(byte i) {
+    @Test(dataProvider = "_checkPositive_Pass_Data")
+    public void checkPositive_Pass(byte i) {
         ByteArgs.checkPositive(i, "i");
+        // Demonstrate argName can be anything ridiculous.
+        ByteArgs.checkPositive(i, null);
+        ByteArgs.checkPositive(i, "");
+        ByteArgs.checkPositive(i, "   ");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsPositiveWithNonPositiveInput() {
+    private static final Object[][] _checkPositive_FailWithNonPositiveInput_Data() {
         return new Object[][] {
                 { (byte) 0 },
                 { (byte) -1 },
@@ -72,31 +76,10 @@ public class ByteArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckAsPositiveWithNonPositiveInput",
+    @Test(dataProvider = "_checkPositive_FailWithNonPositiveInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckAsPositiveWithNonPositiveInput(byte i) {
+    public void checkPositive_FailWithNonPositiveInput(byte i) {
         ByteArgs.checkPositive(i, "i");
-    }
-
-    @Test(dataProvider = "_dataForShouldNotCheckAsPositiveWithNonPositiveInput",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckAsPositiveWithNullArgName(byte i) {
-        ByteArgs.checkPositive(i, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsPositiveWithInvalidArgName() {
-        return new Object[][] {
-                { (byte) 0, "" },
-                { (byte) -1, "   " },  // ASCII spaces
-                { Byte.MIN_VALUE, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsPositiveWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckAsPositiveWithInvalidArgName(byte i, String argName) {
-        ByteArgs.checkPositive(i, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -104,7 +87,7 @@ public class ByteArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckAsNotPositive() {
+    private static final Object[][] _checkNotPositive_Pass_Data() {
         return new Object[][] {
                 { (byte) 0 },
                 { (byte) -99 },
@@ -112,44 +95,27 @@ public class ByteArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckAsNotPositive")
-    public void shouldCheckAsNotPositive(byte i) {
+    @Test(dataProvider = "_checkNotPositive_Pass_Data")
+    public void checkNotPositive_Pass(byte i) {
         ByteArgs.checkNotPositive(i, "i");
+        // Demonstrate argName can be anything ridiculous.
+        ByteArgs.checkNotPositive(i, null);
+        ByteArgs.checkNotPositive(i, "");
+        ByteArgs.checkNotPositive(i, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotPositiveWithPositiveInput() {
+    private static final Object[][] _checkNotPositive_FailWithPositiveInput_Data() {
         return new Object[][] {
                 { (byte) 1 },
                 { Byte.MAX_VALUE },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotPositiveWithPositiveInput",
+    @Test(dataProvider = "_checkNotPositive_FailWithPositiveInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckAsNotPositiveWithPositiveInput(byte i) {
+    public void checkNotPositive_FailWithPositiveInput(byte i) {
         ByteArgs.checkNotPositive(i, "i");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotPositiveWithPositiveInput",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckAsNotPositiveWithNullArgName(byte i) {
-        ByteArgs.checkNotPositive(i, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotPositiveWithInvalidArgName() {
-        return new Object[][] {
-                { (byte) 1, "" },
-                { 99, "   " },  // ASCII spaces
-                { Byte.MAX_VALUE, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotPositiveWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckAsNotPositiveWithInvalidArgName(byte i, String argName) {
-        ByteArgs.checkNotPositive(i, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -157,7 +123,7 @@ public class ByteArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckAsNegative() {
+    private static final Object[][] _checkNegative_Pass_Data() {
         return new Object[][] {
                 { (byte) -1 },
                 { (byte) -99 },
@@ -165,13 +131,17 @@ public class ByteArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckAsNegative")
-    public void shouldCheckAsNegative(byte i) {
+    @Test(dataProvider = "_checkNegative_Pass_Data")
+    public void checkNegative_Pass(byte i) {
         ByteArgs.checkNegative(i, "i");
+        // Demonstrate argName can be anything ridiculous.
+        ByteArgs.checkNegative(i, null);
+        ByteArgs.checkNegative(i, "");
+        ByteArgs.checkNegative(i, "   ");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNegativeWithNonNegativeInput() {
+    private static final Object[][] _checkNegative_FailWithNonNegativeInput_Data() {
         return new Object[][] {
                 { (byte) 0 },
                 { (byte) 1 },
@@ -179,31 +149,10 @@ public class ByteArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckAsNegativeWithNonNegativeInput",
+    @Test(dataProvider = "_checkNegative_FailWithNonNegativeInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckAsNegativeWithNonNegativeInput(byte i) {
+    public void checkNegative_FailWithNonNegativeInput(byte i) {
         ByteArgs.checkNegative(i, "i");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNegativeWithNonNegativeInput",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckAsNegativeWithNullArgName(byte i) {
-        ByteArgs.checkNegative(i, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNegativeWithInvalidArgName() {
-        return new Object[][] {
-                { (byte) 1, "" },
-                { 99, "   " },  // ASCII spaces
-                { Byte.MAX_VALUE, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNegativeWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckAsNegativeWithInvalidArgName(byte i, String argName) {
-        ByteArgs.checkNegative(i, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -211,7 +160,7 @@ public class ByteArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckAsNotNegative() {
+    private static final Object[][] _checkNotNegative_Pass_Data() {
         return new Object[][] {
                 { (byte) 0 },
                 { (byte) 99 },
@@ -219,44 +168,27 @@ public class ByteArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckAsNotNegative")
-    public void shouldCheckAsNotNegative(byte i) {
+    @Test(dataProvider = "_checkNotNegative_Pass_Data")
+    public void checkNotNegative_Pass(byte i) {
         ByteArgs.checkNotNegative(i, "i");
+        // Demonstrate argName can be anything ridiculous.
+        ByteArgs.checkNotNegative(i, null);
+        ByteArgs.checkNotNegative(i, "");
+        ByteArgs.checkNotNegative(i, "   ");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotNegativeWithNegativeInput() {
+    private static final Object[][] _checkNotNegative_FailWithNegativeInput_Data() {
         return new Object[][] {
                 { (byte) -1 },
                 { Byte.MIN_VALUE },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotNegativeWithNegativeInput",
+    @Test(dataProvider = "_checkNotNegative_FailWithNegativeInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckAsNotNegativeWithNegativeInput(byte i) {
+    public void checkNotNegative_FailWithNegativeInput(byte i) {
         ByteArgs.checkNotNegative(i, "i");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotNegativeWithNegativeInput",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckAsNotNegativeWithNullArgName(byte i) {
-        ByteArgs.checkNotNegative(i, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotNegativeWithInvalidArgName() {
-        return new Object[][] {
-                { (byte) -1, "" },
-                { -99, "   " },  // ASCII spaces
-                { Byte.MIN_VALUE, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotNegativeWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckAsNotNegativeWithInvalidArgName(byte i, String argName) {
-        ByteArgs.checkNotNegative(i, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -264,7 +196,7 @@ public class ByteArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckValueRangeAsValid() {
+    private static final Object[][] _checkValueRange_Pass_Data() {
         return new Object[][] {
                 { (byte) 1, (byte) -1, (byte) 2 },
                 { (byte) 1, (byte) -1, (byte) 1 },
@@ -275,13 +207,17 @@ public class ByteArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckValueRangeAsValid")
-    public void shouldCheckValueRangeAsValid(byte i, byte minValue, byte maxValue) {
+    @Test(dataProvider = "_checkValueRange_Pass_Data")
+    public void checkValueRange_Pass(byte i, byte minValue, byte maxValue) {
         ByteArgs.checkValueRange(i, minValue, maxValue, "i");
+        // Demonstrate argName can be anything ridiculous.
+        ByteArgs.checkValueRange(i, minValue, maxValue, null);
+        ByteArgs.checkValueRange(i, minValue, maxValue, "");
+        ByteArgs.checkValueRange(i, minValue, maxValue, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckValueRangeAsValidWithInvalidInput() {
+    private static final Object[][] _checkValueRange_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (byte) 1, (byte) -1, (byte) 0 },
                 { (byte) 1, (byte) 0, (byte) 0 },
@@ -299,44 +235,11 @@ public class ByteArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckValueRangeAsValidWithInvalidInput",
+    @Test(dataProvider = "_checkValueRange_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckValueRangeAsValidWithInvalidInput(
+    public void checkValueRange_FailWithInvalidInput(
             byte i, byte minValue, byte maxValue) {
         ByteArgs.checkValueRange(i, minValue, maxValue, "i");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckValueRangeAsValidWithInvalidInput",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckValueRangeAsValidWithNullArgName(
-            byte i, byte minValue, byte maxValue) {
-        ByteArgs.checkValueRange(i, minValue, maxValue, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckValueRangeAsValidWithInvalidArgName() {
-        return new Object[][] {
-                { (byte) 1, (byte) -1, (byte) 0, "" },
-                { (byte) 1, (byte) 0, (byte) 0, "   " },  // ASCII spaces
-                { (byte) 1, (byte) 2, (byte) 2, "　　　" },  // wide Japanese spaces
-                { (byte) 1, (byte) 2, (byte) 1, "" },
-                { (byte) 1, (byte) -1, (byte) -2, "   " },  // ASCII spaces
-                { (byte) 1, (byte) -2, (byte) -1, "　　　" },  // wide Japanese spaces
-                
-                { (byte) -1, (byte) 1, (byte) 0, "" },
-                { (byte) -1, (byte) 0, (byte) 0, "   " },  // ASCII spaces
-                { (byte) -1, (byte) -2, (byte) -2, "　　　" },  // wide Japanese spaces
-                { (byte) -1, (byte) -1, (byte) -2, "" },
-                { (byte) -1, (byte) 1, (byte) 2, "   " },  // ASCII spaces
-                { (byte) -1, (byte) 2, (byte) 1, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckValueRangeAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckValueRangeAsValidWithInvalidArgName(
-            byte i, byte minValue, byte maxValue, String argName) {
-        ByteArgs.checkValueRange(i, minValue, maxValue, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -344,7 +247,7 @@ public class ByteArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckMinValueAsValid() {
+    private static final Object[][] _checkMinValue_Pass_Data() {
         return new Object[][] {
                 { (byte) 1, (byte) -1 },
                 { (byte) 1, (byte) 0 },
@@ -356,13 +259,17 @@ public class ByteArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckMinValueAsValid")
-    public void shouldCheckMinValueAsValid(byte i, byte minValue) {
+    @Test(dataProvider = "_checkMinValue_Pass_Data")
+    public void checkMinValue_Pass(byte i, byte minValue) {
         ByteArgs.checkMinValue(i, minValue, "i");
+        // Demonstrate argName can be anything ridiculous.
+        ByteArgs.checkMinValue(i, minValue, null);
+        ByteArgs.checkMinValue(i, minValue, "");
+        ByteArgs.checkMinValue(i, minValue, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinValueAsValidWithInvalidInput() {
+    private static final Object[][] _checkMinValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (byte) 1, (byte) 2 },
                 { (byte) 1, (byte) 3 },
@@ -371,32 +278,10 @@ public class ByteArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckMinValueAsValidWithInvalidInput",
+    @Test(dataProvider = "_checkMinValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckMinValueAsValidWithInvalidInput(byte i, byte minValue) {
+    public void checkMinValue_FailWithInvalidInput(byte i, byte minValue) {
         ByteArgs.checkMinValue(i, minValue, "i");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMinValueAsValidWithInvalidInput",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckMinValueAsValidWithNullArgName(byte i, byte minValue) {
-        ByteArgs.checkMinValue(i, minValue, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinValueAsValidWithInvalidArgName() {
-        return new Object[][] {
-                { (byte) 1, (byte) 2, "" },
-                { (byte) 1, (byte) 3, "   " },  // ASCII spaces
-                { (byte) -1, (byte) 0, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMinValueAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckMinValueAsValidWithInvalidArgName(
-            byte i, byte minValue, String argName) {
-        ByteArgs.checkMinValue(i, minValue, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -404,7 +289,7 @@ public class ByteArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckMaxValueAsValid() {
+    private static final Object[][] _checkMaxValue_Pass_Data() {
         return new Object[][] {
                 { (byte) 1, (byte) 1 },
                 { (byte) 1, (byte) 2 },
@@ -416,13 +301,17 @@ public class ByteArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckMaxValueAsValid")
-    public void shouldCheckMaxValueAsValid(byte i, byte maxValue) {
+    @Test(dataProvider = "_checkMaxValue_Pass_Data")
+    public void checkMaxValue_Pass(byte i, byte maxValue) {
         ByteArgs.checkMaxValue(i, maxValue, "i");
+        // Demonstrate argName can be anything ridiculous.
+        ByteArgs.checkMaxValue(i, maxValue, null);
+        ByteArgs.checkMaxValue(i, maxValue, "");
+        ByteArgs.checkMaxValue(i, maxValue, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxValueAsValidWithInvalidInput() {
+    private static final Object[][] _checkMaxValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (byte) 1, (byte) 0 },
                 { (byte) 1, (byte) -1 },
@@ -431,32 +320,10 @@ public class ByteArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckMaxValueAsValidWithInvalidInput",
+    @Test(dataProvider = "_checkMaxValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckMaxValueAsValidWithInvalidInput(byte i, byte maxValue) {
+    public void checkMaxValue_FailWithInvalidInput(byte i, byte maxValue) {
         ByteArgs.checkMaxValue(i, maxValue, "i");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMaxValueAsValidWithInvalidInput",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckMaxValueAsValidWithNullArgName(byte i, byte maxValue) {
-        ByteArgs.checkMaxValue(i, maxValue, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxValueAsValidWithInvalidArgName() {
-        return new Object[][] {
-                { (byte) 1, (byte) 0, "" },
-                { (byte) 1, (byte) -1, "   " },  // ASCII spaces
-                { (byte) -1, (byte) -2, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMaxValueAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckMaxValueAsValidWithInvalidArgName(
-            byte i, byte maxValue, String argName) {
-        ByteArgs.checkMaxValue(i, maxValue, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -464,7 +331,7 @@ public class ByteArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckExactValueAsValid() {
+    private static final Object[][] _checkExactValue_Pass_Data() {
         return new Object[][] {
                 { (byte) 1, (byte) 1 },
                 { (byte) 0, (byte) 0 },
@@ -474,13 +341,17 @@ public class ByteArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckExactValueAsValid")
-    public void shouldCheckExactValueAsValid(byte i, byte value) {
+    @Test(dataProvider = "_checkExactValue_Pass_Data")
+    public void checkExactValue_Pass(byte i, byte value) {
         ByteArgs.checkExactValue(i, value, "i");
+        // Demonstrate argName can be anything ridiculous.
+        ByteArgs.checkExactValue(i, value, null);
+        ByteArgs.checkExactValue(i, value, "");
+        ByteArgs.checkExactValue(i, value, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactValueAsValidWithInvalidInput() {
+    private static final Object[][] _checkExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (byte) 1, (byte) 0 },
                 { (byte) 1, (byte) -1 },
@@ -489,31 +360,9 @@ public class ByteArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckExactValueAsValidWithInvalidInput",
+    @Test(dataProvider = "_checkExactValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckExactValueAsValidWithInvalidInput(byte i, byte value) {
-        ByteArgs.checkMaxValue(i, value, "i");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckExactValueAsValidWithInvalidInput",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckExactValueAsValidWithNullArgName(byte i, byte value) {
-        ByteArgs.checkExactValue(i, value, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactValueAsValidWithInvalidArgName() {
-        return new Object[][] {
-                { (byte) 1, (byte) 0, "" },
-                { (byte) 1, (byte) -1, "   " },  // ASCII spaces
-                { (byte) -1, (byte) -2, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckExactValueAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckExactValueAsValidWithInvalidArgName(
-            byte i, byte value, String argName) {
-        ByteArgs.checkExactValue(i, value, argName);
+    public void checkExactValue_FailWithInvalidInput(byte i, byte value) {
+        ByteArgs.checkExactValue(i, value, "i");
     }
 }

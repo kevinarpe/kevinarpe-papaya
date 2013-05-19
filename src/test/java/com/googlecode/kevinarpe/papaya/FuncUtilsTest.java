@@ -67,7 +67,7 @@ public class FuncUtilsTest {
     
     @Test(dataProvider = "_dataForShouldParseBooleanFromString")
     public void shouldParseBooleanFromString(String input, boolean expectedOutput) {
-    	boolean output = FuncUtils.PARSE_BOOLEAN_FROM_STRING.call(input);
-    	Assert.assertEquals(output, expectedOutput);
+        boolean output = FuncUtils.PARSE_BOOLEAN_FROM_STRING.call(input);
+        Assert.assertEquals(output, expectedOutput);
     }
 }

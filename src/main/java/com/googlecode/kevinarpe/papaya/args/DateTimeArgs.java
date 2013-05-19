@@ -38,9 +38,9 @@ import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 @FullyTested
 public final class DateTimeArgs {
 
-	// Disable default constructor
-	private DateTimeArgs() {
-	}
+    // Disable default constructor
+    private DateTimeArgs() {
+    }
 
     /**
      * Convenience method to call
@@ -50,7 +50,7 @@ public final class DateTimeArgs {
      * @see #checkMaxValue(DateTime, DateTime, String)
      * @see #checkExactValue(DateTime, DateTime, String)
      */
-	@FullyTested
+    @FullyTested
     public static DateTime checkValueRange(
             DateTime dt, DateTime minDt, DateTime maxDt, String argName) {
         ComparableArgs.checkValueRange(
@@ -66,7 +66,7 @@ public final class DateTimeArgs {
      * @see #checkMaxValue(DateTime, DateTime, String)
      * @see #checkExactValue(DateTime, DateTime, String)
      */
-	@FullyTested
+    @FullyTested
     public static DateTime checkMinValue(
             DateTime dt, DateTime minDt, String argName) {
         ComparableArgs.checkMinValue((ReadableInstant) dt, (ReadableInstant) minDt, argName);
@@ -81,7 +81,7 @@ public final class DateTimeArgs {
      * @see #checkMinValue(DateTime, DateTime, String)
      * @see #checkExactValue(DateTime, DateTime, String)
      */
-	@FullyTested
+    @FullyTested
     public static DateTime checkMaxValue(
             DateTime dt, DateTime maxDt, String argName) {
         ComparableArgs.checkMaxValue((ReadableInstant) dt, (ReadableInstant) maxDt, argName);
@@ -96,7 +96,7 @@ public final class DateTimeArgs {
      * @see #checkMinValue(DateTime, DateTime, String)
      * @see #checkMaxValue(DateTime, DateTime, String)
      */
-	@FullyTested
+    @FullyTested
     public static DateTime checkExactValue(
             DateTime dt, DateTime exactDt, String argName) {
         ComparableArgs.checkExactValue((ReadableInstant) dt, (ReadableInstant) exactDt, argName);

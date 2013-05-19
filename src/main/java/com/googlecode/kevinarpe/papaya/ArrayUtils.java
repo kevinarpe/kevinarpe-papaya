@@ -27,17 +27,15 @@ package com.googlecode.kevinarpe.papaya;
 
 import java.lang.reflect.Array;
 
-import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.args.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.args.IntArgs;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 
-@NotFullyTested
 public final class ArrayUtils {
 
-	// Disable default constructor
-	private ArrayUtils() {
-	}
+    // Disable default constructor
+    private ArrayUtils() {
+    }
     
     // TODO: Iterable over one or more arrays
     
@@ -84,7 +82,7 @@ public final class ArrayUtils {
      * @param index index to begin removing elements.  Range: 0 to {@code arr.length - 1}
      * @param count number of elements to remove.  Must be non-negative.
      * @return reference to newly allocated array
-     * @throws NullPointerException if {@code arr} is null
+     * @throws NullPointerException if {@code arr} is {@code null}
      * @throws IllegalArgumentException if {@code index} and {@code count} are invalid
      */
     public static <T> T[] remove(T[] arr, int index, int count) {
@@ -122,7 +120,7 @@ public final class ArrayUtils {
      * @param componentClass element type in new array
      * @param length number of elements in new array.  Must be non-negative.
      * @return reference to newly allocated array
-     * @throws NullPointerException if {@code componentClass} is null
+     * @throws NullPointerException if {@code componentClass} is {@code null}
      * @throws IllegalArgumentException if {@code length} is negative
      */
     public static <T> T[] newGenericArray(Class<T> componentClass, int length) {
@@ -162,7 +160,7 @@ public final class ArrayUtils {
      * @param newItem first new item to insert; null is OK
      * @param newItemArr optional list of additional items to insert; nulls are OK
      * @return reference to newly allocated array
-     * @throws NullPointerException if {@code arr} is null
+     * @throws NullPointerException if {@code arr} is {@code null}
      * @throws IllegalArgumentException if {@code index} is invalid
      */
     //Java 7: @SafeVarargs

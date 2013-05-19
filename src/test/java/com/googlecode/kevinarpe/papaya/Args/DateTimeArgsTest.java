@@ -51,7 +51,7 @@ public class DateTimeArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckValueRangeAsValid() {
+    private static final Object[][] _checkValueRange_Pass_Data() {
         DateTime dt = new DateTime();
         return new Object[][] {
                 { dt, dt.minusDays(2), dt.plusDays(1) },
@@ -63,13 +63,17 @@ public class DateTimeArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckValueRangeAsValid")
-    public void shouldCheckValueRangeAsValid(DateTime dt, DateTime minValue, DateTime maxValue) {
+    @Test(dataProvider = "_checkValueRange_Pass_Data")
+    public void checkValueRange_Pass(DateTime dt, DateTime minValue, DateTime maxValue) {
         DateTimeArgs.checkValueRange(dt, minValue, maxValue, "dt");
+        // Demonstrate argName can be anything ridiculous.
+        DateTimeArgs.checkValueRange(dt, minValue, maxValue, null);
+        DateTimeArgs.checkValueRange(dt, minValue, maxValue, "");
+        DateTimeArgs.checkValueRange(dt, minValue, maxValue, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckValueRangeAsValidWithInvalidInput() {
+    private static final Object[][] _checkValueRange_FailWithInvalidInput_Data() {
         DateTime dt = new DateTime();
         return new Object[][] {
                 { dt, dt.minusDays(2), dt.minusDays(1) },
@@ -88,45 +92,11 @@ public class DateTimeArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckValueRangeAsValidWithInvalidInput",
+    @Test(dataProvider = "_checkValueRange_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckValueRangeAsValidWithInvalidInput(
+    public void checkValueRange_FailWithInvalidInput(
             DateTime dt, DateTime minValue, DateTime maxValue) {
         DateTimeArgs.checkValueRange(dt, minValue, maxValue, "dt");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckValueRangeAsValidWithInvalidInput",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckValueRangeAsValidWithNullArgName(
-            DateTime dt, DateTime minValue, DateTime maxValue) {
-        DateTimeArgs.checkValueRange(dt, minValue, maxValue, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckValueRangeAsValidWithInvalidArgName() {
-        DateTime dt = new DateTime();
-        return new Object[][] {
-                { dt, dt.minusDays(2), dt.minusDays(1), "" },
-                { dt, dt.minusDays(1), dt.minusDays(1), "   " },  // ASCII spaces
-                { dt, dt.plusDays(1), dt.plusDays(1), "　　　" },  // wide Japanese spaces
-                { dt, dt.plusDays(1), dt, "" },
-                { dt, dt.minusDays(2), dt.minusDays(3), "   " },  // ASCII spaces
-                { dt, dt.minusDays(3), dt.minusDays(2), "　　　" },  // wide Japanese spaces
-                
-                { dt.minusDays(2), dt, dt.minusDays(1), "" },
-                { dt.minusDays(2), dt.minusDays(1), dt.minusDays(1), "   " },  // ASCII spaces
-                { dt.minusDays(2), dt.minusDays(3), dt.minusDays(3), "　　　" },  // wide Japanese spaces
-                { dt.minusDays(2), dt.minusDays(2), dt.minusDays(3), "" },
-                { dt.minusDays(2), dt, dt.plusDays(1), "   " },  // ASCII spaces
-                { dt.minusDays(2), dt.plusDays(1), dt, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckValueRangeAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckValueRangeAsValidWithInvalidArgName(
-            DateTime dt, DateTime minValue, DateTime maxValue, String argName) {
-        DateTimeArgs.checkValueRange(dt, minValue, maxValue, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -134,7 +104,7 @@ public class DateTimeArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _dataForShouldCheckMinValueAsValid() {
+    private static final Object[][] _checkMinValue_Pass_Data() {
         DateTime dt = new DateTime();
         return new Object[][] {
                 { dt, dt.minusDays(2) },
@@ -147,13 +117,17 @@ public class DateTimeArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckMinValueAsValid")
-    public void shouldCheckMinValueAsValid(DateTime dt, DateTime minValue) {
+    @Test(dataProvider = "_checkMinValue_Pass_Data")
+    public void checkMinValue_Pass(DateTime dt, DateTime minValue) {
         DateTimeArgs.checkMinValue(dt, minValue, "dt");
+        // Demonstrate argName can be anything ridiculous.
+        DateTimeArgs.checkMinValue(dt, minValue, null);
+        DateTimeArgs.checkMinValue(dt, minValue, "");
+        DateTimeArgs.checkMinValue(dt, minValue, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinValueAsValidWithInvalidInput() {
+    private static final Object[][] _checkMinValue_FailWithInvalidInput_Data() {
         DateTime dt = new DateTime();
         return new Object[][] {
                 { dt, dt.plusDays(1) },
@@ -163,33 +137,9 @@ public class DateTimeArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckMinValueAsValidWithInvalidInput",
+    @Test(dataProvider = "_checkMinValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckMinValueAsValidWithInvalidInput(DateTime dt, DateTime minValue) {
-        DateTimeArgs.checkMinValue(dt, minValue, "dt");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMinValueAsValidWithInvalidInput",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckMinValueAsValidWithNullArgName(
-            DateTime dt, DateTime minValue) {
-        DateTimeArgs.checkMinValue(dt, minValue, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinValueAsValidWithInvalidArgName() {
-        DateTime dt = new DateTime();
-        return new Object[][] {
-                { dt, dt.plusDays(1), "" },
-                { dt, dt.plusDays(2), "   " },  // ASCII spaces
-                { dt.minusDays(2), dt.minusDays(1), "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMinValueAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckMinValueAsValidWithInvalidArgName(
-    		DateTime dt, DateTime minValue, String argName) {
+    public void checkMinValue_FailWithInvalidInput(DateTime dt, DateTime minValue) {
         DateTimeArgs.checkMinValue(dt, minValue, "dt");
     }
     
@@ -198,7 +148,7 @@ public class DateTimeArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _dataForShouldCheckMaxValueAsValid() {
+    private static final Object[][] _checkMaxValue_Pass_Data() {
         DateTime dt = new DateTime();
         return new Object[][] {
                 { dt, dt },
@@ -211,13 +161,17 @@ public class DateTimeArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckMaxValueAsValid")
-    public void shouldCheckMaxValueAsValid(DateTime dt, DateTime maxValue) {
+    @Test(dataProvider = "_checkMaxValue_Pass_Data")
+    public void checkMaxValue_Pass(DateTime dt, DateTime maxValue) {
         DateTimeArgs.checkMaxValue(dt, maxValue, "dt");
+        // Demonstrate argName can be anything ridiculous.
+        DateTimeArgs.checkMaxValue(dt, maxValue, null);
+        DateTimeArgs.checkMaxValue(dt, maxValue, "");
+        DateTimeArgs.checkMaxValue(dt, maxValue, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxValueAsValidWithInvalidInput() {
+    private static final Object[][] _checkMaxValue_FailWithInvalidInput_Data() {
         DateTime dt = new DateTime();
         return new Object[][] {
                 { dt, dt.minusDays(1) },
@@ -227,46 +181,18 @@ public class DateTimeArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckMaxValueAsValidWithInvalidInput",
+    @Test(dataProvider = "_checkMaxValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckMaxValueAsValidWithInvalidInput(DateTime dt, DateTime maxValue) {
+    public void checkMaxValue_FailWithInvalidInput(DateTime dt, DateTime maxValue) {
         DateTimeArgs.checkMaxValue(dt, maxValue, "dt");
     }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMaxValueAsValidWithInvalidInput",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckMaxValueAsValidWithNullArgName(
-            DateTime dt, DateTime maxValue) {
-        DateTimeArgs.checkMaxValue(dt, maxValue, null);
-    }
-    
-    //
-    
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxValueAsValidWithInvalidArgName() {
-        DateTime dt = new DateTime();
-        return new Object[][] {
-                { dt, dt.minusDays(1), "" },
-                { dt, dt.minusDays(2), "   " },  // ASCII spaces
-                { dt.minusDays(2), dt.minusDays(3), "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMaxValueAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckMaxValueAsValidWithInvalidArgName(
-    		DateTime dt, DateTime maxValue, String argName) {
-        DateTimeArgs.checkMaxValue(dt, maxValue, argName);
-    }
-    
     
     ///////////////////////////////////////////////////////////////////////////
     // DateTimeArgs.checkExactValue
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckExactValueAsValid() {
+    private static final Object[][] _checkExactValue_Pass_Data() {
         DateTime dt = new DateTime();
         return new Object[][] {
                 { dt, dt },
@@ -275,13 +201,17 @@ public class DateTimeArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckExactValueAsValid")
-    public void shouldCheckExactValueAsValid(DateTime dt, DateTime value) {
+    @Test(dataProvider = "_checkExactValue_Pass_Data")
+    public void checkExactValue_Pass(DateTime dt, DateTime value) {
         DateTimeArgs.checkExactValue(dt, value, "dt");
+        // Demonstrate argName can be anything ridiculous.
+        DateTimeArgs.checkExactValue(dt, value, null);
+        DateTimeArgs.checkExactValue(dt, value, "");
+        DateTimeArgs.checkExactValue(dt, value, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactValueAsValidWithInvalidInput() {
+    private static final Object[][] _checkExactValue_FailWithInvalidInput_Data() {
         DateTime dt = new DateTime();
         return new Object[][] {
                 { dt, dt.minusDays(1) },
@@ -291,33 +221,9 @@ public class DateTimeArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckExactValueAsValidWithInvalidInput",
+    @Test(dataProvider = "_checkExactValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckExactValueAsValidWithInvalidInput(DateTime dt, DateTime value) {
-        DateTimeArgs.checkMaxValue(dt, value, "dt");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckExactValueAsValidWithInvalidInput",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckExactValueAsValidWithNullArgName(
-            DateTime dt, DateTime value) {
-        DateTimeArgs.checkExactValue(dt, value, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactValueAsValidWithInvalidArgName() {
-        DateTime dt = new DateTime();
-        return new Object[][] {
-                { dt, dt.minusDays(1), "" },
-                { dt, dt.minusDays(2), "   " },  // ASCII spaces
-                { dt.minusDays(2), dt.minusDays(3), "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckExactValueAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckExactValueAsValidWithInvalidArgName(
-    		DateTime dt, DateTime value, String argName) {
-        DateTimeArgs.checkMaxValue(dt, value, argName);
+    public void checkExactValue_FailWithInvalidInput(DateTime dt, DateTime value) {
+        DateTimeArgs.checkExactValue(dt, value, "dt");
     }
 }

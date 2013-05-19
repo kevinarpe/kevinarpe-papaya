@@ -47,7 +47,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckLengthRangeAsValid() {
+    private static final Object[][] _checkLengthRange_Pass_Data() {
         return new Object[][] {
                 { new String[] { }, 0, 0 },
                 { new String[] { "a" }, 0, 10 },
@@ -66,13 +66,17 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckLengthRangeAsValid")
-    public <T> void shouldCheckLengthRangeAsValid(T ref[], int minLen, int maxLen) {
+    @Test(dataProvider = "_checkLengthRange_Pass_Data")
+    public <T> void checkLengthRange_Pass(T ref[], int minLen, int maxLen) {
         ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, null);
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "");
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "   ");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckLengthRangeAsValidWithInvalidMinOrMaxLen() {
+    private static final Object[][] _checkLengthRange_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { new String[] { }, 3, 4 },
                 { new String[] { "a" }, -3, 3 },
@@ -84,15 +88,14 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckLengthRangeAsValidWithInvalidMinOrMaxLen",
+    @Test(dataProvider = "_checkLengthRange_FailWithInvalidMinOrMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldCheckLengthRangeAsValidWithInvalidMinOrMaxLen(
-            T[] ref, int minLen, int maxLen) {
-    	ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+    public <T> void checkLengthRange_FailWithInvalidMinOrMaxLen(T[] ref, int minLen, int maxLen) {
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckLengthRangeAsValidWithNullArray() {
+    private static final Object[][] _checkLengthRange_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -100,34 +103,10 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckLengthRangeAsValidWithNullArray",
+    @Test(dataProvider = "_checkLengthRange_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckLengthRangeAsValidWithNullArray(
-            T[] ref, int minLen, int maxLen) {
-    	ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
-    }
-
-    @Test(dataProvider = "_dataForShouldNotCheckLengthRangeAsValidWithNullArray",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckLengthRangeAsValidWithNullArgName(
-            T[] ref, int minLen, int maxLen) {
-    	ArrayArgs.checkLengthRange(ref, minLen, maxLen, null);
-    }
-
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckLengthRangeAsValidWithInvalidArgName() {
-        return new Object[][] {
-                { null, 4, 3, "" },
-                { null, 4, 3, "   " },  // ASCII spaces
-                { null, 6, 7, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckLengthRangeAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldCheckLengthRangeAsValidWithInvalidArgName(
-            T[] ref, int minLen, int maxLen, String argName) {
-    	ArrayArgs.checkLengthRange(ref, minLen, maxLen, argName);
+    public <T> void checkLengthRange_FailWithNullArray(T[] ref, int minLen, int maxLen) {
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -135,7 +114,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckAsNotEmpty() {
+    private static final Object[][] _checkNotEmpty_Pass_Data() {
         return new Object[][] {
                 { new String[] { "a" } },
                 { new String[] { "a", "b" } },
@@ -143,51 +122,32 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckAsNotEmpty")
-    public <T> void shouldCheckAsNotEmpty(T[] ref) {
+    @Test(dataProvider = "_checkNotEmpty_Pass_Data")
+    public <T> void checkNotEmpty_Pass(T[] ref) {
         ArrayArgs.checkNotEmpty(ref, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        ArrayArgs.checkNotEmpty(ref, null);
+        ArrayArgs.checkNotEmpty(ref, "");
+        ArrayArgs.checkNotEmpty(ref, "   ");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotEmptyWithEmptyArray() {
+    private static final Object[][] _checkNotEmpty_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new String[] { } },
                 { new Object[] { } },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyWithEmptyArray",
+    @Test(dataProvider = "_checkNotEmpty_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldNotCheckAsNotEmptyWithEmptyArray(T[] ref) {
+    public <T> void checkNotEmpty_FailWithEmptyArray(T[] ref) {
         ArrayArgs.checkNotEmpty(ref, "ref");
     }
     
     @Test(expectedExceptions = NullPointerException.class)
-    public <T> void shouldNotCheckAsNotEmptyWithNullArray() {
-        T[] ref = null;
-        ArrayArgs.checkNotEmpty(ref, "ref");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyWithEmptyArray",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldNotCheckAsNotEmptyWithNullArgName(T[] ref) {
-        String argName = null;
-        ArrayArgs.checkNotEmpty(ref, argName);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotEmptyWithInvalidArgName() {
-        return new Object[][] {
-                { new String[] { }, "" },
-                { new String[] { }, "   " },  // ASCII spaces
-                { new String[] { }, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldNotCheckAsNotEmptyWithInvalidArgName(T[] ref, String argName) {
-        ArrayArgs.checkNotEmpty(ref, argName);
+    public void checkNotEmpty_FailWithNullArray() {
+        ArrayArgs.checkNotEmpty(null, "ref");
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -195,7 +155,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckMinLengthAsValid() {
+    private static final Object[][] _checkMinLength_Pass_Data() {
         return new Object[][] {
                 { new String[] { }, 0 },
                 { new String[] { "a" }, 0 },
@@ -206,13 +166,17 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckMinLengthAsValid")
-    public <T> void shouldCheckMinLengthAsValid(T[] ref, int minLen) {
+    @Test(dataProvider = "_checkMinLength_Pass_Data")
+    public <T> void checkMinLength_Pass(T[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        ArrayArgs.checkMinLength(ref, minLen, null);
+        ArrayArgs.checkMinLength(ref, minLen, "");
+        ArrayArgs.checkMinLength(ref, minLen, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinLengthAsValidWithInvalidMinLen() {
+    private static final Object[][] _checkMinLength_FailWithInvalidMinLen_Data() {
         return new Object[][] {
                 { new String[] { }, -2 },
                 { new String[] { }, 2 },
@@ -221,14 +185,14 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckMinLengthAsValidWithInvalidMinLen",
+    @Test(dataProvider = "_checkMinLength_FailWithInvalidMinLen_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldNotCheckMinLengthAsValidWithInvalidMinLen(T[] ref, int minLen) {
+    public <T> void checkMinLength_FailWithInvalidMinLen(T[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinLengthAsValidWithNullArray() {
+    private static final Object[][] _checkMinLength_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -236,33 +200,10 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckMinLengthAsValidWithNullArray",
+    @Test(dataProvider = "_checkMinLength_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckMinLengthAsValidWithNullArray(T[] ref, int minLen) {
+    public <T> void checkMinLength_FailWithNullArray(T[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMinLengthAsValidWithNullArray",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckMinLengthAsValidWithNullArgName(
-            T[] ref, int minLen) {
-        ArrayArgs.checkMinLength(ref, minLen, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinLengthAsValidWithInvalidArgName() {
-        return new Object[][] {
-                { null, 4, "" },
-                { null, 4, "   " },  // ASCII spaces
-                { null, 6, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMinLengthAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldCheckMinLengthAsValidWithInvalidArgName(
-            T[] ref, int minLen, String argName) {
-        ArrayArgs.checkMinLength(ref, minLen, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -270,7 +211,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckMaxLengthAsValid() {
+    private static final Object[][] _checkMaxLength_Pass_Data() {
         return new Object[][] {
                 { new String[] { }, 0 },
                 { new String[] { }, 99 },
@@ -281,13 +222,17 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckMaxLengthAsValid")
-    public <T> void shouldCheckMaxLengthAsValid(T[] ref, int maxLen) {
+    @Test(dataProvider = "_checkMaxLength_Pass_Data")
+    public <T> void checkMaxLength_Pass(T[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        ArrayArgs.checkMaxLength(ref, maxLen, null);
+        ArrayArgs.checkMaxLength(ref, maxLen, "");
+        ArrayArgs.checkMaxLength(ref, maxLen, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxLengthAsValidWithInvalidMaxLen() {
+    private static final Object[][] _checkMaxLength_FailWithInvalidMaxLen_Data() {
         return new Object[][] {
                 { new String[] { }, -2 },
                 { new String[] { "a" }, -3 },
@@ -295,14 +240,14 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckMaxLengthAsValidWithInvalidMaxLen",
+    @Test(dataProvider = "_checkMaxLength_FailWithInvalidMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldNotCheckMaxLengthAsValidWithInvalidMaxLen(T[] ref, int maxLen) {
+    public <T> void checkMaxLength_FailWithInvalidMaxLen(T[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxLengthAsValidWithNullArray() {
+    private static final Object[][] _checkMaxLength_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -310,33 +255,10 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckMaxLengthAsValidWithNullArray",
+    @Test(dataProvider = "_checkMaxLength_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckMaxLengthAsValidWithNullArray(T[] ref, int maxLen) {
+    public <T> void checkMaxLength_FailWithNullArray(T[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMaxLengthAsValidWithNullArray",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckMaxLengthAsValidWithNullArgName(
-            T[] ref, int maxLen) {
-        ArrayArgs.checkMaxLength(ref, maxLen, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxLengthAsValidWithInvalidArgName() {
-        return new Object[][] {
-                { null, 4, "" },
-                { null, 4, "   " },  // ASCII spaces
-                { null, 6, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMaxLengthAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldCheckMaxLengthAsValidWithInvalidArgName(
-            T[] ref, int maxLen, String argName) {
-        ArrayArgs.checkMaxLength(ref, maxLen, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -344,7 +266,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckExactLengthAsValid() {
+    private static final Object[][] _checkExactLength_Pass_Data() {
         return new Object[][] {
                 { new String[] { }, 0 },
                 { new String[] { "a" }, 1 },
@@ -352,13 +274,17 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckExactLengthAsValid")
-    public <T> void shouldCheckExactLengthAsValid(T[] ref, int exactLen) {
+    @Test(dataProvider = "_checkExactLength_Pass_Data")
+    public <T> void checkExactLength_Pass(T[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        ArrayArgs.checkExactLength(ref, exactLen, null);
+        ArrayArgs.checkExactLength(ref, exactLen, "");
+        ArrayArgs.checkExactLength(ref, exactLen, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactLengthAsValidWithInvalidExactLen() {
+    private static final Object[][] _checkExactLength_FailWithInvalidExactLen_Data() {
         return new Object[][] {
                 { new String[] { }, -2 },
                 { new String[] { }, 2 },
@@ -367,15 +293,14 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckExactLengthAsValidWithInvalidExactLen",
+    @Test(dataProvider = "_checkExactLength_FailWithInvalidExactLen_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldNotCheckExactLengthAsValidWithInvalidExactLen(
-            T[] ref, int exactLen) {
+    public <T> void checkExactLength_FailWithInvalidExactLen(T[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactLengthAsValidWithNullArray() {
+    private static final Object[][] _checkExactLength_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -383,34 +308,10 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckExactLengthAsValidWithNullArray",
+    @Test(dataProvider = "_checkExactLength_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckExactLengthAsValidWithNullArray(
-            T[] ref, int exactLen) {
+    public <T> void checkExactLength_FailWithNullArray(T[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckExactLengthAsValidWithNullArray",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckExactLengthAsValidWithNullArgName(
-            T[] ref, int exactLen) {
-        ArrayArgs.checkExactLength(ref, exactLen, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactLengthAsValidWithInvalidArgName() {
-        return new Object[][] {
-                { null, 4, "" },
-                { null, 4, "   " },  // ASCII spaces
-                { null, 6, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckExactLengthAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldCheckExactLengthAsValidWithInvalidArgName(
-            T[] ref, int exactLen, String argName) {
-        ArrayArgs.checkExactLength(ref, exactLen, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -418,7 +319,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckElementsAsNotNull() {
+    private static final Object[][] _checkElementsNotNull_Pass_Data() {
         return new Object[][] {
                 { new String[] { } },
                 { new String[] { "a" } },
@@ -426,13 +327,17 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckElementsAsNotNull")
-    public <T> void shouldCheckElementsAsNotNull(T[] ref) {
+    @Test(dataProvider = "_checkElementsNotNull_Pass_Data")
+    public <T> void checkElementsNotNull_Pass(T[] ref) {
         ArrayArgs.checkElementsNotNull(ref, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        ArrayArgs.checkElementsNotNull(ref, null);
+        ArrayArgs.checkElementsNotNull(ref, "");
+        ArrayArgs.checkElementsNotNull(ref, "   ");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckElementsAsNotNullWithNullElements() {
+    private static final Object[][] _checkElementsNotNull_FailWithNullElements_Data() {
         return new Object[][] {
                 { new String[] { null } },
                 { new String[] { "a", null } },
@@ -443,58 +348,15 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckElementsAsNotNullWithNullElements",
+    @Test(dataProvider = "_checkElementsNotNull_FailWithNullElements_Data",
             expectedExceptions = NullPointerException.class)
-    public <T> void shouldNotCheckElementsAsNotNullWithNullElements(T[] ref) {
+    public <T> void checkElementsNotNull_FailWithNullElements(T[] ref) {
         ArrayArgs.checkElementsNotNull(ref, "ref");
     }
     
     @Test(expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckElementsAsNotNullWithNullArray() {
+    public void checkElementsNotNull_FailWithNullArray() {
         ArrayArgs.checkElementsNotNull(null, "ref");
-    }
-
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckElementsAsNotNullWithNullArgName() {
-        return new Object[][] {
-                { null },
-                { new String[] { null } },
-                { new String[] { "a", null } },
-                { new String[] { null, "a" } },
-                { new String[] { null, "a", "b" } },
-                { new String[] { "a", null, "b" } },
-                { new String[] { "a", "b", null } },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckElementsAsNotNullWithNullArgName",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldNotCheckElementsAsNotNullWithNullArgName(T[] ref) {
-        ArrayArgs.checkElementsNotNull(ref, null);
-    }
-
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckElementsAsNotNullWithInvalidArgName() {
-        return new Object[][] {
-                { null, "" },
-                { new String[] { null }, "" },
-                { new String[] { "a", null }, "" },
-                
-                { null, "   " },
-                { new String[] { null }, "   " },
-                { new String[] { "a", null }, "   " },
-                
-                { null, "　　　" },
-                { new String[] { null }, "　　　" },
-                { new String[] { "a", null }, "　　　" },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckElementsAsNotNullWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldNotCheckElementsAsNotNullWithInvalidArgName(
-            T[] ref, String argName) {
-        ArrayArgs.checkElementsNotNull(ref, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -502,7 +364,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckAccessIndexAsValid() {
+    private static final Object[][] _checkAccessIndex_Pass_Data() {
         return new Object[][] {
                 { new String[] { "a" }, 0 },
                 { new String[] { "a", "b" }, 0 },
@@ -510,13 +372,17 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckAccessIndexAsValid")
-    public <T> void shouldCheckAccessIndexAsValid(T[] ref, int index) {
+    @Test(dataProvider = "_checkAccessIndex_Pass_Data")
+    public <T> void checkAccessIndex_Pass(T[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
+        // Demonstrate argName can be anything ridiculous.
+        ArrayArgs.checkAccessIndex(ref, index, null, null);
+        ArrayArgs.checkAccessIndex(ref, index, "", "");
+        ArrayArgs.checkAccessIndex(ref, index, "   ", "   ");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAccessIndexAsValidWithInvalidIndex() {
+    private static final Object[][] _checkAccessIndex_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new String[] { "a" }, -1 },
                 { new String[] { "a" }, 1 },
@@ -526,15 +392,14 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckAccessIndexAsValidWithInvalidIndex",
+    @Test(dataProvider = "_checkAccessIndex_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
-    public <T> void shouldNotCheckAccessIndexAsValidWithInvalidIndex(
-            T[] ref, int index) {
+    public <T> void checkAccessIndex_FailWithInvalidIndex(T[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAccessIndexAsValidWithNullArray() {
+    private static final Object[][] _checkAccessIndex_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -542,75 +407,10 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckAccessIndexAsValidWithNullArray",
+    @Test(dataProvider = "_checkAccessIndex_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckAccessIndexAsValidWithNullArray(
-            T[] ref, int index) {
+    public <T> void checkAccessIndex_FailWithNullArray(T[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAccessIndexAsValidWithNullArgNames() {
-    	String[] L = new String[] { "a" };
-        return new Object[][] {
-                { null, 4, null, "index" },
-                { null, -4, null, "index" },
-                { L, 4, "ref", null },
-                { L, -4, "ref", null },
-                { null, 6, null, null },
-                { null, -6, null, null },
-                { L, 6, null, null },
-                { L, -6, null, null },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAccessIndexAsValidWithNullArgNames",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckAccessIndexAsValidWithNullArgNames(
-            T[] ref, int index, String collectionArgName, String indexArgName) {
-        ArrayArgs.checkAccessIndex(ref, index, collectionArgName, indexArgName);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAccessIndexAsValidWithInvalidArgNames() {
-    	String[] L = new String[] { "a" };
-        return new Object[][] {
-                { null, 4, "", "index" },
-                { null, -4, "", "index" },
-                { L, 4, "ref", "" },
-                { L, -4, "ref", "" },
-                { null, 6, "", "" },
-                { null, -6, "", "" },
-                { L, 6, "", "" },
-                { L, -6, "", "" },
-                
-                // ASCII spaces
-                { null, 4, "   ", "index" },
-                { null, -4, "   ", "index" },
-                { L, 4, "ref", "   " },
-                { L, -4, "ref", "   " },
-                { null, 6, "   ", "   " },
-                { null, -6, "   ", "   " },
-                { L, 6, "   ", "   " },
-                { L, -6, "   ", "   " },
-                
-                // wide Japanese spaces
-                { null, 4, "　　　", "index" },
-                { null, -4, "　　　", "index" },
-                { L, 4, "ref", "　　　" },
-                { L, -4, "ref", "　　　" },
-                { null, 6, "　　　", "　　　" },
-                { null, -6, "　　　", "　　　" },
-                { L, 6, "　　　", "　　　" },
-                { L, -6, "　　　", "　　　" },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAccessIndexAsValidWithInvalidArgNames",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldCheckAccessIndexAsValidWithInvalidArgNames(
-            T[] ref, int index, String collectionArgName, String indexArgName) {
-        ArrayArgs.checkAccessIndex(ref, index, collectionArgName, indexArgName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -618,7 +418,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckInsertIndexAsValid() {
+    private static final Object[][] _checkInsertIndex_Pass_Data() {
         return new Object[][] {
                 { new String[] { }, 0 },
                 { new String[] { "a" }, 0 },
@@ -629,13 +429,17 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckInsertIndexAsValid")
-    public <T> void shouldCheckInsertIndexAsValid(T[] ref, int index) {
+    @Test(dataProvider = "_checkInsertIndex_Pass_Data")
+    public <T> void checkInsertIndex_Pass(T[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
+        // Demonstrate argName can be anything ridiculous.
+        ArrayArgs.checkInsertIndex(ref, index, null, null);
+        ArrayArgs.checkInsertIndex(ref, index, "", "");
+        ArrayArgs.checkInsertIndex(ref, index, "   ", "   ");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckInsertIndexAsValidWithInvalidIndex() {
+    private static final Object[][] _checkInsertIndex_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new String[] { }, -1 },
                 { new String[] { }, 1 },
@@ -647,15 +451,14 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckInsertIndexAsValidWithInvalidIndex",
+    @Test(dataProvider = "_checkInsertIndex_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
-    public <T> void shouldNotCheckInsertIndexAsValidWithInvalidIndex(
-            T[] ref, int index) {
+    public <T> void checkInsertIndex_FailWithInvalidIndex(T[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckInsertIndexAsValidWithNullArray() {
+    private static final Object[][] _checkInsertIndex_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -663,75 +466,10 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckInsertIndexAsValidWithNullArray",
+    @Test(dataProvider = "_checkInsertIndex_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckInsertIndexAsValidWithNullArray(
-            T[] ref, int index) {
+    public <T> void checkInsertIndex_FailWithNullArray(T[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckInsertIndexAsValidWithNullArgNames() {
-        String[] L = new String[] { "a" };
-        return new Object[][] {
-                { null, 4, null, "index" },
-                { null, -4, null, "index" },
-                { L, 4, "ref", null },
-                { L, -4, "ref", null },
-                { null, 6, null, null },
-                { null, -6, null, null },
-                { L, 6, null, null },
-                { L, -6, null, null },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckInsertIndexAsValidWithNullArgNames",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckInsertIndexAsValidWithNullArgNames(
-            T[] ref, int index, String collectionArgName, String indexArgName) {
-        ArrayArgs.checkInsertIndex(ref, index, collectionArgName, indexArgName);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckInsertIndexAsValidWithInvalidArgNames() {
-        String[] L = new String[] { "a" };
-        return new Object[][] {
-                { null, 4, "", "index" },
-                { null, -4, "", "index" },
-                { L, 4, "ref", "" },
-                { L, -4, "ref", "" },
-                { null, 6, "", "" },
-                { null, -6, "", "" },
-                { L, 6, "", "" },
-                { L, -6, "", "" },
-                
-                // ASCII spaces
-                { null, 4, "   ", "index" },
-                { null, -4, "   ", "index" },
-                { L, 4, "ref", "   " },
-                { L, -4, "ref", "   " },
-                { null, 6, "   ", "   " },
-                { null, -6, "   ", "   " },
-                { L, 6, "   ", "   " },
-                { L, -6, "   ", "   " },
-                
-                // wide Japanese spaces
-                { null, 4, "　　　", "index" },
-                { null, -4, "　　　", "index" },
-                { L, 4, "ref", "　　　" },
-                { L, -4, "ref", "　　　" },
-                { null, 6, "　　　", "　　　" },
-                { null, -6, "　　　", "　　　" },
-                { L, 6, "　　　", "　　　" },
-                { L, -6, "　　　", "　　　" },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckInsertIndexAsValidWithInvalidArgNames",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldCheckInsertIndexAsValidWithInvalidArgNames(
-            T[] ref, int index, String collectionArgName, String indexArgName) {
-        ArrayArgs.checkInsertIndex(ref, index, collectionArgName, indexArgName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -739,7 +477,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckIndexAndCountAsValid() {
+    private static final Object[][] _checkIndexAndCount_Pass_Data() {
         return new Object[][] {
                 { new String[] { "a" }, 0, 0 },
                 { new String[] { "a" }, 0, 1 },
@@ -751,13 +489,17 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckIndexAndCountAsValid")
-    public <T> void shouldCheckIndexAndCountAsValid(T[] ref, int index, int count) {
+    @Test(dataProvider = "_checkIndexAndCount_Pass_Data")
+    public <T> void checkIndexAndCount_Pass(T[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
+        // Demonstrate argName can be anything ridiculous.
+        ArrayArgs.checkIndexAndCount(ref, index, count, null, null, null);
+        ArrayArgs.checkIndexAndCount(ref, index, count, "", "", "");
+        ArrayArgs.checkIndexAndCount(ref, index, count, "   ", "   ", "   ");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckIndexAndCountAsValidWithInvalidIndex() {
+    private static final Object[][] _checkIndexAndCount_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new String[] { "a" }, -1, 0 },
                 { new String[] { "a" }, 1, 1 },
@@ -767,15 +509,15 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckIndexAndCountAsValidWithInvalidIndex",
+    @Test(dataProvider = "_checkIndexAndCount_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
-    public <T> void shouldNotCheckIndexAndCountAsValidWithInvalidIndex(
+    public <T> void checkIndexAndCount_FailWithInvalidIndex(
             T[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckIndexAndCountAsValidWithNegativeCount() {
+    private static final Object[][] _checkIndexAndCount_FailWithNegativeCount_Data() {
         return new Object[][] {
                 { new String[] { "a" }, 0, -1 },
                 { new String[] { "a", "b" }, 0, -1 },
@@ -783,15 +525,15 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckIndexAndCountAsValidWithNegativeCount",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldNotCheckIndexAndCountAsValidWithNegativeCount(
+    @Test(dataProvider = "_checkIndexAndCount_FailWithNegativeCount_Data",
+            expectedExceptions = IndexOutOfBoundsException.class)
+    public <T> void checkIndexAndCount_FailWithNegativeCount(
             T[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckIndexAndCountAsValidWithInvalidCount() {
+    private static final Object[][] _checkIndexAndCount_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { new String[] { "a" }, 0, 2 },
                 { new String[] { "a" }, 0, 99 },
@@ -802,67 +544,68 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckIndexAndCountAsValidWithInvalidCount",
+    @Test(dataProvider = "_checkIndexAndCount_FailWithInvalidCount_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
-    public <T> void shouldNotCheckIndexAndCountAsValidWithInvalidCount(
+    public <T> void checkIndexAndCount_FailWithInvalidCount(
             T[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
     }
     
     @Test(expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckIndexAndCountAsValidWithNullArray() {
+    public void checkIndexAndCount_FailWithNullArray() {
         ArrayArgs.checkIndexAndCount(null, 0, 0, "ref", "index", "count");
     }
     
+    ///////////////////////////////////////////////////////////////////////////
+    // ArrayArgs.checkFromAndToIndices
+    //
+
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckIndexAndCountAsValidWithNullArgNames() {
+    private static final Object[][] _checkFromAndToIndices_Pass_Data() {
         return new Object[][] {
-                { new String[] { "a" }, 0, 2, null, "index", "count" },
-                { new String[] { "a" }, 0, 99, "ref", null, "count" },
-                { new String[] { "a", "b" }, 0, 3, "ref", "index", null },
+                { new String[] { "a" }, 0, 0 },
+                { new String[] { "a" }, 0, 1 },
+                { new String[] { "a", "b" }, 0, 0 },
+                { new String[] { "a", "b" }, 0, 1 },
+                { new String[] { "a", "b" }, 0, 2 },
+                { new String[] { "a", "b" }, 1, 1 },
+                { new String[] { "a", "b" }, 1, 2 },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckIndexAndCountAsValidWithNullArgNames",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldNotCheckIndexAndCountAsValidWithNullArgNames(
-            T[] ref,
-            int index,
-            int count,
-            String collectionArgName,
-            String indexArgName,
-            String countArgName) {
-        ArrayArgs.checkIndexAndCount(
-            ref, index, count, collectionArgName, indexArgName, countArgName);
+    @Test(dataProvider = "_checkFromAndToIndices_Pass_Data")
+    public <T> void checkFromAndToIndices_Pass(T[] ref, int fromIndex, int toIndex) {
+        ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
+        // Demonstrate argName can be anything ridiculous.
+        ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, null, null, null);
+        ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "", "", "");
+        ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "   ", "   ", "   ");
     }
-    
+
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckIndexAndCountAsValidWithInvalidArgNames() {
+    private static final Object[][] _checkFromAndToIndices_FailWithInvalidIndices_Data() {
         return new Object[][] {
-                { new String[] { "a" }, 0, 2, "", "index", "count" },
-                { new String[] { "a" }, 0, 99, "ref", "", "count" },
-                { new String[] { "a", "b" }, 0, 3, "ref", "index", "" },
-                
-                { new String[] { "a" }, 0, 2, "   ", "index", "count" },
-                { new String[] { "a" }, 0, 99, "ref", "   ", "count" },
-                { new String[] { "a", "b" }, 0, 3, "ref", "index", "   " },
-                
-                { new String[] { "a" }, 0, 2, "　　　", "index", "count" },
-                { new String[] { "a" }, 0, 99, "ref", "　　　", "count" },
-                { new String[] { "a", "b" }, 0, 3, "ref", "index", "　　　" },
+                { new String[] { "a" }, -1, 0 },
+                { new String[] { "a" }, 0, -1 },
+                { new String[] { "a" }, -1, -1 },
+                { new String[] { "a" }, 1, 1 },
+                { new String[] { "a" }, 1, 0 },
+                { new String[] { "a", "b" }, 3, 1 },
+                { new String[] { "a", "b" }, 99, 2 },
+                { new String[] { "a", "b", "c", "d" }, 2, 1 },
+                { new String[] { "a", "b", "c", "d" }, 2, 99 },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckIndexAndCountAsValidWithInvalidArgNames",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldNotCheckIndexAndCountAsValidWithInvalidArgNames(
-            T[] ref,
-            int index,
-            int count,
-            String collectionArgName,
-            String indexArgName,
-            String countArgName) {
-        ArrayArgs.checkIndexAndCount(
-            ref, index, count, collectionArgName, indexArgName, countArgName);
+    @Test(dataProvider = "_checkFromAndToIndices_FailWithInvalidIndices_Data",
+            expectedExceptions = IndexOutOfBoundsException.class)
+    public <T> void checkFromAndToIndices_FailWithInvalidIndices(
+            T[] ref, int fromIndex, int toIndex) {
+        ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void checkFromAndToIndices_FailWithNullArray() {
+        ArrayArgs.checkFromAndToIndices(null, 0, 0, "ref", "fromIndex", "toIndex");
     }
 }

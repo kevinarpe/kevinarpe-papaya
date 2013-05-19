@@ -29,8 +29,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
-
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -55,7 +53,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckSizeRangeAsValid() {
+    private static final Object[][] _checkSizeRange_Pass_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), 0, 10 },
                 { new ArrayList<String>(), 0, 0 },
@@ -74,13 +72,17 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckSizeRangeAsValid")
-    public <T> void shouldCheckSizeRangeAsValid(Collection<T> ref, int minSize, int maxSize) {
+    @Test(dataProvider = "_checkSizeRange_Pass_Data")
+    public <T> void checkSizeRange_Pass(Collection<T> ref, int minSize, int maxSize) {
         CollectionArgs.checkSizeRange(ref, minSize, maxSize, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        CollectionArgs.checkSizeRange(ref, minSize, maxSize, null);
+        CollectionArgs.checkSizeRange(ref, minSize, maxSize, "");
+        CollectionArgs.checkSizeRange(ref, minSize, maxSize, "   ");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckSizeRangeAsValidWithInvalidMinOrMaxLen() {
+    private static final Object[][] _checkSizeRange_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), 3, 4 },
                 { ImmutableList.of("a"), -3, 3 },
@@ -92,15 +94,15 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckSizeRangeAsValidWithInvalidMinOrMaxLen",
+    @Test(dataProvider = "_checkSizeRange_FailWithInvalidMinOrMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldCheckSizeRangeAsValidWithInvalidMinOrMaxLen(
+    public <T> void checkSizeRange_FailWithInvalidMinOrMaxLen(
             Collection<T> ref, int minSize, int maxSize) {
         CollectionArgs.checkSizeRange(ref, minSize, maxSize, "ref");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckSizeRangeAsValidWithNullCollection() {
+    private static final Object[][] _checkSizeRange_FailWithNullCollection_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -108,34 +110,11 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckSizeRangeAsValidWithNullCollection",
+    @Test(dataProvider = "_checkSizeRange_FailWithNullCollection_Data",
             expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckSizeRangeAsValidWithNullCollection(
+    public <T> void checkSizeRange_FailWithNullCollection(
             Collection<T> ref, int minSize, int maxSize) {
         CollectionArgs.checkSizeRange(ref, minSize, maxSize, "ref");
-    }
-
-    @Test(dataProvider = "_dataForShouldNotCheckSizeRangeAsValidWithNullCollection",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckSizeRangeAsValidWithNullArgName(
-            Collection<T> ref, int minSize, int maxSize) {
-        CollectionArgs.checkSizeRange(ref, minSize, maxSize, null);
-    }
-
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckSizeRangeAsValidWithInvalidArgName() {
-        return new Object[][] {
-                { null, 4, 3, "" },
-                { null, 4, 3, "   " },  // ASCII spaces
-                { null, 6, 7, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckSizeRangeAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldCheckSizeRangeAsValidWithInvalidArgName(
-            Collection<T> ref, int minSize, int maxSize, String argName) {
-        CollectionArgs.checkSizeRange(ref, minSize, maxSize, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -143,7 +122,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckAsNotEmpty() {
+    private static final Object[][] _checkNotEmpty_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of("a") },
                 { ImmutableList.of("a", "b") },
@@ -151,13 +130,17 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckAsNotEmpty")
-    public <T> void shouldCheckAsNotEmpty(Collection<T> ref) {
+    @Test(dataProvider = "_checkNotEmpty_Pass_Data")
+    public <T> void checkNotEmpty_Pass(Collection<T> ref) {
         CollectionArgs.checkNotEmpty(ref, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        CollectionArgs.checkNotEmpty(ref, null);
+        CollectionArgs.checkNotEmpty(ref, "");
+        CollectionArgs.checkNotEmpty(ref, "   ");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotEmptyWithEmptyCollection() {
+    private static final Object[][] _checkNotEmpty_FailWithEmptyCollection_Data() {
         return new Object[][] {
                 { ImmutableList.of() },
                 { ImmutableSet.of() },
@@ -166,38 +149,15 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyWithEmptyCollection",
+    @Test(dataProvider = "_checkNotEmpty_FailWithEmptyCollection_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldNotCheckAsNotEmptyWithEmptyCollection(Collection<T> ref) {
+    public <T> void checkNotEmpty_FailWithEmptyCollection(Collection<T> ref) {
         CollectionArgs.checkNotEmpty(ref, "ref");
     }
     
     @Test(expectedExceptions = NullPointerException.class)
-    public <T> void shouldNotCheckAsNotEmptyWithNullCollection() {
-        Collection<T> ref = null;
-        CollectionArgs.checkNotEmpty(ref, "ref");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyWithEmptyCollection",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldNotCheckAsNotEmptyWithNullArgName(Collection<T> ref) {
-        String argName = null;
-        CollectionArgs.checkNotEmpty(ref, argName);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotEmptyWithInvalidArgName() {
-        return new Object[][] {
-                { new ArrayList<String>(), "" },
-                { new ArrayList<String>(), "   " },  // ASCII spaces
-                { new ArrayList<String>(), "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldNotCheckAsNotEmptyWithInvalidArgName(Collection<T> ref, String argName) {
-        CollectionArgs.checkNotEmpty(ref, argName);
+    public <T> void checkNotEmpty_FailWithNullCollection() {
+        CollectionArgs.checkNotEmpty(null, "ref");
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -205,7 +165,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckMinSizeAsValid() {
+    private static final Object[][] _checkMinSize_Pass_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), 0 },
                 { ImmutableList.of("a"), 0 },
@@ -216,13 +176,17 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckMinSizeAsValid")
-    public <T> void shouldCheckMinSizeAsValid(Collection<T> ref, int minSize) {
+    @Test(dataProvider = "_checkMinSize_Pass_Data")
+    public <T> void checkMinSize_Pass(Collection<T> ref, int minSize) {
         CollectionArgs.checkMinSize(ref, minSize, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        CollectionArgs.checkMinSize(ref, minSize, null);
+        CollectionArgs.checkMinSize(ref, minSize, "");
+        CollectionArgs.checkMinSize(ref, minSize, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinSizeAsValidWithInvalidMinLen() {
+    private static final Object[][] _checkMinSize_FailWithInvalidMinLen_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), -2 },
                 { new ArrayList<String>(), 2 },
@@ -231,14 +195,14 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckMinSizeAsValidWithInvalidMinLen",
+    @Test(dataProvider = "_checkMinSize_FailWithInvalidMinLen_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldNotCheckMinSizeAsValidWithInvalidMinLen(Collection<T> ref, int minSize) {
+    public <T> void checkMinSize_FailWithInvalidMinLen(Collection<T> ref, int minSize) {
         CollectionArgs.checkMinSize(ref, minSize, "ref");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinSizeAsValidWithNullCollection() {
+    private static final Object[][] _checkMinSize_FailWithNullCollection_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -246,33 +210,10 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckMinSizeAsValidWithNullCollection",
+    @Test(dataProvider = "_checkMinSize_FailWithNullCollection_Data",
             expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckMinSizeAsValidWithNullCollection(Collection<T> ref, int minSize) {
+    public <T> void checkMinSize_FailWithNullCollection(Collection<T> ref, int minSize) {
         CollectionArgs.checkMinSize(ref, minSize, "ref");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMinSizeAsValidWithNullCollection",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckMinSizeAsValidWithNullArgName(
-            Collection<T> ref, int minSize) {
-        CollectionArgs.checkMinSize(ref, minSize, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinSizeAsValidWithInvalidArgName() {
-        return new Object[][] {
-                { null, 4, "" },
-                { null, 4, "   " },  // ASCII spaces
-                { null, 6, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMinSizeAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldCheckMinSizeAsValidWithInvalidArgName(
-            Collection<T> ref, int minSize, String argName) {
-        CollectionArgs.checkMinSize(ref, minSize, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -280,7 +221,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckMaxSizeAsValid() {
+    private static final Object[][] _checkMaxSize_Pass_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), 0 },
                 { new ArrayList<String>(), 99 },
@@ -291,13 +232,17 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckMaxSizeAsValid")
-    public <T> void shouldCheckMaxSizeAsValid(Collection<T> ref, int maxSize) {
+    @Test(dataProvider = "_checkMaxSize_Pass_Data")
+    public <T> void checkMaxSize_Pass(Collection<T> ref, int maxSize) {
         CollectionArgs.checkMaxSize(ref, maxSize, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        CollectionArgs.checkMaxSize(ref, maxSize, null);
+        CollectionArgs.checkMaxSize(ref, maxSize, "");
+        CollectionArgs.checkMaxSize(ref, maxSize, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxSizeAsValidWithInvalidMaxLen() {
+    private static final Object[][] _checkMaxSize_FailWithInvalidMaxLen_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), -2 },
                 { ImmutableList.of("a"), -3 },
@@ -305,14 +250,14 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckMaxSizeAsValidWithInvalidMaxLen",
+    @Test(dataProvider = "_checkMaxSize_FailWithInvalidMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldNotCheckMaxSizeAsValidWithInvalidMaxLen(Collection<T> ref, int maxSize) {
+    public <T> void checkMaxSize_FailWithInvalidMaxLen(Collection<T> ref, int maxSize) {
         CollectionArgs.checkMaxSize(ref, maxSize, "ref");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxSizeAsValidWithNullCollection() {
+    private static final Object[][] _checkMaxSize_FailWithNullCollection_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -320,33 +265,10 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckMaxSizeAsValidWithNullCollection",
+    @Test(dataProvider = "_checkMaxSize_FailWithNullCollection_Data",
             expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckMaxSizeAsValidWithNullCollection(Collection<T> ref, int maxSize) {
+    public <T> void checkMaxSize_FailWithNullCollection(Collection<T> ref, int maxSize) {
         CollectionArgs.checkMaxSize(ref, maxSize, "ref");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMaxSizeAsValidWithNullCollection",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckMaxSizeAsValidWithNullArgName(
-            Collection<T> ref, int maxSize) {
-        CollectionArgs.checkMaxSize(ref, maxSize, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxSizeAsValidWithInvalidArgName() {
-        return new Object[][] {
-                { null, 4, "" },
-                { null, 4, "   " },  // ASCII spaces
-                { null, 6, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMaxSizeAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldCheckMaxSizeAsValidWithInvalidArgName(
-            Collection<T> ref, int maxSize, String argName) {
-        CollectionArgs.checkMaxSize(ref, maxSize, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -354,7 +276,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckExactSizeAsValid() {
+    private static final Object[][] _checkExactSize_Pass_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), 0 },
                 { ImmutableList.of("a"), 1 },
@@ -362,13 +284,17 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckExactSizeAsValid")
-    public <T> void shouldCheckExactSizeAsValid(Collection<T> ref, int exactSize) {
+    @Test(dataProvider = "_checkExactSize_Pass_Data")
+    public <T> void checkExactSize_Pass(Collection<T> ref, int exactSize) {
         CollectionArgs.checkExactSize(ref, exactSize, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        CollectionArgs.checkExactSize(ref, exactSize, null);
+        CollectionArgs.checkExactSize(ref, exactSize, "");
+        CollectionArgs.checkExactSize(ref, exactSize, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactSizeAsValidWithInvalidExactLen() {
+    private static final Object[][] _checkExactSize_FailWithInvalidExactLen_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), -2 },
                 { new ArrayList<String>(), 2 },
@@ -377,15 +303,15 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckExactSizeAsValidWithInvalidExactLen",
+    @Test(dataProvider = "_checkExactSize_FailWithInvalidExactLen_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldNotCheckExactSizeAsValidWithInvalidExactLen(
+    public <T> void checkExactSize_FailWithInvalidExactLen(
             Collection<T> ref, int exactSize) {
         CollectionArgs.checkExactSize(ref, exactSize, "ref");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactSizeAsValidWithNullCollection() {
+    private static final Object[][] _checkExactSize_FailWithNullCollection_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -393,34 +319,11 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckExactSizeAsValidWithNullCollection",
+    @Test(dataProvider = "_checkExactSize_FailWithNullCollection_Data",
             expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckExactSizeAsValidWithNullCollection(
+    public <T> void checkExactSize_FailWithNullCollection(
             Collection<T> ref, int exactSize) {
         CollectionArgs.checkExactSize(ref, exactSize, "ref");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckExactSizeAsValidWithNullCollection",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckExactSizeAsValidWithNullArgName(
-            Collection<T> ref, int exactSize) {
-        CollectionArgs.checkExactSize(ref, exactSize, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactSizeAsValidWithInvalidArgName() {
-        return new Object[][] {
-                { null, 4, "" },
-                { null, 4, "   " },  // ASCII spaces
-                { null, 6, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckExactSizeAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldCheckExactSizeAsValidWithInvalidArgName(
-            Collection<T> ref, int exactSize, String argName) {
-        CollectionArgs.checkExactSize(ref, exactSize, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -428,7 +331,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckElementsAsNotNull() {
+    private static final Object[][] _checkElementsNotNull_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of() },
                 { ImmutableList.of("a") },
@@ -436,13 +339,17 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckElementsAsNotNull")
-    public <T> void shouldCheckElementsAsNotNull(Collection<T> ref) {
+    @Test(dataProvider = "_checkElementsNotNull_Pass_Data")
+    public <T> void checkElementsNotNull_Pass(Collection<T> ref) {
         CollectionArgs.checkElementsNotNull(ref, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        CollectionArgs.checkElementsNotNull(ref, null);
+        CollectionArgs.checkElementsNotNull(ref, "");
+        CollectionArgs.checkElementsNotNull(ref, "   ");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckElementsAsNotNullWithNullElements() {
+    private static final Object[][] _checkElementsNotNull_FailWithNullElements_Data() {
         return new Object[][] {
                 { Arrays.asList(new Object[] { null }) },
                 { Arrays.asList("a", null) },
@@ -453,62 +360,15 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckElementsAsNotNullWithNullElements",
+    @Test(dataProvider = "_checkElementsNotNull_FailWithNullElements_Data",
             expectedExceptions = NullPointerException.class)
-    public <T> void shouldNotCheckElementsAsNotNullWithNullElements(Collection<T> ref) {
+    public <T> void checkElementsNotNull_FailWithNullElements(Collection<T> ref) {
         CollectionArgs.checkElementsNotNull(ref, "ref");
     }
     
     @Test(expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckElementsAsNotNullWithNullCollection() {
+    public void checkElementsNotNull_FailWithNullCollection() {
         CollectionArgs.checkElementsNotNull((Collection<Object>) null, "ref");
-    }
-
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckElementsAsNotNullWithNullArgName() {
-        return new Object[][] {
-                { null },
-                { Arrays.asList(new Object[] { null }) },
-                { Arrays.asList("a", null) },
-                { Arrays.asList(null, "a") },
-                { Arrays.asList(null, "a", "b") },
-                { Arrays.asList("a", null, "b") },
-                { Arrays.asList("a", "b", null) },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckElementsAsNotNullWithNullArgName",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldNotCheckElementsAsNotNullWithNullArgName(Collection<T> ref) {
-        CollectionArgs.checkElementsNotNull(ref, null);
-    }
-
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckElementsAsNotNullWithInvalidArgName() {
-        return new Object[][] {
-                { null, "" },
-                { Arrays.asList(new Object[] { null }), "" },
-                { Arrays.asList("a", null), "" },
-                
-                { null, "   " },
-                { Arrays.asList(new Object[] { null }), "   " },
-                { Arrays.asList("a", null), "   " },
-                
-                { null, "　　　" },
-                { Arrays.asList(new Object[] { null }), "　　　" },
-                { Arrays.asList("a", null), "　　　" },
-                
-                { null, "   " },
-                { Arrays.asList(new Object[] { null }), "   " },
-                { Arrays.asList("a", null), "   " },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckElementsAsNotNullWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldNotCheckElementsAsNotNullWithInvalidArgName(
-            Collection<T> ref, String argName) {
-        CollectionArgs.checkElementsNotNull(ref, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -516,48 +376,31 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckAsNotEmptyAndElementsAsNotNull() {
+    private static final Object[][] _checkNotEmptyAndElementsNotNull_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of("a") },
                 { ImmutableList.of("a", "b") },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckAsNotEmptyAndElementsAsNotNull")
-    public <T> void shouldCheckAsNotEmptyAndElementsAsNotNull(Collection<T> ref) {
+    @Test(dataProvider = "_checkNotEmptyAndElementsNotNull_Pass_Data")
+    public <T> void checkNotEmptyAndElementsNotNull_Pass(Collection<T> ref) {
         CollectionArgs.checkNotEmptyAndElementsNotNull(ref, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        CollectionArgs.checkNotEmptyAndElementsNotNull(ref, null);
+        CollectionArgs.checkNotEmptyAndElementsNotNull(ref, "");
+        CollectionArgs.checkNotEmptyAndElementsNotNull(ref, "   ");
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldNotCheckAsNotEmptyWithEmptyCollection() {
+    public <T> void checkNotEmptyAndElementsNotNull_FailWithEmptyCollection() {
         CollectionArgs.checkNotEmptyAndElementsNotNull(new ArrayList<String>(), "ref");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotEmptyAndElementsAsNotNullWithNullElements() {
-        return new Object[][] {
-        		{ null },
-                { Arrays.asList(new Object[] { null }) },
-                { Arrays.asList("a", null) },
-                { Arrays.asList(null, "a") },
-                { Arrays.asList(null, "a", "b") },
-                { Arrays.asList("a", null, "b") },
-                { Arrays.asList("a", "b", null) },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyAndElementsAsNotNullWithNullElements",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldNotCheckAsNotEmptyAndElementsAsNotNullWithNullElements(
-    		Collection<T> ref) {
-        CollectionArgs.checkNotEmptyAndElementsNotNull(ref, "ref");
-    }
-
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotEmptyAndElementsAsNotNullWithNullArgName() {
+    private static final Object[][] _checkNotEmptyAndElementsNotNull_FailWithNullElements_Data() {
         return new Object[][] {
                 { null },
-        		{ new ArrayList<String>() },
                 { Arrays.asList(new Object[] { null }) },
                 { Arrays.asList("a", null) },
                 { Arrays.asList(null, "a") },
@@ -567,38 +410,11 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyAndElementsAsNotNullWithNullArgName",
+    @Test(dataProvider = "_checkNotEmptyAndElementsNotNull_FailWithNullElements_Data",
             expectedExceptions = NullPointerException.class)
-    public <T> void shouldNotCheckAsNotEmptyAndElementsAsNotNullWithNullArgName(
-    		Collection<T> ref) {
-        CollectionArgs.checkNotEmptyAndElementsNotNull(ref, null);
-    }
-
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAsNotEmptyAndElementsAsNotNullWithInvalidArgName() {
-        return new Object[][] {
-                { null, "" },
-                { new ArrayList<String>(), "" },
-                { Arrays.asList(new Object[] { null }), "" },
-                { Arrays.asList("a", null), "" },
-                
-                { null, "   " },
-                { new ArrayList<String>(), "   " },
-                { Arrays.asList(new Object[] { null }), "   " },
-                { Arrays.asList("a", null), "   " },
-                
-                { null, "　　　" },
-                { new ArrayList<String>(), "　　　" },
-                { Arrays.asList(new Object[] { null }), "　　　" },
-                { Arrays.asList("a", null), "　　　" },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAsNotEmptyAndElementsAsNotNullWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldNotCheckAsNotEmptyAndElementsAsNotNullWithInvalidArgName(
-            Collection<T> ref, String argName) {
-        CollectionArgs.checkNotEmptyAndElementsNotNull(ref, argName);
+    public <T> void checkNotEmptyAndElementsNotNull_FailWithNullElements(
+            Collection<T> ref) {
+        CollectionArgs.checkNotEmptyAndElementsNotNull(ref, "ref");
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -606,7 +422,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckAccessIndexAsValid() {
+    private static final Object[][] _checkAccessIndex_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 0 },
                 { ImmutableList.of("a", "b"), 0 },
@@ -614,13 +430,17 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckAccessIndexAsValid")
-    public <T> void shouldCheckAccessIndexAsValid(Collection<T> ref, int index) {
+    @Test(dataProvider = "_checkAccessIndex_Pass_Data")
+    public <T> void checkAccessIndex_Pass(Collection<T> ref, int index) {
         CollectionArgs.checkAccessIndex(ref, index, "ref", "index");
+        // Demonstrate argName can be anything ridiculous.
+        CollectionArgs.checkAccessIndex(ref, index, null, null);
+        CollectionArgs.checkAccessIndex(ref, index, "", "");
+        CollectionArgs.checkAccessIndex(ref, index, "   ", "   ");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAccessIndexAsValidWithInvalidIndex() {
+    private static final Object[][] _checkAccessIndex_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), -1 },
                 { ImmutableList.of("a"), 1 },
@@ -630,15 +450,15 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckAccessIndexAsValidWithInvalidIndex",
+    @Test(dataProvider = "_checkAccessIndex_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
-    public <T> void shouldNotCheckAccessIndexAsValidWithInvalidIndex(
+    public <T> void checkAccessIndex_FailWithInvalidIndex(
             Collection<T> ref, int index) {
         CollectionArgs.checkAccessIndex(ref, index, "ref", "index");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAccessIndexAsValidWithNullCollection() {
+    private static final Object[][] _checkAccessIndex_FailWithNullCollection_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -646,75 +466,11 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckAccessIndexAsValidWithNullCollection",
+    @Test(dataProvider = "_checkAccessIndex_FailWithNullCollection_Data",
             expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckAccessIndexAsValidWithNullCollection(
+    public <T> void checkAccessIndex_FailWithNullCollection(
             Collection<T> ref, int index) {
         CollectionArgs.checkAccessIndex(ref, index, "ref", "index");
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAccessIndexAsValidWithNullArgNames() {
-        List<String> L = ImmutableList.of("a");
-        return new Object[][] {
-                { null, 4, null, "index" },
-                { null, -4, null, "index" },
-                { L, 4, "ref", null },
-                { L, -4, "ref", null },
-                { null, 6, null, null },
-                { null, -6, null, null },
-                { L, 6, null, null },
-                { L, -6, null, null },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAccessIndexAsValidWithNullArgNames",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckAccessIndexAsValidWithNullArgNames(
-            Collection<T> ref, int index, String collectionArgName, String indexArgName) {
-        CollectionArgs.checkAccessIndex(ref, index, collectionArgName, indexArgName);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckAccessIndexAsValidWithInvalidArgNames() {
-        List<String> L = ImmutableList.of("a");
-        return new Object[][] {
-                { null, 4, "", "index" },
-                { null, -4, "", "index" },
-                { L, 4, "ref", "" },
-                { L, -4, "ref", "" },
-                { null, 6, "", "" },
-                { null, -6, "", "" },
-                { L, 6, "", "" },
-                { L, -6, "", "" },
-                
-                // ASCII spaces
-                { null, 4, "   ", "index" },
-                { null, -4, "   ", "index" },
-                { L, 4, "ref", "   " },
-                { L, -4, "ref", "   " },
-                { null, 6, "   ", "   " },
-                { null, -6, "   ", "   " },
-                { L, 6, "   ", "   " },
-                { L, -6, "   ", "   " },
-                
-                // wide Japanese spaces
-                { null, 4, "　　　", "index" },
-                { null, -4, "　　　", "index" },
-                { L, 4, "ref", "　　　" },
-                { L, -4, "ref", "　　　" },
-                { null, 6, "　　　", "　　　" },
-                { null, -6, "　　　", "　　　" },
-                { L, 6, "　　　", "　　　" },
-                { L, -6, "　　　", "　　　" },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckAccessIndexAsValidWithInvalidArgNames",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldCheckAccessIndexAsValidWithInvalidArgNames(
-            Collection<T> ref, int index, String collectionArgName, String indexArgName) {
-        CollectionArgs.checkAccessIndex(ref, index, collectionArgName, indexArgName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -722,7 +478,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckInsertIndexAsValid() {
+    private static final Object[][] _checkInsertIndex_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of(), 0 },
                 { ImmutableList.of("a"), 0 },
@@ -733,13 +489,17 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckInsertIndexAsValid")
-    public <T> void shouldCheckInsertIndexAsValid(Collection<T> ref, int index) {
+    @Test(dataProvider = "_checkInsertIndex_Pass_Data")
+    public <T> void checkInsertIndex_Pass(Collection<T> ref, int index) {
         CollectionArgs.checkInsertIndex(ref, index, "ref", "index");
+        // Demonstrate argName can be anything ridiculous.
+        CollectionArgs.checkInsertIndex(ref, index, null, null);
+        CollectionArgs.checkInsertIndex(ref, index, "", "");
+        CollectionArgs.checkInsertIndex(ref, index, "   ", "   ");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckInsertIndexAsValidWithInvalidIndex() {
+    private static final Object[][] _checkInsertIndex_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of(), -1 },
                 { ImmutableList.of(), 1 },
@@ -751,15 +511,15 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckInsertIndexAsValidWithInvalidIndex",
+    @Test(dataProvider = "_checkInsertIndex_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
-    public <T> void shouldNotCheckInsertIndexAsValidWithInvalidIndex(
+    public <T> void checkInsertIndex_FailWithInvalidIndex(
             Collection<T> ref, int index) {
         CollectionArgs.checkInsertIndex(ref, index, "ref", "index");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckInsertIndexAsValidWithNullCollection() {
+    private static final Object[][] _checkInsertIndex_FailWithNullCollection_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -767,75 +527,11 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckInsertIndexAsValidWithNullCollection",
+    @Test(dataProvider = "_checkInsertIndex_FailWithNullCollection_Data",
             expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckInsertIndexAsValidWithNullCollection(
+    public <T> void checkInsertIndex_FailWithNullCollection(
             Collection<T> ref, int index) {
         CollectionArgs.checkInsertIndex(ref, index, "ref", "index");
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckInsertIndexAsValidWithNullArgNames() {
-        List<String> L = ImmutableList.of("a");
-        return new Object[][] {
-                { null, 4, null, "index" },
-                { null, -4, null, "index" },
-                { L, 4, "ref", null },
-                { L, -4, "ref", null },
-                { null, 6, null, null },
-                { null, -6, null, null },
-                { L, 6, null, null },
-                { L, -6, null, null },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckInsertIndexAsValidWithNullArgNames",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldCheckInsertIndexAsValidWithNullArgNames(
-            Collection<T> ref, int index, String collectionArgName, String indexArgName) {
-        CollectionArgs.checkInsertIndex(ref, index, collectionArgName, indexArgName);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckInsertIndexAsValidWithInvalidArgNames() {
-        List<String> L = ImmutableList.of("a");
-        return new Object[][] {
-                { null, 4, "", "index" },
-                { null, -4, "", "index" },
-                { L, 4, "ref", "" },
-                { L, -4, "ref", "" },
-                { null, 6, "", "" },
-                { null, -6, "", "" },
-                { L, 6, "", "" },
-                { L, -6, "", "" },
-                
-                // ASCII spaces
-                { null, 4, "   ", "index" },
-                { null, -4, "   ", "index" },
-                { L, 4, "ref", "   " },
-                { L, -4, "ref", "   " },
-                { null, 6, "   ", "   " },
-                { null, -6, "   ", "   " },
-                { L, 6, "   ", "   " },
-                { L, -6, "   ", "   " },
-                
-                // wide Japanese spaces
-                { null, 4, "　　　", "index" },
-                { null, -4, "　　　", "index" },
-                { L, 4, "ref", "　　　" },
-                { L, -4, "ref", "　　　" },
-                { null, 6, "　　　", "　　　" },
-                { null, -6, "　　　", "　　　" },
-                { L, 6, "　　　", "　　　" },
-                { L, -6, "　　　", "　　　" },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckInsertIndexAsValidWithInvalidArgNames",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldCheckInsertIndexAsValidWithInvalidArgNames(
-            Collection<T> ref, int index, String collectionArgName, String indexArgName) {
-        CollectionArgs.checkInsertIndex(ref, index, collectionArgName, indexArgName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -843,7 +539,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckIndexAndCountAsValid() {
+    private static final Object[][] _checkIndexAndCount_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 0, 0 },
                 { ImmutableList.of("a"), 0, 1 },
@@ -855,13 +551,17 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckIndexAndCountAsValid")
-    public <T> void shouldCheckIndexAndCountAsValid(Collection<T> ref, int index, int count) {
+    @Test(dataProvider = "_checkIndexAndCount_Pass_Data")
+    public <T> void checkIndexAndCount_Pass(Collection<T> ref, int index, int count) {
         CollectionArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
+        // Demonstrate argName can be anything ridiculous.
+        CollectionArgs.checkIndexAndCount(ref, index, count, null, null, null);
+        CollectionArgs.checkIndexAndCount(ref, index, count, "", "", "");
+        CollectionArgs.checkIndexAndCount(ref, index, count, "   ", "   ", "   ");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckIndexAndCountAsValidWithInvalidIndex() {
+    private static final Object[][] _checkIndexAndCount_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), -1, 0 },
                 { ImmutableList.of("a"), 1, 1 },
@@ -871,15 +571,15 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckIndexAndCountAsValidWithInvalidIndex",
+    @Test(dataProvider = "_checkIndexAndCount_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
-    public <T> void shouldNotCheckIndexAndCountAsValidWithInvalidIndex(
+    public <T> void checkIndexAndCount_FailWithInvalidIndex(
             Collection<T> ref, int index, int count) {
         CollectionArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckIndexAndCountAsValidWithNegativeCount() {
+    private static final Object[][] _checkIndexAndCount_FailWithNegativeCount_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 0, -1 },
                 { ImmutableList.of("a", "b"), 0, -1 },
@@ -887,15 +587,15 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckIndexAndCountAsValidWithNegativeCount",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldNotCheckIndexAndCountAsValidWithNegativeCount(
+    @Test(dataProvider = "_checkIndexAndCount_FailWithNegativeCount_Data",
+            expectedExceptions = IndexOutOfBoundsException.class)
+    public <T> void checkIndexAndCount_FailWithNegativeCount(
             Collection<T> ref, int index, int count) {
         CollectionArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckIndexAndCountAsValidWithInvalidCount() {
+    private static final Object[][] _checkIndexAndCount_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 0, 2 },
                 { ImmutableList.of("a"), 0, 99 },
@@ -906,71 +606,70 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckIndexAndCountAsValidWithInvalidCount",
+    @Test(dataProvider = "_checkIndexAndCount_FailWithInvalidCount_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
-    public <T> void shouldNotCheckIndexAndCountAsValidWithInvalidCount(
+    public <T> void checkIndexAndCount_FailWithInvalidCount(
             Collection<T> ref, int index, int count) {
         CollectionArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
     }
     
     @Test(expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckIndexAndCountAsValidWithNullCollection() {
+    public void checkIndexAndCount_FailWithNullCollection() {
         CollectionArgs.checkIndexAndCount(null, 0, 0, "ref", "index", "count");
     }
     
+    ///////////////////////////////////////////////////////////////////////////
+    // CollectionArgs.checkFromAndToIndices
+    //
+
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckIndexAndCountAsValidWithNullArgNames() {
+    private static final Object[][] _checkFromAndToIndices_Pass_Data() {
         return new Object[][] {
-                { ImmutableList.of("a"), 0, 2, null, "index", "count" },
-                { ImmutableList.of("a"), 0, 99, "ref", null, "count" },
-                { ImmutableList.of("a", "b"), 0, 3, "ref", "index", null },
+                { ImmutableList.of("a"), 0, 0 },
+                { ImmutableList.of("a"), 0, 1 },
+                { ImmutableList.of("a", "b"), 0, 0 },
+                { ImmutableList.of("a", "b"), 0, 1 },
+                { ImmutableList.of("a", "b"), 0, 2 },
+                { ImmutableList.of("a", "b"), 1, 1 },
+                { ImmutableList.of("a", "b"), 1, 2 },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckIndexAndCountAsValidWithNullArgNames",
-            expectedExceptions = NullPointerException.class)
-    public <T> void shouldNotCheckIndexAndCountAsValidWithNullArgNames(
-            Collection<T> ref,
-            int index,
-            int count,
-            String collectionArgName,
-            String indexArgName,
-            String countArgName) {
-        CollectionArgs.checkIndexAndCount(
-            ref, index, count, collectionArgName, indexArgName, countArgName);
+    @Test(dataProvider = "_checkFromAndToIndices_Pass_Data")
+    public <T> void checkFromAndToIndices_Pass(Collection<T> ref, int fromIndex, int toIndex) {
+        CollectionArgs.checkFromAndToIndices(
+            ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
+        // Demonstrate argName can be anything ridiculous.
+        CollectionArgs.checkFromAndToIndices(ref, fromIndex, toIndex, null, null, null);
+        CollectionArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "", "", "");
+        CollectionArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "   ", "   ", "   ");
     }
-    
+
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckIndexAndCountAsValidWithInvalidArgNames() {
+    private static final Object[][] _checkFromAndToIndices_FailWithInvalidIndices_Data() {
         return new Object[][] {
-                { ImmutableList.of("a"), 0, 2, "", "index", "count" },
-                { ImmutableList.of("a"), 0, 99, "ref", "", "count" },
-                { ImmutableList.of("a", "b"), 0, 3, "ref", "index", "" },
-                
-                { ImmutableList.of("a"), 0, 2, "   ", "index", "count" },
-                { ImmutableList.of("a"), 0, 99, "ref", "   ", "count" },
-                { ImmutableList.of("a", "b"), 0, 3, "ref", "index", "   " },
-                
-                { ImmutableList.of("a"), 0, 2, "　　　", "index", "count" },
-                { ImmutableList.of("a"), 0, 99, "ref", "　　　", "count" },
-                { ImmutableList.of("a", "b"), 0, 3, "ref", "index", "　　　" },
-                
-                { ImmutableList.of("a"), 0, 2, "   ", "index", "count" },
-                { ImmutableList.of("a"), 0, 99, "ref", "   ", "count" },
-                { ImmutableList.of("a", "b"), 0, 3, "ref", "index", "   " },
+                { ImmutableList.of("a"), -1, 0 },
+                { ImmutableList.of("a"), 0, -1 },
+                { ImmutableList.of("a"), -1, -1 },
+                { ImmutableList.of("a"), 1, 1 },
+                { ImmutableList.of("a"), 1, 0 },
+                { ImmutableList.of("a", "b"), 3, 1 },
+                { ImmutableList.of("a", "b"), 99, 2 },
+                { ImmutableList.of("a", "b", "c", "d"), 2, 1 },
+                { ImmutableList.of("a", "b", "c", "d"), 2, 99 },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckIndexAndCountAsValidWithInvalidArgNames",
-            expectedExceptions = IllegalArgumentException.class)
-    public <T> void shouldNotCheckIndexAndCountAsValidWithInvalidArgNames(
-            Collection<T> ref,
-            int index,
-            int count,
-            String collectionArgName,
-            String indexArgName,
-            String countArgName) {
-        CollectionArgs.checkIndexAndCount(
-            ref, index, count, collectionArgName, indexArgName, countArgName);
+    @Test(dataProvider = "_checkFromAndToIndices_FailWithInvalidIndices_Data",
+            expectedExceptions = IndexOutOfBoundsException.class)
+    public <T> void checkFromAndToIndices_FailWithInvalidIndices(
+            Collection<T> ref, int fromIndex, int toIndex) {
+        CollectionArgs.checkFromAndToIndices(
+            ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void checkFromAndToIndices_FailWithNullCollection() {
+        CollectionArgs.checkFromAndToIndices(null, 0, 0, "ref", "fromIndex", "toIndex");
     }
 }

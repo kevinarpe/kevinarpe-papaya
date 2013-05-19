@@ -50,7 +50,7 @@ public class CharArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckValueRangeAsValid() {
+    private static final Object[][] _checkValueRange_Pass_Data() {
         return new Object[][] {
                 { (char) 2, (char) 0, (char) 3 },
                 { (char) 2, (char) 0, (char) 2 },
@@ -61,13 +61,17 @@ public class CharArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckValueRangeAsValid")
-    public void shouldCheckValueRangeAsValid(char i, char minValue, char maxValue) {
+    @Test(dataProvider = "_checkValueRange_Pass_Data")
+    public void checkValueRange_Pass(char i, char minValue, char maxValue) {
         CharArgs.checkValueRange(i, minValue, maxValue, "i");
+        // Demonstrate argName can be anything ridiculous.
+        CharArgs.checkValueRange(i, minValue, maxValue, null);
+        CharArgs.checkValueRange(i, minValue, maxValue, "");
+        CharArgs.checkValueRange(i, minValue, maxValue, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckValueRangeAsValidWithInvalidInput() {
+    private static final Object[][] _checkValueRange_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (char) 2, (char) 0, (char) 1 },
                 { (char) 1, (char) 0, (char) 0 },
@@ -85,44 +89,11 @@ public class CharArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckValueRangeAsValidWithInvalidInput",
+    @Test(dataProvider = "_checkValueRange_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckValueRangeAsValidWithInvalidInput(
+    public void checkValueRange_FailWithInvalidInput(
             char i, char minValue, char maxValue) {
         CharArgs.checkValueRange(i, minValue, maxValue, "i");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckValueRangeAsValidWithInvalidInput",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckValueRangeAsValidWithNullArgName(
-            char i, char minValue, char maxValue) {
-        CharArgs.checkValueRange(i, minValue, maxValue, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckValueRangeAsValidWithInvalidArgName() {
-        return new Object[][] {
-                { (char) 2, (char) 0, (char) 1, "" },
-                { (char) 1, (char) 0, (char) 0, "   " },  // ASCII spaces
-                { (char) 1, (char) 2, (char) 2, "　　　" },  // wide Japanese spaces
-                { (char) 1, (char) 2, (char) 1, "" },
-                { (char) 3, (char) 1, (char) 0, "   " },  // ASCII spaces
-                { (char) 3, (char) 0, (char) 1, "　　　" },  // wide Japanese spaces
-                
-                { (char) 1, (char) 3, (char) 2, "" },
-                { (char) 1, (char) 2, (char) 2, "   " },  // ASCII spaces
-                { (char) 1, (char) 0, (char) 0, "　　　" },  // wide Japanese spaces
-                { (char) 1, (char) 1, (char) 0, "" },
-                { (char) 1, (char) 3, (char) 4, "   " },  // ASCII spaces
-                { (char) 1, (char) 4, (char) 3, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckValueRangeAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckValueRangeAsValidWithInvalidArgName(
-            char i, char minValue, char maxValue, String argName) {
-        CharArgs.checkValueRange(i, minValue, maxValue, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -130,7 +101,7 @@ public class CharArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckMinValueAsValid() {
+    private static final Object[][] _checkMinValue_Pass_Data() {
         return new Object[][] {
                 { (char) 2, (char) 0 },
                 { (char) 1, (char) 0 },
@@ -142,13 +113,17 @@ public class CharArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckMinValueAsValid")
-    public void shouldCheckMinValueAsValid(char i, char minValue) {
+    @Test(dataProvider = "_checkMinValue_Pass_Data")
+    public void checkMinValue_Pass(char i, char minValue) {
         CharArgs.checkMinValue(i, minValue, "i");
+        // Demonstrate argName can be anything ridiculous.
+        CharArgs.checkMinValue(i, minValue, null);
+        CharArgs.checkMinValue(i, minValue, "");
+        CharArgs.checkMinValue(i, minValue, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinValueAsValidWithInvalidInput() {
+    private static final Object[][] _checkMinValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (char) 1, (char) 2 },
                 { (char) 1, (char) 3 },
@@ -157,32 +132,10 @@ public class CharArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckMinValueAsValidWithInvalidInput",
+    @Test(dataProvider = "_checkMinValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckMinValueAsValidWithInvalidInput(char i, char minValue) {
+    public void checkMinValue_FailWithInvalidInput(char i, char minValue) {
         CharArgs.checkMinValue(i, minValue, "i");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMinValueAsValidWithInvalidInput",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckMinValueAsValidWithNullArgName(char i, char minValue) {
-        CharArgs.checkMinValue(i, minValue, null);
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMinValueAsValidWithInvalidArgName() {
-        return new Object[][] {
-                { (char) 1, (char) 2, "" },
-                { (char) 1, (char) 3, "   " },  // ASCII spaces
-                { (char) 0, (char) 1, "　　　" },  // wide Japanese spaces
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMinValueAsValidWithInvalidArgName",
-            expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckMinValueAsValidWithInvalidArgName(
-    		char i, char minValue, String argName) {
-        CharArgs.checkMinValue(i, minValue, argName);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -190,7 +143,7 @@ public class CharArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckMaxValueAsValid() {
+    private static final Object[][] _checkMaxValue_Pass_Data() {
         return new Object[][] {
                 { (char) 1, (char) 1 },
                 { (char) 1, (char) 2 },
@@ -202,47 +155,29 @@ public class CharArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckMaxValueAsValid")
-    public void shouldCheckMaxValueAsValid(char i, char maxValue) {
+    @Test(dataProvider = "_checkMaxValue_Pass_Data")
+    public void checkMaxValue_Pass(char i, char maxValue) {
         CharArgs.checkMaxValue(i, maxValue, "i");
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxValueAsValidWithInvalidInput() {
-        return new Object[][] {
-                { (char) 2, (char) 1 },
-                { (char) 2, (char) 0 },
-                { (char) 2, (char) 1 },
-                { (char) 2, (char) 0 },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMaxValueAsValidWithInvalidInput",
-            expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckMaxValueAsValidWithInvalidInput(char i, char maxValue) {
-        CharArgs.checkMaxValue(i, maxValue, "i");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckMaxValueAsValidWithInvalidInput",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckMaxValueAsValidWithNullArgName(char i, char maxValue) {
+        // Demonstrate argName can be anything ridiculous.
         CharArgs.checkMaxValue(i, maxValue, null);
+        CharArgs.checkMaxValue(i, maxValue, "");
+        CharArgs.checkMaxValue(i, maxValue, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckMaxValueAsValidWithInvalidArgName() {
+    private static final Object[][] _checkMaxValue_FailWithInvalidInput_Data() {
         return new Object[][] {
-                { (char) 2, (char) 1, "" },
-                { (char) 2, (char) 0, "   " },  // ASCII spaces
-                { (char) 2, (char) 1, "　　　" },  // wide Japanese spaces
+                { (char) 2, (char) 1 },
+                { (char) 2, (char) 0 },
+                { (char) 2, (char) 1 },
+                { (char) 2, (char) 0 },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckMaxValueAsValidWithInvalidArgName",
+    @Test(dataProvider = "_checkMaxValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckMaxValueAsValidWithInvalidArgName(
-    		char i, char maxValue, String argName) {
-        CharArgs.checkMaxValue(i, maxValue, argName);
+    public void checkMaxValue_FailWithInvalidInput(char i, char maxValue) {
+        CharArgs.checkMaxValue(i, maxValue, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -250,7 +185,7 @@ public class CharArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCheckExactValueAsValid() {
+    private static final Object[][] _checkExactValue_Pass_Data() {
         return new Object[][] {
                 { (char) 1, (char) 1 },
                 { (char) 0, (char) 0 },
@@ -260,46 +195,28 @@ public class CharArgsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCheckExactValueAsValid")
-    public void shouldCheckExactValueAsValid(char i, char value) {
+    @Test(dataProvider = "_checkExactValue_Pass_Data")
+    public void checkExactValue_Pass(char i, char value) {
         CharArgs.checkExactValue(i, value, "i");
-    }
-    
-    @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactValueAsValidWithInvalidInput() {
-        return new Object[][] {
-                { (char) 2, (char) 1 },
-                { (char) 2, (char) 0 },
-                { (char) 2, (char) 1 },
-                { (char) 2, (char) 0 },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckExactValueAsValidWithInvalidInput",
-            expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckExactValueAsValidWithInvalidInput(char i, char value) {
-        CharArgs.checkExactValue(i, value, "i");
-    }
-    
-    @Test(dataProvider = "_dataForShouldNotCheckExactValueAsValidWithInvalidInput",
-            expectedExceptions = NullPointerException.class)
-    public void shouldNotCheckExactValueAsValidWithNullArgName(char i, char value) {
+        // Demonstrate argName can be anything ridiculous.
         CharArgs.checkExactValue(i, value, null);
+        CharArgs.checkExactValue(i, value, "");
+        CharArgs.checkExactValue(i, value, "   ");
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotCheckExactValueAsValidWithInvalidArgName() {
+    private static final Object[][] _checkExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
-                { (char) 2, (char) 1, "" },
-                { (char) 2, (char) 0, "   " },  // ASCII spaces
-                { (char) 2, (char) 1, "　　　" },  // wide Japanese spaces
+                { (char) 2, (char) 1 },
+                { (char) 2, (char) 0 },
+                { (char) 2, (char) 1 },
+                { (char) 2, (char) 0 },
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotCheckExactValueAsValidWithInvalidArgName",
+    @Test(dataProvider = "_checkExactValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCheckExactValueAsValidWithInvalidArgName(
-    		char i, char value, String argName) {
-        CharArgs.checkExactValue(i, value, argName);
+    public void checkExactValue_FailWithInvalidInput(char i, char value) {
+        CharArgs.checkExactValue(i, value, "i");
     }
 }

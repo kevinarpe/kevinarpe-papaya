@@ -37,9 +37,9 @@ import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 @FullyTested
 public final class MapArgs {
 
-	// Disable default constructor
-	private MapArgs() {
-	}
+    // Disable default constructor
+    private MapArgs() {
+    }
 
     /**
      * Tests if a {@link Map} reference is not null and its size within specified range.
@@ -50,18 +50,17 @@ public final class MapArgs {
      * @param maxSize maximum number of key-value pairs (inclusive).  Must be non-negative.
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @return the validated map reference
-     * @throws NullPointerException if {@code ref} or {@code argName} is null
+     * @throws NullPointerException if {@code ref} is {@code null}
      * @throws IllegalArgumentException if {@code minSize < 0},
-     *         or if {@code maxSize < 0},
-     *         or if {@code minSize > maxSize}, 
-     *         or if number of elements in {@code ref} is outside allowed range,
-     *         or if {@code argName} is empty or whitespace
+     *         <br>or if {@code maxSize < 0},
+     *         <br>or if {@code minSize > maxSize}, 
+     *         <br>or if number of elements in {@code ref} is outside allowed range
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see #checkMinSize(Map, int, String)
      * @see #checkMaxSize(Map, int, String)
      * @see #checkExactSize(Map, int, String)
      */
-	@FullyTested
+    @FullyTested
     public static <TKey, TValue, TMap extends Map<TKey, TValue>>
     TMap checkSizeRange(TMap ref, int minSize, int maxSize, String argName) {
         IntArgs.checkNotNegative(minSize, "minSize");
@@ -70,7 +69,7 @@ public final class MapArgs {
         ContainerArgs._checkSizeRange(ref, "Map", size, minSize, maxSize, argName);
         return ref;
     }
-	
+    
     /**
      * Tests if a {@link Map} reference is not null and has a minimum size.
      * Size is defined as the number of key-value pairs.
@@ -79,13 +78,12 @@ public final class MapArgs {
      * @param minSize minimum number of key-value pairs (inclusive).  Must be non-negative.
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @return the validated map reference
-     * @throws NullPointerException if {@code ref} or {@code argName} is null
+     * @throws NullPointerException if {@code ref} is {@code null}
      * @throws IllegalArgumentException if {@code minSize < 0},
-     *         or if number of elements in {@code ref} is outside allowed range,
-     *         or if {@code argName} is empty or whitespace
+     *         <br>or if number of elements in {@code ref} is outside allowed range
      * @see #checkSizeRange(Map, int, int, String)
      */
-	@FullyTested
+    @FullyTested
     public static <TKey, TValue, TMap extends Map<TKey, TValue>>
     TMap checkMinSize(TMap ref, int minSize, String argName) {
         IntArgs.checkNotNegative(minSize, "minSize");
@@ -103,13 +101,12 @@ public final class MapArgs {
      * @param maxSize maximum number of key-value pairs (inclusive).  Must be non-negative.
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @return the validated map reference
-     * @throws NullPointerException if {@code ref} or {@code argName} is null
+     * @throws NullPointerException if {@code ref} is {@code null}
      * @throws IllegalArgumentException if {@code maxSize < 0},
-     *         or if number of elements in {@code ref} is outside allowed range,
-     *         or if {@code argName} is empty or whitespace
+     *         <br>or if number of elements in {@code ref} is outside allowed range
      * @see #checkSizeRange(Map, int, int, String)
      */
-	@FullyTested
+    @FullyTested
     public static <TKey, TValue, TMap extends Map<TKey, TValue>>
     TMap checkMaxSize(TMap ref, int maxSize, String argName) {
         IntArgs.checkNotNegative(maxSize, "maxSize");
@@ -127,13 +124,12 @@ public final class MapArgs {
      * @param exactSize exact number of key-value pairs (inclusive).  Must be non-negative.
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @return the validated map reference
-     * @throws NullPointerException if {@code ref} or {@code argName} is null
+     * @throws NullPointerException if {@code ref} is {@code null}
      * @throws IllegalArgumentException if {@code exactSize < 0},
-     *         or if number of elements in {@code ref} is outside allowed range,
-     *         or if {@code argName} is empty or whitespace
+     *         <br>or if number of elements in {@code ref} is outside allowed range
      * @see #checkSizeRange(Map, int, int, String)
      */
-	@FullyTested
+    @FullyTested
     public static <TKey, TValue, TMap extends Map<TKey, TValue>>
     TMap checkExactSize(TMap ref, int exactSize, String argName) {
         IntArgs.checkNotNegative(exactSize, "exactSize");
@@ -149,13 +145,12 @@ public final class MapArgs {
      * @param ref a map reference
      * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @return the validated map reference
-     * @throws NullPointerException if {@code ref} or {@code argName} is null
-     * @throws IllegalArgumentException if number of key-value pairs in {@code ref} is zero,
-     *         or if {@code argName} is empty or whitespace
+     * @throws NullPointerException if {@code ref} is {@code null}
+     * @throws IllegalArgumentException if number of key-value pairs in {@code ref} is zero
      * @see #checkSizeRange(Map, int, int, String)
      * @see #checkMinSize(Map, int, String)
      */
-	@FullyTested
+    @FullyTested
     public static <TKey, TValue, TMap extends Map<TKey, TValue>>
     TMap checkNotEmpty(TMap ref, String argName) {
         int size = (null == ref ? -1 : ref.size());
@@ -173,19 +168,18 @@ public final class MapArgs {
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see #checkKeysAndValuesNotNull(Map, String)
      * @see #checkValuesNotNull(Map, String)
-     * @throws NullPointerException if {@code ref} (or any key) or {@code argName} is null
-     * @throws IllegalArgumentException if {@code argName} is empty or whitespace
+     * @throws NullPointerException if {@code ref} (or any key) is {@code null}
      */
-	@FullyTested
+    @FullyTested
     public static <TKey, TValue, TMap extends Map<TKey, TValue>>
     TMap checkKeysNotNull(TMap ref, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
         if (ref.containsKey(null)) {
             TValue value = ref.get(null);
             String valueStr = (null == value ? "null" : String.format("'%s'", value));
-            StringArgs._checkArgNameValid(argName, "argName");
+            String w = StringArgs._getArgNameWarning(argName, "argName");
             throw new NullPointerException(String.format(
-                "Map argument '%s': Key is null where value is %s", argName, valueStr));
+                "Map argument '%s': Key is null where value is %s%s", argName, valueStr, w));
         }
         return ref;
     }
@@ -200,10 +194,9 @@ public final class MapArgs {
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see #checkKeysAndValuesNotNull(Map, String)
      * @see #checkKeysNotNull(Map, String)
-     * @throws NullPointerException if {@code ref} (or any value) or {@code argName} is null
-     * @throws IllegalArgumentException if {@code argName} is empty or whitespace
+     * @throws NullPointerException if {@code ref} (or any value) is {@code null}
      */
-	@FullyTested
+    @FullyTested
     public static <TKey, TValue, TMap extends Map<TKey, TValue>>
     TMap checkValuesNotNull(TMap ref, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
@@ -212,30 +205,66 @@ public final class MapArgs {
             if (null == value) {
                 TKey key = entry.getKey();
                 String keyStr = (null == key ? "null" : String.format("'%s'", key));
-                StringArgs._checkArgNameValid(argName, "argName");
+                String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new NullPointerException(String.format(
-                    "Map argument '%s': Value is null where key is %s", argName, keyStr));
+                    "Map argument '%s': Value is null where key is %s%s", argName, keyStr, w));
             }
         }
         return ref;
     }
 
     /**
-     * Tests if a map reference is not null and each key and value is not null.  An empty map will
-     * pass this test.
+     * This is a convenience method for {@link #checkKeysNotNull(Map, String)} and
+     * {@link #checkValuesNotNull(Map, String)}.
      * 
-     * @param ref a map reference
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @return the validated map reference
-     * @see ObjectArgs#checkNotNull(Object, String)
-     * @see #checkKeysNotNull(Map, String)
-     * @see #checkValuesNotNull(Map, String)
-     * @throws NullPointerException if {@code ref} (or any key or value) or {@code argName} is null
-     * @throws IllegalArgumentException if {@code argName} is empty or whitespace
      */
-	@FullyTested
+    @FullyTested
     public static <TKey, TValue, TMap extends Map<TKey, TValue>>
     TMap checkKeysAndValuesNotNull(TMap ref, String argName) {
+        checkKeysNotNull(ref, argName);
+        checkValuesNotNull(ref, argName);
+        return ref;
+    }
+
+    /**
+     * This is a convenience method for {@link #checkNotEmpty(Map, String)} and
+     * {@link #checkKeysNotNull(Map, String)}.
+     * 
+     * @return the validated map reference
+     */
+    @FullyTested
+    public static <TKey, TValue, TMap extends Map<TKey, TValue>>
+    TMap checkNotEmptyAndKeysNotNull(TMap ref, String argName) {
+        checkNotEmpty(ref, argName);
+        checkKeysNotNull(ref, argName);
+        return ref;
+    }
+
+    /**
+     * This is a convenience method for {@link #checkNotEmpty(Map, String)} and
+     * {@link #checkValuesNotNull(Map, String)}.
+     * 
+     * @return the validated map reference
+     */
+    @FullyTested
+    public static <TKey, TValue, TMap extends Map<TKey, TValue>>
+    TMap checkNotEmptyAndValuesNotNull(TMap ref, String argName) {
+        checkNotEmpty(ref, argName);
+        checkValuesNotNull(ref, argName);
+        return ref;
+    }
+
+    /**
+     * This is a convenience method for {@link #checkNotEmpty(Map, String)},
+     * {@link #checkKeysNotNull(Map, String)}, and {@link #checkValuesNotNull(Map, String)}.
+     * 
+     * @return the validated map reference
+     */
+    @FullyTested
+    public static <TKey, TValue, TMap extends Map<TKey, TValue>>
+    TMap checkNotEmptyAndKeysAndValuesNotNull(TMap ref, String argName) {
+        checkNotEmpty(ref, argName);
         checkKeysNotNull(ref, argName);
         checkValuesNotNull(ref, argName);
         return ref;

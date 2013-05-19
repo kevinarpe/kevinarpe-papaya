@@ -41,10 +41,10 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({
-	ElementType.PACKAGE,
-	ElementType.TYPE,
-	ElementType.CONSTRUCTOR,
-	ElementType.METHOD})
+    ElementType.PACKAGE,
+    ElementType.TYPE,
+    ElementType.CONSTRUCTOR,
+    ElementType.METHOD})
 @Documented
 public @interface FullyTested {
 }

@@ -35,9 +35,9 @@ import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 @FullyTested
 public final class LongArgs {
 
-	// Disable default constructor
-	private LongArgs() {
-	}
+    // Disable default constructor
+    private LongArgs() {
+    }
 
     /**
      * Tests if {@code value > 0}
@@ -45,20 +45,18 @@ public final class LongArgs {
      * @param value a value to test
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
-     * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value <= 0},
-     *         if {@code argName} is empty or whitespace
+     * @throws IllegalArgumentException if value of {@code value <= 0}
      * @see #checkNotPositive(long, String)
      * @see #checkNegative(long, String)
      * @see #checkNotNegative(long, String)
      */
-	@FullyTested
+    @FullyTested
     public static long checkPositive(long value, String argName) {
         if (value <= 0) {
-            StringArgs._checkArgNameValid(argName, "argName");
+            String w = StringArgs._getArgNameWarning(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                "Argument '%s': Value is not positive: %d",
-                argName, value));
+                "Argument '%s': Value is not positive: %d%s",
+                argName, value, w));
         }
         return value;
     }
@@ -69,20 +67,18 @@ public final class LongArgs {
      * @param value a value to test
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
-     * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value > 0},
-     *         if {@code argName} is empty or whitespace
+     * @throws IllegalArgumentException if value of {@code value > 0}
      * @see #checkPositive(long, String)
      * @see #checkNegative(long, String)
      * @see #checkNotNegative(long, String)
      */
-	@FullyTested
+    @FullyTested
     public static long checkNotPositive(long value, String argName) {
         if (value > 0) {
-            StringArgs._checkArgNameValid(argName, "argName");
+            String w = StringArgs._getArgNameWarning(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                "Argument '%s': Value is positive: %d",
-                argName, value));
+                "Argument '%s': Value is positive: %d%s",
+                argName, value, w));
         }
         return value;
     }
@@ -93,20 +89,18 @@ public final class LongArgs {
      * @param value a value to test
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
-     * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value => 0},
-     *         if {@code argName} is empty or whitespace
+     * @throws IllegalArgumentException if value of {@code value => 0}
      * @see #checkPositive(long, String)
      * @see #checkNotPositive(long, String)
      * @see #checkNotNegative(long, String)
      */
-	@FullyTested
+    @FullyTested
     public static long checkNegative(long value, String argName) {
         if (value >= 0) {
-            StringArgs._checkArgNameValid(argName, "argName");
+            String w = StringArgs._getArgNameWarning(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                "Argument '%s': Value is not negative: %d",
-                argName, value));
+                "Argument '%s': Value is not negative: %d%s",
+                argName, value, w));
         }
         return value;
     }
@@ -117,20 +111,18 @@ public final class LongArgs {
      * @param value a value to test
      * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
      * @return the validated value
-     * @throws NullPointerException if {@code argName} is null
-     * @throws IllegalArgumentException if value of {@code value < 0},
-     *         if {@code argName} is empty or whitespace
+     * @throws IllegalArgumentException if value of {@code value < 0}
      * @see #checkPositive(long, String)
      * @see #checkNotPositive(long, String)
      * @see #checkNegative(long, String)
      */
-	@FullyTested
+    @FullyTested
     public static long checkNotNegative(long value, String argName) {
         if (value < 0) {
-            StringArgs._checkArgNameValid(argName, "argName");
+            String w = StringArgs._getArgNameWarning(argName, "argName");
             throw new IllegalArgumentException(String.format(
-                "Argument '%s': Value is negative: %d",
-                argName, value));
+                "Argument '%s': Value is negative: %d%s",
+                argName, value, w));
         }
         return value;
     }
@@ -143,7 +135,7 @@ public final class LongArgs {
      * @see #checkMaxValue(long, long, String)
      * @see #checkExactValue(long, long, String)
      */
-	@FullyTested
+    @FullyTested
     public static long checkValueRange(
             long value, long minValue, long maxValue, String argName) {
         ComparableArgs.checkValueRange(value, minValue, maxValue, argName);
@@ -158,7 +150,7 @@ public final class LongArgs {
      * @see #checkMaxValue(long, long, String)
      * @see #checkExactValue(long, long, String)
      */
-	@FullyTested
+    @FullyTested
     public static long checkMinValue(long value, long minValue, String argName) {
         ComparableArgs.checkMinValue(value, minValue, argName);
         return value;
@@ -172,7 +164,7 @@ public final class LongArgs {
      * @see #checkMinValue(long, long, String)
      * @see #checkExactValue(long, long, String)
      */
-	@FullyTested
+    @FullyTested
     public static long checkMaxValue(long value, long maxValue, String argName) {
         ComparableArgs.checkMaxValue(value, maxValue, argName);
         return value;
@@ -186,7 +178,7 @@ public final class LongArgs {
      * @see #checkMinValue(long, long, String)
      * @see #checkMaxValue(long, long, String)
      */
-	@FullyTested
+    @FullyTested
     public static long checkExactValue(long value, long exactValue, String argName) {
         ComparableArgs.checkExactValue(value, exactValue, argName);
         return value;

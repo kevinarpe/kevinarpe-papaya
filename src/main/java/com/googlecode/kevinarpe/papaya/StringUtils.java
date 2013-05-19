@@ -38,24 +38,23 @@ import com.googlecode.kevinarpe.papaya.args.StringArgs;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@NotFullyTested
 public final class StringUtils {
 
-	// Disable default constructor
-	private StringUtils() {
-	}
+    // Disable default constructor
+    private StringUtils() {
+    }
 
-	/**
-	 * This is the current newline: {@code System.getProperty("line.separator")}.  This will differ
-	 * between operating systems, such as UNIX variants and Microsoft Windows.
-	 * <p>
-	 * It is also available when calling {@link String#format(String, Object...)} and using
-	 * {@code %n} in the format string.
-	 * 
-	 * @see #NEW_LINE
-	 * @see #UNIX_NEW_LINE
-	 * @see #WINDOWS_NEW_LINE
-	 */
+    /**
+     * This is the current newline: {@code System.getProperty("line.separator")}.  This will differ
+     * between operating systems, such as UNIX variants and Microsoft Windows.
+     * <p>
+     * It is also available when calling {@link String#format(String, Object...)} and using
+     * {@code %n} in the format string.
+     * 
+     * @see #NEW_LINE
+     * @see #UNIX_NEW_LINE
+     * @see #WINDOWS_NEW_LINE
+     */
     public static final String NEW_LINE;
     
     /**
@@ -192,10 +191,10 @@ public final class StringUtils {
      * @throws NullPointerException if {@code str} is {@code null}
      */
     public static <T extends CharSequence> boolean isOnlyWhitespace(String str) {
-    	ObjectArgs.checkNotNull(str, "str");
+        ObjectArgs.checkNotNull(str, "str");
         int len = str.length();
         if (0 == len) {
-        	return false;
+            return false;
         }
         boolean b = isEmptyOrWhitespace(str);
         return b;

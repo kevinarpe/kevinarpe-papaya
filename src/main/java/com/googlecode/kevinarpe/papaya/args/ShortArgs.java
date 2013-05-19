@@ -35,9 +35,9 @@ import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 @FullyTested
 public final class ShortArgs {
 
-	// Disable default constructor
-	private ShortArgs() {
-	}
+    // Disable default constructor
+    private ShortArgs() {
+    }
 
     /**
      * This is a convenience method for {@link LongArgs#checkPositive(long, String)}.
@@ -46,7 +46,7 @@ public final class ShortArgs {
      * @see #checkNegative(short, String)
      * @see #checkNotNegative(short, String)
      */
-	@FullyTested
+    @FullyTested
     public static short checkPositive(short value, String argName) {
         LongArgs.checkPositive(value, argName);
         return value;
@@ -59,7 +59,7 @@ public final class ShortArgs {
      * @see #checkNegative(short, String)
      * @see #checkNotNegative(short, String)
      */
-	@FullyTested
+    @FullyTested
     public static short checkNotPositive(short value, String argName) {
         LongArgs.checkNotPositive(value, argName);
         return value;
@@ -72,7 +72,7 @@ public final class ShortArgs {
      * @see #checkNotPositive(short, String)
      * @see #checkNotNegative(short, String)
      */
-	@FullyTested
+    @FullyTested
     public static short checkNegative(short value, String argName) {
         LongArgs.checkNegative(value, argName);
         return value;
@@ -85,7 +85,7 @@ public final class ShortArgs {
      * @see #checkNotPositive(short, String)
      * @see #checkNegative(short, String)
      */
-	@FullyTested
+    @FullyTested
     public static short checkNotNegative(short value, String argName) {
         LongArgs.checkNotNegative(value, argName);
         return value;
@@ -99,7 +99,7 @@ public final class ShortArgs {
      * @see #checkMaxValue(short, short, String)
      * @see #checkExactValue(short, short, String)
      */
-	@FullyTested
+    @FullyTested
     public static short checkValueRange(
             short value, short minValue, short maxValue, String argName) {
         ComparableArgs.checkValueRange(value, minValue, maxValue, argName);
@@ -114,7 +114,7 @@ public final class ShortArgs {
      * @see #checkMaxValue(short, short, String)
      * @see #checkExactValue(short, short, String)
      */
-	@FullyTested
+    @FullyTested
     public static short checkMinValue(short value, short minValue, String argName) {
         ComparableArgs.checkMinValue(value, minValue, argName);
         return value;
@@ -128,7 +128,7 @@ public final class ShortArgs {
      * @see #checkMinValue(short, short, String)
      * @see #checkExactValue(short, short, String)
      */
-	@FullyTested
+    @FullyTested
     public static short checkMaxValue(short value, short maxValue, String argName) {
         ComparableArgs.checkMaxValue(value, maxValue, argName);
         return value;
@@ -143,7 +143,7 @@ public final class ShortArgs {
      * @see #checkMinValue(short, short, String)
      * @see #checkMaxValue(short, short, String)
      */
-	@FullyTested
+    @FullyTested
     public static short checkExactValue(short value, short exactValue, String argName) {
         ComparableArgs.checkExactValue(value, exactValue, argName);
         return value;
