@@ -1,7 +1,5 @@
 package com.googlecode.kevinarpe.papaya;
 
-import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
-
 /*
  * #%L
  * This file is part of Papaya.
