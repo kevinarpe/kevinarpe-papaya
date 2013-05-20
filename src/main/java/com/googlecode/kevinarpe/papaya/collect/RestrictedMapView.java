@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya;
+package com.googlecode.kevinarpe.papaya.collect;
 
 /*
  * #%L
@@ -34,6 +34,7 @@ import java.util.Set;
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.collect.ForwardingMap;
+import com.googlecode.kevinarpe.papaya.StringUtils;
 import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.args.MapArgs;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
@@ -46,7 +47,7 @@ import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 
 /**
  * Forwards calls to an underlying map, similar to {@link ForwardingMap}, except access can be
- * safely controlled.  Class {@link SafeMapView.Builder} must be used to constant view instances,
+ * safely controlled.  Class {@link RestrictedMapView.Builder} must be used to construct instances,
  * as there are number of control features that may be set.
  * <ul>
  *   <li>{@link #getThrowForNullKey()}: Throw an exception when inserting a {@code null} key</li>
@@ -57,11 +58,17 @@ import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
  *       {@link #remove(Object)} fails</li>
  *   <li>{@link #getThrowForKeyExistsOnPut()}: Throw an exception if key already exists in
  *       underlying map when calling {@link #put(Object, Object)} and {@link #putAll(Map)}</li>
- *   <li>{@link #getThrowForMutate()}: Throw an exception if any method changes the map</li>
+ *   <li>{@link #getThrowForAddEntry()}: Throw an exception if key does not exist in underlying map
+ *       when calling {@link #put(Object, Object)} and {@link #putAll(Map)}</li>
+ *   <li>{@link #getThrowForChangeValue()}: Throw an exception if key exists in underlying map
+ *       and its value will change when calling {@link #put(Object, Object)} and
+ *       {@link #putAll(Map)}</li>
+ *   <li>{@link #getThrowForRemoveEntry()}: Throw an exception if key exists in underlying map
+ *       when calling {@link #remove(Object)}</li>
  * </ul>
- * Controls are not mutually exclusive.  For example, if {@link #getThrowForNullKey()} is
- * {@code false}, but {@link #getThrowForMutate()} is {@code true}, inserting new keys is
- * not allowed.
+ * Controls are not mutually exclusive.  For example, consider how {@link #getThrowForNullKey()}
+ * and {@link #getThrowForAddEntry()} are related.  Certain settings (1) may allow null keys to be
+ * added, or (2) reject null keys, or (3) not allow any new keys (null or not) to be added.
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
@@ -69,7 +76,7 @@ import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
  * @param <TValue> type for map entry values
  */
 @NotFullyTested
-public class SafeMapView<TKey, TValue>
+public class RestrictedMapView<TKey, TValue>
 implements Map<TKey, TValue> {
     
     private static class Features {
@@ -79,8 +86,9 @@ implements Map<TKey, TValue> {
         private boolean _throwForKeyDoesNotExistOnGet;
         private boolean _throwForKeyDoesNotExistOnRemove;
         private boolean _throwForKeyExistsOnPut;
-        // TOOD: _throwForInsert/Update/Delete/Mutate
-        private boolean _throwForMutate;
+        private boolean _throwForAddEntry;
+        private boolean _throwForChangeValue;
+        private boolean _throwForRemoveEntry;
         
         public Features() {
             _throwForNullKey = true;
@@ -88,7 +96,9 @@ implements Map<TKey, TValue> {
             _throwForKeyDoesNotExistOnGet = true;
             _throwForKeyDoesNotExistOnRemove = true;
             _throwForKeyExistsOnPut = true;
-            _throwForMutate = true;
+            _throwForAddEntry = true;
+            _throwForChangeValue = true;
+            _throwForRemoveEntry = true;
         }
         
         public void checkMap(Class<?> clazz, Map<?, ?> map) {
@@ -138,7 +148,9 @@ implements Map<TKey, TValue> {
                     _describeFeature("key does not exist on get()", getThrowForKeyDoesNotExistOnGet()),
                     _describeFeature("key does not exist on remove()", getThrowForKeyDoesNotExistOnRemove()),
                     _describeFeature("key exists on put()", getThrowForKeyExistsOnPut()),
-                    _describeFeature("mutate (any data change)", getThrowForMutate())));
+                    _describeFeature("add entry", getThrowForAddEntry()),
+                    _describeFeature("change value", getThrowForChangeValue()),
+                    _describeFeature("remove entry", getThrowForRemoveEntry())));
             return msg;
         }
         
@@ -192,12 +204,30 @@ implements Map<TKey, TValue> {
             return this;
         }
 
-        public boolean getThrowForMutate() {
-            return _throwForMutate;
+        public boolean getThrowForAddEntry() {
+            return _throwForAddEntry;
         }
 
-        public Features setThrowForMutate(boolean b) {
-            _throwForMutate = b;
+        public Features setThrowForAddEntry(boolean b) {
+            _throwForAddEntry = b;
+            return this;
+        }
+
+        public boolean getThrowForChangeValue() {
+            return _throwForChangeValue;
+        }
+
+        public Features setThrowForChangeValue(boolean b) {
+            _throwForChangeValue = b;
+            return this;
+        }
+
+        public boolean getThrowForRemoveEntry() {
+            return _throwForRemoveEntry;
+        }
+
+        public Features setThrowForRemoveEntry(boolean b) {
+            _throwForRemoveEntry = b;
             return this;
         }
     }
@@ -236,7 +266,7 @@ implements Map<TKey, TValue> {
 
         /**
          * Creates a new builder. The returned builder is equivalent to the builder
-         * generated by {@link SafeMapView#builder}.
+         * generated by {@link RestrictedMapView#builder}.
          * 
          * @param map underlying map
          * @throw NullPointerExeption if {@code map} is {@code null}
@@ -244,8 +274,8 @@ implements Map<TKey, TValue> {
         @SuppressWarnings("unchecked")
         public Builder(Map<? extends TKey, ? extends TValue> map) {
             ObjectArgs.checkNotNull(map, "map");
-            if (map instanceof SafeMapView<?, ?>) {
-                _map = ((SafeMapView<TKey, TValue>) map)._map;
+            if (map instanceof RestrictedMapView<?, ?>) {
+                _map = ((RestrictedMapView<TKey, TValue>) map)._map;
             }
             else {
                 _map = (Map<TKey, TValue>) map;
@@ -256,16 +286,16 @@ implements Map<TKey, TValue> {
         /**
          * @return new safe map view
          */
-        public SafeMapView<TKey, TValue> build() {
+        public RestrictedMapView<TKey, TValue> build() {
             _features.checkMap(this.getClass(), _map);
             
-            SafeMapView<TKey, TValue> x =
-                new SafeMapView<TKey, TValue>((Map<TKey, TValue>) _map, _features);
+            RestrictedMapView<TKey, TValue> x =
+                new RestrictedMapView<TKey, TValue>((Map<TKey, TValue>) _map, _features);
             return x;
         }
 
         /**
-         * @see {@link SafeMapView#getThrowForNullKey()}
+         * @see {@link RestrictedMapView#getThrowForNullKey()}
          */
         public boolean getThrowForNullKey() {
             return _features.getThrowForNullKey();
@@ -277,7 +307,7 @@ implements Map<TKey, TValue> {
         }
 
         /**
-         * @see {@link SafeMapView#getThrowForNullValue()}
+         * @see {@link RestrictedMapView#getThrowForNullValue()}
          */
         public boolean getThrowForNullValue() {
             return _features.getThrowForNullValue();
@@ -289,7 +319,7 @@ implements Map<TKey, TValue> {
         }
 
         /**
-         * @see {@link SafeMapView#getThrowForKeyDoesNotExistOnGet()}
+         * @see {@link RestrictedMapView#getThrowForKeyDoesNotExistOnGet()}
          */
         public boolean getThrowForKeyDoesNotExistOnGet() {
             return _features.getThrowForKeyDoesNotExistOnGet();
@@ -301,7 +331,7 @@ implements Map<TKey, TValue> {
         }
 
         /**
-         * @see {@link SafeMapView#getThrowForKeyDoesNotExistOnRemove()}
+         * @see {@link RestrictedMapView#getThrowForKeyDoesNotExistOnRemove()}
          */
         public boolean getThrowForKeyDoesNotExistOnRemove() {
             return _features.getThrowForKeyDoesNotExistOnRemove();
@@ -313,7 +343,7 @@ implements Map<TKey, TValue> {
         }
 
         /**
-         * @see {@link SafeMapView#getThrowForKeyExistsOnPut()}
+         * @see {@link RestrictedMapView#getThrowForKeyExistsOnPut()}
          */
         public boolean getThrowForKeyExistsOnPut() {
             return _features.getThrowForKeyExistsOnPut();
@@ -325,14 +355,38 @@ implements Map<TKey, TValue> {
         }
 
         /**
-         * @see {@link SafeMapView#getThrowForMutate()}
+         * @see {@link RestrictedMapView#getThrowForAddEntry()}
          */
-        public boolean getThrowForMutate() {
-            return _features.getThrowForMutate();
+        public boolean getThrowForAddEntry() {
+            return _features.getThrowForAddEntry();
         }
 
-        public Builder<TKey, TValue> setThrowForMutate(boolean b) {
-            _features.setThrowForMutate(b);
+        public Builder<TKey, TValue> setThrowForAddEntry(boolean b) {
+            _features.setThrowForAddEntry(b);
+            return this;
+        }
+
+        /**
+         * @see {@link RestrictedMapView#getThrowForChangeValue()}
+         */
+        public boolean getThrowForChangeValue() {
+            return _features.getThrowForChangeValue();
+        }
+
+        public Builder<TKey, TValue> setThrowForChangeValue(boolean b) {
+            _features.setThrowForChangeValue(b);
+            return this;
+        }
+
+        /**
+         * @see {@link RestrictedMapView#getThrowForRemoveEntry()}
+         */
+        public boolean getThrowForRemoveEntry() {
+            return _features.getThrowForRemoveEntry();
+        }
+
+        public Builder<TKey, TValue> setThrowForRemoveEntry(boolean b) {
+            _features.setThrowForRemoveEntry(b);
             return this;
         }
     }
@@ -340,7 +394,7 @@ implements Map<TKey, TValue> {
     private final Map<TKey, TValue> _map;
     private final Features _features;
 
-    private SafeMapView(Map<TKey, TValue> map, Features features) {
+    private RestrictedMapView(Map<TKey, TValue> map, Features features) {
         _map = map;
         _features = features;
     }
@@ -417,13 +471,47 @@ implements Map<TKey, TValue> {
     }
 
     /**
-     * If {@code true}, throw an exception when calling any method that changes the underlying map.
+     * If {@code true}, throw an exception when calling:
+     * <ul>
+     *   <li>{@link #put(Object, Object)} and argument {@code key} does not exist in underlying
+     *       map</li>
+     *   <li>{@link #putAll(Map)} and argument {@code map} has a key that does not exist in
+     *       underlying map</li>
+     * </ul>
      * <p>
      * This setting is final once the view is created.  It must be set in the builder using
-     * {@link Builder#setThrowForMutate(boolean)}.
+     * {@link Builder#setThrowForAddEntry(boolean)}.
      */
-    public boolean getThrowForMutate() {
-        return _features.getThrowForMutate();
+    public boolean getThrowForAddEntry() {
+        return _features.getThrowForAddEntry();
+    }
+    
+    /**
+     * If {@code true}, throw an exception when calling:
+     * <ul>
+     *   <li>{@link #put(Object, Object)} and an existing value in underlying map would change</li>
+     *   <li>{@link #putAll(Map)} and an existing value in underlying map would change</li>
+     * </ul>
+     * <p>
+     * This setting is final once the view is created.  It must be set in the builder using
+     * {@link Builder#setThrowForChangeValue(boolean)}.
+     */
+    public boolean getThrowForChangeValue() {
+        return _features.getThrowForChangeValue();
+    }
+    
+    /**
+     * If {@code true}, throw an exception when calling:
+     * <ul>
+     *   <li>{@link #remove(Object)} and argument {@code key} exists in underlying map</li>
+     *   <li>{@link #clear()} and underlying map is not empty</li>
+     * </ul>
+     * <p>
+     * This setting is final once the view is created.  It must be set in the builder using
+     * {@link Builder#setThrowForRemoveEntry(boolean)}.
+     */
+    public boolean getThrowForRemoveEntry() {
+        return _features.getThrowForRemoveEntry();
     }
     
     @Override
@@ -499,20 +587,22 @@ implements Map<TKey, TValue> {
             throw new UnsupportedOperationException(msg2);
         }
         
-        if (getThrowForMutate()) {
-            boolean throwFlag = false;
+        if (getThrowForAddEntry()) {
+            if (!_map.containsKey(key)) {
+                String msg2 = _features.formatMessage(this.getClass(),
+                    "Keys cannot be added to this map");
+                throw new UnsupportedOperationException(msg2);
+            }
+        }
+        
+        if (getThrowForChangeValue()) {
             if (_map.containsKey(key)) {
                 TValue oldValue = _map.get(key);
                 if (!Objects.equal(oldValue, value)) {
-                    throwFlag = true;
+                    String msg2 = _features.formatMessage(this.getClass(),
+                        "Values cannot be changed in this map");
+                    throw new UnsupportedOperationException(msg2);
                 }
-            }
-            else {
-                throwFlag = true;
-            }
-            if (throwFlag) {
-                String msg2 = _features.formatMessage(this.getClass(), "Map is immutable");
-                throw new UnsupportedOperationException(msg2);
             }
         }
         
@@ -532,9 +622,10 @@ implements Map<TKey, TValue> {
             String msg = _features.formatMessage(this.getClass(), "Key does not exist: '%s'", key);
             throw new UnsupportedOperationException(msg);
         }
-        if (getThrowForMutate() && _map.containsKey(key)) {
-            String msg2 = _features.formatMessage(this.getClass(), "Map is immutable");
-            throw new UnsupportedOperationException(msg2);
+        if (getThrowForRemoveEntry() && _map.containsKey(key)) {
+            String msg = _features.formatMessage(this.getClass(),
+                "Entries cannot be removed from this map");
+            throw new UnsupportedOperationException(msg);
         }
         
         TValue value = _map.remove(key);
@@ -568,9 +659,9 @@ implements Map<TKey, TValue> {
      */
     @Override
     public void clear() {
-        if (getThrowForMutate() && !_map.isEmpty()) {
+        if (getThrowForRemoveEntry() && !_map.isEmpty()) {
             String msg = _features.formatMessage(this.getClass(),
-                "Cannot clear non-empty immutable map (size: %d)", _map.size());
+                "Entries cannot be removed from this map");
             throw new UnsupportedOperationException(msg);
         }
         _map.clear();
@@ -602,6 +693,8 @@ implements Map<TKey, TValue> {
             Map.Entry<TKey, TValue> entry2 = new SafeEntryView<TKey, TValue>(this._features, entry);
             set.add(entry2);
         }
+        // TODO: This is probably wrong.  What if values can be updated?
+        // Be default, the unmodifiableSet() result will not allow it.
         Set<Map.Entry<TKey, TValue>> set2 = Collections.unmodifiableSet(set);
         return set2;
     }
@@ -629,10 +722,11 @@ implements Map<TKey, TValue> {
                 String msg = _features.formatMessage(this.getClass(), "Value is null");
                 throw new UnsupportedOperationException(msg);
             }
-            if (_features.getThrowForMutate()) {
+            if (_features.getThrowForChangeValue()) {
                 TValue oldValue = _entry.getValue();
                 if (!Objects.equal(oldValue, value)) {
-                    String msg2 = _features.formatMessage(this.getClass(), "Map is immutable");
+                    String msg2 = _features.formatMessage(this.getClass(),
+                        "Values cannot be changed in this map");
                     throw new UnsupportedOperationException(msg2);
                 }
             }

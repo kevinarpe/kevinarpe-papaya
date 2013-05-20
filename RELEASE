@@ -15,4 +15,3 @@ This document contains notes about how to release this software:
 * git commit -a
 * Update project homepage with new Maven Central Repo dependency details:
     http://code.google.com/p/kevinarpe-papaya/ 
-
