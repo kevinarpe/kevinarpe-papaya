@@ -28,10 +28,8 @@ package com.googlecode.kevinarpe.papaya;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.args.IntArgs;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.args.StringArgs;
 
 /**
  * This is a collection of methods to manipulate {@link String} references.
@@ -69,13 +67,13 @@ public final class StringUtils {
      */
     public static final String WINDOWS_NEW_LINE;
     
-    private static final Pattern _NEW_LINE_REGEX;
+    //private static final Pattern _NEW_LINE_REGEX;
     
     static {
         NEW_LINE = System.getProperty("line.separator");
         UNIX_NEW_LINE = "\n";
         WINDOWS_NEW_LINE = "\r\n";
-        _NEW_LINE_REGEX = Pattern.compile("\r?\n");
+        //_NEW_LINE_REGEX = Pattern.compile("\r?\n");
     }
     
     /**
@@ -179,26 +177,26 @@ public final class StringUtils {
         return s2;
     }
     
-    /**
-     * Tests if an input string is one or more whitespace chars.  Empty strings are not
-     * considered whitespace.
-     * <p>
-     * Whitespace is defined by {@link Character#isWhitespace(char)}, which includes all special
-     * whitespace chars used in East Asian languages.
-     * 
-     * @param str input string
-     * @return true if only whitespace 
-     * @throws NullPointerException if {@code str} is {@code null}
-     */
-    public static <T extends CharSequence> boolean isOnlyWhitespace(String str) {
-        ObjectArgs.checkNotNull(str, "str");
-        int len = str.length();
-        if (0 == len) {
-            return false;
-        }
-        boolean b = isEmptyOrWhitespace(str);
-        return b;
-    }
+//    /**
+//     * Tests if an input string is one or more whitespace chars.  Empty strings are not
+//     * considered whitespace.
+//     * <p>
+//     * Whitespace is defined by {@link Character#isWhitespace(char)}, which includes all special
+//     * whitespace chars used in East Asian languages.
+//     * 
+//     * @param str input string
+//     * @return true if only whitespace 
+//     * @throws NullPointerException if {@code str} is {@code null}
+//     */
+//    public static <T extends CharSequence> boolean isOnlyWhitespace(String str) {
+//        ObjectArgs.checkNotNull(str, "str");
+//        int len = str.length();
+//        if (0 == len) {
+//            return false;
+//        }
+//        boolean b = isEmptyOrWhitespace(str);
+//        return b;
+//    }
     
     /**
      * Tests if an input string is empty or one or more whitespace chars.
@@ -278,159 +276,159 @@ public final class StringUtils {
         return str2;
     }
     
-    public static String replaceAll(String haystack, Pattern regex, String replacement) {
-        ObjectArgs.checkNotNull(haystack, "haystack");
-        ObjectArgs.checkNotNull(regex, "regex");
-        ObjectArgs.checkNotNull(replacement, "replacement");
-        Matcher m = regex.matcher(haystack);
-        String s2 = m.replaceAll(replacement);
-        return s2;
-    }
+//    public static String replaceAll(String haystack, Pattern regex, String replacement) {
+//        ObjectArgs.checkNotNull(haystack, "haystack");
+//        ObjectArgs.checkNotNull(regex, "regex");
+//        ObjectArgs.checkNotNull(replacement, "replacement");
+//        Matcher m = regex.matcher(haystack);
+//        String s2 = m.replaceAll(replacement);
+//        return s2;
+//    }
     
     // TODO: replaceFirstN
     // TODO: replaceLast
     // TODO: replaceLastN
     
-    // Ref: http://stackoverflow.com/a/6417487/257299
-    public static int findLastPatternMatch(String haystack, Pattern regex) {
-        ObjectArgs.checkNotNull(haystack, "haystack");
-        ObjectArgs.checkNotNull(regex, "regex");
-        Matcher m = regex.matcher(haystack);
-        int haystackLen = haystack.length();
-        int index = _findLastPatternMatchCore(0, haystackLen, m);
-        return index;
-    }
-    
-    private static int _findLastPatternMatchCore(int start, int end, Matcher m) {
-        if (start > end) {
-            return -1;
-        }
-        final int pivot = ((end - start) / 2) + start;
-        if (m.find(pivot)) {
-            int index = m.start();
-            if (index + 1 > end) {
-                return index;
-            }
-            int result = _findLastPatternMatchCore(1 + index, end, m);
-            return (-1 == result ? index : result);
-        }
-        else if (m.find(start)) {
-            int index = m.start();
-            if (index + 1 > pivot) {
-                return index;
-            }
-            int result = _findLastPatternMatchCore(1 + index, pivot, m);
-            return (-1 == result ? index : result);
-        }
-        return -1;
-    }
-    
-    // TODO: Split by new line
-    // TODO: Convert new lines
-    // TODO: Add line prefix / suffix
-    
-    /**
-     * This is a convenience method for {@link #remove(String, int, int)}
-     * where {@code count = 1}.
-     */
-    public static String remove(String s, int index) {
-        final int count = 1;
-        String s2 = remove(s, index, count);
-        return s2;
-    }
-    
-    /**
-     * Removes characters from a string by creating a new string and copying remaining characters
-     * from the source string.  To be precise, using the term "remove" is a misnomer, as Java
-     * strings cannot change size.
-     * <p>
-     * If {@code count == 0}, the input string reference is returned.  No copy is made.
-     * 
-     * @param str a string reference
-     * @param index offset to begin removing characters.  Range: 0 to {@code str.length() - 1}
-     * @param count number of characters to remove.  Must be non-negative.
-     * @return reference to a string with characters removed
-     * @throws NullPointerException if {@code str} is {@code null}
-     * @throws IllegalArgumentException if {@code index} and {@code count} are invalid
-     */
-    public static String remove(String str, int index, int count) {
-        StringArgs.checkIndexAndCount(str, index, count, "s", "index", "count");
-        
-        if (0 == count) {
-            return str;
-        }
-        
-        final int len = str.length();
-        String newStr = "";
-        
-        final int countBefore = index;
-        final int countAfter = len - (index + count);
-        
-        if (0 != len && 0 != countBefore) {
-            newStr = str.substring(0, countBefore);
-        }
-        if (0 != len && 0 != countAfter) {
-            String after = str.substring(index + count);
-            newStr += after;
-        }
-        return newStr;
-    }
-    
-    /**
-     * Insert characters into a string by creating a new string and copying characters from the
-     * source strings.  To be precise, using the term "insert" is a misnomer, as Java strings
-     * cannot change size.
-     * <p>
-     * If {@code count == 0}, the input string reference is returned.  No copy is made.
-     * 
-     * @param str a string reference
-     * @param index offset to begin inserting characters.  Range: 0 to {@code str.length()}
-     * @param newText characters to insert
-     * @return reference to a string with characters inserted
-     * @throws NullPointerException if {@code str} or {@code newText} is {@code null}
-     * @throws IllegalArgumentException if {@code index} is invalid
-     */
-    public static String insert(String str, int index, String newText) {
-        StringArgs.checkInsertIndex(str, index, "str", "index");
-        ObjectArgs.checkNotNull(newText, "newText");
-        
-        if (0 == newText.length()) {
-            return str;
-        }
-        
-        String newStr = "";
-        final int len = str.length();
-        final int countBefore = index;
-        final int countAfter = len - index;
-        
-        if (0 != len && 0 != countBefore) {
-            newStr = str.substring(0, countBefore);
-        }
-        newStr += newText;
-        if (0 != len && 0 != countAfter) {
-            String after = str.substring(index);
-            newStr += after;
-        }
-        return newStr;
-    }
-    
-    /**
-     * This is a convenience method to combine {@link #remove(String, int, int)}
-     * and {@link #insert(String, int, String)} where {@code count = 1}.
-     */
-    public static String replace(String str, int index, String newText) {
-        final int count = 1;
-        String newStr = replace(str, index, count, newText);
-        return newStr;
-    }
-    
-    /**
-     * This is a convenience method to combine {@link #remove(String, int, int)}
-     * and {@link #insert(String, int, String)}.
-     */
-    public static String replace(String str, int index, int count, String newText) {
-        String newStr = remove(str, index, count);
-        String newStr2 = insert(newStr, index, newText);
-        return newStr2;
-    }
+//    // Ref: http://stackoverflow.com/a/6417487/257299
+//    public static int findLastPatternMatch(String haystack, Pattern regex) {
+//        ObjectArgs.checkNotNull(haystack, "haystack");
+//        ObjectArgs.checkNotNull(regex, "regex");
+//        Matcher m = regex.matcher(haystack);
+//        int haystackLen = haystack.length();
+//        int index = _findLastPatternMatchCore(0, haystackLen, m);
+//        return index;
+//    }
+//    
+//    private static int _findLastPatternMatchCore(int start, int end, Matcher m) {
+//        if (start > end) {
+//            return -1;
+//        }
+//        final int pivot = ((end - start) / 2) + start;
+//        if (m.find(pivot)) {
+//            int index = m.start();
+//            if (index + 1 > end) {
+//                return index;
+//            }
+//            int result = _findLastPatternMatchCore(1 + index, end, m);
+//            return (-1 == result ? index : result);
+//        }
+//        else if (m.find(start)) {
+//            int index = m.start();
+//            if (index + 1 > pivot) {
+//                return index;
+//            }
+//            int result = _findLastPatternMatchCore(1 + index, pivot, m);
+//            return (-1 == result ? index : result);
+//        }
+//        return -1;
+//    }
+//    
+//    // TODO: Split by new line
+//    // TODO: Convert new lines
+//    // TODO: Add line prefix / suffix
+//    
+//    /**
+//     * This is a convenience method for {@link #remove(String, int, int)}
+//     * where {@code count = 1}.
+//     */
+//    public static String remove(String s, int index) {
+//        final int count = 1;
+//        String s2 = remove(s, index, count);
+//        return s2;
+//    }
+//    
+//    /**
+//     * Removes characters from a string by creating a new string and copying remaining characters
+//     * from the source string.  To be precise, using the term "remove" is a misnomer, as Java
+//     * strings cannot change size.
+//     * <p>
+//     * If {@code count == 0}, the input string reference is returned.  No copy is made.
+//     * 
+//     * @param str a string reference
+//     * @param index offset to begin removing characters.  Range: 0 to {@code str.length() - 1}
+//     * @param count number of characters to remove.  Must be non-negative.
+//     * @return reference to a string with characters removed
+//     * @throws NullPointerException if {@code str} is {@code null}
+//     * @throws IllegalArgumentException if {@code index} and {@code count} are invalid
+//     */
+//    public static String remove(String str, int index, int count) {
+//        StringArgs.checkIndexAndCount(str, index, count, "s", "index", "count");
+//        
+//        if (0 == count) {
+//            return str;
+//        }
+//        
+//        final int len = str.length();
+//        String newStr = "";
+//        
+//        final int countBefore = index;
+//        final int countAfter = len - (index + count);
+//        
+//        if (0 != len && 0 != countBefore) {
+//            newStr = str.substring(0, countBefore);
+//        }
+//        if (0 != len && 0 != countAfter) {
+//            String after = str.substring(index + count);
+//            newStr += after;
+//        }
+//        return newStr;
+//    }
+//    
+//    /**
+//     * Insert characters into a string by creating a new string and copying characters from the
+//     * source strings.  To be precise, using the term "insert" is a misnomer, as Java strings
+//     * cannot change size.
+//     * <p>
+//     * If {@code count == 0}, the input string reference is returned.  No copy is made.
+//     * 
+//     * @param str a string reference
+//     * @param index offset to begin inserting characters.  Range: 0 to {@code str.length()}
+//     * @param newText characters to insert
+//     * @return reference to a string with characters inserted
+//     * @throws NullPointerException if {@code str} or {@code newText} is {@code null}
+//     * @throws IllegalArgumentException if {@code index} is invalid
+//     */
+//    public static String insert(String str, int index, String newText) {
+//        StringArgs.checkInsertIndex(str, index, "str", "index");
+//        ObjectArgs.checkNotNull(newText, "newText");
+//        
+//        if (0 == newText.length()) {
+//            return str;
+//        }
+//        
+//        String newStr = "";
+//        final int len = str.length();
+//        final int countBefore = index;
+//        final int countAfter = len - index;
+//        
+//        if (0 != len && 0 != countBefore) {
+//            newStr = str.substring(0, countBefore);
+//        }
+//        newStr += newText;
+//        if (0 != len && 0 != countAfter) {
+//            String after = str.substring(index);
+//            newStr += after;
+//        }
+//        return newStr;
+//    }
+//    
+//    /**
+//     * This is a convenience method to combine {@link #remove(String, int, int)}
+//     * and {@link #insert(String, int, String)} where {@code count = 1}.
+//     */
+//    public static String replace(String str, int index, String newText) {
+//        final int count = 1;
+//        String newStr = replace(str, index, count, newText);
+//        return newStr;
+//    }
+//    
+//    /**
+//     * This is a convenience method to combine {@link #remove(String, int, int)}
+//     * and {@link #insert(String, int, String)}.
+//     */
+//    public static String replace(String str, int index, int count, String newText) {
+//        String newStr = remove(str, index, count);
+//        String newStr2 = insert(newStr, index, newText);
+//        return newStr2;
+//    }
 }

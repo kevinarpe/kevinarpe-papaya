@@ -104,51 +104,51 @@ public class FileUtilsTest {
         FileUtils.isRootDirectory("");
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    // FileUtils.createDirectory
-    //
-
-    @DataProvider
-    private static final Object[][] _dataForShouldCreateDirectory() {
-        return new Object[][] {
-                { "test_dir" },
-                { "test_dir   " },
-                { "   " },
-        };
-    }
-    
-    @Test(dataProvider = "_dataForShouldCreateDirectory")
-    public void shouldCreateDirectory(String dirName)
-    throws IOException {
-        File dir = new File(dirName);
-        if (!dir.delete() && dir.exists()) {
-            throw new IOException(String.format("Test dir name already exists: '%s'", dirName));
-        }
-        try {
-            FileUtils.createDirectory(dirName);
-            dir.delete();
-            FileUtils.createDirectory(dir);
-        }
-        finally {
-            dir.delete();
-        }
-    }
-    
-    @Test(expectedExceptions = NullPointerException.class)
-    public void shouldNotCreateDirectoryWithNullName()
-    throws IOException {
-        FileUtils.createDirectory((String) null);
-    }
-    
-    @Test(expectedExceptions = NullPointerException.class)
-    public void shouldNotCreateDirectoryWithNullName2()
-    throws IOException {
-        FileUtils.createDirectory((File) null);
-    }
-    
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotCreateDirectoryWithWithInvalidName()
-    throws IOException {
-        FileUtils.createDirectory("");
-    }
+//    ///////////////////////////////////////////////////////////////////////////
+//    // FileUtils.createDirectory
+//    //
+//
+//    @DataProvider
+//    private static final Object[][] _dataForShouldCreateDirectory() {
+//        return new Object[][] {
+//                { "test_dir" },
+//                { "test_dir   " },
+//                { "   " },
+//        };
+//    }
+//    
+//    @Test(dataProvider = "_dataForShouldCreateDirectory")
+//    public void shouldCreateDirectory(String dirName)
+//    throws IOException {
+//        File dir = new File(dirName);
+//        if (!dir.delete() && dir.exists()) {
+//            throw new IOException(String.format("Test dir name already exists: '%s'", dirName));
+//        }
+//        try {
+//            FileUtils.createDirectory(dirName);
+//            dir.delete();
+//            FileUtils.createDirectory(dir);
+//        }
+//        finally {
+//            dir.delete();
+//        }
+//    }
+//    
+//    @Test(expectedExceptions = NullPointerException.class)
+//    public void shouldNotCreateDirectoryWithNullName()
+//    throws IOException {
+//        FileUtils.createDirectory((String) null);
+//    }
+//    
+//    @Test(expectedExceptions = NullPointerException.class)
+//    public void shouldNotCreateDirectoryWithNullName2()
+//    throws IOException {
+//        FileUtils.createDirectory((File) null);
+//    }
+//    
+//    @Test(expectedExceptions = IllegalArgumentException.class)
+//    public void shouldNotCreateDirectoryWithWithInvalidName()
+//    throws IOException {
+//        FileUtils.createDirectory("");
+//    }
 }
