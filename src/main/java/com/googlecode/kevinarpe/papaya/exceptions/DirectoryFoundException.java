@@ -43,7 +43,7 @@ extends PathException {
 
     private static final long serialVersionUID = 0;
 
-    public DirectoryFoundException(File dir, String message) {
-        super(dir, message);
+    public DirectoryFoundException(File path, String message) {
+        super(path, message);
     }
 }

@@ -26,16 +26,19 @@ package com.googlecode.kevinarpe.papaya;
  */
 
 import java.io.File;
+import java.io.IOException;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.args.StringArgs;
+import com.googlecode.kevinarpe.papaya.exceptions.PathException2;
+import com.googlecode.kevinarpe.papaya.exceptions.PathException2.PathExceptionReason;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public final class FileUtils {
+public final class DirectoryUtils2 {
 
     // Disable default constructor
-    private FileUtils() {
+    private DirectoryUtils2() {
     }
     
     /**
@@ -75,6 +78,148 @@ public final class FileUtils {
         File parent = absPath.getParentFile();
         boolean b = (null == parent);
         return b;
+    }
+    
+    public static File makeDirectory(String pathname)
+    throws IOException {
+        StringArgs.checkNotEmpty(pathname, "pathname");
+        File path = new File(pathname);
+        File result = makeDirectory(path);
+        return result;
+    }
+    
+    public static File makeDirectory(File path)
+    throws IOException {
+        ObjectArgs.checkNotNull(path, "path");
+        if (path.mkdir() || path.isDirectory()) {
+            return path;
+        }
+        _throwExceptionAfterMkdirFailed(path, false);
+        return path;
+    }
+    
+    public static File makeDirectoryAndParents(String pathname)
+    throws IOException {
+        StringArgs.checkNotEmpty(pathname, "pathname");
+        File path = new File(pathname);
+        File result = makeDirectoryAndParents(path);
+        return result;
+    }
+    
+    public static File makeDirectoryAndParents(File path)
+    throws IOException {
+        ObjectArgs.checkNotNull(path, "path");
+        if (path.mkdirs() || path.isDirectory()) {
+            return path;
+        }
+        _throwExceptionAfterMkdirFailed(path, true);
+        return path;
+    }
+    
+    private static void _throwExceptionAfterMkdirFailed(File path, boolean parents)
+    throws PathException2 {
+        String desc = (parents ? "directory (and parents)" : "directory");
+        if (path.isFile()) {
+            String msg = String.format(
+                "Failed to make %s: Path exists as a regular file: '%s'",
+                desc,
+                path.getAbsolutePath());
+            throw new PathException2(
+                PathExceptionReason.PATH_IS_REGULAR_FILE, path, null, msg);
+        }
+        File absPath = path.getAbsoluteFile();
+        File parentPath = absPath.getParentFile();
+        // If (null == parentPath), then path is a root directory.
+        // But a root directory will never fail in call to mkdir/mkdirs().
+        // So we don't need to check if parentPath is null here.
+        do {
+            if (!parents && !parentPath.exists()) {
+                String msg = String.format(
+                    "Failed to make %s: '%s'"
+                    + "%n\tParent path does not exist: '%s'",
+                    desc,
+                    path.getAbsolutePath(),
+                    parentPath.getAbsolutePath());
+                throw new PathException2(
+                    PathExceptionReason.PARENT_PATH_DOES_NOT_EXIST, path, parentPath, msg);
+            }
+            if (parentPath.isFile()) {
+                String msg = String.format(
+                    "Failed to make %s: '%s'"
+                    + "%n\tParent path exists as a regular file: '%s'",
+                    desc,
+                    path.getAbsolutePath(),
+                    parentPath.getAbsolutePath());
+                throw new PathException2(
+                    PathExceptionReason.PARENT_PATH_IS_REGULAR_FILE, path, parentPath, msg);
+            }
+            if (parentPath.isDirectory() && !parentPath.canWrite()) {
+                String msg = String.format(
+                    "Failed to make %s: '%s'"
+                    + "%n\tParent path exists as a directory, but is not writable: '%s'",
+                    desc,
+                    path.getAbsolutePath(),
+                    parentPath.getAbsolutePath());
+                throw new PathException2(
+                    PathExceptionReason.PARENT_PATH_IS_NON_WRITABLE_DIRECTORY,
+                    path,
+                    parentPath,
+                    msg);
+            }
+            // Prepare for next iteration.
+            parentPath = parentPath.getParentFile();
+        }
+        while (parents && null != parentPath);
+        
+        String msg = String.format(
+            "Failed to make %s: '%s'"
+            + "%n\tUnknown reason",
+            desc,
+            path.getAbsolutePath());
+        throw new PathException2(PathExceptionReason.UNKNOWN, path, null, msg);
+    }
+    
+    public static void removeDirectory(File path)
+    throws PathException2 {
+        ObjectArgs.checkNotNull(path, "path");
+        if ((path.isDirectory() && path.delete()) || !path.exists()) {
+            return;
+        }
+        if (path.isFile()) {
+            String msg = String.format(
+                "Failed to remove directory: Path exists as a regular file: '%s'",
+                path.getAbsolutePath());
+            throw new PathException2(
+                PathExceptionReason.PATH_IS_REGULAR_FILE, path, null, msg);
+        }
+        else {
+            File absPath = path.getAbsoluteFile();
+            File parentPath = absPath.getParentFile();
+            if (null == parentPath) {
+                String msg = String.format(
+                    "Failed to remove directory: Path exists as a root directory: '%s'",
+                    path.getAbsolutePath());
+                throw new PathException2(
+                    PathExceptionReason.PATH_IS_ROOT_DIRECTORY, path, null, msg);
+            }
+            if (parentPath.isDirectory() && !parentPath.canWrite()) {
+                String msg = String.format(
+                    "Failed to remove directory: '%s'"
+                    + "%n\tParent path exists as a directory, but is not writable: '%s'",
+                    path.getAbsolutePath(),
+                    parentPath.getAbsolutePath());
+                throw new PathException2(
+                    PathExceptionReason.PARENT_PATH_IS_NON_WRITABLE_DIRECTORY,
+                    path,
+                    parentPath,
+                    msg);
+            }
+        }
+        String msg = String.format(
+            "Failed to remove directory: '%s'"
+            + "%n\tUnknown reason",
+            path.getAbsolutePath());
+        throw new PathException2(PathExceptionReason.UNKNOWN, path, null, msg);
     }
     
 //    /**
