@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.Args;
+package com.googlecode.kevinarpe.papaya.args;
 
 /*
  * #%L
@@ -34,16 +34,16 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.args.PathArgs2;
-import com.googlecode.kevinarpe.papaya.exceptions.PathException2;
-import com.googlecode.kevinarpe.papaya.exceptions.PathException2.PathExceptionReason;
+import com.googlecode.kevinarpe.papaya.args.PathArgs;
+import com.googlecode.kevinarpe.papaya.exceptions.PathException;
+import com.googlecode.kevinarpe.papaya.exceptions.PathException.PathExceptionReason;
 import com.googlecode.kevinarpe.papaya.exceptions.ClassResourceNotFoundException;
-import com.googlecode.kevinarpe.papaya.exceptions.PathException2Test;
+import com.googlecode.kevinarpe.papaya.exceptions.PathExceptionTest;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class PathArgs2Test {
+public class PathArgsTest {
 
     @BeforeClass
     public void classSetup() {
@@ -73,21 +73,21 @@ public class PathArgs2Test {
     @Test(dataProvider = "_checkResourceAsStreamExists_Pass_Data")
     public void checkResourceAsStreamExists_Pass(String pathname)
     throws ClassResourceNotFoundException {
-        PathArgs2.checkClassResourceAsStreamExists(PathArgs2Test.class, pathname, "pathname");
+        PathArgs.checkClassResourceAsStreamExists(PathArgsTest.class, pathname, "pathname");
     }
 
     @Test(expectedExceptions = ClassResourceNotFoundException.class)
     public void checkResourceAsStreamExists_FailWithPathNotExists()
     throws ClassResourceNotFoundException {
-        PathArgs2.checkClassResourceAsStreamExists(
-            PathArgs2Test.class, UUID.randomUUID().toString(), "pathname");
+        PathArgs.checkClassResourceAsStreamExists(
+            PathArgsTest.class, UUID.randomUUID().toString(), "pathname");
     }
     
     @DataProvider
     private static Object[][] _checkResourceAsStreamExists_FailWithNulls_Data() {
         return new Object[][] {
                 { null, null, "filePath" },
-                { PathArgs2Test.class, null, "filePath" },
+                { PathArgsTest.class, null, "filePath" },
                 { null, UUID.randomUUID().toString(), "filePath" },
                 { null, null, "" },
                 { null, null, "   " },  // ASCII spaces
@@ -100,52 +100,52 @@ public class PathArgs2Test {
     public void checkResourceAsStreamExists_FailWithNulls(
             Class<?> clazz, String pathname, String argName)
     throws ClassResourceNotFoundException {
-        PathArgs2.checkClassResourceAsStreamExists(clazz, pathname, argName);
+        PathArgs.checkClassResourceAsStreamExists(clazz, pathname, argName);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void checkResourceAsStreamExists_FailWithEmptyPathname()
     throws ClassResourceNotFoundException {
-        PathArgs2.checkClassResourceAsStreamExists(PathArgs2Test.class, "", "pathname");
+        PathArgs.checkClassResourceAsStreamExists(PathArgsTest.class, "", "pathname");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // FileArgs.checkNotRegularFile
+    // FileArgs.checkNotFile
     //
 
     @Test
-    public void checkNotRegularFile_PassWithPathNotExists()
-    throws PathException2 {
+    public void checkNotFile_PassWithPathNotExists()
+    throws PathException {
         File path = new File(UUID.randomUUID().toString());
-        PathArgs2.checkNotRegularFile(path, "path");
-        PathArgs2.checkNotRegularFile(path.getPath(), "path");
-        PathArgs2.checkNotRegularFile(path.getAbsoluteFile(), "path");
-        PathArgs2.checkNotRegularFile(path.getAbsolutePath(), "path");
+        PathArgs.checkNotFile(path, "path");
+        PathArgs.checkNotFile(path.getPath(), "path");
+        PathArgs.checkNotFile(path.getAbsoluteFile(), "path");
+        PathArgs.checkNotFile(path.getAbsolutePath(), "path");
     }
 
     @Test
-    public void checkNotRegularFile_PassWithPathIsDir()
-    throws PathException2 {
+    public void checkNotFile_PassWithPathIsDir()
+    throws PathException {
         File path = new File(UUID.randomUUID().toString());
         _safeMkdir(path);
         try {
-            PathArgs2.checkNotRegularFile(path, "path");
-            PathArgs2.checkNotRegularFile(path.getPath(), "path");
-            PathArgs2.checkNotRegularFile(path.getAbsoluteFile(), "path");
-            PathArgs2.checkNotRegularFile(path.getAbsolutePath(), "path");
+            PathArgs.checkNotFile(path, "path");
+            PathArgs.checkNotFile(path.getPath(), "path");
+            PathArgs.checkNotFile(path.getAbsoluteFile(), "path");
+            PathArgs.checkNotFile(path.getAbsolutePath(), "path");
         }
         finally {
             _safeRmdir(path);
         }
     }
 
-    @Test(expectedExceptions = PathException2.class)
-    public void checkNotRegularFile_FailWithPathIsFile()
+    @Test(expectedExceptions = PathException.class)
+    public void checkNotFile_FailWithPathIsFile()
     throws IOException {
         File path = new File(UUID.randomUUID().toString());
         path.createNewFile();
         try {
-            PathArgs2.checkNotRegularFile(path, "path");
+            PathArgs.checkNotFile(path, "path");
         }
         finally {
             _safeRm(path);
@@ -153,7 +153,7 @@ public class PathArgs2Test {
     }
 
     @DataProvider
-    private static Object[][] _checkNotRegularFile_FailWithNullPath_Data() {
+    private static Object[][] _checkNotFile_FailWithNullPath_Data() {
         return new Object[][] {
                 { null, "filePath" },
                 { null, "" },
@@ -162,24 +162,24 @@ public class PathArgs2Test {
         };
     }
     
-    @Test(dataProvider = "_checkNotRegularFile_FailWithNullPath_Data",
+    @Test(dataProvider = "_checkNotFile_FailWithNullPath_Data",
             expectedExceptions = NullPointerException.class)
-    public void checkNotRegularFile_FailWithNullPathname(String pathname, String argName)
-    throws PathException2 {
-        PathArgs2.checkNotRegularFile(pathname, argName);
+    public void checkNotFile_FailWithNullPathname(String pathname, String argName)
+    throws PathException {
+        PathArgs.checkNotFile(pathname, argName);
     }
     
-    @Test(dataProvider = "_checkNotRegularFile_FailWithNullPath_Data",
+    @Test(dataProvider = "_checkNotFile_FailWithNullPath_Data",
             expectedExceptions = NullPointerException.class)
-    public void checkNotRegularFile_FailWithNullPath(File path, String argName)
-    throws PathException2 {
-        PathArgs2.checkNotRegularFile(path, argName);
+    public void checkNotFile_FailWithNullPath(File path, String argName)
+    throws PathException {
+        PathArgs.checkNotFile(path, argName);
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void checkNotRegularFile_FailWithEmptyPath()
-    throws PathException2 {
-        PathArgs2.checkNotRegularFile("", "path");
+    public void checkNotFile_FailWithEmptyPath()
+    throws PathException {
+        PathArgs.checkNotFile("", "path");
     }
     
     private static void _safeMkdir(File path) {
@@ -218,11 +218,11 @@ public class PathArgs2Test {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // FileArgs.checkRegularFileExists
+    // FileArgs.checkFileExists
     //
 
     @Test
-    public void checkRegularFileExists_Pass()
+    public void checkFileExists_Pass()
     throws IOException {
         File path = new File(UUID.randomUUID().toString());
         String pathname = path.getPath();
@@ -230,10 +230,10 @@ public class PathArgs2Test {
         String absPathname = absPath.getPath();
         path.createNewFile();
         try {
-            PathArgs2.checkRegularFileExists(path, "path");
-            PathArgs2.checkRegularFileExists(pathname, "pathname");
-            PathArgs2.checkRegularFileExists(absPath, "absPath");
-            PathArgs2.checkRegularFileExists(absPathname, "absPathname");
+            PathArgs.checkFileExists(path, "path");
+            PathArgs.checkFileExists(pathname, "pathname");
+            PathArgs.checkFileExists(absPath, "absPath");
+            PathArgs.checkFileExists(absPathname, "absPathname");
         }
         finally {
             _safeRm(path);
@@ -241,16 +241,16 @@ public class PathArgs2Test {
     }
     
     @Test
-    public void checkRegularFileExists_FailWithDir() {
+    public void checkFileExists_FailWithDir() {
         File path = new File(UUID.randomUUID().toString());
         path.mkdir();
         try {
-            PathArgs2.checkRegularFileExists(path, "path");
+            PathArgs.checkFileExists(path, "path");
         }
-        catch (PathException2 e) {
-            PathException2Test.assertPathExceptionEquals(
+        catch (PathException e) {
+            PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException2(PathExceptionReason.PATH_IS_DIRECTORY, path, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_IS_DIRECTORY, path, null, "dummy"));
         }
         finally {
             _safeRmdir(path);
@@ -258,18 +258,18 @@ public class PathArgs2Test {
     }
     
     @Test
-    public void checkRegularFileExists_FailWithDir2()
-    throws PathException2 {
+    public void checkFileExists_FailWithDir2()
+    throws PathException {
         File path = new File(UUID.randomUUID().toString());
         String pathname = path.getPath();
         path.mkdir();
         try {
-            PathArgs2.checkRegularFileExists(pathname, "pathname");
+            PathArgs.checkFileExists(pathname, "pathname");
         }
-        catch (PathException2 e) {
-            PathException2Test.assertPathExceptionEquals(
+        catch (PathException e) {
+            PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException2(PathExceptionReason.PATH_IS_DIRECTORY, path, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_IS_DIRECTORY, path, null, "dummy"));
         }
         finally {
             _safeRmdir(path);
@@ -277,18 +277,18 @@ public class PathArgs2Test {
     }
     
     @Test
-    public void checkRegularFileExists_FailWithDir3()
-    throws PathException2 {
+    public void checkFileExists_FailWithDir3()
+    throws PathException {
         File path = new File(UUID.randomUUID().toString());
         File absPath = path.getAbsoluteFile();
         path.mkdir();
         try {
-            PathArgs2.checkRegularFileExists(absPath, "absPath");
+            PathArgs.checkFileExists(absPath, "absPath");
         }
-        catch (PathException2 e) {
-            PathException2Test.assertPathExceptionEquals(
+        catch (PathException e) {
+            PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException2(PathExceptionReason.PATH_IS_DIRECTORY, absPath, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_IS_DIRECTORY, absPath, null, "dummy"));
         }
         finally {
             _safeRmdir(path);
@@ -296,19 +296,19 @@ public class PathArgs2Test {
     }
     
     @Test
-    public void checkRegularFileExists_FailWithDir4()
-    throws PathException2 {
+    public void checkFileExists_FailWithDir4()
+    throws PathException {
         File path = new File(UUID.randomUUID().toString());
         File absPath = path.getAbsoluteFile();
         String absPathname = absPath.getPath();
         path.mkdir();
         try {
-            PathArgs2.checkRegularFileExists(absPathname, "absPathname");
+            PathArgs.checkFileExists(absPathname, "absPathname");
         }
-        catch (PathException2 e) {
-            PathException2Test.assertPathExceptionEquals(
+        catch (PathException e) {
+            PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException2(PathExceptionReason.PATH_IS_DIRECTORY, absPath, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_IS_DIRECTORY, absPath, null, "dummy"));
         }
         finally {
             _safeRmdir(path);
@@ -316,65 +316,65 @@ public class PathArgs2Test {
     }
     
     @Test
-    public void checkRegularFileExists_FailWithPathNotExists() {
+    public void checkFileExists_FailWithPathNotExists() {
         File path = new File(UUID.randomUUID().toString());
         try {
-            PathArgs2.checkRegularFileExists(path, "path");
+            PathArgs.checkFileExists(path, "path");
         }
-        catch (PathException2 e) {
-            PathException2Test.assertPathExceptionEquals(
+        catch (PathException e) {
+            PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException2(PathExceptionReason.PATH_DOES_NOT_EXIST, path, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_DOES_NOT_EXIST, path, null, "dummy"));
         }
     }
     
     @Test
-    public void checkRegularFileExists_FailWithPathNotExists2() {
+    public void checkFileExists_FailWithPathNotExists2() {
         File path = new File(UUID.randomUUID().toString());
         String pathname = path.getPath();
         try {
-            PathArgs2.checkRegularFileExists(pathname, "pathname");
+            PathArgs.checkFileExists(pathname, "pathname");
         }
-        catch (PathException2 e) {
-            PathException2Test.assertPathExceptionEquals(
+        catch (PathException e) {
+            PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException2(PathExceptionReason.PATH_DOES_NOT_EXIST, path, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_DOES_NOT_EXIST, path, null, "dummy"));
         }
     }
     
     @Test
-    public void checkRegularFileExists_FailWithPathNotExists3()
-    throws PathException2 {
+    public void checkFileExists_FailWithPathNotExists3()
+    throws PathException {
         File path = new File(UUID.randomUUID().toString());
         File absPath = path.getAbsoluteFile();
         try {
-            PathArgs2.checkRegularFileExists(absPath, "absPath");
+            PathArgs.checkFileExists(absPath, "absPath");
         }
-        catch (PathException2 e) {
-            PathException2Test.assertPathExceptionEquals(
+        catch (PathException e) {
+            PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException2(PathExceptionReason.PATH_DOES_NOT_EXIST, absPath, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_DOES_NOT_EXIST, absPath, null, "dummy"));
         }
     }
     
     @Test
-    public void checkRegularFileExists_FailWithPathNotExists4()
-    throws PathException2 {
+    public void checkFileExists_FailWithPathNotExists4()
+    throws PathException {
         File path = new File(UUID.randomUUID().toString());
         File absPath = path.getAbsoluteFile();
         String absPathname = absPath.getPath();
         try {
-            PathArgs2.checkRegularFileExists(absPathname, "absPathname");
+            PathArgs.checkFileExists(absPathname, "absPathname");
         }
-        catch (PathException2 e) {
-            PathException2Test.assertPathExceptionEquals(
+        catch (PathException e) {
+            PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException2(PathExceptionReason.PATH_DOES_NOT_EXIST, absPath, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_DOES_NOT_EXIST, absPath, null, "dummy"));
         }
     }
     
     @DataProvider
-    private static Object[][] _checkRegularFileExists_FailWithNullPath_Data() {
+    private static Object[][] _checkFileExists_FailWithNullPath_Data() {
         return new Object[][] {
                 { null, "filePath" },
                 { null, "" },
@@ -383,24 +383,24 @@ public class PathArgs2Test {
         };
     }
     
-    @Test(dataProvider = "_checkRegularFileExists_FailWithNullPath_Data",
+    @Test(dataProvider = "_checkFileExists_FailWithNullPath_Data",
             expectedExceptions = NullPointerException.class)
-    public void checkRegularFileExists_FailWithNullPathname(String pathname, String argName)
-    throws PathException2 {
-        PathArgs2.checkRegularFileExists(pathname, argName);
+    public void checkFileExists_FailWithNullPathname(String pathname, String argName)
+    throws PathException {
+        PathArgs.checkFileExists(pathname, argName);
     }
     
-    @Test(dataProvider = "_checkRegularFileExists_FailWithNullPath_Data",
+    @Test(dataProvider = "_checkFileExists_FailWithNullPath_Data",
             expectedExceptions = NullPointerException.class)
-    public void checkRegularFileExists_FailWithNullPath(File path, String argName)
-    throws PathException2 {
-        PathArgs2.checkRegularFileExists(path, argName);
+    public void checkFileExists_FailWithNullPath(File path, String argName)
+    throws PathException {
+        PathArgs.checkFileExists(path, argName);
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void checkRegularFileExists_FailWithEmptyPath()
-    throws PathException2 {
-        PathArgs2.checkRegularFileExists("", "path");
+    public void checkFileExists_FailWithEmptyPath()
+    throws PathException {
+        PathArgs.checkFileExists("", "path");
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -409,24 +409,24 @@ public class PathArgs2Test {
 
     @Test
     public void checkNotDirectory_PassWithPathNotExists()
-    throws PathException2 {
+    throws PathException {
         File path = new File(UUID.randomUUID().toString());
-        PathArgs2.checkNotDirectory(path, "path");
-        PathArgs2.checkNotDirectory(path.getPath(), "path");
-        PathArgs2.checkNotDirectory(path.getAbsoluteFile(), "path");
-        PathArgs2.checkNotDirectory(path.getAbsolutePath(), "path");
+        PathArgs.checkNotDirectory(path, "path");
+        PathArgs.checkNotDirectory(path.getPath(), "path");
+        PathArgs.checkNotDirectory(path.getAbsoluteFile(), "path");
+        PathArgs.checkNotDirectory(path.getAbsolutePath(), "path");
     }
 
     @Test
-    public void checkNotDirectory_PassWithPathIfRegularFile()
+    public void checkNotDirectory_PassWithPathIfFile()
     throws IOException {
         File path = new File(UUID.randomUUID().toString());
         path.createNewFile();
         try {
-            PathArgs2.checkNotDirectory(path, "path");
-            PathArgs2.checkNotDirectory(path.getPath(), "path");
-            PathArgs2.checkNotDirectory(path.getAbsoluteFile(), "path");
-            PathArgs2.checkNotDirectory(path.getAbsolutePath(), "path");
+            PathArgs.checkNotDirectory(path, "path");
+            PathArgs.checkNotDirectory(path.getPath(), "path");
+            PathArgs.checkNotDirectory(path.getAbsoluteFile(), "path");
+            PathArgs.checkNotDirectory(path.getAbsolutePath(), "path");
         }
         finally {
             _safeRm(path);
@@ -435,16 +435,16 @@ public class PathArgs2Test {
 
     @Test
     public void checkNotDirectory_FailWithPathIsDir()
-    throws PathException2 {
+    throws PathException {
         File path = new File(UUID.randomUUID().toString());
         _safeMkdir(path);
         try {
-            PathArgs2.checkNotDirectory(path, "path");
+            PathArgs.checkNotDirectory(path, "path");
         }
-        catch (PathException2 e) {
-            PathException2Test.assertPathExceptionEquals(
+        catch (PathException e) {
+            PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException2(PathExceptionReason.PATH_IS_DIRECTORY, path, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_IS_DIRECTORY, path, null, "dummy"));
         }
         finally {
             _safeRmdir(path);
@@ -464,21 +464,21 @@ public class PathArgs2Test {
     @Test(dataProvider = "_checkNotDirectory_FailWithNullPath_Data",
             expectedExceptions = NullPointerException.class)
     public void checkNotDirectory_FailWithNullPathname(String pathname, String argName)
-    throws PathException2 {
-        PathArgs2.checkNotDirectory(pathname, argName);
+    throws PathException {
+        PathArgs.checkNotDirectory(pathname, argName);
     }
     
     @Test(dataProvider = "_checkNotDirectory_FailWithNullPath_Data",
             expectedExceptions = NullPointerException.class)
     public void checkNotDirectory_FailWithNullPath(File path, String argName)
-    throws PathException2 {
-        PathArgs2.checkNotDirectory(path, argName);
+    throws PathException {
+        PathArgs.checkNotDirectory(path, argName);
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void checkNotDirectory_FailWithEmptyPath()
-    throws PathException2 {
-        PathArgs2.checkNotDirectory("", "path");
+    throws PathException {
+        PathArgs.checkNotDirectory("", "path");
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -487,17 +487,17 @@ public class PathArgs2Test {
 
     @Test
     public void checkDirectoryExists_Pass()
-    throws PathException2 {
+    throws PathException {
         File path = new File(UUID.randomUUID().toString());
         String pathname = path.getPath();
         File absPath = path.getAbsoluteFile();
         String absPathname = absPath.getPath();
         path.mkdir();
         try {
-            PathArgs2.checkDirectoryExists(path, "path");
-            PathArgs2.checkDirectoryExists(pathname, "pathname");
-            PathArgs2.checkDirectoryExists(absPath, "absPath");
-            PathArgs2.checkDirectoryExists(absPathname, "absPathname");
+            PathArgs.checkDirectoryExists(path, "path");
+            PathArgs.checkDirectoryExists(pathname, "pathname");
+            PathArgs.checkDirectoryExists(absPath, "absPath");
+            PathArgs.checkDirectoryExists(absPathname, "absPathname");
         }
         finally {
             _safeRmdir(path);
@@ -505,17 +505,17 @@ public class PathArgs2Test {
     }
     
     @Test
-    public void checkDirectoryExists_FailWithRegularFile()
+    public void checkDirectoryExists_FailWithFile()
     throws IOException {
         File path = new File(UUID.randomUUID().toString());
         path.createNewFile();
         try {
-            PathArgs2.checkDirectoryExists(path, "path");
+            PathArgs.checkDirectoryExists(path, "path");
         }
-        catch (PathException2 e) {
-            PathException2Test.assertPathExceptionEquals(
+        catch (PathException e) {
+            PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException2(PathExceptionReason.PATH_IS_REGULAR_FILE, path, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_IS_FILE, path, null, "dummy"));
         }
         finally {
             _safeRm(path);
@@ -523,18 +523,18 @@ public class PathArgs2Test {
     }
     
     @Test
-    public void checkDirectoryExists_FailWithRegularFile2()
+    public void checkDirectoryExists_FailWithFile2()
     throws IOException {
         File path = new File(UUID.randomUUID().toString());
         String pathname = path.getPath();
         path.createNewFile();
         try {
-            PathArgs2.checkDirectoryExists(pathname, "pathname");
+            PathArgs.checkDirectoryExists(pathname, "pathname");
         }
-        catch (PathException2 e) {
-            PathException2Test.assertPathExceptionEquals(
+        catch (PathException e) {
+            PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException2(PathExceptionReason.PATH_IS_REGULAR_FILE, path, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_IS_FILE, path, null, "dummy"));
         }
         finally {
             _safeRm(path);
@@ -542,18 +542,18 @@ public class PathArgs2Test {
     }
     
     @Test
-    public void checkDirectoryExists_FailWithRegularFile3()
+    public void checkDirectoryExists_FailWithFile3()
     throws IOException {
         File path = new File(UUID.randomUUID().toString());
         File absPath = path.getAbsoluteFile();
         path.createNewFile();
         try {
-            PathArgs2.checkDirectoryExists(absPath, "absPath");
+            PathArgs.checkDirectoryExists(absPath, "absPath");
         }
-        catch (PathException2 e) {
-            PathException2Test.assertPathExceptionEquals(
+        catch (PathException e) {
+            PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException2(PathExceptionReason.PATH_IS_REGULAR_FILE, absPath, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_IS_FILE, absPath, null, "dummy"));
         }
         finally {
             _safeRm(path);
@@ -561,19 +561,19 @@ public class PathArgs2Test {
     }
     
     @Test
-    public void checkDirectoryExists_FailWithRegularFile4()
+    public void checkDirectoryExists_FailWithFile4()
     throws IOException {
         File path = new File(UUID.randomUUID().toString());
         File absPath = path.getAbsoluteFile();
         String absPathname = absPath.getPath();
         path.createNewFile();
         try {
-            PathArgs2.checkDirectoryExists(absPathname, "absPathname");
+            PathArgs.checkDirectoryExists(absPathname, "absPathname");
         }
-        catch (PathException2 e) {
-            PathException2Test.assertPathExceptionEquals(
+        catch (PathException e) {
+            PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException2(PathExceptionReason.PATH_IS_REGULAR_FILE, absPath, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_IS_FILE, absPath, null, "dummy"));
         }
         finally {
             _safeRm(path);
@@ -582,61 +582,61 @@ public class PathArgs2Test {
     
     @Test
     public void checkDirectoryExists_FailWithPathNotExists()
-    throws PathException2 {
+    throws PathException {
         File path = new File(UUID.randomUUID().toString());
         try {
-            PathArgs2.checkDirectoryExists(path, "path");
+            PathArgs.checkDirectoryExists(path, "path");
         }
-        catch (PathException2 e) {
-            PathException2Test.assertPathExceptionEquals(
+        catch (PathException e) {
+            PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException2(PathExceptionReason.PATH_DOES_NOT_EXIST, path, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_DOES_NOT_EXIST, path, null, "dummy"));
         }
     }
     
     @Test
     public void checkDirectoryExists_FailWithPathNotExists2()
-    throws PathException2 {
+    throws PathException {
         File path = new File(UUID.randomUUID().toString());
         String pathname = path.getPath();
         try {
-            PathArgs2.checkDirectoryExists(pathname, "pathname");
+            PathArgs.checkDirectoryExists(pathname, "pathname");
         }
-        catch (PathException2 e) {
-            PathException2Test.assertPathExceptionEquals(
+        catch (PathException e) {
+            PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException2(PathExceptionReason.PATH_DOES_NOT_EXIST, path, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_DOES_NOT_EXIST, path, null, "dummy"));
         }
     }
     
     @Test
     public void checkDirectoryExists_FailWithPathNotExists3()
-    throws PathException2 {
+    throws PathException {
         File path = new File(UUID.randomUUID().toString());
         File absPath = path.getAbsoluteFile();
         try {
-            PathArgs2.checkDirectoryExists(absPath, "absPath");
+            PathArgs.checkDirectoryExists(absPath, "absPath");
         }
-        catch (PathException2 e) {
-            PathException2Test.assertPathExceptionEquals(
+        catch (PathException e) {
+            PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException2(PathExceptionReason.PATH_DOES_NOT_EXIST, absPath, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_DOES_NOT_EXIST, absPath, null, "dummy"));
         }
     }
     
     @Test
     public void checkDirectoryExists_FailWithPathNotExists4()
-    throws PathException2 {
+    throws PathException {
         File path = new File(UUID.randomUUID().toString());
         File absPath = path.getAbsoluteFile();
         String absPathname = absPath.getPath();
         try {
-            PathArgs2.checkDirectoryExists(absPathname, "absPathname");
+            PathArgs.checkDirectoryExists(absPathname, "absPathname");
         }
-        catch (PathException2 e) {
-            PathException2Test.assertPathExceptionEquals(
+        catch (PathException e) {
+            PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException2(PathExceptionReason.PATH_DOES_NOT_EXIST, absPath, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_DOES_NOT_EXIST, absPath, null, "dummy"));
         }
     }
     
@@ -653,20 +653,20 @@ public class PathArgs2Test {
     @Test(dataProvider = "_checkDirectoryExists_FailWithNullPath_Data",
             expectedExceptions = NullPointerException.class)
     public void checkDirectoryExists_FailWithNullPathname(String pathname, String argName)
-    throws PathException2 {
-        PathArgs2.checkDirectoryExists(pathname, argName);
+    throws PathException {
+        PathArgs.checkDirectoryExists(pathname, argName);
     }
     
     @Test(dataProvider = "_checkDirectoryExists_FailWithNullPath_Data",
             expectedExceptions = NullPointerException.class)
     public void checkDirectoryExists_FailWithNullPath(File path, String argName)
-    throws PathException2 {
-        PathArgs2.checkDirectoryExists(path, argName);
+    throws PathException {
+        PathArgs.checkDirectoryExists(path, argName);
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void checkDirectoryExists_FailWithEmptyPath()
-    throws PathException2 {
-        PathArgs2.checkDirectoryExists("", "path");
+    throws PathException {
+        PathArgs.checkDirectoryExists("", "path");
     }
 }

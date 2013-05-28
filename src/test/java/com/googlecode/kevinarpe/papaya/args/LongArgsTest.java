@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.Args;
+package com.googlecode.kevinarpe.papaya.args;
 
 /*
  * #%L
@@ -30,12 +30,13 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.args.IntArgs;
+import com.googlecode.kevinarpe.papaya.PrimitiveTypeUtils;
+import com.googlecode.kevinarpe.papaya.args.LongArgs;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class IntArgsTest {
+public class LongArgsTest {
     
     @BeforeClass
     public void classSetup() {
@@ -46,7 +47,7 @@ public class IntArgsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // IntArgs.checkPositive
+    // LongArgs.checkPositive
     //
 
     @DataProvider
@@ -54,17 +55,21 @@ public class IntArgsTest {
         return new Object[][] {
                 { 1 },
                 { 99 },
-                { Integer.MAX_VALUE },
+                { Long.MAX_VALUE },
+                { (long)(1.0f + PrimitiveTypeUtils.EPSILON_POSITIVE_FLOAT), },
+                { (long)(1.0f - PrimitiveTypeUtils.EPSILON_POSITIVE_FLOAT), },
+                { (long)(1.0d + PrimitiveTypeUtils.EPSILON_POSITIVE_DOUBLE), },
+                { (long)(1.0d - PrimitiveTypeUtils.EPSILON_POSITIVE_DOUBLE), },
         };
     }
     
     @Test(dataProvider = "_checkPositive_Pass_Data")
-    public void checkPositive_Pass(int i) {
-        IntArgs.checkPositive(i, "i");
+    public void checkPositive_Pass(long i) {
+        LongArgs.checkPositive(i, "i");
         // Demonstrate argName can be anything ridiculous.
-        IntArgs.checkPositive(i, null);
-        IntArgs.checkPositive(i, "");
-        IntArgs.checkPositive(i, "   ");
+        LongArgs.checkPositive(i, null);
+        LongArgs.checkPositive(i, "");
+        LongArgs.checkPositive(i, "   ");
     }
 
     @DataProvider
@@ -72,18 +77,18 @@ public class IntArgsTest {
         return new Object[][] {
                 { 0 },
                 { -1 },
-                { Integer.MIN_VALUE },
+                { Long.MIN_VALUE },
         };
     }
     
     @Test(dataProvider = "_checkPositive_FailWithNonPositiveInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void checkPositive_FailWithNonPositiveInput(int i) {
-        IntArgs.checkPositive(i, "i");
+    public void checkPositive_FailWithNonPositiveInput(long i) {
+        LongArgs.checkPositive(i, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // IntArgs.checkNotPositive
+    // LongArgs.checkNotPositive
     //
 
     @DataProvider
@@ -91,35 +96,35 @@ public class IntArgsTest {
         return new Object[][] {
                 { 0 },
                 { -99 },
-                { Integer.MIN_VALUE },
+                { Long.MIN_VALUE },
         };
     }
     
     @Test(dataProvider = "_checkNotPositive_Pass_Data")
-    public void checkNotPositive_Pass(int i) {
-        IntArgs.checkNotPositive(i, "i");
+    public void checkNotPositive_Pass(long i) {
+        LongArgs.checkNotPositive(i, "i");
         // Demonstrate argName can be anything ridiculous.
-        IntArgs.checkNotPositive(i, null);
-        IntArgs.checkNotPositive(i, "");
-        IntArgs.checkNotPositive(i, "   ");
+        LongArgs.checkNotPositive(i, null);
+        LongArgs.checkNotPositive(i, "");
+        LongArgs.checkNotPositive(i, "   ");
     }
     
     @DataProvider
     private static final Object[][] _checkNotPositive_FailWithPositiveInput_Data() {
         return new Object[][] {
                 { 1 },
-                { Integer.MAX_VALUE },
+                { Long.MAX_VALUE },
         };
     }
     
     @Test(dataProvider = "_checkNotPositive_FailWithPositiveInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void checkNotPositive_FailWithPositiveInput(int i) {
-        IntArgs.checkNotPositive(i, "i");
+    public void checkNotPositive_FailWithPositiveInput(long i) {
+        LongArgs.checkNotPositive(i, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // IntArgs.checkNegative
+    // LongArgs.checkNegative
     //
 
     @DataProvider
@@ -127,17 +132,17 @@ public class IntArgsTest {
         return new Object[][] {
                 { -1 },
                 { -99 },
-                { Integer.MIN_VALUE },
+                { Long.MIN_VALUE },
         };
     }
     
     @Test(dataProvider = "_checkNegative_Pass_Data")
-    public void checkNegative_Pass(int i) {
-        IntArgs.checkNegative(i, "i");
+    public void checkNegative_Pass(long i) {
+        LongArgs.checkNegative(i, "i");
         // Demonstrate argName can be anything ridiculous.
-        IntArgs.checkNegative(i, null);
-        IntArgs.checkNegative(i, "");
-        IntArgs.checkNegative(i, "   ");
+        LongArgs.checkNegative(i, null);
+        LongArgs.checkNegative(i, "");
+        LongArgs.checkNegative(i, "   ");
     }
 
     @DataProvider
@@ -145,18 +150,18 @@ public class IntArgsTest {
         return new Object[][] {
                 { 0 },
                 { 1 },
-                { Integer.MAX_VALUE },
+                { Long.MAX_VALUE },
         };
     }
     
     @Test(dataProvider = "_checkNegative_FailWithNonNegativeInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void checkNegative_FailWithNonNegativeInput(int i) {
-        IntArgs.checkNegative(i, "i");
+    public void checkNegative_FailWithNonNegativeInput(long i) {
+        LongArgs.checkNegative(i, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // IntArgs.checkNotNegative
+    // LongArgs.checkNotNegative
     //
 
     @DataProvider
@@ -164,35 +169,35 @@ public class IntArgsTest {
         return new Object[][] {
                 { 0 },
                 { 99 },
-                { Integer.MAX_VALUE },
+                { Long.MAX_VALUE },
         };
     }
     
     @Test(dataProvider = "_checkNotNegative_Pass_Data")
-    public void checkNotNegative_Pass(int i) {
-        IntArgs.checkNotNegative(i, "i");
+    public void checkNotNegative_Pass(long i) {
+        LongArgs.checkNotNegative(i, "i");
         // Demonstrate argName can be anything ridiculous.
-        IntArgs.checkNotNegative(i, null);
-        IntArgs.checkNotNegative(i, "");
-        IntArgs.checkNotNegative(i, "   ");
+        LongArgs.checkNotNegative(i, null);
+        LongArgs.checkNotNegative(i, "");
+        LongArgs.checkNotNegative(i, "   ");
     }
 
     @DataProvider
     private static final Object[][] _checkNotNegative_FailWithNegativeInput_Data() {
         return new Object[][] {
                 { -1 },
-                { Integer.MIN_VALUE },
+                { Long.MIN_VALUE },
         };
     }
     
     @Test(dataProvider = "_checkNotNegative_FailWithNegativeInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void checkNotNegative_FailWithNegativeInput(int i) {
-        IntArgs.checkNotNegative(i, "i");
+    public void checkNotNegative_FailWithNegativeInput(long i) {
+        LongArgs.checkNotNegative(i, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // IntArgs.checkValueRange
+    // LongArgs.checkValueRange
     //
 
     @DataProvider
@@ -208,12 +213,12 @@ public class IntArgsTest {
     }
     
     @Test(dataProvider = "_checkValueRange_Pass_Data")
-    public void checkValueRange_Pass(int i, int minValue, int maxValue) {
-        IntArgs.checkValueRange(i, minValue, maxValue, "i");
+    public void checkValueRange_Pass(long i, long minValue, long maxValue) {
+        LongArgs.checkValueRange(i, minValue, maxValue, "i");
         // Demonstrate argName can be anything ridiculous.
-        IntArgs.checkValueRange(i, minValue, maxValue, null);
-        IntArgs.checkValueRange(i, minValue, maxValue, "");
-        IntArgs.checkValueRange(i, minValue, maxValue, "   ");
+        LongArgs.checkValueRange(i, minValue, maxValue, null);
+        LongArgs.checkValueRange(i, minValue, maxValue, "");
+        LongArgs.checkValueRange(i, minValue, maxValue, "   ");
     }
     
     @DataProvider
@@ -238,12 +243,12 @@ public class IntArgsTest {
     @Test(dataProvider = "_checkValueRange_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkValueRange_FailWithInvalidInput(
-            int i, int minValue, int maxValue) {
-        IntArgs.checkValueRange(i, minValue, maxValue, "i");
+            long i, long minValue, long maxValue) {
+        LongArgs.checkValueRange(i, minValue, maxValue, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // IntArgs.checkMinValue
+    // LongArgs.checkMinValue
     //
 
     @DataProvider
@@ -260,12 +265,12 @@ public class IntArgsTest {
     }
     
     @Test(dataProvider = "_checkMinValue_Pass_Data")
-    public void checkMinValue_Pass(int i, int minValue) {
-        IntArgs.checkMinValue(i, minValue, "i");
+    public void checkMinValue_Pass(long i, long minValue) {
+        LongArgs.checkMinValue(i, minValue, "i");
         // Demonstrate argName can be anything ridiculous.
-        IntArgs.checkMinValue(i, minValue, null);
-        IntArgs.checkMinValue(i, minValue, "");
-        IntArgs.checkMinValue(i, minValue, "   ");
+        LongArgs.checkMinValue(i, minValue, null);
+        LongArgs.checkMinValue(i, minValue, "");
+        LongArgs.checkMinValue(i, minValue, "   ");
     }
     
     @DataProvider
@@ -280,12 +285,12 @@ public class IntArgsTest {
     
     @Test(dataProvider = "_checkMinValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void checkMinValue_FailWithInvalidInput(int i, int minValue) {
-        IntArgs.checkMinValue(i, minValue, "i");
+    public void checkMinValue_FailWithInvalidInput(long i, long minValue) {
+        LongArgs.checkMinValue(i, minValue, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // IntArgs.checkMaxValue
+    // LongArgs.checkMaxValue
     //
 
     @DataProvider
@@ -302,12 +307,12 @@ public class IntArgsTest {
     }
     
     @Test(dataProvider = "_checkMaxValue_Pass_Data")
-    public void checkMaxValue_Pass(int i, int maxValue) {
-        IntArgs.checkMaxValue(i, maxValue, "i");
+    public void checkMaxValue_Pass(long i, long maxValue) {
+        LongArgs.checkMaxValue(i, maxValue, "i");
         // Demonstrate argName can be anything ridiculous.
-        IntArgs.checkMaxValue(i, maxValue, null);
-        IntArgs.checkMaxValue(i, maxValue, "");
-        IntArgs.checkMaxValue(i, maxValue, "   ");
+        LongArgs.checkMaxValue(i, maxValue, null);
+        LongArgs.checkMaxValue(i, maxValue, "");
+        LongArgs.checkMaxValue(i, maxValue, "   ");
     }
     
     @DataProvider
@@ -322,12 +327,12 @@ public class IntArgsTest {
     
     @Test(dataProvider = "_checkMaxValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void checkMaxValue_FailWithInvalidInput(int i, int maxValue) {
-        IntArgs.checkMaxValue(i, maxValue, "i");
+    public void checkMaxValue_FailWithInvalidInput(long i, long maxValue) {
+        LongArgs.checkMaxValue(i, maxValue, "i");
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // IntArgs.checkExactValue
+    // LongArgs.checkExactValue
     //
 
     @DataProvider
@@ -336,18 +341,18 @@ public class IntArgsTest {
                 { 1, 1 },
                 { 0, 0 },
                 { -1, -1 },
-                { Integer.MAX_VALUE, Integer.MAX_VALUE },
-                { Integer.MIN_VALUE, Integer.MIN_VALUE },
+                { Long.MAX_VALUE, Long.MAX_VALUE },
+                { Long.MIN_VALUE, Long.MIN_VALUE },
         };
     }
     
     @Test(dataProvider = "_checkExactValue_Pass_Data")
-    public void checkExactValue_Pass(int i, int value) {
-        IntArgs.checkExactValue(i, value, "i");
+    public void checkExactValue_Pass(long i, long value) {
+        LongArgs.checkExactValue(i, value, "i");
         // Demonstrate argName can be anything ridiculous.
-        IntArgs.checkExactValue(i, value, null);
-        IntArgs.checkExactValue(i, value, "");
-        IntArgs.checkExactValue(i, value, "   ");
+        LongArgs.checkExactValue(i, value, null);
+        LongArgs.checkExactValue(i, value, "");
+        LongArgs.checkExactValue(i, value, "   ");
     }
     
     @DataProvider
@@ -362,7 +367,7 @@ public class IntArgsTest {
     
     @Test(dataProvider = "_checkExactValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void checkExactValue_FailWithInvalidInput(int i, int value) {
-        IntArgs.checkExactValue(i, value, "i");
+    public void checkExactValue_FailWithInvalidInput(long i, long value) {
+        LongArgs.checkExactValue(i, value, "i");
     }
 }

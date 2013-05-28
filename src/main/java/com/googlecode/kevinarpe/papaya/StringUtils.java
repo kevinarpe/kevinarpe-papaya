@@ -25,9 +25,6 @@ package com.googlecode.kevinarpe.papaya;
  * #L%
  */
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.googlecode.kevinarpe.papaya.args.IntArgs;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 

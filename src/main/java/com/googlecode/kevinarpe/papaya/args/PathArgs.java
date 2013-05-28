@@ -29,10 +29,8 @@ import java.io.File;
 import java.io.InputStream;
 
 import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
-import com.googlecode.kevinarpe.papaya.exceptions.DirectoryFoundException;
-import com.googlecode.kevinarpe.papaya.exceptions.DirectoryNotFoundException;
-import com.googlecode.kevinarpe.papaya.exceptions.RegularFileFoundException;
-import com.googlecode.kevinarpe.papaya.exceptions.RegularFileNotFoundException;
+import com.googlecode.kevinarpe.papaya.exceptions.PathException;
+import com.googlecode.kevinarpe.papaya.exceptions.PathException.PathExceptionReason;
 import com.googlecode.kevinarpe.papaya.exceptions.ClassResourceNotFoundException;
 
 /**
@@ -103,95 +101,98 @@ public final class PathArgs {
     }
     
     /**
-     * This is a convenience method for {@link #checkRegularFileExists(File, String)}.
+     * This is a convenience method for {@link #checkFileExists(File, String)}.
      * 
      * @throws NullPointerException if {@code pathname} is {@code null}
      * @throws IllegalArgumentException if {@code pathname} is empty
      */
     @FullyTested
-    public static File checkRegularFileExists(String pathname, String argName)
-    throws RegularFileNotFoundException {
+    public static File checkFileExists(String pathname, String argName)
+    throws PathException {
         StringArgs.checkNotEmpty(pathname, "pathname");
         File path = new File(pathname);
-        checkRegularFileExists(path, argName);
+        checkFileExists(path, argName);
         return path;
     }
     
     /**
-     * Tests if a regular file exists at a path.  Exception messages distinguish between paths that
-     * (a) do not exist, and (b) exist, but are not regular files.
+     * Tests if a file exists at a path.  Exception messages distinguish between paths that
+     * (a) do not exist, and (b) exist, but are not files.
      * 
      * @param path path to check
      * @param argName argument name for {@code path}, e.g., "outputFile" or "inputFile"
      * @return File validated path
      * @throws NullPointerException if {@code path} is {@code null}
-     * @throws RegularFileNotFoundException if {@code path} does not exist,
-     *         <br>or if {@code path} exists but is not a regular file
-     * @see #checkRegularFileExists(String, String)
-     * @see #checkNotRegularFile(File, String)
+     * @throws FileNotFoundException if {@code path} does not exist,
+     *         <br>or if {@code path} exists but is not a file
+     * @see #checkFileExists(String, String)
+     * @see #checkNotFile(File, String)
      * @see #checkDirectoryExists(File, String)
      */
     @FullyTested
-    public static File checkRegularFileExists(File path, String argName)
-    throws RegularFileNotFoundException {
+    public static File checkFileExists(File path, String argName)
+    throws PathException {
         ObjectArgs.checkNotNull(path, "path");
         if (!path.exists()) {
             String w = StringArgs._getArgNameWarning(argName, "argName");
             String msg = String.format(
-                "Argument '%s': Regular file does not exist: '%s'%s",
+                "Argument '%s': Path does not exist: '%s'%s",
                 argName, path.getAbsolutePath(), w);
-            throw new RegularFileNotFoundException(path, msg);
+            throw new PathException(
+                PathExceptionReason.PATH_DOES_NOT_EXIST, path, null, msg);
         }
-        if (!path.isFile()) {
+        if (path.isDirectory()) {
             String w = StringArgs._getArgNameWarning(argName, "argName");
             String msg = String.format(
-                "Argument '%s': Path exists, but is not a regular file: '%s'%s",
+                "Argument '%s': Path exists as a directory: '%s'%s",
                 argName, path.getAbsolutePath(), w);
-            throw new RegularFileNotFoundException(path, msg);
+            throw new PathException(
+                PathExceptionReason.PATH_IS_DIRECTORY, path, null, msg);
         }
         return path;
     }
     
     /**
-     * This is a convenience method for {@link #checkNotRegularFile(File, String)}.
+     * This is a convenience method for {@link #checkNotFile(File, String)}.
      * 
      * @throws NullPointerException if {@code pathname} is {@code null}
      * @throws IllegalArgumentException if {@code pathname} is empty
      */
     @FullyTested
-    public static File checkNotRegularFile(String pathname, String argName)
-    throws RegularFileFoundException {
+    public static File checkNotFile(String pathname, String argName)
+    throws PathException {
         StringArgs.checkNotEmpty(pathname, "pathname");
         File path = new File(pathname);
-        checkNotRegularFile(path, argName);
+        checkNotFile(path, argName);
         return path;
     }
     
     /**
-     * Tests if a regular file does not exist at a path.  In other words, the path must not exist,
+     * Tests if a file does not exist at a path.  In other words, the path must not exist,
      * <br>or exists only as a directory.  Understanding the purpose of this method is more subtle than
-     * its opposing relative, {@link #checkRegularFileExists(File, String)}.
+     * its opposing relative, {@link #checkFileExists(File, String)}.
      * <p>
-     * Example: Prior to creating a directory, check the path is not a regular file.
+     * Example: Prior to creating a directory, check the path is not a file.
      * 
      * @param path path to check
      * @param argName argument name for {@code path}, e.g., "outputFile" or "inputFile"
      * @return File validated path
      * @throws NullPointerException if {@code path} is {@code null}
-     * @throws RegularFileFoundException if {@code path} exists and is a regular file
-     * @see #checkNotRegularFile(String, String)
-     * @see #checkRegularFileExists(File, String)
+     * @throws FileFoundException if {@code path} exists and is a file
+     * @see #checkNotFile(String, String)
+     * @see #checkFileExists(File, String)
      */
     @FullyTested
-    public static File checkNotRegularFile(File path, String argName)
-    throws RegularFileFoundException {
+    public static File checkNotFile(File path, String argName)
+    throws PathException {
         ObjectArgs.checkNotNull(path, "path");
-        if (path.exists() && path.isFile()) {
+        if (path.isFile()) {
             String w = StringArgs._getArgNameWarning(argName, "argName");
             String msg = String.format(
-                "Argument '%s': Path exists and is a regular file: '%s'%s",
+                "Argument '%s': Path exists as a file: '%s'%s",
                 argName, path.getAbsolutePath(), w);
-            throw new RegularFileFoundException(path, msg);
+            throw new PathException(
+                PathExceptionReason.PATH_IS_FILE, path, null, msg);
         }
         return path;
     }
@@ -204,7 +205,7 @@ public final class PathArgs {
      */
     @FullyTested
     public static File checkDirectoryExists(String pathname, String argName)
-    throws DirectoryNotFoundException {
+    throws PathException {
         StringArgs.checkNotEmpty(pathname, "pathname");
         File path = new File(pathname);
         checkDirectoryExists(path, argName);
@@ -223,26 +224,28 @@ public final class PathArgs {
      *         <br>or if {@code path} exists but is not a directory
      * @see #checkDirectoryExists(String, String)
      * @see #checkNotDirectory(File, String)
-     * @see #checkRegularFileExists(File, String)
+     * @see #checkFileExists(File, String)
      */
     @FullyTested
     public static File checkDirectoryExists(File path, String argName)
-    throws DirectoryNotFoundException {
+    throws PathException {
         ObjectArgs.checkNotNull(path, "path");
         StringArgs.checkNotEmpty(argName, "argName");
         if (!path.exists()) {
             String w = StringArgs._getArgNameWarning(argName, "argName");
             String msg = String.format(
-                "Argument '%s': Directory does not exist: '%s'%s",
+                "Argument '%s': Path does not exist: '%s'%s",
                 argName, path.getAbsolutePath(), w);
-            throw new DirectoryNotFoundException(path, msg);
+            throw new PathException(
+                PathExceptionReason.PATH_DOES_NOT_EXIST, path, null, msg);
         }
-        if (!path.isDirectory()) {
+        if (path.isFile()) {
             String w = StringArgs._getArgNameWarning(argName, "argName");
             String msg = String.format(
-                "Argument '%s': Path exists, but is not a directory: '%s'%s",
+                "Argument '%s': Path exists as a file: '%s'%s",
                 argName, path.getAbsolutePath(), w);
-            throw new DirectoryNotFoundException(path, msg);
+            throw new PathException(
+                PathExceptionReason.PATH_IS_FILE, path, null, msg);
         }
         return path;
     }
@@ -255,7 +258,7 @@ public final class PathArgs {
      */
     @FullyTested
     public static File checkNotDirectory(String pathname, String argName)
-    throws DirectoryFoundException {
+    throws PathException {
         StringArgs.checkNotEmpty(pathname, "pathname");
         File path = new File(pathname);
         checkNotDirectory(path, argName);
@@ -264,10 +267,10 @@ public final class PathArgs {
     
     /**
      * Tests if a directory does not exist at a path.  In other words, the path must not exist, or
-     * exists only as a regular file.  Understanding the purpose of this method is more subtle than
+     * exists only as a file.  Understanding the purpose of this method is more subtle than
      * its opposing relative, {@link #checkDirectoryExists(File, String)}.
      * <p>
-     * Example: Prior to writing a regular file, check the path is not a directory.
+     * Example: Prior to writing a file, check the path is not a directory.
      * 
      * @param path path to check
      * @param argName argument name for {@code path}, e.g., "outputFile" or "inputFile"
@@ -279,14 +282,15 @@ public final class PathArgs {
      */
     @FullyTested
     public static File checkNotDirectory(File path, String argName)
-    throws DirectoryFoundException {
+    throws PathException {
         ObjectArgs.checkNotNull(path, "path");
-        if (path.exists() && path.isDirectory()) {
+        if (path.isDirectory()) {
             String w = StringArgs._getArgNameWarning(argName, "argName");
             String msg = String.format(
                 "Argument '%s': Path exists and is a directory: '%s'%s",
                 argName, path.getAbsolutePath(), w);
-            throw new DirectoryFoundException(path, msg);
+            throw new PathException(
+                PathExceptionReason.PATH_IS_DIRECTORY, path, null, msg);
         }
         return path;
     }

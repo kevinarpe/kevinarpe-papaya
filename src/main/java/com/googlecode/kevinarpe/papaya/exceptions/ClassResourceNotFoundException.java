@@ -29,7 +29,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
-import com.googlecode.kevinarpe.papaya.args.PathArgs;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.args.StringArgs;
 

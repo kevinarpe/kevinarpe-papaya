@@ -1,6 +1,7 @@
 package com.googlecode.kevinarpe.papaya.args;
 
 import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
+import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 
 /*
  * #%L
@@ -88,6 +89,24 @@ public final class ObjectArgs {
         if (null == ref) {
             String w = StringArgs._getArgNameWarning(argName, "argName");
             throw new NullPointerException(String.format("Argument '%s' is null%s", argName, w));
+        }
+        return ref;
+    }
+
+    /**
+     * Tests if an object reference passed as an argument is null.
+     * 
+     * @param ref an object reference
+     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @return the validated object reference
+     * @throws IllegalArgumentException if {@code ref} is not {@code null}
+     */
+    @NotFullyTested
+    public static <T> T checkNull(T ref, String argName) {
+        if (null != ref) {
+            String w = StringArgs._getArgNameWarning(argName, "argName");
+            throw new IllegalArgumentException(String.format("Argument '%s' is not null%s",
+                argName, w));
         }
         return ref;
     }
