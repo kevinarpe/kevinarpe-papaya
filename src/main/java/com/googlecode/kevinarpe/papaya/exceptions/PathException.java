@@ -34,7 +34,7 @@ import com.googlecode.kevinarpe.papaya.args.StringArgs;
 
 /**
  * This is a more specific version of {@link IOException} that focuses on path-related errors.
- * It applies to both (regular) file and directory paths.
+ * It applies to both file and directory paths.
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
