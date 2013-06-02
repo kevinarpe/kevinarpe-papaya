@@ -37,7 +37,7 @@ import com.googlecode.kevinarpe.papaya.exceptions.PathException.PathExceptionRea
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public final class PathUtils {
-
+    
     // Disable default constructor
     private PathUtils() {
     }
@@ -117,6 +117,10 @@ public final class PathUtils {
      *         directory for {@code path} exists as a file,
      *         <br>or with reason {@link PathExceptionReason#PARENT_PATH_IS_NON_WRITABLE_DIRECTORY}
      *         if parent directory for {@code path} exists as a directory, but is not writable,
+     *         <br>or with reason {@link PathExceptionReason#PATH_DISK_PARTITION_IS_FULL}
+     *         if disk partition for directory is full,
+     *         <br>or with reason {@link PathExceptionReason#PARENT_PATH_DISK_PARTITION_IS_FULL}
+     *         if disk partition for parent directory is full,
      *         <br>or with reason {@link PathExceptionReason#UNKNOWN} if reason for error
      *         is unknown
      * @see #makeDirectory(String)
@@ -161,6 +165,10 @@ public final class PathUtils {
      *         directory for {@code path} exists as a file,
      *         <br>or with reason {@link PathExceptionReason#PARENT_PATH_IS_NON_WRITABLE_DIRECTORY}
      *         if parent directory for {@code path} exists as a directory, but is not writable,
+     *         <br>or with reason {@link PathExceptionReason#PATH_DISK_PARTITION_IS_FULL}
+     *         if disk partition for directory is full,
+     *         <br>or with reason {@link PathExceptionReason#PARENT_PATH_DISK_PARTITION_IS_FULL}
+     *         if disk partition for parent directory is full,
      *         <br>or with reason {@link PathExceptionReason#UNKNOWN} if reason for error
      *         is unknown
      * @see #makeDirectoryAndParents(String)
@@ -187,6 +195,14 @@ public final class PathUtils {
                 path.getAbsolutePath());
             throw new PathException(
                 PathExceptionReason.PATH_IS_FILE, path, null, msg);
+        }
+        if (path.getTotalSpace() > 0 && 0 == path.getFreeSpace()) {
+            String msg = String.format(
+                "Failed to make %s: '%s'%n\tDisk partition is full",
+                desc,
+                path.getAbsolutePath());
+            throw new PathException(
+                PathExceptionReason.PATH_DISK_PARTITION_IS_FULL, path, null, msg);
         }
         File absPath = path.getAbsoluteFile();
         File parentPath = absPath.getParentFile();
@@ -226,6 +242,15 @@ public final class PathUtils {
                     path,
                     parentPath,
                     msg);
+            }
+            if (parentPath.getTotalSpace() > 0 && 0 == parentPath.getFreeSpace()) {
+                String msg = String.format(
+                    "Failed to make %s: '%s'%n\tDisk partition for parent path is full: '%s'",
+                    desc,
+                    path.getAbsolutePath(),
+                    parentPath.getAbsolutePath());
+                throw new PathException(
+                    PathExceptionReason.PARENT_PATH_DISK_PARTITION_IS_FULL, path, null, msg);
             }
             // Prepare for next iteration.
             parentPath = parentPath.getParentFile();

@@ -68,7 +68,7 @@ public class PathUtilsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // DirectoryUtils.isRootDirectory
+    // PathUtils.isRootDirectory
     //
 
     @DataProvider
@@ -109,7 +109,7 @@ public class PathUtilsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // DirectoryUtils.makeDirectory
+    // PathUtils.makeDirectory
     //
     
     @Test
@@ -337,7 +337,7 @@ public class PathUtilsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // DirectoryUtils.makeDirectoryAndParents
+    // PathUtils.makeDirectoryAndParents
     //
     
     @Test
@@ -574,7 +574,7 @@ public class PathUtilsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // DirectoryUtils.removeDirectory
+    // PathUtils.removeDirectory
     //
     
     @Test
@@ -743,7 +743,7 @@ public class PathUtilsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // DirectoryUtils.removeFile
+    // PathUtils.removeFile
     //
     
     @Test

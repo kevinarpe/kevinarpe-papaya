@@ -28,7 +28,8 @@ package com.googlecode.kevinarpe.papaya.exceptions;
 import java.io.File;
 import java.io.IOException;
 
-import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
+import com.google.common.base.Objects;
+import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.args.StringArgs;
 
@@ -38,7 +39,7 @@ import com.googlecode.kevinarpe.papaya.args.StringArgs;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@NotFullyTested
+@FullyTested
 public class PathException
 extends IOException {
 
@@ -62,7 +63,7 @@ extends IOException {
          * {@link PathException#getAbsPath()} does not exist, because
          * {@link PathException#getOptAbsParentPath()} does not exist.
          * <p>
-         * {@link PathException#getOptAbsParentPath()} is always <b>not</b> {@code null}.
+         * {@link PathException#getOptAbsParentPath()} is never {@code null}.
          */
         PARENT_PATH_DOES_NOT_EXIST(true),
 
@@ -76,7 +77,7 @@ extends IOException {
         /**
          * {@link PathException#getOptAbsParentPath()} exists as a file.
          * <p>
-         * {@link PathException#getOptAbsParentPath()} is always <b>not</b> {@code null}.
+         * {@link PathException#getOptAbsParentPath()} is never {@code null}.
          */
         PARENT_PATH_IS_FILE(true),
 
@@ -90,7 +91,7 @@ extends IOException {
         /**
          * {@link PathException#getOptAbsParentPath()} exists as a directory, but is not writable.
          * <p>
-         * {@link PathException#getOptAbsParentPath()} is always <b>not</b> {@code null}.
+         * {@link PathException#getOptAbsParentPath()} is never {@code null}.
          */
         PARENT_PATH_IS_NON_WRITABLE_DIRECTORY(true),
 
@@ -100,6 +101,20 @@ extends IOException {
          * {@link PathException#getOptAbsParentPath()} is always {@code null}.
          */
         PATH_IS_ROOT_DIRECTORY(false),
+        
+        /**
+         * {@link PathException#getAbsPath()} cannot be created on a full disk partition.
+         * <p>
+         * {@link PathException#getOptAbsParentPath()} is always {@code null}.
+         */
+        PATH_DISK_PARTITION_IS_FULL(false),
+        
+        /**
+         * {@link PathException#getOptAbsParentPath()} cannot be created on a full disk partition.
+         * <p>
+         * {@link PathException#getOptAbsParentPath()} is never {@code null}.
+         */
+        PARENT_PATH_DISK_PARTITION_IS_FULL(true),
 
         /**
          * The reason for error is unknown.
@@ -133,36 +148,53 @@ extends IOException {
     private final File _optAbsParentPath;
 
     /**
+     * This is a convenience method for
+     * {@link #PathException(PathExceptionReason, File, File, String, Throwable)}
+     * where param {@code optCause} is {@code null}.
+     */
+    public PathException(
+            PathExceptionReason reason, File path, File optParentPath, String message) {
+        this(reason, path, optParentPath, message, null);
+    }
+
+    /**
      * Constructs a new PathException object.  These should be thrown instead of
      * {@link IOException} in cases where the error is specifically path-related.  Some errors are
      * caused by a parent path and others not.  This class is careful to distinguish between
      * both cases.
      * <p>
      * To understand when parent path is not {@code null}, consider this example:
-     * <br>Imagine a utility method tries to make a directory...
-     * <br>Where input path is {@code /home/user/abc/def}...
-     * <br>But {@code /home/user/abc} exists as a file...
-     * <br>After failing to make the directory, the method might throw an exception where:
      * <ol>
-     *   <li>Parameter {@code reason} is
-     *   {@link PathExceptionReason#PARENT_PATH_IS_FILE}</li>
-     *   <li>Parameter {@code path} is {@code /home/user/abc/def}</li>
-     *   <li>Parameter {@code optParentPath} is {@code /home/user/abc}</li>
-     *   <li>Parameter {@code message} is
-     *   {@code "Failed to make directory: '/home/user/abc/def'; Parent path is a file: '/home/user/abc'"}</li>
+     *   <li>Imagine a utility method tries to make a directory...</li>
+     *   <li>Where input path is {@code /home/user/abc/def}...</li>
+     *   <li>But {@code /home/user/abc} exists as a file...</li>
+     *   <li>After failing to make the directory, the method might throw an exception where:</li>
+     *   <ol>
+     *     <li>Parameter {@code reason} is
+     *     {@link PathExceptionReason#PARENT_PATH_IS_FILE}</li>
+     *     <li>Parameter {@code path} is {@code /home/user/abc/def}</li>
+     *     <li>Parameter {@code optParentPath} is {@code /home/user/abc}</li>
+     *     <li>Parameter {@code message} is
+     *     {@code "Failed to make directory: '/home/user/abc/def'; Parent path is a file: '/home/user/abc'"}</li>
+     *     <li>Parameter {@code optCause} is {@code null}
+     *   </ol>
      * </ol>
      * 
      * @param reason why the error occured
+     *        <br>Access via {@link #getReason()}.
      * @param path deepest path that caused the error
      *        <br>Relative paths are converted to absolute paths automatically.
+     *        <br>Access via {@link #getAbsPath()}.
      * @param optParentPath (optional) parent path that caused the error
      *        <br>If {@link PathExceptionReason#hasParentPath} is {@code true}, then this parameter
      *        must <b>not</b> be {@code null}.
      *        <br>If {@link PathExceptionReason#hasParentPath} is {@code false}, then this
      *        parameter must be {@code null}.
      *        <br>Relative paths are converted to absolute paths automatically.
-     * @param message human-readable error message that is passed directly to
-     *        superclass constructor
+     *        <br>Access via {@link #getOptAbsParentPath()}.
+     * @param optCause optional underlying cause of this exception that is passed directory to
+     *        superclass constructor; may be {@code null}.
+     *        <br>Access via {@link #getMessage()}.
      * @throws NullPointerException if {@code reason}, {@code message} or {@code reason} is
      *         {@code null},
      *         <br>if {@link PathExceptionReason#hasParentPath} is {@code true} and
@@ -172,19 +204,48 @@ extends IOException {
      *         {@code optParentPath} is <b>not</b> {@code null}
      */
     public PathException(
-            PathExceptionReason reason, File path, File optParentPath, String message) {
-        super(StringArgs.checkNotEmptyOrWhitespace(message, "message"));
+            PathExceptionReason reason,
+            File path,
+            File optParentPath,
+            String message,
+            Throwable optCause) {
+        super(StringArgs.checkNotEmptyOrWhitespace(message, "message"), optCause);
         _reason = ObjectArgs.checkNotNull(reason, "reason");
         ObjectArgs.checkNotNull(path, "path");
         _absPath = path.getAbsoluteFile();
         if (reason.hasParentPath) {
-            ObjectArgs.checkNotNull(optParentPath, "optParentPath");
+            if (null == optParentPath) {
+                String msg = String.format(
+                    "%s.hasParentPath is true, but argument 'optParentPath' is null",
+                    reason.name());
+                throw new NullPointerException(msg);
+            }
             _optAbsParentPath = optParentPath.getAbsoluteFile();
         }
         else {
-            ObjectArgs.checkNull(optParentPath, "optParentPath");
+            if (null != optParentPath) {
+                String msg = String.format(
+                        "%s.hasParentPath is false, but argument 'optParentPath' is not null",
+                        reason.name());
+                throw new IllegalArgumentException(msg);
+            }
             _optAbsParentPath = null;
         }
+    }
+
+    /**
+     * Copy constructor to call
+     * {@link #PathException(PathExceptionReason, File, File, String, Throwable)}.
+     * 
+     * @throws NullPointerException if {@code other} is {@code null}
+     */
+    public PathException(PathException other) {
+        this(
+            ObjectArgs.checkNotNull(other, "other").getReason(),
+            other.getAbsPath(),
+            other.getOptAbsParentPath(),
+            other.getMessage(),
+            other.getCause());
     }
 
     /**
@@ -211,69 +272,55 @@ extends IOException {
         return _optAbsParentPath;
     }
 
-    /**
-     * Generated by Eclipse.
-     * <p>
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result
-                + ((_optAbsParentPath == null) ? 0 : _optAbsParentPath.hashCode());
-        result = prime * result + ((_absPath == null) ? 0 : _absPath.hashCode());
-        result = prime * result + ((_reason == null) ? 0 : _reason.hashCode());
+        int result =
+            Objects.hashCode(
+                getReason(),
+                getAbsPath(),
+                getOptAbsParentPath());
+        result = 31 * result + ThrowableUtils.hashCode(this);
         return result;
     }
 
-    /**
-     * Generated by Eclipse.
-     * <p>
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        PathException other = (PathException) obj;
-        if (_optAbsParentPath == null) {
-            if (other._optAbsParentPath != null)
-                return false;
+        // Ref: http://stackoverflow.com/a/5039178/257299
+        boolean result = false;
+        if (obj instanceof PathException) {
+            final PathException other = (PathException) obj;
+            result =
+                ThrowableUtils.equals(this, other)
+                && (getReason() == other.getReason())
+                && Objects.equal(getAbsPath(), other.getAbsPath())
+                && Objects.equal(getOptAbsParentPath(), other.getOptAbsParentPath());
         }
-        else if (!_optAbsParentPath.equals(other._optAbsParentPath))
-            return false;
-        if (_absPath == null) {
-            if (other._absPath != null)
-                return false;
-        }
-        else if (!_absPath.equals(other._absPath))
-            return false;
-        if (_reason != other._reason)
-            return false;
-        return true;
+        return result;
     }
-
+    
+    boolean equalsExcludingStackTrace(Object obj) {
+        // Ref: http://stackoverflow.com/a/5039178/257299
+        boolean result = false;
+        if (obj instanceof PathException) {
+            final PathException other = (PathException) obj;
+            result =
+                ThrowableUtils.equalsExcludingStackTrace(this, other)
+                && (getReason() == other.getReason())
+                && Objects.equal(getAbsPath(), other.getAbsPath())
+                && Objects.equal(getOptAbsParentPath(), other.getOptAbsParentPath());
+        }
+        return result;
+    }
+    
     @Override
     public String toString() {
         String x = String.format(
-            "%s [%n\tgetReason()='%s',%n\tgetAbsPath()='%s',%n\tgetOptAbsParentPath()='%s',%n\tgetMessage()='%s'",
+            "%s [%n\tgetReason()='%s',%n\tgetAbsPath()='%s',%n\tgetOptAbsParentPath()='%s',%s",
             getClass().getSimpleName(),
             getReason(),
             getAbsPath(),
             getOptAbsParentPath(),
-            getMessage());
-        String indent = "\t";
-        for (Throwable cause = getCause()
-                ; null != cause
-                ; cause = cause.getCause(), indent = indent.concat("\t")) {
-            x = x.concat(String.format(",%n%sgetCause()='%s'", indent, cause));
-        }
-        x = x.concat(String.format("%n\t]"));
+            ThrowableUtils.toString(this));
         return x;
     }
 }

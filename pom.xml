@@ -28,6 +28,11 @@
       <url>http://www.gnu.org/licenses/gpl.html</url>
       <distribution>repo</distribution>
     </license>
+    <license>
+      <name>GNU Classpath License</name>
+      <url>http://www.gnu.org/software/classpath/license.html</url>
+      <distribution>repo</distribution>
+    </license>
   </licenses>
   <prerequisites>
     <!-- Copied from Google Guava.  No idea which version is actually required. -->
@@ -55,6 +60,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.6</java.version>
+    
     <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
     <maven-javadoc-plugin.version>2.9</maven-javadoc-plugin.version>
     <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
@@ -65,8 +71,13 @@
     <animal-sniffer-maven-plugin.version>1.9</animal-sniffer-maven-plugin.version>
     <license-maven-plugin.version>1.4</license-maven-plugin.version>
     <maven-gpg-plugin.version>1.4</maven-gpg-plugin.version>
+    <maven-jxr-plugin.version>2.3</maven-jxr-plugin.version>
+    <maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
+    <maven-surefire-report-plugin.version>2.14.1</maven-surefire-report-plugin.version>
+    
     <testng.version>6.8.1</testng.version>
     <guava.version>14.0.1</guava.version>
+    <guava-testlib.version>14.0.1</guava-testlib.version>
     <commons-lang3.version>3.1</commons-lang3.version>
     <joda-time.version>2.2</joda-time.version>
   </properties>
@@ -197,6 +208,29 @@
     </plugins>
   </build>
 
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>${maven-surefire-report-plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>${maven-jxr-plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>${maven-project-info-reports-plugin.version}</version>
+        <configuration>
+          <dependencyLocationEnabled>false</dependencyLocationEnabled>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+
   <dependencies>
     <dependency>
       <groupId>org.testng</groupId>
@@ -208,6 +242,12 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>${guava.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava-testlib</artifactId>
+      <version>${guava-testlib.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>

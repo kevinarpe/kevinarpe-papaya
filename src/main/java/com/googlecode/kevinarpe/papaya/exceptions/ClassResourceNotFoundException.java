@@ -28,8 +28,10 @@ package com.googlecode.kevinarpe.papaya.exceptions;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
+import com.google.common.base.Objects;
+import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.args.PathArgs;
 import com.googlecode.kevinarpe.papaya.args.StringArgs;
 
 /**
@@ -39,27 +41,122 @@ import com.googlecode.kevinarpe.papaya.args.StringArgs;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  * @see PathArgs#checkClassResourceAsStreamExists(Class, String, String)
  */
-@NotFullyTested
+@FullyTested
 public class ClassResourceNotFoundException
 extends IOException {
 
-    private static final long serialVersionUID = 0;
+    private static final long serialVersionUID = -8055567818910462004L;
     
     private final Class<?> _classForResource;
     private final String _resourceName;
     
+    /**
+     * This is a convenience method for
+     * {@link #ClassResourceNotFoundException(Class, String, String, Throwable)}
+     * where param {@code optCause} is {@code null}.
+     */
     public ClassResourceNotFoundException(
             Class<?> classForResource, String resourceName, String message) {
-        super(StringArgs.checkNotEmptyOrWhitespace(message, "message"));
+        this(classForResource, resourceName, message, null);
+    }
+    
+    /**
+     * Constructs a new PathException object.  These should be thrown instead of
+     * {@link IOException} in cases where the error is specifically class resource path-related.
+     * 
+     * @param classForResource class used when check if resource exists
+     *        <br>Access via {@link #getClassForResource()}.
+     * @param resourceName path to class resource.
+     *        <br>See {@link PathArgs#checkClassResourceAsStreamExists(Class, String, String)} for
+     *        detailed explanation about resource paths.
+     *        <br>Access via {@link #getResourceName()}.
+     * @param message human-readable error message that is passed directly to
+     *        superclass constructor.
+     *        <br>Access via {@link #getMessage()}.
+     * @param optCause optional underlying cause of this exception that is passed directory to
+     *        superclass constructor; may be {@code null}.
+     *        <br>Access via {@link #getCause()}. 
+     * @throws NullPointerException if {@code classForResource}, {@code resourceName}, or
+     *         {@code message} is null
+     * @throws IllegalArgumentException if {@code message} is empty
+     */
+    public ClassResourceNotFoundException(
+            Class<?> classForResource, String resourceName, String message, Throwable optCause) {
+        super(StringArgs.checkNotEmptyOrWhitespace(message, "message"), optCause);
         _classForResource = ObjectArgs.checkNotNull(classForResource, "classForResource");
         _resourceName = StringArgs.checkNotEmpty(resourceName, "resourceName");
     }
+    
+    /**
+     * Copy constructor to call
+     * {@link #ClassResourceNotFoundException(Class, String, String, Throwable)}.
+     * 
+     * @throws NullPointerException if {@code other} is {@code null}
+     */
+    public ClassResourceNotFoundException(ClassResourceNotFoundException other) {
+        this(
+            ObjectArgs.checkNotNull(other, "other").getClassForResource(),
+            other.getResourceName(),
+            other.getMessage(),
+            other.getCause());
+    }
 
+    /**
+     * @return class used when checking if resource exists
+     */
     public Class<?> getClassForResource() {
         return _classForResource;
     }
 
+    /**
+     * @return path to class resource
+     */
     public String getResourceName() {
         return _resourceName;
+    }
+    
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(getClassForResource(), getResourceName());
+        result = 31 * result + ThrowableUtils.hashCode(this);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        // Ref: http://stackoverflow.com/a/5039178/257299
+        boolean result = false;
+        if (obj instanceof ClassResourceNotFoundException) {
+            final ClassResourceNotFoundException other = (ClassResourceNotFoundException) obj;
+            result =
+                ThrowableUtils.equals(this, other)
+                && getClassForResource() == other.getClassForResource()
+                && Objects.equal(getResourceName(), other.getResourceName());
+        }
+        return result;
+    }
+    
+    boolean equalsExcludingStackTrace(Object obj) {
+        // Ref: http://stackoverflow.com/a/5039178/257299
+        boolean result = false;
+        if (obj instanceof ClassResourceNotFoundException) {
+            final ClassResourceNotFoundException other = (ClassResourceNotFoundException) obj;
+            result =
+                ThrowableUtils.equalsExcludingStackTrace(this, other)
+                && getClassForResource() == other.getClassForResource()
+                && Objects.equal(getResourceName(), other.getResourceName());
+        }
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        String x = String.format(
+            "%s [%n\tgetClassForResource()=%s,%n\tgetResourceName()='%s',%s",
+            getClass().getSimpleName(),
+            getClassForResource(),
+            getResourceName(),
+            ThrowableUtils.toString(this));
+        return x;
     }
 }
