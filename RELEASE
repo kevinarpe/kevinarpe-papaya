@@ -1,6 +1,6 @@
 This document contains notes about how to release this software:
 
-* mvn install
+* mvn clean install site
 ** Any compiler errors or failed/skipped tests must be cleaned-up.
 * git commit -a
 * mvn release:clean
