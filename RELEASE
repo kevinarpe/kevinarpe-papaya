@@ -16,5 +16,6 @@ This document contains notes about how to release this software:
 * cp -R ../kevinarpe-papaya/target/apidocs/* ./javadoc/
 * git add .
 * git commit -a
+* git push origin master
 * Update project homepage with new Maven Central Repo dependency details:
     http://code.google.com/p/kevinarpe-papaya/ 
