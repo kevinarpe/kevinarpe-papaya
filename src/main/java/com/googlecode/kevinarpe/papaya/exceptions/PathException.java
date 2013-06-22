@@ -180,28 +180,39 @@ extends IOException {
      *   </ol>
      * </ol>
      * 
-     * @param reason why the error occured
-     *        <br>Access via {@link #getReason()}.
-     * @param path deepest path that caused the error
-     *        <br>Relative paths are converted to absolute paths automatically.
-     *        <br>Access via {@link #getAbsPath()}.
-     * @param optParentPath (optional) parent path that caused the error
-     *        <br>If {@link PathExceptionReason#hasParentPath} is {@code true}, then this parameter
-     *        must <b>not</b> be {@code null}.
-     *        <br>If {@link PathExceptionReason#hasParentPath} is {@code false}, then this
-     *        parameter must be {@code null}.
-     *        <br>Relative paths are converted to absolute paths automatically.
-     *        <br>Access via {@link #getOptAbsParentPath()}.
-     * @param optCause optional underlying cause of this exception that is passed directory to
-     *        superclass constructor; may be {@code null}.
-     *        <br>Access via {@link #getMessage()}.
-     * @throws NullPointerException if {@code reason}, {@code message} or {@code reason} is
-     *         {@code null},
-     *         <br>if {@link PathExceptionReason#hasParentPath} is {@code true} and
-     *         {@code optParentPath} is {@code null}
-     * @throws IllegalArgumentException if {@code message} is empty or only whitespace,
-     *         <br>if {@link PathExceptionReason#hasParentPath} is {@code false} and
-     *         {@code optParentPath} is <b>not</b> {@code null}
+     * @param reason
+     *        why the error occured.
+     *        Access via {@link #getReason()}.
+     * @param path
+     *        deepest path that caused the error.  Relative paths are converted to absolute paths
+     *        automatically.
+     *        Access via {@link #getAbsPath()}.
+     * @param optParentPath
+     *        (optional) parent path that caused the error.
+     *        If {@link PathExceptionReason#hasParentPath} is:
+     *        <ul>
+     *          <li>{@code true}, then this parameter must <b>not</b> be {@code null}.</li>
+     *          <li>{@code false}, then this parameter must be {@code null}.</li>
+     *        </ul>
+     *        Relative paths are converted to absolute paths automatically.
+     *        Access via {@link #getOptAbsParentPath()}.
+     * @param optCause
+     *        (optional) underlying cause of this exception that is passed directly to the
+     *        superclass constructor.  May be {@code null}.
+     *        Access via {@link #getMessage()}.
+     *
+     * @throws NullPointerException
+     * <ul>
+     *   <li>if {@code reason}, {@code message} or {@code reason} is {@code null}</li>
+     *   <li>if {@link PathExceptionReason#hasParentPath} is {@code true} and
+     *   {@code optParentPath} is {@code null}</li>
+     * </ul>
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code message} is empty or only whitespace</li>
+     *   <li>if {@link PathExceptionReason#hasParentPath} is {@code false} and
+     *   {@code optParentPath} is <b>not</b> {@code null}</li>
+     * </ul>
      */
     public PathException(
             PathExceptionReason reason,
@@ -212,6 +223,7 @@ extends IOException {
         super(StringArgs.checkNotEmptyOrWhitespace(message, "message"), optCause);
         _reason = ObjectArgs.checkNotNull(reason, "reason");
         ObjectArgs.checkNotNull(path, "path");
+        
         _absPath = path.getAbsoluteFile();
         if (reason.hasParentPath) {
             if (null == optParentPath) {
@@ -237,7 +249,8 @@ extends IOException {
      * Copy constructor to call
      * {@link #PathException(PathExceptionReason, File, File, String, Throwable)}.
      * 
-     * @throws NullPointerException if {@code other} is {@code null}
+     * @throws NullPointerException
+     *         if {@code other} is {@code null}
      */
     public PathException(PathException other) {
         this(
@@ -263,10 +276,10 @@ extends IOException {
     }
     
     /**
-     * @return (optional) absolute parent path that caused this error
-     *         <br>Here, <i>optional</i> means: may be {@code null}
-     *         <br>See {@link #PathException(PathExceptionReason, File, File, String)} for further
-     *         notes about when this field is {@code null} (or not) and why
+     * @return (optional) absolute parent path that caused this error.
+     *         Here, <i>optional</i> means: may be {@code null}.
+     *         See {@link #PathException(PathExceptionReason, File, File, String)} for further
+     *         notes about when and why this field is {@code null} (or not).
      */
     public File getOptAbsParentPath() {
         return _optAbsParentPath;
@@ -298,6 +311,9 @@ extends IOException {
         return result;
     }
     
+    /**
+     * Used by test code.
+     */
     boolean equalsExcludingStackTrace(Object obj) {
         // Ref: http://stackoverflow.com/a/5039178/257299
         boolean result = false;

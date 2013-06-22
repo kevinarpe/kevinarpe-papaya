@@ -25,7 +25,6 @@ package com.googlecode.kevinarpe.papaya.exceptions;
  * #L%
  */
 
-import java.io.File;
 import java.util.UUID;
 
 import org.testng.Assert;

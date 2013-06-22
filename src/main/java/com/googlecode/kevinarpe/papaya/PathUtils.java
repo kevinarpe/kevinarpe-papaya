@@ -42,7 +42,7 @@ public final class PathUtils {
     private PathUtils() {
     }
     
-    /**
+    /*
      * TextFileReader:
      *         Set delimiter
      *             Keep/discard trailing delim
@@ -54,12 +54,15 @@ public final class PathUtils {
     /**
      * This is a convenience method for {@link #isRootDirectory(File)}.
      * 
-     * @throws NullPointerException if {@code pathname} is {@code null}
-     * @throws IllegalArgumentException if {@code pathname} is empty
+     * @throws NullPointerException
+     *         if {@code pathname} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code pathname} is empty
      */
     @FullyTested
     public static boolean isRootDirectory(String pathname) {
         StringArgs.checkNotEmpty(pathname, "pathname");
+        
         File path = new File(pathname);
         boolean b = isRootDirectory(path);
         return b;
@@ -70,13 +73,18 @@ public final class PathUtils {
      * directories, such A:\, B:\, C:\, D:\, etc.  On UNIX (and its variants, including Mac OS X),
      * there is only one root directory: /
      * 
-     * @param path path to test
+     * @param path
+     *        any path to test, including existing file paths, or non-existant paths
+     *
      * @return true if path is a root directory, else false
-     * @throws NullPointerException if {@code path} is {@code null}
+     *
+     * @throws NullPointerException
+     *         if {@code path} is {@code null}
      */
     @FullyTested
     public static boolean isRootDirectory(File path) {
         ObjectArgs.checkNotNull(path, "path");
+        
         File absPath = path.getAbsoluteFile();
         File parent = absPath.getParentFile();
         boolean b = (null == parent);
@@ -86,13 +94,16 @@ public final class PathUtils {
     /**
      * This is a convenience method for {@link #makeDirectory(File)}.
      * 
-     * @throws NullPointerException if {@code pathname} is {@code null}
-     * @throws IllegalArgumentException if {@code pathname} is empty
+     * @throws NullPointerException
+     *         if {@code pathname} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code pathname} is empty
      */
     @FullyTested
     public static File makeDirectory(String pathname)
     throws PathException {
         StringArgs.checkNotEmpty(pathname, "pathname");
+        
         File path = new File(pathname);
         File result = makeDirectory(path);
         return result;
@@ -100,29 +111,41 @@ public final class PathUtils {
     
     /**
      * Improved version of {@link File#mkdir()} with detailed error reporting via exceptions. 
+     * The creation of directories may fail for a wide variety of reasons.  Each reason is
+     * specifically codes into the thrown exception.
      * <p>
-     * This method does not throw an exception if directory already exists.
+     * This method does <b>not</b> throw an exception if directory already exists.
      * <p>
      * This method throws an exception if any parent directory does not exist.  Thus, in almost all
      * "real world" cases, you should instead call {@link #makeDirectoryAndParents(File)}.  This
      * may save some sleepness nights when a parent directory is unexpectedly missing.
      * 
-     * @param path path for new directory
-     * @throws NullPointerException if {@code path} is {@code null}
-     * @throws PathException with reason {@link PathExceptionReason#PATH_IS_FILE}
-     *         if {@code path} exists as a file,
-     *         <br>or with reason {@link PathExceptionReason#PARENT_PATH_DOES_NOT_EXIST} if parent
-     *         directory for {@code path} does not exist,
-     *         <br>or with reason {@link PathExceptionReason#PARENT_PATH_IS_FILE} if parent
-     *         directory for {@code path} exists as a file,
-     *         <br>or with reason {@link PathExceptionReason#PARENT_PATH_IS_NON_WRITABLE_DIRECTORY}
-     *         if parent directory for {@code path} exists as a directory, but is not writable,
-     *         <br>or with reason {@link PathExceptionReason#PATH_DISK_PARTITION_IS_FULL}
-     *         if disk partition for directory is full,
-     *         <br>or with reason {@link PathExceptionReason#PARENT_PATH_DISK_PARTITION_IS_FULL}
-     *         if disk partition for parent directory is full,
-     *         <br>or with reason {@link PathExceptionReason#UNKNOWN} if reason for error
-     *         is unknown
+     * @param path
+     *        path for new directory
+     *        
+     * @return reference to input path
+     *
+     * @throws NullPointerException
+     *         if {@code path} is {@code null}
+     * @throws PathException
+     * <ul>
+     *   <li>with reason {@link PathExceptionReason#PATH_IS_FILE}
+     *   if {@code path} exists as a file,</li>
+     *   <li>or with reason {@link PathExceptionReason#PARENT_PATH_DOES_NOT_EXIST}
+     *   if parent directory for {@code path} does not exist,</li>
+     *   <li>or with reason {@link PathExceptionReason#PARENT_PATH_IS_FILE}
+     *   if parent directory for {@code path} exists as a file,</li>
+     *   <li>or with reason {@link PathExceptionReason#PARENT_PATH_IS_NON_WRITABLE_DIRECTORY}
+     *   if parent directory for {@code path} exists as a directory, but is not
+     *   writable,</li>
+     *   <li>or with reason {@link PathExceptionReason#PATH_DISK_PARTITION_IS_FULL}
+     *   if disk partition for directory is full,</li>
+     *   <li>or with reason {@link PathExceptionReason#PARENT_PATH_DISK_PARTITION_IS_FULL}
+     *   if disk partition for parent directory is full,</li>
+     *   <li>or with reason {@link PathExceptionReason#UNKNOWN}
+     *   if reason for error is unknown</li>
+     * </ul>
+     *
      * @see #makeDirectory(String)
      * @see #makeDirectoryAndParents(File)
      */
@@ -130,6 +153,7 @@ public final class PathUtils {
     public static File makeDirectory(File path)
     throws PathException {
         ObjectArgs.checkNotNull(path, "path");
+        
         if (path.mkdir() || path.isDirectory()) {
             return path;
         }
@@ -140,37 +164,51 @@ public final class PathUtils {
     /**
      * This is a convenience method for {@link #makeDirectoryAndParents(File)}.
      * 
-     * @throws NullPointerException if {@code pathname} is {@code null}
-     * @throws IllegalArgumentException if {@code pathname} is empty
+     * @throws NullPointerException
+     *         if {@code pathname} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code pathname} is empty
      */
     @FullyTested
     public static File makeDirectoryAndParents(String pathname)
     throws PathException {
         StringArgs.checkNotEmpty(pathname, "pathname");
+        
         File path = new File(pathname);
         File result = makeDirectoryAndParents(path);
         return result;
     }
     
     /**
-     * Improved version of {@link File#mkdirs()} with detailed error reporting via exceptions. 
+     * Improved version of {@link File#mkdirs()} with detailed error reporting via exceptions.
+     * The creation of directories may fail for a wide variety of reasons.  Each reason is
+     * specifically codes into the thrown exception.
      * <p>
-     * This method does not throw an exception if directory already exists.
+     * This method does <b>not</b> throw an exception if directory already exists.
      * 
-     * @param path path for new directory
-     * @throws NullPointerException if {@code path} is {@code null}
-     * @throws PathException with reason {@link PathExceptionReason#PATH_IS_FILE}
-     *         if {@code path} exists as a file,
-     *         <br>or with reason {@link PathExceptionReason#PARENT_PATH_IS_FILE} if parent
-     *         directory for {@code path} exists as a file,
-     *         <br>or with reason {@link PathExceptionReason#PARENT_PATH_IS_NON_WRITABLE_DIRECTORY}
-     *         if parent directory for {@code path} exists as a directory, but is not writable,
-     *         <br>or with reason {@link PathExceptionReason#PATH_DISK_PARTITION_IS_FULL}
-     *         if disk partition for directory is full,
-     *         <br>or with reason {@link PathExceptionReason#PARENT_PATH_DISK_PARTITION_IS_FULL}
-     *         if disk partition for parent directory is full,
-     *         <br>or with reason {@link PathExceptionReason#UNKNOWN} if reason for error
-     *         is unknown
+     * @param path
+     *        path for new directory
+     *        
+     * @return reference to input path
+     *
+     * @throws NullPointerException
+     *         if {@code path} is {@code null}
+     * @throws PathException
+     * <ul>
+     *   <li>with reason {@link PathExceptionReason#PATH_IS_FILE}
+     *   if {@code path} exists as a file,</li>
+     *   <li>or with reason {@link PathExceptionReason#PARENT_PATH_IS_FILE}
+     *   if parent directory for {@code path} exists as a file,</li>
+     *   <li>or with reason {@link PathExceptionReason#PARENT_PATH_IS_NON_WRITABLE_DIRECTORY}
+     *   if parent directory for {@code path} exists as a directory, but is not writable,</li>
+     *   <li>or with reason {@link PathExceptionReason#PATH_DISK_PARTITION_IS_FULL}
+     *   if disk partition for directory is full,</li>
+     *   <li>or with reason {@link PathExceptionReason#PARENT_PATH_DISK_PARTITION_IS_FULL}
+     *   if disk partition for parent directory is full,</li>
+     *   <li>or with reason {@link PathExceptionReason#UNKNOWN}
+     *   if reason for error is unknown</li>
+     * </ul>
+     *
      * @see #makeDirectoryAndParents(String)
      * @see #makeDirectory(File)
      */
@@ -178,6 +216,7 @@ public final class PathUtils {
     public static File makeDirectoryAndParents(File path)
     throws PathException {
         ObjectArgs.checkNotNull(path, "path");
+        
         if (path.mkdirs() || path.isDirectory()) {
             return path;
         }
@@ -268,13 +307,16 @@ public final class PathUtils {
     /**
      * This is a convenience method for {@link #removeDirectory(File)}.
      * 
-     * @throws NullPointerException if {@code pathname} is {@code null}
-     * @throws IllegalArgumentException if {@code pathname} is empty
+     * @throws NullPointerException
+     *         if {@code pathname} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code pathname} is empty
      */
     @FullyTested
     public static void removeDirectory(String pathname)
     throws PathException {
         StringArgs.checkNotEmpty(pathname, "pathname");
+        
         File path = new File(pathname);
         removeDirectory(path);
     }
@@ -288,24 +330,30 @@ public final class PathUtils {
      * This method throws an exception if the directory is not empty -- contains any files or
      * sub-directories.
      * 
-     * @param path path to empty directory to remove
-     * @throws NullPointerException if {@code path} is {@code null}
-     * @throws PathException with reason {@link PathExceptionReason#PATH_IS_FILE}
-     *         if {@code path} exists as a file,
-     *         <br>or with reason {@link PathExceptionReason#PATH_IS_ROOT_DIRECTORY}
-     *         if {@code path} exists as a root directory,
-     *         <br>or with reason {@link PathExceptionReason#PARENT_PATH_DOES_NOT_EXIST} if parent
-     *         directory for {@code path} does not exist,
-     *         <br>or with reason {@link PathExceptionReason#PARENT_PATH_IS_NON_WRITABLE_DIRECTORY}
-     *         if parent directory for {@code path} exists as a directory, but is not writable,
-     *         <br>or with reason {@link PathExceptionReason#UNKNOWN} if reason for error
-     *         is unknown
+     * @param path
+     *        path to empty directory to remove
+     *
+     * @throws NullPointerException
+     *         if {@code path} is {@code null}
+     * @throws PathException
+     * <ul>
+     *   <li>with reason {@link PathExceptionReason#PATH_IS_FILE}
+     *   if {@code path} exists as a file,</li>
+     *   <li>or with reason {@link PathExceptionReason#PATH_IS_ROOT_DIRECTORY}
+     *   if {@code path} exists as a root directory,</li>
+     *   <li>or with reason {@link PathExceptionReason#PARENT_PATH_IS_NON_WRITABLE_DIRECTORY}
+     *   if parent directory for {@code path} exists as a directory, but is not writable,</li>
+     *   <li>or with reason {@link PathExceptionReason#UNKNOWN}
+     *   if reason for error is unknown</li>
+     * </ul>
+     *
      * @see #removeDirectory(String)
      */
     @FullyTested
     public static void removeDirectory(File path)
     throws PathException {
         ObjectArgs.checkNotNull(path, "path");
+        
         if ((path.isDirectory() && path.delete()) || !path.exists()) {
             return;
         }
@@ -349,13 +397,16 @@ public final class PathUtils {
     /**
      * This is a convenience method for {@link #removeFile(File)}.
      * 
-     * @throws NullPointerException if {@code pathname} is {@code null}
-     * @throws IllegalArgumentException if {@code pathname} is empty
+     * @throws NullPointerException
+     *         if {@code pathname} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code pathname} is empty
      */
     @FullyTested
     public static void removeFile(String pathname)
     throws PathException {
         StringArgs.checkNotEmpty(pathname, "pathname");
+        
         File path = new File(pathname);
         removeFile(path);
     }
@@ -364,22 +415,30 @@ public final class PathUtils {
      * Improved version of {@link File#delete()} (for files) with detailed error reporting
      * via exceptions. 
      * <p>
-     * This method does not throw an exception if directory does not exist.
+     * This method does not throw an exception if file does not exist.
      * 
-     * @param path path to file to remove
-     * @throws NullPointerException if {@code path} is {@code null}
-     * @throws PathException with reason {@link PathExceptionReason#PATH_IS_DIRECTORY}
-     *         if {@code path} exists as a directory,
-     *         <br>or with reason {@link PathExceptionReason#PARENT_PATH_IS_NON_WRITABLE_DIRECTORY}
-     *         if parent directory for {@code path} exists as a directory, but is not writable,
-     *         <br>or with reason {@link PathExceptionReason#UNKNOWN} if reason for error
-     *         is unknown
+     * @param path
+     *        path to file to remove
+     *
+     * @throws NullPointerException
+     *         if {@code path} is {@code null}
+     * @throws PathException
+     * <ul>
+     *   <li>with reason {@link PathExceptionReason#PATH_IS_DIRECTORY}
+     *   if {@code path} exists as a directory,</li>
+     *   <li>or with reason {@link PathExceptionReason#PARENT_PATH_IS_NON_WRITABLE_DIRECTORY}
+     *   if parent directory for {@code path} exists as a directory, but is not writable,</li>
+     *   <li>or with reason {@link PathExceptionReason#UNKNOWN} if reason for error
+     *   is unknown</li>
+     * </ul>
+     *
      * @see #removeFile(String)
      */
     @FullyTested
     public static void removeFile(File path)
     throws PathException {
         ObjectArgs.checkNotNull(path, "path");
+        
         if ((path.isFile() && path.delete()) || !path.exists()) {
             return;
         }

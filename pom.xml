@@ -103,6 +103,9 @@
           <docencoding>UTF-8</docencoding>
           <charset>UTF-8</charset>
           <stylesheetfile>${project.basedir}/src/javadoc/stylesheet.css</stylesheetfile>
+<!--
+          <linksource>true</linksource>
+-->
         </configuration>
         <executions>
           <execution>

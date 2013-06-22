@@ -70,16 +70,24 @@ public final class PathArgs {
      * Example: For class {@code foo.bar.Baz}, relative resource path {@code "data/xyz.txt"}
      * becomes absolute resource path {@code "/foo/bar/data/xyz.txt"}
      * 
-     * @param clazz ref to class object to find resource
-     * @param pathname relative path (without leading "/") to resource,
+     * @param clazz
+     *        ref to class object to find resource
+     * @param pathname
+     *        relative path (without leading "/") to resource,
      *        e.g., {@code "proxy.properties"},
      *        <br>or absolute path (with leading "/") to resource,
      *        e.g., {@code "/proxy.properties"}
-     * @param pathnameArgName argument name for {@code pathname}, e.g., "outputFile" or "inputFile"
+     * @param pathnameArgName
+     *        argument name for {@code pathname}, e.g., "outputFile" or "inputFile"
+     *
      * @return result from {@link Class#getResourceAsStream(String)}
-     * @throws NullPointerException if {@code clazz} or {@code pathname} is {@code null}
-     * @throws IllegalArgumentException if {@code pathname} is empty
-     * @throws ClassResourceNotFoundException if resource is not found 
+     *
+     * @throws NullPointerException
+     *         if {@code clazz} or {@code pathname} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code pathname} is empty
+     * @throws ClassResourceNotFoundException
+     *         if resource is not found 
      */
     @FullyTested
     public static InputStream checkClassResourceAsStreamExists(
@@ -87,6 +95,7 @@ public final class PathArgs {
     throws ClassResourceNotFoundException {
         ObjectArgs.checkNotNull(clazz, "clazz");
         StringArgs.checkNotEmpty(pathname, "pathname");
+        
         // Ref: http://fuyun.org/2009/11/how-to-read-input-files-in-maven-junit/
         // Ref: http://stackoverflow.com/questions/6608795/what-is-the-difference-between-class-getresource-and-classloader-getresource
         InputStream istream = clazz.getResourceAsStream(pathname);
@@ -103,13 +112,16 @@ public final class PathArgs {
     /**
      * This is a convenience method for {@link #checkFileExists(File, String)}.
      * 
-     * @throws NullPointerException if {@code pathname} is {@code null}
-     * @throws IllegalArgumentException if {@code pathname} is empty
+     * @throws NullPointerException
+     *         if {@code pathname} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code pathname} is empty
      */
     @FullyTested
     public static File checkFileExists(String pathname, String argName)
     throws PathException {
         StringArgs.checkNotEmpty(pathname, "pathname");
+        
         File path = new File(pathname);
         checkFileExists(path, argName);
         return path;
@@ -119,12 +131,24 @@ public final class PathArgs {
      * Tests if a file exists at a path.  Exception messages distinguish between paths that
      * (a) do not exist, and (b) exist, but are not files.
      * 
-     * @param path path to check
-     * @param argName argument name for {@code path}, e.g., "outputFile" or "inputFile"
-     * @return File validated path
-     * @throws NullPointerException if {@code path} is {@code null}
-     * @throws FileNotFoundException if {@code path} does not exist,
-     *         <br>or if {@code path} exists but is not a file
+     * @param path
+     *        path to check
+     * @param argName
+     *        argument name for {@code path}, e.g., "outputFile" or "inputFile"
+     *
+     * @return validated path
+     *
+     * @throws NullPointerException
+     *         if {@code path} is {@code null}
+     * @throws PathException
+     * <ul>
+     *   <li>with reason {@link PathExceptionReason#PATH_DOES_NOT_EXIST}
+     *   if {@code path} does not exist</li>
+     *   <li>with reason {@link PathExceptionReason#PATH_IS_DIRECTORY}
+     *   if {@code path} exists, but is not a file</li>
+     *   <li></li>
+     * </ul>
+     *
      * @see #checkFileExists(String, String)
      * @see #checkNotFile(File, String)
      * @see #checkDirectoryExists(File, String)
@@ -133,6 +157,7 @@ public final class PathArgs {
     public static File checkFileExists(File path, String argName)
     throws PathException {
         ObjectArgs.checkNotNull(path, "path");
+        
         if (!path.exists()) {
             String w = StringArgs._getArgNameWarning(argName, "argName");
             String msg = String.format(
@@ -155,13 +180,16 @@ public final class PathArgs {
     /**
      * This is a convenience method for {@link #checkNotFile(File, String)}.
      * 
-     * @throws NullPointerException if {@code pathname} is {@code null}
-     * @throws IllegalArgumentException if {@code pathname} is empty
+     * @throws NullPointerException
+     *         if {@code pathname} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code pathname} is empty
      */
     @FullyTested
     public static File checkNotFile(String pathname, String argName)
     throws PathException {
         StringArgs.checkNotEmpty(pathname, "pathname");
+        
         File path = new File(pathname);
         checkNotFile(path, argName);
         return path;
@@ -174,11 +202,19 @@ public final class PathArgs {
      * <p>
      * Example: Prior to creating a directory, check the path is not a file.
      * 
-     * @param path path to check
-     * @param argName argument name for {@code path}, e.g., "outputFile" or "inputFile"
-     * @return File validated path
-     * @throws NullPointerException if {@code path} is {@code null}
-     * @throws FileFoundException if {@code path} exists and is a file
+     * @param path
+     *        path to check
+     * @param argName
+     *        argument name for {@code path}, e.g., "outputFile" or "inputFile"
+     *
+     * @return validated path
+     *
+     * @throws NullPointerException
+     *         if {@code path} is {@code null}
+     * @throws PathException
+     *         with reason {@link PathExceptionReason#PATH_IS_FILE}
+     *         if {@code path} exists and is a file
+     *
      * @see #checkNotFile(String, String)
      * @see #checkFileExists(File, String)
      */
@@ -186,6 +222,7 @@ public final class PathArgs {
     public static File checkNotFile(File path, String argName)
     throws PathException {
         ObjectArgs.checkNotNull(path, "path");
+        
         if (path.isFile()) {
             String w = StringArgs._getArgNameWarning(argName, "argName");
             String msg = String.format(
@@ -200,13 +237,16 @@ public final class PathArgs {
     /**
      * This is a convenience method for {@link #checkDirectoryExists(File, String)}.
      * 
-     * @throws NullPointerException if {@code pathname} is {@code null}
-     * @throws IllegalArgumentException if {@code pathname} is empty
+     * @throws NullPointerException
+     *         if {@code pathname} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code pathname} is empty
      */
     @FullyTested
     public static File checkDirectoryExists(String pathname, String argName)
     throws PathException {
         StringArgs.checkNotEmpty(pathname, "pathname");
+        
         File path = new File(pathname);
         checkDirectoryExists(path, argName);
         return path;
@@ -216,12 +256,24 @@ public final class PathArgs {
      * Tests if a directory exists at a path.  Exception messages distinguish between paths that
      * (a) do not exist and (b) exist, but are not directories.
      * 
-     * @param path path to check
-     * @param argName argument name for {@code path}, e.g., "outputDir" or "inputDir"
-     * @return File validated path
-     * @throws NullPointerException if {@code path} is {@code null}
-     * @throws DirectoryNotFoundException if {@code path} does not exist,
-     *         <br>or if {@code path} exists but is not a directory
+     * @param path
+     *        path to check
+     * @param argName
+     *        argument name for {@code path}, e.g., "outputDir" or "inputDir"
+     *
+     * @return validated path
+     *
+     * @throws NullPointerException
+     *         if {@code path} is {@code null}
+     * @throws PathException
+     * <ul>
+     *   <li>with reason {@link PathExceptionReason#PATH_DOES_NOT_EXIST}
+     *   if {@code path} does not exist</li>
+     *   <li>with reason {@link PathExceptionReason#PATH_IS_FILE}
+     *   if {@code path} exists, but is not a directory</li>
+     *   <li></li>
+     * </ul>
+     *
      * @see #checkDirectoryExists(String, String)
      * @see #checkNotDirectory(File, String)
      * @see #checkFileExists(File, String)
@@ -231,6 +283,7 @@ public final class PathArgs {
     throws PathException {
         ObjectArgs.checkNotNull(path, "path");
         StringArgs.checkNotEmpty(argName, "argName");
+        
         if (!path.exists()) {
             String w = StringArgs._getArgNameWarning(argName, "argName");
             String msg = String.format(
@@ -253,13 +306,16 @@ public final class PathArgs {
     /**
      * This is a convenience method for {@link #checkNotDirectory(File, String)}.
      * 
-     * @throws NullPointerException if {@code pathname} is {@code null}
-     * @throws IllegalArgumentException if {@code pathname} is empty
+     * @throws NullPointerException
+     *         if {@code pathname} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code pathname} is empty
      */
     @FullyTested
     public static File checkNotDirectory(String pathname, String argName)
     throws PathException {
         StringArgs.checkNotEmpty(pathname, "pathname");
+        
         File path = new File(pathname);
         checkNotDirectory(path, argName);
         return path;
@@ -272,11 +328,19 @@ public final class PathArgs {
      * <p>
      * Example: Prior to writing a file, check the path is not a directory.
      * 
-     * @param path path to check
-     * @param argName argument name for {@code path}, e.g., "outputFile" or "inputFile"
-     * @return File validated path
-     * @throws NullPointerException if {@code path} is {@code null}
-     * @throws DirectoryFoundException if {@code path} exists and is a directory
+     * @param path
+     *        path to check
+     * @param argName
+     *        argument name for {@code path}, e.g., "outputFile" or "inputFile"
+     *
+     * @return validated path
+     *
+     * @throws NullPointerException
+     *         if {@code path} is {@code null}
+     * @throws PathException
+     *         with reason {@link PathExceptionReason#PATH_IS_DIRECTORY}
+     *         if {@code path} is a directory
+     *
      * @see #checkNotDirectory(String, String)
      * @see #checkDirectoryExists(File, String)
      */
@@ -284,6 +348,7 @@ public final class PathArgs {
     public static File checkNotDirectory(File path, String argName)
     throws PathException {
         ObjectArgs.checkNotNull(path, "path");
+        
         if (path.isDirectory()) {
             String w = StringArgs._getArgNameWarning(argName, "argName");
             String msg = String.format(

@@ -28,7 +28,7 @@ import java.util.Collection;
  */
 
 /**
- * Static methods to check array and {@link Collection} arguments.
+ * Static methods to check array and {@link Collection} and array arguments.
  * <p>
  * See {@link ObjectArgs} for an overview.
  * 
@@ -61,6 +61,51 @@ final class ContainerArgs {
     }
 
     static void _checkSizeRange(
+            Object container,
+            String containerType,
+            int size,
+            int minSize,
+            int maxSize,
+            String containerArgName) {
+        IntArgs.checkNotNegative(minSize, "minSize");
+        IntArgs.checkNotNegative(maxSize, "maxSize");
+        _checkSizeRangeCore(container, containerType, size, minSize, maxSize, containerArgName);
+    }
+
+    static void _checkMinSize(
+            Object container,
+            String containerType,
+            int size,
+            int minSize,
+            String containerArgName) {
+        IntArgs.checkNotNegative(minSize, "minSize");
+        int maxSize = -1;
+        _checkSizeRangeCore(container, containerType, size, minSize, maxSize, containerArgName);
+    }
+
+    static void _checkMaxSize(
+            Object container,
+            String containerType,
+            int size,
+            int maxSize,
+            String containerArgName) {
+        IntArgs.checkNotNegative(maxSize, "minSize");
+        int minSize = -1;
+        _checkSizeRangeCore(container, containerType, size, minSize, maxSize, containerArgName);
+    }
+
+    static void _checkExactSize(
+            Object container,
+            String containerType,
+            int size,
+            int exactSize,
+            String containerArgName) {
+        IntArgs.checkNotNegative(exactSize, "exactSize");
+        _checkSizeRangeCore(
+            container, containerType, size, exactSize, exactSize, containerArgName);
+    }
+    
+    private static void _checkSizeRangeCore(
             Object container,
             String containerType,
             int size,

@@ -28,15 +28,49 @@ package com.googlecode.kevinarpe.papaya.exceptions;
 import java.util.Arrays;
 
 import com.google.common.base.Objects;
+import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 
-final class ThrowableUtils {
+/**
+ * Static methods for {@link Throwable}s.
+ * 
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
+public final class ThrowableUtils {
 
-    static int hashCode(Throwable t) {
+    /**
+     * Calculates the hash code of any throwable, including {@code null}.  Stack trace is included
+     * in the calculation, which may give surprising results.  (It is harder than most realise to
+     * create two exceptions with the exact same stack trace.)  To exclude stack trace in the
+     * calculation, see {@link #hashCodeExcludingStackTrace(Throwable)}.
+     * 
+     * @param t any throwable reference, including {@code null}
+     * 
+     * @return if input is {@code null}, then 0 (zero), else the hash code, including the
+     *         stack trace.
+     * 
+     * @see #hashCodeExcludingStackTrace(Throwable)
+     */
+    @NotFullyTested
+    public static int hashCode(Throwable t) {
         int x = _hashCode(t, false);
         return x;
     }
     
-    static int hashCodeExcludingStackTrace(Throwable t) {
+    /**
+     * Calculates the hash code of any throwable, including {@code null}.  Stack trace is
+     * <b>not</b> included in the calculation.  To include stack trace in the calculation, see
+     * {@link #hashCode(Throwable)}.
+     * 
+     * @param t any throwable reference, including {@code null}
+     * 
+     * @return if input is {@code null}, then 0 (zero), else the hash code, <b>not</b> including
+     *         the stack trace.
+     * 
+     * @see #hashCodeExcludingStackTrace(Throwable)
+     */
+    @NotFullyTested
+    public static int hashCodeExcludingStackTrace(Throwable t) {
         int x = _hashCode(t, true);
         return x;
     }
@@ -59,12 +93,39 @@ final class ThrowableUtils {
         return result;
     }
     
-    static boolean equals(Throwable t1, Throwable t2) {
+    /**
+     * Compare two {@link Throwable} references for equality.  Inputs of {@code null} (none, one,
+     * or both) are handled correctly.  Stack trace is included in the comparison, which may give
+     * surprising results.  (It is harder than most realise to create two exceptions with the exact
+     * same stack trace.)  To exclude stack trace in the comparison, see
+     * {@link #equalsExcludingStackTrace(Throwable, Throwable)}.
+     * 
+     * @param t1 first Throwable for comparison
+     * @param t2 second Throwable for comparison
+     * 
+     * @return {@code true} if the two Throwable references are equal, including stack traces.  If
+     *         <b>both</b> input references are {@code null}, the result is also {@code true}.
+     */
+    @NotFullyTested
+    public static boolean equals(Throwable t1, Throwable t2) {
         boolean x = _equals(t1, t2, false);
         return x;
     }
     
-    static boolean equalsExcludingStackTrace(Throwable t1, Throwable t2) {
+    /**
+     * Compare two {@link Throwable} references for equality.  Inputs of {@code null} (none, one,
+     * or both) are handled correctly.  Stack trace is <b>not</b> included in the comparison.  To
+     * include stack trace in the comparison, see
+     * {@link #equals(Throwable, Throwable)}.
+     * 
+     * @param t1 first Throwable for comparison
+     * @param t2 second Throwable for comparison
+     * 
+     * @return {@code true} if the two Throwable references are equal, excluding stack traces.  If
+     *         <b>both</b> input references are {@code null}, the result is also {@code true}.
+     */
+    @NotFullyTested
+    public static boolean equalsExcludingStackTrace(Throwable t1, Throwable t2) {
         boolean x = _equals(t1, t2, true);
         return x;
     }
@@ -89,7 +150,21 @@ final class ThrowableUtils {
         return result;
     }
     
-    static String toString(Throwable t) {
+    /**
+     * Creates a descriptive string useful for debugging from a {@link Throwable} reference.
+     * Causes are fully recursed via {@link Throwable#getCause()}.
+     * 
+     * @param t non-{@code null} Throwable reference
+     * 
+     * @return string to describe the Throwable reference
+     * 
+     * @throws NullPointerException
+     *         if {@code t} is {@code null}
+     */
+    @NotFullyTested
+    public static String toString(Throwable t) {
+        ObjectArgs.checkNotNull(t, "t");
+        
         String x = String.format("%n\tgetMessage()='%s'", t.getMessage());
         String indent = "\t";
         for (Throwable cause = t.getCause()

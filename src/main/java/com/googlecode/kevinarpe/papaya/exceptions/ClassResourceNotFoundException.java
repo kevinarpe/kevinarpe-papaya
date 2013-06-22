@@ -39,6 +39,7 @@ import com.googlecode.kevinarpe.papaya.args.StringArgs;
  * {@link Class#getResourceAsStream(String)}.
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
  * @see PathArgs#checkClassResourceAsStreamExists(Class, String, String)
  */
 @FullyTested
@@ -64,21 +65,27 @@ extends IOException {
      * Constructs a new PathException object.  These should be thrown instead of
      * {@link IOException} in cases where the error is specifically class resource path-related.
      * 
-     * @param classForResource class used when check if resource exists
-     *        <br>Access via {@link #getClassForResource()}.
-     * @param resourceName path to class resource.
-     *        <br>See {@link PathArgs#checkClassResourceAsStreamExists(Class, String, String)} for
+     * @param classForResource
+     *        class used when check if resource exists.
+     *        Access via {@link #getClassForResource()}.
+     * @param resourceName
+     *        path to class resource.
+     *        Access via {@link #getResourceName()}.
+     *        See {@link PathArgs#checkClassResourceAsStreamExists(Class, String, String)} for a
      *        detailed explanation about resource paths.
-     *        <br>Access via {@link #getResourceName()}.
-     * @param message human-readable error message that is passed directly to
-     *        superclass constructor.
-     *        <br>Access via {@link #getMessage()}.
-     * @param optCause optional underlying cause of this exception that is passed directory to
-     *        superclass constructor; may be {@code null}.
-     *        <br>Access via {@link #getCause()}. 
-     * @throws NullPointerException if {@code classForResource}, {@code resourceName}, or
-     *         {@code message} is null
-     * @throws IllegalArgumentException if {@code message} is empty
+     * @param message
+     *        human-readable error message that is passed directly to superclass constructor.
+     *        Access via {@link #getMessage()}.
+     * @param optCause
+     *        optional underlying cause of this exception that is passed directory to superclass
+     *        constructor.  May be {@code null}.
+     *        Access via {@link #getCause()}.
+     *
+     * @throws NullPointerException
+     *         if {@code classForResource}, {@code resourceName}, or {@code message} is
+     *         {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code message} is empty
      */
     public ClassResourceNotFoundException(
             Class<?> classForResource, String resourceName, String message, Throwable optCause) {
@@ -91,7 +98,8 @@ extends IOException {
      * Copy constructor to call
      * {@link #ClassResourceNotFoundException(Class, String, String, Throwable)}.
      * 
-     * @throws NullPointerException if {@code other} is {@code null}
+     * @throws NullPointerException
+     *         if {@code other} is {@code null}
      */
     public ClassResourceNotFoundException(ClassResourceNotFoundException other) {
         this(
@@ -136,6 +144,9 @@ extends IOException {
         return result;
     }
     
+    /**
+     * Used by test code.
+     */
     boolean equalsExcludingStackTrace(Object obj) {
         // Ref: http://stackoverflow.com/a/5039178/257299
         boolean result = false;

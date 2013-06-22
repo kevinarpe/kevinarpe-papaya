@@ -44,10 +44,16 @@ public final class LongArgs {
     /**
      * Tests if {@code value > 0}
      * 
-     * @param value a value to test
-     * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+     * @param value
+     *        a value to test
+     * @param argName
+     *        argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+     *
      * @return the validated value
-     * @throws IllegalArgumentException if value of {@code value <= 0}
+     *
+     * @throws IllegalArgumentException
+     *         if {@code value <= 0}
+     *
      * @see #checkNotPositive(long, String)
      * @see #checkNegative(long, String)
      * @see #checkNotNegative(long, String)
@@ -66,10 +72,16 @@ public final class LongArgs {
     /**
      * Tests if {@code value <= 0}
      * 
-     * @param value a value to test
-     * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+     * @param value
+     *        a value to test
+     * @param argName
+     *        argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+     *
      * @return the validated value
-     * @throws IllegalArgumentException if value of {@code value > 0}
+     *
+     * @throws IllegalArgumentException
+     *         if {@code value > 0}
+     *
      * @see #checkPositive(long, String)
      * @see #checkNegative(long, String)
      * @see #checkNotNegative(long, String)
@@ -88,10 +100,16 @@ public final class LongArgs {
     /**
      * Tests if {@code value < 0}
      * 
-     * @param value a value to test
-     * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+     * @param value
+     *        a value to test
+     * @param argName
+     *        argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+     *
      * @return the validated value
-     * @throws IllegalArgumentException if value of {@code value => 0}
+     *
+     * @throws IllegalArgumentException
+     *         if {@code value => 0}
+     *
      * @see #checkPositive(long, String)
      * @see #checkNotPositive(long, String)
      * @see #checkNotNegative(long, String)
@@ -110,10 +128,16 @@ public final class LongArgs {
     /**
      * Tests if {@code value >= 0}
      * 
-     * @param value a value to test
-     * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+     * @param value
+     *        a value to test
+     * @param argName
+     *        argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+     *
      * @return the validated value
-     * @throws IllegalArgumentException if value of {@code value < 0}
+     *
+     * @throws IllegalArgumentException
+     *         if {@code value < 0}
+     *
      * @see #checkPositive(long, String)
      * @see #checkNotPositive(long, String)
      * @see #checkNegative(long, String)

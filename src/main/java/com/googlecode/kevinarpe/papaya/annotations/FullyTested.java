@@ -37,6 +37,7 @@ import java.lang.annotation.Target;
  * should be tested and demonstrated via code coverage tools.
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
  * @see NotFullyTested
  */
 @Retention(RetentionPolicy.CLASS)

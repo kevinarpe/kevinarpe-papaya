@@ -79,14 +79,21 @@ public final class StringUtils {
      * {@link Boolean#parseBoolean(String)}, is more lenient, treating {@code "true"} (or case
      * variants) as {@code true} and all other values, including {@code null}, as {@code false}.
      * 
-     * @param str input value
+     * @param str
+     *        input value
+     *
      * @return boolean value
-     * @throws NullPointerException if {@code str} is {@code null}
-     * @throws IllegalArgumentException if {@code str} is not "true" or "false", ignoring case
+     *
+     * @throws NullPointerException
+     *         if {@code str} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code str} is not "true" or "false", ignoring case
+     *
      * @see FuncUtils#PARSE_BOOLEAN_FROM_STRING
      */
     public static boolean parseBoolean(String str) {
         ObjectArgs.checkNotNull(str, "str");
+        
         if (str.equalsIgnoreCase("true")) {
             return true;
         }
@@ -98,24 +105,29 @@ public final class StringUtils {
     }
     
     /**
-     * Creates a copy of the input string, but removes all leading whitespace chars.
-     * To be precise, "leading" is always defined as starting from index zero.
-     * This terminology may be backwards for right-to-left languages such as Hebrew and Arabic.
+     * Removes all leading whitespace chars.  To be precise, "leading" is always defined as
+     * starting from index zero.  This terminology may be backwards for right-to-left languages
+     * such as Hebrew, Arabic, and Farsi.
      * <p>
      * Whitespace is defined as {@link Character#isWhitespace(char)}, which will include all
      * Unicode whitespace, such as the Japanese full-width space.
      * <p>
-     * If zero leading whitespace chars are found, the input string reference is returned.
-     * <p>
-     * If all characters in input string are whitespace, an empty string is returned.
+     * If zero leading whitespace chars are found, the input string reference is returned.  If all
+     * characters in input string are whitespace, an empty string is returned.
      * 
-     * @param str a string reference
+     * @param str
+     *        a string reference
+     *
      * @return string reference without leading whitespace chars
-     * @throws NullPointerException if {@code str} is {@code null}
+     *
+     * @throws NullPointerException
+     *         if {@code str} is {@code null}
+     *
      * @see #trimWhitespaceSuffix(String)
      */
     public static String trimWhitespacePrefix(String str) {
         ObjectArgs.checkNotNull(str, "str");
+        
         final int len = str.length();
         int i = 0;
         for (; i < len; ++i) {
@@ -138,24 +150,29 @@ public final class StringUtils {
     // TODO: trimSuffixByCallback
     
     /**
-     * Creates a copy of the input string, but removes all trailing whitespace chars.
-     * To be precise, "trailing" is always defined as starting from the last index.
-     * This terminology may be backwards for right-to-left languages such as Hebrew and Arabic.
+     * Removes all trailing whitespace chars.  To be precise, "trailing" is always defined as
+     * starting from the last index.  This terminology may be backwards for right-to-left languages
+     * such as Hebrew, Arabic, and Farsi.
      * <p>
      * Whitespace is defined by {@link Character#isWhitespace(char)}, which includes all special
      * whitespace chars used in East Asian languages.
      * <p>
-     * If zero leading whitespace chars are found, the input string reference is returned.
-     * <p>
-     * If all characters in input string are whitespace, an empty string is returned.
+     * If zero leading whitespace chars are found, the input string reference is returned.  If all
+     * characters in input string are whitespace, an empty string is returned.
      * 
-     * @param str a string reference
+     * @param str
+     *        a string reference
+     *
      * @return string reference without leading whitespace chars
-     * @throws NullPointerException if {@code str} is {@code null}
+     *
+     * @throws NullPointerException
+     *         if {@code str} is {@code null}
+     *
      * @see #trimWhitespacePrefix(String)
      */
     public static String trimWhitespaceSuffix(String str) {
         ObjectArgs.checkNotNull(str, "s");
+        
         final int len = str.length();
         int i = len - 1;
         for (; i >= 0; --i) {
@@ -196,17 +213,22 @@ public final class StringUtils {
 //    }
     
     /**
-     * Tests if an input string is empty or one or more whitespace chars.
+     * Tests if an input string is empty or only whitespace chars.
      * <p>
      * Whitespace is defined by {@link Character#isWhitespace(char)}, which includes all special
      * whitespace chars used in East Asian languages.
      * 
-     * @param str input string
+     * @param str
+     *        input string
+     *
      * @return true if empty or all whitespace 
-     * @throws NullPointerException if {@code str} is {@code null}
+     *
+     * @throws NullPointerException
+     *         if {@code str} is {@code null}
      */
     public static <T extends CharSequence> boolean isEmptyOrWhitespace(String str) {
         ObjectArgs.checkNotNull(str, "str");
+        
         int len = str.length();
         for (int i = 0; i < len; ++i) {
             char ch = str.charAt(i);
@@ -218,25 +240,31 @@ public final class StringUtils {
     }
     
     /**
-     * This method is modeled after Left() from Visual Basic.
-     * Copies a specified number of leading chars from a string.
-     * To be precise, "leading" is always defined as starting from index zero.
-     * This terminology may be backwards for right-to-left languages such as Hebrew and Arabic.
+     * This method is modeled after Left() from Visual Basic.  Copies a specified number of leading
+     * chars from a string.  To be precise, "leading" is always defined as starting from index
+     * zero.  This terminology may be backwards for right-to-left languages such as Hebrew, Arabic,
+     * and Farsi.
      * <p>
-     * If {@code count == 0}, the empty string is retured.
-     * <p>
-     * If {@code count >= str.length()}, the input string reference is returned.
+     * If {@code count == 0}, the empty string is retured.  If {@code count >= str.length()}, the
+     * input string reference is returned.
      * 
-     * @param str input string reference to process
-     * @param count number of chars to copy starting from first index.
+     * @param str
+     *        input string reference to process
+     * @param count
+     *        number of chars to copy starting from first index.
      *        Must be >= 0, and may be greater than input length
+     *
      * @return string reference created from leading chars
-     * @throws NullPointerException if {@code str} is {@code null}
-     * @throws IllegalArgumentException if {@code count} is negative
+     *
+     * @throws NullPointerException
+     *         if {@code str} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code count} is negative
      */
     public static String substringPrefix(String str, int count) {
         ObjectArgs.checkNotNull(str, "str");
         IntArgs.checkNotNegative(count, "count");
+        
         int len = str.length();
         if (count >= len) {
             return str;
@@ -246,25 +274,31 @@ public final class StringUtils {
     }
     
     /**
-     * This method is modeled after Right() from Visual Basic.
-     * Copies a specified number of trailing chars from a string.
-     * To be precise, "trailing" is always defined as starting from the last index.
-     * This terminology may be backwards for right-to-left languages such as Hebrew and Arabic.
+     * This method is modeled after Right() from Visual Basic.  Copies a specified number of
+     * trailing chars from a string.  To be precise, "trailing" is always defined as starting from
+     * the last index.  This terminology may be backwards for right-to-left languages such as
+     * Hebrew, Arabic, and Farsi.
      * <p>
-     * If {@code count == 0}, the empty string is retured.
-     * <p>
-     * If {@code count >= str.length()}, the input string reference is returned.
+     * If {@code count == 0}, the empty string is retured.  If {@code count >= str.length()}, the
+     * input string reference is returned.
      * 
-     * @param str input string reference to process
-     * @param count number of chars to copy starting from last index.
+     * @param str
+     *        input string reference to process
+     * @param count
+     *        number of chars to copy starting from last index.
      *        Must be >= 0, and may be greater than input length
+     *
      * @return string reference created from trailing chars
-     * @throws NullPointerException if {@code str} is {@code null}
-     * @throws IllegalArgumentException if {@code count} is negative
+     *
+     * @throws NullPointerException
+     *         if {@code str} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code count} is negative
      */
     public static String substringSuffix(String str, int count) {
         ObjectArgs.checkNotNull(str, "str");
         IntArgs.checkNotNegative(count, "count");
+        
         int len = str.length();
         if (count >= len) {
             return str;

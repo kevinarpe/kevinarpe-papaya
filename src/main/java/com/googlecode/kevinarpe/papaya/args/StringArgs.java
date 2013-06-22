@@ -69,24 +69,6 @@ public final class StringArgs {
         }
         return "";
     }
-
-//    static <T extends CharSequence> void _checkArgNameValid(T ref, String argName) {
-//        if (null == argName) {
-//            throw new NullPointerException("Internal error: Argument 'argName' is null");
-//        }
-//        if (null == ref) {
-//            throw new NullPointerException(String.format("Argument name '%s' is null", argName));
-//        }
-//        if (0 == ref.length()) {
-//            throw new IllegalArgumentException(String.format(
-//                "Argument name '%s' is empty", argName));
-//        }
-//        if (!_isOnlyWhitespace(ref)) {
-//            return;
-//        }
-//        throw new IllegalArgumentException(String.format(
-//            "Argument name '%s' is all whitespace: '%s'", argName, ref));
-//    }
     
     static <T extends CharSequence> boolean _isOnlyWhitespace(T ref) {
         int len = ref.length();
@@ -116,11 +98,18 @@ public final class StringArgs {
      *   <li>{@code "大阪"}</li>
      * </ul>
      * 
-     * @param ref a string reference
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param ref
+     *        a string reference
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
      * @return the validated string reference
-     * @throws NullPointerException if {@code ref} is {@code null}
-     * @throws IllegalArgumentException if {@code ref} is empty
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code ref} is empty
+     *
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see #checkNotEmptyOrWhitespace(CharSequence, String)
      */
@@ -156,11 +145,18 @@ public final class StringArgs {
      *   <li>{@code "大阪"}</li>
      * </ul>
      * 
-     * @param ref a string reference
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param ref
+     *        a string reference
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
      * @return the validated string reference
-     * @throws NullPointerException if {@code ref} is {@code null}
-     * @throws IllegalArgumentException if {@code ref} is empty or only whitespace
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code ref} is empty or only whitespace
+     *
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see #checkNotEmpty(CharSequence, String)
      */
@@ -180,16 +176,27 @@ public final class StringArgs {
      * Length is defined as the number of characters in a CharSequence reference.
      * Kindly remember that characters in East Asian languages are frequently two bytes.
      * 
-     * @param ref a string reference
-     * @param minLen minimum number of chars (inclusive).  Must be non-negative. 
-     * @param maxLen maximum number of chars (inclusive).  Must be non-negative.
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param ref
+     *        a string reference
+     * @param minLen
+     *        minimum number of chars (inclusive).  Must be non-negative. 
+     * @param maxLen
+     *        maximum number of chars (inclusive).  Must be non-negative.
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
      * @return the validated string reference
-     * @throws NullPointerException if {@code ref} is {@code null}
-     * @throws IllegalArgumentException if {@code minLen < 0},
-     *         <br>or if {@code maxLen < 0},
-     *         <br>or if {@code minLen > maxLen}, 
-     *         <br>or if number of chars in {@code ref} is outside allowed range
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code minLen < 0}</li>
+     *   <li>if {@code maxLen < 0}</li>
+     *   <li>if {@code minLen > maxLen}</li>
+     *   <li>if number of chars in {@code ref} is outside allowed range</li>
+     * </ul>
+     *
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see #checkNotEmpty(CharSequence, String)
      * @see #checkNotEmptyOrWhitespace(CharSequence, String)
@@ -235,13 +242,23 @@ public final class StringArgs {
      * Length is defined as the number of characters in a CharSequence reference.
      * Kindly remember that characters in East Asian languages are frequently two bytes.
      * 
-     * @param ref a string reference
-     * @param minLen minimum number of chars (inclusive).  Must be non-negative. 
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param ref
+     *        a string reference
+     * @param minLen
+     *        minimum number of chars (inclusive).  Must be non-negative. 
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
      * @return the validated string reference
-     * @throws NullPointerException if {@code ref} is {@code null}
-     * @throws IllegalArgumentException if {@code minLen < 0},
-     *         <br>or if number of chars in {@code ref} is outside allowed range
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code minLen < 0}</li>
+     *   <li>if number of chars in {@code ref} is outside allowed range</li>
+     * </ul>
+     *
      * @see #checkLengthRange(CharSequence, int, int, String)
      */
     @FullyTested
@@ -258,13 +275,23 @@ public final class StringArgs {
      * Length is defined as the number of characters in a CharSequence reference.
      * Kindly remember that characters in East Asian languages are frequently two bytes.
      * 
-     * @param ref a string reference
-     * @param maxLen maximum number of chars (inclusive).  Must be non-negative.
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param ref
+     *        a string reference
+     * @param maxLen
+     *        maximum number of chars (inclusive).  Must be non-negative.
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
      * @return the validated string reference
-     * @throws NullPointerException if {@code ref} is {@code null}
-     * @throws IllegalArgumentException if {@code maxLen < 0},
-     *         <br>or if number of chars in {@code ref} is outside allowed range
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code maxLen < 0}</li>
+     *   <li>if number of chars in {@code ref} is outside allowed range</li>
+     * </ul>
+     *
      * @see #checkLengthRange(CharSequence, int, int, String)
      */
     @FullyTested
@@ -281,13 +308,23 @@ public final class StringArgs {
      * Length is defined as the number of characters in a CharSequence reference.
      * Kindly remember that characters in East Asian languages are frequently two bytes.
      * 
-     * @param ref a string reference
-     * @param exactLen exact number of chars (inclusive).  Must be non-negative. 
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param ref
+     *        a string reference
+     * @param exactLen
+     *        exact number of chars (inclusive).  Must be non-negative. 
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
      * @return the validated string reference
-     * @throws NullPointerException if {@code ref} is {@code null}
-     * @throws IllegalArgumentException if {@code exactLen < 0},
-     *         <br>or if number of chars in {@code ref} is outside allowed range
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code exactLen < 0}</li>
+     *   <li>if number of chars in {@code ref} is outside allowed range</li>
+     * </ul>
+     *
      * @see #checkLengthRange(CharSequence, int, int, String)
      */
     @FullyTested
@@ -301,14 +338,24 @@ public final class StringArgs {
     /**
      * Tests if a string reference is not null and an index is valid to insert an character.
      * 
-     * @param ref an string reference
-     * @param index index of character to insert.  Must be non-negative.
-     * @param refArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-     * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
+     * @param ref
+     *        an string reference
+     * @param index
+     *        index of character to insert.  Must be non-negative.
+     * @param refArgName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param indexArgName
+     *        argument name for {@code index}, e.g., "strListIndex"
+     *
      * @return the validated index
-     * @throws NullPointerException if {@code ref} is {@code null}
-     * @throws IndexOutOfBoundsException if {@code index < 0},
-     *         <br>or {@code index >= ref.length()}
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IndexOutOfBoundsException
+     * <ul>
+     *   <li>if {@code index < 0}</li>
+     *   <li>if {@code index >= ref.length()}</li>
+     * </ul>
      */
     @FullyTested
     public static <T extends CharSequence> int checkInsertIndex(
@@ -323,18 +370,32 @@ public final class StringArgs {
      * Tests if an string reference is not null, and an index and count is valid to
      * access characters.
      * 
-     * @param ref a string reference
-     * @param index index of character to access.  Must be non-negative.
-     * @param count number of characters to access, starting from {@code index}.
+     * @param ref
+     *        a string reference
+     * @param index
+     *        index of character to access.  Must be non-negative.
+     * @param count
+     *        number of characters to access, starting from {@code index}.
      *              Must be non-negative.
-     * @param refArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-     * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
-     * @param countArgName argument name for {@code count}, e.g., "strListCount"
-     * @throws NullPointerException if {@code ref} is {@code null}
-     * @throws IllegalArgumentException if {@code index < 0},
-     *         <br>or if {@code count < 0}
-     * @throws IndexOutOfBoundsException if {@code index >= ref.length()},
-     *         <br>or if {@code index + count > ref.length()}
+     * @param refArgName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param indexArgName
+     *        argument name for {@code index}, e.g., "strListIndex"
+     * @param countArgName
+     *        argument name for {@code count}, e.g., "strListCount"
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code index < 0}</li>
+     *   <li>if {@code count < 0}</li>
+     * </ul>
+     * @throws IndexOutOfBoundsException
+     * <ul>
+     *   <li>if {@code index >= ref.length()}</li>
+     *   <li>if {@code index + count > ref.length()}</li>
+     * </ul>
      */
     @FullyTested
     public static <T extends CharSequence> void checkIndexAndCount(

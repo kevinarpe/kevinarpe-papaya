@@ -27,6 +27,8 @@ package com.googlecode.kevinarpe.papaya;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ * 
+ * @see <a href="http://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html">Ref</a>
  */
 public final class PrimitiveTypeUtils {
 
@@ -34,18 +36,19 @@ public final class PrimitiveTypeUtils {
     private PrimitiveTypeUtils() {
     }
 
-    // Ref: http://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
-    
-    public static final byte DEFAULT_BYTE_VALUE;
-    public static final short DEFAULT_SHORT_VALUE;
-    public static final int DEFAULT_INT_VALUE;
-    public static final long DEFAULT_LONG_VALUE;
-    public static final float DEFAULT_FLOAT_VALUE;
-    public static final double DEFAULT_DOUBLE_VALUE;
-    public static final char DEFAULT_CHAR_VALUE;
-    public static final String DEFAULT_STRING_VALUE;
-    public static final Object DEFAULT_OBJECT_VALUE;
-    public static final boolean DEFAULT_BOOLEAN_VALUE;
+    /**
+     * Value is zero.
+     */
+    public static final byte DEFAULT_BYTE_VALUE = 0;
+    public static final short DEFAULT_SHORT_VALUE = 0;
+    public static final int DEFAULT_INT_VALUE = 0;
+    public static final long DEFAULT_LONG_VALUE = 0L;
+    public static final float DEFAULT_FLOAT_VALUE = 0.0f;
+    public static final double DEFAULT_DOUBLE_VALUE = 0.0d;
+    public static final char DEFAULT_CHAR_VALUE = '\u0000';
+    public static final String DEFAULT_STRING_VALUE = null;
+    public static final Object DEFAULT_OBJECT_VALUE = null;
+    public static final boolean DEFAULT_BOOLEAN_VALUE = false;
     
     public static final float EPSILON_POSITIVE_FLOAT;
     public static final float EPSILON_NEGATIVE_FLOAT;
@@ -53,17 +56,6 @@ public final class PrimitiveTypeUtils {
     public static final double EPSILON_NEGATIVE_DOUBLE;
     
     static {
-        DEFAULT_BYTE_VALUE = 0;
-        DEFAULT_SHORT_VALUE = 0;
-        DEFAULT_INT_VALUE = 0;
-        DEFAULT_LONG_VALUE = 0L;
-        DEFAULT_FLOAT_VALUE = 0.0f;
-        DEFAULT_DOUBLE_VALUE = 0.0d;
-        DEFAULT_CHAR_VALUE = '\u0000';
-        DEFAULT_STRING_VALUE = null;
-        DEFAULT_OBJECT_VALUE = null;
-        DEFAULT_BOOLEAN_VALUE = false;
-        
         // Ref: http://stackoverflow.com/a/3735931/257299
         EPSILON_POSITIVE_FLOAT = Math.nextAfter(0.0f, 1.0f);
         EPSILON_NEGATIVE_FLOAT = Math.nextAfter(0.0f, -1.0f);

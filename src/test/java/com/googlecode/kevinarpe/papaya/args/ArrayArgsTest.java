@@ -147,7 +147,7 @@ public class ArrayArgsTest {
     
     @Test(expectedExceptions = NullPointerException.class)
     public void checkNotEmpty_FailWithNullArray() {
-        ArrayArgs.checkNotEmpty(null, "ref");
+        ArrayArgs.checkNotEmpty((Object[]) null, "ref");
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -553,7 +553,7 @@ public class ArrayArgsTest {
     
     @Test(expectedExceptions = NullPointerException.class)
     public void checkIndexAndCount_FailWithNullArray() {
-        ArrayArgs.checkIndexAndCount(null, 0, 0, "ref", "index", "count");
+        ArrayArgs.checkIndexAndCount((Object[]) null, 0, 0, "ref", "index", "count");
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -606,6 +606,6 @@ public class ArrayArgsTest {
     
     @Test(expectedExceptions = NullPointerException.class)
     public void checkFromAndToIndices_FailWithNullArray() {
-        ArrayArgs.checkFromAndToIndices(null, 0, 0, "ref", "fromIndex", "toIndex");
+        ArrayArgs.checkFromAndToIndices((Object[]) null, 0, 0, "ref", "fromIndex", "toIndex");
     }
 }

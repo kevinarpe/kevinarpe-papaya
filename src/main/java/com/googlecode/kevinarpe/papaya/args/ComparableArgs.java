@@ -44,15 +44,26 @@ public final class ComparableArgs {
     /**
      * Tests if a Comparable reference is not null and its value within specified range.
      * 
-     * @param ref an object reference
-     * @param minValue minimum value (inclusive)
-     * @param maxValue maximum value (inclusive)
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param ref
+     *        an object reference
+     * @param minValue
+     *        minimum value (inclusive)
+     * @param maxValue
+     *        maximum value (inclusive)
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
      * @return the validated object reference
-     * @throws NullPointerException if {@code ref}, {@code minValue}, or {@code maxValue} is
+     *
+     * @throws NullPointerException
+     *         if {@code ref}, {@code minValue}, or {@code maxValue} is
      *         {@code null}
-     * @throws IllegalArgumentException if {@code minValue > maxValue},
-     *         <br>or if value of {@code ref} is outside allowed range
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code minValue > maxValue}</li>
+     *   <li>if value of {@code ref} is outside allowed range</li>
+     * </ul>
+     *
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see #checkMinValue(Comparable, Comparable, String)
      * @see #checkMaxValue(Comparable, Comparable, String)
@@ -95,12 +106,20 @@ public final class ComparableArgs {
     /**
      * Tests if a Comparable reference is not null and has a minimum value.
      * 
-     * @param ref an object reference
-     * @param minValue minimum value (inclusive)
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param ref
+     *        an object reference
+     * @param minValue
+     *        minimum value (inclusive)
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
      * @return the validated object reference
-     * @throws NullPointerException if {@code ref} or {@code minValue} is {@code null}
-     * @throws IllegalArgumentException if value of {@code ref} is outside allowed range
+     *
+     * @throws NullPointerException
+     *         if {@code ref} or {@code minValue} is {@code null}
+     * @throws IllegalArgumentException
+     *         if value of {@code ref} is outside allowed range
+     *
      * @see #checkValueRange(Comparable, Comparable, Comparable, String)
      */
     @FullyTested
@@ -115,12 +134,20 @@ public final class ComparableArgs {
     /**
      * Tests if a Comparable reference is not null and has a maximum value.
      * 
-     * @param ref an object reference
-     * @param maxValue maximum value (inclusive)
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param ref
+     *        an object reference
+     * @param maxValue
+     *        maximum value (inclusive)
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
      * @return the validated object reference
-     * @throws NullPointerException if {@code ref} or {@code maxValue} is {@code null}
-     * @throws IllegalArgumentException if value of {@code ref} is outside allowed range
+     *
+     * @throws NullPointerException
+     *         if {@code ref} or {@code maxValue} is {@code null}
+     * @throws IllegalArgumentException
+     *         if value of {@code ref} is outside allowed range
+     *
      * @see #checkValueRange(Comparable, Comparable, Comparable, String)
      */
     @FullyTested
@@ -135,12 +162,20 @@ public final class ComparableArgs {
     /**
      * Tests if a Comparable reference is not null and has an exact value.
      * 
-     * @param ref an object reference
-     * @param exactValue expected value
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param ref
+     *        an object reference
+     * @param exactValue
+     *        expected value
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
      * @return the validated object reference
-     * @throws NullPointerException if {@code ref} or {@code maxValue} is {@code null}
-     * @throws IllegalArgumentException if value of {@code ref} is outside allowed range
+     *
+     * @throws NullPointerException
+     *         if {@code ref} or {@code maxValue} is {@code null}
+     * @throws IllegalArgumentException
+     *         if value of {@code ref} is outside allowed range
+     *
      * @see #checkValueRange(Comparable, Comparable, Comparable, String)
      */
     @FullyTested

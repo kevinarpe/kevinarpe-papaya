@@ -47,26 +47,115 @@ public final class ArrayArgs {
      * Tests if an array reference is not null and its length within specified range.
      * Length is defined as the number of elements.
      * 
-     * @param ref an array reference
-     * @param minLen minimum number of elements (inclusive).  Must be non-negative.
-     * @param maxLen maximum number of elements (inclusive).  Must be non-negative.
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param ref
+     *        an array reference
+     * @param minLen
+     *        minimum number of elements (inclusive).  Must be non-negative.
+     * @param maxLen
+     *        maximum number of elements (inclusive).  Must be non-negative.
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
      * @return the validated array reference
-     * @throws NullPointerException if {@code ref} is {@code null}
-     * @throws IllegalArgumentException if {@code minLen < 0},
-     *         <br>or if {@code maxLen < 0},
-     *         <br>or if {@code minLen > maxLen}, 
-     *         <br>or if number of elements in {@code ref} is outside allowed range
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code minLen < 0}</li>
+     *   <li>if {@code maxLen < 0}</li>
+     *   <li>if {@code minLen > maxLen}</li>
+     *   <li>if number of elements in {@code ref} is outside allowed range</li>
+     * </ul>
+     *
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see #checkMinLength(Object[], int, String)
      * @see #checkMaxLength(Object[], int, String)
      * @see #checkExactLength(Object[], int, String)
      */
     @FullyTested
-    public static <T> T[] checkLengthRange(
-            T[] ref, int minLen, int maxLen, String argName) {
-        IntArgs.checkNotNegative(minLen, "minLen");
-        IntArgs.checkNotNegative(maxLen, "maxLen");
+    public static <T> T[] checkLengthRange(T[] ref, int minLen, int maxLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkLengthRange(Object[], int, int, String)
+     */
+    @NotFullyTested
+    public static byte[] checkLengthRange(byte[] ref, int minLen, int maxLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkLengthRange(Object[], int, int, String)
+     */
+    @NotFullyTested
+    public static short[] checkLengthRange(short[] ref, int minLen, int maxLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkLengthRange(Object[], int, int, String)
+     */
+    @NotFullyTested
+    public static int[] checkLengthRange(int[] ref, int minLen, int maxLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkLengthRange(Object[], int, int, String)
+     */
+    @NotFullyTested
+    public static long[] checkLengthRange(long[] ref, int minLen, int maxLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkLengthRange(Object[], int, int, String)
+     */
+    @NotFullyTested
+    public static float[] checkLengthRange(float[] ref, int minLen, int maxLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkLengthRange(Object[], int, int, String)
+     */
+    @NotFullyTested
+    public static double[] checkLengthRange(double[] ref, int minLen, int maxLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkLengthRange(Object[], int, int, String)
+     */
+    @NotFullyTested
+    public static char[] checkLengthRange(char[] ref, int minLen, int maxLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkLengthRange(Object[], int, int, String)
+     */
+    @NotFullyTested
+    public static boolean[] checkLengthRange(
+            boolean[] ref, int minLen, int maxLen, String argName) {
         int len = (null == ref ? -1 : ref.length);
         ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
         return ref;
@@ -76,11 +165,18 @@ public final class ArrayArgs {
      * Tests if an array reference is not null and not empty (size >= 1).
      * Length is defined as the number of elements.
      * 
-     * @param ref an array reference
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param ref
+     *        an array reference
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
      * @return the validated array reference
-     * @throws NullPointerException if {@code ref} is {@code null}
-     * @throws IllegalArgumentException if number of elements in {@code ref} is zero
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if number of elements in {@code ref} is zero
+     *
      * @see #checkLengthRange(Object[], int, int, String)
      * @see #checkMinLength(Object[], int, String)
      */
@@ -92,24 +188,192 @@ public final class ArrayArgs {
     }
     
     /**
+     * @see #checkNotEmpty(Object[], String)
+     */
+    @NotFullyTested
+    public static byte[] checkNotEmpty(byte[] ref, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkNotEmpty(ref, "Array", len, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkNotEmpty(Object[], String)
+     */
+    @NotFullyTested
+    public static short[] checkNotEmpty(short[] ref, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkNotEmpty(ref, "Array", len, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkNotEmpty(Object[], String)
+     */
+    @NotFullyTested
+    public static int[] checkNotEmpty(int[] ref, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkNotEmpty(ref, "Array", len, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkNotEmpty(Object[], String)
+     */
+    @NotFullyTested
+    public static long[] checkNotEmpty(long[] ref, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkNotEmpty(ref, "Array", len, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkNotEmpty(Object[], String)
+     */
+    @NotFullyTested
+    public static float[] checkNotEmpty(float[] ref, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkNotEmpty(ref, "Array", len, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkNotEmpty(Object[], String)
+     */
+    @NotFullyTested
+    public static double[] checkNotEmpty(double[] ref, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkNotEmpty(ref, "Array", len, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkNotEmpty(Object[], String)
+     */
+    @NotFullyTested
+    public static char[] checkNotEmpty(char[] ref, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkNotEmpty(ref, "Array", len, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkNotEmpty(Object[], String)
+     */
+    @NotFullyTested
+    public static boolean[] checkNotEmpty(boolean[] ref, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkNotEmpty(ref, "Array", len, argName);
+        return ref;
+    }
+    
+    /**
      * Tests if an array reference is not null and has a minimum length.
      * Length is defined as the number of elements.
      * 
-     * @param ref an array reference
-     * @param minLen minimum number of elements (inclusive).  Must be non-negative.
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param ref
+     *        an array reference
+     * @param minLen
+     *        minimum number of elements (inclusive).  Must be non-negative.
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
      * @return the validated array reference
-     * @throws NullPointerException if {@code ref} is {@code null}
-     * @throws IllegalArgumentException if {@code minLen < 0},
-     *         <br>or if number of elements in {@code ref} is outside allowed range
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code minLen < 0}</li>
+     *   <li>if number of elements in {@code ref} is outside allowed range</li>
+     * </ul>
+     *
      * @see #checkLengthRange(Object[], int, int, String)
      */
     @FullyTested
     public static <T> T[] checkMinLength(T[] ref, int minLen, String argName) {
-        IntArgs.checkNotNegative(minLen, "minLen");
         int len = (null == ref ? -1 : ref.length);
-        int maxLen = -1;
-        ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
+        ContainerArgs._checkMinSize(ref, "Array", len, minLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkMinLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static byte[] checkMinLength(byte[] ref, int minLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkMinSize(ref, "Array", len, minLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkMinLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static short[] checkMinLength(short[] ref, int minLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkMinSize(ref, "Array", len, minLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkMinLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static int[] checkMinLength(int[] ref, int minLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkMinSize(ref, "Array", len, minLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkMinLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static long[] checkMinLength(long[] ref, int minLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkMinSize(ref, "Array", len, minLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkMinLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static float[] checkMinLength(float[] ref, int minLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkMinSize(ref, "Array", len, minLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkMinLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static double[] checkMinLength(double[] ref, int minLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkMinSize(ref, "Array", len, minLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkMinLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static char[] checkMinLength(char[] ref, int minLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkMinSize(ref, "Array", len, minLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkMinLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static boolean[] checkMinLength(boolean[] ref, int minLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkMinSize(ref, "Array", len, minLen, argName);
         return ref;
     }
     
@@ -117,21 +381,109 @@ public final class ArrayArgs {
      * Tests if an array reference is not null and has a maximum length.
      * Length is defined as the number of elements.
      * 
-     * @param ref an array reference
-     * @param maxLen maximum number of elements (inclusive).  Must be non-negative.
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param ref
+     *        an array reference
+     * @param maxLen
+     *        maximum number of elements (inclusive).  Must be non-negative.
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
      * @return the validated array reference
-     * @throws NullPointerException if {@code ref} is {@code null}
-     * @throws IllegalArgumentException if {@code maxLen < 0},
-     *         <br>or if number of elements in {@code ref} is outside allowed range
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code maxLen < 0}</li>
+     *   <li>if number of elements in {@code ref} is outside allowed range</li>
+     * </ul>
+     *
      * @see #checkLengthRange(Object[], int, int, String)
      */
     @FullyTested
     public static <T> T[] checkMaxLength(T[] ref, int maxLen, String argName) {
-        IntArgs.checkNotNegative(maxLen, "maxLen");
         int len = (null == ref ? -1 : ref.length);
-        int minLen = -1;
-        ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
+        ContainerArgs._checkMaxSize(ref, "Array", len, maxLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkMaxLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static byte[] checkMaxLength(byte[] ref, int maxLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkMaxSize(ref, "Array", len, maxLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkMaxLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static short[] checkMaxLength(short[] ref, int maxLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkMaxSize(ref, "Array", len, maxLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkMaxLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static int[] checkMaxLength(int[] ref, int maxLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkMaxSize(ref, "Array", len, maxLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkMaxLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static long[] checkMaxLength(long[] ref, int maxLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkMaxSize(ref, "Array", len, maxLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkMaxLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static float[] checkMaxLength(float[] ref, int maxLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkMaxSize(ref, "Array", len, maxLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkMaxLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static double[] checkMaxLength(double[] ref, int maxLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkMaxSize(ref, "Array", len, maxLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkMaxLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static char[] checkMaxLength(char[] ref, int maxLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkMaxSize(ref, "Array", len, maxLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkMaxLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static boolean[] checkMaxLength(boolean[] ref, int maxLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkMaxSize(ref, "Array", len, maxLen, argName);
         return ref;
     }
     
@@ -139,32 +491,127 @@ public final class ArrayArgs {
      * Tests if an array reference is not null and has an exact length.
      * Length is defined as the number of elements.
      * 
-     * @param ref an array reference
-     * @param exactLen exact number of elements (inclusive).  Must be non-negative.
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param ref
+     *        an array reference
+     * @param exactLen
+     *        exact number of elements (inclusive).  Must be non-negative.
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
      * @return the validated array reference
-     * @throws NullPointerException if {@code ref} is {@code null}
-     * @throws IllegalArgumentException if {@code exactLen < 0},
-     *         <br>or if number of elements in {@code ref} is outside allowed range
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code exactLen < 0}</li>
+     *   <li>if number of elements in {@code ref} is outside allowed range</li>
+     * </ul>
+     *
      * @see #checkLengthRange(Object[], int, int, String)
      */
     @FullyTested
     public static <T> T[] checkExactLength(T[] ref, int exactLen, String argName) {
-        IntArgs.checkNotNegative(exactLen, "exactLen");
         int len = (null == ref ? -1 : ref.length);
-        ContainerArgs._checkSizeRange(ref, "Array", len, exactLen, exactLen, argName);
+        ContainerArgs._checkExactSize(ref, "Array", len, exactLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkExactLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static byte[] checkExactLength(byte[] ref, int exactLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkExactSize(ref, "Array", len, exactLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkExactLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static short[] checkExactLength(short[] ref, int exactLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkExactSize(ref, "Array", len, exactLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkExactLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static int[] checkExactLength(int[] ref, int exactLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkExactSize(ref, "Array", len, exactLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkExactLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static long[] checkExactLength(long[] ref, int exactLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkExactSize(ref, "Array", len, exactLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkExactLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static float[] checkExactLength(float[] ref, int exactLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkExactSize(ref, "Array", len, exactLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkExactLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static double[] checkExactLength(double[] ref, int exactLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkExactSize(ref, "Array", len, exactLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkExactLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static char[] checkExactLength(char[] ref, int exactLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkExactSize(ref, "Array", len, exactLen, argName);
+        return ref;
+    }
+    
+    /**
+     * @see #checkExactLength(Object[], int, String)
+     */
+    @NotFullyTested
+    public static boolean[] checkExactLength(boolean[] ref, int exactLen, String argName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkExactSize(ref, "Array", len, exactLen, argName);
         return ref;
     }
     
     /**
      * Tests if an array reference is not null and each element is not null.
      * 
-     * @param ref an array reference
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param ref
+     *        an array reference
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
      * @return the validated array reference
+     *
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see CollectionArgs#checkElementsNotNull(java.util.Collection, String)
-     * @throws NullPointerException if {@code ref} (or any element) is {@code null}
+     *
+     * @throws NullPointerException
+     *         if {@code ref} (or any element) is {@code null}
      */
     @FullyTested
     public static <T> T[] checkElementsNotNull(T[] ref, String argName) {
@@ -183,7 +630,7 @@ public final class ArrayArgs {
     /**
      * This is a convenience method for {@link #checkNotEmpty(Object[], String)}
      * and {@link #checkElementsNotNull(Object[], String)}.
-     * 
+     * <p>
      * This method is useful to check variable argument lists (var args).
      */
     @NotFullyTested
@@ -196,258 +643,403 @@ public final class ArrayArgs {
     /**
      * Tests if an array reference is not null and an index is valid to access an element.
      * 
-     * @param ref an array reference
-     * @param index index of element to access.  Must be non-negative.
-     * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-     * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
+     * @param ref
+     *        an array reference
+     * @param index
+     *        index of element to access.  Must be non-negative.
+     * @param arrArgName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param indexArgName
+     *        argument name for {@code index}, e.g., "strListIndex"
+     *
      * @return the validated index
-     * @throws NullPointerException if {@code ref} is {@code null}
-     * @throws IndexOutOfBoundsException if {@code index < 0},
-     *         <br>or {@code index >= ref.length}
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IndexOutOfBoundsException
+     * <ul>
+     *   <li>if {@code index < 0}</li>
+     *   <li>{@code index >= ref.length}</li>
+     * </ul>
+     *
      * @see #checkInsertIndex(Object[], int, String, String)
      */
     @FullyTested
     public static <T> int checkAccessIndex(
             T[] ref, int index, String arrArgName, String indexArgName) {
         int len = (null == ref ? -1 : ref.length);
-        ContainerArgs._checkAccessIndex(
-            ref, "Array", len, index, arrArgName, indexArgName);
+        ContainerArgs._checkAccessIndex(ref, "Array", len, index, arrArgName, indexArgName);
+        return index;
+    }
+    
+    /**
+     * @see #checkInsertIndex(Object[], int, String, String)
+     */
+    @NotFullyTested
+    public static int checkAccessIndex(
+            byte[] ref, int index, String arrArgName, String indexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkAccessIndex(ref, "Array", len, index, arrArgName, indexArgName);
+        return index;
+    }
+
+    /**
+     * @see #checkInsertIndex(Object[], int, String, String)
+     */
+    @NotFullyTested
+    public static int checkAccessIndex(
+            short[] ref, int index, String arrArgName, String indexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkAccessIndex(ref, "Array", len, index, arrArgName, indexArgName);
+        return index;
+    }
+
+    /**
+     * @see #checkInsertIndex(Object[], int, String, String)
+     */
+    @NotFullyTested
+    public static int checkAccessIndex(
+            int[] ref, int index, String arrArgName, String indexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkAccessIndex(ref, "Array", len, index, arrArgName, indexArgName);
+        return index;
+    }
+
+    /**
+     * @see #checkInsertIndex(Object[], int, String, String)
+     */
+    @NotFullyTested
+    public static int checkAccessIndex(
+            long[] ref, int index, String arrArgName, String indexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkAccessIndex(ref, "Array", len, index, arrArgName, indexArgName);
+        return index;
+    }
+
+    /**
+     * @see #checkInsertIndex(Object[], int, String, String)
+     */
+    @NotFullyTested
+    public static int checkAccessIndex(
+            float[] ref, int index, String arrArgName, String indexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkAccessIndex(ref, "Array", len, index, arrArgName, indexArgName);
+        return index;
+    }
+
+    /**
+     * @see #checkInsertIndex(Object[], int, String, String)
+     */
+    @NotFullyTested
+    public static int checkAccessIndex(
+            double[] ref, int index, String arrArgName, String indexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkAccessIndex(ref, "Array", len, index, arrArgName, indexArgName);
+        return index;
+    }
+
+    /**
+     * @see #checkInsertIndex(Object[], int, String, String)
+     */
+    @NotFullyTested
+    public static int checkAccessIndex(
+            char[] ref, int index, String arrArgName, String indexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkAccessIndex(ref, "Array", len, index, arrArgName, indexArgName);
+        return index;
+    }
+
+    /**
+     * @see #checkInsertIndex(Object[], int, String, String)
+     */
+    @NotFullyTested
+    public static int checkAccessIndex(
+            boolean[] ref, int index, String arrArgName, String indexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkAccessIndex(ref, "Array", len, index, arrArgName, indexArgName);
         return index;
     }
     
     /**
      * Tests if an array reference is not null and an index is valid to insert an element.
      * 
-     * @param ref an array reference
-     * @param index index of element to insert.  Must be non-negative.
-     * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-     * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
+     * @param ref
+     *        an array reference
+     * @param index
+     *        index of element to insert.  Must be non-negative.
+     * @param arrArgName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param indexArgName
+     *        argument name for {@code index}, e.g., "strListIndex"
+     *
      * @return the validated index
-     * @throws NullPointerException if {@code ref} is {@code null}
-     * @throws IndexOutOfBoundsException if {@code index < 0},
-     *         <br>or {@code index >= ref.length}
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IndexOutOfBoundsException
+     * <ul>
+     *   <li>if {@code index < 0}</li>
+     *   <li>if {@code index > ref.length}</li>
+     * </ul>
+     *
      * @see #checkAccessIndex(Object[], int, String, String)
      */
     @FullyTested
     public static <T> int checkInsertIndex(
             T[] ref, int index, String arrArgName, String indexArgName) {
         int len = (null == ref ? -1 : ref.length);
-        ContainerArgs._checkInsertIndex(
-            ref, "Array", len, index, arrArgName, indexArgName);
+        ContainerArgs._checkInsertIndex(ref, "Array", len, index, arrArgName, indexArgName);
         return index;
     }
     
-//    /**
-//     * Tests if an array reference is not null and an index is valid to access an element.
-//     * 
-//     * @param ref an array reference
-//     * @param index index of element to access.  Must be non-negative.
-//     * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-//     * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
-//     * @return the validated index
-//     * @throws NullPointerException if {@code ref}, {@code listArgName},
-//     *         <br>or {@code indexArgName} is {@code null}
-//     * @throws IllegalArgumentException if {@code arrArgName} or {@code indexArgName} is empty
-//     *         <br>or whitespace
-//     * @throws IndexOutOfBoundsException if {@code index < 0},
-//     *         <br>or {@code index >= ref.length}
-//     * @see #checkAccessIndex(Object[], int, String, String)
-//     */
-//    public static int checkAccessIndex(
-//            byte[] ref, int index, String arrArgName, String indexArgName) {
-//        int len = (null == ref ? -1 : ref.length);
-//        ContainerArgs._checkAccessIndex(
-//            ref, "Array", len, index, arrArgName, indexArgName);
-//        return index;
-//    }
-//    
-//    /**
-//     * Tests if an array reference is not null and an index is valid to access an element.
-//     * 
-//     * @param ref an array reference
-//     * @param index index of element to access.  Must be non-negative.
-//     * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-//     * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
-//     * @return the validated index
-//     * @throws NullPointerException if {@code ref}, {@code listArgName},
-//     *         <br>or {@code indexArgName} is {@code null}
-//     * @throws IllegalArgumentException if {@code arrArgName} or {@code indexArgName} is empty
-//     *         <br>or whitespace
-//     * @throws IndexOutOfBoundsException if {@code index < 0},
-//     *         <br>or {@code index >= ref.length}
-//     * @see #checkAccessIndex(Object[], int, String, String)
-//     */
-//    public static int checkAccessIndex(
-//            short[] ref, int index, String arrArgName, String indexArgName) {
-//        int len = (null == ref ? -1 : ref.length);
-//        ContainerArgs._checkAccessIndex(
-//            ref, "Array", len, index, arrArgName, indexArgName);
-//        return index;
-//    }
-//    
-//    /**
-//     * Tests if an array reference is not null and an index is valid to access an element.
-//     * 
-//     * @param ref an array reference
-//     * @param index index of element to access.  Must be non-negative.
-//     * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-//     * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
-//     * @return the validated index
-//     * @throws NullPointerException if {@code ref}, {@code listArgName},
-//     *         <br>or {@code indexArgName} is {@code null}
-//     * @throws IllegalArgumentException if {@code arrArgName} or {@code indexArgName} is empty
-//     *         <br>or whitespace
-//     * @throws IndexOutOfBoundsException if {@code index < 0},
-//     *         <br>or {@code index >= ref.length}
-//     * @see #checkAccessIndex(Object[], int, String, String)
-//     */
-//    public static int checkAccessIndex(
-//            int[] ref, int index, String arrArgName, String indexArgName) {
-//        int len = (null == ref ? -1 : ref.length);
-//        ContainerArgs._checkAccessIndex(
-//            ref, "Array", len, index, arrArgName, indexArgName);
-//        return index;
-//    }
-//    
-//    /**
-//     * Tests if an array reference is not null and an index is valid to access an element.
-//     * 
-//     * @param ref an array reference
-//     * @param index index of element to access.  Must be non-negative.
-//     * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-//     * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
-//     * @return the validated index
-//     * @throws NullPointerException if {@code ref}, {@code listArgName},
-//     *         <br>or {@code indexArgName} is {@code null}
-//     * @throws IllegalArgumentException if {@code arrArgName} or {@code indexArgName} is empty
-//     *         <br>or whitespace
-//     * @throws IndexOutOfBoundsException if {@code index < 0},
-//     *         <br>or {@code index >= ref.length}
-//     * @see #checkAccessIndex(Object[], int, String, String)
-//     */
-//    public static int checkAccessIndex(
-//            long[] ref, int index, String arrArgName, String indexArgName) {
-//        int len = (null == ref ? -1 : ref.length);
-//        ContainerArgs._checkAccessIndex(
-//            ref, "Array", len, index, arrArgName, indexArgName);
-//        return index;
-//    }
-//    
-//    /**
-//     * Tests if an array reference is not null and an index is valid to access an element.
-//     * 
-//     * @param ref an array reference
-//     * @param index index of element to access.  Must be non-negative.
-//     * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-//     * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
-//     * @return the validated index
-//     * @throws NullPointerException if {@code ref}, {@code listArgName},
-//     *         <br>or {@code indexArgName} is {@code null}
-//     * @throws IllegalArgumentException if {@code arrArgName} or {@code indexArgName} is empty
-//     *         <br>or whitespace
-//     * @throws IndexOutOfBoundsException if {@code index < 0},
-//     *         <br>or {@code index >= ref.length}
-//     * @see #checkAccessIndex(Object[], int, String, String)
-//     */
-//    public static int checkAccessIndex(
-//            float[] ref, int index, String arrArgName, String indexArgName) {
-//        int len = (null == ref ? -1 : ref.length);
-//        ContainerArgs._checkAccessIndex(
-//            ref, "Array", len, index, arrArgName, indexArgName);
-//        return index;
-//    }
-//    
-//    /**
-//     * Tests if an array reference is not null and an index is valid to access an element.
-//     * 
-//     * @param ref an array reference
-//     * @param index index of element to access.  Must be non-negative.
-//     * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-//     * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
-//     * @return the validated index
-//     * @throws NullPointerException if {@code ref}, {@code listArgName},
-//     *         <br>or {@code indexArgName} is {@code null}
-//     * @throws IllegalArgumentException if {@code arrArgName} or {@code indexArgName} is empty
-//     *         <br>or whitespace
-//     * @throws IndexOutOfBoundsException if {@code index < 0},
-//     *         <br>or {@code index >= ref.length}
-//     * @see #checkAccessIndex(Object[], int, String, String)
-//     */
-//    public static int checkAccessIndex(
-//            double[] ref, int index, String arrArgName, String indexArgName) {
-//        int len = (null == ref ? -1 : ref.length);
-//        ContainerArgs._checkAccessIndex(
-//            ref, "Array", len, index, arrArgName, indexArgName);
-//        return index;
-//    }
-//    
-//    /**
-//     * Tests if an array reference is not null and an index is valid to access an element.
-//     * 
-//     * @param ref an array reference
-//     * @param index index of element to access.  Must be non-negative.
-//     * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-//     * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
-//     * @return the validated index
-//     * @throws NullPointerException if {@code ref}, {@code listArgName},
-//     *         <br>or {@code indexArgName} is {@code null}
-//     * @throws IllegalArgumentException if {@code arrArgName} or {@code indexArgName} is empty
-//     *         <br>or whitespace
-//     * @throws IndexOutOfBoundsException if {@code index < 0},
-//     *         <br>or {@code index >= ref.length}
-//     * @see #checkAccessIndex(Object[], int, String, String)
-//     */
-//    public static int checkAccessIndex(
-//            char[] ref, int index, String arrArgName, String indexArgName) {
-//        int len = (null == ref ? -1 : ref.length);
-//        ContainerArgs._checkAccessIndex(
-//            ref, "Array", len, index, arrArgName, indexArgName);
-//        return index;
-//    }
-//    
-//    /**
-//     * Tests if an array reference is not null and an index is valid to access an element.
-//     * 
-//     * @param ref an array reference
-//     * @param index index of element to access.  Must be non-negative.
-//     * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-//     * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
-//     * @return the validated index
-//     * @throws NullPointerException if {@code ref}, {@code listArgName},
-//     *         <br>or {@code indexArgName} is {@code null}
-//     * @throws IllegalArgumentException if {@code arrArgName} or {@code indexArgName} is empty
-//     *         <br>or whitespace
-//     * @throws IndexOutOfBoundsException if {@code index < 0},
-//     *         <br>or {@code index >= ref.length}
-//     * @see #checkAccessIndex(Object[], int, String, String)
-//     */
-//    public static int checkAccessIndex(
-//            boolean[] ref, int index, String arrArgName, String indexArgName) {
-//        int len = (null == ref ? -1 : ref.length);
-//        ContainerArgs._checkAccessIndex(
-//            ref, "Array", len, index, arrArgName, indexArgName);
-//        return index;
-//    }
+    /**
+     * @see #checkInsertIndex(Object[], int, String, String)
+     */
+    @NotFullyTested
+    public static <T> int checkInsertIndex(
+            byte[] ref, int index, String arrArgName, String indexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkInsertIndex(ref, "Array", len, index, arrArgName, indexArgName);
+        return index;
+    }
+    
+    /**
+     * @see #checkInsertIndex(Object[], int, String, String)
+     */
+    @NotFullyTested
+    public static <T> int checkInsertIndex(
+            short[] ref, int index, String arrArgName, String indexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkInsertIndex(ref, "Array", len, index, arrArgName, indexArgName);
+        return index;
+    }
+    
+    /**
+     * @see #checkInsertIndex(Object[], int, String, String)
+     */
+    @NotFullyTested
+    public static <T> int checkInsertIndex(
+            int[] ref, int index, String arrArgName, String indexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkInsertIndex(ref, "Array", len, index, arrArgName, indexArgName);
+        return index;
+    }
+    
+    /**
+     * @see #checkInsertIndex(Object[], int, String, String)
+     */
+    @NotFullyTested
+    public static <T> int checkInsertIndex(
+            long[] ref, int index, String arrArgName, String indexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkInsertIndex(ref, "Array", len, index, arrArgName, indexArgName);
+        return index;
+    }
+    
+    /**
+     * @see #checkInsertIndex(Object[], int, String, String)
+     */
+    @NotFullyTested
+    public static <T> int checkInsertIndex(
+            float[] ref, int index, String arrArgName, String indexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkInsertIndex(ref, "Array", len, index, arrArgName, indexArgName);
+        return index;
+    }
+    
+    /**
+     * @see #checkInsertIndex(Object[], int, String, String)
+     */
+    @NotFullyTested
+    public static <T> int checkInsertIndex(
+            double[] ref, int index, String arrArgName, String indexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkInsertIndex(ref, "Array", len, index, arrArgName, indexArgName);
+        return index;
+    }
+    
+    /**
+     * @see #checkInsertIndex(Object[], int, String, String)
+     */
+    @NotFullyTested
+    public static <T> int checkInsertIndex(
+            char[] ref, int index, String arrArgName, String indexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkInsertIndex(ref, "Array", len, index, arrArgName, indexArgName);
+        return index;
+    }
+    
+    /**
+     * @see #checkInsertIndex(Object[], int, String, String)
+     */
+    @NotFullyTested
+    public static <T> int checkInsertIndex(
+            boolean[] ref, int index, String arrArgName, String indexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkInsertIndex(ref, "Array", len, index, arrArgName, indexArgName);
+        return index;
+    }
     
     /**
      * Tests if an array reference is not null, and an index and count is valid to access elements.
      * 
-     * @param ref an array reference
-     * @param index index of element to access.  Must be non-negative.
-     * @param count number of elements to access, starting from {@code index}.
-     *              Must be non-negative.
-     * @param arrArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-     * @param indexArgName argument name for {@code index}, e.g., "strListIndex"
-     * @param countArgName argument name for {@code count}, e.g., "strListCount"
-     * @throws NullPointerException if {@code ref} is {@code null}
-     * @throws IllegalArgumentException if {@code index < 0},
-     *         <br>or if {@code count < 0}
-     * @throws IndexOutOfBoundsException if {@code index >= ref.length},
-     *         <br>or if {@code index + count > ref.length}
+     * @param ref
+     *        an array reference
+     * @param index
+     *        index of element to access.  Must be non-negative.
+     * @param count
+     *        number of elements to access, starting from {@code index}.  Must be non-negative.
+     * @param arrArgName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param indexArgName
+     *        argument name for {@code index}, e.g., "strListIndex"
+     * @param countArgName
+     *        argument name for {@code count}, e.g., "strListCount"
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code index < 0}</li>
+     *   <li>if {@code count < 0}</li>
+     * </ul>
+     * @throws IndexOutOfBoundsException
+     * <ul>
+     *   <li>if {@code index >= ref.length}</li>
+     *   <li>if {@code index + count > ref.length}</li>
+     * </ul>
      */
     @FullyTested
     public static <T> void checkIndexAndCount(
             T[] ref,
+            int index,
+            int count,
+            String arrArgName,
+            String indexArgName,
+            String countArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkIndexAndCount(
+            ref, "Array", len, index, count, arrArgName, indexArgName, countArgName);
+    }
+    
+    /**
+     * @see #checkIndexAndCount(Object[], int, int, String, String, String)
+     */
+    @NotFullyTested
+    public static <T> void checkIndexAndCount(
+            byte[] ref,
+            int index,
+            int count,
+            String arrArgName,
+            String indexArgName,
+            String countArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkIndexAndCount(
+            ref, "Array", len, index, count, arrArgName, indexArgName, countArgName);
+    }
+    
+    /**
+     * @see #checkIndexAndCount(Object[], int, int, String, String, String)
+     */
+    @NotFullyTested
+    public static <T> void checkIndexAndCount(
+            short[] ref,
+            int index,
+            int count,
+            String arrArgName,
+            String indexArgName,
+            String countArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkIndexAndCount(
+            ref, "Array", len, index, count, arrArgName, indexArgName, countArgName);
+    }
+    
+    /**
+     * @see #checkIndexAndCount(Object[], int, int, String, String, String)
+     */
+    @NotFullyTested
+    public static <T> void checkIndexAndCount(
+            int[] ref,
+            int index,
+            int count,
+            String arrArgName,
+            String indexArgName,
+            String countArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkIndexAndCount(
+            ref, "Array", len, index, count, arrArgName, indexArgName, countArgName);
+    }
+    
+    /**
+     * @see #checkIndexAndCount(Object[], int, int, String, String, String)
+     */
+    @NotFullyTested
+    public static <T> void checkIndexAndCount(
+            long[] ref,
+            int index,
+            int count,
+            String arrArgName,
+            String indexArgName,
+            String countArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkIndexAndCount(
+            ref, "Array", len, index, count, arrArgName, indexArgName, countArgName);
+    }
+    
+    /**
+     * @see #checkIndexAndCount(Object[], int, int, String, String, String)
+     */
+    @NotFullyTested
+    public static <T> void checkIndexAndCount(
+            float[] ref,
+            int index,
+            int count,
+            String arrArgName,
+            String indexArgName,
+            String countArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkIndexAndCount(
+            ref, "Array", len, index, count, arrArgName, indexArgName, countArgName);
+    }
+    
+    /**
+     * @see #checkIndexAndCount(Object[], int, int, String, String, String)
+     */
+    @NotFullyTested
+    public static <T> void checkIndexAndCount(
+            double[] ref,
+            int index,
+            int count,
+            String arrArgName,
+            String indexArgName,
+            String countArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkIndexAndCount(
+            ref, "Array", len, index, count, arrArgName, indexArgName, countArgName);
+    }
+    
+    /**
+     * @see #checkIndexAndCount(Object[], int, int, String, String, String)
+     */
+    @NotFullyTested
+    public static <T> void checkIndexAndCount(
+            char[] ref,
+            int index,
+            int count,
+            String arrArgName,
+            String indexArgName,
+            String countArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkIndexAndCount(
+            ref, "Array", len, index, count, arrArgName, indexArgName, countArgName);
+    }
+    
+    /**
+     * @see #checkIndexAndCount(Object[], int, int, String, String, String)
+     */
+    @NotFullyTested
+    public static <T> void checkIndexAndCount(
+            boolean[] ref,
             int index,
             int count,
             String arrArgName,
@@ -464,21 +1056,216 @@ public final class ArrayArgs {
      * <p>
      * This test method was written for index pairs used by {@link List#subList(int, int)}.
      * 
-     * @param ref a collection reference
-     * @param fromIndex first index of element to access.  Must be non-negative.
-     * @param toIndex one greater than last index of element to access.  Must be non-negative.
-     * @param collectionArgName argument name for {@code ref}, e.g., "strList"
-     * @param fromIndexArgName argument name for {@code fromIndex}, e.g., "strListFromIndex"
-     * @param toIndexArgName argument name for {@code toIndex}, e.g., "strListToIndex"
-     * @throws NullPointerException if {@code ref} is {@code null}
-     * @throws IndexOutOfBoundsException if {@code fromIndex < 0},
-     *         <br>or if {@code toIndex < 0},
-     *         <br>or if {@code fromIndex >= ref.length},
-     *         <br>or if {@code toIndex > ref.length}
+     * @param ref
+     *        a collection reference
+     * @param fromIndex
+     *        first index of element to access.  Must be non-negative.
+     * @param toIndex
+     *        one greater than last index of element to access.  Must be non-negative.
+     * @param collectionArgName
+     *        argument name for {@code ref}, e.g., "strList"
+     * @param fromIndexArgName
+     *        argument name for {@code fromIndex}, e.g., "strListFromIndex"
+     * @param toIndexArgName
+     *        argument name for {@code toIndex}, e.g., "strListToIndex"
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IndexOutOfBoundsException
+     * <ul>
+     *   <li>if {@code fromIndex < 0}</li>
+     *   <li>if {@code toIndex < 0}</li>
+     *   <li>if {@code fromIndex >= ref.length}</li>
+     *   <li>if {@code toIndex > ref.length}</li>
+     * </ul>
      */
     @FullyTested
     public static <T> void checkFromAndToIndices(
             T[] ref,
+            int fromIndex,
+            int toIndex,
+            String collectionArgName,
+            String fromIndexArgName,
+            String toIndexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkFromAndToIndices(
+            ref,
+            "Collection",
+            len,
+            fromIndex,
+            toIndex,
+            collectionArgName,
+            fromIndexArgName,
+            toIndexArgName);
+    }
+    
+    /**
+     * @see #checkFromAndToIndices(Object[], int, int, String, String, String)
+     */
+    @NotFullyTested
+    public static <T> void checkFromAndToIndices(
+            byte[] ref,
+            int fromIndex,
+            int toIndex,
+            String collectionArgName,
+            String fromIndexArgName,
+            String toIndexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkFromAndToIndices(
+            ref,
+            "Collection",
+            len,
+            fromIndex,
+            toIndex,
+            collectionArgName,
+            fromIndexArgName,
+            toIndexArgName);
+    }
+    
+    /**
+     * @see #checkFromAndToIndices(Object[], int, int, String, String, String)
+     */
+    @NotFullyTested
+    public static <T> void checkFromAndToIndices(
+            short[] ref,
+            int fromIndex,
+            int toIndex,
+            String collectionArgName,
+            String fromIndexArgName,
+            String toIndexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkFromAndToIndices(
+            ref,
+            "Collection",
+            len,
+            fromIndex,
+            toIndex,
+            collectionArgName,
+            fromIndexArgName,
+            toIndexArgName);
+    }
+    
+    /**
+     * @see #checkFromAndToIndices(Object[], int, int, String, String, String)
+     */
+    @NotFullyTested
+    public static <T> void checkFromAndToIndices(
+            int[] ref,
+            int fromIndex,
+            int toIndex,
+            String collectionArgName,
+            String fromIndexArgName,
+            String toIndexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkFromAndToIndices(
+            ref,
+            "Collection",
+            len,
+            fromIndex,
+            toIndex,
+            collectionArgName,
+            fromIndexArgName,
+            toIndexArgName);
+    }
+    
+    /**
+     * @see #checkFromAndToIndices(Object[], int, int, String, String, String)
+     */
+    @NotFullyTested
+    public static <T> void checkFromAndToIndices(
+            long[] ref,
+            int fromIndex,
+            int toIndex,
+            String collectionArgName,
+            String fromIndexArgName,
+            String toIndexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkFromAndToIndices(
+            ref,
+            "Collection",
+            len,
+            fromIndex,
+            toIndex,
+            collectionArgName,
+            fromIndexArgName,
+            toIndexArgName);
+    }
+    
+    /**
+     * @see #checkFromAndToIndices(Object[], int, int, String, String, String)
+     */
+    @NotFullyTested
+    public static <T> void checkFromAndToIndices(
+            float[] ref,
+            int fromIndex,
+            int toIndex,
+            String collectionArgName,
+            String fromIndexArgName,
+            String toIndexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkFromAndToIndices(
+            ref,
+            "Collection",
+            len,
+            fromIndex,
+            toIndex,
+            collectionArgName,
+            fromIndexArgName,
+            toIndexArgName);
+    }
+    
+    /**
+     * @see #checkFromAndToIndices(Object[], int, int, String, String, String)
+     */
+    @NotFullyTested
+    public static <T> void checkFromAndToIndices(
+            double[] ref,
+            int fromIndex,
+            int toIndex,
+            String collectionArgName,
+            String fromIndexArgName,
+            String toIndexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkFromAndToIndices(
+            ref,
+            "Collection",
+            len,
+            fromIndex,
+            toIndex,
+            collectionArgName,
+            fromIndexArgName,
+            toIndexArgName);
+    }
+    
+    /**
+     * @see #checkFromAndToIndices(Object[], int, int, String, String, String)
+     */
+    @NotFullyTested
+    public static <T> void checkFromAndToIndices(
+            char[] ref,
+            int fromIndex,
+            int toIndex,
+            String collectionArgName,
+            String fromIndexArgName,
+            String toIndexArgName) {
+        int len = (null == ref ? -1 : ref.length);
+        ContainerArgs._checkFromAndToIndices(
+            ref,
+            "Collection",
+            len,
+            fromIndex,
+            toIndex,
+            collectionArgName,
+            fromIndexArgName,
+            toIndexArgName);
+    }
+    
+    /**
+     * @see #checkFromAndToIndices(Object[], int, int, String, String, String)
+     */
+    @NotFullyTested
+    public static <T> void checkFromAndToIndices(
+            boolean[] ref,
             int fromIndex,
             int toIndex,
             String collectionArgName,

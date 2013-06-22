@@ -44,10 +44,16 @@ public class DoubleArgs {
     /**
      * Tests if {@code value > 0.0d}
      * 
-     * @param value a value to test
-     * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+     * @param value
+     *        a value to test
+     * @param argName
+     *        argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+     *
      * @return the validated value
-     * @throws IllegalArgumentException if value of {@code value <= 0.0d}
+     *
+     * @throws IllegalArgumentException
+     *         if {@code value <= 0.0d}
+     *
      * @see #checkNotPositive(double, String)
      * @see #checkNegative(double, String)
      * @see #checkNotNegative(double, String)
@@ -66,10 +72,16 @@ public class DoubleArgs {
     /**
      * Tests if {@code value <= 0.0d}
      * 
-     * @param value a value to test
-     * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+     * @param value
+     *        a value to test
+     * @param argName
+     *        argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+     *
      * @return the validated value
-     * @throws IllegalArgumentException if value of {@code value > 0.0d}
+     *
+     * @throws IllegalArgumentException
+     *         if {@code value > 0.0d}
+     *
      * @see #checkPositive(double, String)
      * @see #checkNegative(double, String)
      * @see #checkNotNegative(double, String)
@@ -88,10 +100,16 @@ public class DoubleArgs {
     /**
      * Tests if {@code value < 0.0d}
      * 
-     * @param value a value to test
-     * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+     * @param value
+     *        a value to test
+     * @param argName
+     *        argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+     *
      * @return the validated value
-     * @throws IllegalArgumentException if value of {@code value => 0.0d}
+     *
+     * @throws IllegalArgumentException
+     *         if {@code value => 0.0d}
+     *
      * @see #checkPositive(double, String)
      * @see #checkNotPositive(double, String)
      * @see #checkNotNegative(double, String)
@@ -110,10 +128,16 @@ public class DoubleArgs {
     /**
      * Tests if {@code value >= 0.0d}
      * 
-     * @param value a value to test
-     * @param argName argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+     * @param value
+     *        a value to test
+     * @param argName
+     *        argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+     *
      * @return the validated value
-     * @throws IllegalArgumentException if value of {@code value < 0.0d}
+     *
+     * @throws IllegalArgumentException
+     *         if {@code value < 0.0d}
+     *
      * @see #checkPositive(double, String)
      * @see #checkNotPositive(double, String)
      * @see #checkNegative(double, String)

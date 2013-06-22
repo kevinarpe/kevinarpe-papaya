@@ -78,10 +78,15 @@ public final class ObjectArgs {
     /**
      * Tests if an object reference passed as an argument is not null.
      * 
-     * @param ref an object reference
-     * @param argName argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param ref
+     *        an object reference
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
      * @return the validated object reference
-     * @throws NullPointerException if {@code ref} is {@code null}
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
      */
     @FullyTested
     public static <T> T checkNotNull(T ref, String argName) {
@@ -124,14 +129,22 @@ public final class ObjectArgs {
      * Long num = (Long) ((Object) str);  // throws ClassCastException at run-time
      * </pre>
      * 
-     * @param ref an object reference
-     * @param destClass destination type after cast
-     * @param refArgName argument name for {@code ref}, e.g., "strList" or "searchRegex"
-     * @param destClassArgName argument name for {@code destClass},
-     *        e.g., "strListClass" or "searchRegexClass"
+     * @param ref
+     *        an object reference
+     * @param destClass
+     *        destination type after cast
+     * @param refArgName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param destClassArgName
+     *        argument name for {@code destClass}, e.g., "strListClass" or "searchRegexClass"
+     *
      * @return the validated object reference
-     * @throws NullPointerException if {@code ref} or {@code destClass} is {@code null}
-     * @throws ClassCastException if {@code ref} cannot be safely cast to type {@code destClass}
+     *
+     * @throws NullPointerException
+     *         if {@code ref} or {@code destClass} is {@code null}
+     * @throws ClassCastException
+     *         if {@code ref} cannot be safely cast to type {@code destClass}
+     *
      * @see #checkInstanceOfType(Object, Class, String)
      * @see #checkAssignableToType(Class, Class, String, String)
      */
@@ -174,15 +187,22 @@ public final class ObjectArgs {
      * For examples of valid and invalid type casts, see
      * {@link #checkInstanceOfType(Object, Class, String, String)}.
      * 
-     * @param srcClass source type before cast
-     * @param destClass destination type after cast
-     * @param srcClassArgName argument name for {@code srcClass},
+     * @param srcClass
+     *        source type before cast
+     * @param destClass
+     *        destination type after cast
+     * @param srcClassArgName
+     *        argument name for {@code srcClass},
      *        e.g., "strListClass" or "searchRegexClass"
-     * @param destClassArgName argument name for {@code destClass},
+     * @param destClassArgName
+     *        argument name for {@code destClass},
      *        e.g., "strListClass" or "searchRegexClass"
-     * @throws NullPointerException if {@code srcClass} or {@code destClass} is {@code null}
-     * @throws ClassCastException if type {@code srcClass} cannot be safely cast to type
-     *         {@code destClass}
+     *
+     * @throws NullPointerException
+     *         if {@code srcClass} or {@code destClass} is {@code null}
+     * @throws ClassCastException
+     *         if type {@code srcClass} cannot be safely cast to type {@code destClass}
+     *
      * @see #checkAssignableToType(Class, Class, String)
      * @see #checkInstanceOfType(Object, Class, String, String)
      */
