@@ -130,18 +130,18 @@ public final class PathUtils {
      * @throws PathException
      * <ul>
      *   <li>with reason {@link PathExceptionReason#PATH_IS_FILE}
-     *   if {@code path} exists as a file<li>
+     *   if {@code path} exists as a file</li>
      *   <li>with reason {@link PathExceptionReason#PARENT_PATH_DOES_NOT_EXIST}
-     *   if parent directory for {@code path} does not exist<li>
+     *   if parent directory for {@code path} does not exist</li>
      *   <li>with reason {@link PathExceptionReason#PARENT_PATH_IS_FILE}
-     *   if parent directory for {@code path} exists as a file<li>
+     *   if parent directory for {@code path} exists as a file</li>
      *   <li>with reason {@link PathExceptionReason#PARENT_PATH_IS_NON_WRITABLE_DIRECTORY}
      *   if parent directory for {@code path} exists as a directory, but is not
-     *   writable<li>
+     *   writable</li>
      *   <li>with reason {@link PathExceptionReason#PATH_DISK_PARTITION_IS_FULL}
-     *   if disk partition for directory is full<li>
+     *   if disk partition for directory is full</li>
      *   <li>with reason {@link PathExceptionReason#PARENT_PATH_DISK_PARTITION_IS_FULL}
-     *   if disk partition for parent directory is full<li>
+     *   if disk partition for parent directory is full</li>
      *   <li>with reason {@link PathExceptionReason#UNKNOWN}
      *   if reason for error is unknown</li>
      * </ul>
@@ -196,15 +196,15 @@ public final class PathUtils {
      * @throws PathException
      * <ul>
      *   <li>with reason {@link PathExceptionReason#PATH_IS_FILE}
-     *   if {@code path} exists as a file<li>
+     *   if {@code path} exists as a file</li>
      *   <li>with reason {@link PathExceptionReason#PARENT_PATH_IS_FILE}
-     *   if parent directory for {@code path} exists as a file<li>
+     *   if parent directory for {@code path} exists as a file</li>
      *   <li>with reason {@link PathExceptionReason#PARENT_PATH_IS_NON_WRITABLE_DIRECTORY}
-     *   if parent directory for {@code path} exists as a directory, but is not writable<li>
+     *   if parent directory for {@code path} exists as a directory, but is not writable</li>
      *   <li>with reason {@link PathExceptionReason#PATH_DISK_PARTITION_IS_FULL}
-     *   if disk partition for directory is full<li>
+     *   if disk partition for directory is full</li>
      *   <li>with reason {@link PathExceptionReason#PARENT_PATH_DISK_PARTITION_IS_FULL}
-     *   if disk partition for parent directory is full<li>
+     *   if disk partition for parent directory is full</li>
      *   <li>with reason {@link PathExceptionReason#UNKNOWN}
      *   if reason for error is unknown</li>
      * </ul>
@@ -338,11 +338,11 @@ public final class PathUtils {
      * @throws PathException
      * <ul>
      *   <li>with reason {@link PathExceptionReason#PATH_IS_FILE}
-     *   if {@code path} exists as a file<li>
+     *   if {@code path} exists as a file</li>
      *   <li>with reason {@link PathExceptionReason#PATH_IS_ROOT_DIRECTORY}
-     *   if {@code path} exists as a root directory<li>
+     *   if {@code path} exists as a root directory</li>
      *   <li>with reason {@link PathExceptionReason#PARENT_PATH_IS_NON_WRITABLE_DIRECTORY}
-     *   if parent directory for {@code path} exists as a directory, but is not writable<li>
+     *   if parent directory for {@code path} exists as a directory, but is not writable</li>
      *   <li>with reason {@link PathExceptionReason#UNKNOWN}
      *   if reason for error is unknown</li>
      * </ul>
@@ -425,9 +425,9 @@ public final class PathUtils {
      * @throws PathException
      * <ul>
      *   <li>with reason {@link PathExceptionReason#PATH_IS_DIRECTORY}
-     *   if {@code path} exists as a directory<li>
+     *   if {@code path} exists as a directory</li>
      *   <li>with reason {@link PathExceptionReason#PARENT_PATH_IS_NON_WRITABLE_DIRECTORY}
-     *   if parent directory for {@code path} exists as a directory, but is not writable<li>
+     *   if parent directory for {@code path} exists as a directory, but is not writable</li>
      *   <li>with reason {@link PathExceptionReason#UNKNOWN} if reason for error
      *   is unknown</li>
      * </ul>
