@@ -1,6 +1,7 @@
 package com.googlecode.kevinarpe.papaya.args;
 
 import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
+import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 
 /*
  * #%L
@@ -160,6 +161,7 @@ public final class LongArgs {
      * @see #checkMinValue(long, long, String)
      * @see #checkMaxValue(long, long, String)
      * @see #checkExactValue(long, long, String)
+     * @see #checkNotExactValue(long, long, String)
      */
     @FullyTested
     public static long checkValueRange(
@@ -175,6 +177,7 @@ public final class LongArgs {
      * @see #checkValueRange(long, long, long, String)
      * @see #checkMaxValue(long, long, String)
      * @see #checkExactValue(long, long, String)
+     * @see #checkNotExactValue(long, long, String)
      */
     @FullyTested
     public static long checkMinValue(long value, long minValue, String argName) {
@@ -189,6 +192,7 @@ public final class LongArgs {
      * @see #checkValueRange(long, long, long, String)
      * @see #checkMinValue(long, long, String)
      * @see #checkExactValue(long, long, String)
+     * @see #checkNotExactValue(long, long, String)
      */
     @FullyTested
     public static long checkMaxValue(long value, long maxValue, String argName) {
@@ -203,10 +207,26 @@ public final class LongArgs {
      * @see #checkValueRange(long, long, long, String)
      * @see #checkMinValue(long, long, String)
      * @see #checkMaxValue(long, long, String)
+     * @see #checkNotExactValue(long, long, String)
      */
     @FullyTested
     public static long checkExactValue(long value, long exactValue, String argName) {
         ComparableArgs.checkExactValue(value, exactValue, argName);
+        return value;
+    }
+
+    /**
+     * Convenience method to call
+     * {@link ComparableArgs#checkNotExactValue(Comparable, Comparable, String)}.
+     * 
+     * @see #checkValueRange(long, long, long, String)
+     * @see #checkMinValue(long, long, String)
+     * @see #checkMaxValue(long, long, String)
+     * @see #checkExactValue(long, long, String)
+     */
+    @NotFullyTested
+    public static long checkNotExactValue(long value, long exactValue, String argName) {
+        ComparableArgs.checkNotExactValue(value, exactValue, argName);
         return value;
     }
 }

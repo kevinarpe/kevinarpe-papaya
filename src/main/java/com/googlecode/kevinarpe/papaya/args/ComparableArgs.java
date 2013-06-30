@@ -1,6 +1,7 @@
 package com.googlecode.kevinarpe.papaya.args;
 
 import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
+import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 
 /*
  * #%L
@@ -172,17 +173,58 @@ public final class ComparableArgs {
      * @return the validated object reference
      *
      * @throws NullPointerException
-     *         if {@code ref} or {@code maxValue} is {@code null}
+     *         if {@code ref} or {@code exactValue} is {@code null}
      * @throws IllegalArgumentException
-     *         if value of {@code ref} is outside allowed range
+     *         if value of {@code ref} is not the exact value
      *
      * @see #checkValueRange(Comparable, Comparable, Comparable, String)
      */
     @FullyTested
     public static <T extends Comparable<T>> T checkExactValue(
             T ref, T exactValue, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
         ObjectArgs.checkNotNull(exactValue, "exactValue");
-        _checkRangeCore(ref, exactValue, exactValue, argName);        
+        
+        if (ref != exactValue) {
+            String w = StringArgs._getArgNameWarning(argName, "argName");
+            throw new IllegalArgumentException(String.format(
+                "Argument '%s': 'ref' != 'exactValue': %s != %s%s",
+                argName, ref, exactValue, w));
+        }
+        return ref;
+    }
+    
+    /**
+     * Tests if a Comparable reference is not null and is not an exact value.
+     * 
+     * @param ref
+     *        an object reference
+     * @param exactValue
+     *        unexpected value
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
+     * @return the validated object reference
+     *
+     * @throws NullPointerException
+     *         if {@code ref} or {@code exactValue} is {@code null}
+     * @throws IllegalArgumentException
+     *         if value of {@code ref} is the exact value
+     *
+     * @see #checkValueRange(Comparable, Comparable, Comparable, String)
+     */
+    @NotFullyTested
+    public static <T extends Comparable<T>> T checkNotExactValue(
+            T ref, T exactValue, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+        ObjectArgs.checkNotNull(exactValue, "exactValue");
+        
+        if (ref == exactValue) {
+            String w = StringArgs._getArgNameWarning(argName, "argName");
+            throw new IllegalArgumentException(String.format(
+                "Argument '%s': 'ref' == 'exactValue': %s == %s%s",
+                argName, ref, exactValue, w));
+        }
         return ref;
     }
 }

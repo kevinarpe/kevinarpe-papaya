@@ -1,6 +1,7 @@
 package com.googlecode.kevinarpe.papaya.args;
 
 import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
+import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 
 /*
  * #%L
@@ -100,6 +101,7 @@ public final class IntArgs {
      * @see #checkMinValue(int, int, String)
      * @see #checkMaxValue(int, int, String)
      * @see #checkExactValue(int, int, String)
+     * @see #checkNotExactValue(int, int, String)
      */
     @FullyTested
     public static int checkValueRange(
@@ -115,6 +117,7 @@ public final class IntArgs {
      * @see #checkValueRange(int, int, int, String)
      * @see #checkMaxValue(int, int, String)
      * @see #checkExactValue(int, int, String)
+     * @see #checkNotExactValue(int, int, String)
      */
     @FullyTested
     public static int checkMinValue(int value, int minValue, String argName) {
@@ -129,6 +132,7 @@ public final class IntArgs {
      * @see #checkValueRange(int, int, int, String)
      * @see #checkMinValue(int, int, String)
      * @see #checkExactValue(int, int, String)
+     * @see #checkNotExactValue(int, int, String)
      */
     @FullyTested
     public static int checkMaxValue(int value, int maxValue, String argName) {
@@ -143,10 +147,26 @@ public final class IntArgs {
      * @see #checkValueRange(int, int, int, String)
      * @see #checkMinValue(int, int, String)
      * @see #checkMaxValue(int, int, String)
+     * @see #checkNotExactValue(int, int, String)
      */
     @FullyTested
     public static int checkExactValue(int value, int exactValue, String argName) {
         ComparableArgs.checkExactValue(value, exactValue, argName);
+        return value;
+    }
+    
+    /**
+     * Convenience method to call
+     * {@link ComparableArgs#checkExactValue(Comparable, Comparable, String)}.
+     * 
+     * @see #checkValueRange(int, int, int, String)
+     * @see #checkMinValue(int, int, String)
+     * @see #checkMaxValue(int, int, String)
+     * @see #checkExactValue(int, int, String)
+     */
+    @NotFullyTested
+    public static int checkNotExactValue(int value, int exactValue, String argName) {
+        ComparableArgs.checkNotExactValue(value, exactValue, argName);
         return value;
     }
 }
