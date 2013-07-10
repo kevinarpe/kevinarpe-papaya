@@ -29,6 +29,8 @@ import java.util.Arrays;
 
 import com.google.common.base.Objects;
 import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.args.ArrayArgs;
+import com.googlecode.kevinarpe.papaya.args.IntArgs;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 
 /**
@@ -87,9 +89,13 @@ public final class ThrowableUtils {
             result = 31 * result + (null == localMessage ? 0 : localMessage.hashCode());
         }
         if (!excludeStackTrace) {
-            result = 31 * result + Objects.hashCode((Object[]) t.getStackTrace());
+            Object[] stackTrace = t.getStackTrace();
+            result = 31 * result + stackTrace.hashCode();
         }
-        result = 31 * result + hashCode(t.getCause());
+        Throwable cause = t.getCause();
+        if (null != cause) {
+            result = 31 * result + hashCode(cause);
+        }
         return result;
     }
     

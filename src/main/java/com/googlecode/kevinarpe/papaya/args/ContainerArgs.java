@@ -2,6 +2,8 @@ package com.googlecode.kevinarpe.papaya.args;
 
 import java.util.Collection;
 
+import com.google.common.base.Joiner;
+
 /*
  * #%L
  * This file is part of Papaya.
@@ -150,15 +152,15 @@ final class ContainerArgs {
             String w2 = StringArgs._getArgNameWarning(containerArgName, "containerArgName");
             String w3 = StringArgs._getArgNameWarning(indexArgName, "indexArgName");
             throw new IndexOutOfBoundsException(String.format(
-                    "%s '%s': Index '%s' for access too large: %d >= %d%s%s%s",
-                    containerType,
-                    containerArgName,
-                    indexArgName,
-                    index,
-                    containerSize,
-                    w,
-                    w2,
-                    w3));
+                "%s '%s': Index '%s' for access too large: %d >= %d%s%s%s",
+                containerType,
+                containerArgName,
+                indexArgName,
+                index,
+                containerSize,
+                w,
+                w2,
+                w3));
         }
     }
     
@@ -176,15 +178,15 @@ final class ContainerArgs {
             String w2 = StringArgs._getArgNameWarning(containerArgName, "containerArgName");
             String w3 = StringArgs._getArgNameWarning(indexArgName, "indexArgName");
             throw new IndexOutOfBoundsException(String.format(
-                    "%s '%s': Index '%s' for insert too large: %d > %d%s%s%s",
-                    containerType,
-                    containerArgName,
-                    indexArgName,
-                    index,
-                    containerSize,
-                    w,
-                    w2,
-                    w3));
+                "%s '%s': Index '%s' for insert too large: %d > %d%s%s%s",
+                containerType,
+                containerArgName,
+                indexArgName,
+                index,
+                containerSize,
+                w,
+                w2,
+                w3));
         }
     }
 
@@ -237,18 +239,18 @@ final class ContainerArgs {
             String w3 = StringArgs._getArgNameWarning(indexArgName, "indexArgName");
             String w4 = StringArgs._getArgNameWarning(countArgName, "countArgName");
             throw new IndexOutOfBoundsException(String.format(
-                    "%s '%s': Index '%s' and count '%s' too large: %d + %d > %d%s%s%s%s",
-                    containerType,
-                    containerArgName,
-                    indexArgName,
-                    countArgName,
-                    index,
-                    count,
-                    containerSize,
-                    w,
-                    w2,
-                    w3,
-                    w4));
+                "%s '%s': Index '%s' and count '%s' too large: %d + %d > %d%s%s%s%s",
+                containerType,
+                containerArgName,
+                indexArgName,
+                countArgName,
+                index,
+                count,
+                containerSize,
+                w,
+                w2,
+                w3,
+                w4));
         }
     }
     
@@ -274,15 +276,15 @@ final class ContainerArgs {
             String w2 = StringArgs._getArgNameWarning(containerArgName, "containerArgName");
             String w3 = StringArgs._getArgNameWarning(toIndexArgName, "toIndexArgName");
             throw new IndexOutOfBoundsException(String.format(
-                    "%s '%s': Index '%s' too large: %d > %d%s%s%s",
-                    containerType,
-                    containerArgName,
-                    toIndexArgName,
-                    toIndex,
-                    containerSize,
-                    w,
-                    w2,
-                    w3));
+                "%s '%s': Index '%s' too large: %d > %d%s%s%s",
+                containerType,
+                containerArgName,
+                toIndexArgName,
+                toIndex,
+                containerSize,
+                w,
+                w2,
+                w3));
         }
         if (fromIndex > toIndex) {
             String w = _getContainerTypeWarning(containerType);
@@ -290,17 +292,49 @@ final class ContainerArgs {
             String w3 = StringArgs._getArgNameWarning(toIndexArgName, "toIndexArgName");
             String w4 = StringArgs._getArgNameWarning(fromIndexArgName, "fromIndexArgName");
             throw new IndexOutOfBoundsException(String.format(
-                    "%s '%s': Index '%s' larger than index '%s': %d > %d%s%s%s%s",
-                    containerType,
-                    containerArgName,
-                    fromIndexArgName,
-                    toIndexArgName,
-                    fromIndex,
-                    toIndex,
-                    w,
-                    w2,
-                    w3,
-                    w4));
+                "%s '%s': Index '%s' larger than index '%s': %d > %d%s%s%s%s",
+                containerType,
+                containerArgName,
+                fromIndexArgName,
+                toIndexArgName,
+                fromIndex,
+                toIndex,
+                w,
+                w2,
+                w3,
+                w4));
+        }
+    }
+    
+    static <T> void _checkContains(
+            Collection<T> ref,
+            String containerType,
+            T value,
+            String containerArgName) {
+        ObjectArgs.checkNotNull(ref, "ref");
+        
+        if (ref.isEmpty()) {
+            String w = _getContainerTypeWarning(containerType);
+            String w2 = StringArgs._getArgNameWarning(containerArgName, "containerArgName");
+            throw new IllegalArgumentException(String.format(
+                "%s '%s' is empty%s%s",
+                containerType,
+                containerArgName,
+                w,
+                w2));
+        }
+        
+        if (!ref.contains(value)) {
+            String w = _getContainerTypeWarning(containerType);
+            String w2 = StringArgs._getArgNameWarning(containerArgName, "containerArgName");
+            throw new IndexOutOfBoundsException(String.format(
+                "%s '%s': Value %s not valid%nValid value(s): %s%s%s",
+                containerType,
+                containerArgName,
+                (null == value ? "null" : value),
+                Joiner.on(", ").useForNull("null").join(ref),
+                w,
+                w2));
         }
     }
 }

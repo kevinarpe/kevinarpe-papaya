@@ -25,10 +25,12 @@ package com.googlecode.kevinarpe.papaya.args;
  * #L%
  */
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
+import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 
 /**
  * Static methods to check {@link Collection} arguments.
@@ -407,5 +409,34 @@ public final class CollectionArgs {
             collectionArgName,
             fromIndexArgName,
             toIndexArgName);
+    }
+    
+    /**
+     * Tests if a value is found in a collection of valid values.
+     * 
+     * @param ref
+     *        a collection reference of valid values
+     * @param value
+     *        reference to test if found in collection of valid values
+     * @param collectionArgName
+     *        argument name for {@code ref}, e.g., "strList"
+     *
+     * @return validated value
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code ref} is empty</li>
+     *   <li>if {@code ref} does not contain {@code value}</li>
+     * </ul>
+     * 
+     * @see ArrayArgs#checkContains(Object[], Object, String)
+     */
+    @NotFullyTested
+    public static <T> T checkContains(
+            Collection<T> ref, T value, String collectionArgName) {
+        ContainerArgs._checkContains(ref, "Collection", value, collectionArgName);
+        return value;
     }
 }

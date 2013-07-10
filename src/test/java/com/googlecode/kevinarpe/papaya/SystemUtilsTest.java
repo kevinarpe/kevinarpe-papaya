@@ -202,8 +202,25 @@ public class SystemUtilsTest {
         Assert.assertTrue(os.isCurrent());
         SystemUtils.OperatingSystem otherOs =
             (os.equals(SystemUtils.OperatingSystem.LINUX)
-                    ? SystemUtils.OperatingSystem.WINDOWS_7
-                    : SystemUtils.OperatingSystem.LINUX);
+                ? SystemUtils.OperatingSystem.WINDOWS_7
+                : SystemUtils.OperatingSystem.LINUX);
         Assert.assertFalse(otherOs.isCurrent());
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // SystemUtils.OperatingSystemCategory.isCurrent
+    //
+
+    @Test
+    public void shouldCheckIsCurrentOperatingSystemCategory() {
+        SystemUtils.OperatingSystemCategory osCat =
+            SystemUtils.getCurrentOperatingSystemCategory();
+        Assert.assertTrue(osCat.isCurrent());
+        
+        SystemUtils.OperatingSystemCategory otherOsCat =
+            (osCat.equals(SystemUtils.OperatingSystemCategory.UNIX)
+                ? SystemUtils.OperatingSystemCategory.WINDOWS
+                : SystemUtils.OperatingSystemCategory.UNIX);
+        Assert.assertFalse(otherOsCat.isCurrent());
     }
 }

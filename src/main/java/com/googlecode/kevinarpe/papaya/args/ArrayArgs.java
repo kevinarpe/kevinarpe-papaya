@@ -1,7 +1,16 @@
 package com.googlecode.kevinarpe.papaya.args;
 
+import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.primitives.Booleans;
+import com.google.common.primitives.Bytes;
+import com.google.common.primitives.Chars;
+import com.google.common.primitives.Doubles;
+import com.google.common.primitives.Floats;
+import com.google.common.primitives.Ints;
+import com.google.common.primitives.Longs;
+import com.google.common.primitives.Shorts;
 import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 
@@ -926,7 +935,7 @@ public final class ArrayArgs {
      * @see #checkIndexAndCount(Object[], int, int, String, String, String)
      */
     @NotFullyTested
-    public static <T> void checkIndexAndCount(
+    public static void checkIndexAndCount(
             byte[] ref,
             int index,
             int count,
@@ -942,7 +951,7 @@ public final class ArrayArgs {
      * @see #checkIndexAndCount(Object[], int, int, String, String, String)
      */
     @NotFullyTested
-    public static <T> void checkIndexAndCount(
+    public static void checkIndexAndCount(
             short[] ref,
             int index,
             int count,
@@ -958,7 +967,7 @@ public final class ArrayArgs {
      * @see #checkIndexAndCount(Object[], int, int, String, String, String)
      */
     @NotFullyTested
-    public static <T> void checkIndexAndCount(
+    public static void checkIndexAndCount(
             int[] ref,
             int index,
             int count,
@@ -974,7 +983,7 @@ public final class ArrayArgs {
      * @see #checkIndexAndCount(Object[], int, int, String, String, String)
      */
     @NotFullyTested
-    public static <T> void checkIndexAndCount(
+    public static void checkIndexAndCount(
             long[] ref,
             int index,
             int count,
@@ -990,7 +999,7 @@ public final class ArrayArgs {
      * @see #checkIndexAndCount(Object[], int, int, String, String, String)
      */
     @NotFullyTested
-    public static <T> void checkIndexAndCount(
+    public static void checkIndexAndCount(
             float[] ref,
             int index,
             int count,
@@ -1006,7 +1015,7 @@ public final class ArrayArgs {
      * @see #checkIndexAndCount(Object[], int, int, String, String, String)
      */
     @NotFullyTested
-    public static <T> void checkIndexAndCount(
+    public static void checkIndexAndCount(
             double[] ref,
             int index,
             int count,
@@ -1022,7 +1031,7 @@ public final class ArrayArgs {
      * @see #checkIndexAndCount(Object[], int, int, String, String, String)
      */
     @NotFullyTested
-    public static <T> void checkIndexAndCount(
+    public static void checkIndexAndCount(
             char[] ref,
             int index,
             int count,
@@ -1038,7 +1047,7 @@ public final class ArrayArgs {
      * @see #checkIndexAndCount(Object[], int, int, String, String, String)
      */
     @NotFullyTested
-    public static <T> void checkIndexAndCount(
+    public static void checkIndexAndCount(
             boolean[] ref,
             int index,
             int count,
@@ -1057,12 +1066,12 @@ public final class ArrayArgs {
      * This test method was written for index pairs used by {@link List#subList(int, int)}.
      * 
      * @param ref
-     *        a collection reference
+     *        an array reference
      * @param fromIndex
      *        first index of element to access.  Must be non-negative.
      * @param toIndex
      *        one greater than last index of element to access.  Must be non-negative.
-     * @param collectionArgName
+     * @param arrayArgName
      *        argument name for {@code ref}, e.g., "strList"
      * @param fromIndexArgName
      *        argument name for {@code fromIndex}, e.g., "strListFromIndex"
@@ -1084,17 +1093,17 @@ public final class ArrayArgs {
             T[] ref,
             int fromIndex,
             int toIndex,
-            String collectionArgName,
+            String arrayArgName,
             String fromIndexArgName,
             String toIndexArgName) {
         int len = (null == ref ? -1 : ref.length);
         ContainerArgs._checkFromAndToIndices(
             ref,
-            "Collection",
+            "Array",
             len,
             fromIndex,
             toIndex,
-            collectionArgName,
+            arrayArgName,
             fromIndexArgName,
             toIndexArgName);
     }
@@ -1103,21 +1112,21 @@ public final class ArrayArgs {
      * @see #checkFromAndToIndices(Object[], int, int, String, String, String)
      */
     @NotFullyTested
-    public static <T> void checkFromAndToIndices(
+    public static void checkFromAndToIndices(
             byte[] ref,
             int fromIndex,
             int toIndex,
-            String collectionArgName,
+            String arrayArgName,
             String fromIndexArgName,
             String toIndexArgName) {
         int len = (null == ref ? -1 : ref.length);
         ContainerArgs._checkFromAndToIndices(
             ref,
-            "Collection",
+            "Array",
             len,
             fromIndex,
             toIndex,
-            collectionArgName,
+            arrayArgName,
             fromIndexArgName,
             toIndexArgName);
     }
@@ -1126,21 +1135,21 @@ public final class ArrayArgs {
      * @see #checkFromAndToIndices(Object[], int, int, String, String, String)
      */
     @NotFullyTested
-    public static <T> void checkFromAndToIndices(
+    public static void checkFromAndToIndices(
             short[] ref,
             int fromIndex,
             int toIndex,
-            String collectionArgName,
+            String arrayArgName,
             String fromIndexArgName,
             String toIndexArgName) {
         int len = (null == ref ? -1 : ref.length);
         ContainerArgs._checkFromAndToIndices(
             ref,
-            "Collection",
+            "Array",
             len,
             fromIndex,
             toIndex,
-            collectionArgName,
+            arrayArgName,
             fromIndexArgName,
             toIndexArgName);
     }
@@ -1149,21 +1158,21 @@ public final class ArrayArgs {
      * @see #checkFromAndToIndices(Object[], int, int, String, String, String)
      */
     @NotFullyTested
-    public static <T> void checkFromAndToIndices(
+    public static void checkFromAndToIndices(
             int[] ref,
             int fromIndex,
             int toIndex,
-            String collectionArgName,
+            String arrayArgName,
             String fromIndexArgName,
             String toIndexArgName) {
         int len = (null == ref ? -1 : ref.length);
         ContainerArgs._checkFromAndToIndices(
             ref,
-            "Collection",
+            "Array",
             len,
             fromIndex,
             toIndex,
-            collectionArgName,
+            arrayArgName,
             fromIndexArgName,
             toIndexArgName);
     }
@@ -1172,21 +1181,21 @@ public final class ArrayArgs {
      * @see #checkFromAndToIndices(Object[], int, int, String, String, String)
      */
     @NotFullyTested
-    public static <T> void checkFromAndToIndices(
+    public static void checkFromAndToIndices(
             long[] ref,
             int fromIndex,
             int toIndex,
-            String collectionArgName,
+            String arrayArgName,
             String fromIndexArgName,
             String toIndexArgName) {
         int len = (null == ref ? -1 : ref.length);
         ContainerArgs._checkFromAndToIndices(
             ref,
-            "Collection",
+            "Array",
             len,
             fromIndex,
             toIndex,
-            collectionArgName,
+            arrayArgName,
             fromIndexArgName,
             toIndexArgName);
     }
@@ -1195,21 +1204,21 @@ public final class ArrayArgs {
      * @see #checkFromAndToIndices(Object[], int, int, String, String, String)
      */
     @NotFullyTested
-    public static <T> void checkFromAndToIndices(
+    public static void checkFromAndToIndices(
             float[] ref,
             int fromIndex,
             int toIndex,
-            String collectionArgName,
+            String arrayArgName,
             String fromIndexArgName,
             String toIndexArgName) {
         int len = (null == ref ? -1 : ref.length);
         ContainerArgs._checkFromAndToIndices(
             ref,
-            "Collection",
+            "Array",
             len,
             fromIndex,
             toIndex,
-            collectionArgName,
+            arrayArgName,
             fromIndexArgName,
             toIndexArgName);
     }
@@ -1218,21 +1227,21 @@ public final class ArrayArgs {
      * @see #checkFromAndToIndices(Object[], int, int, String, String, String)
      */
     @NotFullyTested
-    public static <T> void checkFromAndToIndices(
+    public static void checkFromAndToIndices(
             double[] ref,
             int fromIndex,
             int toIndex,
-            String collectionArgName,
+            String arrayArgName,
             String fromIndexArgName,
             String toIndexArgName) {
         int len = (null == ref ? -1 : ref.length);
         ContainerArgs._checkFromAndToIndices(
             ref,
-            "Collection",
+            "Array",
             len,
             fromIndex,
             toIndex,
-            collectionArgName,
+            arrayArgName,
             fromIndexArgName,
             toIndexArgName);
     }
@@ -1241,21 +1250,21 @@ public final class ArrayArgs {
      * @see #checkFromAndToIndices(Object[], int, int, String, String, String)
      */
     @NotFullyTested
-    public static <T> void checkFromAndToIndices(
+    public static void checkFromAndToIndices(
             char[] ref,
             int fromIndex,
             int toIndex,
-            String collectionArgName,
+            String arrayArgName,
             String fromIndexArgName,
             String toIndexArgName) {
         int len = (null == ref ? -1 : ref.length);
         ContainerArgs._checkFromAndToIndices(
             ref,
-            "Collection",
+            "Array",
             len,
             fromIndex,
             toIndex,
-            collectionArgName,
+            arrayArgName,
             fromIndexArgName,
             toIndexArgName);
     }
@@ -1264,22 +1273,131 @@ public final class ArrayArgs {
      * @see #checkFromAndToIndices(Object[], int, int, String, String, String)
      */
     @NotFullyTested
-    public static <T> void checkFromAndToIndices(
+    public static void checkFromAndToIndices(
             boolean[] ref,
             int fromIndex,
             int toIndex,
-            String collectionArgName,
+            String arrayArgName,
             String fromIndexArgName,
             String toIndexArgName) {
         int len = (null == ref ? -1 : ref.length);
         ContainerArgs._checkFromAndToIndices(
             ref,
-            "Collection",
+            "Array",
             len,
             fromIndex,
             toIndex,
-            collectionArgName,
+            arrayArgName,
             fromIndexArgName,
             toIndexArgName);
+    }
+    
+    /**
+     * Tests if a value is found in a array of valid values.
+     * 
+     * @param ref
+     *        an array reference of valid values
+     * @param value
+     *        reference to test if found in array of valid values
+     * @param arrayArgName
+     *        argument name for {@code ref}, e.g., "strList"
+     *
+     * @return validated value
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code ref} is empty</li>
+     *   <li>if {@code ref} does not contain {@code value}</li>
+     * </ul>
+     * 
+     * @see CollectionArgs#checkContains(java.util.Collection, Object, String)
+     */
+    @NotFullyTested
+    public static <T> T checkContains(T[] ref, T value, String arrayArgName) {
+        List<T> list = (null == ref ? null : Arrays.asList(ref));
+        ContainerArgs._checkContains(list, "Array", value, arrayArgName);
+        return value;
+    }
+    
+    /**
+     * @see #checkContains(Object[], Object, String)
+     */
+    @NotFullyTested
+    public static byte checkContains(byte[] ref, byte value, String arrayArgName) {
+        List<Byte> list = (null == ref ? null : Bytes.asList(ref));
+        ContainerArgs._checkContains(list, "Array", value, arrayArgName);
+        return value;
+    }
+    
+    /**
+     * @see #checkContains(Object[], Object, String)
+     */
+    @NotFullyTested
+    public static short checkContains(short[] ref, short value, String arrayArgName) {
+        List<Short> list = (null == ref ? null : Shorts.asList(ref));
+        ContainerArgs._checkContains(list, "Array", value, arrayArgName);
+        return value;
+    }
+    
+    /**
+     * @see #checkContains(Object[], Object, String)
+     */
+    @NotFullyTested
+    public static int checkContains(int[] ref, int value, String arrayArgName) {
+        List<Integer> list = (null == ref ? null : Ints.asList(ref));
+        ContainerArgs._checkContains(list, "Array", value, arrayArgName);
+        return value;
+    }
+    
+    /**
+     * @see #checkContains(Object[], Object, String)
+     */
+    @NotFullyTested
+    public static long checkContains(long[] ref, long value, String arrayArgName) {
+        List<Long> list = (null == ref ? null : Longs.asList(ref));
+        ContainerArgs._checkContains(list, "Array", value, arrayArgName);
+        return value;
+    }
+    
+    /**
+     * @see #checkContains(Object[], Object, String)
+     */
+    @NotFullyTested
+    public static float checkContains(float[] ref, float value, String arrayArgName) {
+        List<Float> list = (null == ref ? null : Floats.asList(ref));
+        ContainerArgs._checkContains(list, "Array", value, arrayArgName);
+        return value;
+    }
+    
+    /**
+     * @see #checkContains(Object[], Object, String)
+     */
+    @NotFullyTested
+    public static double checkContains(double[] ref, double value, String arrayArgName) {
+        List<Double> list = (null == ref ? null : Doubles.asList(ref));
+        ContainerArgs._checkContains(list, "Array", value, arrayArgName);
+        return value;
+    }
+    
+    /**
+     * @see #checkContains(Object[], Object, String)
+     */
+    @NotFullyTested
+    public static char checkContains(char[] ref, char value, String arrayArgName) {
+        List<Character> list = (null == ref ? null : Chars.asList(ref));
+        ContainerArgs._checkContains(list, "Array", value, arrayArgName);
+        return value;
+    }
+    
+    /**
+     * @see #checkContains(Object[], Object, String)
+     */
+    @NotFullyTested
+    public static boolean checkContains(boolean[] ref, boolean value, String arrayArgName) {
+        List<Boolean> list = (null == ref ? null : Booleans.asList(ref));
+        ContainerArgs._checkContains(list, "Array", value, arrayArgName);
+        return value;
     }
 }

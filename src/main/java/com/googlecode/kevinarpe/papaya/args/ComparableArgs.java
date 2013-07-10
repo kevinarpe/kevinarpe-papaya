@@ -185,7 +185,7 @@ public final class ComparableArgs {
         ObjectArgs.checkNotNull(ref, argName);
         ObjectArgs.checkNotNull(exactValue, "exactValue");
         
-        if (ref != exactValue) {
+        if (0 != ref.compareTo(exactValue)) {
             String w = StringArgs._getArgNameWarning(argName, "argName");
             throw new IllegalArgumentException(String.format(
                 "Argument '%s': 'ref' != 'exactValue': %s != %s%s",
@@ -219,7 +219,7 @@ public final class ComparableArgs {
         ObjectArgs.checkNotNull(ref, argName);
         ObjectArgs.checkNotNull(exactValue, "exactValue");
         
-        if (ref == exactValue) {
+        if (0 == ref.compareTo(exactValue)) {
             String w = StringArgs._getArgNameWarning(argName, "argName");
             throw new IllegalArgumentException(String.format(
                 "Argument '%s': 'ref' == 'exactValue': %s == %s%s",

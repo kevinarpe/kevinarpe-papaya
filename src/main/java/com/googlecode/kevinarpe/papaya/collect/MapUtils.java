@@ -129,8 +129,28 @@ class MapUtils {
             return (TClass) this;
         }
         
+        public <TKey2 extends TKey, TValue2 extends TValue>
+        TClass putAll(Map<TKey2, TValue2> map) {
+            ObjectArgs.checkNotNull(map, "map");
+            
+            putAll(map.entrySet());
+            return (TClass) this;
+        }
+        
+        
+        public <TKey2 extends TKey, TValue2 extends TValue>
+        TClass putAll(Iterable<Map.Entry<TKey2, TValue2>> entryIterable) {
+            for (Map.Entry<TKey2, TValue2> entry: entryIterable) {
+                TKey2 key = entry.getKey();
+                TValue2 value = entry.getValue();
+                put(key, value);
+            }
+            return (TClass) this;
+        }
+        
         public TMap insert(TMap map) {
             ObjectArgs.checkNotNull(map, "map");
+            
             Set<TKey> newKeySet =
                 (_allowDuplicateKeys ? null : new HashSet<TKey>(_newEntryList.size()));
             for (Map.Entry<TKey, TValue> entry: _newEntryList) {

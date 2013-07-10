@@ -39,6 +39,7 @@ import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 public class SystemUtils {
     
     private static final OperatingSystem _CURRENT_OPERATING_SYSTEM;
+    private static final OperatingSystemCategory _CURRENT_OPERATING_SYSTEM_CATEGORY;
     
     static {
         String name = System.getProperty("os.name");
@@ -48,7 +49,7 @@ public class SystemUtils {
         name = name.toUpperCase();
         OperatingSystem os = OperatingSystem.UNKNOWN;
         try {
-            os = OperatingSystem.valueOf(name); 
+            os = OperatingSystem.valueOf(name);
         }
         catch (Exception e) {
             if (name.startsWith("WINDOWS")) {
@@ -56,6 +57,7 @@ public class SystemUtils {
             }
         }
         _CURRENT_OPERATING_SYSTEM = os;
+        _CURRENT_OPERATING_SYSTEM_CATEGORY = os.getCategory();
     }
     
     /**
@@ -98,6 +100,14 @@ public class SystemUtils {
          * not {@link #WINDOWS}.
          */
         OTHER;
+        
+        /**
+         * Tests if this value identifies the current operating system category.
+         */
+        public boolean isCurrent() {
+            boolean b = (this == _CURRENT_OPERATING_SYSTEM_CATEGORY);
+            return b;
+        }
     }
 
     /**
@@ -296,12 +306,31 @@ public class SystemUtils {
      *
      * @see OperatingSystem
      * @see OperatingSystem#getCategory()
+     * @see #getCurrentOperatingSystemCategory()
      * @see OperatingSystemCategory
      * @see #checkCurrentOperatingSystemCategory(OperatingSystemCategory...)
      */
     @FullyTested
     public static OperatingSystem getCurrentOperatingSystem() {
         return _CURRENT_OPERATING_SYSTEM;
+    }
+    
+    /**
+     * Via static initialisation, the current operating system is discovered and categorised.
+     * Access that category with this method.  In rare cases where it is not possible identify the
+     * current operating system via system property {@code os.name},
+     * {@link OperatingSystemCategory#UNKNOWN} is returned.
+     * 
+     * @return current operating system category or {@link OperatingSystemCategory#UNKNOWN}
+     *
+     * @see #getCurrentOperatingSystem()
+     * @see OperatingSystem#getCategory()
+     * @see OperatingSystemCategory
+     * @see #checkCurrentOperatingSystemCategory(OperatingSystemCategory...)
+     */
+    @FullyTested
+    public static OperatingSystemCategory getCurrentOperatingSystemCategory() {
+        return _CURRENT_OPERATING_SYSTEM_CATEGORY;
     }
     
     /**

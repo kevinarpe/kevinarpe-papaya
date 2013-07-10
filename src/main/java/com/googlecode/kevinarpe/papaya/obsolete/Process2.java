@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya;
+package com.googlecode.kevinarpe.papaya.obsolete;
 
 /*
  * #%L
@@ -39,226 +39,98 @@ import org.joe_e.array.ByteArray;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+import com.googlecode.kevinarpe.papaya.AbstractThreadWithException;
 import com.googlecode.kevinarpe.papaya.args.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.args.LongArgs;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.ProcessBuilder2;
-import com.googlecode.kevinarpe.papaya.ByteAppendable;
+import com.googlecode.kevinarpe.papaya.obsolete.ProcessBuilder2.ByteAppendable;
 
-/**
- * Instances of this class must be created via {@link ProcessBuilder2#start()}.  An instance of
- * this class is guaranteed to be a started process.
- * <p>
- * The following auxilliary threads may be created to manage process input and output:
- * <ul>
- *   <li>Write data to STDIN: If data for STDIN is specified via
- *   {@link ProcessBuilder2#stdinData(byte[])} or {@link ProcessBuilder2#stdinText(String)}, a
- *   thread is spawned to write these bytes to the child process' STDIN stream.  A separate thread
- *   is used in case the operating system or child process cannot read the entire data array in a
- *   single read.</li>
- *   <li>Read data from STDOUT: A thread is always spawned to read data from the child process'
- *   STDOUT stream.</li>
- *   <li>Read data from STDERR: If STDERR is <b>not</b> redirected to STDOUT via
- *   {@link ProcessBuilder2#redirectErrorStream(boolean)}, then a thread is spanwed to read data
- *   from the child process' STDERR stream.</li>
- * </ul>
- * In the standard JDK implementation of {@link Process}, the process' original argument list,
- * environment, directory, and if STDERR is redirected to STDOUT are not available.  This extended
- * version provides the following method to access immutable versions of this data:
- * <ul>
- *   <li>{@link #command()}</li>
- *   <li>{@link #environment()}</li>
- *   <li>{@link #directory()}</li>
- *   <li>{@link #redirectErrorStream()}</li>
- * </ul>
- * 
- * @author Kevin Connor ARPE (kevinarpe@gmail.com)
- */
-public class Process2
-extends AbstractProcessSettings {
+public class Process2 {
     
     private final Process _process;
-    private final List<String> _argList;
-    private final Map<String, String> _environment;
-    private final File _directory;
-    private final boolean _redirectErrorStream;
-    private final byte[] _optStdinByteArr;
-    private final String _optStdinText;
+    private final ProcessBuilder2._ProcessSettings _processSettings;
     private final ReadInputStreamThread _readStdoutThread;
     private final ReadInputStreamThread _optReadStderrThread;
     private final WriteOutputStreamThread _optWriteStdinThread;
     
-    Process2(ProcessBuilder2 pb, Process process) {
-        super(ObjectArgs.checkNotNull(pb, "pb"));
-        
+    Process2(
+            Process process,
+            ProcessBuilder2._ProcessSettings processSettings) {
         _process = ObjectArgs.checkNotNull(process, "process");
-        _argList = ImmutableList.copyOf(pb.command());
-        _environment = ImmutableMap.copyOf(pb.environment());
-        _directory = pb.directory();
-        _redirectErrorStream = pb.redirectErrorStream();
-        byte[] optByteArr = pb.stdinData();
-        _optStdinByteArr =
-            (null == optByteArr ? null : Arrays.copyOf(optByteArr, optByteArr.length));
-        _optStdinText = pb.stdinText();
+        _processSettings = ObjectArgs.checkNotNull(processSettings, "processSettings");
         
-        InputStream stdoutStream = _process.getInputStream();
+        InputStream stdout = _process.getInputStream();
         _readStdoutThread =
-            createReadInputStreamThreadAndStart(stdoutStream, this.stdoutSettings());
+            createReadInputStreamThreadAndStart(stdout, _processSettings.stdoutSettings);
         
-        if (_redirectErrorStream) {
+        if (_processSettings.redirectErrorStream) {
             _optReadStderrThread = null;
         }
         else {
-            InputStream stderrStream = _process.getErrorStream();
+            InputStream stderr = _process.getErrorStream();
             _optReadStderrThread =
-                createReadInputStreamThreadAndStart(stderrStream, this.stderrSettings());
+                createReadInputStreamThreadAndStart(stderr, _processSettings.stderrSettings);
         }
         
-        if (null == _optStdinByteArr) {
+        if (null == _processSettings.optStdinByteArr) {
             _optWriteStdinThread = null;
         }
         else {
-            OutputStream stdinStream = _process.getOutputStream();
+            OutputStream stdin = _process.getOutputStream();
             _optWriteStdinThread =
-                createWriteOutputStreamThreadAndStart(stdinStream, _optStdinByteArr);
+                createWriteOutputStreamThreadAndStart(stdin, _processSettings.optStdinByteArr);
         }
     }
     
-    /**
-     * @return immutable copy of original argument list
-     * 
-     * @see ProcessBuilder2#command()
-     */
-    @Override
+    // TODO: Make STDOUT/STDERR Charset gettable/settable in this class.
+    // Create a generic base classes with getters/setters.
+    // Pass subclass type as (generic) type argument.
+    // Both Process2 and ProcessBuilder2 can derive from the same base class.
+    
     public List<String> command() {
-        return _argList;
+        return _processSettings.command;
     }
     
-    /**
-     * @return immutable copy of original environment variables (name/value pairs)
-     * 
-     * @see ProcessBuilder2#environment()
-     */
-    @Override
     public Map<String, String> environment() {
-        return _environment;
+        return _processSettings.environment;
     }
     
-    /**
-     * @see ProcessBuilder2#directory()
-     */
-    @Override
     public File directory() {
-        return _directory;
+        return _processSettings.directory;
     }
     
-    /**
-     * @see ProcessBuilder2#redirectErrorStream()
-     */
-    @Override
     public boolean redirectErrorStream() {
-        return _redirectErrorStream;
+        return _processSettings.redirectErrorStream;
     }
     
-    /**
-     * Note: As there is no simple or lightweight way to create an immutable array in Java, a copy
-     * is made on each call.  For huge arrays, this is very inefficient.  Call this method
-     * with care!
-     * 
-     * @return copy of original byte array to be written to child process' STDIN stream
-     */
-    @Override
-    public byte[] stdinData() {
-        byte[] x = _optStdinByteArr;
-        if (null != x) {
-            x = Arrays.copyOf(x, x.length);
-        }
-        return x;
-    }
-    
-    @Override
-    protected byte[] stdinDataRef() {
-        return _optStdinByteArr;
-    }
-    
-    @Override
-    public String stdinText() {
-        return _optStdinText;
-    }
-    
-    /**
-     * Tests if the current process has returned an exit value via {@link #tryExitValue()}.
-     * A return value of {@code null} is interpretaed as the child process is still running and has
-     * yet to terminate.
-     * <p>
-     * All child processes tracked by instances of this class are guaranteed to have at least
-     * started.  However, a process is not guaranteed to finish.  A simple infinite loop may
-     * (un)intentionally prevent a process from terminating.
-     * 
-     * @return if {@code true}, the child process is current running
-     * 
-     * @throws IOException
-     *         if an error occurred when writing data to STDIN (rethrown from STDIN thread)
-     *         
-     * @see #hasFinished()
-     */
     public boolean isRunning()
     throws IOException {
-        Integer exitValue = tryExitValue();
+        if (null == _process) {
+            return false;
+        }
+        Integer exitValue = tryGetExitValue();
         boolean b = (null == exitValue);
         return b;
     }
     
-    /**
-     * Tests if the current process has returned an exit value via {@link #tryExitValue()}.
-     * A return value of non-{@code null} is interpretaed as the child process has terminated.
-     * <p>
-     * All child processes tracked by instances of this class are guaranteed to have at least
-     * started.  However, a process is not guaranteed to finish.  A simple infinite loop may
-     * (un)intentionally prevent a process from terminating.
-     * 
-     * @return if {@code true}, the child process has terminated
-     * 
-     * @throws IOException
-     *         if an error occurred when writing data to STDIN (rethrown from STDIN thread)
-     *         
-     * @see #isRunning()
-     */
     public boolean hasFinished()
     throws IOException {
-        Integer exitValue = tryExitValue();
+        if (null == _process) {
+            return false;
+        }
+        Integer exitValue = tryGetExitValue();
         boolean b = (null != exitValue);
         return b;
     }
     
     protected void tryWriteStdinThreadRethrowCaughtException()
     throws IOException {
-        if (null != _optWriteStdinThread) {
+        if (null == _optWriteStdinThread) {
             _optWriteStdinThread.rethrowCaughtException();
         }
     }
-
-    /**
-     * If {@link ProcessOutputSettings#isDataAccumulated()} is {@code true} and bytes are read by
-     * the STDOUT thread, the accumulated byte array is copied and returned.  This method may be
-     * safely called repeatedly during the runtime and after the termination of the child process.
-     * <p>
-     * Given that the data accumulation feature may be safely (repeatedly) enabled or disabled as
-     * the child process is running, this method is not guaranteed to return data unless the
-     * feature was enabled for the entire runtime of the child process <i>and</i> the child process
-     * wrote data to its STDOUT stream.
-     * 
-     * @return copy of currently accumulated bytes from child process' STDOUT stream.
-     *         May be empty array, but will never be {@code null}
-     * 
-     * @throws IOException
-     *         if an error occurred when writing data to STDIN (rethrown from STDIN thread)
-     *
-     * @see #stdoutDataAsString()
-     * @see #stdoutDataAsString(Charset)
-     */
-    public byte[] stdoutDataAsByteArr()
+    
+    public byte[] getStdoutDataAsByteArr()
     throws IOException {
         tryWriteStdinThreadRethrowCaughtException();
         
@@ -266,41 +138,13 @@ extends AbstractProcessSettings {
         return x;
     }
     
-    /**
-     * This is a convenience methods to call {@link #stdoutDataAsString(Charset)} where
-     * {@code optCs} is {@code null}.
-     */
-    public String stdoutDataAsString()
+    public String getStdoutDataAsString()
     throws IOException {
-        String x = stdoutDataAsString(null);
+        String x = getStdoutDataAsString(null);
         return x;
     }
     
-    /**
-     * Similar to {@link #stdoutDataAsByteArr()}, but bytes are converted to an instance of
-     * {@link String} using the specified {@link Charset}.  This method may be safely called
-     * repeatedly during runtime and after termination of child process.
-     * <p>
-     * As Java currently uses UTF-16 encoding
-     * for {@link String}, it may be possible for badly behaving child processes to emit invalid
-     * Unicode text.
-     * <a href="http://stackoverflow.com/questions/887148/how-to-determine-if-a-string-contains-invalid-encoded-characters">
-     * Read more about invalid Unicode text in Java here.</a>
-     *
-     * @param optCs
-     *        {@code Charset} used to convert bytes to {@code String}.
-     *        If {@code null}, result from {@link Charset#defaultCharset()} is used.
-     * 
-     * @return copy of currently accumulated characters from child process' STDOUT stream.
-     *         May be empty string, but will never be {@code null}
-     * 
-     * @throws IOException
-     *         if an error occurred when writing data to STDIN (rethrown from STDIN thread)
-     *
-     * @see #stdoutDataAsByteArr()
-     * @see #stdoutDataAsString(Charset)
-     */
-    public String stdoutDataAsString(Charset optCs)
+    public String getStdoutDataAsString(Charset optCs)
     throws IOException {
         tryWriteStdinThreadRethrowCaughtException();
         
@@ -308,9 +152,7 @@ extends AbstractProcessSettings {
         return x;
     }
     
-    private static byte[] EMPTY_BYTE_ARRAY = new byte[0];
-    
-    public byte[] stderrDataAsByteArr()
+    public byte[] getStderrDataAsByteArr()
     throws IOException {
         tryWriteStdinThreadRethrowCaughtException();
         
@@ -318,30 +160,27 @@ extends AbstractProcessSettings {
         if (null != _optReadStderrThread) {
             x = _optReadStderrThread.getDataAsByteArr();
         }
-        else {
-            x = EMPTY_BYTE_ARRAY;
-        }
         return x;
     }
     
-    public String stderrDataAsString()
+    public String getStderrDataAsString()
     throws IOException {
-        String x = stderrDataAsString(null);
+        String x = getStderrDataAsString(null);
         return x;
     }
     
-    public String stderrDataAsString(Charset optCs)
+    public String getStderrDataAsString(Charset optCs)
     throws IOException {
         tryWriteStdinThreadRethrowCaughtException();
         
-        String x = "";
+        String x = null;
         if (null != _optReadStderrThread) {
             x = _optReadStderrThread.getDataAsString(optCs);
         }
         return x;
     }
     
-    public Integer tryExitValue()
+    public Integer tryGetExitValue()
     throws IOException {
         tryWriteStdinThreadRethrowCaughtException();
         
@@ -371,7 +210,6 @@ extends AbstractProcessSettings {
         return exitValue;
     }
     
-    // TODO: Rename these to waitFor()?
     public Integer getExitValue(long timeoutMillis)
     throws IOException {
         tryWriteStdinThreadRethrowCaughtException();
@@ -391,7 +229,7 @@ extends AbstractProcessSettings {
         else {
             // Before we create a thread (expensive), check if process has finished.
             // If yes, get the exit code and skip the thread create below.
-            optExitValue = this.tryExitValue();
+            optExitValue = this.tryGetExitValue();
             if (null != optExitValue) {
                 return optExitValue;
             }
@@ -473,7 +311,7 @@ extends AbstractProcessSettings {
             if (validExitValueCollection.contains(optExitValue)) {
                 return optExitValue;
             }
-            String argListStr = ProcessBuilder2.argListToString(_argList);
+            String argListStr = ProcessBuilder2.argListToString(_processSettings.command);
             throw new InvalidExitValueException(
                 optExitValue, validExitValueCollection, "Failed to run command: %s", argListStr);
         }
@@ -550,7 +388,7 @@ extends AbstractProcessSettings {
             OutputStream outputStream,
             byte[] byteArr) {
         WriteOutputStreamThread thread =
-            new WriteOutputStreamThread(outputStream, byteArr);
+                new WriteOutputStreamThread(outputStream, byteArr);
         thread.start();
         return thread;
     }
@@ -599,7 +437,7 @@ extends AbstractProcessSettings {
     
     protected ReadInputStreamThread createReadInputStreamThreadAndStart(
             InputStream inputStream,
-            ProcessOutputSettings settings) {
+            ProcessBuilder2._ProcessSettings._InputStreamSettings settings) {
         ReadInputStreamThread thread = new ReadInputStreamThread(inputStream, settings);
         thread.start();
         return thread;
@@ -609,41 +447,45 @@ extends AbstractProcessSettings {
     extends AbstractThreadWithException<IOException> {
         
         private final InputStream _inputStream;
-        private final ProcessOutputSettings _settings;
-        private final ByteArray.Builder _byteArrBuilder;
+        private final ProcessBuilder2._ProcessSettings._InputStreamSettings _settings;
+        private final ByteArray.Builder _optByteArrBuilder;
 
         public ReadInputStreamThread(
                 InputStream inputStream,
-                ProcessOutputSettings settings) {
+                ProcessBuilder2._ProcessSettings._InputStreamSettings settings) {
             _inputStream = ObjectArgs.checkNotNull(inputStream, "inputStream");
             _settings = ObjectArgs.checkNotNull(settings, "settings");
-            _byteArrBuilder = ByteArray.builder();
+            _optByteArrBuilder = (_settings.accumulateData ? ByteArray.builder() : null);
         }
         
-        protected byte[] getByteArr() {
-            synchronized (_byteArrBuilder) {
-                ByteArray x = _byteArrBuilder.snapshot();
-                byte[] x2 = x.toByteArray();
-                return x2;
+        protected ByteArray getByteArray() {
+            if (!_settings.accumulateData) {
+                throw new IllegalStateException("Incoming data was not accumulated");
+            }
+            synchronized (_optByteArrBuilder) {
+                ByteArray x = _optByteArrBuilder.snapshot();
+                return x;
             }
         }
         
         public byte[] getDataAsByteArr()
         throws IOException {
             rethrowCaughtException();
-            byte[] x = getByteArr();
+            ByteArray byteArr = getByteArray();
+            byte[] x = byteArr.toByteArray();
             return x;
         }
         
         public String getDataAsString(Charset optCs)
         throws IOException {
             rethrowCaughtException();
-            
-            byte[] byteArr = getByteArr();
             if (null == optCs) {
                 optCs = Charset.defaultCharset();
             }
-            String s = new String(byteArr, optCs);
+            
+            ByteArray byteArr = getByteArray();
+            byte[] x = byteArr.toByteArray();
+            String s = new String(x, optCs);
             return s;
         }
         
@@ -656,45 +498,33 @@ extends AbstractProcessSettings {
                 if (-1 == readCount) {
                     break;
                 }
-                if (_settings.isDataAccumulated()) {
-                    synchronized (_byteArrBuilder) {
+                if (_settings.accumulateData) {
+                    synchronized (_optByteArrBuilder) {
                         int adjReadCount = readCount;
-                        int maxByteCount = _settings.maxAccumulatedDataByteCount();
-                        if (maxByteCount > 0) {
-                            int maxReadCount = maxByteCount - _byteArrBuilder.length();
+                        if (_settings.maxAccumulateByteCount < 0
+//                                && _optByteArrBuilder.length() + readCount >
+//                                    _settings.maxAccumulateByteCount
+                                    ) {
+                            int maxReadCount =
+                                _settings.maxAccumulateByteCount - _optByteArrBuilder.length();
                             adjReadCount = Math.min(readCount, maxReadCount);
                         }
-                        _byteArrBuilder.append(buffer, 0, adjReadCount);
+                        _optByteArrBuilder.append(buffer, 0, adjReadCount);
                     }
                 }
-                // Make a reference copy here to be thread-safe.
-                Appendable optCharCallback = _settings.charCallback();
-                if (null != optCharCallback) {
-                    Charset cs = _settings.charset();
-                    String s = new String(buffer, 0, readCount, cs);
-                    optCharCallback.append(s);
+                // TODO: Make a local copy of _settings.optCharCallback
+                // To be thread-safe, we cannot read twice!
+                if (null != _settings.optCharCallback) {
+                    String s = new String(buffer, 0, readCount, _settings.charset);
+                    _settings.optCharCallback.append(s);
                 }
-                // Make a reference copy here to be thread-safe.
-                ByteAppendable optByteCallback = _settings.byteCallback();
-                if (null != optByteCallback) {
+                if (null != _settings.optByteCallback) {
                     byte[] truncBuffer = Arrays.copyOf(buffer, readCount);
-                    optByteCallback.append(truncBuffer);
+                    _settings.optByteCallback.append(truncBuffer);
                 }
             }
             @SuppressWarnings("unused")
             int dummy = 1;  // debug breakpoint
-        }
-
-        protected InputStream getInputStream() {
-            return _inputStream;
-        }
-
-        protected ProcessOutputSettings getSettings() {
-            return _settings;
-        }
-
-        protected ByteArray.Builder getByteArrBuilder() {
-            return _byteArrBuilder;
         }
     }
 
