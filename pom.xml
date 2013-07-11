@@ -80,7 +80,6 @@
     <guava-testlib.version>14.0.1</guava-testlib.version>
     <commons-lang3.version>3.1</commons-lang3.version>
     <joda-time.version>2.2</joda-time.version>
-    <joe-e.version>4.28.0-SNAPSHOT</joe-e.version>
   </properties>
 
   <build>
@@ -262,11 +261,6 @@
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
       <version>${joda-time.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.googlecode.joe-e</groupId>
-      <artifactId>joe-e</artifactId>
-      <version>${joe-e.version}</version>
     </dependency>
   </dependencies>
 

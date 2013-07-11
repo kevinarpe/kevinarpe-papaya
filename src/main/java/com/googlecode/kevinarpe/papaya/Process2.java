@@ -35,12 +35,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.joe_e.array.ByteArray;
-
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.googlecode.kevinarpe.papaya.args.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.args.CollectionArgs;
+import com.googlecode.kevinarpe.papaya.args.IntArgs;
 import com.googlecode.kevinarpe.papaya.args.LongArgs;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.ProcessBuilder2;
@@ -48,19 +48,19 @@ import com.googlecode.kevinarpe.papaya.ByteAppendable;
 
 /**
  * Instances of this class must be created via {@link ProcessBuilder2#start()}.  An instance of
- * this class is guaranteed to be a started process.
+ * this class is guaranteed to track a started child process.
  * <p>
- * The following auxilliary threads may be created to manage process input and output:
+ * The following auxilliary threads may be created to manage child process input and output:
  * <ul>
  *   <li>Write data to STDIN: If data for STDIN is specified via
  *   {@link ProcessBuilder2#stdinData(byte[])} or {@link ProcessBuilder2#stdinText(String)}, a
  *   thread is spawned to write these bytes to the child process' STDIN stream.  A separate thread
- *   is used in case the operating system or child process cannot read the entire data array in a
+ *   is used in event the operating system or child process cannot read the entire data array in a
  *   single read.</li>
  *   <li>Read data from STDOUT: A thread is always spawned to read data from the child process'
  *   STDOUT stream.</li>
  *   <li>Read data from STDERR: If STDERR is <b>not</b> redirected to STDOUT via
- *   {@link ProcessBuilder2#redirectErrorStream(boolean)}, then a thread is spanwed to read data
+ *   {@link ProcessBuilder2#redirectErrorStream(boolean)}, then a thread is spawned to read data
  *   from the child process' STDERR stream.</li>
  * </ul>
  * In the standard JDK implementation of {@link Process}, the process' original argument list,
@@ -126,7 +126,7 @@ extends AbstractProcessSettings {
     }
     
     /**
-     * @return immutable copy of original argument list
+     * @return immutable copy of original argument list to start child process
      * 
      * @see ProcessBuilder2#command()
      */
@@ -136,7 +136,8 @@ extends AbstractProcessSettings {
     }
     
     /**
-     * @return immutable copy of original environment variables (name/value pairs)
+     * @return immutable copy of original environment variables (name/value pairs) for
+     *         child process
      * 
      * @see ProcessBuilder2#environment()
      */
@@ -146,6 +147,8 @@ extends AbstractProcessSettings {
     }
     
     /**
+     * @return original working directory for child process
+     * 
      * @see ProcessBuilder2#directory()
      */
     @Override
@@ -154,6 +157,8 @@ extends AbstractProcessSettings {
     }
     
     /**
+     * @return original setting if STDERR stream is redirected to STDOUT stream in child process
+     * 
      * @see ProcessBuilder2#redirectErrorStream()
      */
     @Override
@@ -166,7 +171,7 @@ extends AbstractProcessSettings {
      * is made on each call.  For huge arrays, this is very inefficient.  Call this method
      * with care!
      * 
-     * @return copy of original byte array to be written to child process' STDIN stream
+     * @return <b>copy</b> of original byte array to be written to child process' STDIN stream
      */
     @Override
     public byte[] stdinData() {
@@ -308,8 +313,17 @@ extends AbstractProcessSettings {
         return x;
     }
     
-    private static byte[] EMPTY_BYTE_ARRAY = new byte[0];
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
     
+    /**
+     * Retrieves raw bytes from child process' STDERR stream.
+     * 
+     * @return raw bytes from child process' STDERR stream.
+     *         If zero bytes received, the result is an empty {@code byte} array
+     * 
+     * @throws IOException
+     *         if an error occurred when writing data to STDIN (rethrown from STDIN thread)
+     */
     public byte[] stderrDataAsByteArr()
     throws IOException {
         tryWriteStdinThreadRethrowCaughtException();
@@ -324,12 +338,32 @@ extends AbstractProcessSettings {
         return x;
     }
     
+    /**
+     * This is a convenience method for {@link #stderrDataAsString(Charset)} where {@code optCs} is
+     * {@code null}.
+     */
     public String stderrDataAsString()
     throws IOException {
         String x = stderrDataAsString(null);
         return x;
     }
     
+    /**
+     * Retrieves the text from child process' STDERR stream.
+     * 
+     * @param optCs
+     * <ul>
+     *   <li>optional {@link Charset} to convert bytes to {@link String}</li>
+     *   <li>if {@code null}, results from {@link Charset#defaultCharset()} is used</li>
+     *   <li>in the vast majority of use cases, the default value is acceptable</li>
+     * </ul>
+     * 
+     * @return text from child process' STDERR stream.
+     *         If zero bytes received, the result is an empty {@code String}, e.g., {@code ""}.
+     * 
+     * @throws IOException
+     *         if an error occurred when writing data to STDIN (rethrown from STDIN thread)
+     */
     public String stderrDataAsString(Charset optCs)
     throws IOException {
         tryWriteStdinThreadRethrowCaughtException();
@@ -340,7 +374,19 @@ extends AbstractProcessSettings {
         }
         return x;
     }
-    
+
+    /**
+     * Tries to retrieve the exit value from the terminated child process.
+     * 
+     * @return
+     * <ul>
+     *   <li>if the child process has not terminated, the result is {@code null}</li>
+     *   <li>else, the exit value from the terminated child process</li>
+     * </ul>
+     * 
+     * @throws IOException
+     *         if an error occurred when writing data to STDIN (rethrown from STDIN thread)
+     */
     public Integer tryExitValue()
     throws IOException {
         tryWriteStdinThreadRethrowCaughtException();
@@ -362,31 +408,60 @@ extends AbstractProcessSettings {
         return optExitValue;
     }
     
-    public int getExitValue()
-    throws IOException {
-        tryWriteStdinThreadRethrowCaughtException();
-        
+    /**
+     * This is a convenience method for {@link #waitFor(long)} where {@code timeoutMillis} is zero
+     * (unlimited wait).
+     */
+    public int waitFor()
+    throws IOException, InterruptedException {
         long timeoutMillis = 0;
-        int exitValue = getExitValue(timeoutMillis);
+        int exitValue = waitFor(timeoutMillis);
         return exitValue;
     }
     
-    // TODO: Rename these to waitFor()?
-    public Integer getExitValue(long timeoutMillis)
-    throws IOException {
+    /**
+     * Wait for the child process to exit and retrieve its exit value.  Optionally, a number of
+     * milliseconds to wait may be specified.
+     * 
+     * @param timeoutMillis
+     * <ul>
+     *   <li>Maximum number of milliseconds to wait for child process to exit.</li>
+     *   <li>Value of zero implies "wait forever".</li>
+     *   <li>Must not be negative.</li>
+     * </ul>
+     * 
+     * @return
+     * <ul>
+     *   <li>if {@code null}, the child process has not yet terminated after waiting for
+     *   {@code timeoutMillis} milliseconds.  This scenario only occurs when {@code timeoutMillis}
+     *   is non-zero</li>
+     *   <li>if not {@code null}, the child has terminated and the exit value is returned</li>
+     * </ul>
+     * 
+     * @throws IllegalArgumentException
+     *         if {@code timeoutMillis} is negative
+     * @throws IOException
+     *         if an error occurred when writing data to STDIN (rethrown from STDIN thread)
+     * @throws InterruptedException
+     *         if the current thread is waiting, but is interrupted with {@link Thread#interrupt()}
+     *         by another thread
+     */
+    public Integer waitFor(long timeoutMillis)
+    throws IOException, InterruptedException {
         tryWriteStdinThreadRethrowCaughtException();
         LongArgs.checkNotNegative(timeoutMillis, "timeoutMillis");
         
         Integer optExitValue = null;
         if (0 == timeoutMillis) {
-            try {
+//            try {
                 optExitValue = _process.waitFor();
-            }
-            catch (InterruptedException e) {
-                // Intentionally ignore exception.
-                @SuppressWarnings("unused")
-                int dummy = 1;  // debug breakpoint
-            }
+//            }
+//            catch (InterruptedException e) {
+//                // Intentionally ignore exception.
+//                @SuppressWarnings("unused")
+//                int dummy = 1;  // debug breakpoint
+//            }
+            
         }
         else {
             // Before we create a thread (expensive), check if process has finished.
@@ -397,10 +472,14 @@ extends AbstractProcessSettings {
             }
             WaitForThread thread = WaitForThread.createAndStart(this);
             try {
+                // Normally, this does not throw InterruptedException. 
                 thread.join(timeoutMillis);
                 optExitValue = thread.getOptExitValue();
             }
             catch (InterruptedException e) {
+                // Ignore
+            }
+            if (null == optExitValue) {
                 thread.interrupt();
             }
         }
@@ -434,30 +513,69 @@ extends AbstractProcessSettings {
         }
     }
     
-    public int checkExitValue()
-    throws TimeoutException, InvalidExitValueException, IOException {
+    /**
+     * This is a convenience method for {@link #waitForThenCheckExitValue(long, Collection)} where
+     * {@code timeoutMillis} is zero (unlimited wait) and the only valid exit value is zero.
+     */
+    public int waitForThenCheckExitValue()
+    throws TimeoutException, InvalidExitValueException, IOException, InterruptedException {
         long timeoutMillis = 0;
         List<Integer> validExitValueList = Arrays.asList(0);
-        int exitValue = checkExitValue(timeoutMillis, validExitValueList);
+        int exitValue = waitForThenCheckExitValue(timeoutMillis, validExitValueList);
         return exitValue;
     }
     
-    public int checkExitValue(long timeoutMillis)
-    throws TimeoutException, InvalidExitValueException, IOException {
+    /**
+     * This is a convenience method for {@link #waitForThenCheckExitValue(long, Collection)} where
+     * the only valid exit value is zero.
+     */
+    public int waitForThenCheckExitValue(long timeoutMillis)
+    throws TimeoutException, InvalidExitValueException, IOException, InterruptedException {
         List<Integer> validExitValueList = Arrays.asList(0);
-        int exitValue = checkExitValue(timeoutMillis, validExitValueList);
+        int exitValue = waitForThenCheckExitValue(timeoutMillis, validExitValueList);
         return exitValue;
     }
     
-    public int checkExitValue(Collection<Integer> validExitValueCollection)
-    throws TimeoutException, InvalidExitValueException, IOException {
+    /**
+     * This is a convenience method for {@link #waitForThenCheckExitValue(long, Collection)} where
+     * {@code timeoutMillis} is zero (unlimited wait).
+     */
+    public int waitForThenCheckExitValue(Collection<Integer> validExitValueCollection)
+    throws TimeoutException, InvalidExitValueException, IOException, InterruptedException {
         long timeoutMillis = 0;
-        int exitValue = checkExitValue(timeoutMillis, validExitValueCollection);
+        int exitValue = waitForThenCheckExitValue(timeoutMillis, validExitValueCollection);
         return exitValue;
     }
     
-    public int checkExitValue(long timeoutMillis, Collection<Integer> validExitValueCollection)
-    throws TimeoutException, InvalidExitValueException, IOException {
+    /**
+     * Wait for the child process to exit, retrieve its exit value, and check the exit value is
+     * valid.  Optionally, a number of milliseconds to wait may be specified.
+     * 
+     * @param timeoutMillis
+     * <ul>
+     *   <li>Maximum number of milliseconds to wait for child process to exit.</li>
+     *   <li>Value of zero implies "wait forever".</li>
+     *   <li>Must not be negative.</li>
+     * </ul>
+     * @param validExitValueCollection
+     *        collection of valid exit values, e.g., zero, one, etc.
+     * 
+     * @return validated exit value
+     * 
+     * @throws TimeoutException
+     *         if {@code timeoutMillis} is non-zero, and, if after waiting for
+     *         {@code timeoutMillis} milliseconds, the child process has not terminated
+     * @throws InvalidExitValueException
+     *         if exit value is not found in {@code validExitValueCollection}
+     * @throws IOException
+     *         if an error occurred when writing data to STDIN (rethrown from STDIN thread)
+     * @throws InterruptedException
+     *         if the current thread is waiting, but is interrupted with {@link Thread#interrupt()}
+     *         by another thread
+     */
+    public int waitForThenCheckExitValue(
+            long timeoutMillis, Collection<Integer> validExitValueCollection)
+    throws TimeoutException, InvalidExitValueException, IOException, InterruptedException {
         tryWriteStdinThreadRethrowCaughtException();
         CollectionArgs.checkNotEmptyAndElementsNotNull(
             validExitValueCollection, "validExitValueCollection");
@@ -465,17 +583,63 @@ extends AbstractProcessSettings {
 //        ArgUtil.static_check_greater_equal(validExitValueList, 0, "allowed_exit_code_array");
 //        ArgUtil.static_check_less_equal(validExitValueList, 255, "allowed_exit_code_array");
         
-        Integer optExitValue = getExitValue(timeoutMillis);
+        Integer optExitValue = waitFor(timeoutMillis);
         if (null == optExitValue) {
             throw new TimeoutException(timeoutMillis);
         }
         else {
-            if (validExitValueCollection.contains(optExitValue)) {
-                return optExitValue;
-            }
+            _checkExitValue(optExitValue, validExitValueCollection);
+            return optExitValue;
+        }
+    }
+    
+    /**
+     * This is a convenience method for {@link #checkExitValue(Collection)} where the only valid
+     * exit value is zero.
+     */
+    public int checkExitValue()
+    throws IOException, InvalidExitValueException {
+        int x = checkExitValue(Arrays.asList(0));
+        return x;
+    }
+    
+    /**
+     * This is a convenience method for {@link #checkExitValue(Collection)} where the only valid
+     * exit value is {@code expectedExitValue}.
+     */
+    public int checkExitValue(int expectedExitValue)
+    throws IOException, InvalidExitValueException {
+        int x = checkExitValue(Arrays.asList(expectedExitValue));
+        return x;
+    }
+    
+    /**
+     * Retrieves the exit value from the child process and checks it is one of
+     * {@code validExitValueCollection}.
+     * 
+     * @param validExitValueCollection
+     *        collection of valid exit values from child process, e.g., zero, one, etc.
+     * 
+     * @return validated exit value
+     * 
+     * @throws IOException
+     *         if an error occurred when writing data to STDIN (rethrown from STDIN thread)
+     * @throws InvalidExitValueException
+     *         if exit value is not found in {@code validExitValueCollection}
+     */
+    public int checkExitValue(Collection<Integer> validExitValueCollection)
+    throws IOException, InvalidExitValueException {
+        int exitValue = exitValue();
+        _checkExitValue(exitValue, validExitValueCollection);
+        return exitValue;
+    }
+    
+    protected void _checkExitValue(int exitValue, Collection<Integer> validExitValueCollection)
+    throws InvalidExitValueException {
+        if (!validExitValueCollection.contains(exitValue)) {
             String argListStr = ProcessBuilder2.argListToString(_argList);
             throw new InvalidExitValueException(
-                optExitValue, validExitValueCollection, "Failed to run command: %s", argListStr);
+                exitValue, validExitValueCollection, "Failed to run command: %s", argListStr);
         }
     }
     
@@ -597,6 +761,11 @@ extends AbstractProcessSettings {
         }
     }
     
+    /**
+     * Subclasses of {@link Process2} that want to subclass {@link ReadInputStreamThread} will need
+     * to override this method create an instance of the new subclass of
+     * {@link ReadInputStreamThread} and call {@link Thread#start()}.
+     */
     protected ReadInputStreamThread createReadInputStreamThreadAndStart(
             InputStream inputStream,
             ProcessOutputSettings settings) {
@@ -605,26 +774,118 @@ extends AbstractProcessSettings {
         return thread;
     }
     
+    protected static class ByteArrayBuilder {
+        
+        private byte[] _byteArr;
+        private int _usedLength;
+        
+        public ByteArrayBuilder(int initialCapacity) {
+            _byteArr = new byte[initialCapacity];
+            _usedLength = 0;
+        }
+        
+        public int capacity() {
+            return _byteArr.length;
+        }
+        
+        public int length() {
+            return _usedLength;
+        }
+        
+        public ByteArrayBuilder setLength(int newLength) {
+            IntArgs.checkNotNegative(newLength, "newLength");
+            
+            if (newLength > _usedLength) {
+                ensureCapacity(newLength);
+            }
+            _usedLength = newLength;
+            return this;
+        }
+        
+        public ByteArrayBuilder clear() {
+            _usedLength = 0;
+            return this;
+        }
+        
+        public ByteArrayBuilder append(Byte oneByte) {
+            ObjectArgs.checkNotNull(oneByte, "oneByte");
+            
+            byte b = oneByte.byteValue();
+            append(b);
+            return this;
+        }
+        
+        public ByteArrayBuilder append(byte oneByte) {
+            ensureCapacity(_usedLength + 1);
+            _byteArr[_usedLength] = oneByte;
+            ++_usedLength;
+            return this;
+        }
+        
+        public ByteArrayBuilder append(byte[] byteArr) {
+            append(byteArr, 0, byteArr.length);
+            return this;
+        }
+        
+        public ByteArrayBuilder append(byte[] byteArr, int offset, int length) {
+            ArrayArgs.checkIndexAndCount(byteArr, offset, length, "byteArr", "offset", "length");
+            ensureCapacity(_usedLength + length);
+            System.arraycopy(byteArr, offset, _byteArr, _usedLength, length);
+            _usedLength += length;
+            return this;
+        }
+        
+        protected void ensureCapacity(int newCapacity) {
+            int capacity = _byteArr.length;
+            while (capacity < newCapacity) {
+                capacity *= 2;
+            }
+            _byteArr = Arrays.copyOf(_byteArr, capacity);
+        }
+        
+        public byte[] toArray() {
+            byte[] x = Arrays.copyOf(_byteArr, _usedLength);
+            return x;
+        }
+        
+        public ByteArrayBuilder copy(byte[] byteArr, int offset, int length) {
+            ArrayArgs.checkIndexAndCount(byteArr, offset, length, "byteArr", "offset", "length");
+            if (length > _usedLength) {
+                throw new IllegalArgumentException(String.format(
+                    "Argument 'length': Larger than number of available bytes: %d > %d",
+                    length, _usedLength));
+            }
+            
+            System.arraycopy(_byteArr, 0, byteArr, offset, length);
+            return this;
+        }
+   }
+    
     protected static class ReadInputStreamThread
     extends AbstractThreadWithException<IOException> {
         
+        private static final int DEFAULT_BYTE_ARR_LENGTH = 8192;
+        
         private final InputStream _inputStream;
         private final ProcessOutputSettings _settings;
-        private final ByteArray.Builder _byteArrBuilder;
+        //private final ByteArray.Builder _byteArrBuilder;
+        private final ByteArrayBuilder _byteArrBuilder;
 
         public ReadInputStreamThread(
                 InputStream inputStream,
                 ProcessOutputSettings settings) {
             _inputStream = ObjectArgs.checkNotNull(inputStream, "inputStream");
             _settings = ObjectArgs.checkNotNull(settings, "settings");
-            _byteArrBuilder = ByteArray.builder();
+            _byteArrBuilder = new ByteArrayBuilder(DEFAULT_BYTE_ARR_LENGTH);
         }
         
         protected byte[] getByteArr() {
             synchronized (_byteArrBuilder) {
-                ByteArray x = _byteArrBuilder.snapshot();
-                byte[] x2 = x.toByteArray();
-                return x2;
+//                ByteArray x = _byteArrBuilder.snapshot();
+//                byte[] x2 = x.toByteArray();
+//                return x2;
+                byte[] x = _byteArrBuilder.toArray();
+                return x;
             }
         }
         
@@ -693,38 +954,66 @@ extends AbstractProcessSettings {
             return _settings;
         }
 
-        protected ByteArray.Builder getByteArrBuilder() {
+        protected ByteArrayBuilder getByteArrBuilder() {
             return _byteArrBuilder;
         }
     }
 
-    public int hashCode() {
-        return _process.hashCode();
-    }
-
-    public OutputStream getOutputStream() {
+    /**
+     * Forwards to {@link Process#getOutputStream()}
+     * 
+     * @return stream handle for STDIN on child process
+     * 
+     * @throws IOException
+     *         if an error occurred when writing data to STDIN (rethrown from STDIN thread)
+     */
+    public OutputStream getOutputStream()
+    throws IOException {
+        tryWriteStdinThreadRethrowCaughtException();
+        
         return _process.getOutputStream();
     }
 
-    public InputStream getInputStream() {
+    /**
+     * Forwards to {@link Process#getInputStream()}
+     * 
+     * @return stream handle for STDOUT on child process
+     * 
+     * @throws IOException
+     *         if an error occurred when writing data to STDIN (rethrown from STDIN thread)
+     */
+    public InputStream getInputStream()
+    throws IOException {
+        tryWriteStdinThreadRethrowCaughtException();
+        
         return _process.getInputStream();
     }
 
-    public InputStream getErrorStream() {
+    /**
+     * Forwards to {@link Process#getErrorStream()}
+     * 
+     * @return stream handle for STDERR on child process
+     * 
+     * @throws IOException
+     *         if an error occurred when writing data to STDIN (rethrown from STDIN thread)
+     */
+    public InputStream getErrorStream()
+    throws IOException {
+        tryWriteStdinThreadRethrowCaughtException();
+        
         return _process.getErrorStream();
     }
 
-    public boolean equals(Object obj) {
-        return _process.equals(obj);
-    }
-
-    public int waitFor()
-    throws InterruptedException, IOException {
-        tryWriteStdinThreadRethrowCaughtException();
-        
-        return _process.waitFor();
-    }
-
+    /**
+     * Forwards to {@link Process#exitValue()}
+     * 
+     * @return exit value from child process
+     * 
+     * @throws IOException
+     *         if an error occurred when writing data to STDIN (rethrown from STDIN thread)
+     * @throws IllegalThreadStateException
+     *         if the child process has not yet terminated
+     */
     public int exitValue()
     throws IOException {
         tryWriteStdinThreadRethrowCaughtException();
@@ -732,15 +1021,19 @@ extends AbstractProcessSettings {
         return _process.exitValue();
     }
     
+    /**
+     * Forwards to {@link Process#destroy()}
+     * 
+     * @return reference to {@code this}
+     * 
+     * @throws IOException
+     *         if an error occurred when writing data to STDIN (rethrown from STDIN thread)
+     */
     public Process2 destroy()
-    throws Exception {
+    throws IOException {
         tryWriteStdinThreadRethrowCaughtException();
         
         _process.destroy();
         return this;
-    }
-
-    public String toString() {
-        return _process.toString();
     }
 }

@@ -1,5 +1,30 @@
 package com.googlecode.kevinarpe.papaya;
 
+/*
+ * #%L
+ * This file is part of Papaya.
+ * %%
+ * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * %%
+ * Papaya is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * GPL Classpath Exception:
+ * This project is subject to the "Classpath" exception as provided in
+ * the LICENSE file that accompanied this code.
+ * 
+ * Papaya is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Papaya.  If not, see <http://www.gnu.org/licenses/>.
+ * #L%
+ */
+
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.Arrays;
@@ -28,29 +53,68 @@ abstract class AbstractProcessSettings {
         _stderrSettings = new ProcessOutputSettings();
     }
     
+    /**
+     * Copies another instance.
+     */
     protected AbstractProcessSettings(AbstractProcessSettings x) {
         _stdoutSettings = new ProcessOutputSettings(x._stdoutSettings);
         _stderrSettings = new ProcessOutputSettings(x._stderrSettings);
     }
 
+    /**
+     * @return reference to settings for STDOUT stream in child process
+     * 
+     * @see #stderrSettings()
+     */
     public ProcessOutputSettings stdoutSettings() {
         return _stdoutSettings;
     }
 
+    /**
+     * @return reference to settings for STDERR stream in child process
+     * 
+     * @see #stdoutSettings()
+     */
     public ProcessOutputSettings stderrSettings() {
         return _stderrSettings;
     }
     
+    /**
+     * @see ProcessBuilder#command()
+     */
     public abstract List<String> command();
     
+    
+    /**
+     * @see ProcessBuilder#environment()
+     */
     public abstract Map<String, String> environment();
     
+    
+    /**
+     * @see ProcessBuilder#directory()
+     */
     public abstract File directory();
     
+    
+    /**
+     * @see ProcessBuilder#redirectErrorStream()
+     */
     public abstract boolean redirectErrorStream();
     
+    /**
+     * May or not return a copy of the byte array to be written to the STDIN stream of the
+     * child process.  To retrieve a reference to the original byte array, use the protected method
+     * {@link #stdinDataRef()}.
+     */
     public abstract byte[] stdinData();
     
+    /**
+     * Similar to {@link #stdinData()}, but guarantees the return value is a reference to, not a
+     * copy of, the original byte array.
+     * 
+     * @see #stdinData()
+     */
     protected abstract byte[] stdinDataRef();
     
     public abstract String stdinText();
@@ -76,7 +140,16 @@ abstract class AbstractProcessSettings {
         
         File dirPath = directory();
         String x = String.format(
-            "%s [%n\tcommand()=[%s],%n\tenvironment()={%s},%n\tdirectory()=%s,%n\tredirectErrorStream()=%s,%n\tstdinData()=%s,%n\tstdinText()=%s%n\t]",
+            "%s ["
+//            + "%n\tstdoutSettings()=[%s]"
+//            + "%n\tstderrSettings()=[%s]"
+            + "%n\tcommand()=[%s]"
+            + "%n\tenvironment()={%s}"
+            + "%n\tdirectory()=%s"
+            + "%n\tredirectErrorStream()=%s"
+            + "%n\tstdinData()=%s"
+            + "%n\tstdinText()=%s"
+            + "%n\t]",
             getClass().getSimpleName(),
             commandStr,
             envStr,
@@ -134,30 +207,70 @@ abstract class AbstractProcessSettings {
         return result;
     }
     
-//    @Override
-//    public int hashCode() {
-//        int x = Objects.hashCode(_stdoutSettings, _stderrSettings);
-//        return x;
-//    }
-
-    // TODO: Make this generic?  Borrow more logic from ProcessBuilder2
+    /**
+     * Since this object is mutable, apply caution when calling this method and interpreting
+     * the result.
+     * <p>
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        // This order closely follows that of equals().
+        int x = Objects.hashCode(
+            _stdoutSettings,
+            _stderrSettings,
+            redirectErrorStream(),
+            directory(),
+            command(),
+            stdinText(),
+            environment());
+        x = ObjectUtils.appendHashCodes(x, Arrays.hashCode(stdinDataRef()));
+        return x;
+    }
     
+    /**
+     * Since this object is mutable, apply caution when calling this method and interpreting
+     * the result.
+     * <p>
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
-        boolean result = false;
-        // This handles when obj == null also.
-        if (obj instanceof AbstractProcessSettings) {
+        boolean result = (this == obj);
+        // This also handles when obj == null.
+        if (!result && obj instanceof AbstractProcessSettings) {
             AbstractProcessSettings other = (AbstractProcessSettings) obj;
+            // This long, complicated expression is carefully organized from fastest-to-slowest for
+            // equals testing.  Primitives appear first, followed by arrays and collections.
             result =
-                    Objects.equal(this._stdoutSettings, other._stdoutSettings)
-                    && Objects.equal(this._stderrSettings, other._stderrSettings)
-                    ;
+                // Both settings objects consist of many primitives.
+                this._stdoutSettings.equals(other._stdoutSettings)
+                && this._stderrSettings.equals(other._stderrSettings)
+                && Objects.equal(this.redirectErrorStream(),  other.redirectErrorStream())
+                && Objects.equal(this.directory(), other.directory())
+                && Objects.equal(this.command(), other.command())
+                && Objects.equal(this.environment(), other.environment())
+                && Objects.equal(this.stdinText(), other.stdinText())
+                && Arrays.equals(this.stdinDataRef(), other.stdinDataRef())
+                ;
+//            if (result) {
+//                // From Javadocs for ProcessBuilder.environment():
+//                // The returned map and its collection views may not obey the general contract of
+//                // the Object.equals and Object.hashCode methods.
+//                // Thus, we need to make a copy before comparing.  This is expensive!
+//                result = result
+//                    && Objects.equal(
+//                        ImmutableMap.copyOf(this.environment()),
+//                        ImmutableMap.copyOf(other.environment()));
+//            }
         }
         return result;
     }
 
     /**
-     * One for STDOUT and another for STDERR.
+     * This simple class holds the settings for child process output streams (either STDOUT or
+     * STDERR).  The parent class, {@link AbstractProcessSettings}, has two instances: one each for
+     * STDOUT and STDERR. 
      * 
      * @author Kevin Connor ARPE (kevinarpe@gmail.com)
      */
@@ -175,7 +288,12 @@ abstract class AbstractProcessSettings {
             _maxAccumulatedDataByteCount = -1;
         }
         
+        /**
+         * Copies another instance.
+         */
         public ProcessOutputSettings(ProcessOutputSettings x) {
+            ObjectArgs.checkNotNull(x, "x");
+            
             this._charset = x._charset;
             this._optCharCallback = x._optCharCallback;
             this._optByteCallback = x._optByteCallback;
@@ -360,11 +478,14 @@ abstract class AbstractProcessSettings {
         }
         
         /**
+         * Sets whether or not the child process manager should accumulate incoming data from this
+         * stream (either STDOUT or STDERR).  The default setting is disabled ({@code false}).
+         * <p>
          * If this feature is enabled, it is crucial to also set
          * {@link #maxAccumulateStdoutByteCount(int)}.  By default, an unlimited amount of data is
-         * accumulated.  If a large number of processes are launched simultaneously and each outputs
-         * a large amount of data on STDOUT, the parent Java Virtual Machine may easily exhaust
-         * available memory.
+         * accumulated.  If a large number of processes are launched simultaneously and each
+         * outputs a large amount of data on STDOUT or STDERR, the parent Java Virtual Machine may
+         * easily exhaust available memory.
          * 
          * @param b
          *        if {@code true}, all incoming data from STDOUT is accumulated
@@ -383,18 +504,18 @@ abstract class AbstractProcessSettings {
         }
         
         /**
-         * Retrieves the setting for the data accumulation feature for STDOUT stream.  The default
-         * value is {@code false}.
+         * Retrieves the setting for the data accumulation feature for this stream (either STDOUT
+         * or STDERR).  The default value is {@code false}.
          */
         public boolean isDataAccumulated() {
             return _isDataAccumulated;
         }
         
         /**
-         * Sets the maximum number of bytes to accumulate from STDOUT stream.  This feature is only
-         * relevant if {@link #accumulateStdoutData()} is enabled.
+         * Sets the maximum number of bytes to accumulate from this stream (either STDOUT or
+         * STDERR).  This feature is only relevant if {@link #accumulateStdoutData()} is enabled.
          * <p>
-         * It is very important to enable this feature in parallel with
+         * It is very important to configure this feature in parallel with
          * {@link #accumulateStdoutData()}.  It is easy for a errant process to produce gigabytes
          * of data on STDOUT or STDERR and exhaust all available memory for the parent Java virtual
          * machine.
@@ -415,8 +536,8 @@ abstract class AbstractProcessSettings {
         }
         
         /**
-         * Retrieves the maximum number of bytes to accumulate from STDOUT or STDERR stream.  This
-         * feature is only relevant if {@link #accumulateStdoutData()} is enabled.
+         * Retrieves the maximum number of bytes to accumulate from this stream (either STDOUT or
+         * STDERR).  This feature is only relevant if {@link #accumulateStdoutData()} is enabled.
          *
          * @return if negative, this feature is disabled
          * 
@@ -427,30 +548,62 @@ abstract class AbstractProcessSettings {
             return _maxAccumulatedDataByteCount;
         }
         
-//        @Override
-//        public int hashCode() {
-//            int x = Objects.hashCode(
-//                _charset,
-//                _optCharCallback,
-//                _optByteCallback,
-//                _isDataAccumulated,
-//                _maxAccumulatedDataByteCount);
-//            return x;
-//        }
+        @Override
+        public String toString() {
+            String x = String.format(
+                "%s ["
+                + "%n\tcharset()=(%s) '%s'"
+                + "%n\tcharCallback()=%s"
+                + "%n\tbyteCallback()=%s"
+                + "%n\tisDataAccumulated()=%s"
+                + "%n\tmaxAccumulatedDataByteCount()=%d"
+                + "%n\t]",
+                getClass().getSimpleName(),
+                _charset.getClass().getSimpleName(),
+                _charset,
+                (null == _optCharCallback ? "null" : _optCharCallback.getClass().getSimpleName()),
+                (null == _optByteCallback ? "null" : _optByteCallback.getClass().getSimpleName()),
+                _isDataAccumulated,
+                _maxAccumulatedDataByteCount);
+            return x;
+        }
+        
+        /**
+         * Since this object is mutable, apply caution when calling this method and interpreting
+         * the result.
+         * <p>
+         * {@inheritDoc}
+         */
+        @Override
+        public int hashCode() {
+            int x = Objects.hashCode(
+                _charset,
+                _optCharCallback,
+                _optByteCallback,
+                _isDataAccumulated,
+                _maxAccumulatedDataByteCount);
+            return x;
+        }
 
+        /**
+         * Since this object is mutable, apply caution when calling this method and interpreting
+         * the result.
+         * <p>
+         * {@inheritDoc}
+         */
         @Override
         public boolean equals(Object obj) {
-            boolean result = false;
-            // This handles when obj == null also.
-            if (obj instanceof ProcessOutputSettings) {
+            boolean result = (this == obj);
+            // This also handles when obj == null.
+            if (!result && obj instanceof ProcessOutputSettings) {
                 ProcessOutputSettings other = (ProcessOutputSettings) obj;
                 result =
-                        (this._isDataAccumulated == other._isDataAccumulated)
-                        && (this._maxAccumulatedDataByteCount == other._maxAccumulatedDataByteCount)
-                        && Objects.equal(this._charset, other._charset)
-                        && Objects.equal(this._optCharCallback, other._optCharCallback)
-                        && Objects.equal(this._optByteCallback, other._optByteCallback)
-                        ;
+                    (this._isDataAccumulated == other._isDataAccumulated)
+                    && (this._maxAccumulatedDataByteCount == other._maxAccumulatedDataByteCount)
+                    && Objects.equal(this._charset, other._charset)
+                    && Objects.equal(this._optCharCallback, other._optCharCallback)
+                    && Objects.equal(this._optByteCallback, other._optByteCallback)
+                    ;
             }
             return result;
         }

@@ -34,13 +34,9 @@ import java.util.Map;
 
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableMap;
 import com.googlecode.kevinarpe.papaya.args.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.args.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.args.PathArgs;
-import com.googlecode.kevinarpe.papaya.args.StringArgs;
-import com.googlecode.kevinarpe.papaya.exceptions.ThrowableUtils;
 import com.googlecode.kevinarpe.papaya.Process2;
 
 /**
@@ -72,13 +68,19 @@ import com.googlecode.kevinarpe.papaya.Process2;
  * <p>
  * Finally, as processes will vary in their time to termination, a helpful set of methods has been
  * added to {@link Process2} to wait for the exit value in a friendly and convenient manner.
+ * <p>
+ * Here are some extensions on top of {@code ProcessBuilder}:
+ * <ul>
+ *   <li>Set text for STDIN via {@link ProcessBuilder2#stdinText(String)}</li>
+ *   <li>Set raw bytes for STDIN via {@link ProcessBuilder2#stdinData(byte[])}</li>
+ *   <li>Configure STDOUT handling via {@link ProcessBuilder2#stdoutSettings()}</li>
+ *   <li>Configure STDERR handling via {@link ProcessBuilder2#stderrSettings()}</li>
+ * </ul>
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public class ProcessBuilder2
 extends AbstractProcessSettings {
-    
-    // TODO: Move more methods into ProcessSettings, at least as abstract methods.
     
     private final ProcessBuilder _processBuilder;
     private byte[] _optStdinByteArr;
@@ -98,40 +100,6 @@ extends AbstractProcessSettings {
      */
     public ProcessBuilder2(String... commandArr) {
         this(new ArrayList<String>(Arrays.asList(commandArr)));
-    }
-
-//    @Override
-//    public int hashCode() {
-//        //int x = ObjectUtils.subclassHashCode(super.hashCode(), _processBuilder);
-//        int x = super.hashCode();
-//        // Intentionally skip '_processBuilder'.  It does not implement hashCode() correctly.
-//        x = ObjectUtils.appendHashCodes(x, Arrays.hashCode(_optStdinByteArr));
-//        return x;
-//    }
-
-    @Override
-    public boolean equals(Object obj) {
-        boolean result = (this == obj);
-        // This handles when obj == null also.
-        if (!result && obj instanceof ProcessBuilder2) {
-            ProcessBuilder2 other = (ProcessBuilder2) obj;
-            result =
-                Objects.equal(this._processBuilder.redirectErrorStream(),  other._processBuilder.redirectErrorStream())
-                && Objects.equal(this._processBuilder.directory(), other._processBuilder.directory())
-                && Objects.equal(this._processBuilder.command(), other.command())
-                ;
-            if (result) {
-                // From Javadocs for ProcessBuilder.environment():
-                // The returned map and its collection views may not obey the general contract of
-                // the Object.equals and Object.hashCode methods.
-                // Thus, we need to make a copy before comparing.  This is expensive!
-                result = result
-                    && Objects.equal(
-                        ImmutableMap.copyOf(this._processBuilder.environment()),
-                        ImmutableMap.copyOf(other._processBuilder.environment()));
-            }
-        }
-        return result;
     }
 
     /**
@@ -163,7 +131,7 @@ extends AbstractProcessSettings {
      * 
      * @return reference to {@code this}
      * 
-     * @see #command(List<String>)
+     * @see #command(List)
      * @see #command()
      */
     public ProcessBuilder2 command(String... command) {
@@ -176,7 +144,7 @@ extends AbstractProcessSettings {
     /**
      * Forwards to {@link ProcessBuilder#command()}.
      * 
-     * @see #command(List<String>)
+     * @see #command(List)
      * @see #command(String...)
      */
     @Override
@@ -251,12 +219,14 @@ extends AbstractProcessSettings {
     /**
      * Sets array of bytes to write to STDIN stream in new process.
      * <p>
-     * This method clears any text previous set with {@link #stdinText(String)}.
+     * This method clears any text previously set with {@link #stdinText(String)}.
      * 
      * @param optByteArr
-     *        (optional) array of bytes for STDIN stream.
-     *        May be {@code null} or empty.
-     *        This array is <i>not</i> copied.
+     * <ul>
+     *   <li>(optional) array of bytes for STDIN stream</li>
+     *   <li>May be {@code null} or empty, but empty is treated as {@code null}.</li>
+     *   <li>This array is <i>not</i> copied.</li>
+     * </ul>
      * 
      * @return reference to {@code this}
      * 
@@ -279,11 +249,13 @@ extends AbstractProcessSettings {
      * STDIN stream.  Instead, the bytes first are extracted via {@link String#getBytes()}, then
      * written to STDIN stream.
      * <p>
-     * This method clears any bytes previous set with {@link #stdinData(byte[])}.
+     * This method clears any bytes previously set with {@link #stdinData(byte[])}.
      * 
      * @param optStr
-     *        (optional) text for STDIN stream.
-     *        May be {@code null} or empty.
+     * <ul>
+     *   <li>(optional) text for STDIN stream</li>
+     *   <li>May be {@code null} or empty, but empty is treated as {@code null}.</li>
+     * </ul>
      * 
      * @return reference to {@code this}
      * 
@@ -294,10 +266,10 @@ extends AbstractProcessSettings {
     public ProcessBuilder2 stdinText(String optStr) {
         _optStdinByteArr = null;
         if (null == optStr || optStr.isEmpty()) {
-            _optStdinByteArr = null;
+            _optStdinText = null;
         }
         else {
-            _optStdinByteArr = optStr.getBytes();
+            _optStdinText = optStr;
         }
         return this;
     }
