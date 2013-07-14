@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya;
+package com.googlecode.kevinarpe.papaya.appendable;
 
 /*
  * #%L
@@ -27,20 +27,24 @@ package com.googlecode.kevinarpe.papaya;
 
 import java.io.IOException;
 
+import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
+
 /**
  * Reduces the number of methods required for implementation by interface {@link Appendable}
  * from three to one.  Only {@link #append(CharSequence)} must be implemented by subclasses.
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@NotFullyTested
 public abstract class AbstractSimplifiedAppendable
 implements Appendable {
 
     /**
-     * This method call {@link #append(CharSequence)}.
+     * This method calls {@link #append(CharSequence)}.
      * <p>
      * {@inheritDoc}
      */
+    @NotFullyTested
     @Override
     public Appendable append(CharSequence csq, int start, int end)
     throws IOException {
@@ -49,12 +53,12 @@ implements Appendable {
         return result;
     }
 
-
     /**
-     * This method call {@link #append(CharSequence)}.
+     * This method calls {@link #append(CharSequence)}.
      * <p>
      * {@inheritDoc}
      */
+    @NotFullyTested
     @Override
     public Appendable append(char c)
     throws IOException {

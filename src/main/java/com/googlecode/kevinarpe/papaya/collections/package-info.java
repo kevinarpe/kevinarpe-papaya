@@ -1,4 +1,11 @@
-package com.googlecode.kevinarpe.papaya.collect;
+/**
+ * 
+ */
+/**
+ * @author kca
+ *
+ */
+package com.googlecode.kevinarpe.papaya.collections;
 
 /*
  * #%L
@@ -24,25 +31,3 @@ package com.googlecode.kevinarpe.papaya.collect;
  * along with Papaya.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-public class LinkedHashMapBuilder<TKey, TValue>
-extends MapUtils.CoreMapInserter<TKey, TValue, Map<TKey,TValue>, LinkedHashMapBuilder<TKey, TValue>> {
-    
-    public static <TKey, TValue> LinkedHashMapBuilder<TKey, TValue> create() {
-        LinkedHashMapBuilder<TKey, TValue> x = new LinkedHashMapBuilder<TKey, TValue>();
-        return x;
-    }
-    
-    protected LinkedHashMapBuilder() {
-        super();
-    }
-    
-    public LinkedHashMap<TKey, TValue> build() {
-        LinkedHashMap<TKey, TValue> map = new LinkedHashMap<TKey, TValue>();
-        insert(map);
-        return map;
-    }
-}

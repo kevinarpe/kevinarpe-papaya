@@ -25,12 +25,10 @@ package com.googlecode.kevinarpe.papaya;
  * #L%
  */
 
-import java.util.ArrayList;
-import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
+import java.util.regex.Pattern;
+
 import com.googlecode.kevinarpe.papaya.args.IntArgs;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.args.StringArgs;
 
 /**
  * This is a collection of methods to manipulate {@link String} references.
@@ -53,8 +51,17 @@ public final class StringUtils {
      * @see #NEW_LINE
      * @see #UNIX_NEW_LINE
      * @see #WINDOWS_NEW_LINE
+     * @see #NEW_LINE_REGEX
      */
     public static final String NEW_LINE;
+    
+    /**
+     * This is the current newline as a compiled regular expression:
+     * {@code Pattern.compile(Pattern.quote(NEW_LINE))}
+     * 
+     * @see #NEW_LINE
+     */
+    public static final Pattern NEW_LINE_REGEX;
     
     /**
      * This is the newline used by UNIX variants: "\n".  This value will never differ between
@@ -74,6 +81,7 @@ public final class StringUtils {
         NEW_LINE = System.getProperty("line.separator");
         UNIX_NEW_LINE = "\n";
         WINDOWS_NEW_LINE = "\r\n";
+        NEW_LINE_REGEX = Pattern.compile(Pattern.quote(NEW_LINE));
         //_NEW_LINE_REGEX = Pattern.compile("\r?\n");
     }
     
@@ -467,37 +475,37 @@ public final class StringUtils {
 //        return newStr2;
 //    }
     
-    public static String addPrefixAndSuffixPerLine(
-            String textBlock, String optLinePrefix, String optLineSuffix) {
-        StringArgs.checkNotEmpty(textBlock, "textBlock");
-        
-        boolean hasLinePrefix = (null != optLinePrefix && !optLinePrefix.isEmpty());
-        boolean hasLineSuffix = (null != optLineSuffix && !optLineSuffix.isEmpty());
-        if (!hasLinePrefix && !hasLineSuffix) {
-            throw new IllegalArgumentException(
-                "Both arguments 'optLinePrefix' and 'optLineSuffix' are null or empty");
-        }
-        
-        Iterable<String> lineIter = Splitter.on(NEW_LINE).split(textBlock);
-        ArrayList<String> lineList = new ArrayList<String>();
-        for (String line: lineIter) {
-            lineList.add(line);
-        }
-        int lineListSize = lineList.size();
-        for (int i = 0; i < lineListSize; ++i) {
-            String line = lineList.get(i);
-            // Do not modify the last line if empty.
-            if (!(i == lineListSize - 1 && line.isEmpty())) {
-                if (hasLinePrefix) {
-                    line = optLinePrefix + line;
-                }
-                if (hasLineSuffix) {
-                    line += optLineSuffix;
-                }
-                lineList.set(i, line);
-            }
-        }
-        String x = Joiner.on(NEW_LINE).join(lineList);
-        return x;
-    }
+//    public static String addPrefixAndSuffixPerLine(
+//            String textBlock, String optLinePrefix, String optLineSuffix) {
+//        StringArgs.checkNotEmpty(textBlock, "textBlock");
+//        
+//        boolean hasLinePrefix = (null != optLinePrefix && !optLinePrefix.isEmpty());
+//        boolean hasLineSuffix = (null != optLineSuffix && !optLineSuffix.isEmpty());
+//        if (!hasLinePrefix && !hasLineSuffix) {
+//            throw new IllegalArgumentException(
+//                "Both arguments 'optLinePrefix' and 'optLineSuffix' are null or empty");
+//        }
+//        
+//        Iterable<String> lineIter = Splitter.on(NEW_LINE).split(textBlock);
+//        ArrayList<String> lineList = new ArrayList<String>();
+//        for (String line: lineIter) {
+//            lineList.add(line);
+//        }
+//        int lineListSize = lineList.size();
+//        for (int i = 0; i < lineListSize; ++i) {
+//            String line = lineList.get(i);
+//            // Do not modify the last line if empty.
+//            if (!(i == lineListSize - 1 && line.isEmpty())) {
+//                if (hasLinePrefix) {
+//                    line = optLinePrefix + line;
+//                }
+//                if (hasLineSuffix) {
+//                    line += optLineSuffix;
+//                }
+//                lineList.set(i, line);
+//            }
+//        }
+//        String x = Joiner.on(NEW_LINE).join(lineList);
+//        return x;
+//    }
 }

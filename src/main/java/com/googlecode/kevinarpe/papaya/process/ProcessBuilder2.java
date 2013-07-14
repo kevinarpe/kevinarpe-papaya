@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya;
+package com.googlecode.kevinarpe.papaya.process;
 
 /*
  * #%L
@@ -36,8 +36,9 @@ import java.util.Map;
 import com.google.common.base.Joiner;
 import com.googlecode.kevinarpe.papaya.args.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.args.CollectionArgs;
+import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.args.PathArgs;
-import com.googlecode.kevinarpe.papaya.Process2;
+import com.googlecode.kevinarpe.papaya.process.AbstractProcessSettings.ChildProcessState;
 
 /**
  * This class is used to spawn external child processes by calling {@link #start()}.  Instances of
@@ -46,7 +47,7 @@ import com.googlecode.kevinarpe.papaya.Process2;
  * <p>
  * This class, in conjunction with class {@code Process2}, act as powerful replacements for
  * {@link ProcessBuilder} and {@link Process}, respectively.  These default implementations
- * included in the JDK are deceptively simple, and, unfortunately, easily misused.
+ * included in the JDK are deceptively simple and unfortunately easily misused.
  * <p>
  * Due to the nature of modern operating system processes, there are normally three streams
  * associated with each process: STDIN, STDOUT, and STDERR.  Instances of {@link Process2} will
@@ -100,6 +101,43 @@ extends AbstractProcessSettings {
      */
     public ProcessBuilder2(String... commandArr) {
         this(new ArrayList<String>(Arrays.asList(commandArr)));
+    }
+    
+    /**
+     * Copy constructor
+     * 
+     * @param pb
+     *        reference to another instance of {@link ProcessBuilder2}
+     * 
+     * @throws NullPointerException
+     *         if {@code pb} is {@code null}
+     */
+    public ProcessBuilder2(ProcessBuilder2 pb) {
+        super(ObjectArgs.checkNotNull(pb, "pb"), ChildProcessState.HAS_NOT_STARTED);
+        
+        _processBuilder = new ProcessBuilder(pb.command());
+        
+        Map<String, String> env = this.environment();
+        env.clear();
+        Map<String, String> env2 = pb.environment();
+        env.putAll(env2);
+        
+        File dirPath = pb.directory();
+        this.directory(dirPath);
+        
+        boolean isRedirected = pb.redirectErrorStream();
+        this.redirectErrorStream(isRedirected);
+        
+        byte[] stdinData = pb.stdinData();
+        String stdinText = pb.stdinText();
+        
+        if (null != stdinData) {
+            this.stdinData(stdinData);
+        }
+        
+        if (null != stdinText) {
+            this.stdinText(stdinText);
+        }
     }
 
     /**
@@ -324,7 +362,7 @@ extends AbstractProcessSettings {
      *         if {@link #command()} is empty or contains {@code null} values
      * @throws IOException
      * <ul>
-     *   <li>if {@link #directory()} is not {@code null}, but is not a directory</li>
+     *   <li>if {@link #directory()} is not {@code null} and is not a directory</li>
      *   <li>if new child process cannot be started</li>
      * </ul>
      */

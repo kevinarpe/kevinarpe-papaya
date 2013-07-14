@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.collect;
+package com.googlecode.kevinarpe.papaya.collections;
 
 /*
  * #%L

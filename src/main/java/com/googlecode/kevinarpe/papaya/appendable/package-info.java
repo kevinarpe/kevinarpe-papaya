@@ -1,11 +1,10 @@
 /**
- * 
+ * Useful implementations of {@link java.lang.Appendable} and other related classes.
+ * <p>
+ * This package is a part of the open-source
+ * <a href="http://kevinarpe-papaya.googlecode.com">Papaya library</a>.
  */
-/**
- * @author kca
- *
- */
-package com.googlecode.kevinarpe.papaya.collect;
+package com.googlecode.kevinarpe.papaya.appendable;
 
 /*
  * #%L

@@ -1,4 +1,11 @@
-package com.googlecode.kevinarpe.papaya.collect;
+/**
+ * Classes related to the extension of {@link java.lang.ProcessBuilder} and
+ * {@link java.lang.Process}.
+ * <p>
+ * This package is a part of the open-source
+ * <a href="http://kevinarpe-papaya.googlecode.com">Papaya library</a>.
+ */
+package com.googlecode.kevinarpe.papaya.process;
 
 /*
  * #%L
@@ -24,14 +31,3 @@ package com.googlecode.kevinarpe.papaya.collect;
  * along with Papaya.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
-import java.util.Map;
-
-public class MapInserter<TKey, TValue, TMap extends Map<TKey, TValue>>
-extends MapUtils.CoreMapInserter<TKey, TValue, TMap, MapInserter<TKey, TValue, TMap>> {
-    
-    public MapInserter() {
-        super();
-    }
-    
-}

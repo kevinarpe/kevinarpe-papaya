@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.collect;
+package com.googlecode.kevinarpe.papaya.collections;
 
 /*
  * #%L
@@ -26,23 +26,22 @@ package com.googlecode.kevinarpe.papaya.collect;
  */
 
 import java.util.Map;
+import java.util.TreeMap;
 
-import com.google.common.collect.HashBiMap;
-
-public class HashBiMapBuilder<TKey, TValue> 
-extends MapUtils.CoreMapInserter<TKey, TValue, Map<TKey, TValue>, HashBiMapBuilder<TKey, TValue>> {
+public class TreeMapBuilder<TKey, TValue>
+extends MapUtils.CoreMapInserter<TKey, TValue, Map<TKey,TValue>, TreeMapBuilder<TKey, TValue>> {
     
-    public static <TKey, TValue> HashBiMapBuilder<TKey, TValue> create() {
-        HashBiMapBuilder<TKey, TValue> x = new HashBiMapBuilder<TKey, TValue>();
+    public static <TKey, TValue> TreeMapBuilder<TKey, TValue> create() {
+        TreeMapBuilder<TKey, TValue> x = new TreeMapBuilder<TKey, TValue>();
         return x;
     }
     
-    protected HashBiMapBuilder() {
+    protected TreeMapBuilder() {
         super();
     }
     
-    public HashBiMap<TKey, TValue> build() {
-        HashBiMap<TKey, TValue> map = HashBiMap.create();
+    public TreeMap<TKey, TValue> build() {
+        TreeMap<TKey, TValue> map = new TreeMap<TKey, TValue>();
         insert(map);
         return map;
     }

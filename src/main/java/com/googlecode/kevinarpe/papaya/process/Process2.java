@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya;
+package com.googlecode.kevinarpe.papaya.process;
 
 /*
  * #%L
@@ -30,21 +30,27 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
+import com.googlecode.kevinarpe.papaya.appendable.ByteAppendable;
 import com.googlecode.kevinarpe.papaya.args.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.args.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.args.IntArgs;
 import com.googlecode.kevinarpe.papaya.args.LongArgs;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.ProcessBuilder2;
-import com.googlecode.kevinarpe.papaya.ByteAppendable;
+import com.googlecode.kevinarpe.papaya.args.StringArgs;
+import com.googlecode.kevinarpe.papaya.AbstractThreadWithException;
+import com.googlecode.kevinarpe.papaya.GenericFactory;
 
 /**
  * Instances of this class must be created via {@link ProcessBuilder2#start()}.  An instance of
@@ -72,6 +78,14 @@ import com.googlecode.kevinarpe.papaya.ByteAppendable;
  *   <li>{@link #directory()}</li>
  *   <li>{@link #redirectErrorStream()}</li>
  * </ul>
+ * Since this class and {@link ProcessBuilder2} both extend {@link AbstractProcessSettings}, all
+ * settings for STDIN, STDOUT, and STDERR streams from {@link ProcessBuilder2} are available from
+ * this class:
+ * <ul>
+ *   <li>STDIN config via {@link Process2#stdinData()} and {@link Process2#stdinText()}</li>
+ *   <li>STDOUT config via {@link Process2#stdoutSettings()}</li>
+ *   <li>STDERR config via {@link Process2#stderrSettings()}</li>
+ * </ul>
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
@@ -80,6 +94,7 @@ extends AbstractProcessSettings {
     
     private final Process _process;
     private final List<String> _argList;
+    private final String _argListStr;
     private final Map<String, String> _environment;
     private final File _directory;
     private final boolean _redirectErrorStream;
@@ -90,13 +105,15 @@ extends AbstractProcessSettings {
     private final WriteOutputStreamThread _optWriteStdinThread;
     
     Process2(ProcessBuilder2 pb, Process process) {
-        super(ObjectArgs.checkNotNull(pb, "pb"));
+        super(ObjectArgs.checkNotNull(pb, "pb"), ChildProcessState.HAS_STARTED);
         
         _process = ObjectArgs.checkNotNull(process, "process");
         _argList = ImmutableList.copyOf(pb.command());
+        _argListStr = ProcessBuilder2.argListToString(_argList);
         _environment = ImmutableMap.copyOf(pb.environment());
         _directory = pb.directory();
         _redirectErrorStream = pb.redirectErrorStream();
+        
         byte[] optByteArr = pb.stdinData();
         _optStdinByteArr =
             (null == optByteArr ? null : Arrays.copyOf(optByteArr, optByteArr.length));
@@ -104,7 +121,7 @@ extends AbstractProcessSettings {
         
         InputStream stdoutStream = _process.getInputStream();
         _readStdoutThread =
-            createReadInputStreamThreadAndStart(stdoutStream, this.stdoutSettings());
+            createReadInputStreamThreadAndStart(stdoutStream, this.stdoutSettings(), "STDOUT");
         
         if (_redirectErrorStream) {
             _optReadStderrThread = null;
@@ -112,16 +129,28 @@ extends AbstractProcessSettings {
         else {
             InputStream stderrStream = _process.getErrorStream();
             _optReadStderrThread =
-                createReadInputStreamThreadAndStart(stderrStream, this.stderrSettings());
+                createReadInputStreamThreadAndStart(stderrStream, this.stderrSettings(), "STDERR");
         }
         
-        if (null == _optStdinByteArr) {
+        OutputStream stdinStream = _process.getOutputStream();
+        byte[] stdinByteArr = _optStdinByteArr;
+        if (null == stdinByteArr && null != _optStdinText) {
+            stdinByteArr = _optStdinText.getBytes();
+        }
+        if (null == stdinByteArr) {
             _optWriteStdinThread = null;
+            try {
+                stdinStream.close();
+            }
+            catch (IOException e) {
+                // Intentionally ignore exception.
+                @SuppressWarnings("unused")
+                int dummy = 1;  // debug breakpoint
+            }
         }
         else {
-            OutputStream stdinStream = _process.getOutputStream();
             _optWriteStdinThread =
-                createWriteOutputStreamThreadAndStart(stdinStream, _optStdinByteArr);
+                createWriteOutputStreamThreadAndStart(stdinStream, stdinByteArr);
         }
     }
     
@@ -240,12 +269,12 @@ extends AbstractProcessSettings {
     protected void tryWriteStdinThreadRethrowCaughtException()
     throws IOException {
         if (null != _optWriteStdinThread) {
-            _optWriteStdinThread.rethrowCaughtException();
+            _optWriteStdinThread.rethrowException();
         }
     }
 
     /**
-     * If {@link ProcessOutputSettings#isDataAccumulated()} is {@code true} and bytes are read by
+     * If {@link ProcessOutputStreamSettings#isDataAccumulated()} is {@code true} and bytes are read by
      * the STDOUT thread, the accumulated byte array is copied and returned.  This method may be
      * safely called repeatedly during the runtime and after the termination of the child process.
      * <p>
@@ -414,8 +443,9 @@ extends AbstractProcessSettings {
      */
     public int waitFor()
     throws IOException, InterruptedException {
-        long timeoutMillis = 0;
-        int exitValue = waitFor(timeoutMillis);
+        tryWriteStdinThreadRethrowCaughtException();
+        
+        int exitValue = _process.waitFor();
         return exitValue;
     }
     
@@ -453,15 +483,7 @@ extends AbstractProcessSettings {
         
         Integer optExitValue = null;
         if (0 == timeoutMillis) {
-//            try {
-                optExitValue = _process.waitFor();
-//            }
-//            catch (InterruptedException e) {
-//                // Intentionally ignore exception.
-//                @SuppressWarnings("unused")
-//                int dummy = 1;  // debug breakpoint
-//            }
-            
+            optExitValue = _process.waitFor();
         }
         else {
             // Before we create a thread (expensive), check if process has finished.
@@ -715,6 +737,7 @@ extends AbstractProcessSettings {
             byte[] byteArr) {
         WriteOutputStreamThread thread =
             new WriteOutputStreamThread(outputStream, byteArr);
+        setThreadName(thread, "STDIN");
         thread.start();
         return thread;
     }
@@ -737,7 +760,7 @@ extends AbstractProcessSettings {
         throws IOException {
             try {
                 // This is synchronous / blocking.  For massive byte arrays (1 meg +), this will
-                // not be received in a single read by the listening process. 
+                // not be received in a single read by the listening process.
                 _outputStream.write(_byteArr);
             }
             finally {
@@ -768,10 +791,20 @@ extends AbstractProcessSettings {
      */
     protected ReadInputStreamThread createReadInputStreamThreadAndStart(
             InputStream inputStream,
-            ProcessOutputSettings settings) {
+            ProcessOutputStreamSettings settings,
+            String streamName) {
         ReadInputStreamThread thread = new ReadInputStreamThread(inputStream, settings);
+        setThreadName(thread, streamName);
         thread.start();
         return thread;
+    }
+    
+    protected void setThreadName(Thread thread, String prefix) {
+        ObjectArgs.checkNotNull(thread, "thread");
+        StringArgs.checkNotEmptyOrWhitespace(prefix, "prefix");
+        
+        String name = prefix + ": " + _argListStr;
+        thread.setName(name);
     }
     
     protected static class ByteArrayBuilder {
@@ -807,13 +840,13 @@ extends AbstractProcessSettings {
             return this;
         }
         
-        public ByteArrayBuilder append(Byte oneByte) {
-            ObjectArgs.checkNotNull(oneByte, "oneByte");
-            
-            byte b = oneByte.byteValue();
-            append(b);
-            return this;
-        }
+//        public ByteArrayBuilder append(Byte oneByte) {
+//            ObjectArgs.checkNotNull(oneByte, "oneByte");
+//            
+//            byte b = oneByte.byteValue();
+//            append(b);
+//            return this;
+//        }
         
         public ByteArrayBuilder append(byte oneByte) {
             ensureCapacity(_usedLength + 1);
@@ -836,11 +869,14 @@ extends AbstractProcessSettings {
         }
         
         protected void ensureCapacity(int newCapacity) {
-            int capacity = _byteArr.length;
-            while (capacity < newCapacity) {
-                capacity *= 2;
+            if (_byteArr.length < newCapacity) {
+                int capacity = _byteArr.length;
+                do {
+                    capacity *= 2;
+                }
+                while (capacity < newCapacity);
+                _byteArr = Arrays.copyOf(_byteArr, capacity);
             }
-            _byteArr = Arrays.copyOf(_byteArr, capacity);
         }
         
         public byte[] toArray() {
@@ -859,7 +895,7 @@ extends AbstractProcessSettings {
             System.arraycopy(_byteArr, 0, byteArr, offset, length);
             return this;
         }
-   }
+    }
     
     protected static class ReadInputStreamThread
     extends AbstractThreadWithException<IOException> {
@@ -867,23 +903,25 @@ extends AbstractProcessSettings {
         private static final int DEFAULT_BYTE_ARR_LENGTH = 8192;
         
         private final InputStream _inputStream;
-        private final ProcessOutputSettings _settings;
-        //private final ByteArray.Builder _byteArrBuilder;
+        private final ProcessOutputStreamSettings _settings;
         private final ByteArrayBuilder _byteArrBuilder;
+        private final Appendable _optCharCallbackFromFactory;
+        private final ByteAppendable _optByteCallbackFromFactory;
 
         public ReadInputStreamThread(
                 InputStream inputStream,
-                ProcessOutputSettings settings) {
+                ProcessOutputStreamSettings settings) {
             _inputStream = ObjectArgs.checkNotNull(inputStream, "inputStream");
             _settings = ObjectArgs.checkNotNull(settings, "settings");
             _byteArrBuilder = new ByteArrayBuilder(DEFAULT_BYTE_ARR_LENGTH);
+            GenericFactory<Appendable> ccFactory = _settings.charCallbackFactory();
+            _optCharCallbackFromFactory = (null == ccFactory ? null : ccFactory.create());
+            GenericFactory<ByteAppendable> bcFactory = _settings.byteCallbackFactory();
+            _optByteCallbackFromFactory = (null == bcFactory ? null : bcFactory.create());
         }
         
         protected byte[] getByteArr() {
             synchronized (_byteArrBuilder) {
-//                ByteArray x = _byteArrBuilder.snapshot();
-//                byte[] x2 = x.toByteArray();
-//                return x2;
                 byte[] x = _byteArrBuilder.toArray();
                 return x;
             }
@@ -891,14 +929,14 @@ extends AbstractProcessSettings {
         
         public byte[] getDataAsByteArr()
         throws IOException {
-            rethrowCaughtException();
+            rethrowException();
             byte[] x = getByteArr();
             return x;
         }
         
         public String getDataAsString(Charset optCs)
         throws IOException {
-            rethrowCaughtException();
+            rethrowException();
             
             byte[] byteArr = getByteArr();
             if (null == optCs) {
@@ -912,6 +950,7 @@ extends AbstractProcessSettings {
         public void runWithException()
         throws IOException {
             byte[] buffer = new byte[8192];
+            String lastText = "";
             while (true) {
                 int readCount = _inputStream.read(buffer);
                 if (-1 == readCount) {
@@ -926,31 +965,57 @@ extends AbstractProcessSettings {
                             adjReadCount = Math.min(readCount, maxReadCount);
                         }
                         _byteArrBuilder.append(buffer, 0, adjReadCount);
+                        //System.out.println(_byteArrBuilder.length());
                     }
                 }
-                // Make a reference copy here to be thread-safe.
-                Appendable optCharCallback = _settings.charCallback();
+                // Make a reference copy here, _settings.charCallback(), to be thread-safe.
+                Appendable optCharCallback =
+                    (null != _optCharCallbackFromFactory
+                        ? _optCharCallbackFromFactory : _settings.charCallback());
                 if (null != optCharCallback) {
                     Charset cs = _settings.charset();
                     String s = new String(buffer, 0, readCount, cs);
-                    optCharCallback.append(s);
+                    // Make a reference copy here to be thread-safe.
+                    Pattern optSplitRegex = _settings.splitRegex();
+                    if (null != optSplitRegex) {
+                        String text = lastText.concat(s);
+                        Iterable<String> partIter = Splitter.on(optSplitRegex).split(text);
+                        ArrayList<String> partList = new ArrayList<String>();
+                        Iterables.addAll(partList, partIter);
+                        int partListSize = partList.size();
+                        for (int i = 0; i < partListSize - 1; ++i) {
+                            String part = partList.get(i);
+                            optCharCallback.append(part);
+                        }
+                        lastText = partList.get(partListSize - 1);
+                    }
+                    else {
+                        optCharCallback.append(s);
+                    }
                 }
-                // Make a reference copy here to be thread-safe.
-                ByteAppendable optByteCallback = _settings.byteCallback();
+                // Make a reference copy here, _settings.byteCallback(),  to be thread-safe.
+                ByteAppendable optByteCallback =
+                    (null != _optByteCallbackFromFactory
+                        ? _optByteCallbackFromFactory : _settings.byteCallback());
                 if (null != optByteCallback) {
                     byte[] truncBuffer = Arrays.copyOf(buffer, readCount);
                     optByteCallback.append(truncBuffer);
                 }
             }
-            @SuppressWarnings("unused")
-            int dummy = 1;  // debug breakpoint
+            // Make a reference copy here, _settings.charCallback(), to be thread-safe.
+            Appendable optCharCallback =
+                (null != _optCharCallbackFromFactory
+                    ? _optCharCallbackFromFactory : _settings.charCallback());
+            if (null != optCharCallback && !lastText.isEmpty()) {
+                optCharCallback.append(lastText);
+            }
         }
 
         protected InputStream getInputStream() {
             return _inputStream;
         }
 
-        protected ProcessOutputSettings getSettings() {
+        protected ProcessOutputStreamSettings getSettings() {
             return _settings;
         }
 
