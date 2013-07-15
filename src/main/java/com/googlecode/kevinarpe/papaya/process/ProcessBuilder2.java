@@ -32,13 +32,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-
 import com.google.common.base.Joiner;
+import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 import com.googlecode.kevinarpe.papaya.args.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.args.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.args.PathArgs;
-import com.googlecode.kevinarpe.papaya.process.AbstractProcessSettings.ChildProcessState;
 
 /**
  * This class is used to spawn external child processes by calling {@link #start()}.  Instances of
@@ -80,6 +79,7 @@ import com.googlecode.kevinarpe.papaya.process.AbstractProcessSettings.ChildProc
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public class ProcessBuilder2
 extends AbstractProcessSettings {
     

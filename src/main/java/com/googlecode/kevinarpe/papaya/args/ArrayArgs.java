@@ -1296,9 +1296,13 @@ public final class ArrayArgs {
      * Tests if a value is found in a array of valid values.
      * 
      * @param ref
-     *        an array reference of valid values
+     * <ul>
+     *   <li>An array reference of valid values</li>
+     *   <li>Must not be empty.</li>
+     *   <li>May contain {@code null} values or duplicate values</li>
+     * </ul>
      * @param value
-     *        reference to test if found in array of valid values
+     *        reference to test if found in array of valid values.  May be {@code null}.
      * @param arrayArgName
      *        argument name for {@code ref}, e.g., "strList"
      *
@@ -1314,9 +1318,11 @@ public final class ArrayArgs {
      * 
      * @see CollectionArgs#checkContains(java.util.Collection, Object, String)
      */
-    @NotFullyTested
-    public static <T> T checkContains(T[] ref, T value, String arrayArgName) {
-        List<T> list = (null == ref ? null : Arrays.asList(ref));
+    @FullyTested
+    public static
+    <THaystack, TNeedle extends THaystack>
+    TNeedle checkContains(THaystack[] ref, TNeedle value, String arrayArgName) {
+        List<THaystack> list = (null == ref ? null : Arrays.asList(ref));
         ContainerArgs._checkContains(list, "Array", value, arrayArgName);
         return value;
     }

@@ -27,6 +27,9 @@ package com.googlecode.kevinarpe.papaya.collections;
 
 import java.util.Map;
 
+import com.google.common.annotations.Beta;
+
+@Beta
 public class MapInserter<TKey, TValue, TMap extends Map<TKey, TValue>>
 extends MapUtils.CoreMapInserter<TKey, TValue, TMap, MapInserter<TKey, TValue, TMap>> {
     

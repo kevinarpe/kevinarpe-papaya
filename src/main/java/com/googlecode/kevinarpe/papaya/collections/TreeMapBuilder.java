@@ -28,6 +28,9 @@ package com.googlecode.kevinarpe.papaya.collections;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.google.common.annotations.Beta;
+
+@Beta
 public class TreeMapBuilder<TKey, TValue>
 extends MapUtils.CoreMapInserter<TKey, TValue, Map<TKey,TValue>, TreeMapBuilder<TKey, TValue>> {
     

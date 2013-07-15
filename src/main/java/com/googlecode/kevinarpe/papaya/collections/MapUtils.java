@@ -33,10 +33,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.annotations.Beta;
 import com.google.common.collect.Lists;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.args.StringArgs;
 
+@Beta
 class MapUtils {
     
     static class CoreMapInserter

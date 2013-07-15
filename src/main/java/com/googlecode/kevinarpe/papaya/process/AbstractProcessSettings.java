@@ -33,6 +33,7 @@ import java.util.Map;
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.googlecode.kevinarpe.papaya.ObjectUtils;
+import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 
 /**
@@ -40,6 +41,7 @@ import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 abstract class AbstractProcessSettings {
     
     /**

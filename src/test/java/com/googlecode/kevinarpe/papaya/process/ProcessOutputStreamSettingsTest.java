@@ -34,6 +34,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.googlecode.kevinarpe.papaya.GenericFactory;
+import com.googlecode.kevinarpe.papaya.appendable.AbstractSimplifiedAppendable;
 import com.googlecode.kevinarpe.papaya.appendable.ByteAppendable;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.process.ProcessBuilder2;
@@ -107,7 +108,16 @@ public class ProcessOutputStreamSettingsTest {
     // ProcessOutputStreamSettings.charCallback & .charCallbackFactory
     //
     
-    private static final GenericFactory<Appendable> _CHAR_CALLBACK_FACTORY =
+    public static final Appendable SAMPLE_CHAR_CALLBACK =
+        new AbstractSimplifiedAppendable() {
+            @Override
+            public Appendable append(CharSequence csq)
+            throws IOException {
+                return null;
+            }
+        };
+    
+    public static final GenericFactory<Appendable> SAMPLE_CHAR_CALLBACK_FACTORY =
         new GenericFactory<Appendable>() {
             @Override
             public Appendable create() {
@@ -123,10 +133,9 @@ public class ProcessOutputStreamSettingsTest {
         // Test charCallback
         Assert.assertEquals(x.charCallback(), null);
         Assert.assertEquals(x.charCallbackFactory(), null);
-        StringBuffer sb = new StringBuffer();
         // Two steps here: (1) call the method, (2) assert the result
-        Assert.assertTrue(x == x.charCallback(sb));
-        Assert.assertEquals(x.charCallback(), sb);
+        Assert.assertTrue(x == x.charCallback(SAMPLE_CHAR_CALLBACK));
+        Assert.assertEquals(x.charCallback(), SAMPLE_CHAR_CALLBACK);
         Assert.assertEquals(x.charCallbackFactory(), null);
         Assert.assertTrue(x == x.charCallback(null));
         Assert.assertEquals(x.charCallback(), null);
@@ -138,9 +147,9 @@ public class ProcessOutputStreamSettingsTest {
         Assert.assertEquals(x.charCallback(), null);
         Assert.assertEquals(x.charCallbackFactory(), null);
         // Two steps here: (1) call the method, (2) assert the result
-        Assert.assertTrue(x == x.charCallbackFactory(_CHAR_CALLBACK_FACTORY));
+        Assert.assertTrue(x == x.charCallbackFactory(SAMPLE_CHAR_CALLBACK_FACTORY));
         Assert.assertEquals(x.charCallback(), null);
-        Assert.assertEquals(x.charCallbackFactory(), _CHAR_CALLBACK_FACTORY);
+        Assert.assertEquals(x.charCallbackFactory(), SAMPLE_CHAR_CALLBACK_FACTORY);
         Assert.assertTrue(x == x.charCallbackFactory(null));
         Assert.assertEquals(x.charCallback(), null);
         Assert.assertEquals(x.charCallbackFactory(), null);
@@ -150,10 +159,9 @@ public class ProcessOutputStreamSettingsTest {
         // Test charCallback & charCallbackFactory
         Assert.assertEquals(x.charCallback(), null);
         Assert.assertEquals(x.charCallbackFactory(), null);
-        StringBuffer sb = new StringBuffer();
         // Two steps here: (1) call the method, (2) assert the result
-        Assert.assertTrue(x == x.charCallback(sb));
-        Assert.assertEquals(x.charCallback(), sb);
+        Assert.assertTrue(x == x.charCallback(SAMPLE_CHAR_CALLBACK));
+        Assert.assertEquals(x.charCallback(), SAMPLE_CHAR_CALLBACK);
         Assert.assertEquals(x.charCallbackFactory(), null);
         
         // Prove setting callback factory to null also clears callback.
@@ -161,27 +169,27 @@ public class ProcessOutputStreamSettingsTest {
         Assert.assertEquals(x.charCallback(), null);
         Assert.assertEquals(x.charCallbackFactory(), null);
         
-        Assert.assertTrue(x == x.charCallback(sb));
-        Assert.assertEquals(x.charCallback(), sb);
+        Assert.assertTrue(x == x.charCallback(SAMPLE_CHAR_CALLBACK));
+        Assert.assertEquals(x.charCallback(), SAMPLE_CHAR_CALLBACK);
         Assert.assertEquals(x.charCallbackFactory(), null);
         
         // Prove setting callback factory to non-null also clears callback.
-        Assert.assertTrue(x == x.charCallbackFactory(_CHAR_CALLBACK_FACTORY));
+        Assert.assertTrue(x == x.charCallbackFactory(SAMPLE_CHAR_CALLBACK_FACTORY));
         Assert.assertEquals(x.charCallback(), null);
-        Assert.assertEquals(x.charCallbackFactory(), _CHAR_CALLBACK_FACTORY);
+        Assert.assertEquals(x.charCallbackFactory(), SAMPLE_CHAR_CALLBACK_FACTORY);
         
         // Prove setting callback to null also clears callback factory.
         Assert.assertTrue(x == x.charCallback(null));
         Assert.assertEquals(x.charCallback(), null);
         Assert.assertEquals(x.charCallbackFactory(), null);
         
-        Assert.assertTrue(x == x.charCallbackFactory(_CHAR_CALLBACK_FACTORY));
+        Assert.assertTrue(x == x.charCallbackFactory(SAMPLE_CHAR_CALLBACK_FACTORY));
         Assert.assertEquals(x.charCallback(), null);
-        Assert.assertEquals(x.charCallbackFactory(), _CHAR_CALLBACK_FACTORY);
+        Assert.assertEquals(x.charCallbackFactory(), SAMPLE_CHAR_CALLBACK_FACTORY);
         
         // Prove setting callback to non-null also clears callback factory.
-        Assert.assertTrue(x == x.charCallback(sb));
-        Assert.assertEquals(x.charCallback(), sb);
+        Assert.assertTrue(x == x.charCallback(SAMPLE_CHAR_CALLBACK));
+        Assert.assertEquals(x.charCallback(), SAMPLE_CHAR_CALLBACK);
         Assert.assertEquals(x.charCallbackFactory(), null);
         }
     }
@@ -200,16 +208,19 @@ public class ProcessOutputStreamSettingsTest {
             ProcessOutputStreamSettings x) {
         ObjectArgs.checkNotNull(x, "x");
         
+        Assert.assertEquals(x.charCallback(), null);
         Assert.assertEquals(x.charCallbackFactory(), null);
         // Two steps here: (1) call the method, (2) assert the result
-        Assert.assertTrue(x == x.charCallbackFactory(_CHAR_CALLBACK_FACTORY));
-        Assert.assertEquals(x.charCallbackFactory(), _CHAR_CALLBACK_FACTORY);
+        Assert.assertTrue(x == x.charCallbackFactory(SAMPLE_CHAR_CALLBACK_FACTORY));
+        Assert.assertEquals(x.charCallback(), null);
+        Assert.assertEquals(x.charCallbackFactory(), SAMPLE_CHAR_CALLBACK_FACTORY);
         try {
             x.charCallback(new StringBuilder());
             throw new IllegalStateException("Previous line should have thrown an exception");
         }
         catch (IllegalArgumentException e) {
-            Assert.assertEquals(x.charCallbackFactory(), _CHAR_CALLBACK_FACTORY);
+            Assert.assertEquals(x.charCallback(), null);
+            Assert.assertEquals(x.charCallbackFactory(), SAMPLE_CHAR_CALLBACK_FACTORY);
         }
     }
     
@@ -217,7 +228,7 @@ public class ProcessOutputStreamSettingsTest {
     // ProcessOutputStreamSettings.byteCallback & .byteCallbackFactory
     //
     
-    private static final ByteAppendable _BYTE_CALLBACK =
+    public static final ByteAppendable SAMPLE_BYTE_CALLBACK =
         new ByteAppendable() {
             @Override
             public void append(byte[] byteArr)
@@ -226,7 +237,7 @@ public class ProcessOutputStreamSettingsTest {
             }
         };
     
-    private static final GenericFactory<ByteAppendable> _BYTE_CALLBACK_FACTORY =
+    public static final GenericFactory<ByteAppendable> SAMPLE_BYTE_CALLBACK_FACTORY =
         new GenericFactory<ByteAppendable>() {
             @Override
             public ByteAppendable create() {
@@ -240,8 +251,8 @@ public class ProcessOutputStreamSettingsTest {
         
         Assert.assertEquals(x.byteCallback(), null);
         // Two steps here: (1) call the method, (2) assert the result
-        Assert.assertTrue(x == x.byteCallback(_BYTE_CALLBACK));
-        Assert.assertEquals(x.byteCallback(), _BYTE_CALLBACK);
+        Assert.assertTrue(x == x.byteCallback(SAMPLE_BYTE_CALLBACK));
+        Assert.assertEquals(x.byteCallback(), SAMPLE_BYTE_CALLBACK);
         Assert.assertTrue(x == x.byteCallback(null));
         Assert.assertEquals(x.byteCallback(), null);
         
@@ -250,8 +261,8 @@ public class ProcessOutputStreamSettingsTest {
         Assert.assertEquals(x.byteCallback(), null);
         Assert.assertEquals(x.byteCallbackFactory(), null);
         // Two steps here: (1) call the method, (2) assert the result
-        Assert.assertTrue(x == x.byteCallback(_BYTE_CALLBACK));
-        Assert.assertEquals(x.byteCallback(), _BYTE_CALLBACK);
+        Assert.assertTrue(x == x.byteCallback(SAMPLE_BYTE_CALLBACK));
+        Assert.assertEquals(x.byteCallback(), SAMPLE_BYTE_CALLBACK);
         Assert.assertEquals(x.byteCallbackFactory(), null);
         Assert.assertTrue(x == x.byteCallback(null));
         Assert.assertEquals(x.byteCallback(), null);
@@ -263,9 +274,9 @@ public class ProcessOutputStreamSettingsTest {
         Assert.assertEquals(x.byteCallback(), null);
         Assert.assertEquals(x.byteCallbackFactory(), null);
         // Two steps here: (1) call the method, (2) assert the result
-        Assert.assertTrue(x == x.byteCallbackFactory(_BYTE_CALLBACK_FACTORY));
+        Assert.assertTrue(x == x.byteCallbackFactory(SAMPLE_BYTE_CALLBACK_FACTORY));
         Assert.assertEquals(x.byteCallback(), null);
-        Assert.assertEquals(x.byteCallbackFactory(), _BYTE_CALLBACK_FACTORY);
+        Assert.assertEquals(x.byteCallbackFactory(), SAMPLE_BYTE_CALLBACK_FACTORY);
         Assert.assertTrue(x == x.byteCallbackFactory(null));
         Assert.assertEquals(x.byteCallback(), null);
         Assert.assertEquals(x.byteCallbackFactory(), null);
@@ -276,8 +287,8 @@ public class ProcessOutputStreamSettingsTest {
         Assert.assertEquals(x.byteCallback(), null);
         Assert.assertEquals(x.byteCallbackFactory(), null);
         // Two steps here: (1) call the method, (2) assert the result
-        Assert.assertTrue(x == x.byteCallback(_BYTE_CALLBACK));
-        Assert.assertEquals(x.byteCallback(), _BYTE_CALLBACK);
+        Assert.assertTrue(x == x.byteCallback(SAMPLE_BYTE_CALLBACK));
+        Assert.assertEquals(x.byteCallback(), SAMPLE_BYTE_CALLBACK);
         Assert.assertEquals(x.byteCallbackFactory(), null);
         
         // Prove setting callback factory to null also clears callback.
@@ -285,27 +296,27 @@ public class ProcessOutputStreamSettingsTest {
         Assert.assertEquals(x.byteCallback(), null);
         Assert.assertEquals(x.byteCallbackFactory(), null);
         
-        Assert.assertTrue(x == x.byteCallback(_BYTE_CALLBACK));
-        Assert.assertEquals(x.byteCallback(), _BYTE_CALLBACK);
+        Assert.assertTrue(x == x.byteCallback(SAMPLE_BYTE_CALLBACK));
+        Assert.assertEquals(x.byteCallback(), SAMPLE_BYTE_CALLBACK);
         Assert.assertEquals(x.byteCallbackFactory(), null);
         
         // Prove setting callback factory to non-null also clears callback.
-        Assert.assertTrue(x == x.byteCallbackFactory(_BYTE_CALLBACK_FACTORY));
+        Assert.assertTrue(x == x.byteCallbackFactory(SAMPLE_BYTE_CALLBACK_FACTORY));
         Assert.assertEquals(x.byteCallback(), null);
-        Assert.assertEquals(x.byteCallbackFactory(), _BYTE_CALLBACK_FACTORY);
+        Assert.assertEquals(x.byteCallbackFactory(), SAMPLE_BYTE_CALLBACK_FACTORY);
         
         // Prove setting callback to null also clears callback factory.
         Assert.assertTrue(x == x.byteCallback(null));
         Assert.assertEquals(x.byteCallback(), null);
         Assert.assertEquals(x.byteCallbackFactory(), null);
         
-        Assert.assertTrue(x == x.byteCallbackFactory(_BYTE_CALLBACK_FACTORY));
+        Assert.assertTrue(x == x.byteCallbackFactory(SAMPLE_BYTE_CALLBACK_FACTORY));
         Assert.assertEquals(x.byteCallback(), null);
-        Assert.assertEquals(x.byteCallbackFactory(), _BYTE_CALLBACK_FACTORY);
+        Assert.assertEquals(x.byteCallbackFactory(), SAMPLE_BYTE_CALLBACK_FACTORY);
         
         // Prove setting callback to non-null also clears callback factory.
-        Assert.assertTrue(x == x.byteCallback(_BYTE_CALLBACK));
-        Assert.assertEquals(x.byteCallback(), _BYTE_CALLBACK);
+        Assert.assertTrue(x == x.byteCallback(SAMPLE_BYTE_CALLBACK));
+        Assert.assertEquals(x.byteCallback(), SAMPLE_BYTE_CALLBACK);
         Assert.assertEquals(x.byteCallbackFactory(), null);
         }
     }

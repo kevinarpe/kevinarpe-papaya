@@ -608,4 +608,62 @@ public class ArrayArgsTest {
     public void checkFromAndToIndices_FailWithNullArray() {
         ArrayArgs.checkFromAndToIndices((Object[]) null, 0, 0, "ref", "fromIndex", "toIndex");
     }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // ArrayArgs.checkContains
+    //
+    
+    @DataProvider
+    private static final Object[][] _checkContains_Pass_Data() {
+        return new Object[][] {
+                { new String[] { "a" }, "a" },
+                { new String[] { "a", "b" }, "b" },
+                { new String[] { "a", "b", "c" }, "b" },
+                { new String[] { "a", "b", "c", "b" }, "b" },
+                { new String[] { "a", "b", "xyz" }, "xyz" },
+                { new String[] { "東京", "大阪", "札幌" }, "大阪" },
+                { new String[] { "a", "b", null, "c" }, null },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContains_Pass_Data")
+    public <THaystack, TNeedle extends THaystack>
+    void checkContains_Pass(THaystack[] ref, TNeedle value) {
+        ArrayArgs.checkContains(ref, value, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        ArrayArgs.checkContains(ref, value, null);
+        ArrayArgs.checkContains(ref, value, "");
+        ArrayArgs.checkContains(ref, value, "   ");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkContains_Fail_Data() {
+        return new Object[][] {
+                { new String[] { "a" }, "x" },
+                { new String[] { "a" }, null },
+                { new String[] { "a", "b" }, "x" },
+                { new String[] { "a", "b", "c" }, "x" },
+                { new String[] { "a", "b", "c", "b" }, "x" },
+                { new String[] { "a", "b", "xyz" }, "x" },
+                { new String[] { "東京", "大阪", "札幌" }, "x" },
+                { new String[] { "a", "b", null, "c" }, "x" },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContains_Fail_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <THaystack, TNeedle extends THaystack>
+    void checkContains_Fail(THaystack[] ref, TNeedle value) {
+        ArrayArgs.checkContains(ref, value, "ref");
+    }
+    
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void checkContains_FailWithEmptyArray() {
+        ArrayArgs.checkContains(new Object[0], "abc", "ref");
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void checkContains_FailWithNullArray() {
+        ArrayArgs.checkContains((Object[]) null, "abc", "ref");
+    }
 }

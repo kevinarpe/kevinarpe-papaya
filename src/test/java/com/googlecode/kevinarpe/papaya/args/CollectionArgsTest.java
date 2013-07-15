@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
+
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -671,5 +673,63 @@ public class CollectionArgsTest {
     @Test(expectedExceptions = NullPointerException.class)
     public void checkFromAndToIndices_FailWithNullCollection() {
         CollectionArgs.checkFromAndToIndices(null, 0, 0, "ref", "fromIndex", "toIndex");
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // CollectionArgs.checkContains
+    //
+    
+    @DataProvider
+    private static final Object[][] _checkContains_Pass_Data() {
+        return new Object[][] {
+                { Arrays.asList("a"), "a" },
+                { Arrays.asList("a", "b"), "b" },
+                { Arrays.asList("a", "b", "c"), "b" },
+                { Arrays.asList("a", "b", "c", "b"), "b" },
+                { Arrays.asList("a", "b", "xyz"), "xyz" },
+                { Arrays.asList("東京", "大阪", "札幌"), "大阪" },
+                { Arrays.asList("a", "b", null, "c"), null },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContains_Pass_Data")
+    public <THaystack, TNeedle extends THaystack>
+    void checkContains_Pass(Collection<THaystack> ref, TNeedle value) {
+        CollectionArgs.checkContains(ref, value, "ref");
+        // Demonstrate argName can be anything ridiculous.
+        CollectionArgs.checkContains(ref, value, null);
+        CollectionArgs.checkContains(ref, value, "");
+        CollectionArgs.checkContains(ref, value, "   ");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkContains_Fail_Data() {
+        return new Object[][] {
+                { Arrays.asList("a"), "x" },
+                { Arrays.asList("a"), null },
+                { Arrays.asList("a", "b"), "x" },
+                { Arrays.asList("a", "b", "c"), "x" },
+                { Arrays.asList("a", "b", "c", "b"), "x" },
+                { Arrays.asList("a", "b", "xyz"), "x" },
+                { Arrays.asList("東京", "大阪", "札幌"), "x" },
+                { Arrays.asList("a", "b", null, "c"), "x" },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContains_Fail_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <THaystack, TNeedle extends THaystack>
+    void checkContains_Fail(Collection<THaystack> ref, TNeedle value) {
+        CollectionArgs.checkContains(ref, value, "ref");
+    }
+    
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void checkContains_FailWithEmptyCollection() {
+        CollectionArgs.checkContains(Arrays.asList(), "abc", "ref");
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void checkContains_FailWithNullCollection() {
+        CollectionArgs.checkContains((List<Object>) null, "abc", "ref");
     }
 }

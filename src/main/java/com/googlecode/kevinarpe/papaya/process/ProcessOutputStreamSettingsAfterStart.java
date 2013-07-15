@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.process;
  */
 
 import com.googlecode.kevinarpe.papaya.GenericFactory;
+import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 import com.googlecode.kevinarpe.papaya.appendable.ByteAppendable;
 
 /**
@@ -45,6 +46,7 @@ import com.googlecode.kevinarpe.papaya.appendable.ByteAppendable;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public class ProcessOutputStreamSettingsAfterStart
 extends ProcessOutputStreamSettings {
     

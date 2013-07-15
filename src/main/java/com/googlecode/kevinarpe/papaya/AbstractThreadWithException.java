@@ -1,5 +1,7 @@
 package com.googlecode.kevinarpe.papaya;
 
+import java.io.IOException;
+
 import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 
 /*
@@ -30,17 +32,20 @@ import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 /**
  * Extension of class {@link Thread} to allow exceptions to be thrown.  Instead of {@link #run()},
  * subclasses should override {@link #runWithException()}.  Any caught exception can be rethrown
- * with {@link #rethrowException()}.
+ * with {@link #rethrowException()} or {@link #rethrowThenClearException().
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @param <TException>
- *        Type of exception to be throws by {@link #runWithException()}
+ *        Type of exception to be throws by {@link #runWithException()}, e.g., {@link IOException}
  *        
  * @see Thread
  * @see #run()
  * @see #runWithException()
+ * @see #getException()
+ * @see #clearException()
  * @see #rethrowException()
+ * @see #rethrowThenClearException()
  */
 @NotFullyTested
 public abstract class AbstractThreadWithException<TException extends Exception>
@@ -65,26 +70,67 @@ extends Thread {
      *         May be {@code null}
      * 
      * @see #runWithException()
+     * @see #clearException()
+     * @see #rethrowException()
+     * @see #rethrowThenClearException()
      */
     public TException getException() {
         return _exception;
     }
     
     /**
-     * If {@link #runWithException()} threw an exception, call this method to rethrow from a
-     * different thread.
-     * 
-     * @throws TException
-     *         exception caught by {@link #runWithException()}
+     * Clears any exception previously thrown by {@link #runWithException()}.
      * 
      * @see #runWithException()
+     * @see #getException()
+     * @see #rethrowException()
+     * @see #rethrowThenClearException()
      */
-    public void rethrowException()
-    throws TException {
-        if (null != _exception) {
-            throw _exception;
-        }
+    public void clearException() {
+        _exception = null;
     }
+    
+//    /**
+//     * If {@link #runWithException()} threw an exception, call this method to rethrow from a
+//     * different thread.  To also clear the caught exception, see
+//     * {@link #rethrowThenClearException()}.
+//     * 
+//     * @throws TException
+//     *         exception caught by {@link #runWithException()}
+//     * 
+//     * @see #runWithException()
+//     * @see #getException()
+//     * @see #clearException()
+//     * @see #rethrowThenClearException()
+//     */
+//    public void rethrowException()
+//    throws TException {
+//        if (null != _exception) {
+//            throw _exception;
+//        }
+//    }
+//    
+//    /**
+//     * Similar to {@link #rethrowException()}.  In addition, the exception is cleared before
+//     * rethrowing.  This will prevent scenarios where a caught exception is rethrown multiple
+//     * times.  Rethrowing once is likely more useful in most cases.
+//     * 
+//     * @throws TException
+//     *         exception caught by {@link #runWithException()}
+//     * 
+//     * @see #runWithException()
+//     * @see #getException()
+//     * @see #clearException()
+//     * @see #rethrowException()
+//     */
+//    public void rethrowThenClearException()
+//    throws TException {
+//        if (null != _exception) {
+//            TException x = _exception;
+//            _exception = null;
+//            throw x;
+//        }
+//    }
     
     /**
      * Calls {@link #runWithException()} and catches any exception thrown.  Subclasses should
@@ -92,7 +138,9 @@ extends Thread {
      * 
      * @see #runWithException()
      * @see #getException()
+     * @see #clearException()
      * @see #rethrowException()
+     * @see #rethrowThenClearException()
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -101,7 +149,7 @@ extends Thread {
             runWithException();
         }
         catch (Exception e) {
-            _exception = (TException) e;
+            setException((TException) e);
         }
     }
     
@@ -112,7 +160,9 @@ extends Thread {
      *         on error
      * 
      * @see #getException()
+     * @see #clearException()
      * @see #rethrowException()
+     * @see #rethrowThenClearException()
      */
     public abstract void runWithException()
     throws TException;

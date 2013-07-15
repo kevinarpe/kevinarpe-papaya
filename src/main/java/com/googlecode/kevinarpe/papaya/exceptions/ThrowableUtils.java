@@ -36,6 +36,7 @@ import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@NotFullyTested
 public final class ThrowableUtils {
 
     /**

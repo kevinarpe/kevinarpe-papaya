@@ -22,3 +22,5 @@ out/
 # TestNG
 test-output/
 
+# Generated Test Data
+src/test/resources/generated/

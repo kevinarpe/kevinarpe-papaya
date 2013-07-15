@@ -32,6 +32,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
 import com.googlecode.kevinarpe.papaya.GenericFactory;
 import com.googlecode.kevinarpe.papaya.StringUtils;
+import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
 import com.googlecode.kevinarpe.papaya.appendable.AbstractSimplifiedAppendable;
 import com.googlecode.kevinarpe.papaya.appendable.AppendablePrintLineWithPrefix;
 import com.googlecode.kevinarpe.papaya.appendable.ByteAppendable;
@@ -48,6 +49,7 @@ import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public class ProcessOutputStreamSettings {
     
     static final Charset DEFAULT_CHARSET = Charset.defaultCharset();
@@ -571,7 +573,9 @@ public class ProcessOutputStreamSettings {
             + "%n\tcharset()=(%s) '%s'"
             + "%n\tsplitRegex()='%s'"
             + "%n\tcharCallback()=%s"
+            + "%n\tcharCallbackFactory()=%s"
             + "%n\tbyteCallback()=%s"
+            + "%n\tbyteCallbackFactory()=%s"
             + "%n\tisDataAccumulated()=%s"
             + "%n\tmaxAccumulatedDataByteCount()=%d"
             + "%n\t]",
@@ -580,7 +584,11 @@ public class ProcessOutputStreamSettings {
             _charset,
             (null == _optSplitRegex ? "null" : _optSplitRegex),
             (null == _optCharCallback ? "null" : _optCharCallback.getClass().getSimpleName()),
+            (null == _optCharCallbackFactory
+                ? "null" : _optCharCallbackFactory.getClass().getSimpleName()),
             (null == _optByteCallback ? "null" : _optByteCallback.getClass().getSimpleName()),
+            (null == _optByteCallbackFactory
+                ? "null" : _optByteCallbackFactory.getClass().getSimpleName()),
             _isDataAccumulated,
             _maxAccumulatedDataByteCount);
         return x;
@@ -592,14 +600,15 @@ public class ProcessOutputStreamSettings {
      * <p>
      * {@inheritDoc}
      */
-    // TODO: Add char/byteCallbackFactory
     @Override
     public int hashCode() {
         int x = Objects.hashCode(
             _charset,
             _optSplitRegex,
             _optCharCallback,
+            _optCharCallbackFactory,
             _optByteCallback,
+            _optByteCallbackFactory,
             _isDataAccumulated,
             _maxAccumulatedDataByteCount);
         return x;
@@ -611,8 +620,6 @@ public class ProcessOutputStreamSettings {
      * <p>
      * {@inheritDoc}
      */
-    // TODO: Add char/byteCallbackFactory
-    // TODO: Add note about how equals might work
     @Override
     public boolean equals(Object obj) {
         boolean result = (this == obj);
@@ -625,7 +632,9 @@ public class ProcessOutputStreamSettings {
                 && Objects.equal(this._charset, other._charset)
                 && Objects.equal(this._optSplitRegex, other._optSplitRegex)
                 && Objects.equal(this._optCharCallback, other._optCharCallback)
+                && Objects.equal(this._optCharCallbackFactory, other._optCharCallbackFactory)
                 && Objects.equal(this._optByteCallback, other._optByteCallback)
+                && Objects.equal(this._optByteCallbackFactory, other._optByteCallbackFactory)
                 ;
         }
         return result;

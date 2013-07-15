@@ -28,8 +28,10 @@ package com.googlecode.kevinarpe.papaya.collections;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.annotations.Beta;
 import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
 
+@Beta
 public class ListUtils {
     
     static abstract class AbstractCoreListInserter

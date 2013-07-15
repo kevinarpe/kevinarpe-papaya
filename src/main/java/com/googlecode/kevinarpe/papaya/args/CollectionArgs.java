@@ -29,7 +29,6 @@ import java.util.Collection;
 import java.util.List;
 
 import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
-import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 
 /**
  * Static methods to check {@link Collection} arguments.
@@ -432,9 +431,9 @@ public final class CollectionArgs {
      * 
      * @see ArrayArgs#checkContains(Object[], Object, String)
      */
-    @NotFullyTested
-    public static <T> T checkContains(
-            Collection<T> ref, T value, String collectionArgName) {
+    @FullyTested
+    public static <THaystack, TNeedle extends THaystack>
+    TNeedle checkContains(Collection<THaystack> ref, TNeedle value, String collectionArgName) {
         ContainerArgs._checkContains(ref, "Collection", value, collectionArgName);
         return value;
     }

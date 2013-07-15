@@ -28,6 +28,9 @@ package com.googlecode.kevinarpe.papaya.collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.annotations.Beta;
+
+@Beta
 public class HashMapBuilder<TKey, TValue>
 extends MapUtils.CoreMapInserter<TKey, TValue, Map<TKey,TValue>, HashMapBuilder<TKey, TValue>> {
     

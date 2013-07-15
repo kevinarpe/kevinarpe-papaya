@@ -1,5 +1,11 @@
 package com.googlecode.kevinarpe.papaya;
 
+import java.io.PrintStream;
+
+import com.googlecode.kevinarpe.papaya.appendable.AbstractSimplifiedAppendable;
+import com.googlecode.kevinarpe.papaya.process.ProcessBuilder2;
+import com.googlecode.kevinarpe.papaya.process.ProcessOutputStreamSettings;
+
 /*
  * #%L
  * This file is part of Papaya.
@@ -25,6 +31,9 @@ package com.googlecode.kevinarpe.papaya;
  * #L%
  */
 
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public interface GenericFactory<T> {
 
      public T create();

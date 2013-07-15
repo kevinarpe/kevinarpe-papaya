@@ -28,6 +28,9 @@ package com.googlecode.kevinarpe.papaya.collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.google.common.annotations.Beta;
+
+@Beta
 public class LinkedHashMapBuilder<TKey, TValue>
 extends MapUtils.CoreMapInserter<TKey, TValue, Map<TKey,TValue>, LinkedHashMapBuilder<TKey, TValue>> {
     

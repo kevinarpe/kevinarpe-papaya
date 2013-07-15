@@ -306,10 +306,10 @@ final class ContainerArgs {
         }
     }
     
-    static <T> void _checkContains(
-            Collection<T> ref,
+    static <THaystack, TNeedle extends THaystack> void _checkContains(
+            Collection<THaystack> ref,
             String containerType,
-            T value,
+            TNeedle value,
             String containerArgName) {
         ObjectArgs.checkNotNull(ref, "ref");
         
@@ -327,7 +327,7 @@ final class ContainerArgs {
         if (!ref.contains(value)) {
             String w = _getContainerTypeWarning(containerType);
             String w2 = StringArgs._getArgNameWarning(containerArgName, "containerArgName");
-            throw new IndexOutOfBoundsException(String.format(
+            throw new IllegalArgumentException(String.format(
                 "%s '%s': Value %s not valid%nValid value(s): %s%s%s",
                 containerType,
                 containerArgName,
