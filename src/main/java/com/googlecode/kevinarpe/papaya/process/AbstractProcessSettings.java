@@ -42,7 +42,7 @@ import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @FullyTested
-abstract class AbstractProcessSettings {
+public abstract class AbstractProcessSettings {
     
     /**
      * Used by the
@@ -83,7 +83,7 @@ abstract class AbstractProcessSettings {
     /**
      * Copy constructor.
      * 
-     * @param x
+     * @param other
      *        reference to another instance of this class, perhaps {@link ProcessBuilder2} or
      *        {@link Process}
      * @param state
@@ -92,20 +92,23 @@ abstract class AbstractProcessSettings {
      *   <li>To copy {@link ProcessBuilder2}, use {@link ChildProcessState#HAS_NOT_STARTED}</li>
      *   <li>To copy {@link Process2}, use {@link ChildProcessState#HAS_STARTED}</li>
      * </ul>
-     * 
+     *
+     * @throws NullPointerException
+     *         if {@code other} or {@code state} is {@code null}
      * @throws IllegalArgumentException
      *         if {@code state} is an unknown value
      */
-    protected AbstractProcessSettings(AbstractProcessSettings x, ChildProcessState state) {
+    protected AbstractProcessSettings(AbstractProcessSettings other, ChildProcessState state) {
+        ObjectArgs.checkNotNull(other, "other");
         ObjectArgs.checkNotNull(state, "state");
         
         if (ChildProcessState.HAS_NOT_STARTED == state) {
-            _stdoutSettings = new ProcessOutputStreamSettings(x._stdoutSettings);
-            _stderrSettings = new ProcessOutputStreamSettings(x._stderrSettings);
+            _stdoutSettings = new ProcessOutputStreamSettings(other._stdoutSettings);
+            _stderrSettings = new ProcessOutputStreamSettings(other._stderrSettings);
         }
         else if (ChildProcessState.HAS_STARTED == state) {
-            _stdoutSettings = new ProcessOutputStreamSettingsAfterStart(x._stdoutSettings);
-            _stderrSettings = new ProcessOutputStreamSettingsAfterStart(x._stderrSettings);
+            _stdoutSettings = new ProcessOutputStreamSettingsAfterStart(other._stdoutSettings);
+            _stderrSettings = new ProcessOutputStreamSettingsAfterStart(other._stderrSettings);
         }
         else {
             throw new IllegalArgumentException(String.format("Unknown child process state: '%s'",
@@ -126,6 +129,11 @@ abstract class AbstractProcessSettings {
     }
 
     /**
+     * Settings for STDOUT stream of child process.  Initially, settings are controlled from
+     * {@link ProcessBuilder2}.  When the child process is spawned via
+     * {@link ProcessBuilder2#start()}, the settings are copied by {@link Process2}.  Most settings
+     * remain mutable after the child process starts.
+     * 
      * @return
      * <ul>
      *   <li>reference to settings for STDOUT stream of child process</li>
@@ -145,6 +153,11 @@ abstract class AbstractProcessSettings {
     }
 
     /**
+     * Settings for STDERR stream of child process.  Initially, settings are controlled from
+     * {@link ProcessBuilder2}.  When the child process is spawned via
+     * {@link ProcessBuilder2#start()}, the settings are copied by {@link Process2}.  Most settings
+     * remain mutable after the child process starts.
+     * 
      * @return
      * <ul>
      *   <li>reference to settings for STDERR stream of child process</li>
@@ -187,9 +200,15 @@ abstract class AbstractProcessSettings {
     public abstract boolean redirectErrorStream();
     
     /**
-     * May or not create a copy of the byte array to be written to the STDIN stream of the child
-     * process.  To retrieve a reference to the original byte array, use the protected method
-     * {@link #stdinDataRef()}.
+     * Retrieves an array of bytes to be written to the STDIN stream of the child process.
+     * <p>
+     * Depending upon the implementation, this may or may not create a copy of the byte array.
+     * Generally, {@link ProcessBuilder2} will return a reference to the original array to allow
+     * modifications, but {@link Process2} will return a copy of the original array.
+     * 
+     * @return array of bytes to write to child process STDIN stream
+     * 
+     * @see #stdinDataRef()
      */
     public abstract byte[] stdinData();
     
@@ -285,7 +304,7 @@ abstract class AbstractProcessSettings {
         char[] hexCharArr = new char[2];
         for (int i = 0; i < byteArr.length; ++i) {
             // Ref: http://stackoverflow.com/a/9855338/257299
-            int x = byteArr[i] & 0xFF;
+            int x = byteArr[i] & 0xFF;  // safely convert a byte to an integer
             hexCharArr[0] = HEX_ARR[x >>> 4];
             hexCharArr[1] = HEX_ARR[x & 0x0F];
             String hex = new String(hexCharArr);

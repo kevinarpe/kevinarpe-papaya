@@ -92,7 +92,7 @@ public final class ArrayArgs {
     /**
      * @see #checkLengthRange(Object[], int, int, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static byte[] checkLengthRange(byte[] ref, int minLen, int maxLen, String argName) {
         int len = (null == ref ? -1 : ref.length);
         ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
@@ -102,7 +102,7 @@ public final class ArrayArgs {
     /**
      * @see #checkLengthRange(Object[], int, int, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static short[] checkLengthRange(short[] ref, int minLen, int maxLen, String argName) {
         int len = (null == ref ? -1 : ref.length);
         ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
@@ -112,7 +112,7 @@ public final class ArrayArgs {
     /**
      * @see #checkLengthRange(Object[], int, int, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static int[] checkLengthRange(int[] ref, int minLen, int maxLen, String argName) {
         int len = (null == ref ? -1 : ref.length);
         ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
@@ -122,7 +122,7 @@ public final class ArrayArgs {
     /**
      * @see #checkLengthRange(Object[], int, int, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static long[] checkLengthRange(long[] ref, int minLen, int maxLen, String argName) {
         int len = (null == ref ? -1 : ref.length);
         ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
@@ -132,7 +132,7 @@ public final class ArrayArgs {
     /**
      * @see #checkLengthRange(Object[], int, int, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static float[] checkLengthRange(float[] ref, int minLen, int maxLen, String argName) {
         int len = (null == ref ? -1 : ref.length);
         ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
@@ -142,7 +142,7 @@ public final class ArrayArgs {
     /**
      * @see #checkLengthRange(Object[], int, int, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static double[] checkLengthRange(double[] ref, int minLen, int maxLen, String argName) {
         int len = (null == ref ? -1 : ref.length);
         ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
@@ -152,7 +152,7 @@ public final class ArrayArgs {
     /**
      * @see #checkLengthRange(Object[], int, int, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static char[] checkLengthRange(char[] ref, int minLen, int maxLen, String argName) {
         int len = (null == ref ? -1 : ref.length);
         ContainerArgs._checkSizeRange(ref, "Array", len, minLen, maxLen, argName);
@@ -162,7 +162,7 @@ public final class ArrayArgs {
     /**
      * @see #checkLengthRange(Object[], int, int, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static boolean[] checkLengthRange(
             boolean[] ref, int minLen, int maxLen, String argName) {
         int len = (null == ref ? -1 : ref.length);
@@ -1330,7 +1330,7 @@ public final class ArrayArgs {
     /**
      * @see #checkContains(Object[], Object, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static byte checkContains(byte[] ref, byte value, String arrayArgName) {
         List<Byte> list = (null == ref ? null : Bytes.asList(ref));
         ContainerArgs._checkContains(list, "Array", value, arrayArgName);
@@ -1340,7 +1340,7 @@ public final class ArrayArgs {
     /**
      * @see #checkContains(Object[], Object, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static short checkContains(short[] ref, short value, String arrayArgName) {
         List<Short> list = (null == ref ? null : Shorts.asList(ref));
         ContainerArgs._checkContains(list, "Array", value, arrayArgName);
@@ -1350,7 +1350,7 @@ public final class ArrayArgs {
     /**
      * @see #checkContains(Object[], Object, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static int checkContains(int[] ref, int value, String arrayArgName) {
         List<Integer> list = (null == ref ? null : Ints.asList(ref));
         ContainerArgs._checkContains(list, "Array", value, arrayArgName);
@@ -1360,7 +1360,7 @@ public final class ArrayArgs {
     /**
      * @see #checkContains(Object[], Object, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static long checkContains(long[] ref, long value, String arrayArgName) {
         List<Long> list = (null == ref ? null : Longs.asList(ref));
         ContainerArgs._checkContains(list, "Array", value, arrayArgName);
@@ -1370,7 +1370,7 @@ public final class ArrayArgs {
     /**
      * @see #checkContains(Object[], Object, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static float checkContains(float[] ref, float value, String arrayArgName) {
         List<Float> list = (null == ref ? null : Floats.asList(ref));
         ContainerArgs._checkContains(list, "Array", value, arrayArgName);
@@ -1380,7 +1380,7 @@ public final class ArrayArgs {
     /**
      * @see #checkContains(Object[], Object, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static double checkContains(double[] ref, double value, String arrayArgName) {
         List<Double> list = (null == ref ? null : Doubles.asList(ref));
         ContainerArgs._checkContains(list, "Array", value, arrayArgName);
@@ -1390,7 +1390,7 @@ public final class ArrayArgs {
     /**
      * @see #checkContains(Object[], Object, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static char checkContains(char[] ref, char value, String arrayArgName) {
         List<Character> list = (null == ref ? null : Chars.asList(ref));
         ContainerArgs._checkContains(list, "Array", value, arrayArgName);
@@ -1400,7 +1400,7 @@ public final class ArrayArgs {
     /**
      * @see #checkContains(Object[], Object, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static boolean checkContains(boolean[] ref, boolean value, String arrayArgName) {
         List<Boolean> list = (null == ref ? null : Booleans.asList(ref));
         ContainerArgs._checkContains(list, "Array", value, arrayArgName);

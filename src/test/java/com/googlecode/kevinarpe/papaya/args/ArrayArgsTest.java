@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.args;
  * #L%
  */
 
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -43,11 +44,11 @@ public class ArrayArgsTest {
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    // ArrayArgs.checkLengthRange
+    // ArrayArgs.checkLengthRange(Object ref[], int, int)
     //
 
     @DataProvider
-    private static final Object[][] _checkLengthRange_Pass_Data() {
+    private static final Object[][] _checkLengthRangeObject_Pass_Data() {
         return new Object[][] {
                 { new String[] { }, 0, 0 },
                 { new String[] { "a" }, 0, 10 },
@@ -66,17 +67,18 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRange_Pass_Data")
-    public <T> void checkLengthRange_Pass(T ref[], int minLen, int maxLen) {
-        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+    @Test(dataProvider = "_checkLengthRangeObject_Pass_Data")
+    public <T> void checkLengthRangeObject_Pass(T ref[], int minLen, int maxLen) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        ArrayArgs.checkLengthRange(ref, minLen, maxLen, null);
-        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "");
-        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "   ");
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, null));
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, ""));
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "   "));
     }
 
     @DataProvider
-    private static final Object[][] _checkLengthRange_FailWithInvalidMinOrMaxLen_Data() {
+    private static final Object[][] _checkLengthRangeObject_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { new String[] { }, 3, 4 },
                 { new String[] { "a" }, -3, 3 },
@@ -88,14 +90,15 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRange_FailWithInvalidMinOrMaxLen_Data",
+    @Test(dataProvider = "_checkLengthRangeObject_FailWithInvalidMinOrMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public <T> void checkLengthRange_FailWithInvalidMinOrMaxLen(T[] ref, int minLen, int maxLen) {
+    public <T> void checkLengthRangeObject_FailWithInvalidMinOrMaxLen(
+            T[] ref, int minLen, int maxLen) {
         ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
     }
     
     @DataProvider
-    private static final Object[][] _checkLengthRange_FailWithNullArray_Data() {
+    private static final Object[][] _checkLengthRangeObject_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -103,9 +106,561 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRange_FailWithNullArray_Data",
+    @Test(dataProvider = "_checkLengthRangeObject_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
-    public <T> void checkLengthRange_FailWithNullArray(T[] ref, int minLen, int maxLen) {
+    public <T> void checkLengthRangeObject_FailWithNullArray(T[] ref, int minLen, int maxLen) {
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // ArrayArgs.checkLengthRange(byte ref[], int, int)
+    //
+
+    @DataProvider
+    private static final Object[][] _checkLengthRangeByte_Pass_Data() {
+        return new Object[][] {
+                { new byte[] { }, 0, 0 },
+                { new byte[] { 99 }, 0, 10 },
+                { new byte[] { 99 }, 1, 10 },
+                { new byte[] { }, 0, 10 },
+                { new byte[] { 99 }, 0, 1 },
+                { new byte[] { 99 }, 1, 1 },
+                { new byte[] { 99, 101 }, 0, 10 },
+                { new byte[] { 99, 101 }, 2, 10 },
+                { new byte[] { 99, 101 }, 0, 2 },
+                { new byte[] { 99, 101 }, 2, 2 },
+                { new byte[] { 99, 101, 103 }, 0, 10 },
+                { new byte[] { 99, 101, 103 }, 3, 10 },
+                { new byte[] { 99, 101, 103 }, 0, 3 },
+                { new byte[] { 99, 101, 103 }, 3, 3 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeByte_Pass_Data")
+    public void checkLengthRangeByte_Pass(byte ref[], int minLen, int maxLen) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, null));
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, ""));
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "   "));
+    }
+
+    @DataProvider
+    private static final Object[][] _checkLengthRangeByte_FailWithInvalidMinOrMaxLen_Data() {
+        return new Object[][] {
+                { new byte[] { }, 3, 4 },
+                { new byte[] { 99 }, -3, 3 },
+                { new byte[] { 99, 101 }, 1, -3 },
+                { new byte[] { 99 }, -3, -4 },
+                { new byte[] { 99 }, 4, 3 },
+                { new byte[] { 99, 101, 103 }, 6, 7 },
+                { new byte[] { 99, 101, 103 }, 0, 1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeByte_FailWithInvalidMinOrMaxLen_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkLengthRangeByte_FailWithInvalidMinOrMaxLen(
+            byte[] ref, int minLen, int maxLen) {
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkLengthRangeByte_FailWithNullArray_Data() {
+        return new Object[][] {
+                { null, 4, 3 },
+                { null, 6, 7 },
+                { null, 0, 1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeByte_FailWithNullArray_Data",
+            expectedExceptions = NullPointerException.class)
+    public void checkLengthRangeByte_FailWithNullArray(byte[] ref, int minLen, int maxLen) {
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // ArrayArgs.checkLengthRange(short ref[], int, int)
+    //
+
+    @DataProvider
+    private static final Object[][] _checkLengthRangeShort_Pass_Data() {
+        return new Object[][] {
+                { new short[] { }, 0, 0 },
+                { new short[] { 99 }, 0, 10 },
+                { new short[] { 99 }, 1, 10 },
+                { new short[] { }, 0, 10 },
+                { new short[] { 99 }, 0, 1 },
+                { new short[] { 99 }, 1, 1 },
+                { new short[] { 99, 101 }, 0, 10 },
+                { new short[] { 99, 101 }, 2, 10 },
+                { new short[] { 99, 101 }, 0, 2 },
+                { new short[] { 99, 101 }, 2, 2 },
+                { new short[] { 99, 101, 103 }, 0, 10 },
+                { new short[] { 99, 101, 103 }, 3, 10 },
+                { new short[] { 99, 101, 103 }, 0, 3 },
+                { new short[] { 99, 101, 103 }, 3, 3 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeShort_Pass_Data")
+    public void checkLengthRangeShort_Pass(short ref[], int minLen, int maxLen) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, null));
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, ""));
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "   "));
+    }
+
+    @DataProvider
+    private static final Object[][] _checkLengthRangeShort_FailWithInvalidMinOrMaxLen_Data() {
+        return new Object[][] {
+                { new short[] { }, 3, 4 },
+                { new short[] { 99 }, -3, 3 },
+                { new short[] { 99, 101 }, 1, -3 },
+                { new short[] { 99 }, -3, -4 },
+                { new short[] { 99 }, 4, 3 },
+                { new short[] { 99, 101, 103 }, 6, 7 },
+                { new short[] { 99, 101, 103 }, 0, 1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeShort_FailWithInvalidMinOrMaxLen_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkLengthRangeShort_FailWithInvalidMinOrMaxLen(
+            short[] ref, int minLen, int maxLen) {
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkLengthRangeShort_FailWithNullArray_Data() {
+        return new Object[][] {
+                { null, 4, 3 },
+                { null, 6, 7 },
+                { null, 0, 1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeShort_FailWithNullArray_Data",
+            expectedExceptions = NullPointerException.class)
+    public void checkLengthRangeShort_FailWithNullArray(short[] ref, int minLen, int maxLen) {
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // ArrayArgs.checkLengthRange(int ref[], int, int)
+    //
+
+    @DataProvider
+    private static final Object[][] _checkLengthRangeInteger_Pass_Data() {
+        return new Object[][] {
+                { new int[] { }, 0, 0 },
+                { new int[] { 99 }, 0, 10 },
+                { new int[] { 99 }, 1, 10 },
+                { new int[] { }, 0, 10 },
+                { new int[] { 99 }, 0, 1 },
+                { new int[] { 99 }, 1, 1 },
+                { new int[] { 99, 101 }, 0, 10 },
+                { new int[] { 99, 101 }, 2, 10 },
+                { new int[] { 99, 101 }, 0, 2 },
+                { new int[] { 99, 101 }, 2, 2 },
+                { new int[] { 99, 101, 103 }, 0, 10 },
+                { new int[] { 99, 101, 103 }, 3, 10 },
+                { new int[] { 99, 101, 103 }, 0, 3 },
+                { new int[] { 99, 101, 103 }, 3, 3 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeInteger_Pass_Data")
+    public void checkLengthRangeInteger_Pass(int ref[], int minLen, int maxLen) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, null));
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, ""));
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "   "));
+    }
+
+    @DataProvider
+    private static final Object[][] _checkLengthRangeInteger_FailWithInvalidMinOrMaxLen_Data() {
+        return new Object[][] {
+                { new int[] { }, 3, 4 },
+                { new int[] { 99 }, -3, 3 },
+                { new int[] { 99, 101 }, 1, -3 },
+                { new int[] { 99 }, -3, -4 },
+                { new int[] { 99 }, 4, 3 },
+                { new int[] { 99, 101, 103 }, 6, 7 },
+                { new int[] { 99, 101, 103 }, 0, 1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeInteger_FailWithInvalidMinOrMaxLen_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkLengthRangeInteger_FailWithInvalidMinOrMaxLen(
+            int[] ref, int minLen, int maxLen) {
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkLengthRangeInteger_FailWithNullArray_Data() {
+        return new Object[][] {
+                { null, 4, 3 },
+                { null, 6, 7 },
+                { null, 0, 1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeInteger_FailWithNullArray_Data",
+            expectedExceptions = NullPointerException.class)
+    public void checkLengthRangeInteger_FailWithNullArray(int[] ref, int minLen, int maxLen) {
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // ArrayArgs.checkLengthRange(long ref[], int, int)
+    //
+
+    @DataProvider
+    private static final Object[][] _checkLengthRangeLong_Pass_Data() {
+        return new Object[][] {
+                { new long[] { }, 0, 0 },
+                { new long[] { 99 }, 0, 10 },
+                { new long[] { 99 }, 1, 10 },
+                { new long[] { }, 0, 10 },
+                { new long[] { 99 }, 0, 1 },
+                { new long[] { 99 }, 1, 1 },
+                { new long[] { 99, 101 }, 0, 10 },
+                { new long[] { 99, 101 }, 2, 10 },
+                { new long[] { 99, 101 }, 0, 2 },
+                { new long[] { 99, 101 }, 2, 2 },
+                { new long[] { 99, 101, 103 }, 0, 10 },
+                { new long[] { 99, 101, 103 }, 3, 10 },
+                { new long[] { 99, 101, 103 }, 0, 3 },
+                { new long[] { 99, 101, 103 }, 3, 3 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeLong_Pass_Data")
+    public void checkLengthRangeLong_Pass(long ref[], int minLen, int maxLen) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, null));
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, ""));
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "   "));
+    }
+
+    @DataProvider
+    private static final Object[][] _checkLengthRangeLong_FailWithInvalidMinOrMaxLen_Data() {
+        return new Object[][] {
+                { new long[] { }, 3, 4 },
+                { new long[] { 99 }, -3, 3 },
+                { new long[] { 99, 101 }, 1, -3 },
+                { new long[] { 99 }, -3, -4 },
+                { new long[] { 99 }, 4, 3 },
+                { new long[] { 99, 101, 103 }, 6, 7 },
+                { new long[] { 99, 101, 103 }, 0, 1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeLong_FailWithInvalidMinOrMaxLen_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkLengthRangeLong_FailWithInvalidMinOrMaxLen(
+            long[] ref, int minLen, int maxLen) {
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkLengthRangeLong_FailWithNullArray_Data() {
+        return new Object[][] {
+                { null, 4, 3 },
+                { null, 6, 7 },
+                { null, 0, 1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeLong_FailWithNullArray_Data",
+            expectedExceptions = NullPointerException.class)
+    public void checkLengthRangeLong_FailWithNullArray(long[] ref, int minLen, int maxLen) {
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // ArrayArgs.checkLengthRange(float ref[], int, int)
+    //
+
+    @DataProvider
+    private static final Object[][] _checkLengthRangeFloat_Pass_Data() {
+        return new Object[][] {
+                { new float[] { }, 0, 0 },
+                { new float[] { 99 }, 0, 10 },
+                { new float[] { 99 }, 1, 10 },
+                { new float[] { }, 0, 10 },
+                { new float[] { 99 }, 0, 1 },
+                { new float[] { 99 }, 1, 1 },
+                { new float[] { 99, 101 }, 0, 10 },
+                { new float[] { 99, 101 }, 2, 10 },
+                { new float[] { 99, 101 }, 0, 2 },
+                { new float[] { 99, 101 }, 2, 2 },
+                { new float[] { 99, 101, 103 }, 0, 10 },
+                { new float[] { 99, 101, 103 }, 3, 10 },
+                { new float[] { 99, 101, 103 }, 0, 3 },
+                { new float[] { 99, 101, 103 }, 3, 3 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeFloat_Pass_Data")
+    public void checkLengthRangeFloat_Pass(float ref[], int minLen, int maxLen) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, null));
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, ""));
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "   "));
+    }
+
+    @DataProvider
+    private static final Object[][] _checkLengthRangeFloat_FailWithInvalidMinOrMaxLen_Data() {
+        return new Object[][] {
+                { new float[] { }, 3, 4 },
+                { new float[] { 99 }, -3, 3 },
+                { new float[] { 99, 101 }, 1, -3 },
+                { new float[] { 99 }, -3, -4 },
+                { new float[] { 99 }, 4, 3 },
+                { new float[] { 99, 101, 103 }, 6, 7 },
+                { new float[] { 99, 101, 103 }, 0, 1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeFloat_FailWithInvalidMinOrMaxLen_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkLengthRangeFloat_FailWithInvalidMinOrMaxLen(
+            float[] ref, int minLen, int maxLen) {
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkLengthRangeFloat_FailWithNullArray_Data() {
+        return new Object[][] {
+                { null, 4, 3 },
+                { null, 6, 7 },
+                { null, 0, 1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeFloat_FailWithNullArray_Data",
+            expectedExceptions = NullPointerException.class)
+    public void checkLengthRangeFloat_FailWithNullArray(float[] ref, int minLen, int maxLen) {
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // ArrayArgs.checkLengthRange(double ref[], int, int)
+    //
+
+    @DataProvider
+    private static final Object[][] _checkLengthRangeDouble_Pass_Data() {
+        return new Object[][] {
+                { new double[] { }, 0, 0 },
+                { new double[] { 99 }, 0, 10 },
+                { new double[] { 99 }, 1, 10 },
+                { new double[] { }, 0, 10 },
+                { new double[] { 99 }, 0, 1 },
+                { new double[] { 99 }, 1, 1 },
+                { new double[] { 99, 101 }, 0, 10 },
+                { new double[] { 99, 101 }, 2, 10 },
+                { new double[] { 99, 101 }, 0, 2 },
+                { new double[] { 99, 101 }, 2, 2 },
+                { new double[] { 99, 101, 103 }, 0, 10 },
+                { new double[] { 99, 101, 103 }, 3, 10 },
+                { new double[] { 99, 101, 103 }, 0, 3 },
+                { new double[] { 99, 101, 103 }, 3, 3 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeDouble_Pass_Data")
+    public void checkLengthRangeDouble_Pass(double ref[], int minLen, int maxLen) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, null));
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, ""));
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "   "));
+    }
+
+    @DataProvider
+    private static final Object[][] _checkLengthRangeDouble_FailWithInvalidMinOrMaxLen_Data() {
+        return new Object[][] {
+                { new double[] { }, 3, 4 },
+                { new double[] { 99 }, -3, 3 },
+                { new double[] { 99, 101 }, 1, -3 },
+                { new double[] { 99 }, -3, -4 },
+                { new double[] { 99 }, 4, 3 },
+                { new double[] { 99, 101, 103 }, 6, 7 },
+                { new double[] { 99, 101, 103 }, 0, 1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeDouble_FailWithInvalidMinOrMaxLen_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkLengthRangeDouble_FailWithInvalidMinOrMaxLen(
+            double[] ref, int minLen, int maxLen) {
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkLengthRangeDouble_FailWithNullArray_Data() {
+        return new Object[][] {
+                { null, 4, 3 },
+                { null, 6, 7 },
+                { null, 0, 1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeDouble_FailWithNullArray_Data",
+            expectedExceptions = NullPointerException.class)
+    public void checkLengthRangeDouble_FailWithNullArray(double[] ref, int minLen, int maxLen) {
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // ArrayArgs.checkLengthRange(char ref[], int, int)
+    //
+
+    @DataProvider
+    private static final Object[][] _checkLengthRangeCharacter_Pass_Data() {
+        return new Object[][] {
+                { new char[] { }, 0, 0 },
+                { new char[] { 'a' }, 0, 10 },
+                { new char[] { 'a' }, 1, 10 },
+                { new char[] { }, 0, 10 },
+                { new char[] { 'a' }, 0, 1 },
+                { new char[] { 'a' }, 1, 1 },
+                { new char[] { 'a', 'b' }, 0, 10 },
+                { new char[] { 'a', 'b' }, 2, 10 },
+                { new char[] { 'a', 'b' }, 0, 2 },
+                { new char[] { 'a', 'b' }, 2, 2 },
+                { new char[] { 'a', 'b', 'c' }, 0, 10 },
+                { new char[] { 'a', 'b', 'c' }, 3, 10 },
+                { new char[] { 'a', 'b', 'c' }, 0, 3 },
+                { new char[] { 'a', 'b', 'c' }, 3, 3 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeCharacter_Pass_Data")
+    public void checkLengthRangeCharacter_Pass(char ref[], int minLen, int maxLen) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, null));
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, ""));
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "   "));
+    }
+
+    @DataProvider
+    private static final Object[][] _checkLengthRangeCharacter_FailWithInvalidMinOrMaxLen_Data() {
+        return new Object[][] {
+                { new char[] { }, 3, 4 },
+                { new char[] { 'a' }, -3, 3 },
+                { new char[] { 'a', 'b' }, 1, -3 },
+                { new char[] { 'a' }, -3, -4 },
+                { new char[] { 'a' }, 4, 3 },
+                { new char[] { 'a', 'b', 'c' }, 6, 7 },
+                { new char[] { 'a', 'b', 'c' }, 0, 1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeCharacter_FailWithInvalidMinOrMaxLen_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkLengthRangeCharacter_FailWithInvalidMinOrMaxLen(
+            char[] ref, int minLen, int maxLen) {
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkLengthRangeCharacter_FailWithNullArray_Data() {
+        return new Object[][] {
+                { null, 4, 3 },
+                { null, 6, 7 },
+                { null, 0, 1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeCharacter_FailWithNullArray_Data",
+            expectedExceptions = NullPointerException.class)
+    public void checkLengthRangeCharacter_FailWithNullArray(char[] ref, int minLen, int maxLen) {
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // ArrayArgs.checkLengthRange(boolean ref[], int, int)
+    //
+
+    @DataProvider
+    private static final Object[][] _checkLengthRangeBoolean_Pass_Data() {
+        return new Object[][] {
+                { new boolean[] { }, 0, 0 },
+                { new boolean[] { true }, 0, 10 },
+                { new boolean[] { true }, 1, 10 },
+                { new boolean[] { }, 0, 10 },
+                { new boolean[] { true }, 0, 1 },
+                { new boolean[] { true }, 1, 1 },
+                { new boolean[] { true, false }, 0, 10 },
+                { new boolean[] { true, false }, 2, 10 },
+                { new boolean[] { true, false }, 0, 2 },
+                { new boolean[] { true, false }, 2, 2 },
+                { new boolean[] { true, false, true }, 0, 10 },
+                { new boolean[] { true, false, true }, 3, 10 },
+                { new boolean[] { true, false, true }, 0, 3 },
+                { new boolean[] { true, false, true }, 3, 3 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeBoolean_Pass_Data")
+    public void checkLengthRangeBoolean_Pass(boolean ref[], int minLen, int maxLen) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, null));
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, ""));
+        Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "   "));
+    }
+
+    @DataProvider
+    private static final Object[][] _checkLengthRangeBoolean_FailWithInvalidMinOrMaxLen_Data() {
+        return new Object[][] {
+                { new boolean[] { }, 3, 4 },
+                { new boolean[] { true }, -3, 3 },
+                { new boolean[] { true, false }, 1, -3 },
+                { new boolean[] { true }, -3, -4 },
+                { new boolean[] { true }, 4, 3 },
+                { new boolean[] { true, false, true }, 6, 7 },
+                { new boolean[] { true, false, true }, 0, 1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeBoolean_FailWithInvalidMinOrMaxLen_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkLengthRangeBoolean_FailWithInvalidMinOrMaxLen(
+            boolean[] ref, int minLen, int maxLen) {
+        ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkLengthRangeBoolean_FailWithNullArray_Data() {
+        return new Object[][] {
+                { null, 4, 3 },
+                { null, 6, 7 },
+                { null, 0, 1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkLengthRangeBoolean_FailWithNullArray_Data",
+            expectedExceptions = NullPointerException.class)
+    public void checkLengthRangeBoolean_FailWithNullArray(boolean[] ref, int minLen, int maxLen) {
         ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
     }
     
@@ -610,11 +1165,11 @@ public class ArrayArgsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // ArrayArgs.checkContains
+    // ArrayArgs.checkContains(Object[] ref, Object value, String arrayArgName)
     //
     
     @DataProvider
-    private static final Object[][] _checkContains_Pass_Data() {
+    private static final Object[][] _checkContainsObject_Pass_Data() {
         return new Object[][] {
                 { new String[] { "a" }, "a" },
                 { new String[] { "a", "b" }, "b" },
@@ -626,18 +1181,19 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContains_Pass_Data")
+    @Test(dataProvider = "_checkContainsObject_Pass_Data")
     public <THaystack, TNeedle extends THaystack>
-    void checkContains_Pass(THaystack[] ref, TNeedle value) {
-        ArrayArgs.checkContains(ref, value, "ref");
+    void checkContainsObject_Pass(THaystack[] ref, TNeedle value) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        ArrayArgs.checkContains(ref, value, null);
-        ArrayArgs.checkContains(ref, value, "");
-        ArrayArgs.checkContains(ref, value, "   ");
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, null));
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, ""));
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "   "));
     }
     
     @DataProvider
-    private static final Object[][] _checkContains_Fail_Data() {
+    private static final Object[][] _checkContainsObject_Fail_Data() {
         return new Object[][] {
                 { new String[] { "a" }, "x" },
                 { new String[] { "a" }, null },
@@ -650,20 +1206,418 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContains_Fail_Data",
+    @Test(dataProvider = "_checkContainsObject_Fail_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <THaystack, TNeedle extends THaystack>
-    void checkContains_Fail(THaystack[] ref, TNeedle value) {
+    void checkContainsObject_Fail(THaystack[] ref, TNeedle value) {
         ArrayArgs.checkContains(ref, value, "ref");
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void checkContains_FailWithEmptyArray() {
+    public void checkContainsObject_FailWithEmptyArray() {
         ArrayArgs.checkContains(new Object[0], "abc", "ref");
     }
     
     @Test(expectedExceptions = NullPointerException.class)
-    public void checkContains_FailWithNullArray() {
+    public void checkContainsObject_FailWithNullArray() {
         ArrayArgs.checkContains((Object[]) null, "abc", "ref");
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // ArrayArgs.checkContains(byte[] ref, byte value, String arrayArgName)
+    //
+    
+    @DataProvider
+    private static final Object[][] _checkContainsByte_Pass_Data() {
+        return new Object[][] {
+                { new byte[] { 1 }, (byte) 1 },
+                { new byte[] { 1, 2 }, (byte) 2 },
+                { new byte[] { 1, 2, 3 }, (byte) 2 },
+                { new byte[] { 1, 2, 3, 2 }, (byte) 2 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContainsByte_Pass_Data")
+    public void checkContainsByte_Pass(byte[] ref, byte value) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "ref"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, null));
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, ""));
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "   "));
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkContainsByte_Fail_Data() {
+        return new Object[][] {
+                { new byte[] { 1 }, (byte) 99 },
+                { new byte[] { 1, 2 }, (byte) 99 },
+                { new byte[] { 1, 2, 3 }, (byte) 99 },
+                { new byte[] { 1, 2, 3, 2 }, (byte) 99 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContainsByte_Fail_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkContainsByte_Fail(byte[] ref, byte value) {
+        ArrayArgs.checkContains(ref, value, "ref");
+    }
+    
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void checkContainsByte_FailWithEmptyArray() {
+        ArrayArgs.checkContains(new byte[0], (byte) 99, "ref");
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void checkContainsByte_FailWithNullArray() {
+        ArrayArgs.checkContains((byte[]) null, (byte) 99, "ref");
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // ArrayArgs.checkContains(short[] ref, short value, String arrayArgName)
+    //
+    
+    @DataProvider
+    private static final Object[][] _checkContainsShort_Pass_Data() {
+        return new Object[][] {
+                { new short[] { 1 }, (short) 1 },
+                { new short[] { 1, 2 }, (short) 2 },
+                { new short[] { 1, 2, 3 }, (short) 2 },
+                { new short[] { 1, 2, 3, 2 }, (short) 2 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContainsShort_Pass_Data")
+    public void checkContainsShort_Pass(short[] ref, short value) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "ref"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, null));
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, ""));
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "   "));
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkContainsShort_Fail_Data() {
+        return new Object[][] {
+                { new short[] { 1 }, (short) 99 },
+                { new short[] { 1, 2 }, (short) 99 },
+                { new short[] { 1, 2, 3 }, (short) 99 },
+                { new short[] { 1, 2, 3, 2 }, (short) 99 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContainsShort_Fail_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkContainsShort_Fail(short[] ref, short value) {
+        ArrayArgs.checkContains(ref, value, "ref");
+    }
+    
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void checkContainsShort_FailWithEmptyArray() {
+        ArrayArgs.checkContains(new short[0], (short) 99, "ref");
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void checkContainsShort_FailWithNullArray() {
+        ArrayArgs.checkContains((short[]) null, (short) 99, "ref");
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // ArrayArgs.checkContains(int[] ref, int value, String arrayArgName)
+    //
+    
+    @DataProvider
+    private static final Object[][] _checkContainsInteger_Pass_Data() {
+        return new Object[][] {
+                { new int[] { 1 }, (int) 1 },
+                { new int[] { 1, 2 }, (int) 2 },
+                { new int[] { 1, 2, 3 }, (int) 2 },
+                { new int[] { 1, 2, 3, 2 }, (int) 2 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContainsInteger_Pass_Data")
+    public void checkContainsInteger_Pass(int[] ref, int value) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "ref"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, null));
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, ""));
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "   "));
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkContainsInteger_Fail_Data() {
+        return new Object[][] {
+                { new int[] { 1 }, (int) 99 },
+                { new int[] { 1, 2 }, (int) 99 },
+                { new int[] { 1, 2, 3 }, (int) 99 },
+                { new int[] { 1, 2, 3, 2 }, (int) 99 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContainsInteger_Fail_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkContainsInteger_Fail(int[] ref, int value) {
+        ArrayArgs.checkContains(ref, value, "ref");
+    }
+    
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void checkContainsInteger_FailWithEmptyArray() {
+        ArrayArgs.checkContains(new int[0], (int) 99, "ref");
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void checkContainsInteger_FailWithNullArray() {
+        ArrayArgs.checkContains((int[]) null, (int) 99, "ref");
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // ArrayArgs.checkContains(long[] ref, long value, String arrayArgName)
+    //
+    
+    @DataProvider
+    private static final Object[][] _checkContainsLong_Pass_Data() {
+        return new Object[][] {
+                { new long[] { 1 }, (long) 1 },
+                { new long[] { 1, 2 }, (long) 2 },
+                { new long[] { 1, 2, 3 }, (long) 2 },
+                { new long[] { 1, 2, 3, 2 }, (long) 2 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContainsLong_Pass_Data")
+    public void checkContainsLong_Pass(long[] ref, long value) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "ref"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, null));
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, ""));
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "   "));
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkContainsLong_Fail_Data() {
+        return new Object[][] {
+                { new long[] { 1 }, (long) 99 },
+                { new long[] { 1, 2 }, (long) 99 },
+                { new long[] { 1, 2, 3 }, (long) 99 },
+                { new long[] { 1, 2, 3, 2 }, (long) 99 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContainsLong_Fail_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkContainsLong_Fail(long[] ref, long value) {
+        ArrayArgs.checkContains(ref, value, "ref");
+    }
+    
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void checkContainsLong_FailWithEmptyArray() {
+        ArrayArgs.checkContains(new long[0], (long) 99, "ref");
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void checkContainsLong_FailWithNullArray() {
+        ArrayArgs.checkContains((long[]) null, (long) 99, "ref");
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // ArrayArgs.checkContains(float[] ref, float value, String arrayArgName)
+    //
+    
+    @DataProvider
+    private static final Object[][] _checkContainsFloat_Pass_Data() {
+        return new Object[][] {
+                { new float[] { 1 }, (float) 1 },
+                { new float[] { 1, 2 }, (float) 2 },
+                { new float[] { 1, 2, 3 }, (float) 2 },
+                { new float[] { 1, 2, 3, 2 }, (float) 2 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContainsFloat_Pass_Data")
+    public void checkContainsFloat_Pass(float[] ref, float value) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "ref"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, null));
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, ""));
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "   "));
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkContainsFloat_Fail_Data() {
+        return new Object[][] {
+                { new float[] { 1 }, (float) 99 },
+                { new float[] { 1, 2 }, (float) 99 },
+                { new float[] { 1, 2, 3 }, (float) 99 },
+                { new float[] { 1, 2, 3, 2 }, (float) 99 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContainsFloat_Fail_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkContainsFloat_Fail(float[] ref, float value) {
+        ArrayArgs.checkContains(ref, value, "ref");
+    }
+    
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void checkContainsFloat_FailWithEmptyArray() {
+        ArrayArgs.checkContains(new float[0], (float) 99, "ref");
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void checkContainsFloat_FailWithNullArray() {
+        ArrayArgs.checkContains((float[]) null, (float) 99, "ref");
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // ArrayArgs.checkContains(double[] ref, double value, String arrayArgName)
+    //
+    
+    @DataProvider
+    private static final Object[][] _checkContainsDouble_Pass_Data() {
+        return new Object[][] {
+                { new double[] { 1 }, (double) 1 },
+                { new double[] { 1, 2 }, (double) 2 },
+                { new double[] { 1, 2, 3 }, (double) 2 },
+                { new double[] { 1, 2, 3, 2 }, (double) 2 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContainsDouble_Pass_Data")
+    public void checkContainsDouble_Pass(double[] ref, double value) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "ref"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, null));
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, ""));
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "   "));
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkContainsDouble_Fail_Data() {
+        return new Object[][] {
+                { new double[] { 1 }, (double) 99 },
+                { new double[] { 1, 2 }, (double) 99 },
+                { new double[] { 1, 2, 3 }, (double) 99 },
+                { new double[] { 1, 2, 3, 2 }, (double) 99 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContainsDouble_Fail_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkContainsDouble_Fail(double[] ref, double value) {
+        ArrayArgs.checkContains(ref, value, "ref");
+    }
+    
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void checkContainsDouble_FailWithEmptyArray() {
+        ArrayArgs.checkContains(new double[0], (double) 99, "ref");
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void checkContainsDouble_FailWithNullArray() {
+        ArrayArgs.checkContains((double[]) null, (double) 99, "ref");
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // ArrayArgs.checkContains(char[] ref, char value, String arrayArgName)
+    //
+    
+    @DataProvider
+    private static final Object[][] _checkContainsCharacter_Pass_Data() {
+        return new Object[][] {
+                { new char[] { 'a' }, 'a' },
+                { new char[] { 'a', 'b' }, 'b' },
+                { new char[] { 'a', 'b', 'c' }, 'b' },
+                { new char[] { 'a', 'b', 'c', 'b' }, 'b' },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContainsCharacter_Pass_Data")
+    public void checkContainsCharacter_Pass(char[] ref, char value) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "ref"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, null));
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, ""));
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "   "));
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkContainsCharacter_Fail_Data() {
+        return new Object[][] {
+                { new char[] { 'a' }, 'x' },
+                { new char[] { 'a', 'b' }, 'x' },
+                { new char[] { 'a', 'b', 'c' }, 'x' },
+                { new char[] { 'a', 'b', 'c', 'b' }, 'x' },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContainsObject_Fail_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkContainsCharacter_Fail(char[] ref, char value) {
+        ArrayArgs.checkContains(ref, value, "ref");
+    }
+    
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void checkContainsCharacter_FailWithEmptyArray() {
+        ArrayArgs.checkContains(new char[0], 'a', "ref");
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void checkContainsCharacter_FailWithNullArray() {
+        ArrayArgs.checkContains((char[]) null, 'a', "ref");
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // ArrayArgs.checkContains(boolean[] ref, boolean value, String arrayArgName)
+    //
+    
+    @DataProvider
+    private static final Object[][] _checkContainsBoolean_Pass_Data() {
+        return new Object[][] {
+                { new boolean[] { true }, true },
+                { new boolean[] { true, false }, false },
+                { new boolean[] { true, false, true }, false },
+                { new boolean[] { true, false, true, false }, false },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContainsBoolean_Pass_Data")
+    public void checkContainsBoolean_Pass(boolean[] ref, boolean value) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "ref"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, null));
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, ""));
+        Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "   "));
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkContainsBoolean_Fail_Data() {
+        return new Object[][] {
+                { new boolean[] { true }, false },
+                { new boolean[] { false }, true },
+        };
+    }
+    
+    @Test(dataProvider = "_checkContainsObject_Fail_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkContainsBoolean_Fail(boolean[] ref, boolean value) {
+        ArrayArgs.checkContains(ref, value, "ref");
+    }
+    
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void checkContainsBoolean_FailWithEmptyArray() {
+        ArrayArgs.checkContains(new boolean[0], true, "ref");
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void checkContainsBoolean_FailWithNullArray() {
+        ArrayArgs.checkContains((boolean[]) null, true, "ref");
     }
 }
