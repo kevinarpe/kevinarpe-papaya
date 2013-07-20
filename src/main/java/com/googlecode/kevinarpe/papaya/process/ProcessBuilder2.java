@@ -33,11 +33,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Joiner;
-import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
-import com.googlecode.kevinarpe.papaya.args.ArrayArgs;
-import com.googlecode.kevinarpe.papaya.args.CollectionArgs;
-import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.args.PathArgs;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
+import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.argument.PathArgs;
 
 /**
  * This class is used to spawn external child processes by calling {@link #start()}.  Instances of

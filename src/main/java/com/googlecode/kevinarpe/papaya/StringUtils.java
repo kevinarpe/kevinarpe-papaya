@@ -27,8 +27,8 @@ package com.googlecode.kevinarpe.papaya;
 
 import java.util.regex.Pattern;
 
-import com.googlecode.kevinarpe.papaya.args.IntArgs;
-import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.argument.IntArgs;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 /**
  * This is a collection of methods to manipulate {@link String} references.

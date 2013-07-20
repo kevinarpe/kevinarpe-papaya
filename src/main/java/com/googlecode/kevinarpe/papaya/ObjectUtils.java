@@ -27,9 +27,9 @@ package com.googlecode.kevinarpe.papaya;
 
 import java.util.Arrays;
 
-import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
-import com.googlecode.kevinarpe.papaya.args.ArrayArgs;
-import com.googlecode.kevinarpe.papaya.args.IntArgs;
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
+import com.googlecode.kevinarpe.papaya.argument.IntArgs;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -53,7 +53,7 @@ public final class ObjectUtils {
      *        
      * @return new hash code that combines hash code from superclass and all objects
      * 
-     * @see #appendHashCodes(int, int)
+     * @see #appendHashCodes(int, int...)
      * @see Arrays#hashCode(Object[])
      */
     @NotFullyTested

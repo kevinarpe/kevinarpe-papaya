@@ -27,7 +27,7 @@ package com.googlecode.kevinarpe.papaya.appendable;
 
 import java.io.IOException;
 
-import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 
 /**
  * Reduces the number of methods required for implementation by interface {@link Appendable}

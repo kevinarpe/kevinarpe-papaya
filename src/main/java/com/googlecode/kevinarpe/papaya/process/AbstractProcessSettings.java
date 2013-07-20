@@ -33,8 +33,8 @@ import java.util.Map;
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.googlecode.kevinarpe.papaya.ObjectUtils;
-import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
-import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 /**
  * This is the shared base class for {@link ProcessBuilder2} and {@link Process2}.

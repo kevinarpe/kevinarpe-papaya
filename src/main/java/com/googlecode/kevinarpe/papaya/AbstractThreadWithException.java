@@ -1,8 +1,6 @@
 package com.googlecode.kevinarpe.papaya;
 
-import java.io.IOException;
-
-import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 
 /*
  * #%L
@@ -31,50 +29,55 @@ import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
 
 /**
  * Extension of class {@link Thread} to allow exceptions to be thrown.  Instead of {@link #run()},
- * subclasses should override {@link #runWithException()}.  Any caught exception can be rethrown
- * with {@link #rethrowException()} or {@link #rethrowThenClearException().
+ * subclasses should override {@link #runWithException()}.  Any caught exception can be retrieved
+ * with {@link #getException()} and cleared with {@link #clearException()}.
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @param <TException>
- *        Type of exception to be throws by {@link #runWithException()}, e.g., {@link IOException}
- *        
  * @see Thread
  * @see #run()
  * @see #runWithException()
  * @see #getException()
  * @see #clearException()
- * @see #rethrowException()
- * @see #rethrowThenClearException()
  */
 @NotFullyTested
-public abstract class AbstractThreadWithException<TException extends Exception>
+public abstract class AbstractThreadWithException
 extends Thread {
     
-    private TException _exception;
+    private Exception _exception;
     
     /**
      * Sets the exception reference.  Normally, there is no need to call this method directly.  The
      * method {@link #run()} catches exceptions throws by {@link #runWithException()} and sets the
-     * exception reference directly.
+     * exception reference directly.  This method exists only for subclasses if they need to
+     * control the setting of caught exceptions differently than the standard implementation in
+     * this class.
      * 
      * @param exception
      *        reference to a subclass of {@link Exception}
      */
-    protected void setException(TException exception) {
+    protected void setException(Exception exception) {
         _exception = exception;
     }
     
     /**
+     * Retrieves the caught exception from {@link #runWithException()}.  If this exception is
+     * rethrown, it is best to wrap in another exception.  Without a wrapper, it may be confusing
+     * to catching code the understand the source of the error, as the callstack will not correct
+     * show the link between threads.
+     * <p>
+     * After rethrowing the exception, it may be prudent to clear it via {@link #clearException()},
+     * else the same exception may be rethrown multiple times.  However, the option is left to the
+     * developer.  There may be rare cases where it is necessary or valuable to rethrow the same
+     * exception more than once.
+     * 
      * @return references to exception thrown by {@link #runWithException()}.
      *         May be {@code null}
      * 
      * @see #runWithException()
      * @see #clearException()
-     * @see #rethrowException()
-     * @see #rethrowThenClearException()
      */
-    public TException getException() {
+    public Exception getException() {
         return _exception;
     }
     
@@ -83,54 +86,10 @@ extends Thread {
      * 
      * @see #runWithException()
      * @see #getException()
-     * @see #rethrowException()
-     * @see #rethrowThenClearException()
      */
     public void clearException() {
         _exception = null;
     }
-    
-//    /**
-//     * If {@link #runWithException()} threw an exception, call this method to rethrow from a
-//     * different thread.  To also clear the caught exception, see
-//     * {@link #rethrowThenClearException()}.
-//     * 
-//     * @throws TException
-//     *         exception caught by {@link #runWithException()}
-//     * 
-//     * @see #runWithException()
-//     * @see #getException()
-//     * @see #clearException()
-//     * @see #rethrowThenClearException()
-//     */
-//    public void rethrowException()
-//    throws TException {
-//        if (null != _exception) {
-//            throw _exception;
-//        }
-//    }
-//    
-//    /**
-//     * Similar to {@link #rethrowException()}.  In addition, the exception is cleared before
-//     * rethrowing.  This will prevent scenarios where a caught exception is rethrown multiple
-//     * times.  Rethrowing once is likely more useful in most cases.
-//     * 
-//     * @throws TException
-//     *         exception caught by {@link #runWithException()}
-//     * 
-//     * @see #runWithException()
-//     * @see #getException()
-//     * @see #clearException()
-//     * @see #rethrowException()
-//     */
-//    public void rethrowThenClearException()
-//    throws TException {
-//        if (null != _exception) {
-//            TException x = _exception;
-//            _exception = null;
-//            throw x;
-//        }
-//    }
     
     /**
      * Calls {@link #runWithException()} and catches any exception thrown.  Subclasses should
@@ -139,31 +98,27 @@ extends Thread {
      * @see #runWithException()
      * @see #getException()
      * @see #clearException()
-     * @see #rethrowException()
-     * @see #rethrowThenClearException()
      */
-    @SuppressWarnings("unchecked")
     @Override
     public void run() {
         try {
             runWithException();
         }
         catch (Exception e) {
-            setException((TException) e);
+            setException(e);
         }
     }
     
     /**
-     * Subclasses must override this method, which is called by {@link #run()}.
+     * Subclasses must override this method, which is called by {@link #run()}.  Implementations
+     * are welcome to throw exceptions of type {@code TException}.
      * 
      * @throws TException
      *         on error
      * 
      * @see #getException()
      * @see #clearException()
-     * @see #rethrowException()
-     * @see #rethrowThenClearException()
      */
     public abstract void runWithException()
-    throws TException;
+    throws Exception;
 }

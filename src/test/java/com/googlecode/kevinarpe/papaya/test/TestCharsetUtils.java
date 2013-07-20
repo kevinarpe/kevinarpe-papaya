@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.google.common.collect.ImmutableList;
-import com.googlecode.kevinarpe.papaya.annotations.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 
 @NotFullyTested
 public final class TestCharsetUtils {

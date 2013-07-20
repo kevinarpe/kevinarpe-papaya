@@ -25,24 +25,26 @@ package com.googlecode.kevinarpe.papaya.process;
  * #L%
  */
 
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
-import com.googlecode.kevinarpe.papaya.GenericFactory;
+import com.googlecode.kevinarpe.papaya.FuncUtils;
 import com.googlecode.kevinarpe.papaya.StringUtils;
-import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.appendable.AbstractSimplifiedAppendable;
 import com.googlecode.kevinarpe.papaya.appendable.AppendablePrintLineWithPrefix;
 import com.googlecode.kevinarpe.papaya.appendable.ByteAppendable;
-import com.googlecode.kevinarpe.papaya.args.IntArgs;
-import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.argument.IntArgs;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 /**
- * This simple class holds the settings for child process output streams (either STDOUT or
- * STDERR).  The parent class, {@link AbstractProcessSettings}, has two instances: one each for
- * STDOUT and STDERR.
+ * This simple class holds the settings for child process output streams (either STDOUT or STDERR)
+ * <b>before</b> the child process starts.  The parent class, {@link AbstractProcessSettings}, has
+ * two instances: one each for STDOUT and STDERR.
  * <p>
  * This class may not be instantiated directly.  Normally, only class
  * {@link AbstractProcessSettings} creates instances.
@@ -55,18 +57,18 @@ public class ProcessOutputStreamSettings {
     static final Charset DEFAULT_CHARSET = Charset.defaultCharset();
     static final Pattern DEFAULT_SPLIT_REGEX = StringUtils.NEW_LINE_REGEX;
     static final Appendable DEFAULT_CHAR_CALLBACK = null;
-    static final GenericFactory<Appendable> DEFAULT_CHAR_CALLBACK_FACTORY = null;
+    static final FuncUtils.Func0<Appendable> DEFAULT_CHAR_CALLBACK_FACTORY = null;
     static final ByteAppendable DEFAULT_BYTE_CALLBACK = null;
-    static final GenericFactory<ByteAppendable> DEFAULT_BYTE_CALLBACK_FACTORY = null;
+    static final FuncUtils.Func0<ByteAppendable> DEFAULT_BYTE_CALLBACK_FACTORY = null;
     static final boolean DEFAULT_IS_DATA_ACCUMULATED = false;
     static final int DEFAULT_MAX_ACCUMULATED_DATA_BYTE_COUNT = -1;
     
     private Charset _charset;
     private Pattern _optSplitRegex;
     private Appendable _optCharCallback;
-    private GenericFactory<Appendable> _optCharCallbackFactory;
+    private FuncUtils.Func0<Appendable> _optCharCallbackFactory;
     private ByteAppendable _optByteCallback;
-    private GenericFactory<ByteAppendable> _optByteCallbackFactory;
+    private FuncUtils.Func0<ByteAppendable> _optByteCallbackFactory;
     private boolean _isDataAccumulated;
     private int _maxAccumulatedDataByteCount;
 
@@ -248,8 +250,8 @@ public class ProcessOutputStreamSettings {
      * A separate thread always is used by {@link Process2} to read STDOUT or STDERR.  Thus,
      * incoming data is appended to the callback from a different thread than that used to
      * start the process.  This may be important for specialised implementations of
-     * {@link Appendable}.  As a special case, this method does not accept
-     * {@link StringBuilder}, as it is not thread-safe.  Use {@link StringBuffer} instead.
+     * {@link Appendable}.  As a special case, this method does not accept {@link StringBuilder},
+     * as it is not thread-safe.  Use {@link StringBuffer} instead.
      * <p>
      * If {@link ProcessBuilder2#redirectErrorStream()} is enabled, all data from STDERR is
      * redirected to STDOUT.  This may help to simplify processing logic, at the expense of
@@ -261,10 +263,14 @@ public class ProcessOutputStreamSettings {
      * <p>
      * If the character-based callback has state, such as {@link StringBuffer}, and multiple child
      * processes are started from a single {@link ProcessBuilder2}, a factory should instead
-     * be set via {@link #charCallbackFactory(GenericFactory)}.
+     * be set via {@link #charCallbackFactory(FuncUtils.Func0)}.
      * <p>
      * All calls to this method, which do not throw exceptions, clear previous settings to
-     * {@link #charCallbackFactory(GenericFactory)}.
+     * {@link #charCallbackFactory(FuncUtils.Func0)}.
+     * <p>
+     * To capture child process output and write to a file, consider using a {@link BufferedWriter}
+     * that wraps a {@link OutputStreamWriter}.  This allows for full control over {@link Charset},
+     * with buffering for more efficient I/O.
      * 
      * @param optCallback
      * <ul>
@@ -281,11 +287,11 @@ public class ProcessOutputStreamSettings {
      * 
      * @see #charset(Charset)
      * @see #splitRegex(Pattern)
-     * @see #charCallbackFactory(GenericFactory)
+     * @see #charCallbackFactory(FuncUtils.Func0)
      * @see #charCallback()
      * @see #byteCallback(ByteAppendable)
      * @see #isDataAccumulated(boolean)
-     * @see #redirectErrorStream()
+     * @see Process2#redirectErrorStream()
      */
     public ProcessOutputStreamSettings charCallback(Appendable optCallback) {
         if (optCallback instanceof StringBuilder) {
@@ -334,10 +340,10 @@ public class ProcessOutputStreamSettings {
      * @see #charCallbackFactory()
      * @see #byteCallback(ByteAppendable)
      * @see #isDataAccumulated(boolean)
-     * @see #redirectErrorStream()
+     * @see Process2#redirectErrorStream()
      */
     public ProcessOutputStreamSettings charCallbackFactory(
-            GenericFactory<Appendable> optCallbackFactory) {
+            FuncUtils.Func0<Appendable> optCallbackFactory) {
         _optCharCallback = null;
         _optCharCallbackFactory = optCallbackFactory;
         return this;
@@ -349,10 +355,10 @@ public class ProcessOutputStreamSettings {
      * 
      * @return may be {@code null}
      * 
-     * @see #charCallbackFactory(GenericFactory)
+     * @see #charCallbackFactory(FuncUtils.Func0)
      * @see #isDataAccumulated()
      */
-    public GenericFactory<Appendable> charCallbackFactory() {
+    public FuncUtils.Func0<Appendable> charCallbackFactory() {
         return _optCharCallbackFactory;
     }
     
@@ -396,23 +402,23 @@ public class ProcessOutputStreamSettings {
      * <p>
      * If the byte-based callback has state and multiple child processes are started from a single
      * {@link ProcessBuilder2}, a factory should instead be set via
-     * {@link #byteCallbackFactory(GenericFactory)}.
+     * {@link #byteCallbackFactory(FuncUtils.Func0)}.
      * <p>
      * All calls to this method, which do not throw exceptions, clear previous settings to
-     * {@link #byteCallbackFactory(GenericFactory)}.
+     * {@link #byteCallbackFactory(FuncUtils.Func0)}.
      * 
      * @param optCallback
      * <ul>
      *   <li>(optional) ByteAppendable reference to receive incoming data from STDOUT or
      *   STDERR.</li>
-     *   <li>May be {@null}.</li>
+     *   <li>May be {@code null}.</li>
      * </ul>
      *        
      * @return reference to {@code this}
      * 
      * @see #byteCallback()
      * @see #isDataAccumulated(boolean)
-     * @see #redirectErrorStream()
+     * @see Process2#redirectErrorStream()
      */
     public ProcessOutputStreamSettings byteCallback(ByteAppendable optCallback) {
         _optByteCallbackFactory = null;
@@ -452,10 +458,10 @@ public class ProcessOutputStreamSettings {
      * @see #byteCallback(ByteAppendable)
      * @see #byteCallbackFactory()
      * @see #isDataAccumulated(boolean)
-     * @see #redirectErrorStream()
+     * @see Process2#redirectErrorStream()
      */
     public ProcessOutputStreamSettings byteCallbackFactory(
-            GenericFactory<ByteAppendable> optCallbackFactory) {
+            FuncUtils.Func0<ByteAppendable> optCallbackFactory) {
         _optByteCallback = null;
         _optByteCallbackFactory = optCallbackFactory;
         return this;
@@ -467,10 +473,10 @@ public class ProcessOutputStreamSettings {
      * 
      * @return may be {@code null}
      * 
-     * @see #byteCallbackFactory(GenericFactory)
+     * @see #byteCallbackFactory(FuncUtils.Func0)
      * @see #isDataAccumulated()
      */
-    public GenericFactory<ByteAppendable> byteCallbackFactory() {
+    public FuncUtils.Func0<ByteAppendable> byteCallbackFactory() {
         return _optByteCallbackFactory;
     }
     
@@ -482,7 +488,7 @@ public class ProcessOutputStreamSettings {
      * to enable or disable this feature.
      * <p>
      * If this feature is enabled, it is crucial to also set
-     * {@link #maxAccumulateStdoutByteCount(int)}.  By default, an unlimited amount of data is
+     * {@link #maxAccumulatedDataByteCount(int)}.  By default, an unlimited amount of data is
      * accumulated.  If a large number of processes are launched simultaneously and each
      * outputs a large amount of data on STDOUT or STDERR, the parent Java Virtual Machine may
      * easily exhaust available memory.
@@ -508,12 +514,15 @@ public class ProcessOutputStreamSettings {
      *        if {@code true}, all incoming data from STDOUT is accumulated
      *        
      * @return reference to {@code this}
-     * 
-     * @see #accumulateStdoutData()
-     * @see #maxAccumulateStdoutByteCount(int)
-     * @see Process2#getStdoutDataAsByteArr()
-     * @see Process2#getStdoutDataAsString()
-     * @see Process2#getStdoutDataAsString(Charset)
+     *
+     * @see #isDataAccumulated()
+     * @see #maxAccumulatedDataByteCount(int)
+     * @see Process2#stdoutDataAsByteArr()
+     * @see Process2#stdoutDataAsString()
+     * @see Process2#stdoutDataAsString(Charset)
+     * @see Process2#stderrDataAsByteArr()
+     * @see Process2#stderrDataAsString()
+     * @see Process2#stderrDataAsString(Charset)
      */
     public ProcessOutputStreamSettings isDataAccumulated(boolean b) {
         _isDataAccumulated = b;
@@ -529,13 +538,12 @@ public class ProcessOutputStreamSettings {
     }
     
     /**
-     * Sets the maximum number of bytes to accumulate from this stream (either STDOUT or
-     * STDERR).  This feature is only relevant if {@link #accumulateStdoutData()} is enabled.
+     * Sets the maximum number of bytes to accumulate from this stream (either STDOUT or STDERR).
+     * This feature is only relevant if {@link #isDataAccumulated()} is enabled.
      * <p>
      * It is very important to configure this feature in parallel with
-     * {@link #accumulateStdoutData()}.  It is easy for a errant process to produce gigabytes
-     * of data on STDOUT or STDERR and exhaust all available memory for the parent Java virtual
-     * machine.
+     * {@link #isDataAccumulated()}.  It is easy for a errant process to produce gigabytes of data
+     * on STDOUT or STDERR and exhaust all available memory for the parent Java virtual machine.
      * 
      * @param max
      *        any value except zero.  Negative value implies this feature is disabled.
@@ -554,7 +562,7 @@ public class ProcessOutputStreamSettings {
     
     /**
      * Retrieves the maximum number of bytes to accumulate from this stream (either STDOUT or
-     * STDERR).  This feature is only relevant if {@link #accumulateStdoutData()} is enabled.
+     * STDERR).  This feature is only relevant if {@link #isDataAccumulated()} is enabled.
      *
      * @return if negative, this feature is disabled
      * 
@@ -565,7 +573,6 @@ public class ProcessOutputStreamSettings {
         return _maxAccumulatedDataByteCount;
     }
     
-    // TODO: Add char/byteCallbackFactory
     @Override
     public String toString() {
         String x = String.format(

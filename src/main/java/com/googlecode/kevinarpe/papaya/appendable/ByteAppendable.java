@@ -27,21 +27,26 @@ package com.googlecode.kevinarpe.papaya.appendable;
 
 import java.io.IOException;
 
+import com.googlecode.kevinarpe.papaya.container.ByteArraySimpleBuilder;
 import com.googlecode.kevinarpe.papaya.process.ProcessBuilder2;
+import com.googlecode.kevinarpe.papaya.process.ProcessOutputStreamSettings;
 
 /**
  * This is a byte-based-version of {@link Appendable}, which is character-based.  If STDOUT or
  * STDERR are expect to produce non-character data, use
- * {@link ProcessBuilder2#stdoutByteCallback(ByteAppendable)} or
- * {@link ProcessBuilder2#stderrByteCallback(ByteAppendable)}.
+ * {@link ProcessOutputStreamSettings#byteCallback(ByteAppendable)}
+ * via:
+ * <ul>
+ *   <li>{@link ProcessBuilder2#stdoutSettings()}</li>
+ *   <li>{@link ProcessBuilder2#stderrSettings()}</li>
+ * </ul>
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public interface ByteAppendable {
     
     /**
-     * If you need to accumulate the incoming bytes, consider using {@link ByteArray} (via
-     * {@link ByteArray#builder()}).
+     * If you need to accumulate the incoming bytes, consider using {@link ByteArraySimpleBuilder}.
      * 
      * @param byteArr the byte array to append
      * @throws IOException if {@code byteArr} cannot be consumed -- I/O error

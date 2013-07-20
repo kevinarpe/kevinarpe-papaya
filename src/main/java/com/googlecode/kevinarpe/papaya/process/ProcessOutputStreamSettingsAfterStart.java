@@ -25,23 +25,24 @@ package com.googlecode.kevinarpe.papaya.process;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.GenericFactory;
-import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
+import com.googlecode.kevinarpe.papaya.FuncUtils;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.appendable.ByteAppendable;
 
 /**
- * After the child process has started, certain output stream settings (for STDOUT or STDERR)
- * cannot be reasonably changed, e.g., {@link #charCallbackFactory(GenericFactory)}.  This subclass
- * implements no behavior except to throw {@link UnsupportedOperationException} for certain
- * restricted setter methods.
+ * This simple class holds the settings for child process output streams (either STDOUT or STDERR)
+ * <b>after</b> the child process starts.  After the child process has started, certain output
+ * stream settings (for STDOUT or STDERR) cannot be reasonably changed, e.g.,
+ * {@link #charCallbackFactory(FuncUtils.Func0)}.  This subclass implements no new behavior except
+ * to throw {@link UnsupportedOperationException} for certain restricted setter methods.
  * <p>
  * This class may not be instantiated directly.  Normally, only class
  * {@link AbstractProcessSettings} creates instances.
  * <p>
  * The following methods throw {@link UnsupportedOperationException}:
  * <ul>
- *   <li>{@link ProcessOutputStreamSettingsAfterStart#charCallbackFactory(GenericFactory)}</li>
- *   <li>{@link ProcessOutputStreamSettingsAfterStart#byteCallbackFactory(GenericFactory)}</li>
+ *   <li>{@link ProcessOutputStreamSettingsAfterStart#charCallbackFactory(FuncUtils.Func0)}</li>
+ *   <li>{@link ProcessOutputStreamSettingsAfterStart#byteCallbackFactory(FuncUtils.Func0)}</li>
  * </ul>
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -52,10 +53,6 @@ extends ProcessOutputStreamSettings {
     
     static final String UNSUPPORTED_EXCEPTION_MESSAGE =
         "This method may not be called after child process has started";
-
-    public ProcessOutputStreamSettingsAfterStart() {
-        super();
-    }
 
     /**
      * Copy constructor
@@ -75,7 +72,7 @@ extends ProcessOutputStreamSettings {
      */
     @Override
     public ProcessOutputStreamSettings charCallbackFactory(
-            GenericFactory<Appendable> optCallbackFactory) {
+            FuncUtils.Func0<Appendable> optCallbackFactory) {
         throw new UnsupportedOperationException(UNSUPPORTED_EXCEPTION_MESSAGE);
     }
     
@@ -90,7 +87,7 @@ extends ProcessOutputStreamSettings {
      */
     @Override
     public ProcessOutputStreamSettings byteCallbackFactory(
-            GenericFactory<ByteAppendable> optCallbackFactory) {
+            FuncUtils.Func0<ByteAppendable> optCallbackFactory) {
         throw new UnsupportedOperationException(UNSUPPORTED_EXCEPTION_MESSAGE);
     }
 }

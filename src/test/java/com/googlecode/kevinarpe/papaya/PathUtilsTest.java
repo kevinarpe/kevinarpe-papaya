@@ -34,9 +34,9 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.exceptions.PathException;
-import com.googlecode.kevinarpe.papaya.exceptions.PathExceptionTest;
-import com.googlecode.kevinarpe.papaya.exceptions.PathException.PathExceptionReason;
+import com.googlecode.kevinarpe.papaya.exception.PathException;
+import com.googlecode.kevinarpe.papaya.exception.PathExceptionTest;
+import com.googlecode.kevinarpe.papaya.exception.PathException.PathExceptionReason;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)

@@ -30,29 +30,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
 import com.google.common.primitives.Ints;
-import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
-import com.googlecode.kevinarpe.papaya.appendable.ByteAppendable;
-import com.googlecode.kevinarpe.papaya.args.ArrayArgs;
-import com.googlecode.kevinarpe.papaya.args.CollectionArgs;
-import com.googlecode.kevinarpe.papaya.args.IntArgs;
-import com.googlecode.kevinarpe.papaya.args.LongArgs;
-import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.args.StringArgs;
-import com.googlecode.kevinarpe.papaya.AbstractThreadWithException;
-import com.googlecode.kevinarpe.papaya.GenericFactory;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
+import com.googlecode.kevinarpe.papaya.argument.LongArgs;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.argument.StringArgs;
+import com.googlecode.kevinarpe.papaya.exception.InvalidExitValueException;
+import com.googlecode.kevinarpe.papaya.exception.TimeoutException;
 
 /**
  * Instances of this class must be created via {@link ProcessBuilder2#start()}.  An instance of
@@ -127,7 +119,7 @@ import com.googlecode.kevinarpe.papaya.GenericFactory;
 public class Process2
 extends AbstractProcessSettings {
     
-    private final Process _process;
+    final Process _process;
     private final List<String> _argList;
     private final String _argListStr;
     private final Map<String, String> _environment;
@@ -155,16 +147,18 @@ extends AbstractProcessSettings {
         _optStdinText = pb.stdinText();
         
         InputStream stdoutStream = _process.getInputStream();
+        ProcessOutputStreamSettings stdoutSettings = this.stdoutSettings();
         _readStdoutThread =
-            createReadInputStreamThreadAndStart(stdoutStream, this.stdoutSettings(), "STDOUT");
+            createReadInputStreamThreadAndStart(stdoutStream, stdoutSettings, "STDOUT");
         
         if (_redirectErrorStream) {
             _optReadStderrThread = null;
         }
         else {
             InputStream stderrStream = _process.getErrorStream();
+            ProcessOutputStreamSettings stderrSettings = this.stderrSettings();
             _optReadStderrThread =
-                createReadInputStreamThreadAndStart(stderrStream, this.stderrSettings(), "STDERR");
+                createReadInputStreamThreadAndStart(stderrStream, stderrSettings, "STDERR");
         }
         
         OutputStream stdinStream = _process.getOutputStream();
@@ -184,8 +178,9 @@ extends AbstractProcessSettings {
             }
         }
         else {
-            _optWriteStdinThread =
-                createWriteOutputStreamThreadAndStart(stdinStream, stdinByteArr);
+            _optWriteStdinThread = createWriteOutputStreamThread(stdinStream, stdinByteArr);
+            setThreadName(_optWriteStdinThread, "STDIN");
+            _optWriteStdinThread.start();
         }
     }
     
@@ -304,7 +299,7 @@ extends AbstractProcessSettings {
     protected void tryWriteStdinThreadRethrowCaughtException()
     throws IOException {
         if (null != _optWriteStdinThread) {
-            IOException e = _optWriteStdinThread.getException();
+            Exception e = _optWriteStdinThread.getException();
             if (null != e) {
                 _optWriteStdinThread.clearException();
                 throw new IOException("Failed to write data to child process STDIN stream", e);
@@ -315,7 +310,7 @@ extends AbstractProcessSettings {
     protected void tryReadStdxxxThreadRethrowCaughtException(ReadInputStreamThread optThread)
     throws IOException {
         if (null != optThread) {
-            IOException e = optThread.getException();
+            Exception e = optThread.getException();
             if (null != e) {
                 optThread.clearException();
                 String msg = String.format("Failed to read data from child process %s stream",
@@ -396,7 +391,7 @@ extends AbstractProcessSettings {
         return x;
     }
     
-    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+    private static final byte[] _EMPTY_BYTE_ARRAY = new byte[0];
     
     /**
      * Retrieves raw bytes from child process' STDERR stream.
@@ -417,7 +412,7 @@ extends AbstractProcessSettings {
             x = _optReadStderrThread.getDataAsByteArr();
         }
         else {
-            x = EMPTY_BYTE_ARRAY;
+            x = _EMPTY_BYTE_ARRAY;
         }
         return x;
     }
@@ -554,47 +549,43 @@ extends AbstractProcessSettings {
             if (null != optExitValue) {
                 return optExitValue;
             }
-            WaitForThread thread = WaitForThread.createAndStart(this);
+            // Unfortunately, due to the complexities of threading (spawn/join/interrupt), this
+            // section of code looks *far* more complicated than necessary.  There are no secrets
+            // here.
+            WaitForProcessThread thread = createWaitForProcessThread();
+            thread.start();
             try {
-                // Normally, this does not throw InterruptedException. 
+                // First:
+                // Surprisingly, a failed join is not clearly indicated here.  It is necessary to
+                // check if the thread is still alive via Thread.isAlive().  Why didn't JDK API add
+                // a boolean return value to this method?  <My Jimmies Are Rustled>
+                // Second:
+                // This method only throws InterruptedException if this thread has its interrupt()
+                // method called while we are waiting for Thread.join(long) to complete.  In this
+                // section of code: Impossible (as I see it).
                 thread.join(timeoutMillis);
-                optExitValue = thread.getOptExitValue();
             }
             catch (InterruptedException e) {
-                // Ignore
+                // Ignore this exception.
+                @SuppressWarnings("unused")
+                int dummy = 1;  // debug breakpoint
             }
-            if (null == optExitValue) {
-                thread.interrupt();
-            }
+            // If null, our call to Thread.join(long) above failed (timed-out).
+            optExitValue = thread.getOptExitValue();
+            // This has no effect if the thread is not alive.  Always call to be safe.
+            thread.interrupt();
         }
         return optExitValue;
     }
     
-    protected static class WaitForThread
-    extends AbstractThreadWithException<InterruptedException> {
-        
-        public static WaitForThread createAndStart(Process2 parent) {
-            WaitForThread x = new WaitForThread(parent);
-            x.start();
-            return x;
-        }
-        
-        protected final Process2 _parent;
-        protected Integer _optExitValue;
-        
-        protected WaitForThread(Process2 parent) {
-            _parent = ObjectArgs.checkNotNull(parent, "parent");
-        }
-        
-        public Integer getOptExitValue() {
-            return _optExitValue;
-        }
-        
-        @Override
-        public void runWithException()
-        throws InterruptedException {
-            _optExitValue = _parent._process.waitFor();
-        }
+    /**
+     * Override this method if class {@link WaitForProcessThread} has also been subclassed.
+     * 
+     * @return new thread to wait for child process to terminate
+     */
+    protected WaitForProcessThread createWaitForProcessThread() {
+        WaitForProcessThread x = new WaitForProcessThread(_process);
+        return x;
     }
     
     /**
@@ -686,7 +677,8 @@ extends AbstractProcessSettings {
         
         Integer optExitValue = waitFor(timeoutMillis);
         if (null == optExitValue) {
-            throw new TimeoutException(timeoutMillis);
+            throw new TimeoutException(
+                timeoutMillis, "Failed to wait for child process to terminate");
         }
         else {
             _checkExitValue(optExitValue, validExitValueCollection);
@@ -744,144 +736,90 @@ extends AbstractProcessSettings {
         }
     }
     
-    @SuppressWarnings("serial")
-    public static class TimeoutException
-    extends Exception {
-        
-        private final long _timeoutMillis;
-        
-        private static String _createMessage(long timeoutMillis) {
-            LongArgs.checkNotNegative(timeoutMillis, "timeoutMillis");
-            
-            String x = String.format("Timeout after %d milliseconds", timeoutMillis);
-            return x;
-        }
-        
-        public TimeoutException(long timeoutMillis) {
-            super(_createMessage(timeoutMillis));
-            
-            _timeoutMillis = timeoutMillis;
-        }
-        
-        public long getTimeoutMillis() {
-            return _timeoutMillis;
-        }
-    }
-    
-    @SuppressWarnings("serial")
-    public static class InvalidExitValueException
-    extends Exception {
-        
-        private final int _exitValue;
-        private final List<Integer> _validExitValueList;
-        
-        private static String _createMessage(
-                int exitValue,
-                Collection<Integer> validExitValueCollection,
-                String format,
-                Object[] argArr) {
-            CollectionArgs.checkNotEmptyAndElementsNotNull(
-                validExitValueCollection, "validExitValueCollection");
-            
-            String x = String.format(format, argArr);
-            x += String.format(
-                "%nInvalid exit value: %d%nValid values: %s",
-                exitValue,
-                Joiner.on(", ").join(validExitValueCollection));
-            return x;
-        }
-        
-        public InvalidExitValueException(
-                int exitValue,
-                Collection<Integer> validExitValueCollection,
-                String format,
-                Object... argArr) {
-            super(_createMessage(exitValue, validExitValueCollection, format, argArr));
-            
-            _exitValue = exitValue;
-            _validExitValueList = ImmutableList.copyOf(validExitValueCollection);
-        }
-
-        public int getExitValue() {
-            return _exitValue;
-        }
-
-        public List<Integer> getValidExitValueList() {
-            return _validExitValueList;
-        }
-    }
-    
-    protected WriteOutputStreamThread createWriteOutputStreamThreadAndStart(
-            OutputStream outputStream,
-            byte[] byteArr) {
-        WriteOutputStreamThread thread =
-            new WriteOutputStreamThread(outputStream, byteArr);
-        setThreadName(thread, "STDIN");
-        thread.start();
+    /**
+     * Creates, but does not start (spawn), a new thread to read STDIN stream from a child process.
+     * <p>
+     * Subclasses of {@link Process2} that want to subclass {@link WriteOutputStreamThread} will
+     * need to override this method to create instances of {@link WriteOutputStreamThread}
+     * subclasses.
+     * 
+     * @param outputStream
+     *        STDIN stream handle ({@link Process#getOutputStream()})
+     * @param byteArr
+     * <ul>
+     *   <li>array of bytes to write to STDIN stream of child process</li>
+     *   <li>this is not a copy, so receiving class must <b>not</b> modify</li>
+     * </ul>
+     *        
+     * @return new thread
+     */
+    protected WriteOutputStreamThread createWriteOutputStreamThread(
+            OutputStream outputStream, byte[] byteArr) {
+        WriteOutputStreamThread thread = new WriteOutputStreamThread(outputStream, byteArr);
         return thread;
     }
     
-    protected static class WriteOutputStreamThread
-    extends AbstractThreadWithException<IOException> {
-        
-        private final OutputStream _outputStream;
-        private final byte[] _byteArr;
-
-        public WriteOutputStreamThread(
-                OutputStream outputStream,
-                byte[] byteArr) {
-            _outputStream = ObjectArgs.checkNotNull(outputStream, "outputStream");
-            _byteArr = ObjectArgs.checkNotNull(byteArr, "byteArr");
-        }
-        
-        @Override
-        public void runWithException()
-        throws IOException {
-            try {
-                // This is synchronous / blocking.  For massive byte arrays (1 meg +), this will
-                // not be received in a single read by the listening process.
-                _outputStream.write(_byteArr);
-            }
-            catch (IOException e) {
-                throw e;  // debug breakpoint
-            }
-            finally {
-                try {
-                    _outputStream.close();
-                }
-                catch (IOException e) {
-                    // Intentionally ignore exception.
-                    @SuppressWarnings("unused")
-                    int dummy = 1;  // debug breakpoint
-                }
-            }
-        }
-        
-        protected OutputStream getOutputStream() {
-            return _outputStream;
-        }
-
-        protected byte[] getByteArr() {
-            return _byteArr;
-        }
-    }
-    
     /**
-     * Subclasses of {@link Process2} that want to subclass {@link ReadInputStreamThread} will need
-     * to override this method create an instance of the new subclass of
-     * {@link ReadInputStreamThread} and call {@link Thread#start()}.
+     * This method:
+     * <ol>
+     *   <li>Creates a new thread by via
+     *   {@link Process2#createReadInputStreamThread(InputStream, ProcessOutputStreamSettings, String)}</li>
+     *   <li>Sets the name of the thread via {@link Process2#setThreadName(Thread, String)}</li>
+     *   <li>Spawns the new thread via {@link Thread#start()}</li>
+     * </ol>
      */
     protected ReadInputStreamThread createReadInputStreamThreadAndStart(
             InputStream inputStream,
             ProcessOutputStreamSettings settings,
             String streamName) {
         ReadInputStreamThread thread =
-            new ReadInputStreamThread(inputStream, settings, streamName);
+            createReadInputStreamThread(inputStream, settings, streamName);
         setThreadName(thread, streamName);
         thread.start();
         return thread;
     }
     
+    /**
+     * Creates, but does not start (spawn), a new thread to read either STDOUT or STDERR stream
+     * from a child process.
+     * <p>
+     * Subclasses of {@link Process2} that want to subclass {@link ReadInputStreamThread} will need
+     * to override this method to create instances of {@link ReadInputStreamThread} subclasses.
+     * 
+     * @param inputStream
+     *        either STDOUT stream handle ({@link Process#getInputStream()})
+     *        or STDERR stream handle ({@link Process#getErrorStream()})
+     * @param settings
+     *        either STDOUT settings ({@link Process#getErrorStream()})
+     *        or STDERR settings ({@link Process2#stderrSettings()})
+     * @param streamName
+     *        either {@code "STDOUT"} or {@code "STDERR"}
+     * 
+     * @return new thread
+     */
+    protected ReadInputStreamThread createReadInputStreamThread(
+            InputStream inputStream,
+            ProcessOutputStreamSettings settings,
+            String streamName) {
+        ReadInputStreamThread thread =
+            new ReadInputStreamThread(inputStream, settings, streamName);
+        return thread;
+    }
+    
+    /**
+     * Adds descriptive text to identify a thread in a debugger.
+     * 
+     * @param thread
+     *        new thread that has not yet started
+     * @param prefix
+     *        text to describe the thread, e.g., {@code "STDOUT"}
+     * 
+     * @throws NullPointerException
+     *         if {@code thread} or {@code prefix} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code prefix} is empty or only
+     *         {@linkplain Character#isWhitespace(char) whitespace}
+     */
     protected void setThreadName(Thread thread, String prefix) {
         ObjectArgs.checkNotNull(thread, "thread");
         StringArgs.checkNotEmptyOrWhitespace(prefix, "prefix");
@@ -890,228 +828,6 @@ extends AbstractProcessSettings {
         thread.setName(name);
     }
     
-    // TODO: Move to separate file and test.
-    protected static class ByteArrayBuilder {
-        
-        private byte[] _byteArr;
-        private int _usedLength;
-        
-        public ByteArrayBuilder(int initialCapacity) {
-            _byteArr = new byte[initialCapacity];
-            _usedLength = 0;
-        }
-        
-        public int capacity() {
-            return _byteArr.length;
-        }
-        
-        public int length() {
-            return _usedLength;
-        }
-        
-        public ByteArrayBuilder setLength(int newLength) {
-            IntArgs.checkNotNegative(newLength, "newLength");
-            
-            if (newLength > _usedLength) {
-                ensureCapacity(newLength);
-            }
-            _usedLength = newLength;
-            return this;
-        }
-        
-        public ByteArrayBuilder clear() {
-            _usedLength = 0;
-            return this;
-        }
-        
-//        public ByteArrayBuilder append(Byte oneByte) {
-//            ObjectArgs.checkNotNull(oneByte, "oneByte");
-//            
-//            byte b = oneByte.byteValue();
-//            append(b);
-//            return this;
-//        }
-        
-        public ByteArrayBuilder append(byte oneByte) {
-            ensureCapacity(_usedLength + 1);
-            _byteArr[_usedLength] = oneByte;
-            ++_usedLength;
-            return this;
-        }
-        
-        public ByteArrayBuilder append(byte[] byteArr) {
-            append(byteArr, 0, byteArr.length);
-            return this;
-        }
-        
-        public ByteArrayBuilder append(byte[] byteArr, int offset, int length) {
-            ArrayArgs.checkIndexAndCount(byteArr, offset, length, "byteArr", "offset", "length");
-            ensureCapacity(_usedLength + length);
-            System.arraycopy(byteArr, offset, _byteArr, _usedLength, length);
-            _usedLength += length;
-            return this;
-        }
-        
-        protected void ensureCapacity(int newCapacity) {
-            if (_byteArr.length < newCapacity) {
-                int capacity = _byteArr.length;
-                do {
-                    capacity *= 2;
-                }
-                while (capacity < newCapacity);
-                _byteArr = Arrays.copyOf(_byteArr, capacity);
-            }
-        }
-        
-        public byte[] toArray() {
-            byte[] x = Arrays.copyOf(_byteArr, _usedLength);
-            return x;
-        }
-        
-        public ByteArrayBuilder copy(byte[] byteArr, int offset, int length) {
-            ArrayArgs.checkIndexAndCount(byteArr, offset, length, "byteArr", "offset", "length");
-            if (length > _usedLength) {
-                throw new IllegalArgumentException(String.format(
-                    "Argument 'length': Larger than number of available bytes: %d > %d",
-                    length, _usedLength));
-            }
-            
-            System.arraycopy(_byteArr, 0, byteArr, offset, length);
-            return this;
-        }
-    }
-    
-    protected static class ReadInputStreamThread
-    extends AbstractThreadWithException<IOException> {
-        
-        private static final int DEFAULT_BYTE_ARR_LENGTH = 8192;
-        
-        private final InputStream _inputStream;
-        private final ProcessOutputStreamSettings _settings;
-        private final String _streamName;
-        private final ByteArrayBuilder _byteArrBuilder;
-        private final Appendable _optCharCallbackFromFactory;
-        private final ByteAppendable _optByteCallbackFromFactory;
-
-        public ReadInputStreamThread(
-                InputStream inputStream,
-                ProcessOutputStreamSettings settings,
-                String streamName) {
-            _inputStream = ObjectArgs.checkNotNull(inputStream, "inputStream");
-            _settings = ObjectArgs.checkNotNull(settings, "settings");
-            _streamName = StringArgs.checkNotEmptyOrWhitespace(streamName, "streamName");
-            _byteArrBuilder = new ByteArrayBuilder(DEFAULT_BYTE_ARR_LENGTH);
-            GenericFactory<Appendable> ccFactory = _settings.charCallbackFactory();
-            _optCharCallbackFromFactory = (null == ccFactory ? null : ccFactory.create());
-            GenericFactory<ByteAppendable> bcFactory = _settings.byteCallbackFactory();
-            _optByteCallbackFromFactory = (null == bcFactory ? null : bcFactory.create());
-        }
-        
-        public String getStreamName() {
-            return _streamName;
-        }
-        
-        protected byte[] getByteArr() {
-            synchronized (_byteArrBuilder) {
-                byte[] x = _byteArrBuilder.toArray();
-                return x;
-            }
-        }
-        
-        public byte[] getDataAsByteArr()
-        throws IOException {
-            byte[] x = getByteArr();
-            return x;
-        }
-        
-        public String getDataAsString(Charset optCs)
-        throws IOException {
-            byte[] byteArr = getByteArr();
-            if (null == optCs) {
-                optCs = Charset.defaultCharset();
-            }
-            String s = new String(byteArr, optCs);
-            return s;
-        }
-        
-        @Override
-        public void runWithException()
-        throws IOException {
-            byte[] buffer = new byte[8192];
-            String lastText = "";
-            while (true) {
-                int readCount = _inputStream.read(buffer);
-                if (-1 == readCount) {
-                    break;
-                }
-                if (_settings.isDataAccumulated()) {
-                    synchronized (_byteArrBuilder) {
-                        int adjReadCount = readCount;
-                        int maxByteCount = _settings.maxAccumulatedDataByteCount();
-                        if (maxByteCount > 0) {
-                            int maxReadCount = maxByteCount - _byteArrBuilder.length();
-                            adjReadCount = Math.min(readCount, maxReadCount);
-                        }
-                        _byteArrBuilder.append(buffer, 0, adjReadCount);
-                        //System.out.println(_byteArrBuilder.length());
-                    }
-                }
-                // Make a reference copy here, _settings.charCallback(), to be thread-safe.
-                Appendable optCharCallback =
-                    (null != _optCharCallbackFromFactory
-                        ? _optCharCallbackFromFactory : _settings.charCallback());
-                if (null != optCharCallback) {
-                    Charset cs = _settings.charset();
-                    String s = new String(buffer, 0, readCount, cs);
-                    // Make a reference copy here to be thread-safe.
-                    Pattern optSplitRegex = _settings.splitRegex();
-                    if (null != optSplitRegex) {
-                        String text = lastText.concat(s);
-                        Iterable<String> partIter = Splitter.on(optSplitRegex).split(text);
-                        ArrayList<String> partList = new ArrayList<String>();
-                        Iterables.addAll(partList, partIter);
-                        int partListSize = partList.size();
-                        for (int i = 0; i < partListSize - 1; ++i) {
-                            String part = partList.get(i);
-                            optCharCallback.append(part);
-                        }
-                        lastText = partList.get(partListSize - 1);
-                    }
-                    else {
-                        optCharCallback.append(s);
-                    }
-                }
-                // Make a reference copy here, _settings.byteCallback(),  to be thread-safe.
-                ByteAppendable optByteCallback =
-                    (null != _optByteCallbackFromFactory
-                        ? _optByteCallbackFromFactory : _settings.byteCallback());
-                if (null != optByteCallback) {
-                    byte[] truncBuffer = Arrays.copyOf(buffer, readCount);
-                    optByteCallback.append(truncBuffer);
-                }
-            }
-            // Make a reference copy here, _settings.charCallback(), to be thread-safe.
-            Appendable optCharCallback =
-                (null != _optCharCallbackFromFactory
-                    ? _optCharCallbackFromFactory : _settings.charCallback());
-            if (null != optCharCallback && !lastText.isEmpty()) {
-                optCharCallback.append(lastText);
-            }
-        }
-
-        protected InputStream getInputStream() {
-            return _inputStream;
-        }
-
-        protected ProcessOutputStreamSettings getSettings() {
-            return _settings;
-        }
-
-        protected ByteArrayBuilder getByteArrBuilder() {
-            return _byteArrBuilder;
-        }
-    }
-
     /**
      * Forwards to {@link Process#getOutputStream()}.  Do not use this method unless you really
      * know what you are doing.  Writing to this stream directly, or -- worse -- closing it, will

@@ -2,6 +2,7 @@ This document contains notes about how to release this software:
 
 * mvn clean install site
 ** Any compiler errors or failed/skipped tests must be cleaned-up.
+** Fix any Javadoc warnings.  Re-run as many times as necessary: mvn javadoc:javadoc
 * git commit -a
 * mvn release:clean
 * mvn release:prepare

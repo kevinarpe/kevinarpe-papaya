@@ -26,9 +26,9 @@ package com.googlecode.kevinarpe.papaya;
  */
 
 import com.google.common.base.Joiner;
-import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
-import com.googlecode.kevinarpe.papaya.args.ArrayArgs;
-import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 /**
  * This is a collection of methods to indentify the current operating system.

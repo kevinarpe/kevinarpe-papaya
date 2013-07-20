@@ -27,11 +27,11 @@ package com.googlecode.kevinarpe.papaya;
 
 import java.io.File;
 
-import com.googlecode.kevinarpe.papaya.annotations.FullyTested;
-import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.args.StringArgs;
-import com.googlecode.kevinarpe.papaya.exceptions.PathException;
-import com.googlecode.kevinarpe.papaya.exceptions.PathException.PathExceptionReason;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.argument.StringArgs;
+import com.googlecode.kevinarpe.papaya.exception.PathException;
+import com.googlecode.kevinarpe.papaya.exception.PathException.PathExceptionReason;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)

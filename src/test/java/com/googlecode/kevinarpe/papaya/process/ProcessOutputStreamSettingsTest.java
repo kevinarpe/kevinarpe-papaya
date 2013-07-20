@@ -33,10 +33,10 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.GenericFactory;
+import com.googlecode.kevinarpe.papaya.FuncUtils;
 import com.googlecode.kevinarpe.papaya.appendable.AbstractSimplifiedAppendable;
 import com.googlecode.kevinarpe.papaya.appendable.ByteAppendable;
-import com.googlecode.kevinarpe.papaya.args.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.process.ProcessBuilder2;
 import com.googlecode.kevinarpe.papaya.process.ProcessOutputStreamSettings;
 import com.googlecode.kevinarpe.papaya.test.TestCharsetUtils;
@@ -117,10 +117,10 @@ public class ProcessOutputStreamSettingsTest {
             }
         };
     
-    public static final GenericFactory<Appendable> SAMPLE_CHAR_CALLBACK_FACTORY =
-        new GenericFactory<Appendable>() {
+    public static final FuncUtils.Func0<Appendable> SAMPLE_CHAR_CALLBACK_FACTORY =
+        new FuncUtils.Func0<Appendable>() {
             @Override
-            public Appendable create() {
+            public Appendable call() {
                 return null;
             }
         };
@@ -237,10 +237,10 @@ public class ProcessOutputStreamSettingsTest {
             }
         };
     
-    public static final GenericFactory<ByteAppendable> SAMPLE_BYTE_CALLBACK_FACTORY =
-        new GenericFactory<ByteAppendable>() {
+    public static final FuncUtils.Func0<ByteAppendable> SAMPLE_BYTE_CALLBACK_FACTORY =
+        new FuncUtils.Func0<ByteAppendable>() {
             @Override
-            public ByteAppendable create() {
+            public ByteAppendable call() {
                 return null;
             }
         };

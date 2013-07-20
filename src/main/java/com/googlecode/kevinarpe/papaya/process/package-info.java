@@ -1,5 +1,7 @@
 /**
- * Classes related to the extension of {@link java.lang.ProcessBuilder} and
+ * Contains {@link com.googlecode.kevinarpe.papaya.process.ProcessBuilder2},
+ * {@link com.googlecode.kevinarpe.papaya.process.Process2}, and supporting classes.  These classes
+ * are extensions of the JDK classes {@link java.lang.ProcessBuilder} and
  * {@link java.lang.Process}.
  * <p>
  * This package is a part of the open-source
