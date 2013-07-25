@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 
 import com.googlecode.kevinarpe.papaya.argument.IntArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 
 /**
  * This is a collection of methods to manipulate {@link String} references.
@@ -370,52 +371,52 @@ public final class StringUtils {
 //    // TODO: Convert new lines
 //    // TODO: Add line prefix / suffix
 //    
-//    /**
-//     * This is a convenience method for {@link #remove(String, int, int)}
-//     * where {@code count = 1}.
-//     */
-//    public static String remove(String s, int index) {
-//        final int count = 1;
-//        String s2 = remove(s, index, count);
-//        return s2;
-//    }
-//    
-//    /**
-//     * Removes characters from a string by creating a new string and copying remaining characters
-//     * from the source string.  To be precise, using the term "remove" is a misnomer, as Java
-//     * strings cannot change size.
-//     * <p>
-//     * If {@code count == 0}, the input string reference is returned.  No copy is made.
-//     * 
-//     * @param str a string reference
-//     * @param index offset to begin removing characters.  Range: 0 to {@code str.length() - 1}
-//     * @param count number of characters to remove.  Must be non-negative.
-//     * @return reference to a string with characters removed
-//     * @throws NullPointerException if {@code str} is {@code null}
-//     * @throws IllegalArgumentException if {@code index} and {@code count} are invalid
-//     */
-//    public static String remove(String str, int index, int count) {
-//        StringArgs.checkIndexAndCount(str, index, count, "s", "index", "count");
-//        
-//        if (0 == count) {
-//            return str;
-//        }
-//        
-//        final int len = str.length();
-//        String newStr = "";
-//        
-//        final int countBefore = index;
-//        final int countAfter = len - (index + count);
-//        
-//        if (0 != len && 0 != countBefore) {
-//            newStr = str.substring(0, countBefore);
-//        }
-//        if (0 != len && 0 != countAfter) {
-//            String after = str.substring(index + count);
-//            newStr += after;
-//        }
-//        return newStr;
-//    }
+    /**
+     * This is a convenience method for {@link #remove(String, int, int)}
+     * where {@code count = 1}.
+     */
+    public static String removeCharAt(String s, int index) {
+        final int count = 1;
+        String s2 = remove(s, index, count);
+        return s2;
+    }
+    
+    /**
+     * Removes characters from a string by creating a new string and copying remaining characters
+     * from the source string.  To be precise, using the term "remove" is a misnomer, as Java
+     * strings cannot change size.
+     * <p>
+     * If {@code count == 0}, the input string reference is returned.  No copy is made.
+     * 
+     * @param str a string reference
+     * @param index offset to begin removing characters.  Range: 0 to {@code str.length() - 1}
+     * @param count number of characters to remove.  Must be non-negative.
+     * @return reference to a string with characters removed
+     * @throws NullPointerException if {@code str} is {@code null}
+     * @throws IllegalArgumentException if {@code index} and {@code count} are invalid
+     */
+    public static String remove(String str, int index, int count) {
+        StringArgs.checkIndexAndCount(str, index, count, "s", "index", "count");
+        
+        if (0 == count) {
+            return str;
+        }
+        
+        final int len = str.length();
+        String newStr = "";
+        
+        final int countBefore = index;
+        final int countAfter = len - (index + count);
+        
+        if (0 != len && 0 != countBefore) {
+            newStr = str.substring(0, countBefore);
+        }
+        if (0 != len && 0 != countAfter) {
+            String after = str.substring(index + count);
+            newStr += after;
+        }
+        return newStr;
+    }
 //    
 //    /**
 //     * Insert characters into a string by creating a new string and copying characters from the
