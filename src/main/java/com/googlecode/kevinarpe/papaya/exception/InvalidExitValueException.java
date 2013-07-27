@@ -233,7 +233,7 @@ extends Exception {
             final InvalidExitValueException other = (InvalidExitValueException) obj;
             result =
                 ThrowableUtils.equals(this, other)
-                && getExitValue() == other.getExitValue()
+                && this.getExitValue() == other.getExitValue()
                 && Objects.equal(this.getValidExitValueList(), other.getValidExitValueList());
         }
         return result;
