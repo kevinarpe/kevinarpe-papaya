@@ -2594,11 +2594,23 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkAccessIndexObject_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkAccessIndexObject_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new String[] { "a" }, -1 },
-                { new String[] { "a" }, 1 },
                 { new String[] { "a", "b" }, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkAccessIndexObject_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <T> void checkAccessIndexObject_FailWithNegativeIndex(T[] ref, int index) {
+        ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkAccessIndexObject_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new String[] { "a" }, 1 },
                 { new String[] { "a", "b" }, 2 },
                 { new String[] { "a", "b" }, 99 },
         };
@@ -2649,11 +2661,23 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkAccessIndexByte_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkAccessIndexByte_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new byte[] { 99 }, -1 },
-                { new byte[] { 99 }, 1 },
                 { new byte[] { 99, 101 }, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkAccessIndexByte_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkAccessIndexByte_FailWithNegativeIndex(byte[] ref, int index) {
+        ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkAccessIndexByte_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new byte[] { 99 }, 1 },
                 { new byte[] { 99, 101 }, 2 },
                 { new byte[] { 99, 101 }, 99 },
         };
@@ -2704,11 +2728,23 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkAccessIndexShort_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkAccessIndexShort_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new short[] { 99 }, -1 },
-                { new short[] { 99 }, 1 },
                 { new short[] { 99, 101 }, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkAccessIndexShort_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkAccessIndexShort_FailWithNegativeIndex(short[] ref, int index) {
+        ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkAccessIndexShort_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new short[] { 99 }, 1 },
                 { new short[] { 99, 101 }, 2 },
                 { new short[] { 99, 101 }, 99 },
         };
@@ -2759,11 +2795,23 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkAccessIndexInteger_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkAccessIndexInteger_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new int[] { 99 }, -1 },
-                { new int[] { 99 }, 1 },
                 { new int[] { 99, 101 }, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkAccessIndexInteger_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkAccessIndexInteger_FailWithNegativeIndex(int[] ref, int index) {
+        ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkAccessIndexInteger_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new int[] { 99 }, 1 },
                 { new int[] { 99, 101 }, 2 },
                 { new int[] { 99, 101 }, 99 },
         };
@@ -2814,11 +2862,23 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkAccessIndexLong_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkAccessIndexLong_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new long[] { 99 }, -1 },
-                { new long[] { 99 }, 1 },
                 { new long[] { 99, 101 }, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkAccessIndexLong_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkAccessIndexLong_FailWithNegativeIndex(long[] ref, int index) {
+        ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkAccessIndexLong_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new long[] { 99 }, 1 },
                 { new long[] { 99, 101 }, 2 },
                 { new long[] { 99, 101 }, 99 },
         };
@@ -2869,11 +2929,23 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkAccessIndexFloat_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkAccessIndexFloat_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new float[] { 99 }, -1 },
-                { new float[] { 99 }, 1 },
                 { new float[] { 99, 101 }, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkAccessIndexFloat_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkAccessIndexFloat_FailWithNegativeIndex(float[] ref, int index) {
+        ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkAccessIndexFloat_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new float[] { 99 }, 1 },
                 { new float[] { 99, 101 }, 2 },
                 { new float[] { 99, 101 }, 99 },
         };
@@ -2924,11 +2996,23 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkAccessIndexDouble_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkAccessIndexDouble_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new double[] { 99 }, -1 },
-                { new double[] { 99 }, 1 },
                 { new double[] { 99, 101 }, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkAccessIndexDouble_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkAccessIndexDouble_FailWithNegativeIndex(double[] ref, int index) {
+        ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkAccessIndexDouble_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new double[] { 99 }, 1 },
                 { new double[] { 99, 101 }, 2 },
                 { new double[] { 99, 101 }, 99 },
         };
@@ -2979,11 +3063,23 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkAccessIndexCharacter_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkAccessIndexCharacter_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new char[] { 99 }, -1 },
-                { new char[] { 99 }, 1 },
                 { new char[] { 99, 101 }, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkAccessIndexCharacter_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkAccessIndexCharacter_FailWithNegativeIndex(char[] ref, int index) {
+        ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkAccessIndexCharacter_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new char[] { 99 }, 1 },
                 { new char[] { 99, 101 }, 2 },
                 { new char[] { 99, 101 }, 99 },
         };
@@ -3034,11 +3130,23 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkAccessIndexBoolean_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkAccessIndexBoolean_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new boolean[] { true }, -1 },
-                { new boolean[] { true }, 1 },
                 { new boolean[] { true, false }, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkAccessIndexBoolean_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkAccessIndexBoolean_FailWithNegativeIndex(boolean[] ref, int index) {
+        ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkAccessIndexBoolean_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new boolean[] { true }, 1 },
                 { new boolean[] { true, false }, 2 },
                 { new boolean[] { true, false }, 99 },
         };
@@ -3092,13 +3200,25 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkInsertIndexObject_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkInsertIndexObject_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new String[] { }, -1 },
-                { new String[] { }, 1 },
                 { new String[] { "a" }, -1 },
-                { new String[] { "a" }, 2 },
                 { new String[] { "a", "b" }, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkInsertIndexObject_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <T> void checkInsertIndexObject_FailWithNegativeIndex(T[] ref, int index) {
+        ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkInsertIndexObject_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new String[] { }, 1 },
+                { new String[] { "a" }, 2 },
                 { new String[] { "a", "b" }, 3 },
                 { new String[] { "a", "b" }, 99 },
         };
@@ -3152,13 +3272,25 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkInsertIndexByte_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkInsertIndexByte_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new byte[] { }, -1 },
-                { new byte[] { }, 1 },
                 { new byte[] { 99 }, -1 },
-                { new byte[] { 99 }, 2 },
                 { new byte[] { 99, 101 }, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkInsertIndexByte_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkInsertIndexByte_FailWithNegativeIndex(byte[] ref, int index) {
+        ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkInsertIndexByte_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new byte[] { }, 1 },
+                { new byte[] { 99 }, 2 },
                 { new byte[] { 99, 101 }, 3 },
                 { new byte[] { 99, 101 }, 99 },
         };
@@ -3212,13 +3344,25 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkInsertIndexShort_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkInsertIndexShort_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new short[] { }, -1 },
-                { new short[] { }, 1 },
                 { new short[] { 99 }, -1 },
-                { new short[] { 99 }, 2 },
                 { new short[] { 99, 101 }, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkInsertIndexShort_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkInsertIndexShort_FailWithNegativeIndex(short[] ref, int index) {
+        ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkInsertIndexShort_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new short[] { }, 1 },
+                { new short[] { 99 }, 2 },
                 { new short[] { 99, 101 }, 3 },
                 { new short[] { 99, 101 }, 99 },
         };
@@ -3272,13 +3416,25 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkInsertIndexInteger_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkInsertIndexInteger_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new int[] { }, -1 },
-                { new int[] { }, 1 },
                 { new int[] { 99 }, -1 },
-                { new int[] { 99 }, 2 },
                 { new int[] { 99, 101 }, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkInsertIndexInteger_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkInsertIndexInteger_FailWithNegativeIndex(int[] ref, int index) {
+        ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkInsertIndexInteger_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new int[] { }, 1 },
+                { new int[] { 99 }, 2 },
                 { new int[] { 99, 101 }, 3 },
                 { new int[] { 99, 101 }, 99 },
         };
@@ -3332,13 +3488,25 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkInsertIndexLong_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkInsertIndexLong_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new long[] { }, -1 },
-                { new long[] { }, 1 },
                 { new long[] { 99 }, -1 },
-                { new long[] { 99 }, 2 },
                 { new long[] { 99, 101 }, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkInsertIndexLong_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkInsertIndexLong_FailWithNegativeIndex(long[] ref, int index) {
+        ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkInsertIndexLong_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new long[] { }, 1 },
+                { new long[] { 99 }, 2 },
                 { new long[] { 99, 101 }, 3 },
                 { new long[] { 99, 101 }, 99 },
         };
@@ -3392,13 +3560,25 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkInsertIndexFloat_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkInsertIndexFloat_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new float[] { }, -1 },
-                { new float[] { }, 1 },
                 { new float[] { 99 }, -1 },
-                { new float[] { 99 }, 2 },
                 { new float[] { 99, 101 }, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkInsertIndexFloat_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkInsertIndexFloat_FailWithNegativeIndex(float[] ref, int index) {
+        ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkInsertIndexFloat_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new float[] { }, 1 },
+                { new float[] { 99 }, 2 },
                 { new float[] { 99, 101 }, 3 },
                 { new float[] { 99, 101 }, 99 },
         };
@@ -3452,13 +3632,25 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkInsertIndexDouble_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkInsertIndexDouble_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new double[] { }, -1 },
-                { new double[] { }, 1 },
                 { new double[] { 99 }, -1 },
-                { new double[] { 99 }, 2 },
                 { new double[] { 99, 101 }, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkInsertIndexDouble_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkInsertIndexDouble_FailWithNegativeIndex(double[] ref, int index) {
+        ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkInsertIndexDouble_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new double[] { }, 1 },
+                { new double[] { 99 }, 2 },
                 { new double[] { 99, 101 }, 3 },
                 { new double[] { 99, 101 }, 99 },
         };
@@ -3512,13 +3704,25 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkInsertIndexCharacter_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkInsertIndexCharacter_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new char[] { }, -1 },
-                { new char[] { }, 1 },
                 { new char[] { 99 }, -1 },
-                { new char[] { 99 }, 2 },
                 { new char[] { 99, 101 }, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkInsertIndexCharacter_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkInsertIndexCharacter_FailWithNegativeIndex(char[] ref, int index) {
+        ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkInsertIndexCharacter_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new char[] { }, 1 },
+                { new char[] { 99 }, 2 },
                 { new char[] { 99, 101 }, 3 },
                 { new char[] { 99, 101 }, 99 },
         };
@@ -3572,13 +3776,25 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkInsertIndexBoolean_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkInsertIndexBoolean_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new boolean[] { }, -1 },
-                { new boolean[] { }, 1 },
                 { new boolean[] { true }, -1 },
-                { new boolean[] { true }, 2 },
                 { new boolean[] { true, false }, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkInsertIndexBoolean_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkInsertIndexBoolean_FailWithNegativeIndex(boolean[] ref, int index) {
+        ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkInsertIndexBoolean_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new boolean[] { }, 1 },
+                { new boolean[] { true }, 2 },
                 { new boolean[] { true, false }, 3 },
                 { new boolean[] { true, false }, 99 },
         };
@@ -3632,11 +3848,24 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkIndexAndCountObject_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkIndexAndCountObject_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new String[] { "a" }, -1, 0 },
-                { new String[] { "a" }, 1, 1 },
                 { new String[] { "a", "b" }, -1, 0 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkIndexAndCountObject_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <T> void checkIndexAndCountObject_FailWithNegativeIndex(
+            T[] ref, int index, int count) {
+        ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkIndexAndCountObject_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new String[] { "a" }, 1, 1 },
                 { new String[] { "a", "b" }, 3, 1 },
                 { new String[] { "a", "b" }, 99, 2 },
         };
@@ -3659,7 +3888,7 @@ public class ArrayArgsTest {
     }
     
     @Test(dataProvider = "_checkIndexAndCountObject_FailWithNegativeCount_Data",
-            expectedExceptions = IndexOutOfBoundsException.class)
+            expectedExceptions = IllegalArgumentException.class)
     public <T> void checkIndexAndCountObject_FailWithNegativeCount(
             T[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -3716,11 +3945,24 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkIndexAndCountByte_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkIndexAndCountByte_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new byte[] { 99 }, -1, 0 },
-                { new byte[] { 99 }, 1, 1 },
                 { new byte[] { 99, 101 }, -1, 0 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkIndexAndCountByte_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkIndexAndCountByte_FailWithNegativeIndex(
+            byte[] ref, int index, int count) {
+        ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkIndexAndCountByte_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new byte[] { 99 }, 1, 1 },
                 { new byte[] { 99, 101 }, 3, 1 },
                 { new byte[] { 99, 101 }, 99, 2 },
         };
@@ -3743,7 +3985,7 @@ public class ArrayArgsTest {
     }
     
     @Test(dataProvider = "_checkIndexAndCountByte_FailWithNegativeCount_Data",
-            expectedExceptions = IndexOutOfBoundsException.class)
+            expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountByte_FailWithNegativeCount(
             byte[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -3800,11 +4042,24 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkIndexAndCountShort_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkIndexAndCountShort_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new short[] { 99 }, -1, 0 },
-                { new short[] { 99 }, 1, 1 },
                 { new short[] { 99, 101 }, -1, 0 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkIndexAndCountShort_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkIndexAndCountShort_FailWithNegativeIndex(
+            short[] ref, int index, int count) {
+        ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkIndexAndCountShort_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new short[] { 99 }, 1, 1 },
                 { new short[] { 99, 101 }, 3, 1 },
                 { new short[] { 99, 101 }, 99, 2 },
         };
@@ -3827,7 +4082,7 @@ public class ArrayArgsTest {
     }
     
     @Test(dataProvider = "_checkIndexAndCountShort_FailWithNegativeCount_Data",
-            expectedExceptions = IndexOutOfBoundsException.class)
+            expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountShort_FailWithNegativeCount(
             short[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -3884,11 +4139,24 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkIndexAndCountInteger_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkIndexAndCountInteger_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new int[] { 99 }, -1, 0 },
-                { new int[] { 99 }, 1, 1 },
                 { new int[] { 99, 101 }, -1, 0 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkIndexAndCountInteger_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkIndexAndCountInteger_FailWithNegativeIndex(
+            int[] ref, int index, int count) {
+        ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkIndexAndCountInteger_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new int[] { 99 }, 1, 1 },
                 { new int[] { 99, 101 }, 3, 1 },
                 { new int[] { 99, 101 }, 99, 2 },
         };
@@ -3911,7 +4179,7 @@ public class ArrayArgsTest {
     }
     
     @Test(dataProvider = "_checkIndexAndCountInteger_FailWithNegativeCount_Data",
-            expectedExceptions = IndexOutOfBoundsException.class)
+            expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountInteger_FailWithNegativeCount(
             int[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -3968,11 +4236,24 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkIndexAndCountLong_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkIndexAndCountLong_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new long[] { 99 }, -1, 0 },
-                { new long[] { 99 }, 1, 1 },
                 { new long[] { 99, 101 }, -1, 0 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkIndexAndCountLong_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkIndexAndCountLong_FailWithNegativeIndex(
+            long[] ref, int index, int count) {
+        ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkIndexAndCountLong_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new long[] { 99 }, 1, 1 },
                 { new long[] { 99, 101 }, 3, 1 },
                 { new long[] { 99, 101 }, 99, 2 },
         };
@@ -3995,7 +4276,7 @@ public class ArrayArgsTest {
     }
     
     @Test(dataProvider = "_checkIndexAndCountLong_FailWithNegativeCount_Data",
-            expectedExceptions = IndexOutOfBoundsException.class)
+            expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountLong_FailWithNegativeCount(
             long[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -4052,11 +4333,24 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkIndexAndCountFloat_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkIndexAndCountFloat_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new float[] { 99 }, -1, 0 },
-                { new float[] { 99 }, 1, 1 },
                 { new float[] { 99, 101 }, -1, 0 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkIndexAndCountFloat_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkIndexAndCountFloat_FailWithNegativeIndex(
+            float[] ref, int index, int count) {
+        ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkIndexAndCountFloat_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new float[] { 99 }, 1, 1 },
                 { new float[] { 99, 101 }, 3, 1 },
                 { new float[] { 99, 101 }, 99, 2 },
         };
@@ -4079,7 +4373,7 @@ public class ArrayArgsTest {
     }
     
     @Test(dataProvider = "_checkIndexAndCountFloat_FailWithNegativeCount_Data",
-            expectedExceptions = IndexOutOfBoundsException.class)
+            expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountFloat_FailWithNegativeCount(
             float[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -4136,11 +4430,24 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkIndexAndCountDouble_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkIndexAndCountDouble_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new double[] { 99 }, -1, 0 },
-                { new double[] { 99 }, 1, 1 },
                 { new double[] { 99, 101 }, -1, 0 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkIndexAndCountDouble_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkIndexAndCountDouble_FailWithNegativeIndex(
+            double[] ref, int index, int count) {
+        ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkIndexAndCountDouble_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new double[] { 99 }, 1, 1 },
                 { new double[] { 99, 101 }, 3, 1 },
                 { new double[] { 99, 101 }, 99, 2 },
         };
@@ -4163,7 +4470,7 @@ public class ArrayArgsTest {
     }
     
     @Test(dataProvider = "_checkIndexAndCountDouble_FailWithNegativeCount_Data",
-            expectedExceptions = IndexOutOfBoundsException.class)
+            expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountDouble_FailWithNegativeCount(
             double[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -4220,11 +4527,24 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkIndexAndCountCharacter_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkIndexAndCountCharacter_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new char[] { 99 }, -1, 0 },
-                { new char[] { 99 }, 1, 1 },
                 { new char[] { 99, 101 }, -1, 0 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkIndexAndCountCharacter_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkIndexAndCountCharacter_FailWithNegativeIndex(
+            char[] ref, int index, int count) {
+        ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkIndexAndCountCharacter_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new char[] { 99 }, 1, 1 },
                 { new char[] { 99, 101 }, 3, 1 },
                 { new char[] { 99, 101 }, 99, 2 },
         };
@@ -4247,7 +4567,7 @@ public class ArrayArgsTest {
     }
     
     @Test(dataProvider = "_checkIndexAndCountCharacter_FailWithNegativeCount_Data",
-            expectedExceptions = IndexOutOfBoundsException.class)
+            expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountCharacter_FailWithNegativeCount(
             char[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -4304,11 +4624,24 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkIndexAndCountBoolean_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkIndexAndCountBoolean_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { new boolean[] { true }, -1, 0 },
-                { new boolean[] { true }, 1, 1 },
                 { new boolean[] { true, false }, -1, 0 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkIndexAndCountBoolean_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkIndexAndCountBoolean_FailWithNegativeIndex(
+            boolean[] ref, int index, int count) {
+        ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkIndexAndCountBoolean_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { new boolean[] { true }, 1, 1 },
                 { new boolean[] { true, false }, 3, 1 },
                 { new boolean[] { true, false }, 99, 2 },
         };
@@ -4331,7 +4664,7 @@ public class ArrayArgsTest {
     }
     
     @Test(dataProvider = "_checkIndexAndCountBoolean_FailWithNegativeCount_Data",
-            expectedExceptions = IndexOutOfBoundsException.class)
+            expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountBoolean_FailWithNegativeCount(
             boolean[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -4388,11 +4721,24 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkFromAndToIndicesObject_FailWithInvalidIndices_Data() {
+    private static final Object[][] _checkFromAndToIndicesObject_FailWithNegativeIndices_Data() {
         return new Object[][] {
                 { new String[] { "a" }, -1, 0 },
                 { new String[] { "a" }, 0, -1 },
                 { new String[] { "a" }, -1, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkFromAndToIndicesObject_FailWithNegativeIndices_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <T> void checkFromAndToIndicesObject_FailWithNegativeIndices(
+            T[] ref, int fromIndex, int toIndex) {
+        ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkFromAndToIndicesObject_FailWithInvalidIndices_Data() {
+        return new Object[][] {
                 { new String[] { "a" }, 1, 1 },
                 { new String[] { "a" }, 1, 0 },
                 { new String[] { "a", "b" }, 3, 1 },
@@ -4441,11 +4787,24 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkFromAndToIndicesByte_FailWithInvalidIndices_Data() {
+    private static final Object[][] _checkFromAndToIndicesByte_FailWithNegativeIndices_Data() {
         return new Object[][] {
                 { new byte[] { 99 }, -1, 0 },
                 { new byte[] { 99 }, 0, -1 },
                 { new byte[] { 99 }, -1, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkFromAndToIndicesByte_FailWithNegativeIndices_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkFromAndToIndicesByte_FailWithNegativeIndices(
+            byte[] ref, int fromIndex, int toIndex) {
+        ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkFromAndToIndicesByte_FailWithInvalidIndices_Data() {
+        return new Object[][] {
                 { new byte[] { 99 }, 1, 1 },
                 { new byte[] { 99 }, 1, 0 },
                 { new byte[] { 99, 101 }, 3, 1 },
@@ -4494,11 +4853,24 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkFromAndToIndicesShort_FailWithInvalidIndices_Data() {
+    private static final Object[][] _checkFromAndToIndicesShort_FailWithNegativeIndices_Data() {
         return new Object[][] {
                 { new short[] { 99 }, -1, 0 },
                 { new short[] { 99 }, 0, -1 },
                 { new short[] { 99 }, -1, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkFromAndToIndicesShort_FailWithNegativeIndices_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkFromAndToIndicesShort_FailWithNegativeIndices(
+            short[] ref, int fromIndex, int toIndex) {
+        ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkFromAndToIndicesShort_FailWithInvalidIndices_Data() {
+        return new Object[][] {
                 { new short[] { 99 }, 1, 1 },
                 { new short[] { 99 }, 1, 0 },
                 { new short[] { 99, 101 }, 3, 1 },
@@ -4547,11 +4919,24 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkFromAndToIndicesInteger_FailWithInvalidIndices_Data() {
+    private static final Object[][] _checkFromAndToIndicesInteger_FailWithNegativeIndices_Data() {
         return new Object[][] {
                 { new int[] { 99 }, -1, 0 },
                 { new int[] { 99 }, 0, -1 },
                 { new int[] { 99 }, -1, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkFromAndToIndicesInteger_FailWithNegativeIndices_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkFromAndToIndicesInteger_FailWithNegativeIndices(
+            int[] ref, int fromIndex, int toIndex) {
+        ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkFromAndToIndicesInteger_FailWithInvalidIndices_Data() {
+        return new Object[][] {
                 { new int[] { 99 }, 1, 1 },
                 { new int[] { 99 }, 1, 0 },
                 { new int[] { 99, 101 }, 3, 1 },
@@ -4600,11 +4985,24 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkFromAndToIndicesLong_FailWithInvalidIndices_Data() {
+    private static final Object[][] _checkFromAndToIndicesLong_FailWithNegativeIndices_Data() {
         return new Object[][] {
                 { new long[] { 99 }, -1, 0 },
                 { new long[] { 99 }, 0, -1 },
                 { new long[] { 99 }, -1, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkFromAndToIndicesLong_FailWithNegativeIndices_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkFromAndToIndicesLong_FailWithNegativeIndices(
+            long[] ref, int fromIndex, int toIndex) {
+        ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkFromAndToIndicesLong_FailWithInvalidIndices_Data() {
+        return new Object[][] {
                 { new long[] { 99 }, 1, 1 },
                 { new long[] { 99 }, 1, 0 },
                 { new long[] { 99, 101 }, 3, 1 },
@@ -4653,11 +5051,24 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkFromAndToIndicesFloat_FailWithInvalidIndices_Data() {
+    private static final Object[][] _checkFromAndToIndicesFloat_FailWithNegativeIndices_Data() {
         return new Object[][] {
                 { new float[] { 99 }, -1, 0 },
                 { new float[] { 99 }, 0, -1 },
                 { new float[] { 99 }, -1, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkFromAndToIndicesFloat_FailWithNegativeIndices_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkFromAndToIndicesFloat_FailWithNegativeIndices(
+            float[] ref, int fromIndex, int toIndex) {
+        ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkFromAndToIndicesFloat_FailWithInvalidIndices_Data() {
+        return new Object[][] {
                 { new float[] { 99 }, 1, 1 },
                 { new float[] { 99 }, 1, 0 },
                 { new float[] { 99, 101 }, 3, 1 },
@@ -4706,11 +5117,24 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkFromAndToIndicesDouble_FailWithInvalidIndices_Data() {
+    private static final Object[][] _checkFromAndToIndicesDouble_FailWithNegativeIndices_Data() {
         return new Object[][] {
                 { new double[] { 99 }, -1, 0 },
                 { new double[] { 99 }, 0, -1 },
                 { new double[] { 99 }, -1, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkFromAndToIndicesDouble_FailWithNegativeIndices_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkFromAndToIndicesDouble_FailWithNegativeIndices(
+            double[] ref, int fromIndex, int toIndex) {
+        ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkFromAndToIndicesDouble_FailWithInvalidIndices_Data() {
+        return new Object[][] {
                 { new double[] { 99 }, 1, 1 },
                 { new double[] { 99 }, 1, 0 },
                 { new double[] { 99, 101 }, 3, 1 },
@@ -4759,11 +5183,24 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkFromAndToIndicesCharacter_FailWithInvalidIndices_Data() {
+    private static final Object[][] _checkFromAndToIndicesCharacter_FailWithNegativeIndices_Data() {
         return new Object[][] {
                 { new char[] { 99 }, -1, 0 },
                 { new char[] { 99 }, 0, -1 },
                 { new char[] { 99 }, -1, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkFromAndToIndicesCharacter_FailWithNegativeIndices_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkFromAndToIndicesCharacter_FailWithNegativeIndices(
+            char[] ref, int fromIndex, int toIndex) {
+        ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkFromAndToIndicesCharacter_FailWithInvalidIndices_Data() {
+        return new Object[][] {
                 { new char[] { 99 }, 1, 1 },
                 { new char[] { 99 }, 1, 0 },
                 { new char[] { 99, 101 }, 3, 1 },
@@ -4812,11 +5249,24 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkFromAndToIndicesBoolean_FailWithInvalidIndices_Data() {
+    private static final Object[][] _checkFromAndToIndicesBoolean_FailWithNegativeIndices_Data() {
         return new Object[][] {
                 { new boolean[] { true }, -1, 0 },
                 { new boolean[] { true }, 0, -1 },
                 { new boolean[] { true }, -1, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkFromAndToIndicesBoolean_FailWithNegativeIndices_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkFromAndToIndicesBoolean_FailWithNegativeIndices(
+            boolean[] ref, int fromIndex, int toIndex) {
+        ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkFromAndToIndicesBoolean_FailWithInvalidIndices_Data() {
+        return new Object[][] {
                 { new boolean[] { true }, 1, 1 },
                 { new boolean[] { true }, 1, 0 },
                 { new boolean[] { true, false }, 3, 1 },

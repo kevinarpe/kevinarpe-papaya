@@ -442,11 +442,24 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkAccessIndex_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkAccessIndex_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), -1 },
-                { ImmutableList.of("a"), 1 },
                 { ImmutableList.of("a", "b"), -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkAccessIndex_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <T> void checkAccessIndex_FailWithNegativeIndex(
+            Collection<T> ref, int index) {
+        CollectionArgs.checkAccessIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkAccessIndex_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { ImmutableList.of("a"), 1 },
                 { ImmutableList.of("a", "b"), 2 },
                 { ImmutableList.of("a", "b"), 99 },
         };
@@ -501,13 +514,26 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkInsertIndex_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkInsertIndex_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of(), -1 },
-                { ImmutableList.of(), 1 },
                 { ImmutableList.of("a"), -1 },
-                { ImmutableList.of("a"), 2 },
                 { ImmutableList.of("a", "b"), -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkInsertIndex_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <T> void checkInsertIndex_FailWithNegativeIndex(
+            Collection<T> ref, int index) {
+        CollectionArgs.checkInsertIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkInsertIndex_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { ImmutableList.of(), 1 },
+                { ImmutableList.of("a"), 2 },
                 { ImmutableList.of("a", "b"), 3 },
                 { ImmutableList.of("a", "b"), 99 },
         };
@@ -563,11 +589,29 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkIndexAndCount_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkIndexAndCount_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), -1, 0 },
-                { ImmutableList.of("a"), 1, 1 },
+                { ImmutableList.of("a"), -99, 0 },
+                { ImmutableList.of("a"), -99, 1 },
                 { ImmutableList.of("a", "b"), -1, 0 },
+                { ImmutableList.of("a", "b"), -99, 0 },
+                { ImmutableList.of("a", "b"), -99, 1 },
+                { ImmutableList.of("a", "b"), -99, 2 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkIndexAndCount_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <T> void checkIndexAndCount_FailWithNegativeIndex(
+            Collection<T> ref, int index, int count) {
+        CollectionArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkIndexAndCount_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { ImmutableList.of("a"), 1, 1 },
                 { ImmutableList.of("a", "b"), 3, 1 },
                 { ImmutableList.of("a", "b"), 99, 2 },
         };
@@ -590,7 +634,7 @@ public class CollectionArgsTest {
     }
     
     @Test(dataProvider = "_checkIndexAndCount_FailWithNegativeCount_Data",
-            expectedExceptions = IndexOutOfBoundsException.class)
+            expectedExceptions = IllegalArgumentException.class)
     public <T> void checkIndexAndCount_FailWithNegativeCount(
             Collection<T> ref, int index, int count) {
         CollectionArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -648,11 +692,25 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkFromAndToIndices_FailWithInvalidIndices_Data() {
+    private static final Object[][] _checkFromAndToIndices_FailWithNegativeIndices_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), -1, 0 },
                 { ImmutableList.of("a"), 0, -1 },
                 { ImmutableList.of("a"), -1, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkFromAndToIndices_FailWithNegativeIndices_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <T> void checkFromAndToIndices_FailWithNegativeIndices(
+            Collection<T> ref, int fromIndex, int toIndex) {
+        CollectionArgs.checkFromAndToIndices(
+            ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
+    }
+
+    @DataProvider
+    private static final Object[][] _checkFromAndToIndices_FailWithInvalidIndices_Data() {
+        return new Object[][] {
                 { ImmutableList.of("a"), 1, 1 },
                 { ImmutableList.of("a"), 1, 0 },
                 { ImmutableList.of("a", "b"), 3, 1 },

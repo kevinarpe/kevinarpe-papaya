@@ -1,7 +1,10 @@
 Papaya: Utilities for Java 1.6+
 ===============================
 
-Requires JDK 1.6 or higher.
+Requires JDK 1.6 or higher.  All source code in this project is encoded
+as UTF-8.  Many of the tests make use of East Asian characters
+(Japanese, Chinese, etc.), so a font capable of displaying this test
+data may be necessary to read and edit the source code.
 
 Project page:
   http://kevinarpe-papaya.googlecode.com

@@ -51,7 +51,7 @@ public class StringUtilsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCorrectlyTrimWhitespacePrefix() {
+    private static final Object[][] _trimWhitespacePrefix_Pass_Data() {
         return new Object[][] {
                 { " ", "" },  // ASCII space
                 { "\t", "" },
@@ -94,14 +94,14 @@ public class StringUtilsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCorrectlyTrimWhitespacePrefix")
-    public void shouldCorrectlyTrimWhitespacePrefix(String input, String expectedOutput) {
+    @Test(dataProvider = "_trimWhitespacePrefix_Pass_Data")
+    public void trimWhitespacePrefix_Pass(String input, String expectedOutput) {
         String output = StringUtils.trimWhitespacePrefix(input);
         Assert.assertEquals(output, expectedOutput);
     }
     
     @Test(expectedExceptions = NullPointerException.class)
-    public void shouldNotTrimWhitespacePrefixWithNullInput() {
+    public void trimWhitespacePrefix_FailWithNull() {
         String input = null;
         StringUtils.trimWhitespacePrefix(input);
     }
@@ -111,7 +111,7 @@ public class StringUtilsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldCorrectlyTrimWhitespaceSuffix() {
+    private static final Object[][] _trimWhitespaceSuffix_Pass_Data() {
         return new Object[][] {
                 { " ", "" },  // ASCII space
                 { "\t", "" },
@@ -154,14 +154,14 @@ public class StringUtilsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCorrectlyTrimWhitespaceSuffix")
-    public void shouldCorrectlyTrimWhitespaceRight(String input, String expectedOutput) {
+    @Test(dataProvider = "_trimWhitespaceSuffix_Pass_Data")
+    public void trimWhitespaceSuffix_Pass(String input, String expectedOutput) {
         String output = StringUtils.trimWhitespaceSuffix(input);
         Assert.assertEquals(output, expectedOutput);
     }
     
     @Test(expectedExceptions = NullPointerException.class)
-    public void shouldNotTrimWhitespaceSuffixWithNullInput() {
+    public void trimWhitespaceSuffix_FailWithNull() {
         String input = null;
         StringUtils.trimWhitespaceSuffix(input);
     }
@@ -171,7 +171,7 @@ public class StringUtilsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldParseBoolean() {
+    private static final Object[][] _parseBoolean_Pass_Data() {
         return new Object[][] {
                 { "true", true },
                 { "True", true },
@@ -190,20 +190,19 @@ public class StringUtilsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldParseBoolean")
-    public void shouldParseBoolean(String input, boolean expectedOutput) {
+    @Test(dataProvider = "_parseBoolean_Pass_Data")
+    public void parseBoolean_Pass(String input, boolean expectedOutput) {
         boolean output = StringUtils.parseBoolean(input);
         Assert.assertEquals(output, expectedOutput);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
-    public void shouldNotParseBooleanWithNullInput() {
-        String input = null;
-        StringUtils.parseBoolean(input);
+    public void parseBoolean_FailWithNull() {
+        StringUtils.parseBoolean(null);
     }
 
     @DataProvider
-    private static final Object[][] _dataForShouldNotParseBooleanWithInvalidInput() {
+    private static final Object[][] _parseBoolean_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { "" },
                 { "\t" },
@@ -221,9 +220,9 @@ public class StringUtilsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotParseBooleanWithInvalidInput",
+    @Test(dataProvider = "_parseBoolean_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotParseBooleanWithInvalidInput(String input) {
+    public void parseBoolean_FailWithInvalidInput(String input) {
         StringUtils.parseBoolean(input);
     }
     
@@ -232,7 +231,7 @@ public class StringUtilsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldRunIsWhiteSpaceWithoutException() {
+    private static final Object[][] _isWhitespace_Pass_Data() {
         return new Object[][] {
                 { "", true },
                 { "\t", true },
@@ -247,16 +246,15 @@ public class StringUtilsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldRunIsWhiteSpaceWithoutException")
-    public void shouldRunIsWhiteSpaceWithoutException(String input, boolean expectedOutput) {
+    @Test(dataProvider = "_isWhitespace_Pass_Data")
+    public void isWhitespace_Pass(String input, boolean expectedOutput) {
         boolean output = StringUtils.isEmptyOrWhitespace(input);
         Assert.assertEquals(output, expectedOutput);
     }
     
     @Test(expectedExceptions = NullPointerException.class)
-    public void shouldRunIsWhiteSpaceWithException() {
-        String input = null;
-        StringUtils.isEmptyOrWhitespace(input);
+    public void isWhitespace_FailWithNull() {
+        StringUtils.isEmptyOrWhitespace(null);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -264,7 +262,7 @@ public class StringUtilsTest {
     //
     
     @DataProvider
-    private static final Object[][] _dataForShouldCorrectlySubstringPrefix() {
+    private static final Object[][] _substringPrefix_Pass_Data() {
         return new Object[][] {
                 { "abc", 0, "" },
                 { "abc", 1, "a" },
@@ -294,14 +292,14 @@ public class StringUtilsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCorrectlySubstringPrefix")
-    public void shouldCorrectlySubstringPrefix(String input, int count, String expectedOutput) {
+    @Test(dataProvider = "_substringPrefix_Pass_Data")
+    public void substringPrefix_Pass(String input, int count, String expectedOutput) {
         String output = StringUtils.substringPrefix(input, count);
         Assert.assertEquals(output, expectedOutput);
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotSubstringPrefixWithNullInput() {
+    private static final Object[][] _substringPrefix_FailWithNull_Data() {
         return new Object[][] {
                 { null, 0 },
                 { null, 2 },
@@ -311,14 +309,14 @@ public class StringUtilsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotSubstringPrefixWithNullInput",
+    @Test(dataProvider = "_substringPrefix_FailWithNull_Data",
             expectedExceptions = NullPointerException.class)
-    public void shouldNotSubstringPrefixWithNullInput(String input, int count) {
+    public void substringPrefix_FailWithNull(String input, int count) {
         StringUtils.substringPrefix(input, count);
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotSubstringPrefixWithInvalidCount() {
+    private static final Object[][] _substringPrefix_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { "", -1 },
                 { "", -99 },
@@ -327,9 +325,9 @@ public class StringUtilsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotSubstringPrefixWithInvalidCount",
+    @Test(dataProvider = "_substringPrefix_FailWithInvalidCount_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotSubstringPrefixWithInvalidCount(String input, int count) {
+    public void substringPrefix_FailWithInvalidCount(String input, int count) {
         StringUtils.substringPrefix(input, count);
     }
     
@@ -338,7 +336,7 @@ public class StringUtilsTest {
     //
     
     @DataProvider
-    private static final Object[][] _dataForShouldCorrectlySubstringSuffix() {
+    private static final Object[][] _substringSuffix_Pass_Data() {
         return new Object[][] {
                 { "abc", 0, "" },
                 { "abc", 1, "c" },
@@ -373,14 +371,14 @@ public class StringUtilsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldCorrectlySubstringSuffix")
-    public void shouldCorrectlySubstringSuffix(String input, int count, String expectedOutput) {
+    @Test(dataProvider = "_substringSuffix_Pass_Data")
+    public void substringSuffix_Pass(String input, int count, String expectedOutput) {
         String output = StringUtils.substringSuffix(input, count);
         Assert.assertEquals(output, expectedOutput);
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotSubstringSuffixWithNullInput() {
+    private static final Object[][] _substringSuffix_FailWithNull_Data() {
         return new Object[][] {
                 { null, 0 },
                 { null, 2 },
@@ -390,14 +388,14 @@ public class StringUtilsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotSubstringSuffixWithNullInput",
+    @Test(dataProvider = "_substringSuffix_FailWithNull_Data",
             expectedExceptions = NullPointerException.class)
-    public void shouldNotSubstringSuffixWithNullInput(String input, int count) {
+    public void substringSuffix_FailWithNull(String input, int count) {
         StringUtils.substringSuffix(input, count);
     }
     
     @DataProvider
-    private static final Object[][] _dataForShouldNotSubstringSuffixWithInvalidCount() {
+    private static final Object[][] _substringSuffix_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { "", -1 },
                 { "", -99 },
@@ -406,9 +404,75 @@ public class StringUtilsTest {
         };
     }
     
-    @Test(dataProvider = "_dataForShouldNotSubstringSuffixWithInvalidCount",
+    @Test(dataProvider = "_substringSuffix_FailWithInvalidCount_Data",
             expectedExceptions = IllegalArgumentException.class)
-    public void shouldNotSubstringSuffixWithInvalidCount(String input, int count) {
+    public void substringSuffix_FailWithInvalidCount(String input, int count) {
         StringUtils.substringSuffix(input, count);
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // StringUtil.removeCharAt
+    //
+    
+    @DataProvider
+    private static final Object[][] _removeCharAt_Pass_Data() {
+        return new Object[][] {
+                { "abc", 0, "bc" },
+                { "abc", 1, "ac" },
+                { "abc", 2, "ab" },
+        };
+    }
+    
+    @Test(dataProvider = "_removeCharAt_Pass_Data")
+    public void removeCharAt_Pass(String input, int index, String expectedOutput) {
+        String output = StringUtils.removeCharAt(input, index);
+        Assert.assertEquals(output, expectedOutput);
+        Assert.assertTrue(input != output);
+    }
+    
+    @DataProvider
+    private static final Object[][] _removeCharAt_FailWithNull_Data() {
+        return new Object[][] {
+                { null, 0 },
+                { null, 2 },
+                { null, 99 },
+                { null, -1 },
+                { null, -99 },
+        };
+    }
+    
+    @Test(dataProvider = "_removeCharAt_FailWithNull_Data",
+            expectedExceptions = NullPointerException.class)
+    public void removeCharAt_FailWithNull(String input, int index) {
+        StringUtils.substringPrefix(input, index);
+    }
+    
+    @DataProvider
+    private static final Object[][] _removeCharAt_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { "", 0 },
+                { "abc", -1 },
+                { "abc", -99 },
+        };
+    }
+    
+    @Test(dataProvider = "_removeCharAt_FailWithInvalidIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void removeCharAt_FailWithInvalidIndex(String input, int index) {
+        StringUtils.removeCharAt(input, index);
+    }
+    
+    @DataProvider
+    private static final Object[][] _removeCharAt_FailWithInvalidIndex2_Data() {
+        return new Object[][] {
+                { "abc", 3 },
+                { "abc", 99 },
+        };
+    }
+    
+    @Test(dataProvider = "_removeCharAt_FailWithInvalidIndex2_Data",
+            expectedExceptions = IndexOutOfBoundsException.class)
+    public void removeCharAt_FailWithInvalidIndex2(String input, int index) {
+        StringUtils.removeCharAt(input, index);
     }
 }

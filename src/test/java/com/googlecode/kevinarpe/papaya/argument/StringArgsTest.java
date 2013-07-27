@@ -386,11 +386,23 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkInsertIndex_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkInsertIndex_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { "東京", -1 },
-                { "東京", 3 },
                 { "abc", -3 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkInsertIndex_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkInsertIndex_FailWithNegativeIndex(String s, int index) {
+        StringArgs.checkInsertIndex(s, index, "s", "index");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkInsertIndex_FailWithInvalidIndex_Data() {
+        return new Object[][] {
+                { "東京", 3 },
                 { "abc", 4 },
         };
     }
@@ -450,12 +462,24 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkIndexAndCount_FailWithInvalidIndex_Data() {
+    private static final Object[][] _checkIndexAndCount_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { "東京", -1, 1 },
+                { "abc", -3, 1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkIndexAndCount_FailWithNegativeIndex_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkIndexAndCount_FailWithNegativeIndex(String s, int index, int count) {
+        StringArgs.checkIndexAndCount(s, index, count, "s", "index", "count");
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkIndexAndCount_FailWithInvalidIndex_Data() {
+        return new Object[][] {
                 { "東京", 2, 2 },
                 { "東京", 3, 2 },
-                { "abc", -3, 1 },
                 { "abc", 4, 2 },
         };
     }
@@ -475,7 +499,7 @@ public class StringArgsTest {
     }
     
     @Test(dataProvider = "_checkIndexAndCount_FailWithNegativeCount_Data",
-            expectedExceptions = IndexOutOfBoundsException.class)
+            expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCount_FailWithNegativeCount(String s, int index, int count) {
         StringArgs.checkIndexAndCount(s, index, count, "s", "index", "count");
     }

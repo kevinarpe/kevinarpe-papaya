@@ -208,7 +208,7 @@ final class ContainerArgs {
             String w = _getContainerTypeWarning(containerType);
             String w2 = StringArgs._getArgNameWarning(containerArgName, "containerArgName");
             String w3 = StringArgs._getArgNameWarning(indexArgName, "indexArgName");
-            throw new IndexOutOfBoundsException(String.format(
+            throw new IllegalArgumentException(String.format(
                 "%s '%s': Index '%s' is negative: %d%s%s%s",
                 containerType,
                 containerArgName,
@@ -235,7 +235,7 @@ final class ContainerArgs {
             String w = _getContainerTypeWarning(containerType);
             String w2 = StringArgs._getArgNameWarning(containerArgName, "containerArgName");
             String w3 = StringArgs._getArgNameWarning(countArgName, "countArgName");
-            throw new IndexOutOfBoundsException(String.format(
+          throw new IllegalArgumentException(String.format(
                 "%s '%s': Count '%s' is negative: %d%s%s%s",
                 containerType,
                 containerArgName,

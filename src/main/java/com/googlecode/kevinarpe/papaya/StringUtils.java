@@ -27,12 +27,14 @@ package com.googlecode.kevinarpe.papaya;
 
 import java.util.regex.Pattern;
 
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.argument.IntArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 
 /**
- * This is a collection of methods to manipulate {@link String} references.
+ * Collection of static methods to manipulate {@link String} references.
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
@@ -104,6 +106,7 @@ public final class StringUtils {
      *
      * @see FuncUtils#PARSE_BOOLEAN_FROM_STRING
      */
+    @FullyTested
     public static boolean parseBoolean(String str) {
         ObjectArgs.checkNotNull(str, "str");
         
@@ -138,6 +141,7 @@ public final class StringUtils {
      *
      * @see #trimWhitespaceSuffix(String)
      */
+    @FullyTested
     public static String trimWhitespacePrefix(String str) {
         ObjectArgs.checkNotNull(str, "str");
         
@@ -183,8 +187,9 @@ public final class StringUtils {
      *
      * @see #trimWhitespacePrefix(String)
      */
+    @FullyTested
     public static String trimWhitespaceSuffix(String str) {
-        ObjectArgs.checkNotNull(str, "s");
+        ObjectArgs.checkNotNull(str, "str");
         
         final int len = str.length();
         int i = len - 1;
@@ -239,6 +244,7 @@ public final class StringUtils {
      * @throws NullPointerException
      *         if {@code str} is {@code null}
      */
+    @FullyTested
     public static <T extends CharSequence> boolean isEmptyOrWhitespace(String str) {
         ObjectArgs.checkNotNull(str, "str");
         
@@ -274,6 +280,7 @@ public final class StringUtils {
      * @throws IllegalArgumentException
      *         if {@code count} is negative
      */
+    @FullyTested
     public static String substringPrefix(String str, int count) {
         ObjectArgs.checkNotNull(str, "str");
         IntArgs.checkNotNegative(count, "count");
@@ -308,6 +315,7 @@ public final class StringUtils {
      * @throws IllegalArgumentException
      *         if {@code count} is negative
      */
+    @FullyTested
     public static String substringSuffix(String str, int count) {
         ObjectArgs.checkNotNull(str, "str");
         IntArgs.checkNotNegative(count, "count");
@@ -372,52 +380,73 @@ public final class StringUtils {
 //    // TODO: Add line prefix / suffix
 //    
     /**
-     * This is a convenience method for {@link #remove(String, int, int)}
+     * This is a convenience method for {@link #removeByIndexAndCount(String, int, int)}
      * where {@code count = 1}.
      */
-    public static String removeCharAt(String s, int index) {
+    @FullyTested
+    public static String removeCharAt(String str, int index) {
         final int count = 1;
-        String s2 = remove(s, index, count);
-        return s2;
+        String x = removeByIndexAndCount(str, index, count);
+        return x;
     }
     
     /**
      * Removes characters from a string by creating a new string and copying remaining characters
      * from the source string.  To be precise, using the term "remove" is a misnomer, as Java
-     * strings cannot change size.
+     * strings cannot change size; they are immutable.
      * <p>
      * If {@code count == 0}, the input string reference is returned.  No copy is made.
      * 
-     * @param str a string reference
-     * @param index offset to begin removing characters.  Range: 0 to {@code str.length() - 1}
-     * @param count number of characters to remove.  Must be non-negative.
+     * @param str
+     *        a string reference.  May be empty, but not {@code null}
+     * @param index
+     *        offset to begin removing characters.  Range: 0 to {@code str.length() - 1}
+     * @param count
+     *        number of characters to remove.  Must be non-negative.
+     * 
      * @return reference to a string with characters removed
-     * @throws NullPointerException if {@code str} is {@code null}
-     * @throws IllegalArgumentException if {@code index} and {@code count} are invalid
+     * 
+     * @throws NullPointerException
+     *         if {@code str} is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code str} is empty</li>
+     *   <li>if {@code index < 0}</li>
+     *   <li>if {@code count < 0}</li>
+     * </ul>
+     * @throws IndexOutOfBoundsException
+     * <ul>
+     *   <li>if {@code index >= str.length()}</li>
+     *   <li>if {@code index + count > str.length()}</li>
+     * </ul>
+     * 
+     * @see StringArgs#checkIndexAndCount(CharSequence, int, int, String, String, String)
      */
-    public static String remove(String str, int index, int count) {
-        StringArgs.checkIndexAndCount(str, index, count, "s", "index", "count");
+    @NotFullyTested
+    public static String removeByIndexAndCount(String str, int index, int count) {
+        StringArgs.checkIndexAndCount(str, index, count, "str", "index", "count");
         
         if (0 == count) {
             return str;
         }
         
+        // Never zero because StringArgs.checkIndexAndCount(...) rejects empty strings.
         final int len = str.length();
         String newStr = "";
         
         final int countBefore = index;
         final int countAfter = len - (index + count);
         
-        if (0 != len && 0 != countBefore) {
+        if (0 != countBefore) {
             newStr = str.substring(0, countBefore);
         }
-        if (0 != len && 0 != countAfter) {
+        if (0 != countAfter) {
             String after = str.substring(index + count);
             newStr += after;
         }
         return newStr;
     }
-//    
+
 //    /**
 //     * Insert characters into a string by creating a new string and copying characters from the
 //     * source strings.  To be precise, using the term "insert" is a misnomer, as Java strings
