@@ -26,6 +26,10 @@ package com.googlecode.kevinarpe.papaya.test;
  */
 
 public final class TestAssertUtils {
+
+    // Disable default constructor
+    private TestAssertUtils() {
+    }
     
     public static final int DEFAULT_MAX_SAMPLE_LENGTH_FOR_ERROR = 1024;
     

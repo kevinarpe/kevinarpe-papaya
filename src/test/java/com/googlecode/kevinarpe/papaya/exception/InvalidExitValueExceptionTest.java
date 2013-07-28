@@ -278,7 +278,6 @@ public final class InvalidExitValueExceptionTest {
         new InvalidExitValueException(null);
     }
     
-    
     @Test(dataProvider = "_Pass_Data")
     public static void copyCtorAndAccessors_Pass(
             int exitValue,

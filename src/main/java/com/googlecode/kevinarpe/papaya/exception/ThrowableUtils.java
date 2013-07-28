@@ -39,6 +39,10 @@ import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 @NotFullyTested
 public final class ThrowableUtils {
 
+    // Disable default constructor
+    private ThrowableUtils() {
+    }
+    
     /**
      * Calculates the hash code of any throwable, including {@code null}.  Stack trace is included
      * in the calculation, which may give surprising results.  (It is harder than most realise to
