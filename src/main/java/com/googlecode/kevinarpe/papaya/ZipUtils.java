@@ -33,7 +33,6 @@ import java.io.PushbackInputStream;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Bytes;
 import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
@@ -158,7 +157,7 @@ public final class ZipUtils {
      * @throws IOException
      *         if any I/O error occurs
      * 
-     * @see #createInputStream(File)
+     * @see #createUnzipInputStream(File)
      * @see #isGZipFile(File)
      */
     @NotFullyTested
