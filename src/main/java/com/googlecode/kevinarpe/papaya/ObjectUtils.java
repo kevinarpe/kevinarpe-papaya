@@ -36,6 +36,10 @@ import com.googlecode.kevinarpe.papaya.argument.IntArgs;
  */
 public final class ObjectUtils {
 
+    // Disable default constructor
+    private ObjectUtils() {
+    }
+    
     /**
      * Creates a hash code for a subclass using:
      * <ol>

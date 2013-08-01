@@ -25,10 +25,17 @@ package com.googlecode.kevinarpe.papaya;
  * #L%
  */
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.argument.IntArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
@@ -505,37 +512,68 @@ public final class StringUtils {
 //        return newStr2;
 //    }
     
-//    public static String addPrefixAndSuffixPerLine(
-//            String textBlock, String optLinePrefix, String optLineSuffix) {
-//        StringArgs.checkNotEmpty(textBlock, "textBlock");
-//        
-//        boolean hasLinePrefix = (null != optLinePrefix && !optLinePrefix.isEmpty());
-//        boolean hasLineSuffix = (null != optLineSuffix && !optLineSuffix.isEmpty());
-//        if (!hasLinePrefix && !hasLineSuffix) {
-//            throw new IllegalArgumentException(
-//                "Both arguments 'optLinePrefix' and 'optLineSuffix' are null or empty");
-//        }
-//        
-//        Iterable<String> lineIter = Splitter.on(NEW_LINE).split(textBlock);
-//        ArrayList<String> lineList = new ArrayList<String>();
-//        for (String line: lineIter) {
-//            lineList.add(line);
-//        }
-//        int lineListSize = lineList.size();
-//        for (int i = 0; i < lineListSize; ++i) {
-//            String line = lineList.get(i);
-//            // Do not modify the last line if empty.
-//            if (!(i == lineListSize - 1 && line.isEmpty())) {
-//                if (hasLinePrefix) {
-//                    line = optLinePrefix + line;
-//                }
-//                if (hasLineSuffix) {
-//                    line += optLineSuffix;
-//                }
-//                lineList.set(i, line);
-//            }
-//        }
-//        String x = Joiner.on(NEW_LINE).join(lineList);
-//        return x;
-//    }
+    public static enum TextProcessorOption {
+        SKIP_FIRST_LINE;
+    }
+    
+    @NotFullyTested
+    public static String addPrefixPerLine(
+            String textBlock,
+            String optLinePrefix,
+            TextProcessorOption... optionArr) {
+        String optLineSuffix = null;
+        String x = addPrefixAndSuffixPerLine(textBlock, optLinePrefix, optLineSuffix, optionArr);
+        return x;
+    }
+    
+    @NotFullyTested
+    public static String addSuffixPerLine(
+            String textBlock,
+            String optLineSuffix,
+            TextProcessorOption... optionArr) {
+        String optLinePrefix = null;
+        String x = addPrefixAndSuffixPerLine(textBlock, optLinePrefix, optLineSuffix, optionArr);
+        return x;
+    }
+    
+    @NotFullyTested
+    public static String addPrefixAndSuffixPerLine(
+            String textBlock,
+            String optLinePrefix,
+            String optLineSuffix,
+            TextProcessorOption... optionArr) {
+        StringArgs.checkNotEmpty(textBlock, "textBlock");
+        ArrayArgs.checkElementsNotNull(optionArr, "optionArr");
+        
+        boolean hasLinePrefix = (null != optLinePrefix && !optLinePrefix.isEmpty());
+        boolean hasLineSuffix = (null != optLineSuffix && !optLineSuffix.isEmpty());
+        if (!hasLinePrefix && !hasLineSuffix) {
+            throw new IllegalArgumentException(
+                "Both arguments 'optLinePrefix' and 'optLineSuffix' are null or empty");
+        }
+        
+        Iterable<String> lineIter = Splitter.on(NEW_LINE).split(textBlock);
+        ArrayList<String> lineList = new ArrayList<String>();
+        Iterables.addAll(lineList, lineIter);
+        
+        List<TextProcessorOption> optionList = Arrays.asList(optionArr);
+        
+        int lineListSize = lineList.size();
+        int i = (optionList.contains(TextProcessorOption.SKIP_FIRST_LINE) ? 1 : 0);
+        for ( ; i < lineListSize; ++i) {
+            String line = lineList.get(i);
+            // Do not modify the last line if empty.
+            if (i < lineListSize - 1 || !line.isEmpty()) {
+                if (hasLinePrefix) {
+                    line = optLinePrefix + line;
+                }
+                if (hasLineSuffix) {
+                    line += optLineSuffix;
+                }
+                lineList.set(i, line);
+            }
+        }
+        String x = Joiner.on(NEW_LINE).join(lineList);
+        return x;
+    }
 }

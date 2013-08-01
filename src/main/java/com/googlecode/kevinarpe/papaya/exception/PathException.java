@@ -42,6 +42,8 @@ import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 @FullyTested
 public class PathException
 extends IOException {
+    
+    // TODO: Convert all exceptions to follow TimeoutException with String format & Object[] argArr
 
     private static final long serialVersionUID = 1L;
 

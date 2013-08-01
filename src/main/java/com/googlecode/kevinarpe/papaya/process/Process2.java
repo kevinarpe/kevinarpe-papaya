@@ -740,8 +740,7 @@ extends AbstractProcessSettings {
      * Creates, but does not start (spawn), a new thread to read STDIN stream from a child process.
      * <p>
      * Subclasses of {@link Process2} that want to subclass {@link WriteOutputStreamThread} will
-     * need to override this method to create instances of {@link WriteOutputStreamThread}
-     * subclasses.
+     * need to override this method.
      * 
      * @param outputStream
      *        STDIN stream handle ({@link Process#getOutputStream()})
@@ -784,7 +783,7 @@ extends AbstractProcessSettings {
      * from a child process.
      * <p>
      * Subclasses of {@link Process2} that want to subclass {@link ReadInputStreamThread} will need
-     * to override this method to create instances of {@link ReadInputStreamThread} subclasses.
+     * to override this method.
      * 
      * @param inputStream
      *        either STDOUT stream handle ({@link Process#getInputStream()})

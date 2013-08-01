@@ -146,7 +146,6 @@ public final class PathArgs {
      *   if {@code path} does not exist</li>
      *   <li>with reason {@link PathExceptionReason#PATH_IS_DIRECTORY}
      *   if {@code path} exists, but is not a file</li>
-     *   <li></li>
      * </ul>
      *
      * @see #checkFileExists(String, String)

@@ -258,10 +258,10 @@ extends Exception {
     @Override
     public String toString() {
         String x = String.format(
-            "%s ["
+            "class %s ["
             + "%n\tgetExitValue()=%s,"
             + "%n\tgetValidExitValueList()='%s',%s",
-            getClass().getSimpleName(),
+            InvalidExitValueException.class.getCanonicalName(),
             getExitValue(),
             Joiner.on(", ").join(getValidExitValueList()),
             ThrowableUtils.toString(this));

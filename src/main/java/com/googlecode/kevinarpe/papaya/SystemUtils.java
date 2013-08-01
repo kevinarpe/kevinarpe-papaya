@@ -36,7 +36,11 @@ import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @FullyTested
-public class SystemUtils {
+public final class SystemUtils {
+
+    // Disable default constructor
+    private SystemUtils() {
+    }
     
     private static final OperatingSystem _CURRENT_OPERATING_SYSTEM;
     private static final OperatingSystemCategory _CURRENT_OPERATING_SYSTEM_CATEGORY;
