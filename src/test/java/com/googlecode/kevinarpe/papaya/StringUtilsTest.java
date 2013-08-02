@@ -480,7 +480,7 @@ public class StringUtilsTest {
     ///////////////////////////////////////////////////////////////////////////
     // StringUtil.addPrefixAndSuffixPerLine
     //
-
+    
     @DataProvider
     private static final Object[][] _addPrefixAndSuffixPerLine_Pass_Data() {
         return new Object[][] {
@@ -657,6 +657,7 @@ public class StringUtilsTest {
                     new StringUtils.TextProcessorOption[] { },  // optionArr
                     String.format(">>>x"),  // expected
                 },
+                
                 ///////////////////////////////////////////////////////////////
                 // only optLineSuffix is not null and not empty
                 {  // Regular
@@ -848,6 +849,137 @@ public class StringUtilsTest {
             if (expectedExceptionClass != e.getClass()) {
                 throw e;
             }
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // StringUtil.addPrefixPerLine
+    //
+
+    @DataProvider
+    private static final Object[][] _addPrefixPerLine_Pass_Data() {
+        Object[][] x = _addPrefixAndSuffixPerLine_Pass_Data();
+        Object[][] y = _create_Data(x, 2);  // optLineSuffix
+        return y;
+    }
+
+    @DataProvider
+    private static final Object[][] _addPrefixPerLine_Fail_Data() {
+        Object[][] x = _addPrefixAndSuffixPerLine_Fail_Data();
+        Object[][] y = _create_Data(x, 2);  // optLineSuffix
+        return y;
+    }
+    
+    private static final Object[][] _create_Data(Object[][] allDataArrArr, int dataArrIndex) {
+        int count = 0;
+        for (Object[] dataArr: allDataArrArr) {
+            String x = (String) dataArr[dataArrIndex];
+            if (null == x || x.isEmpty()) {
+                ++count;
+            }
+        }
+        if (0 == count) {
+            throw new IllegalStateException("Failed to create test data");
+        }
+        Object[][] dataArrArr = new Object[count][];
+        int dataArrArrIter = 0;
+        for (Object[] dataArr: allDataArrArr) {
+            String x = (String) dataArr[dataArrIndex];
+            if (null == x || x.isEmpty()) {
+                dataArrArr[dataArrArrIter] = dataArr;
+                ++dataArrArrIter;
+            }
+        }
+        return dataArrArr;
+    }
+    
+    @Test(dataProvider = "_addPrefixPerLine_Pass_Data")
+    public void addPrefixPerLine_Pass(
+            String textBlock,
+            String optLinePrefix,
+            String optLineSuffix,
+            TextProcessorOption[] optionArr,
+            String expected) {
+        String actual = StringUtils.addPrefixPerLine(textBlock, optLinePrefix, optionArr);
+        Assert.assertEquals(actual, expected);
+    }
+    
+    @Test(dataProvider = "_addPrefixPerLine_Fail_Data")
+    public void addPrefixPerLine_Fail(
+            String textBlock,
+            String optLinePrefix,
+            String optLineSuffix,
+            TextProcessorOption[] optionArr,
+            Class<?> expectedExceptionClass)
+    throws Exception {
+        try {
+            StringUtils.addPrefixPerLine(textBlock, optLinePrefix, optionArr);
+        }
+        catch (Exception e) {
+            if (expectedExceptionClass != e.getClass()) {
+                throw e;
+            }
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // StringUtil.addSuffixPerLine
+    //
+
+    @DataProvider
+    private static final Object[][] _addSuffixPerLine_Pass_Data() {
+        Object[][] x = _addPrefixAndSuffixPerLine_Pass_Data();
+        Object[][] y = _create_Data(x, 1);  // optLinePrefix
+        return y;
+    }
+
+    @DataProvider
+    private static final Object[][] _addSuffixPerLine_Fail_Data() {
+        Object[][] x = _addPrefixAndSuffixPerLine_Fail_Data();
+        Object[][] y = _create_Data(x, 1);  // optLinePrefix
+        return y;
+    }
+    
+    @Test(dataProvider = "_addSuffixPerLine_Pass_Data")
+    public void addSuffixPerLine_Pass(
+            String textBlock,
+            String optLinePrefix,
+            String optLineSuffix,
+            TextProcessorOption[] optionArr,
+            String expected) {
+        String actual = StringUtils.addSuffixPerLine(textBlock, optLineSuffix, optionArr);
+        Assert.assertEquals(actual, expected);
+    }
+    
+    @Test(dataProvider = "_addSuffixPerLine_Fail_Data")
+    public void addSuffixPerLine_Fail(
+            String textBlock,
+            String optLinePrefix,
+            String optLineSuffix,
+            TextProcessorOption[] optionArr,
+            Class<?> expectedExceptionClass)
+    throws Exception {
+        try {
+            StringUtils.addSuffixPerLine(textBlock, optLineSuffix, optionArr);
+        }
+        catch (Exception e) {
+            if (expectedExceptionClass != e.getClass()) {
+                throw e;
+            }
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // StringUtil.TextProcessorOption
+    //
+    
+    @Test
+    public void TextProcessorOption_toString_Pass() {
+        for (TextProcessorOption x: TextProcessorOption.values()) {
+            String y = x.toString();
+            Assert.assertTrue(null != y, "!= null");
+            Assert.assertTrue(!y.isEmpty(), "!isEmpty()");
+            Assert.assertTrue(y.contains(x.name()), "contains(name())");
         }
     }
 }

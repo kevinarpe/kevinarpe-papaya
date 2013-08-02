@@ -512,9 +512,42 @@ public final class StringUtils {
 //        return newStr2;
 //    }
     
+    /**
+     * Options for methods that process text, such as
+     * {@link StringUtils#addPrefixAndSuffixPerLine(String, String, String, TextProcessorOption...)}.
+     * 
+     * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+     * 
+     * @see StringUtils#addPrefixPerLine(String, String, TextProcessorOption...)
+     * @see StringUtils#addSuffixPerLine(String, String, TextProcessorOption...)
+     * @see StringUtils#addPrefixAndSuffixPerLine(String, String, String, TextProcessorOption...)
+     */
+    @FullyTested
     public static enum TextProcessorOption {
+        
+        /**
+         * Do not process the first line in a multiline block of text.  The first line will be
+         * preserved, unchanged.
+         */
         SKIP_FIRST_LINE;
-        // TODO: toString()
+        
+        /**
+         * Converts this reference to a debugger-friendly string.  {@link Enum#toString()} only
+         * returns {@link #name()}.  This version embellishes the result with the full class name.
+         * If only the name is required, call {@link #name()} directly.
+         * <hr>
+         * Docs from {@link Enum#toString()}:
+         * <p>
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            String x = String.format(
+                "enum %s: [name(): %s]",
+                TextProcessorOption.class.getCanonicalName(),
+                name());
+            return x;
+        }
     }
     
     /**
@@ -522,7 +555,7 @@ public final class StringUtils {
      * {@link #addPrefixAndSuffixPerLine(String, String, String, TextProcessorOption...)} with
      * {@code optLineSuffix} as {@code null}.
      */
-    @NotFullyTested
+    @FullyTested
     public static String addPrefixPerLine(
             String textBlock,
             String optLinePrefix,
@@ -537,7 +570,7 @@ public final class StringUtils {
      * {@link #addPrefixAndSuffixPerLine(String, String, String, TextProcessorOption...)} with
      * {@code optLinePrefix} as {@code null}.
      */
-    @NotFullyTested
+    @FullyTested
     public static String addSuffixPerLine(
             String textBlock,
             String optLineSuffix,
