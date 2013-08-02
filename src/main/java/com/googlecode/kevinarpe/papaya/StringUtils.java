@@ -514,8 +514,14 @@ public final class StringUtils {
     
     public static enum TextProcessorOption {
         SKIP_FIRST_LINE;
+        // TODO: toString()
     }
     
+    /**
+     * This is a convenience method to call
+     * {@link #addPrefixAndSuffixPerLine(String, String, String, TextProcessorOption...)} with
+     * {@code optLineSuffix} as {@code null}.
+     */
     @NotFullyTested
     public static String addPrefixPerLine(
             String textBlock,
@@ -526,6 +532,11 @@ public final class StringUtils {
         return x;
     }
     
+    /**
+     * This is a convenience method to call
+     * {@link #addPrefixAndSuffixPerLine(String, String, String, TextProcessorOption...)} with
+     * {@code optLinePrefix} as {@code null}.
+     */
     @NotFullyTested
     public static String addSuffixPerLine(
             String textBlock,
@@ -536,7 +547,77 @@ public final class StringUtils {
         return x;
     }
     
-    @NotFullyTested
+    /**
+     * Creates a new string from a multiline block of text with additional prefix and/or suffix per
+     * line.  This method can be used to programatically indent blocks of text.
+     * <p>
+     * Example:
+     * <br>{@code String textBlock = String.format("This is a sample%nmultiline block%nof text.");}
+     * <br>(The format code {@code "%n"} is replaced by current system newline.)
+     * <pre>
+     * {@code
+     * This is a sample
+     * multiline block
+     * of text.
+     * }
+     * </pre>
+     * Calling this method with {@code optLinePrefix} as {@code ">"} and {@code optLineSuffix} as
+     * {@code "<"} will return:
+     * <pre>
+     * {@code
+     * >This is a sample<
+     * >multiline block<
+     * >of text.<
+     * }
+     * </pre>
+     * 
+     * @param textBlock
+     * <ul>
+     *   <li>text to process, usually a multiline block of text</li>
+     *   <li>text is split and joined using {@link #NEW_LINE}</li>
+     *   <li>if text ends with {@link #NEW_LINE}:</li>
+     *   <ul>
+     *     <li>final "phantom" empty line is ignored during processing</li>
+     *     <li>result will also end with {@link #NEW_LINE}</li>
+     *   </ul>
+     *   <li>must not be {@code null} or empty</li>
+     * </ul>
+     * @param optLinePrefix
+     * <ul>
+     *   <li>additional text to add to the beginning to each line in the multiline block of
+     *   text</li>
+     *   <li>may be {@code null} or empty, but only if parameter {@code optLineSuffix} is not
+     *   <i>also</i> {@code null} or empty</li>
+     * </ul>
+     * @param optLineSuffix
+     * <ul>
+     *   <li>additional text to add to the end to each line in the multiline block of text</li>
+     *   <li>may be {@code null} or empty, but only if parameter {@code optLinePrefix} is not
+     *   <i>also</i> {@code null} or empty</li>
+     * </ul>
+     * @param optionArr
+     * <ul>
+     *   <li>zero or more values from enum {@link TextProcessorOption}</li>
+     *   <li>values must not be {@code null}</li>
+     * </ul>
+     * 
+     * @return new string with each line modified to have new prefix and/or suffix
+     * 
+     * @throws NullPointerException
+     * <ul>
+     *   <li>if {@code textBlock} is {@code null}</li>
+     *   <li>if any element of {@code optionArr} is {@code null}</li>
+     * </ul>
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code textBlock} has length zero (empty)</li>
+     *   <li>if both {@code optLinePrefix} and {@code optLineSuffix} are {@code null} or empty</li>
+     * </ul>
+     * 
+     * @see #addPrefixPerLine(String, String, TextProcessorOption...)
+     * @see #addSuffixPerLine(String, String, TextProcessorOption...)
+     */
+    @FullyTested
     public static String addPrefixAndSuffixPerLine(
             String textBlock,
             String optLinePrefix,

@@ -32,6 +32,7 @@ import org.testng.annotations.Test;
 import org.testng.Assert;
 
 import com.googlecode.kevinarpe.papaya.StringUtils;
+import com.googlecode.kevinarpe.papaya.StringUtils.TextProcessorOption;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -474,5 +475,379 @@ public class StringUtilsTest {
             expectedExceptions = IndexOutOfBoundsException.class)
     public void removeCharAt_FailWithInvalidIndex2(String input, int index) {
         StringUtils.removeCharAt(input, index);
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // StringUtil.addPrefixAndSuffixPerLine
+    //
+
+    @DataProvider
+    private static final Object[][] _addPrefixAndSuffixPerLine_Pass_Data() {
+        return new Object[][] {
+                ///////////////////////////////////////////////////////////////
+                // both optLinePrefix & optLineSuffix are not null and not empty
+                {  // Regular
+                    String.format("This is a sample%nmultiline block%nof text."),  // textBlock
+                    ">",  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format(">This is a sample<%n>multiline block<%n>of text.<"),  // expected
+                },
+                {  // Regular, skip first line
+                    String.format("This is a sample%nmultiline block%nof text."),  // textBlock
+                    ">",  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { StringUtils.TextProcessorOption.SKIP_FIRST_LINE },  // optionArr
+                    String.format("This is a sample%n>multiline block<%n>of text.<"),  // expected
+                },
+                {  // Regular, skip first line x 2
+                    String.format("This is a sample%nmultiline block%nof text."),  // textBlock
+                    ">",  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { StringUtils.TextProcessorOption.SKIP_FIRST_LINE, StringUtils.TextProcessorOption.SKIP_FIRST_LINE },  // optionArr
+                    String.format("This is a sample%n>multiline block<%n>of text.<"),  // expected
+                },
+                {  // Empty line in middle of pack
+                    String.format("This is a sample%n%nmultiline block%nof text."),  // textBlock
+                    ">",  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format(">This is a sample<%n><%n>multiline block<%n>of text.<"),  // expected
+                },
+                {  // Trailing newline
+                    String.format("This is a sample%nmultiline block%nof text.%n"),  // textBlock
+                    ">",  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format(">This is a sample<%n>multiline block<%n>of text.<%n"),  // expected
+                },
+                {  // Leading newline
+                    String.format("%nThis is a sample%nmultiline block%nof text."),  // textBlock
+                    ">",  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format("><%n>This is a sample<%n>multiline block<%n>of text.<"),  // expected
+                },
+                {  // Single char
+                    String.format("x"),  // textBlock
+                    ">",  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format(">x<"),  // expected
+                },
+                {  // Single char, trailing newline
+                    String.format("x%n"),  // textBlock
+                    ">",  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format(">x<%n"),  // expected
+                },
+                {  // Single char, leading newline
+                    String.format("%nx"),  // textBlock
+                    ">",  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format("><%n>x<"),  // expected
+                },
+                {  // Single newline
+                    String.format("%n"),  // textBlock
+                    ">",  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format("><%n"),  // expected
+                },
+                {  // Two newlines
+                    String.format("%n%n"),  // textBlock
+                    ">",  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format("><%n><%n"),  // expected
+                },
+                {  // Single char, multichar prefix/suffix
+                    String.format("x"),  // textBlock
+                    ">>>",  // optLinePrefix
+                    "<<<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format(">>>x<<<"),  // expected
+                },
+                
+                ///////////////////////////////////////////////////////////////
+                // only optLinePrefix is not null and not empty
+                {  // Regular
+                    String.format("This is a sample%nmultiline block%nof text."),  // textBlock
+                    ">",  // optLinePrefix
+                    null,  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format(">This is a sample%n>multiline block%n>of text."),  // expected
+                },
+                {  // Regular, skip first line
+                    String.format("This is a sample%nmultiline block%nof text."),  // textBlock
+                    ">",  // optLinePrefix
+                    null,  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { StringUtils.TextProcessorOption.SKIP_FIRST_LINE },  // optionArr
+                    String.format("This is a sample%n>multiline block%n>of text."),  // expected
+                },
+                {  // Regular, skip first line x 2
+                    String.format("This is a sample%nmultiline block%nof text."),  // textBlock
+                    ">",  // optLinePrefix
+                    null,  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { StringUtils.TextProcessorOption.SKIP_FIRST_LINE, StringUtils.TextProcessorOption.SKIP_FIRST_LINE },  // optionArr
+                    String.format("This is a sample%n>multiline block%n>of text."),  // expected
+                },
+                {  // Empty line in middle of pack
+                    String.format("This is a sample%n%nmultiline block%nof text."),  // textBlock
+                    ">",  // optLinePrefix
+                    null,  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format(">This is a sample%n>%n>multiline block%n>of text."),  // expected
+                },
+                {  // Trailing newline
+                    String.format("This is a sample%nmultiline block%nof text.%n"),  // textBlock
+                    ">",  // optLinePrefix
+                    null,  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format(">This is a sample%n>multiline block%n>of text.%n"),  // expected
+                },
+                {  // Leading newline
+                    String.format("%nThis is a sample%nmultiline block%nof text."),  // textBlock
+                    ">",  // optLinePrefix
+                    null,  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format(">%n>This is a sample%n>multiline block%n>of text."),  // expected
+                },
+                {  // Single char
+                    String.format("x"),  // textBlock
+                    ">",  // optLinePrefix
+                    null,  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format(">x"),  // expected
+                },
+                {  // Single char, trailing newline
+                    String.format("x%n"),  // textBlock
+                    ">",  // optLinePrefix
+                    null,  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format(">x%n"),  // expected
+                },
+                {  // Single char, leading newline
+                    String.format("%nx"),  // textBlock
+                    ">",  // optLinePrefix
+                    null,  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format(">%n>x"),  // expected
+                },
+                {  // Single newline
+                    String.format("%n"),  // textBlock
+                    ">",  // optLinePrefix
+                    null,  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format(">%n"),  // expected
+                },
+                {  // Two newlines
+                    String.format("%n%n"),  // textBlock
+                    ">",  // optLinePrefix
+                    null,  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format(">%n>%n"),  // expected
+                },
+                {  // Single char, multichar prefix/suffix
+                    String.format("x"),  // textBlock
+                    ">>>",  // optLinePrefix
+                    null,  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format(">>>x"),  // expected
+                },
+                ///////////////////////////////////////////////////////////////
+                // only optLineSuffix is not null and not empty
+                {  // Regular
+                    String.format("This is a sample%nmultiline block%nof text."),  // textBlock
+                    null,  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format("This is a sample<%nmultiline block<%nof text.<"),  // expected
+                },
+                {  // Regular, skip first line
+                    String.format("This is a sample%nmultiline block%nof text."),  // textBlock
+                    null,  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { StringUtils.TextProcessorOption.SKIP_FIRST_LINE },  // optionArr
+                    String.format("This is a sample%nmultiline block<%nof text.<"),  // expected
+                },
+                {  // Regular, skip first line x 2
+                    String.format("This is a sample%nmultiline block%nof text."),  // textBlock
+                    null,  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { StringUtils.TextProcessorOption.SKIP_FIRST_LINE, StringUtils.TextProcessorOption.SKIP_FIRST_LINE },  // optionArr
+                    String.format("This is a sample%nmultiline block<%nof text.<"),  // expected
+                },
+                {  // Empty line in middle of pack
+                    String.format("This is a sample%n%nmultiline block%nof text."),  // textBlock
+                    null,  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format("This is a sample<%n<%nmultiline block<%nof text.<"),  // expected
+                },
+                {  // Trailing newline
+                    String.format("This is a sample%nmultiline block%nof text.%n"),  // textBlock
+                    null,  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format("This is a sample<%nmultiline block<%nof text.<%n"),  // expected
+                },
+                {  // Leading newline
+                    String.format("%nThis is a sample%nmultiline block%nof text."),  // textBlock
+                    null,  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format("<%nThis is a sample<%nmultiline block<%nof text.<"),  // expected
+                },
+                {  // Single char
+                    String.format("x"),  // textBlock
+                    null,  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format("x<"),  // expected
+                },
+                {  // Single char, trailing newline
+                    String.format("x%n"),  // textBlock
+                    null,  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format("x<%n"),  // expected
+                },
+                {  // Single char, leading newline
+                    String.format("%nx"),  // textBlock
+                    null,  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format("<%nx<"),  // expected
+                },
+                {  // Single newline
+                    String.format("%n"),  // textBlock
+                    null,  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format("<%n"),  // expected
+                },
+                {  // Two newlines
+                    String.format("%n%n"),  // textBlock
+                    null,  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format("<%n<%n"),  // expected
+                },
+                {  // Single char, multichar prefix/suffix
+                    String.format("x"),  // textBlock
+                    null,  // optLinePrefix
+                    "<<<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    String.format("x<<<"),  // expected
+                },
+        };
+    }
+    
+    @Test(dataProvider = "_addPrefixAndSuffixPerLine_Pass_Data")
+    public void addPrefixAndSuffixPerLine_Pass(
+            String textBlock,
+            String optLinePrefix,
+            String optLineSuffix,
+            TextProcessorOption[] optionArr,
+            String expected) {
+        String actual =
+            StringUtils.addPrefixAndSuffixPerLine(
+                textBlock, optLinePrefix, optLineSuffix, optionArr);
+        Assert.assertEquals(actual, expected);
+        if (null == optLinePrefix) {
+            actual =
+                StringUtils.addPrefixAndSuffixPerLine(textBlock, "", optLineSuffix, optionArr);
+            Assert.assertEquals(actual, expected);
+        }
+        if (null == optLineSuffix) {
+            actual =
+                StringUtils.addPrefixAndSuffixPerLine(textBlock, optLinePrefix, "", optionArr);
+            Assert.assertEquals(actual, expected);
+        }
+    }
+    
+    @DataProvider
+    private static final Object[][] _addPrefixAndSuffixPerLine_Fail_Data() {
+        return new Object[][] {
+                {
+                    null,  // textBlock (bad)
+                    ">",  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    NullPointerException.class,  // expectedExceptionClass
+                },
+                {
+                    "",  // textBlock (bad)
+                    ">",  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    IllegalArgumentException.class,  // expectedExceptionClass
+                },
+                {
+                    "x",  // textBlock
+                    null,  // optLinePrefix (bad)
+                    null,  // optLineSuffix (bad)
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    IllegalArgumentException.class,  // expectedExceptionClass
+                },
+                {
+                    "x",  // textBlock
+                    "",  // optLinePrefix (bad)
+                    null,  // optLineSuffix (bad)
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    IllegalArgumentException.class,  // expectedExceptionClass
+                },
+                {
+                    "x",  // textBlock
+                    null,  // optLinePrefix (bad)
+                    "",  // optLineSuffix (bad)
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    IllegalArgumentException.class,  // expectedExceptionClass
+                },
+                {
+                    "x",  // textBlock
+                    "",  // optLinePrefix (bad)
+                    "",  // optLineSuffix (bad)
+                    new StringUtils.TextProcessorOption[] { },  // optionArr
+                    IllegalArgumentException.class,  // expectedExceptionClass
+                },
+                {
+                    "x",  // textBlock
+                    ">",  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] { null },  // optionArr (bad)
+                    NullPointerException.class,  // expectedExceptionClass
+                },
+                {
+                    "x",  // textBlock
+                    ">",  // optLinePrefix
+                    "<",  // optLineSuffix
+                    new StringUtils.TextProcessorOption[] {
+                        StringUtils.TextProcessorOption.SKIP_FIRST_LINE, null },  // optionArr (bad)
+                    NullPointerException.class,  // expectedExceptionClass
+                },
+        };
+    }
+    
+    @Test(dataProvider = "_addPrefixAndSuffixPerLine_Fail_Data")
+    public void addPrefixAndSuffixPerLine_Fail(
+            String textBlock,
+            String optLinePrefix,
+            String optLineSuffix,
+            TextProcessorOption[] optionArr,
+            Class<?> expectedExceptionClass)
+    throws Exception {
+        try {
+            StringUtils.addPrefixAndSuffixPerLine(
+                textBlock, optLinePrefix, optLineSuffix, optionArr);
+        }
+        catch (Exception e) {
+            if (expectedExceptionClass != e.getClass()) {
+                throw e;
+            }
+        }
     }
 }
