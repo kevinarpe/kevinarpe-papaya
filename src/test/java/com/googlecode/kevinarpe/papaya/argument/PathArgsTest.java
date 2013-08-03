@@ -127,7 +127,7 @@ public class PathArgsTest {
     public void checkNotFile_PassWithPathIsDir()
     throws PathException {
         File path = new File(UUID.randomUUID().toString());
-        _safeMkdir(path);
+        safeMkdir(path);
         try {
             PathArgs.checkNotFile(path, "path");
             PathArgs.checkNotFile(path.getPath(), "path");
@@ -135,7 +135,7 @@ public class PathArgsTest {
             PathArgs.checkNotFile(path.getAbsolutePath(), "path");
         }
         finally {
-            _safeRmdir(path);
+            safeRmdir(path);
         }
     }
 
@@ -148,7 +148,7 @@ public class PathArgsTest {
             PathArgs.checkNotFile(path, "path");
         }
         finally {
-            _safeRm(path);
+            safeRm(path);
         }
     }
 
@@ -182,7 +182,7 @@ public class PathArgsTest {
         PathArgs.checkNotFile("", "path");
     }
     
-    private static void _safeMkdir(File path) {
+    public static void safeMkdir(File path) {
         if (path.exists()) {
             throw new RuntimeException(String.format("Failed to mkdir: Path exists: '%s'",
                 path.getAbsolutePath()));
@@ -193,7 +193,7 @@ public class PathArgsTest {
         }
     }
     
-    private static void _safeRmdir(File path) {
+    public static void safeRmdir(File path) {
         if (!path.isDirectory()) {
             throw new RuntimeException(String.format(
                 "Failed to rmdir: Path is not a directory: '%s'",
@@ -205,7 +205,7 @@ public class PathArgsTest {
         }
     }
     
-    private static void _safeRm(File path) {
+    public static void safeRm(File path) {
         if (!path.isFile()) {
             throw new RuntimeException(String.format(
                 "Failed to rm: Path is not a file: '%s'",
@@ -236,7 +236,7 @@ public class PathArgsTest {
             PathArgs.checkFileExists(absPathname, "absPathname");
         }
         finally {
-            _safeRm(path);
+            safeRm(path);
         }
     }
     
@@ -253,7 +253,7 @@ public class PathArgsTest {
                 new PathException(PathExceptionReason.PATH_IS_DIRECTORY, path, null, "dummy"));
         }
         finally {
-            _safeRmdir(path);
+            safeRmdir(path);
         }
     }
     
@@ -272,7 +272,7 @@ public class PathArgsTest {
                 new PathException(PathExceptionReason.PATH_IS_DIRECTORY, path, null, "dummy"));
         }
         finally {
-            _safeRmdir(path);
+            safeRmdir(path);
         }
     }
     
@@ -291,7 +291,7 @@ public class PathArgsTest {
                 new PathException(PathExceptionReason.PATH_IS_DIRECTORY, absPath, null, "dummy"));
         }
         finally {
-            _safeRmdir(path);
+            safeRmdir(path);
         }
     }
     
@@ -311,7 +311,7 @@ public class PathArgsTest {
                 new PathException(PathExceptionReason.PATH_IS_DIRECTORY, absPath, null, "dummy"));
         }
         finally {
-            _safeRmdir(path);
+            safeRmdir(path);
         }
     }
     
@@ -429,7 +429,7 @@ public class PathArgsTest {
             PathArgs.checkNotDirectory(path.getAbsolutePath(), "path");
         }
         finally {
-            _safeRm(path);
+            safeRm(path);
         }
     }
 
@@ -437,7 +437,7 @@ public class PathArgsTest {
     public void checkNotDirectory_FailWithPathIsDir()
     throws PathException {
         File path = new File(UUID.randomUUID().toString());
-        _safeMkdir(path);
+        safeMkdir(path);
         try {
             PathArgs.checkNotDirectory(path, "path");
         }
@@ -447,7 +447,7 @@ public class PathArgsTest {
                 new PathException(PathExceptionReason.PATH_IS_DIRECTORY, path, null, "dummy"));
         }
         finally {
-            _safeRmdir(path);
+            safeRmdir(path);
         }
     }
 
@@ -500,7 +500,7 @@ public class PathArgsTest {
             PathArgs.checkDirectoryExists(absPathname, "absPathname");
         }
         finally {
-            _safeRmdir(path);
+            safeRmdir(path);
         }
     }
     
@@ -518,7 +518,7 @@ public class PathArgsTest {
                 new PathException(PathExceptionReason.PATH_IS_FILE, path, null, "dummy"));
         }
         finally {
-            _safeRm(path);
+            safeRm(path);
         }
     }
     
@@ -537,7 +537,7 @@ public class PathArgsTest {
                 new PathException(PathExceptionReason.PATH_IS_FILE, path, null, "dummy"));
         }
         finally {
-            _safeRm(path);
+            safeRm(path);
         }
     }
     
@@ -556,7 +556,7 @@ public class PathArgsTest {
                 new PathException(PathExceptionReason.PATH_IS_FILE, absPath, null, "dummy"));
         }
         finally {
-            _safeRm(path);
+            safeRm(path);
         }
     }
     
@@ -576,7 +576,7 @@ public class PathArgsTest {
                 new PathException(PathExceptionReason.PATH_IS_FILE, absPath, null, "dummy"));
         }
         finally {
-            _safeRm(path);
+            safeRm(path);
         }
     }
     

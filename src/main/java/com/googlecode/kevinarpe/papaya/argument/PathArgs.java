@@ -69,6 +69,9 @@ public final class PathArgs {
      * <p>
      * Example: For class {@code foo.bar.Baz}, relative resource path {@code "data/xyz.txt"}
      * becomes absolute resource path {@code "/foo/bar/data/xyz.txt"}
+     * <p>
+     * <a href="http://technotes.tostaky.biz/2012/08/understanding-absolute-and-relative.html"
+     * >Read more here about relative vs. absolute paths.</a>
      * 
      * @param clazz
      *        ref to class object to find resource

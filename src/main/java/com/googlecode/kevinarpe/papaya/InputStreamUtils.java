@@ -49,8 +49,11 @@ public final class InputStreamUtils {
      * from method {@link InputStream#read()} cannot be guaranteed by the interface
      * {@link InputStream}.
      * <p>
-     * Most primitive types in Java are signed (except {@code char}), this method, oddly, returns
-     * an integer.  The range for {@code byte} is -128 to 127.
+     * Most primitive types in Java are signed (except {@code char}).  The range for {@code byte}
+     * is -128 to 127.  This method returns an unsigned byte stored in a signed integer type.  Be
+     * careful when casting between {@code byte} and {@code integer}.  For example, if this method
+     * returns 255, casting to byte will have value -128.  If then cast to an integer, the value
+     * will by -128, not 255.
      * 
      * @param in
      *        stream handle from which to read the next byte
@@ -65,7 +68,7 @@ public final class InputStreamUtils {
      * @see InputStream#read()
      */
     @NotFullyTested
-    public static int checkedReadNextByte(InputStream in)
+    public static int checkedReadNextUnsignedByte(InputStream in)
     throws IOException {
         ObjectArgs.checkNotNull(in, "in");
         

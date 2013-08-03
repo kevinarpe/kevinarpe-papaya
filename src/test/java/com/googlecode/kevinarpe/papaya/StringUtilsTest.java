@@ -48,7 +48,7 @@ public class StringUtilsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringUtil.trimWhitespacePrefix
+    // StringUtils.trimWhitespacePrefix
     //
 
     @DataProvider
@@ -108,7 +108,7 @@ public class StringUtilsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringUtil.trimWhitespaceSuffix
+    // StringUtils.trimWhitespaceSuffix
     //
 
     @DataProvider
@@ -168,7 +168,7 @@ public class StringUtilsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringUtil.parseBoolean
+    // StringUtils.parseBoolean
     //
 
     @DataProvider
@@ -228,7 +228,7 @@ public class StringUtilsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringUtil.isWhitespace
+    // StringUtils.isWhitespace
     //
 
     @DataProvider
@@ -259,7 +259,7 @@ public class StringUtilsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringUtil.substringPrefix
+    // StringUtils.substringPrefix
     //
     
     @DataProvider
@@ -333,7 +333,7 @@ public class StringUtilsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringUtil.substringSuffix
+    // StringUtils.substringSuffix
     //
     
     @DataProvider
@@ -412,7 +412,7 @@ public class StringUtilsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringUtil.removeCharAt
+    // StringUtils.removeCharAt
     //
     
     @DataProvider
@@ -478,7 +478,7 @@ public class StringUtilsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringUtil.addPrefixAndSuffixPerLine
+    // StringUtils.addPrefixAndSuffixPerLine
     //
     
     @DataProvider
@@ -853,7 +853,7 @@ public class StringUtilsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringUtil.addPrefixPerLine
+    // StringUtils.addPrefixPerLine
     //
 
     @DataProvider
@@ -923,7 +923,7 @@ public class StringUtilsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringUtil.addSuffixPerLine
+    // StringUtils.addSuffixPerLine
     //
 
     @DataProvider
@@ -970,7 +970,7 @@ public class StringUtilsTest {
     }
     
     ///////////////////////////////////////////////////////////////////////////
-    // StringUtil.TextProcessorOption
+    // StringUtils.TextProcessorOption
     //
     
     @Test

@@ -33,7 +33,7 @@ import java.io.PushbackInputStream;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
-import com.google.common.primitives.Bytes;
+import com.google.common.primitives.Ints;
 import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.PathArgs;
@@ -50,11 +50,15 @@ public final class ZipUtils {
     }
 
     /**
-     * Tricky: We cannot use byte here because range is -128 to 127.
-     * Instead, we intentionally use int to match return type from InputStream.read().
-     * Ref: http://www.onicos.com/staff/iz/formats/gzip.html
+     * First byte: 0x1f
+     * <br>Second byte: 0x8b
+     * <p>
+     * Bytes are stored as integers to match return type of {@link InputStream#read()}.
+     * <p>
+     * Reference: <a href="http://www.onicos.com/staff/iz/formats/gzip.html"
+     * >http://www.onicos.com/staff/iz/formats/gzip.html</a>
      */
-    public static final List<Byte> GZIP_MAGIC_BYTE_LIST = Bytes.asList((byte) 0x1f, (byte) 0x8b);
+    public static final List<Integer> GZIP_MAGIC_BYTE_LIST = Ints.asList(0x1f, 0x8b);
     
     /**
      * Tests if a file has GZIP compression format.
@@ -84,7 +88,7 @@ public final class ZipUtils {
         
         try {
             for (final int expected: GZIP_MAGIC_BYTE_LIST) {
-                final int actual = InputStreamUtils.checkedReadNextByte(fin);
+                final int actual = InputStreamUtils.checkedReadNextUnsignedByte(fin);
                 if (-1 == actual || actual != expected) {
                     return false;
                 }
@@ -177,7 +181,7 @@ public final class ZipUtils {
             return pbin;
         }
         for (int i = 0; i < size; ++i) {
-            final byte expected = GZIP_MAGIC_BYTE_LIST.get(i);
+            final byte expected = GZIP_MAGIC_BYTE_LIST.get(i).byteValue();
             final byte actual = byteArr[i];
             if (expected != actual) {
                 return pbin;
