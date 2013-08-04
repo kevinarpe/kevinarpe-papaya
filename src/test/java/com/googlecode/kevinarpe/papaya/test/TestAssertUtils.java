@@ -1,5 +1,9 @@
 package com.googlecode.kevinarpe.papaya.test;
 
+import org.testng.Assert;
+
+import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
+
 /*
  * #%L
  * This file is part of Papaya.
@@ -105,5 +109,15 @@ Expected: (length: 8000028): (sample of 1024 chars from index 4000014) '-909a-cf
         }
         sample = String.format("(length: %d): %s", hugeStringLen, sample);
         return sample;
+    }
+    
+    public static <T> void assertToStringMethodValid(T[] arr) {
+        ArrayArgs.checkNotEmptyAndElementsNotNull(arr, "arr");
+        
+        for (T x: arr) {
+            String s = x.toString();
+            Assert.assertNotNull(s);
+            Assert.assertTrue(!s.isEmpty(), "!isEmpty");
+        }
     }
 }
