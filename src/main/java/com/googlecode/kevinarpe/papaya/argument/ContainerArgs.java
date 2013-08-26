@@ -1,7 +1,6 @@
 package com.googlecode.kevinarpe.papaya.argument;
 
 import java.util.Collection;
-
 import com.google.common.base.Joiner;
 
 /*
@@ -323,7 +322,7 @@ final class ContainerArgs {
             String containerType,
             TNeedle value,
             String containerArgName) {
-        ObjectArgs.checkNotNull(ref, "ref");
+        ObjectArgs.checkNotNull(ref, containerArgName);
         
         if (ref.isEmpty()) {
             String w = _getContainerTypeWarning(containerType);
@@ -347,6 +346,22 @@ final class ContainerArgs {
                 Joiner.on(", ").useForNull("null").join(ref),
                 w,
                 w2));
+        }
+    }
+    
+    static <TValue> void _checkElementsNotNull(
+            Iterable<TValue> ref, String containerType, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+        
+        int count = 0;
+        for (TValue item: ref) {
+            if (null == item) {
+                String w = StringArgs._getArgNameWarning(argName, "argName");
+                throw new NullPointerException(String.format(
+                    "%s argument '%s': Item at index %d is null%s",
+                    containerType, argName, count, w));
+            }
+            ++count;
         }
     }
 }

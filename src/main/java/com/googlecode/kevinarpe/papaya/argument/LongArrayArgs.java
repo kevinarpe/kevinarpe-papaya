@@ -1,0 +1,575 @@
+package com.googlecode.kevinarpe.papaya.argument;
+
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ValueAsTypeIterator._IValueAsLongIterator;
+
+public final class LongArrayArgs {
+
+    // Disable default constructor
+    private LongArrayArgs() {
+    }
+
+    /**
+     * Tests if all values in an array are positive.
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value is not positive
+     * 
+     * @see #checkPositive(Long[], String)
+     */
+    @NotFullyTested
+    public static long[] checkPositive(long[] ref, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedPrimitiveLongArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkPositive(iter, argName);
+        return ref;
+    }
+    
+    /**
+     * Tests if all values in an array are positive.
+     * 
+     * @param ref
+     *        array of values to test.  May be empty.
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} (or any element) is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value is not positive
+     * 
+     * @see #checkPositive(long[], String)
+     */
+    @NotFullyTested
+    public static Long[] checkPositive(Long[] ref, String argName) {
+        ArrayArgs.checkElementsNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedLongObjectArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkPositive(iter, argName);
+        return ref;
+    }
+    
+    /**
+     * Tests if all values in an array are not positive.
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value is positive
+     */
+    @NotFullyTested
+    public static long[] checkNotPositive(long[] ref, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedPrimitiveLongArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkNotPositive(iter, argName);
+        return ref;
+    }
+    
+    /**
+     * Tests if all values in an array are not positive.
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} (or any element) is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value is positive
+     */
+    @NotFullyTested
+    public static Long[] checkNotPositive(Long[] ref, String argName) {
+        ArrayArgs.checkElementsNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedLongObjectArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkNotPositive(iter, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array are negative.
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value is not negative
+     */
+    @NotFullyTested
+    public static long[] checkNegative(long[] ref, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedPrimitiveLongArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkNegative(iter, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array are negative.
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} (or any element) is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value is not negative
+     */
+    @NotFullyTested
+    public static Long[] checkNegative(Long[] ref, String argName) {
+        ArrayArgs.checkElementsNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedLongObjectArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkNegative(iter, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array are not negative.
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value is negative
+     */
+    @NotFullyTested
+    public static long[] checkNotNegative(long[] ref, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedPrimitiveLongArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkNotNegative(iter, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array are not negative.
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} (or any element) is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value is negative
+     */
+    @NotFullyTested
+    public static Long[] checkNotNegative(Long[] ref, String argName) {
+        ArrayArgs.checkElementsNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedLongObjectArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkNotNegative(iter, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array are within specified range.
+     * <p>
+     * Example: All values must be >= 3 and <= 7:
+     * <br>{@code checkValueInsideRange(numbersArray, 3, 7, "numbersArray");}
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param minRangeValue
+     *        minimum value (inclusive) for inclusive range of each value in array to test
+     * @param maxRangeValue
+     *        maximum value (inclusive) for inclusive range of each value in array to test
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code minValue > maxValue}</li>
+     *   <li>if any value of {@code ref} is outside allowed range</li>
+     * </ul>
+     */
+    @NotFullyTested
+    public static long[] checkValueInsideRange(
+            long[] ref, long minRangeValue, long maxRangeValue, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedPrimitiveLongArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkValueInsideRange(iter, minRangeValue, maxRangeValue, argName);
+        return ref;
+    }
+    
+    /**
+     * Tests if all values in an array are within specified range.
+     * <p>
+     * Example: All values must be >= 3 and <= 7:
+     * <br>{@code checkValueInsideRange(numbersArray, 3, 7, "numbersArray");}
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param minRangeValue
+     *        minimum value (inclusive) for inclusive range of each value in array to test
+     * @param maxRangeValue
+     *        maximum value (inclusive) for inclusive range of each value in array to test
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} (or any element) is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code minValue > maxValue}</li>
+     *   <li>if any value of {@code ref} is outside allowed range</li>
+     * </ul>
+     */
+    @NotFullyTested
+    public static Long[] checkValueInsideRange(
+            Long[] ref, long minValue, long maxValue, String argName) {
+        ArrayArgs.checkElementsNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedLongObjectArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkValueInsideRange(iter, minValue, maxValue, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array are <b>not</b> within specified range.
+     * <p>
+     * Example: All values must be <= 3 and >= 7:
+     * <br>{@code checkValueInsideRange(numbersArray, 4, 6, "numbersArray");}
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param minRangeValue
+     *        minimum value (inclusive) for exclusive range of each value in array to test 
+     * @param maxRangeValue
+     *        maximum value (inclusive) for exclusive range of each value in array to test
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code minValue > maxValue}</li>
+     *   <li>if any value of {@code ref} is inside not-allowed range</li>
+     * </ul>
+     */
+    @NotFullyTested
+    public static long[] checkValueOutsideRange(
+            long[] ref, long minRangeValue, long maxRangeValue, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedPrimitiveLongArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkValueInsideRange(iter, minRangeValue, maxRangeValue, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array are <b>not</b> within specified range.
+     * <p>
+     * Example: All values must be <= 3 and >= 7:
+     * <br>{@code checkValueInsideRange(numbersArray, 4, 6, "numbersArray");}
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param minRangeValue
+     *        minimum value (inclusive) for exclusive range of each value in array to test 
+     * @param maxRangeValue
+     *        maximum value (inclusive) for exclusive range of each value in array to test
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} (or any element) is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code minValue > maxValue}</li>
+     *   <li>if any value of {@code ref} is inside not-allowed range</li>
+     * </ul>
+     */
+    @NotFullyTested
+    public static Long[] checkValueOutsideRange(
+            Long[] ref, long minRangeValue, long maxRangeValue, String argName) {
+        ArrayArgs.checkElementsNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedLongObjectArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkValueInsideRange(iter, minRangeValue, maxRangeValue, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array have a minimum value.
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param minValue
+     *        minimum value (inclusive)
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value of {@code ref} is less than {@code minValue}
+     */
+    @NotFullyTested
+    public static long[] checkMinValue(long[] ref, long minValue, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedPrimitiveLongArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkMinValue(iter, minValue, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array have a minimum value.
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param minValue
+     *        minimum value (inclusive)
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} (or any element) is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value of {@code ref} is less than {@code minValue}
+     */
+    @NotFullyTested
+    public static Long[] checkMinValue(Long[] ref, long minValue, String argName) {
+        ArrayArgs.checkElementsNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedLongObjectArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkMinValue(iter, minValue, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array have a maximum value.
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param maxValue
+     *        maximum value (inclusive)
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value of {@code ref} is greater than {@code maxValue}
+     */
+    @NotFullyTested
+    public static long[] checkMaxValue(long[] ref, long maxValue, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedPrimitiveLongArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkMaxValue(iter, maxValue, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array have a maximum value.
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param maxValue
+     *        maximum value (inclusive)
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} (or any element) is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value of {@code ref} is greater than {@code maxValue}
+     */
+    @NotFullyTested
+    public static Long[] checkMaxValue(Long[] ref, long maxValue, String argName) {
+        ArrayArgs.checkElementsNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedLongObjectArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkMaxValue(iter, maxValue, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array have an exact value.
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param exactValue
+     *        expected value
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value of {@code ref} is not {@code exactValue}
+     */
+    @NotFullyTested
+    public static long[] checkExactValue(long[] ref, long exactValue, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedPrimitiveLongArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkExactValue(iter, exactValue, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array have an exact value.
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param exactValue
+     *        expected value
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} (or any element) is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value of {@code ref} is not {@code exactValue}
+     */
+    @NotFullyTested
+    public static Long[] checkExactValue(Long[] ref, long exactValue, String argName) {
+        ArrayArgs.checkElementsNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedLongObjectArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkExactValue(iter, exactValue, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array do not have an exact value.
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param exactValue
+     *        expected value
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value of {@code ref} is {@code exactValue}
+     */
+    @NotFullyTested
+    public static long[] checkNotExactValue(long[] ref, long exactValue, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedPrimitiveLongArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkNotExactValue(iter, exactValue, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array do not have an exact value.
+     * 
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param exactValue
+     *        expected value
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     * 
+     * @return the validated array
+     * 
+     * @throws NullPointerException
+     *         if {@code ref} (or any element) is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value of {@code ref} is {@code exactValue}
+     */
+    @NotFullyTested
+    public static Long[] checkNotExactValue(Long[] ref, long exactValue, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+        
+        _IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedLongObjectArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkNotExactValue(iter, exactValue, argName);
+        return ref;
+    }
+}

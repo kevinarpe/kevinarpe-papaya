@@ -213,6 +213,7 @@ public final class CollectionArgs {
      * @return the validated collection reference
      *
      * @see ObjectArgs#checkNotNull(Object, String)
+     * @see IterableArgs#checkElementsNotNull(Iterable, String)
      * @see ArrayArgs#checkElementsNotNull(Object[], String)
      *
      * @throws NullPointerException
@@ -221,16 +222,7 @@ public final class CollectionArgs {
     @FullyTested
     public static <TValue, TCollection extends Collection<TValue>>
     TCollection checkElementsNotNull(TCollection ref, String argName) {
-        ObjectArgs.checkNotNull(ref, argName);
-        int count = 0;
-        for (TValue item: ref) {
-            if (null == item) {
-                String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new NullPointerException(String.format(
-                    "Collection argument '%s': Item at index %d is null%s", argName, count, w));
-            }
-            ++count;
-        }
+        ContainerArgs._checkElementsNotNull(ref, "Collection", argName);
         return ref;
     }
     
