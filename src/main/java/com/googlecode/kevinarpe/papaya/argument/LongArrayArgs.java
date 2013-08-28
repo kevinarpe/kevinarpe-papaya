@@ -25,7 +25,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ValueAsTypeIterator._IValueAsLongIterator;
 
 public final class LongArrayArgs {
@@ -35,7 +35,7 @@ public final class LongArrayArgs {
     }
 
     /**
-     * Tests if all values in an array are positive.
+     * Tests if all values in an array are positive: greater than zero.
      * 
      * @param ref
      *        array of values to test.  May be empty
@@ -51,7 +51,7 @@ public final class LongArrayArgs {
      * 
      * @see #checkPositive(Long[], String)
      */
-    @NotFullyTested
+    @FullyTested
     public static long[] checkPositive(long[] ref, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
         
@@ -62,7 +62,7 @@ public final class LongArrayArgs {
     }
     
     /**
-     * Tests if all values in an array are positive.
+     * Tests if all values in an array are positive: greater than zero.
      * 
      * @param ref
      *        array of values to test.  May be empty.
@@ -78,7 +78,7 @@ public final class LongArrayArgs {
      * 
      * @see #checkPositive(long[], String)
      */
-    @NotFullyTested
+    @FullyTested
     public static Long[] checkPositive(Long[] ref, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
         
@@ -89,7 +89,7 @@ public final class LongArrayArgs {
     }
     
     /**
-     * Tests if all values in an array are not positive.
+     * Tests if all values in an array are not positive: less than or equal to zero.
      * 
      * @param ref
      *        array of values to test.  May be empty
@@ -103,7 +103,7 @@ public final class LongArrayArgs {
      * @throws IllegalArgumentException
      *         if any value is positive
      */
-    @NotFullyTested
+    @FullyTested
     public static long[] checkNotPositive(long[] ref, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
         
@@ -114,7 +114,7 @@ public final class LongArrayArgs {
     }
     
     /**
-     * Tests if all values in an array are not positive.
+     * Tests if all values in an array are not positive: less than or equal to zero.
      * 
      * @param ref
      *        array of values to test.  May be empty
@@ -128,7 +128,7 @@ public final class LongArrayArgs {
      * @throws IllegalArgumentException
      *         if any value is positive
      */
-    @NotFullyTested
+    @FullyTested
     public static Long[] checkNotPositive(Long[] ref, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
         
@@ -139,7 +139,7 @@ public final class LongArrayArgs {
     }
 
     /**
-     * Tests if all values in an array are negative.
+     * Tests if all values in an array are negative: less than zero.
      * 
      * @param ref
      *        array of values to test.  May be empty
@@ -153,7 +153,7 @@ public final class LongArrayArgs {
      * @throws IllegalArgumentException
      *         if any value is not negative
      */
-    @NotFullyTested
+    @FullyTested
     public static long[] checkNegative(long[] ref, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
         
@@ -164,7 +164,7 @@ public final class LongArrayArgs {
     }
 
     /**
-     * Tests if all values in an array are negative.
+     * Tests if all values in an array are negative: less than zero.
      * 
      * @param ref
      *        array of values to test.  May be empty
@@ -178,7 +178,7 @@ public final class LongArrayArgs {
      * @throws IllegalArgumentException
      *         if any value is not negative
      */
-    @NotFullyTested
+    @FullyTested
     public static Long[] checkNegative(Long[] ref, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
         
@@ -189,7 +189,7 @@ public final class LongArrayArgs {
     }
 
     /**
-     * Tests if all values in an array are not negative.
+     * Tests if all values in an array are not negative: greater than or equal to zero.
      * 
      * @param ref
      *        array of values to test.  May be empty
@@ -203,7 +203,7 @@ public final class LongArrayArgs {
      * @throws IllegalArgumentException
      *         if any value is negative
      */
-    @NotFullyTested
+    @FullyTested
     public static long[] checkNotNegative(long[] ref, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
         
@@ -214,7 +214,7 @@ public final class LongArrayArgs {
     }
 
     /**
-     * Tests if all values in an array are not negative.
+     * Tests if all values in an array are not negative: greater than or equal to zero.
      * 
      * @param ref
      *        array of values to test.  May be empty
@@ -228,7 +228,7 @@ public final class LongArrayArgs {
      * @throws IllegalArgumentException
      *         if any value is negative
      */
-    @NotFullyTested
+    @FullyTested
     public static Long[] checkNotNegative(Long[] ref, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
         
@@ -263,7 +263,7 @@ public final class LongArrayArgs {
      *   <li>if any value of {@code ref} is outside allowed range</li>
      * </ul>
      */
-    @NotFullyTested
+    @FullyTested
     public static long[] checkValueInsideRange(
             long[] ref, long minRangeValue, long maxRangeValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
@@ -299,14 +299,14 @@ public final class LongArrayArgs {
      *   <li>if any value of {@code ref} is outside allowed range</li>
      * </ul>
      */
-    @NotFullyTested
+    @FullyTested
     public static Long[] checkValueInsideRange(
-            Long[] ref, long minValue, long maxValue, String argName) {
+            Long[] ref, long minRangeValue, long maxRangeValue, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
         
         _IValueAsLongIterator iter =
             new ValueAsTypeIterator._UncheckedLongObjectArrayAsLongIterator(ref);
-        ValueAsTypeIterator._checkValueInsideRange(iter, minValue, maxValue, argName);
+        ValueAsTypeIterator._checkValueInsideRange(iter, minRangeValue, maxRangeValue, argName);
         return ref;
     }
 
@@ -335,14 +335,14 @@ public final class LongArrayArgs {
      *   <li>if any value of {@code ref} is inside not-allowed range</li>
      * </ul>
      */
-    @NotFullyTested
+    @FullyTested
     public static long[] checkValueOutsideRange(
             long[] ref, long minRangeValue, long maxRangeValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
         
         _IValueAsLongIterator iter =
             new ValueAsTypeIterator._UncheckedPrimitiveLongArrayAsLongIterator(ref);
-        ValueAsTypeIterator._checkValueInsideRange(iter, minRangeValue, maxRangeValue, argName);
+        ValueAsTypeIterator._checkValueOutsideRange(iter, minRangeValue, maxRangeValue, argName);
         return ref;
     }
 
@@ -371,14 +371,14 @@ public final class LongArrayArgs {
      *   <li>if any value of {@code ref} is inside not-allowed range</li>
      * </ul>
      */
-    @NotFullyTested
+    @FullyTested
     public static Long[] checkValueOutsideRange(
             Long[] ref, long minRangeValue, long maxRangeValue, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
         
         _IValueAsLongIterator iter =
             new ValueAsTypeIterator._UncheckedLongObjectArrayAsLongIterator(ref);
-        ValueAsTypeIterator._checkValueInsideRange(iter, minRangeValue, maxRangeValue, argName);
+        ValueAsTypeIterator._checkValueOutsideRange(iter, minRangeValue, maxRangeValue, argName);
         return ref;
     }
 
@@ -399,7 +399,7 @@ public final class LongArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is less than {@code minValue}
      */
-    @NotFullyTested
+    @FullyTested
     public static long[] checkMinValue(long[] ref, long minValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
         
@@ -426,7 +426,7 @@ public final class LongArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is less than {@code minValue}
      */
-    @NotFullyTested
+    @FullyTested
     public static Long[] checkMinValue(Long[] ref, long minValue, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
         
@@ -453,7 +453,7 @@ public final class LongArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is greater than {@code maxValue}
      */
-    @NotFullyTested
+    @FullyTested
     public static long[] checkMaxValue(long[] ref, long maxValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
         
@@ -480,7 +480,7 @@ public final class LongArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is greater than {@code maxValue}
      */
-    @NotFullyTested
+    @FullyTested
     public static Long[] checkMaxValue(Long[] ref, long maxValue, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
         
@@ -507,7 +507,7 @@ public final class LongArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is not {@code exactValue}
      */
-    @NotFullyTested
+    @FullyTested
     public static long[] checkExactValue(long[] ref, long exactValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
         
@@ -534,7 +534,7 @@ public final class LongArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is not {@code exactValue}
      */
-    @NotFullyTested
+    @FullyTested
     public static Long[] checkExactValue(Long[] ref, long exactValue, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
         
@@ -561,7 +561,7 @@ public final class LongArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is {@code exactValue}
      */
-    @NotFullyTested
+    @FullyTested
     public static long[] checkNotExactValue(long[] ref, long exactValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
         
@@ -588,9 +588,9 @@ public final class LongArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is {@code exactValue}
      */
-    @NotFullyTested
+    @FullyTested
     public static Long[] checkNotExactValue(Long[] ref, long exactValue, String argName) {
-        ObjectArgs.checkNotNull(ref, argName);
+        ArrayArgs.checkElementsNotNull(ref, argName);
         
         _IValueAsLongIterator iter =
             new ValueAsTypeIterator._UncheckedLongObjectArrayAsLongIterator(ref);

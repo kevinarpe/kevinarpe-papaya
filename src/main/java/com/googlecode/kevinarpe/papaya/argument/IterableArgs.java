@@ -44,12 +44,12 @@ public final class IterableArgs {
      *
      * @return the validated iterable reference
      *
-     * @see ObjectArgs#checkNotNull(Object, String)
-     * @see ArrayArgs#checkElementsNotNull(Object[], String)
-     * @see CollectionArgs#checkElementsNotNull(Object[], String)
-     *
      * @throws NullPointerException
      *         if {@code ref} (or any element) is {@code null}
+     *
+     * @see ObjectArgs#checkNotNull(Object, String)
+     * @see ArrayArgs#checkElementsNotNull(Object[], String)
+     * @see CollectionArgs#checkElementsNotNull(Collection, String)
      */
     @NotFullyTested
     public static <TValue, TIterable extends Iterable<TValue>>

@@ -25,7 +25,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ValueAsTypeIterator._IValueAsLongIterator;
 
 public class LongIterableArgs {
@@ -51,7 +51,7 @@ public class LongIterableArgs {
      * 
      * //@see #checkPositive(Long[], String)
      */
-    @NotFullyTested
+    @FullyTested
     public static <TIterable extends Iterable<Long>>
     TIterable checkPositive(TIterable ref, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
@@ -79,7 +79,7 @@ public class LongIterableArgs {
      * 
      * //@see #checkPositive(Long[], String)
      */
-    @NotFullyTested
+    @FullyTested
     public static <TIterable extends Iterable<Long>>
     TIterable checkNotPositive(TIterable ref, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
@@ -91,7 +91,7 @@ public class LongIterableArgs {
     }
 
     /**
-     * Tests if all values in an {@link Iterable} are negative: greater than zero.
+     * Tests if all values in an {@link Iterable} are negative: less than zero.
      * 
      * @param ref
      *        iterable of values to test.  May be empty
@@ -107,7 +107,7 @@ public class LongIterableArgs {
      * 
      * //@see #checkNegative(Long[], String)
      */
-    @NotFullyTested
+    @FullyTested
     public static <TIterable extends Iterable<Long>>
     TIterable checkNegative(TIterable ref, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
@@ -119,7 +119,7 @@ public class LongIterableArgs {
     }
 
     /**
-     * Tests if all values in an {@link Iterable} are not negative: less than or equal to zero.
+     * Tests if all values in an {@link Iterable} are not negative: greater than or equal to zero.
      * 
      * @param ref
      *        iterable of values to test.  May be empty
@@ -135,7 +135,7 @@ public class LongIterableArgs {
      * 
      * //@see #checkNegative(Long[], String)
      */
-    @NotFullyTested
+    @FullyTested
     public static <TIterable extends Iterable<Long>>
     TIterable checkNotNegative(TIterable ref, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
@@ -171,7 +171,7 @@ public class LongIterableArgs {
      *   <li>if any value of {@code ref} is outside allowed range</li>
      * </ul>
      */
-    @NotFullyTested
+    @FullyTested
     public static <TIterable extends Iterable<Long>>
     TIterable checkValueInsideRange(TIterable ref, long minValue, long maxValue, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
@@ -207,7 +207,7 @@ public class LongIterableArgs {
      *   <li>if any value of {@code ref} is inside not-allowed range</li>
      * </ul>
      */
-    @NotFullyTested
+    @FullyTested
     public static <TIterable extends Iterable<Long>>
     TIterable checkValueOutsideRange(TIterable ref, long minValue, long maxValue, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
@@ -235,7 +235,7 @@ public class LongIterableArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is less than {@code minValue}
      */
-    @NotFullyTested
+    @FullyTested
     public static <TIterable extends Iterable<Long>>
     TIterable checkMinValue(TIterable ref, long minValue, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
@@ -263,7 +263,7 @@ public class LongIterableArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is greater than {@code maxValue}
      */
-    @NotFullyTested
+    @FullyTested
     public static <TIterable extends Iterable<Long>>
     TIterable checkMaxValue(TIterable ref, long maxValue, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
@@ -291,7 +291,7 @@ public class LongIterableArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is {@code exactValue}
      */
-    @NotFullyTested
+    @FullyTested
     public static <TIterable extends Iterable<Long>>
     TIterable checkExactValue(TIterable ref, long exactValue, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
@@ -319,7 +319,7 @@ public class LongIterableArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is {@code exactValue}
      */
-    @NotFullyTested
+    @FullyTested
     public static <TIterable extends Iterable<Long>>
     TIterable checkNotExactValue(TIterable ref, long exactValue, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);

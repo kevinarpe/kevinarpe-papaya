@@ -37,7 +37,7 @@ final class ValueAsTypeIterator {
         
         public boolean hasNext();
         
-        public int index();
+        public int nextIndex();
         
         public String getUnderlyingDescription();
     }
@@ -69,8 +69,8 @@ final class ValueAsTypeIterator {
         }
         
         @Override
-        public int index() {
-            return _index;
+        public int nextIndex() {
+            return 1 + _index;
         }
     }
     
@@ -85,8 +85,8 @@ final class ValueAsTypeIterator {
         
         @Override
         public boolean hasNext() {
-            int index = index();
-            boolean x = (1 + index < _size);
+            int index = nextIndex();
+            boolean x = (index < _size);
             return x;
         }
         
@@ -138,7 +138,7 @@ final class ValueAsTypeIterator {
         
         @Override
         public long nextAsLong() {
-            int index = index();
+            int index = nextIndex();
             long x = getValueAsLong(index);
             incrementIndex();
             return x;
@@ -157,7 +157,7 @@ final class ValueAsTypeIterator {
         
         @Override
         public double nextAsDouble() {
-            int index = index();
+            int index = nextIndex();
             double x = getValueAsDouble(index);
             incrementIndex();
             return x;
@@ -371,7 +371,7 @@ final class ValueAsTypeIterator {
             final long value = iter.nextAsLong();
             if (value <= 0) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d is not positive: %d%s",
@@ -385,7 +385,7 @@ final class ValueAsTypeIterator {
             final long value = iter.nextAsLong();
             if (value > 0) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d is positive: %d%s",
@@ -399,7 +399,7 @@ final class ValueAsTypeIterator {
             final long value = iter.nextAsLong();
             if (value >= 0) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d is not negative: %d%s",
@@ -413,7 +413,7 @@ final class ValueAsTypeIterator {
             final long value = iter.nextAsLong();
             if (value < 0) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d is negative: %d%s",
@@ -441,7 +441,7 @@ final class ValueAsTypeIterator {
             final long value = iter.nextAsLong();
             if (value < minRangeValue || value > maxRangeValue) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d outside valid range: (min) %d <= %d <= %d (max)%s",
@@ -469,7 +469,7 @@ final class ValueAsTypeIterator {
             final long value = iter.nextAsLong();
             if (value >= minRangeValue && value <= maxRangeValue) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d inside invalid range: (min) %d >= %d <= %d (max)%s",
@@ -483,7 +483,7 @@ final class ValueAsTypeIterator {
             final long value = iter.nextAsLong();
             if (value < minValue) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d < 'minValue': %d < %d%s",
@@ -497,7 +497,7 @@ final class ValueAsTypeIterator {
             final long value = iter.nextAsLong();
             if (value > maxValue) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d > 'maxValue': %d > %d%s",
@@ -511,7 +511,7 @@ final class ValueAsTypeIterator {
             final long value = iter.nextAsLong();
             if (value != exactValue) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d != 'exactValue': %d != %d%s",
@@ -525,7 +525,7 @@ final class ValueAsTypeIterator {
             final long value = iter.nextAsLong();
             if (value == exactValue) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d == 'exactValue': %d == %d%s",
@@ -543,7 +543,7 @@ final class ValueAsTypeIterator {
             final double value = iter.nextAsDouble();
             if (value <= 0.0d) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d is not positive: %f%s",
@@ -557,7 +557,7 @@ final class ValueAsTypeIterator {
             final double value = iter.nextAsDouble();
             if (value > 0.0d) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d is positive: %f%s",
@@ -571,7 +571,7 @@ final class ValueAsTypeIterator {
             final double value = iter.nextAsDouble();
             if (value >= 0.0d) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d is not negative: %f%s",
@@ -585,7 +585,7 @@ final class ValueAsTypeIterator {
             final double value = iter.nextAsDouble();
             if (value < 0.0d) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d is negative: %f%s",
@@ -599,7 +599,7 @@ final class ValueAsTypeIterator {
             final double value = iter.nextAsDouble();
             if (value < minValue) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d < 'minValue': %f < %f%s",
@@ -607,7 +607,7 @@ final class ValueAsTypeIterator {
             }
             if (value > maxValue) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d > 'maxValue': %f > %f%s",
@@ -621,7 +621,7 @@ final class ValueAsTypeIterator {
             final double value = iter.nextAsDouble();
             if (value < minValue) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d < 'minValue': %f < %f%s",
@@ -635,7 +635,7 @@ final class ValueAsTypeIterator {
             final double value = iter.nextAsDouble();
             if (value > maxValue) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d > 'maxValue': %f > %f%s",
@@ -649,7 +649,7 @@ final class ValueAsTypeIterator {
             final double value = iter.nextAsDouble();
             if (value != exactValue) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d != 'exactValue': %f != %f%s",
@@ -664,7 +664,7 @@ final class ValueAsTypeIterator {
             final double value = iter.nextAsDouble();
             if (value == exactValue) {
                 final String desc = iter.getUnderlyingDescription();
-                final int index = iter.index();
+                final int index = iter.nextIndex() - 1;
                 final String w = StringArgs._getArgNameWarning(argName, "argName");
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d == 'exactValue': %f == %f%s",
