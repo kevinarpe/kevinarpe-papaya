@@ -25,7 +25,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 public final class IterableArgs {
 
@@ -51,7 +51,7 @@ public final class IterableArgs {
      * @see ArrayArgs#checkElementsNotNull(Object[], String)
      * @see CollectionArgs#checkElementsNotNull(Collection, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static <TValue, TIterable extends Iterable<TValue>>
     TIterable checkElementsNotNull(TIterable ref, String argName) {
         ContainerArgs._checkElementsNotNull(ref, "Iterable", argName);

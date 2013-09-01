@@ -36,6 +36,8 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
  */
 @FullyTested
 public final class ShortArgs {
+    
+    // TODO: Add checkNotExactValue
 
     // Disable default constructor
     private ShortArgs() {
@@ -138,8 +140,7 @@ public final class ShortArgs {
     
     /**
      * Convenience method to call
-     * {@link ComparableArgs#checkExactValue(Comparable, Comparable, String)}
-     * where {@code minValue = null} and {@code maxValue = null}.
+     * {@link ComparableArgs#checkExactValue(Comparable, Comparable, String)}.
      * 
      * @see #checkValueRange(short, short, short, String)
      * @see #checkMinValue(short, short, String)
@@ -148,6 +149,20 @@ public final class ShortArgs {
     @FullyTested
     public static short checkExactValue(short value, short exactValue, String argName) {
         ComparableArgs.checkExactValue(value, exactValue, argName);
+        return value;
+    }
+    
+    /**
+     * Convenience method to call
+     * {@link ComparableArgs#checkNotExactValue(Comparable, Comparable, String)}.
+     * 
+     * @see #checkValueRange(short, short, short, String)
+     * @see #checkMinValue(short, short, String)
+     * @see #checkMaxValue(short, short, String)
+     */
+    @FullyTested
+    public static short checkNotExactValue(short value, short exactValue, String argName) {
+        ComparableArgs.checkNotExactValue(value, exactValue, argName);
         return value;
     }
 }

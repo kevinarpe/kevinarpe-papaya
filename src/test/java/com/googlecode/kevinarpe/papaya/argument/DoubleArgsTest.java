@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -63,11 +64,12 @@ public class DoubleArgsTest {
     
     @Test(dataProvider = "_checkPositive_Pass_Data")
     public void checkPositive_Pass(double i) {
-        DoubleArgs.checkPositive(i, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == DoubleArgs.checkPositive(i, "i"));
         // Demonstrate argName can be anything ridiculous.
-        DoubleArgs.checkPositive(i, null);
-        DoubleArgs.checkPositive(i, "");
-        DoubleArgs.checkPositive(i, "   ");
+        Assert.assertTrue(i == DoubleArgs.checkPositive(i, null));
+        Assert.assertTrue(i == DoubleArgs.checkPositive(i, ""));
+        Assert.assertTrue(i == DoubleArgs.checkPositive(i, "   "));
     }
 
     @DataProvider
@@ -102,11 +104,12 @@ public class DoubleArgsTest {
     
     @Test(dataProvider = "_checkNotPositive_Pass_Data")
     public void checkNotPositive_Pass(double i) {
-        DoubleArgs.checkNotPositive(i, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == DoubleArgs.checkNotPositive(i, "i"));
         // Demonstrate argName can be anything ridiculous.
-        DoubleArgs.checkNotPositive(i, null);
-        DoubleArgs.checkNotPositive(i, "");
-        DoubleArgs.checkNotPositive(i, "   ");
+        Assert.assertTrue(i == DoubleArgs.checkNotPositive(i, null));
+        Assert.assertTrue(i == DoubleArgs.checkNotPositive(i, ""));
+        Assert.assertTrue(i == DoubleArgs.checkNotPositive(i, "   "));
     }
     
     @DataProvider
@@ -138,11 +141,12 @@ public class DoubleArgsTest {
     
     @Test(dataProvider = "_checkNegative_Pass_Data")
     public void checkNegative_Pass(double i) {
-        DoubleArgs.checkNegative(i, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == DoubleArgs.checkNegative(i, "i"));
         // Demonstrate argName can be anything ridiculous.
-        DoubleArgs.checkNegative(i, null);
-        DoubleArgs.checkNegative(i, "");
-        DoubleArgs.checkNegative(i, "   ");
+        Assert.assertTrue(i == DoubleArgs.checkNegative(i, null));
+        Assert.assertTrue(i == DoubleArgs.checkNegative(i, ""));
+        Assert.assertTrue(i == DoubleArgs.checkNegative(i, "   "));
     }
 
     @DataProvider
@@ -175,11 +179,12 @@ public class DoubleArgsTest {
     
     @Test(dataProvider = "_checkNotNegative_Pass_Data")
     public void checkNotNegative_Pass(double i) {
-        DoubleArgs.checkNotNegative(i, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == DoubleArgs.checkNotNegative(i, "i"));
         // Demonstrate argName can be anything ridiculous.
-        DoubleArgs.checkNotNegative(i, null);
-        DoubleArgs.checkNotNegative(i, "");
-        DoubleArgs.checkNotNegative(i, "   ");
+        Assert.assertTrue(i == DoubleArgs.checkNotNegative(i, null));
+        Assert.assertTrue(i == DoubleArgs.checkNotNegative(i, ""));
+        Assert.assertTrue(i == DoubleArgs.checkNotNegative(i, "   "));
     }
 
     @DataProvider
@@ -214,11 +219,12 @@ public class DoubleArgsTest {
     
     @Test(dataProvider = "_checkValueRange_Pass_Data")
     public void checkValueRange_Pass(double i, double minValue, double maxValue) {
-        DoubleArgs.checkValueRange(i, minValue, maxValue, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == DoubleArgs.checkValueRange(i, minValue, maxValue, "i"));
         // Demonstrate argName can be anything ridiculous.
-        DoubleArgs.checkValueRange(i, minValue, maxValue, null);
-        DoubleArgs.checkValueRange(i, minValue, maxValue, "");
-        DoubleArgs.checkValueRange(i, minValue, maxValue, "   ");
+        Assert.assertTrue(i == DoubleArgs.checkValueRange(i, minValue, maxValue, null));
+        Assert.assertTrue(i == DoubleArgs.checkValueRange(i, minValue, maxValue, ""));
+        Assert.assertTrue(i == DoubleArgs.checkValueRange(i, minValue, maxValue, "   "));
     }
     
     @DataProvider
@@ -266,11 +272,12 @@ public class DoubleArgsTest {
     
     @Test(dataProvider = "_checkMinValue_Pass_Data")
     public void checkMinValue_Pass(double i, double minValue) {
-        DoubleArgs.checkMinValue(i, minValue, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == DoubleArgs.checkMinValue(i, minValue, "i"));
         // Demonstrate argName can be anything ridiculous.
-        DoubleArgs.checkMinValue(i, minValue, null);
-        DoubleArgs.checkMinValue(i, minValue, "");
-        DoubleArgs.checkMinValue(i, minValue, "   ");
+        Assert.assertTrue(i == DoubleArgs.checkMinValue(i, minValue, null));
+        Assert.assertTrue(i == DoubleArgs.checkMinValue(i, minValue, ""));
+        Assert.assertTrue(i == DoubleArgs.checkMinValue(i, minValue, "   "));
     }
     
     @DataProvider
@@ -308,11 +315,12 @@ public class DoubleArgsTest {
     
     @Test(dataProvider = "_checkMaxValue_Pass_Data")
     public void checkMaxValue_Pass(double i, double maxValue) {
-        DoubleArgs.checkMaxValue(i, maxValue, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == DoubleArgs.checkMaxValue(i, maxValue, "i"));
         // Demonstrate argName can be anything ridiculous.
-        DoubleArgs.checkMaxValue(i, maxValue, null);
-        DoubleArgs.checkMaxValue(i, maxValue, "");
-        DoubleArgs.checkMaxValue(i, maxValue, "   ");
+        Assert.assertTrue(i == DoubleArgs.checkMaxValue(i, maxValue, null));
+        Assert.assertTrue(i == DoubleArgs.checkMaxValue(i, maxValue, ""));
+        Assert.assertTrue(i == DoubleArgs.checkMaxValue(i, maxValue, "   "));
     }
     
     @DataProvider
@@ -350,11 +358,12 @@ public class DoubleArgsTest {
     
     @Test(dataProvider = "_checkExactValue_Pass_Data")
     public void checkExactValue_Pass(double i, double value) {
-        DoubleArgs.checkExactValue(i, value, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == DoubleArgs.checkExactValue(i, value, "i"));
         // Demonstrate argName can be anything ridiculous.
-        DoubleArgs.checkExactValue(i, value, null);
-        DoubleArgs.checkExactValue(i, value, "");
-        DoubleArgs.checkExactValue(i, value, "   ");
+        Assert.assertTrue(i == DoubleArgs.checkExactValue(i, value, null));
+        Assert.assertTrue(i == DoubleArgs.checkExactValue(i, value, ""));
+        Assert.assertTrue(i == DoubleArgs.checkExactValue(i, value, "   "));
     }
     
     @DataProvider

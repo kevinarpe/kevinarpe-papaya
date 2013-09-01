@@ -26,12 +26,12 @@ package com.googlecode.kevinarpe.papaya.argument;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-import com.googlecode.kevinarpe.papaya.argument.ValueAsTypeIterator._IValueAsLongIterator;
+import com.googlecode.kevinarpe.papaya.argument.ValueAsTypeIterator._IValueAsDoubleIterator;
 
-public class LongIterableArgs {
+public class DoubleIterableArgs {
 
     // Disable default constructor
-    private LongIterableArgs() {
+    private DoubleIterableArgs() {
     }
 
     /**
@@ -49,16 +49,16 @@ public class LongIterableArgs {
      * @throws IllegalArgumentException
      *         if any value is not positive
      * 
-     * @see LongArrayArgs#checkPositive(long[], String)
-     * @see LongArrayArgs#checkPositive(Long[], String)
+     * @see DoubleArrayArgs#checkPositive(double[], String)
+     * @see DoubleArrayArgs#checkPositive(Double[], String)
      */
     @FullyTested
-    public static <TIterable extends Iterable<Long>>
+    public static <TIterable extends Iterable<Double>>
     TIterable checkPositive(TIterable ref, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
         
-        ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedLongObjectIterableAsLongIterator(ref);
+        ValueAsTypeIterator._IValueAsDoubleIterator iter =
+            new ValueAsTypeIterator._UncheckedDoubleObjectIterableAsDoubleIterator(ref);
         ValueAsTypeIterator._checkPositive(iter, argName);
         return ref;
     }
@@ -78,16 +78,16 @@ public class LongIterableArgs {
      * @throws IllegalArgumentException
      *         if any value is positive
      * 
-     * @see LongArrayArgs#checkNotPositive(long[], String)
-     * @see LongArrayArgs#checkNotPositive(Long[], String)
+     * @see DoubleArrayArgs#checkNotPositive(double[], String)
+     * @see DoubleArrayArgs#checkNotPositive(Double[], String)
      */
     @FullyTested
-    public static <TIterable extends Iterable<Long>>
+    public static <TIterable extends Iterable<Double>>
     TIterable checkNotPositive(TIterable ref, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
         
-        ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedLongObjectIterableAsLongIterator(ref);
+        ValueAsTypeIterator._IValueAsDoubleIterator iter =
+            new ValueAsTypeIterator._UncheckedDoubleObjectIterableAsDoubleIterator(ref);
         ValueAsTypeIterator._checkNotPositive(iter, argName);
         return ref;
     }
@@ -107,16 +107,16 @@ public class LongIterableArgs {
      * @throws IllegalArgumentException
      *         if any value is not negative
      * 
-     * @see LongArrayArgs#checkNegative(long[], String)
-     * @see LongArrayArgs#checkNegative(Long[], String)
+     * @see DoubleArrayArgs#checkNegative(double[], String)
+     * @see DoubleArrayArgs#checkNegative(Double[], String)
      */
     @FullyTested
-    public static <TIterable extends Iterable<Long>>
+    public static <TIterable extends Iterable<Double>>
     TIterable checkNegative(TIterable ref, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
         
-        ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedLongObjectIterableAsLongIterator(ref);
+        ValueAsTypeIterator._IValueAsDoubleIterator iter =
+            new ValueAsTypeIterator._UncheckedDoubleObjectIterableAsDoubleIterator(ref);
         ValueAsTypeIterator._checkNegative(iter, argName);
         return ref;
     }
@@ -136,16 +136,16 @@ public class LongIterableArgs {
      * @throws IllegalArgumentException
      *         if any value is negative
      * 
-     * @see LongArrayArgs#checkNotNegative(long[], String)
-     * @see LongArrayArgs#checkNotNegative(Long[], String)
+     * @see DoubleArrayArgs#checkNotNegative(double[], String)
+     * @see DoubleArrayArgs#checkNotNegative(Double[], String)
      */
     @FullyTested
-    public static <TIterable extends Iterable<Long>>
+    public static <TIterable extends Iterable<Double>>
     TIterable checkNotNegative(TIterable ref, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
         
-        ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedLongObjectIterableAsLongIterator(ref);
+        ValueAsTypeIterator._IValueAsDoubleIterator iter =
+            new ValueAsTypeIterator._UncheckedDoubleObjectIterableAsDoubleIterator(ref);
         ValueAsTypeIterator._checkNotNegative(iter, argName);
         return ref;
     }
@@ -175,17 +175,18 @@ public class LongIterableArgs {
      *   <li>if any value of {@code ref} is outside allowed range</li>
      * </ul>
      * 
-     * @see #checkValueOutsideRange(Iterable, long, long, String)
-     * @see LongArrayArgs#checkValueInsideRange(long[], long, long, String)
-     * @see LongArrayArgs#checkValueInsideRange(Long[], long, long, String)
+     * @see #checkValueOutsideRange(Iterable, double, double, String)
+     * @see DoubleArrayArgs#checkValueInsideRange(double[], double, double, String)
+     * @see DoubleArrayArgs#checkValueInsideRange(Double[], double, double, String)
      */
     @FullyTested
-    public static <TIterable extends Iterable<Long>>
-    TIterable checkValueInsideRange(TIterable ref, long minValue, long maxValue, String argName) {
+    public static <TIterable extends Iterable<Double>>
+    TIterable checkValueInsideRange(
+            TIterable ref, double minValue, double maxValue, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
         
-        _IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedLongObjectIterableAsLongIterator(ref);
+        _IValueAsDoubleIterator iter =
+            new ValueAsTypeIterator._UncheckedDoubleObjectIterableAsDoubleIterator(ref);
         ValueAsTypeIterator._checkValueInsideRange(iter, minValue, maxValue, argName);
         return ref;
     }
@@ -215,17 +216,18 @@ public class LongIterableArgs {
      *   <li>if any value of {@code ref} is inside not-allowed range</li>
      * </ul>
      * 
-     * @see #checkValueInsideRange(Iterable, long, long, String)
-     * @see LongArrayArgs#checkValueOutsideRange(long[], long, long, String)
-     * @see LongArrayArgs#checkValueOutsideRange(Long[], long, long, String)
+     * @see #checkValueInsideRange(Iterable, double, double, String)
+     * @see DoubleArrayArgs#checkValueOutsideRange(double[], double, double, String)
+     * @see DoubleArrayArgs#checkValueOutsideRange(Double[], double, double, String)
      */
     @FullyTested
-    public static <TIterable extends Iterable<Long>>
-    TIterable checkValueOutsideRange(TIterable ref, long minValue, long maxValue, String argName) {
+    public static <TIterable extends Iterable<Double>>
+    TIterable checkValueOutsideRange(
+            TIterable ref, double minValue, double maxValue, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
         
-        _IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedLongObjectIterableAsLongIterator(ref);
+        _IValueAsDoubleIterator iter =
+            new ValueAsTypeIterator._UncheckedDoubleObjectIterableAsDoubleIterator(ref);
         ValueAsTypeIterator._checkValueOutsideRange(iter, minValue, maxValue, argName);
         return ref;
     }
@@ -247,17 +249,17 @@ public class LongIterableArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is less than {@code minValue}
      * 
-     * @see #checkMaxValue(Iterable, long, String)
-     * @see LongArrayArgs#checkMinValue(long[], long, String)
-     * @see LongArrayArgs#checkMinValue(Long[], long, String)
+     * @see #checkMaxValue(Iterable, double, String)
+     * @see DoubleArrayArgs#checkMinValue(double[], double, String)
+     * @see DoubleArrayArgs#checkMinValue(Double[], double, String)
      */
     @FullyTested
-    public static <TIterable extends Iterable<Long>>
-    TIterable checkMinValue(TIterable ref, long minValue, String argName) {
+    public static <TIterable extends Iterable<Double>>
+    TIterable checkMinValue(TIterable ref, double minValue, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
         
-        ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedLongObjectIterableAsLongIterator(ref);
+        ValueAsTypeIterator._IValueAsDoubleIterator iter =
+            new ValueAsTypeIterator._UncheckedDoubleObjectIterableAsDoubleIterator(ref);
         ValueAsTypeIterator._checkMinValue(iter, minValue, argName);
         return ref;
     }
@@ -279,17 +281,17 @@ public class LongIterableArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is greater than {@code maxValue}
      * 
-     * @see #checkMinValue(Iterable, long, String)
-     * @see LongArrayArgs#checkMaxValue(long[], long, String)
-     * @see LongArrayArgs#checkMaxValue(Long[], long, String)
+     * @see #checkMinValue(Iterable, double, String)
+     * @see DoubleArrayArgs#checkMaxValue(double[], double, String)
+     * @see DoubleArrayArgs#checkMaxValue(Double[], double, String)
      */
     @FullyTested
-    public static <TIterable extends Iterable<Long>>
-    TIterable checkMaxValue(TIterable ref, long maxValue, String argName) {
+    public static <TIterable extends Iterable<Double>>
+    TIterable checkMaxValue(TIterable ref, double maxValue, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
         
-        ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedLongObjectIterableAsLongIterator(ref);
+        ValueAsTypeIterator._IValueAsDoubleIterator iter =
+            new ValueAsTypeIterator._UncheckedDoubleObjectIterableAsDoubleIterator(ref);
         ValueAsTypeIterator._checkMaxValue(iter, maxValue, argName);
         return ref;
     }
@@ -311,17 +313,17 @@ public class LongIterableArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is {@code exactValue}
      * 
-     * @see #checkNotExactValue(Iterable, long, String)
-     * @see LongArrayArgs#checkExactValue(long[], long, String)
-     * @see LongArrayArgs#checkExactValue(Long[], long, String)
+     * @see #checkNotExactValue(Iterable, double, String)
+     * @see DoubleArrayArgs#checkExactValue(double[], double, String)
+     * @see DoubleArrayArgs#checkExactValue(Double[], double, String)
      */
     @FullyTested
-    public static <TIterable extends Iterable<Long>>
-    TIterable checkExactValue(TIterable ref, long exactValue, String argName) {
+    public static <TIterable extends Iterable<Double>>
+    TIterable checkExactValue(TIterable ref, double exactValue, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
         
-        ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedLongObjectIterableAsLongIterator(ref);
+        ValueAsTypeIterator._IValueAsDoubleIterator iter =
+            new ValueAsTypeIterator._UncheckedDoubleObjectIterableAsDoubleIterator(ref);
         ValueAsTypeIterator._checkExactValue(iter, exactValue, argName);
         return ref;
     }
@@ -343,17 +345,17 @@ public class LongIterableArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is {@code exactValue}
      * 
-     * @see #checkExactValue(Iterable, long, String)
-     * @see LongArrayArgs#checkNotExactValue(long[], long, String)
-     * @see LongArrayArgs#checkNotExactValue(Long[], long, String)
+     * @see #checkExactValue(Iterable, double, String)
+     * @see DoubleArrayArgs#checkNotExactValue(double[], double, String)
+     * @see DoubleArrayArgs#checkNotExactValue(Double[], double, String)
      */
     @FullyTested
-    public static <TIterable extends Iterable<Long>>
-    TIterable checkNotExactValue(TIterable ref, long exactValue, String argName) {
+    public static <TIterable extends Iterable<Double>>
+    TIterable checkNotExactValue(TIterable ref, double exactValue, String argName) {
         IterableArgs.checkElementsNotNull(ref, argName);
         
-        ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedLongObjectIterableAsLongIterator(ref);
+        ValueAsTypeIterator._IValueAsDoubleIterator iter =
+            new ValueAsTypeIterator._UncheckedDoubleObjectIterableAsDoubleIterator(ref);
         ValueAsTypeIterator._checkNotExactValue(iter, exactValue, argName);
         return ref;
     }

@@ -200,70 +200,6 @@ final class ValueAsTypeIterator {
         }
     }
     
-    static class _UncheckedIntObjectArrayAsLongIterator
-    extends _AbstractValueAsLongArrayIterator {
-        
-        private Integer[] _arr;
-        
-        public _UncheckedIntObjectArrayAsLongIterator(Integer[] arr) {
-            super(arr.length);
-            _arr = arr;
-        }
-
-        @Override
-        protected long getValueAsLong(int index) {
-            long x = _arr[index];
-            return x;
-        }
-    }
-    
-    static class _UncheckedLongObjectArrayAsLongIterator
-    extends _AbstractValueAsLongArrayIterator {
-        
-        private Long[] _arr;
-        
-        public _UncheckedLongObjectArrayAsLongIterator(Long[] arr) {
-            super(arr.length);
-            _arr = arr;
-        }
-
-        @Override
-        protected long getValueAsLong(int index) {
-            long x = _arr[index];
-            return x;
-        }
-    }
-    
-    static class _UncheckedIntObjectIterableAsLongIterator
-    extends _AbstractValueAsTypeIterableIterator<Integer>
-    implements _IValueAsLongIterator {
-
-        public _UncheckedIntObjectIterableAsLongIterator(Iterable<Integer> iterable) {
-            super(iterable);
-        }
-
-        @Override
-        public long nextAsLong() {
-            long x = next();
-            return x;
-        }
-    }
-    
-    static class _UncheckedLongObjectIterableAsLongIterator
-    extends _AbstractValueAsTypeIterableIterator<Long>
-    implements _IValueAsLongIterator {
-
-        public _UncheckedLongObjectIterableAsLongIterator(Iterable<Long> iterable) {
-            super(iterable);
-        }
-
-        @Override
-        public long nextAsLong() {
-            long x = next();
-            return x;
-        }
-    }
-    
     static class _UncheckedPrimitiveFloatArrayAsDoubleIterator
     extends _AbstractValueAsDoubleArrayIterator {
         
@@ -298,6 +234,40 @@ final class ValueAsTypeIterator {
         }
     }
     
+    static class _UncheckedIntObjectArrayAsLongIterator
+    extends _AbstractValueAsLongArrayIterator {
+        
+        private Integer[] _arr;
+        
+        public _UncheckedIntObjectArrayAsLongIterator(Integer[] arr) {
+            super(arr.length);
+            _arr = arr;
+        }
+
+        @Override
+        protected long getValueAsLong(int index) {
+            long x = _arr[index];
+            return x;
+        }
+    }
+    
+    static class _UncheckedLongObjectArrayAsLongIterator
+    extends _AbstractValueAsLongArrayIterator {
+        
+        private Long[] _arr;
+        
+        public _UncheckedLongObjectArrayAsLongIterator(Long[] arr) {
+            super(arr.length);
+            _arr = arr;
+        }
+
+        @Override
+        protected long getValueAsLong(int index) {
+            long x = _arr[index];
+            return x;
+        }
+    }
+    
     static class _UncheckedFloatObjectArrayAsDoubleIterator
     extends _AbstractValueAsDoubleArrayIterator {
         
@@ -328,6 +298,36 @@ final class ValueAsTypeIterator {
         @Override
         protected double getValueAsDouble(int index) {
             double x = _arr[index];
+            return x;
+        }
+    }
+    
+    static class _UncheckedIntObjectIterableAsLongIterator
+    extends _AbstractValueAsTypeIterableIterator<Integer>
+    implements _IValueAsLongIterator {
+
+        public _UncheckedIntObjectIterableAsLongIterator(Iterable<Integer> iterable) {
+            super(iterable);
+        }
+
+        @Override
+        public long nextAsLong() {
+            long x = next();
+            return x;
+        }
+    }
+    
+    static class _UncheckedLongObjectIterableAsLongIterator
+    extends _AbstractValueAsTypeIterableIterator<Long>
+    implements _IValueAsLongIterator {
+
+        public _UncheckedLongObjectIterableAsLongIterator(Iterable<Long> iterable) {
+            super(iterable);
+        }
+
+        @Override
+        public long nextAsLong() {
+            long x = next();
             return x;
         }
     }
@@ -446,18 +446,7 @@ final class ValueAsTypeIterator {
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d outside valid range: (min) %d <= %d <= %d (max)%s",
                     desc, argName, index, minRangeValue, value, maxRangeValue, w));
-//                throw new IllegalArgumentException(String.format(
-//                    "%s argument '%s': Value at index %d < 'minRangeValue': %d < %d%s",
-//                    desc, argName, index, value, minRangeValue, w));
             }
-//            if (value > maxRangeValue) {
-//                final String desc = iter.getUnderlyingDescription();
-//                final int index = iter.index();
-//                final String w = StringArgs._getArgNameWarning(argName, "argName");
-//                throw new IllegalArgumentException(String.format(
-//                    "%s argument '%s': Value at index %d > 'maxRangeValue': %d > %d%s",
-//                    desc, argName, index, value, maxRangeValue, w));
-//            }
         }
     }
     
@@ -593,6 +582,7 @@ final class ValueAsTypeIterator {
             }
         }
     }
+    
     static void _checkValueRange(
             _IValueAsDoubleIterator iter, double minValue, double maxValue, String argName) {
         while (iter.hasNext()) {
@@ -612,6 +602,60 @@ final class ValueAsTypeIterator {
                 throw new IllegalArgumentException(String.format(
                     "%s argument '%s': Value at index %d > 'maxValue': %f > %f%s",
                     desc, argName, index, value, maxValue, w));
+            }
+        }
+    }
+    
+    private static void _checkMinAndMaxRangeValues(
+            _IValueAsDoubleIterator iter,
+            double minRangeValue,
+            double maxRangeValue,
+            String argName) {
+        if (minRangeValue > maxRangeValue) {
+            final String desc = iter.getUnderlyingDescription();
+            final String w = StringArgs._getArgNameWarning(argName, "argName");
+            throw new IllegalArgumentException(String.format(
+                "%s argument '%s': 'minRangeValue' > 'maxRangeValue': %f > %f%s",
+                desc, argName, minRangeValue, maxRangeValue, w));
+        }
+    }
+    
+    static void _checkValueInsideRange(
+            _IValueAsDoubleIterator iter,
+            double minRangeValue,
+            double maxRangeValue,
+            String argName) {
+        _checkMinAndMaxRangeValues(iter, minRangeValue, maxRangeValue, argName);
+        
+        while (iter.hasNext()) {
+            final double value = iter.nextAsDouble();
+            if (value < minRangeValue || value > maxRangeValue) {
+                final String desc = iter.getUnderlyingDescription();
+                final int index = iter.nextIndex() - 1;
+                final String w = StringArgs._getArgNameWarning(argName, "argName");
+                throw new IllegalArgumentException(String.format(
+                    "%s argument '%s': Value at index %d outside valid range: (min) %f <= %f >= %f (max)%s",
+                    desc, argName, index, minRangeValue, value, maxRangeValue, w));
+            }
+        }
+    }
+    
+    static void _checkValueOutsideRange(
+            _IValueAsDoubleIterator iter,
+            double minRangeValue,
+            double maxRangeValue,
+            String argName) {
+        _checkMinAndMaxRangeValues(iter, minRangeValue, maxRangeValue, argName);
+        
+        while (iter.hasNext()) {
+            final double value = iter.nextAsDouble();
+            if (value >= minRangeValue && value <= maxRangeValue) {
+                final String desc = iter.getUnderlyingDescription();
+                final int index = iter.nextIndex() - 1;
+                final String w = StringArgs._getArgNameWarning(argName, "argName");
+                throw new IllegalArgumentException(String.format(
+                    "%s argument '%s': Value at index %d inside invalid range: (min) %f >= %f <= %f (max)%s",
+                    desc, argName, index, minRangeValue, value, maxRangeValue, w));
             }
         }
     }

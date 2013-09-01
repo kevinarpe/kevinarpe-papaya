@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.junit.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -73,7 +74,8 @@ public class PathArgsTest {
     @Test(dataProvider = "_checkResourceAsStreamExists_Pass_Data")
     public void checkResourceAsStreamExists_Pass(String pathname)
     throws ClassResourceNotFoundException {
-        PathArgs.checkClassResourceAsStreamExists(PathArgsTest.class, pathname, "pathname");
+        Assert.assertNotNull(
+            PathArgs.checkClassResourceAsStreamExists(PathArgsTest.class, pathname, "pathname"));
     }
 
     @Test(expectedExceptions = ClassResourceNotFoundException.class)
@@ -117,10 +119,20 @@ public class PathArgsTest {
     public void checkNotFile_PassWithPathNotExists()
     throws PathException {
         File path = new File(UUID.randomUUID().toString());
-        PathArgs.checkNotFile(path, "path");
-        PathArgs.checkNotFile(path.getPath(), "path");
-        PathArgs.checkNotFile(path.getAbsoluteFile(), "path");
-        PathArgs.checkNotFile(path.getAbsolutePath(), "path");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(path == PathArgs.checkNotFile(path, "path"));
+        
+        Assert.assertEquals(
+            new File(path.getPath()),
+            PathArgs.checkNotFile(path.getPath(), "path"));
+        
+        Assert.assertEquals(
+            path.getAbsoluteFile(),
+            PathArgs.checkNotFile(path.getAbsoluteFile(), "path"));
+        
+        Assert.assertEquals(
+            new File(path.getAbsolutePath()),
+            PathArgs.checkNotFile(path.getAbsolutePath(), "path"));
     }
 
     @Test
@@ -129,10 +141,20 @@ public class PathArgsTest {
         File path = new File(UUID.randomUUID().toString());
         safeMkdir(path);
         try {
-            PathArgs.checkNotFile(path, "path");
-            PathArgs.checkNotFile(path.getPath(), "path");
-            PathArgs.checkNotFile(path.getAbsoluteFile(), "path");
-            PathArgs.checkNotFile(path.getAbsolutePath(), "path");
+            // Two steps here: (1) call the method, (2) assert the result
+            Assert.assertTrue(path == PathArgs.checkNotFile(path, "path"));
+            
+            Assert.assertEquals(
+                new File(path.getPath()),
+                PathArgs.checkNotFile(path.getPath(), "path"));
+            
+            Assert.assertEquals(
+                path.getAbsoluteFile(),
+                PathArgs.checkNotFile(path.getAbsoluteFile(), "path"));
+            
+            Assert.assertEquals(
+                new File(path.getAbsolutePath()),
+                PathArgs.checkNotFile(path.getAbsolutePath(), "path"));
         }
         finally {
             safeRmdir(path);
@@ -230,10 +252,16 @@ public class PathArgsTest {
         String absPathname = absPath.getPath();
         path.createNewFile();
         try {
-            PathArgs.checkFileExists(path, "path");
-            PathArgs.checkFileExists(pathname, "pathname");
-            PathArgs.checkFileExists(absPath, "absPath");
-            PathArgs.checkFileExists(absPathname, "absPathname");
+            // Two steps here: (1) call the method, (2) assert the result
+            Assert.assertTrue(path == PathArgs.checkFileExists(path, "path"));
+            
+            Assert.assertEquals(
+                new File(pathname), PathArgs.checkFileExists(pathname, "pathname"));
+            
+            Assert.assertTrue(absPath == PathArgs.checkFileExists(absPath, "absPath"));
+            
+            Assert.assertEquals(
+                new File(absPathname), PathArgs.checkFileExists(absPathname, "absPathname"));
         }
         finally {
             safeRm(path);
@@ -411,10 +439,20 @@ public class PathArgsTest {
     public void checkNotDirectory_PassWithPathNotExists()
     throws PathException {
         File path = new File(UUID.randomUUID().toString());
-        PathArgs.checkNotDirectory(path, "path");
-        PathArgs.checkNotDirectory(path.getPath(), "path");
-        PathArgs.checkNotDirectory(path.getAbsoluteFile(), "path");
-        PathArgs.checkNotDirectory(path.getAbsolutePath(), "path");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(path == PathArgs.checkNotDirectory(path, "path"));
+        
+        Assert.assertEquals(
+            new File(path.getPath()),
+            PathArgs.checkNotDirectory(path.getPath(), "path"));
+        
+        Assert.assertEquals(
+            path.getAbsoluteFile(),
+            PathArgs.checkNotDirectory(path.getAbsoluteFile(), "path"));
+        
+        Assert.assertEquals(
+            new File(path.getAbsolutePath()),
+            PathArgs.checkNotDirectory(path.getAbsolutePath(), "path"));
     }
 
     @Test
@@ -423,10 +461,20 @@ public class PathArgsTest {
         File path = new File(UUID.randomUUID().toString());
         path.createNewFile();
         try {
-            PathArgs.checkNotDirectory(path, "path");
-            PathArgs.checkNotDirectory(path.getPath(), "path");
-            PathArgs.checkNotDirectory(path.getAbsoluteFile(), "path");
-            PathArgs.checkNotDirectory(path.getAbsolutePath(), "path");
+            // Two steps here: (1) call the method, (2) assert the result
+            Assert.assertTrue(path == PathArgs.checkNotDirectory(path, "path"));
+            
+            Assert.assertEquals(
+                new File(path.getPath()),
+                PathArgs.checkNotDirectory(path.getPath(), "path"));
+            
+            Assert.assertEquals(
+                path.getAbsoluteFile(),
+                PathArgs.checkNotDirectory(path.getAbsoluteFile(), "path"));
+            
+            Assert.assertEquals(
+                new File(path.getAbsolutePath()),
+                PathArgs.checkNotDirectory(path.getAbsolutePath(), "path"));
         }
         finally {
             safeRm(path);
@@ -494,10 +542,16 @@ public class PathArgsTest {
         String absPathname = absPath.getPath();
         path.mkdir();
         try {
-            PathArgs.checkDirectoryExists(path, "path");
-            PathArgs.checkDirectoryExists(pathname, "pathname");
-            PathArgs.checkDirectoryExists(absPath, "absPath");
-            PathArgs.checkDirectoryExists(absPathname, "absPathname");
+            // Two steps here: (1) call the method, (2) assert the result
+            Assert.assertTrue(path == PathArgs.checkDirectoryExists(path, "path"));
+            
+            Assert.assertEquals(
+                new File(pathname), PathArgs.checkDirectoryExists(pathname, "pathname"));
+            
+            Assert.assertTrue(absPath == PathArgs.checkDirectoryExists(absPath, "absPath"));
+            
+            Assert.assertEquals(
+                new File(absPathname), PathArgs.checkDirectoryExists(absPathname, "absPathname"));
         }
         finally {
             safeRmdir(path);

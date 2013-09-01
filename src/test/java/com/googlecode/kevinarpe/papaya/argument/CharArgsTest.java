@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -63,11 +64,12 @@ public class CharArgsTest {
     
     @Test(dataProvider = "_checkValueRange_Pass_Data")
     public void checkValueRange_Pass(char i, char minValue, char maxValue) {
-        CharArgs.checkValueRange(i, minValue, maxValue, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == CharArgs.checkValueRange(i, minValue, maxValue, "i"));
         // Demonstrate argName can be anything ridiculous.
-        CharArgs.checkValueRange(i, minValue, maxValue, null);
-        CharArgs.checkValueRange(i, minValue, maxValue, "");
-        CharArgs.checkValueRange(i, minValue, maxValue, "   ");
+        Assert.assertTrue(i == CharArgs.checkValueRange(i, minValue, maxValue, null));
+        Assert.assertTrue(i == CharArgs.checkValueRange(i, minValue, maxValue, ""));
+        Assert.assertTrue(i == CharArgs.checkValueRange(i, minValue, maxValue, "   "));
     }
     
     @DataProvider
@@ -115,11 +117,12 @@ public class CharArgsTest {
     
     @Test(dataProvider = "_checkMinValue_Pass_Data")
     public void checkMinValue_Pass(char i, char minValue) {
-        CharArgs.checkMinValue(i, minValue, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == CharArgs.checkMinValue(i, minValue, "i"));
         // Demonstrate argName can be anything ridiculous.
-        CharArgs.checkMinValue(i, minValue, null);
-        CharArgs.checkMinValue(i, minValue, "");
-        CharArgs.checkMinValue(i, minValue, "   ");
+        Assert.assertTrue(i == CharArgs.checkMinValue(i, minValue, null));
+        Assert.assertTrue(i == CharArgs.checkMinValue(i, minValue, ""));
+        Assert.assertTrue(i == CharArgs.checkMinValue(i, minValue, "   "));
     }
     
     @DataProvider
@@ -157,11 +160,12 @@ public class CharArgsTest {
     
     @Test(dataProvider = "_checkMaxValue_Pass_Data")
     public void checkMaxValue_Pass(char i, char maxValue) {
-        CharArgs.checkMaxValue(i, maxValue, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == CharArgs.checkMaxValue(i, maxValue, "i"));
         // Demonstrate argName can be anything ridiculous.
-        CharArgs.checkMaxValue(i, maxValue, null);
-        CharArgs.checkMaxValue(i, maxValue, "");
-        CharArgs.checkMaxValue(i, maxValue, "   ");
+        Assert.assertTrue(i == CharArgs.checkMaxValue(i, maxValue, null));
+        Assert.assertTrue(i == CharArgs.checkMaxValue(i, maxValue, ""));
+        Assert.assertTrue(i == CharArgs.checkMaxValue(i, maxValue, "   "));
     }
     
     @DataProvider
@@ -197,11 +201,12 @@ public class CharArgsTest {
     
     @Test(dataProvider = "_checkExactValue_Pass_Data")
     public void checkExactValue_Pass(char i, char value) {
-        CharArgs.checkExactValue(i, value, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == CharArgs.checkExactValue(i, value, "i"));
         // Demonstrate argName can be anything ridiculous.
-        CharArgs.checkExactValue(i, value, null);
-        CharArgs.checkExactValue(i, value, "");
-        CharArgs.checkExactValue(i, value, "   ");
+        Assert.assertTrue(i == CharArgs.checkExactValue(i, value, null));
+        Assert.assertTrue(i == CharArgs.checkExactValue(i, value, ""));
+        Assert.assertTrue(i == CharArgs.checkExactValue(i, value, "   "));
     }
     
     @DataProvider

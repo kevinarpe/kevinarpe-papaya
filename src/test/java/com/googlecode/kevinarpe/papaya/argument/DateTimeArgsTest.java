@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  */
 
 import org.joda.time.DateTime;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -65,11 +66,12 @@ public class DateTimeArgsTest {
     
     @Test(dataProvider = "_checkValueRange_Pass_Data")
     public void checkValueRange_Pass(DateTime dt, DateTime minValue, DateTime maxValue) {
-        DateTimeArgs.checkValueRange(dt, minValue, maxValue, "dt");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(dt == DateTimeArgs.checkValueRange(dt, minValue, maxValue, "dt"));
         // Demonstrate argName can be anything ridiculous.
-        DateTimeArgs.checkValueRange(dt, minValue, maxValue, null);
-        DateTimeArgs.checkValueRange(dt, minValue, maxValue, "");
-        DateTimeArgs.checkValueRange(dt, minValue, maxValue, "   ");
+        Assert.assertTrue(dt == DateTimeArgs.checkValueRange(dt, minValue, maxValue, null));
+        Assert.assertTrue(dt == DateTimeArgs.checkValueRange(dt, minValue, maxValue, ""));
+        Assert.assertTrue(dt == DateTimeArgs.checkValueRange(dt, minValue, maxValue, "   "));
     }
     
     @DataProvider
@@ -119,11 +121,12 @@ public class DateTimeArgsTest {
     
     @Test(dataProvider = "_checkMinValue_Pass_Data")
     public void checkMinValue_Pass(DateTime dt, DateTime minValue) {
-        DateTimeArgs.checkMinValue(dt, minValue, "dt");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(dt == DateTimeArgs.checkMinValue(dt, minValue, "dt"));
         // Demonstrate argName can be anything ridiculous.
-        DateTimeArgs.checkMinValue(dt, minValue, null);
-        DateTimeArgs.checkMinValue(dt, minValue, "");
-        DateTimeArgs.checkMinValue(dt, minValue, "   ");
+        Assert.assertTrue(dt == DateTimeArgs.checkMinValue(dt, minValue, null));
+        Assert.assertTrue(dt == DateTimeArgs.checkMinValue(dt, minValue, ""));
+        Assert.assertTrue(dt == DateTimeArgs.checkMinValue(dt, minValue, "   "));
     }
     
     @DataProvider
@@ -163,11 +166,12 @@ public class DateTimeArgsTest {
     
     @Test(dataProvider = "_checkMaxValue_Pass_Data")
     public void checkMaxValue_Pass(DateTime dt, DateTime maxValue) {
-        DateTimeArgs.checkMaxValue(dt, maxValue, "dt");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(dt == DateTimeArgs.checkMaxValue(dt, maxValue, "dt"));
         // Demonstrate argName can be anything ridiculous.
-        DateTimeArgs.checkMaxValue(dt, maxValue, null);
-        DateTimeArgs.checkMaxValue(dt, maxValue, "");
-        DateTimeArgs.checkMaxValue(dt, maxValue, "   ");
+        Assert.assertTrue(dt == DateTimeArgs.checkMaxValue(dt, maxValue, null));
+        Assert.assertTrue(dt == DateTimeArgs.checkMaxValue(dt, maxValue, ""));
+        Assert.assertTrue(dt == DateTimeArgs.checkMaxValue(dt, maxValue, "   "));
     }
     
     @DataProvider
@@ -203,11 +207,12 @@ public class DateTimeArgsTest {
     
     @Test(dataProvider = "_checkExactValue_Pass_Data")
     public void checkExactValue_Pass(DateTime dt, DateTime value) {
-        DateTimeArgs.checkExactValue(dt, value, "dt");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(dt == DateTimeArgs.checkExactValue(dt, value, "dt"));
         // Demonstrate argName can be anything ridiculous.
-        DateTimeArgs.checkExactValue(dt, value, null);
-        DateTimeArgs.checkExactValue(dt, value, "");
-        DateTimeArgs.checkExactValue(dt, value, "   ");
+        Assert.assertTrue(dt == DateTimeArgs.checkExactValue(dt, value, null));
+        Assert.assertTrue(dt == DateTimeArgs.checkExactValue(dt, value, ""));
+        Assert.assertTrue(dt == DateTimeArgs.checkExactValue(dt, value, "   "));
     }
     
     @DataProvider

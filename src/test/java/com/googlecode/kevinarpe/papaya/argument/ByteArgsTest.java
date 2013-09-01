@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -60,11 +61,12 @@ public class ByteArgsTest {
     
     @Test(dataProvider = "_checkPositive_Pass_Data")
     public void checkPositive_Pass(byte i) {
-        ByteArgs.checkPositive(i, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == ByteArgs.checkPositive(i, "i"));
         // Demonstrate argName can be anything ridiculous.
-        ByteArgs.checkPositive(i, null);
-        ByteArgs.checkPositive(i, "");
-        ByteArgs.checkPositive(i, "   ");
+        Assert.assertTrue(i == ByteArgs.checkPositive(i, null));
+        Assert.assertTrue(i == ByteArgs.checkPositive(i, ""));
+        Assert.assertTrue(i == ByteArgs.checkPositive(i, "   "));
     }
 
     @DataProvider
@@ -97,11 +99,12 @@ public class ByteArgsTest {
     
     @Test(dataProvider = "_checkNotPositive_Pass_Data")
     public void checkNotPositive_Pass(byte i) {
-        ByteArgs.checkNotPositive(i, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == ByteArgs.checkNotPositive(i, "i"));
         // Demonstrate argName can be anything ridiculous.
-        ByteArgs.checkNotPositive(i, null);
-        ByteArgs.checkNotPositive(i, "");
-        ByteArgs.checkNotPositive(i, "   ");
+        Assert.assertTrue(i == ByteArgs.checkNotPositive(i, null));
+        Assert.assertTrue(i == ByteArgs.checkNotPositive(i, ""));
+        Assert.assertTrue(i == ByteArgs.checkNotPositive(i, "   "));
     }
     
     @DataProvider
@@ -133,11 +136,12 @@ public class ByteArgsTest {
     
     @Test(dataProvider = "_checkNegative_Pass_Data")
     public void checkNegative_Pass(byte i) {
-        ByteArgs.checkNegative(i, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == ByteArgs.checkNegative(i, "i"));
         // Demonstrate argName can be anything ridiculous.
-        ByteArgs.checkNegative(i, null);
-        ByteArgs.checkNegative(i, "");
-        ByteArgs.checkNegative(i, "   ");
+        Assert.assertTrue(i == ByteArgs.checkNegative(i, null));
+        Assert.assertTrue(i == ByteArgs.checkNegative(i, ""));
+        Assert.assertTrue(i == ByteArgs.checkNegative(i, "   "));
     }
 
     @DataProvider
@@ -170,11 +174,12 @@ public class ByteArgsTest {
     
     @Test(dataProvider = "_checkNotNegative_Pass_Data")
     public void checkNotNegative_Pass(byte i) {
-        ByteArgs.checkNotNegative(i, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == ByteArgs.checkNotNegative(i, "i"));
         // Demonstrate argName can be anything ridiculous.
-        ByteArgs.checkNotNegative(i, null);
-        ByteArgs.checkNotNegative(i, "");
-        ByteArgs.checkNotNegative(i, "   ");
+        Assert.assertTrue(i == ByteArgs.checkNotNegative(i, null));
+        Assert.assertTrue(i == ByteArgs.checkNotNegative(i, ""));
+        Assert.assertTrue(i == ByteArgs.checkNotNegative(i, "   "));
     }
 
     @DataProvider
@@ -209,11 +214,12 @@ public class ByteArgsTest {
     
     @Test(dataProvider = "_checkValueRange_Pass_Data")
     public void checkValueRange_Pass(byte i, byte minValue, byte maxValue) {
-        ByteArgs.checkValueRange(i, minValue, maxValue, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == ByteArgs.checkValueRange(i, minValue, maxValue, "i"));
         // Demonstrate argName can be anything ridiculous.
-        ByteArgs.checkValueRange(i, minValue, maxValue, null);
-        ByteArgs.checkValueRange(i, minValue, maxValue, "");
-        ByteArgs.checkValueRange(i, minValue, maxValue, "   ");
+        Assert.assertTrue(i == ByteArgs.checkValueRange(i, minValue, maxValue, null));
+        Assert.assertTrue(i == ByteArgs.checkValueRange(i, minValue, maxValue, ""));
+        Assert.assertTrue(i == ByteArgs.checkValueRange(i, minValue, maxValue, "   "));
     }
     
     @DataProvider
@@ -261,11 +267,12 @@ public class ByteArgsTest {
     
     @Test(dataProvider = "_checkMinValue_Pass_Data")
     public void checkMinValue_Pass(byte i, byte minValue) {
-        ByteArgs.checkMinValue(i, minValue, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == ByteArgs.checkMinValue(i, minValue, "i"));
         // Demonstrate argName can be anything ridiculous.
-        ByteArgs.checkMinValue(i, minValue, null);
-        ByteArgs.checkMinValue(i, minValue, "");
-        ByteArgs.checkMinValue(i, minValue, "   ");
+        Assert.assertTrue(i == ByteArgs.checkMinValue(i, minValue, null));
+        Assert.assertTrue(i == ByteArgs.checkMinValue(i, minValue, ""));
+        Assert.assertTrue(i == ByteArgs.checkMinValue(i, minValue, "   "));
     }
     
     @DataProvider
@@ -303,11 +310,12 @@ public class ByteArgsTest {
     
     @Test(dataProvider = "_checkMaxValue_Pass_Data")
     public void checkMaxValue_Pass(byte i, byte maxValue) {
-        ByteArgs.checkMaxValue(i, maxValue, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == ByteArgs.checkMaxValue(i, maxValue, "i"));
         // Demonstrate argName can be anything ridiculous.
-        ByteArgs.checkMaxValue(i, maxValue, null);
-        ByteArgs.checkMaxValue(i, maxValue, "");
-        ByteArgs.checkMaxValue(i, maxValue, "   ");
+        Assert.assertTrue(i == ByteArgs.checkMaxValue(i, maxValue, null));
+        Assert.assertTrue(i == ByteArgs.checkMaxValue(i, maxValue, ""));
+        Assert.assertTrue(i == ByteArgs.checkMaxValue(i, maxValue, "   "));
     }
     
     @DataProvider
@@ -343,11 +351,12 @@ public class ByteArgsTest {
     
     @Test(dataProvider = "_checkExactValue_Pass_Data")
     public void checkExactValue_Pass(byte i, byte value) {
-        ByteArgs.checkExactValue(i, value, "i");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == ByteArgs.checkExactValue(i, value, "i"));
         // Demonstrate argName can be anything ridiculous.
-        ByteArgs.checkExactValue(i, value, null);
-        ByteArgs.checkExactValue(i, value, "");
-        ByteArgs.checkExactValue(i, value, "   ");
+        Assert.assertTrue(i == ByteArgs.checkExactValue(i, value, null));
+        Assert.assertTrue(i == ByteArgs.checkExactValue(i, value, ""));
+        Assert.assertTrue(i == ByteArgs.checkExactValue(i, value, "   "));
     }
     
     @DataProvider

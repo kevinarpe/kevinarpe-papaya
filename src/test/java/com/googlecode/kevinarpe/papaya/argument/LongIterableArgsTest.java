@@ -28,6 +28,7 @@ package com.googlecode.kevinarpe.papaya.argument;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -46,11 +47,12 @@ public class LongIterableArgsTest {
     public void checkPositive_Pass(long[] arr) {
         Long[] arr2 = LongArrayArgsTest.toLongObjectArray(arr);
         List<Long> list = Arrays.asList(arr2);
-        LongIterableArgs.checkPositive(list, "list");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(list == LongIterableArgs.checkPositive(list, "list"));
         // Demonstrate argName can be anything ridiculous.
-        LongIterableArgs.checkPositive(list, null);
-        LongIterableArgs.checkPositive(list, "");
-        LongIterableArgs.checkPositive(list, "   ");
+        Assert.assertTrue(list == LongIterableArgs.checkPositive(list, null));
+        Assert.assertTrue(list == LongIterableArgs.checkPositive(list, ""));
+        Assert.assertTrue(list == LongIterableArgs.checkPositive(list, "   "));
     }
 
     @DataProvider
@@ -96,11 +98,12 @@ public class LongIterableArgsTest {
     public void checkNotPositive_Pass(long[] arr) {
         Long[] arr2 = LongArrayArgsTest.toLongObjectArray(arr);
         List<Long> list = Arrays.asList(arr2);
-        LongIterableArgs.checkNotPositive(list, "list");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(list == LongIterableArgs.checkNotPositive(list, "list"));
         // Demonstrate argName can be anything ridiculous.
-        LongIterableArgs.checkNotPositive(list, null);
-        LongIterableArgs.checkNotPositive(list, "");
-        LongIterableArgs.checkNotPositive(list, "   ");
+        Assert.assertTrue(list == LongIterableArgs.checkNotPositive(list, null));
+        Assert.assertTrue(list == LongIterableArgs.checkNotPositive(list, ""));
+        Assert.assertTrue(list == LongIterableArgs.checkNotPositive(list, "   "));
     }
 
     @DataProvider
@@ -146,11 +149,12 @@ public class LongIterableArgsTest {
     public void checkNegative_Pass(long[] arr) {
         Long[] arr2 = LongArrayArgsTest.toLongObjectArray(arr);
         List<Long> list = Arrays.asList(arr2);
-        LongIterableArgs.checkNegative(list, "list");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(list == LongIterableArgs.checkNegative(list, "list"));
         // Demonstrate argName can be anything ridiculous.
-        LongIterableArgs.checkNegative(list, null);
-        LongIterableArgs.checkNegative(list, "");
-        LongIterableArgs.checkNegative(list, "   ");
+        Assert.assertTrue(list == LongIterableArgs.checkNegative(list, null));
+        Assert.assertTrue(list == LongIterableArgs.checkNegative(list, ""));
+        Assert.assertTrue(list == LongIterableArgs.checkNegative(list, "   "));
     }
 
     @DataProvider
@@ -196,11 +200,12 @@ public class LongIterableArgsTest {
     public void checkNotNegative_Pass(long[] arr) {
         Long[] arr2 = LongArrayArgsTest.toLongObjectArray(arr);
         List<Long> list = Arrays.asList(arr2);
-        LongIterableArgs.checkNotNegative(list, "list");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(list == LongIterableArgs.checkNotNegative(list, "list"));
         // Demonstrate argName can be anything ridiculous.
-        LongIterableArgs.checkNotNegative(list, null);
-        LongIterableArgs.checkNotNegative(list, "");
-        LongIterableArgs.checkNotNegative(list, "   ");
+        Assert.assertTrue(list == LongIterableArgs.checkNotNegative(list, null));
+        Assert.assertTrue(list == LongIterableArgs.checkNotNegative(list, ""));
+        Assert.assertTrue(list == LongIterableArgs.checkNotNegative(list, "   "));
     }
 
     @DataProvider
@@ -246,11 +251,16 @@ public class LongIterableArgsTest {
     public void checkValueInsideRange_Pass(long[] arr, long minValue, long maxValue) {
         Long[] arr2 = LongArrayArgsTest.toLongObjectArray(arr);
         List<Long> list = Arrays.asList(arr2);
-        LongIterableArgs.checkValueInsideRange(list, minValue, maxValue, "list");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(
+            list == LongIterableArgs.checkValueInsideRange(list, minValue, maxValue, "list"));
         // Demonstrate argName can be anything ridiculous.
-        LongIterableArgs.checkValueInsideRange(list, minValue, maxValue, null);
-        LongIterableArgs.checkValueInsideRange(list, minValue, maxValue, "");
-        LongIterableArgs.checkValueInsideRange(list, minValue, maxValue, "   ");
+        Assert.assertTrue(
+            list == LongIterableArgs.checkValueInsideRange(list, minValue, maxValue, null));
+        Assert.assertTrue(
+            list == LongIterableArgs.checkValueInsideRange(list, minValue, maxValue, ""));
+        Assert.assertTrue(
+            list == LongIterableArgs.checkValueInsideRange(list, minValue, maxValue, "   "));
     }
     
     @DataProvider
@@ -297,11 +307,16 @@ public class LongIterableArgsTest {
     public void checkValueOutsideRange_Pass(long[] arr, long minValue, long maxValue) {
         Long[] arr2 = LongArrayArgsTest.toLongObjectArray(arr);
         List<Long> list = Arrays.asList(arr2);
-        LongIterableArgs.checkValueOutsideRange(list, minValue, maxValue, "list");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(
+            list == LongIterableArgs.checkValueOutsideRange(list, minValue, maxValue, "list"));
         // Demonstrate argName can be anything ridiculous.
-        LongIterableArgs.checkValueOutsideRange(list, minValue, maxValue, null);
-        LongIterableArgs.checkValueOutsideRange(list, minValue, maxValue, "");
-        LongIterableArgs.checkValueOutsideRange(list, minValue, maxValue, "   ");
+        Assert.assertTrue(
+            list == LongIterableArgs.checkValueOutsideRange(list, minValue, maxValue, null));
+        Assert.assertTrue(
+            list == LongIterableArgs.checkValueOutsideRange(list, minValue, maxValue, ""));
+        Assert.assertTrue(
+            list == LongIterableArgs.checkValueOutsideRange(list, minValue, maxValue, "   "));
     }
     
     @DataProvider
@@ -345,14 +360,15 @@ public class LongIterableArgsTest {
     }
     
     @Test(dataProvider = "checkMinValue_Pass_Data")
-    public void checkMinValue_Pass2(long[] arr, long minValue) {
+    public void checkMinValue_Pass(long[] arr, long minValue) {
         Long[] arr2 = LongArrayArgsTest.toLongObjectArray(arr);
         List<Long> list = Arrays.asList(arr2);
-        LongIterableArgs.checkMinValue(list, minValue, "list");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(list == LongIterableArgs.checkMinValue(list, minValue, "list"));
         // Demonstrate argName can be anything ridiculous.
-        LongIterableArgs.checkMinValue(list, minValue, null);
-        LongIterableArgs.checkMinValue(list, minValue, "");
-        LongIterableArgs.checkMinValue(list, minValue, "   ");
+        Assert.assertTrue(list == LongIterableArgs.checkMinValue(list, minValue, null));
+        Assert.assertTrue(list == LongIterableArgs.checkMinValue(list, minValue, ""));
+        Assert.assertTrue(list == LongIterableArgs.checkMinValue(list, minValue, "   "));
     }
     
     @DataProvider
@@ -395,14 +411,15 @@ public class LongIterableArgsTest {
     }
     
     @Test(dataProvider = "checkMaxValue_Pass_Data")
-    public void checkMaxValue_Pass2(long[] arr, long maxValue) {
+    public void checkMaxValue_Pass(long[] arr, long maxValue) {
         Long[] arr2 = LongArrayArgsTest.toLongObjectArray(arr);
         List<Long> list = Arrays.asList(arr2);
-        LongIterableArgs.checkMaxValue(list, maxValue, "list");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(list == LongIterableArgs.checkMaxValue(list, maxValue, "list"));
         // Demonstrate argName can be anything ridiculous.
-        LongIterableArgs.checkMaxValue(list, maxValue, null);
-        LongIterableArgs.checkMaxValue(list, maxValue, "");
-        LongIterableArgs.checkMaxValue(list, maxValue, "   ");
+        Assert.assertTrue(list == LongIterableArgs.checkMaxValue(list, maxValue, null));
+        Assert.assertTrue(list == LongIterableArgs.checkMaxValue(list, maxValue, ""));
+        Assert.assertTrue(list == LongIterableArgs.checkMaxValue(list, maxValue, "   "));
     }
     
     @DataProvider
@@ -445,14 +462,15 @@ public class LongIterableArgsTest {
     }
     
     @Test(dataProvider = "checkExactValue_Pass_Data")
-    public void checkExactValue_Pass2(long[] arr, long exactValue) {
+    public void checkExactValue_Pass(long[] arr, long exactValue) {
         Long[] arr2 = LongArrayArgsTest.toLongObjectArray(arr);
         List<Long> list = Arrays.asList(arr2);
-        LongIterableArgs.checkExactValue(list, exactValue, "list");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(list == LongIterableArgs.checkExactValue(list, exactValue, "list"));
         // Demonstrate argName can be anything ridiculous.
-        LongIterableArgs.checkExactValue(list, exactValue, null);
-        LongIterableArgs.checkExactValue(list, exactValue, "");
-        LongIterableArgs.checkExactValue(list, exactValue, "   ");
+        Assert.assertTrue(list == LongIterableArgs.checkExactValue(list, exactValue, null));
+        Assert.assertTrue(list == LongIterableArgs.checkExactValue(list, exactValue, ""));
+        Assert.assertTrue(list == LongIterableArgs.checkExactValue(list, exactValue, "   "));
     }
     
     @DataProvider
@@ -495,14 +513,15 @@ public class LongIterableArgsTest {
     }
     
     @Test(dataProvider = "checkNotExactValue_Pass_Data")
-    public void checkNotExactValue_Pass2(long[] arr, long exactValue) {
+    public void checkNotExactValue_Pass(long[] arr, long exactValue) {
         Long[] arr2 = LongArrayArgsTest.toLongObjectArray(arr);
         List<Long> list = Arrays.asList(arr2);
-        LongIterableArgs.checkNotExactValue(list, exactValue, "list");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(list == LongIterableArgs.checkNotExactValue(list, exactValue, "list"));
         // Demonstrate argName can be anything ridiculous.
-        LongIterableArgs.checkNotExactValue(list, exactValue, null);
-        LongIterableArgs.checkNotExactValue(list, exactValue, "");
-        LongIterableArgs.checkNotExactValue(list, exactValue, "   ");
+        Assert.assertTrue(list == LongIterableArgs.checkNotExactValue(list, exactValue, null));
+        Assert.assertTrue(list == LongIterableArgs.checkNotExactValue(list, exactValue, ""));
+        Assert.assertTrue(list == LongIterableArgs.checkNotExactValue(list, exactValue, "   "));
     }
     
     @DataProvider

@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -76,11 +77,12 @@ public class CollectionArgsTest {
     
     @Test(dataProvider = "_checkSizeRange_Pass_Data")
     public <T> void checkSizeRange_Pass(Collection<T> ref, int minSize, int maxSize) {
-        CollectionArgs.checkSizeRange(ref, minSize, maxSize, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == CollectionArgs.checkSizeRange(ref, minSize, maxSize, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        CollectionArgs.checkSizeRange(ref, minSize, maxSize, null);
-        CollectionArgs.checkSizeRange(ref, minSize, maxSize, "");
-        CollectionArgs.checkSizeRange(ref, minSize, maxSize, "   ");
+        Assert.assertTrue(ref == CollectionArgs.checkSizeRange(ref, minSize, maxSize, null));
+        Assert.assertTrue(ref == CollectionArgs.checkSizeRange(ref, minSize, maxSize, ""));
+        Assert.assertTrue(ref == CollectionArgs.checkSizeRange(ref, minSize, maxSize, "   "));
     }
 
     @DataProvider
@@ -134,11 +136,12 @@ public class CollectionArgsTest {
     
     @Test(dataProvider = "_checkNotEmpty_Pass_Data")
     public <T> void checkNotEmpty_Pass(Collection<T> ref) {
-        CollectionArgs.checkNotEmpty(ref, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == CollectionArgs.checkNotEmpty(ref, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        CollectionArgs.checkNotEmpty(ref, null);
-        CollectionArgs.checkNotEmpty(ref, "");
-        CollectionArgs.checkNotEmpty(ref, "   ");
+        Assert.assertTrue(ref == CollectionArgs.checkNotEmpty(ref, null));
+        Assert.assertTrue(ref == CollectionArgs.checkNotEmpty(ref, ""));
+        Assert.assertTrue(ref == CollectionArgs.checkNotEmpty(ref, "   "));
     }
 
     @DataProvider
@@ -180,11 +183,12 @@ public class CollectionArgsTest {
     
     @Test(dataProvider = "_checkMinSize_Pass_Data")
     public <T> void checkMinSize_Pass(Collection<T> ref, int minSize) {
-        CollectionArgs.checkMinSize(ref, minSize, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == CollectionArgs.checkMinSize(ref, minSize, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        CollectionArgs.checkMinSize(ref, minSize, null);
-        CollectionArgs.checkMinSize(ref, minSize, "");
-        CollectionArgs.checkMinSize(ref, minSize, "   ");
+        Assert.assertTrue(ref == CollectionArgs.checkMinSize(ref, minSize, null));
+        Assert.assertTrue(ref == CollectionArgs.checkMinSize(ref, minSize, ""));
+        Assert.assertTrue(ref == CollectionArgs.checkMinSize(ref, minSize, "   "));
     }
     
     @DataProvider
@@ -236,11 +240,12 @@ public class CollectionArgsTest {
     
     @Test(dataProvider = "_checkMaxSize_Pass_Data")
     public <T> void checkMaxSize_Pass(Collection<T> ref, int maxSize) {
-        CollectionArgs.checkMaxSize(ref, maxSize, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == CollectionArgs.checkMaxSize(ref, maxSize, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        CollectionArgs.checkMaxSize(ref, maxSize, null);
-        CollectionArgs.checkMaxSize(ref, maxSize, "");
-        CollectionArgs.checkMaxSize(ref, maxSize, "   ");
+        Assert.assertTrue(ref == CollectionArgs.checkMaxSize(ref, maxSize, null));
+        Assert.assertTrue(ref == CollectionArgs.checkMaxSize(ref, maxSize, ""));
+        Assert.assertTrue(ref == CollectionArgs.checkMaxSize(ref, maxSize, "   "));
     }
     
     @DataProvider
@@ -288,11 +293,12 @@ public class CollectionArgsTest {
     
     @Test(dataProvider = "_checkExactSize_Pass_Data")
     public <T> void checkExactSize_Pass(Collection<T> ref, int exactSize) {
-        CollectionArgs.checkExactSize(ref, exactSize, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == CollectionArgs.checkExactSize(ref, exactSize, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        CollectionArgs.checkExactSize(ref, exactSize, null);
-        CollectionArgs.checkExactSize(ref, exactSize, "");
-        CollectionArgs.checkExactSize(ref, exactSize, "   ");
+        Assert.assertTrue(ref == CollectionArgs.checkExactSize(ref, exactSize, null));
+        Assert.assertTrue(ref == CollectionArgs.checkExactSize(ref, exactSize, ""));
+        Assert.assertTrue(ref == CollectionArgs.checkExactSize(ref, exactSize, "   "));
     }
     
     @DataProvider
@@ -333,7 +339,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkElementsNotNull_Pass_Data() {
+    public static final Object[][] checkElementsNotNull_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of() },
                 { ImmutableList.of("a") },
@@ -341,17 +347,18 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkElementsNotNull_Pass_Data")
+    @Test(dataProvider = "checkElementsNotNull_Pass_Data")
     public <T> void checkElementsNotNull_Pass(Collection<T> ref) {
-        CollectionArgs.checkElementsNotNull(ref, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == CollectionArgs.checkElementsNotNull(ref, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        CollectionArgs.checkElementsNotNull(ref, null);
-        CollectionArgs.checkElementsNotNull(ref, "");
-        CollectionArgs.checkElementsNotNull(ref, "   ");
+        Assert.assertTrue(ref == CollectionArgs.checkElementsNotNull(ref, null));
+        Assert.assertTrue(ref == CollectionArgs.checkElementsNotNull(ref, ""));
+        Assert.assertTrue(ref == CollectionArgs.checkElementsNotNull(ref, "   "));
     }
 
     @DataProvider
-    private static final Object[][] _checkElementsNotNull_FailWithNullElements_Data() {
+    public static final Object[][] checkElementsNotNull_FailWithNullElements_Data() {
         return new Object[][] {
                 { Arrays.asList(new Object[] { null }) },
                 { Arrays.asList("a", null) },
@@ -362,7 +369,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkElementsNotNull_FailWithNullElements_Data",
+    @Test(dataProvider = "checkElementsNotNull_FailWithNullElements_Data",
             expectedExceptions = NullPointerException.class)
     public <T> void checkElementsNotNull_FailWithNullElements(Collection<T> ref) {
         CollectionArgs.checkElementsNotNull(ref, "ref");
@@ -387,11 +394,12 @@ public class CollectionArgsTest {
     
     @Test(dataProvider = "_checkNotEmptyAndElementsNotNull_Pass_Data")
     public <T> void checkNotEmptyAndElementsNotNull_Pass(Collection<T> ref) {
-        CollectionArgs.checkNotEmptyAndElementsNotNull(ref, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == CollectionArgs.checkNotEmptyAndElementsNotNull(ref, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        CollectionArgs.checkNotEmptyAndElementsNotNull(ref, null);
-        CollectionArgs.checkNotEmptyAndElementsNotNull(ref, "");
-        CollectionArgs.checkNotEmptyAndElementsNotNull(ref, "   ");
+        Assert.assertTrue(ref == CollectionArgs.checkNotEmptyAndElementsNotNull(ref, null));
+        Assert.assertTrue(ref == CollectionArgs.checkNotEmptyAndElementsNotNull(ref, ""));
+        Assert.assertTrue(ref == CollectionArgs.checkNotEmptyAndElementsNotNull(ref, "   "));
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -434,11 +442,12 @@ public class CollectionArgsTest {
     
     @Test(dataProvider = "_checkAccessIndex_Pass_Data")
     public <T> void checkAccessIndex_Pass(Collection<T> ref, int index) {
-        CollectionArgs.checkAccessIndex(ref, index, "ref", "index");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(index == CollectionArgs.checkAccessIndex(ref, index, "ref", "index"));
         // Demonstrate argName can be anything ridiculous.
-        CollectionArgs.checkAccessIndex(ref, index, null, null);
-        CollectionArgs.checkAccessIndex(ref, index, "", "");
-        CollectionArgs.checkAccessIndex(ref, index, "   ", "   ");
+        Assert.assertTrue(index == CollectionArgs.checkAccessIndex(ref, index, null, null));
+        Assert.assertTrue(index == CollectionArgs.checkAccessIndex(ref, index, "", ""));
+        Assert.assertTrue(index == CollectionArgs.checkAccessIndex(ref, index, "   ", "   "));
     }
 
     @DataProvider
@@ -506,11 +515,12 @@ public class CollectionArgsTest {
     
     @Test(dataProvider = "_checkInsertIndex_Pass_Data")
     public <T> void checkInsertIndex_Pass(Collection<T> ref, int index) {
-        CollectionArgs.checkInsertIndex(ref, index, "ref", "index");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(index == CollectionArgs.checkInsertIndex(ref, index, "ref", "index"));
         // Demonstrate argName can be anything ridiculous.
-        CollectionArgs.checkInsertIndex(ref, index, null, null);
-        CollectionArgs.checkInsertIndex(ref, index, "", "");
-        CollectionArgs.checkInsertIndex(ref, index, "   ", "   ");
+        Assert.assertTrue(index == CollectionArgs.checkInsertIndex(ref, index, null, null));
+        Assert.assertTrue(index == CollectionArgs.checkInsertIndex(ref, index, "", ""));
+        Assert.assertTrue(index == CollectionArgs.checkInsertIndex(ref, index, "   ", "   "));
     }
 
     @DataProvider
@@ -753,11 +763,12 @@ public class CollectionArgsTest {
     @Test(dataProvider = "_checkContains_Pass_Data")
     public <THaystack, TNeedle extends THaystack>
     void checkContains_Pass(Collection<THaystack> ref, TNeedle value) {
-        CollectionArgs.checkContains(ref, value, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(value == CollectionArgs.checkContains(ref, value, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        CollectionArgs.checkContains(ref, value, null);
-        CollectionArgs.checkContains(ref, value, "");
-        CollectionArgs.checkContains(ref, value, "   ");
+        Assert.assertTrue(value == CollectionArgs.checkContains(ref, value, null));
+        Assert.assertTrue(value == CollectionArgs.checkContains(ref, value, ""));
+        Assert.assertTrue(value == CollectionArgs.checkContains(ref, value, "   "));
     }
     
     @DataProvider

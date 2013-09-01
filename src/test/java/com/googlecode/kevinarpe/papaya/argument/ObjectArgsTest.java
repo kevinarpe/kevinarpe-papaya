@@ -26,7 +26,10 @@ package com.googlecode.kevinarpe.papaya.argument;
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import org.junit.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -72,7 +75,12 @@ public class ObjectArgsTest {
     
     @Test(dataProvider = "_checkNotNull_Pass_Data")
     public void checkNotNull_Pass(Object x) {
-        ObjectArgs.checkNotNull(x, "x");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(x == ObjectArgs.checkNotNull(x, "x"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(x == ObjectArgs.checkNotNull(x, null));
+        Assert.assertTrue(x == ObjectArgs.checkNotNull(x, ""));
+        Assert.assertTrue(x == ObjectArgs.checkNotNull(x, "   "));
     }
     
     @DataProvider
@@ -108,10 +116,34 @@ public class ObjectArgsTest {
         };
     }
     
+    final List<String> ARG_NAME_LIST = Arrays.asList("blah", null, "", "   ");
+    
     @Test(dataProvider = "_checkInstanceOfType_Pass_Data")
     public void checkInstanceOfType_Pass(Object ref, Class<?> destClass) {
-        ObjectArgs.checkInstanceOfType(ref, destClass, "refArgName", "destClassArgName");
-        ObjectArgs.checkInstanceOfType(ref, destClass, "refArgName");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(
+            ref ==
+                ObjectArgs.checkInstanceOfType(ref, destClass, "refArgName", "destClassArgName"));
+        // Demonstrate argName can be anything ridiculous.
+        for (String refArgName: ARG_NAME_LIST) {
+            for (String destClassArgName: ARG_NAME_LIST) {
+                Assert.assertTrue(
+                    ref == ObjectArgs.checkInstanceOfType(
+                                ref, destClass, refArgName, destClassArgName));
+            }
+        }
+    }
+    
+    @Test(dataProvider = "_checkInstanceOfType_Pass_Data")
+    public void checkInstanceOfType_Pass2(Object ref, Class<?> destClass) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(
+            ref ==
+                ObjectArgs.checkInstanceOfType(ref, destClass, "refArgName"));
+        // Demonstrate argName can be anything ridiculous.
+        for (String refArgName: ARG_NAME_LIST) {
+            Assert.assertTrue(ref == ObjectArgs.checkInstanceOfType(ref, destClass, refArgName));
+        }
     }
     
     @DataProvider
@@ -175,7 +207,25 @@ public class ObjectArgsTest {
     public void checkAssignableToType_Pass(Class<?> srcClass, Class<?> destClass) {
         ObjectArgs.checkAssignableToType(
             srcClass, destClass, "srcClassArgName", "destClassArgName");
-        ObjectArgs.checkAssignableToType(srcClass, destClass, "srcClassArgName");
+        
+        // Demonstrate argName can be anything ridiculous.
+        for (String srcClassArgName: ARG_NAME_LIST) {
+            for (String destClassArgName: ARG_NAME_LIST) {
+                ObjectArgs.checkAssignableToType(
+                    srcClass, destClass, srcClassArgName, destClassArgName);
+            }
+        }
+    }
+    
+    @Test(dataProvider = "_checkAssignableToType_Pass_Data")
+    public void checkAssignableToType_Pass2(Class<?> srcClass, Class<?> destClass) {
+        ObjectArgs.checkAssignableToType(
+            srcClass, destClass, "srcClassArgName");
+        
+        // Demonstrate argName can be anything ridiculous.
+        for (String srcClassArgName: ARG_NAME_LIST) {
+            ObjectArgs.checkAssignableToType(srcClass, destClass, srcClassArgName);
+        }
     }
     
     @DataProvider

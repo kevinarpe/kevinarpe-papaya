@@ -212,12 +212,12 @@ public final class CollectionArgs {
      *
      * @return the validated collection reference
      *
+     * @throws NullPointerException
+     *         if {@code ref} (or any element) is {@code null}
+     *
      * @see ObjectArgs#checkNotNull(Object, String)
      * @see IterableArgs#checkElementsNotNull(Iterable, String)
      * @see ArrayArgs#checkElementsNotNull(Object[], String)
-     *
-     * @throws NullPointerException
-     *         if {@code ref} (or any element) is {@code null}
      */
     @FullyTested
     public static <TValue, TCollection extends Collection<TValue>>

@@ -28,6 +28,7 @@ package com.googlecode.kevinarpe.papaya.argument;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -73,11 +74,12 @@ public class MapArgsTest {
     @Test(dataProvider = "_checkSizeRange_Pass_Data")
     public <TKey, TValue> void checkSizeRange_Pass(
             Map<TKey, TValue> ref, int minSize, int maxSize) {
-        MapArgs.checkSizeRange(ref, minSize, maxSize, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == MapArgs.checkSizeRange(ref, minSize, maxSize, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        MapArgs.checkSizeRange(ref, minSize, maxSize, null);
-        MapArgs.checkSizeRange(ref, minSize, maxSize, "");
-        MapArgs.checkSizeRange(ref, minSize, maxSize, "   ");
+        Assert.assertTrue(ref == MapArgs.checkSizeRange(ref, minSize, maxSize, null));
+        Assert.assertTrue(ref == MapArgs.checkSizeRange(ref, minSize, maxSize, ""));
+        Assert.assertTrue(ref == MapArgs.checkSizeRange(ref, minSize, maxSize, "   "));
     }
 
     @DataProvider
@@ -131,11 +133,12 @@ public class MapArgsTest {
     
     @Test(dataProvider = "_checkNotEmpty_Pass_Data")
     public <TKey, TValue> void checkNotEmpty_Pass(Map<TKey, TValue> ref) {
-        MapArgs.checkNotEmpty(ref, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == MapArgs.checkNotEmpty(ref, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        MapArgs.checkNotEmpty(ref, null);
-        MapArgs.checkNotEmpty(ref, "");
-        MapArgs.checkNotEmpty(ref, "   ");
+        Assert.assertTrue(ref == MapArgs.checkNotEmpty(ref, null));
+        Assert.assertTrue(ref == MapArgs.checkNotEmpty(ref, ""));
+        Assert.assertTrue(ref == MapArgs.checkNotEmpty(ref, "   "));
     }
 
     @DataProvider
@@ -176,11 +179,12 @@ public class MapArgsTest {
     
     @Test(dataProvider = "_checkMinSize_Pass_Data")
     public <TKey, TValue> void checkMinSize_Pass(Map<TKey, TValue> ref, int minSize) {
-        MapArgs.checkMinSize(ref, minSize, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == MapArgs.checkMinSize(ref, minSize, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        MapArgs.checkMinSize(ref, minSize, null);
-        MapArgs.checkMinSize(ref, minSize, "");
-        MapArgs.checkMinSize(ref, minSize, "   ");
+        Assert.assertTrue(ref == MapArgs.checkMinSize(ref, minSize, null));
+        Assert.assertTrue(ref == MapArgs.checkMinSize(ref, minSize, ""));
+        Assert.assertTrue(ref == MapArgs.checkMinSize(ref, minSize, "   "));
     }
     
     @DataProvider
@@ -234,11 +238,12 @@ public class MapArgsTest {
     
     @Test(dataProvider = "_checkMaxSize_Pass_Data")
     public <TKey, TValue> void checkMaxSize_Pass(Map<TKey, TValue> ref, int maxSize) {
-        MapArgs.checkMaxSize(ref, maxSize, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == MapArgs.checkMaxSize(ref, maxSize, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        MapArgs.checkMaxSize(ref, maxSize, null);
-        MapArgs.checkMaxSize(ref, maxSize, "");
-        MapArgs.checkMaxSize(ref, maxSize, "   ");
+        Assert.assertTrue(ref == MapArgs.checkMaxSize(ref, maxSize, null));
+        Assert.assertTrue(ref == MapArgs.checkMaxSize(ref, maxSize, ""));
+        Assert.assertTrue(ref == MapArgs.checkMaxSize(ref, maxSize, "   "));
     }
     
     @DataProvider
@@ -288,11 +293,12 @@ public class MapArgsTest {
     
     @Test(dataProvider = "_checkExactSize_Pass_Data")
     public <TKey, TValue> void checkExactSize_Pass(Map<TKey, TValue> ref, int exactSize) {
-        MapArgs.checkExactSize(ref, exactSize, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == MapArgs.checkExactSize(ref, exactSize, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        MapArgs.checkExactSize(ref, exactSize, null);
-        MapArgs.checkExactSize(ref, exactSize, "");
-        MapArgs.checkExactSize(ref, exactSize, "   ");
+        Assert.assertTrue(ref == MapArgs.checkExactSize(ref, exactSize, null));
+        Assert.assertTrue(ref == MapArgs.checkExactSize(ref, exactSize, ""));
+        Assert.assertTrue(ref == MapArgs.checkExactSize(ref, exactSize, "   "));
     }
     
     @DataProvider
@@ -345,11 +351,12 @@ public class MapArgsTest {
     
     @Test(dataProvider = "_checkKeysNotNull_Pass_Data")
     public <TKey, TValue> void checkKeysNotNull_Pass(Map<TKey, TValue> ref) {
-        MapArgs.checkKeysNotNull(ref, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == MapArgs.checkKeysNotNull(ref, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        MapArgs.checkKeysNotNull(ref, null);
-        MapArgs.checkKeysNotNull(ref, "");
-        MapArgs.checkKeysNotNull(ref, "   ");
+        Assert.assertTrue(ref == MapArgs.checkKeysNotNull(ref, null));
+        Assert.assertTrue(ref == MapArgs.checkKeysNotNull(ref, ""));
+        Assert.assertTrue(ref == MapArgs.checkKeysNotNull(ref, "   "));
     }
     
     @DataProvider
@@ -391,11 +398,12 @@ public class MapArgsTest {
     
     @Test(dataProvider = "_checkValuesNotNull_Pass_Data")
     public <TKey, TValue> void checkValuesNotNull_Pass(Map<TKey, TValue> ref) {
-        MapArgs.checkValuesNotNull(ref, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == MapArgs.checkValuesNotNull(ref, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        MapArgs.checkValuesNotNull(ref, null);
-        MapArgs.checkValuesNotNull(ref, "");
-        MapArgs.checkValuesNotNull(ref, "   ");
+        Assert.assertTrue(ref == MapArgs.checkValuesNotNull(ref, null));
+        Assert.assertTrue(ref == MapArgs.checkValuesNotNull(ref, ""));
+        Assert.assertTrue(ref == MapArgs.checkValuesNotNull(ref, "   "));
     }
     
     @DataProvider
@@ -435,11 +443,12 @@ public class MapArgsTest {
     
     @Test(dataProvider = "_checkKeysAndValuesNotNull_Pass_Data")
     public <TKey, TValue> void checkKeysAndValuesNotNull_Pass(Map<TKey, TValue> ref) {
-        MapArgs.checkKeysAndValuesNotNull(ref, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == MapArgs.checkKeysAndValuesNotNull(ref, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        MapArgs.checkKeysAndValuesNotNull(ref, null);
-        MapArgs.checkKeysAndValuesNotNull(ref, "");
-        MapArgs.checkKeysAndValuesNotNull(ref, "   ");
+        Assert.assertTrue(ref == MapArgs.checkKeysAndValuesNotNull(ref, null));
+        Assert.assertTrue(ref == MapArgs.checkKeysAndValuesNotNull(ref, ""));
+        Assert.assertTrue(ref == MapArgs.checkKeysAndValuesNotNull(ref, "   "));
     }
     
     @DataProvider
@@ -489,11 +498,12 @@ public class MapArgsTest {
     
     @Test(dataProvider = "_checkNotEmptyAndKeysNotNull_Pass_Data")
     public <TKey, TValue> void checkNotEmptyAndKeysNotNull_Pass(Map<TKey, TValue> ref) {
-        MapArgs.checkNotEmptyAndKeysNotNull(ref, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == MapArgs.checkNotEmptyAndKeysNotNull(ref, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        MapArgs.checkNotEmptyAndKeysNotNull(ref, null);
-        MapArgs.checkNotEmptyAndKeysNotNull(ref, "");
-        MapArgs.checkNotEmptyAndKeysNotNull(ref, "   ");
+        Assert.assertTrue(ref == MapArgs.checkNotEmptyAndKeysNotNull(ref, null));
+        Assert.assertTrue(ref == MapArgs.checkNotEmptyAndKeysNotNull(ref, ""));
+        Assert.assertTrue(ref == MapArgs.checkNotEmptyAndKeysNotNull(ref, "   "));
     }
     
     @DataProvider
@@ -549,11 +559,12 @@ public class MapArgsTest {
     
     @Test(dataProvider = "_checkNotEmptyAndValuesNotNull_Pass_Data")
     public <TKey, TValue> void checkNotEmptyAndValuesNotNull_Pass(Map<TKey, TValue> ref) {
-        MapArgs.checkNotEmptyAndValuesNotNull(ref, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == MapArgs.checkNotEmptyAndValuesNotNull(ref, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        MapArgs.checkNotEmptyAndValuesNotNull(ref, null);
-        MapArgs.checkNotEmptyAndValuesNotNull(ref, "");
-        MapArgs.checkNotEmptyAndValuesNotNull(ref, "   ");
+        Assert.assertTrue(ref == MapArgs.checkNotEmptyAndValuesNotNull(ref, null));
+        Assert.assertTrue(ref == MapArgs.checkNotEmptyAndValuesNotNull(ref, ""));
+        Assert.assertTrue(ref == MapArgs.checkNotEmptyAndValuesNotNull(ref, "   "));
     }
     
     @DataProvider
@@ -608,11 +619,12 @@ public class MapArgsTest {
     
     @Test(dataProvider = "_checkNotEmptyAndKeysAndValuesNotNull_Pass_Data")
     public <TKey, TValue> void checkNotEmptyAndKeysAndValuesNotNull_Pass(Map<TKey, TValue> ref) {
-        MapArgs.checkNotEmptyAndKeysAndValuesNotNull(ref, "ref");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == MapArgs.checkNotEmptyAndKeysAndValuesNotNull(ref, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        MapArgs.checkNotEmptyAndKeysAndValuesNotNull(ref, null);
-        MapArgs.checkNotEmptyAndKeysAndValuesNotNull(ref, "");
-        MapArgs.checkNotEmptyAndKeysAndValuesNotNull(ref, "   ");
+        Assert.assertTrue(ref == MapArgs.checkNotEmptyAndKeysAndValuesNotNull(ref, null));
+        Assert.assertTrue(ref == MapArgs.checkNotEmptyAndKeysAndValuesNotNull(ref, ""));
+        Assert.assertTrue(ref == MapArgs.checkNotEmptyAndKeysAndValuesNotNull(ref, "   "));
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)

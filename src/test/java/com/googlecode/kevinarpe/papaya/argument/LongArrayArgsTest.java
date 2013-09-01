@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -61,21 +62,23 @@ public class LongArrayArgsTest {
     
     @Test(dataProvider = "checkPositive_Pass_Data")
     public void checkPositive_Pass(long[] arr) {
-        LongArrayArgs.checkPositive(arr, "arr");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(arr == LongArrayArgs.checkPositive(arr, "arr"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkPositive(arr, null);
-        LongArrayArgs.checkPositive(arr, "");
-        LongArrayArgs.checkPositive(arr, "   ");
+        Assert.assertTrue(arr == LongArrayArgs.checkPositive(arr, null));
+        Assert.assertTrue(arr == LongArrayArgs.checkPositive(arr, ""));
+        Assert.assertTrue(arr == LongArrayArgs.checkPositive(arr, "   "));
     }
     
     @Test(dataProvider = "checkPositive_Pass_Data")
     public void checkPositive_Pass2(long[] arr) {
         Long[] arr2 = toLongObjectArray(arr);
-        LongArrayArgs.checkPositive(arr2, "arr2");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(arr2 == LongArrayArgs.checkPositive(arr2, "arr2"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkPositive(arr2, null);
-        LongArrayArgs.checkPositive(arr2, "");
-        LongArrayArgs.checkPositive(arr2, "   ");
+        Assert.assertTrue(arr2 == LongArrayArgs.checkPositive(arr2, null));
+        Assert.assertTrue(arr2 == LongArrayArgs.checkPositive(arr2, ""));
+        Assert.assertTrue(arr2 == LongArrayArgs.checkPositive(arr2, "   "));
     }
 
     @DataProvider
@@ -154,21 +157,23 @@ public class LongArrayArgsTest {
     
     @Test(dataProvider = "checkNotPositive_Pass_Data")
     public void checkNotPositive_Pass(long[] arr) {
-        LongArrayArgs.checkNotPositive(arr, "arr");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(arr == LongArrayArgs.checkNotPositive(arr, "arr"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkNotPositive(arr, null);
-        LongArrayArgs.checkNotPositive(arr, "");
-        LongArrayArgs.checkNotPositive(arr, "   ");
+        Assert.assertTrue(arr == LongArrayArgs.checkNotPositive(arr, null));
+        Assert.assertTrue(arr == LongArrayArgs.checkNotPositive(arr, ""));
+        Assert.assertTrue(arr == LongArrayArgs.checkNotPositive(arr, "   "));
     }
     
     @Test(dataProvider = "checkNotPositive_Pass_Data")
     public void checkNotPositive_Pass2(long[] arr) {
         Long[] arr2 = toLongObjectArray(arr);
-        LongArrayArgs.checkNotPositive(arr2, "arr2");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(arr2 == LongArrayArgs.checkNotPositive(arr2, "arr2"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkNotPositive(arr2, null);
-        LongArrayArgs.checkNotPositive(arr2, "");
-        LongArrayArgs.checkNotPositive(arr2, "   ");
+        Assert.assertTrue(arr2 == LongArrayArgs.checkNotPositive(arr2, null));
+        Assert.assertTrue(arr2 == LongArrayArgs.checkNotPositive(arr2, ""));
+        Assert.assertTrue(arr2 == LongArrayArgs.checkNotPositive(arr2, "   "));
     }
     
     @DataProvider
@@ -237,21 +242,23 @@ public class LongArrayArgsTest {
     
     @Test(dataProvider = "checkNegative_Pass_Data")
     public void checkNegative_Pass(long[] arr) {
-        LongArrayArgs.checkNegative(arr, "arr");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(arr == LongArrayArgs.checkNegative(arr, "arr"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkNegative(arr, null);
-        LongArrayArgs.checkNegative(arr, "");
-        LongArrayArgs.checkNegative(arr, "   ");
+        Assert.assertTrue(arr == LongArrayArgs.checkNegative(arr, null));
+        Assert.assertTrue(arr == LongArrayArgs.checkNegative(arr, ""));
+        Assert.assertTrue(arr == LongArrayArgs.checkNegative(arr, "   "));
     }
     
     @Test(dataProvider = "checkNegative_Pass_Data")
     public void checkNegative_Pass2(long[] arr) {
         Long[] arr2 = toLongObjectArray(arr);
-        LongArrayArgs.checkNegative(arr2, "arr2");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(arr2 == LongArrayArgs.checkNegative(arr2, "arr2"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkNegative(arr2, null);
-        LongArrayArgs.checkNegative(arr2, "");
-        LongArrayArgs.checkNegative(arr2, "   ");
+        Assert.assertTrue(arr2 == LongArrayArgs.checkNegative(arr2, null));
+        Assert.assertTrue(arr2 == LongArrayArgs.checkNegative(arr2, ""));
+        Assert.assertTrue(arr2 == LongArrayArgs.checkNegative(arr2, "   "));
     }
 
     @DataProvider
@@ -320,21 +327,23 @@ public class LongArrayArgsTest {
     
     @Test(dataProvider = "checkNotNegative_Pass_Data")
     public void checkNotNegative_Pass(long[] arr) {
-        LongArrayArgs.checkNotNegative(arr, "arr");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(arr == LongArrayArgs.checkNotNegative(arr, "arr"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkNotNegative(arr, null);
-        LongArrayArgs.checkNotNegative(arr, "");
-        LongArrayArgs.checkNotNegative(arr, "   ");
+        Assert.assertTrue(arr == LongArrayArgs.checkNotNegative(arr, null));
+        Assert.assertTrue(arr == LongArrayArgs.checkNotNegative(arr, ""));
+        Assert.assertTrue(arr == LongArrayArgs.checkNotNegative(arr, "   "));
     }
     
     @Test(dataProvider = "checkNotNegative_Pass_Data")
     public void checkNotNegative_Pass2(long[] arr) {
         Long[] arr2 = toLongObjectArray(arr);
-        LongArrayArgs.checkNotNegative(arr2, "arr2");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(arr2 == LongArrayArgs.checkNotNegative(arr2, "arr2"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkNotNegative(arr2, null);
-        LongArrayArgs.checkNotNegative(arr2, "");
-        LongArrayArgs.checkNotNegative(arr2, "   ");
+        Assert.assertTrue(arr2 == LongArrayArgs.checkNotNegative(arr2, null));
+        Assert.assertTrue(arr2 == LongArrayArgs.checkNotNegative(arr2, ""));
+        Assert.assertTrue(arr2 == LongArrayArgs.checkNotNegative(arr2, "   "));
     }
 
     @DataProvider
@@ -413,21 +422,31 @@ public class LongArrayArgsTest {
     
     @Test(dataProvider = "checkValueInsideRange_Pass_Data")
     public void checkValueInsideRange_Pass(long[] arr, long minValue, long maxValue) {
-        LongArrayArgs.checkValueInsideRange(arr, minValue, maxValue, "arr");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(
+            arr == LongArrayArgs.checkValueInsideRange(arr, minValue, maxValue, "arr"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkValueInsideRange(arr, minValue, maxValue, null);
-        LongArrayArgs.checkValueInsideRange(arr, minValue, maxValue, "");
-        LongArrayArgs.checkValueInsideRange(arr, minValue, maxValue, "   ");
+        Assert.assertTrue(
+            arr == LongArrayArgs.checkValueInsideRange(arr, minValue, maxValue, null));
+        Assert.assertTrue(
+            arr == LongArrayArgs.checkValueInsideRange(arr, minValue, maxValue, ""));
+        Assert.assertTrue(
+            arr == LongArrayArgs.checkValueInsideRange(arr, minValue, maxValue, "   "));
     }
     
     @Test(dataProvider = "checkValueInsideRange_Pass_Data")
     public void checkValueInsideRange_Pass2(long[] arr, long minValue, long maxValue) {
         Long[] arr2 = toLongObjectArray(arr);
-        LongArrayArgs.checkValueInsideRange(arr2, minValue, maxValue, "arr2");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(
+            arr2 == LongArrayArgs.checkValueInsideRange(arr2, minValue, maxValue, "arr2"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkValueInsideRange(arr2, minValue, maxValue, null);
-        LongArrayArgs.checkValueInsideRange(arr2, minValue, maxValue, "");
-        LongArrayArgs.checkValueInsideRange(arr2, minValue, maxValue, "   ");
+        Assert.assertTrue(
+            arr2 == LongArrayArgs.checkValueInsideRange(arr2, minValue, maxValue, null));
+        Assert.assertTrue(
+            arr2 == LongArrayArgs.checkValueInsideRange(arr2, minValue, maxValue, ""));
+        Assert.assertTrue(
+            arr2 == LongArrayArgs.checkValueInsideRange(arr2, minValue, maxValue, "   "));
     }
     
     @DataProvider
@@ -541,21 +560,31 @@ public class LongArrayArgsTest {
     
     @Test(dataProvider = "checkValueOutsideRange_Pass_Data")
     public void checkValueOutsideRange_Pass(long[] arr, long minValue, long maxValue) {
-        LongArrayArgs.checkValueOutsideRange(arr, minValue, maxValue, "arr");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(
+            arr == LongArrayArgs.checkValueOutsideRange(arr, minValue, maxValue, "arr"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkValueOutsideRange(arr, minValue, maxValue, null);
-        LongArrayArgs.checkValueOutsideRange(arr, minValue, maxValue, "");
-        LongArrayArgs.checkValueOutsideRange(arr, minValue, maxValue, "   ");
+        Assert.assertTrue(
+            arr == LongArrayArgs.checkValueOutsideRange(arr, minValue, maxValue, null));
+        Assert.assertTrue(
+            arr == LongArrayArgs.checkValueOutsideRange(arr, minValue, maxValue, ""));
+        Assert.assertTrue(
+            arr == LongArrayArgs.checkValueOutsideRange(arr, minValue, maxValue, "   "));
     }
     
     @Test(dataProvider = "checkValueOutsideRange_Pass_Data")
     public void checkValueOutsideRange_Pass2(long[] arr, long minValue, long maxValue) {
         Long[] arr2 = toLongObjectArray(arr);
-        LongArrayArgs.checkValueOutsideRange(arr2, minValue, maxValue, "arr2");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(
+            arr2 == LongArrayArgs.checkValueOutsideRange(arr2, minValue, maxValue, "arr2"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkValueOutsideRange(arr2, minValue, maxValue, null);
-        LongArrayArgs.checkValueOutsideRange(arr2, minValue, maxValue, "");
-        LongArrayArgs.checkValueOutsideRange(arr2, minValue, maxValue, "   ");
+        Assert.assertTrue(
+            arr2 == LongArrayArgs.checkValueOutsideRange(arr2, minValue, maxValue, null));
+        Assert.assertTrue(
+            arr2 == LongArrayArgs.checkValueOutsideRange(arr2, minValue, maxValue, ""));
+        Assert.assertTrue(
+            arr2 == LongArrayArgs.checkValueOutsideRange(arr2, minValue, maxValue, "   "));
     }
     
     @DataProvider
@@ -663,21 +692,23 @@ public class LongArrayArgsTest {
     
     @Test(dataProvider = "checkMinValue_Pass_Data")
     public void checkMinValue_Pass(long[] arr, long minValue) {
-        LongArrayArgs.checkMinValue(arr, minValue, "arr");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(arr == LongArrayArgs.checkMinValue(arr, minValue, "arr"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkMinValue(arr, minValue, null);
-        LongArrayArgs.checkMinValue(arr, minValue, "");
-        LongArrayArgs.checkMinValue(arr, minValue, "   ");
+        Assert.assertTrue(arr == LongArrayArgs.checkMinValue(arr, minValue, null));
+        Assert.assertTrue(arr == LongArrayArgs.checkMinValue(arr, minValue, ""));
+        Assert.assertTrue(arr == LongArrayArgs.checkMinValue(arr, minValue, "   "));
     }
     
     @Test(dataProvider = "checkMinValue_Pass_Data")
     public void checkMinValue_Pass2(long[] arr, long minValue) {
         Long[] arr2 = toLongObjectArray(arr);
-        LongArrayArgs.checkMinValue(arr2, minValue, "arr2");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(arr2 == LongArrayArgs.checkMinValue(arr2, minValue, "arr2"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkMinValue(arr2, minValue, null);
-        LongArrayArgs.checkMinValue(arr2, minValue, "");
-        LongArrayArgs.checkMinValue(arr2, minValue, "   ");
+        Assert.assertTrue(arr2 == LongArrayArgs.checkMinValue(arr2, minValue, null));
+        Assert.assertTrue(arr2 == LongArrayArgs.checkMinValue(arr2, minValue, ""));
+        Assert.assertTrue(arr2 == LongArrayArgs.checkMinValue(arr2, minValue, "   "));
     }
     
     @DataProvider
@@ -749,21 +780,23 @@ public class LongArrayArgsTest {
     
     @Test(dataProvider = "checkMaxValue_Pass_Data")
     public void checkMaxValue_Pass(long[] arr, long maxValue) {
-        LongArrayArgs.checkMaxValue(arr, maxValue, "arr");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(arr == LongArrayArgs.checkMaxValue(arr, maxValue, "arr"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkMaxValue(arr, maxValue, null);
-        LongArrayArgs.checkMaxValue(arr, maxValue, "");
-        LongArrayArgs.checkMaxValue(arr, maxValue, "   ");
+        Assert.assertTrue(arr == LongArrayArgs.checkMaxValue(arr, maxValue, null));
+        Assert.assertTrue(arr == LongArrayArgs.checkMaxValue(arr, maxValue, ""));
+        Assert.assertTrue(arr == LongArrayArgs.checkMaxValue(arr, maxValue, "   "));
     }
     
     @Test(dataProvider = "checkMaxValue_Pass_Data")
     public void checkMaxValue_Pass2(long[] arr, long maxValue) {
         Long[] arr2 = toLongObjectArray(arr);
-        LongArrayArgs.checkMaxValue(arr2, maxValue, "arr2");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(arr2 == LongArrayArgs.checkMaxValue(arr2, maxValue, "arr2"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkMaxValue(arr2, maxValue, null);
-        LongArrayArgs.checkMaxValue(arr2, maxValue, "");
-        LongArrayArgs.checkMaxValue(arr2, maxValue, "   ");
+        Assert.assertTrue(arr2 == LongArrayArgs.checkMaxValue(arr2, maxValue, null));
+        Assert.assertTrue(arr2 == LongArrayArgs.checkMaxValue(arr2, maxValue, ""));
+        Assert.assertTrue(arr2 == LongArrayArgs.checkMaxValue(arr2, maxValue, "   "));
     }
     
     @DataProvider
@@ -835,21 +868,23 @@ public class LongArrayArgsTest {
     
     @Test(dataProvider = "checkExactValue_Pass_Data")
     public void checkExactValue_Pass(long[] arr, long exactValue) {
-        LongArrayArgs.checkExactValue(arr, exactValue, "arr");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(arr == LongArrayArgs.checkExactValue(arr, exactValue, "arr"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkExactValue(arr, exactValue, null);
-        LongArrayArgs.checkExactValue(arr, exactValue, "");
-        LongArrayArgs.checkExactValue(arr, exactValue, "   ");
+        Assert.assertTrue(arr == LongArrayArgs.checkExactValue(arr, exactValue, null));
+        Assert.assertTrue(arr == LongArrayArgs.checkExactValue(arr, exactValue, ""));
+        Assert.assertTrue(arr == LongArrayArgs.checkExactValue(arr, exactValue, "   "));
     }
     
     @Test(dataProvider = "checkExactValue_Pass_Data")
     public void checkExactValue_Pass2(long[] arr, long exactValue) {
         Long[] arr2 = toLongObjectArray(arr);
-        LongArrayArgs.checkExactValue(arr2, exactValue, "arr2");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(arr2 == LongArrayArgs.checkExactValue(arr2, exactValue, "arr2"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkExactValue(arr2, exactValue, null);
-        LongArrayArgs.checkExactValue(arr2, exactValue, "");
-        LongArrayArgs.checkExactValue(arr2, exactValue, "   ");
+        Assert.assertTrue(arr2 == LongArrayArgs.checkExactValue(arr2, exactValue, null));
+        Assert.assertTrue(arr2 == LongArrayArgs.checkExactValue(arr2, exactValue, ""));
+        Assert.assertTrue(arr2 == LongArrayArgs.checkExactValue(arr2, exactValue, "   "));
     }
     
     @DataProvider
@@ -921,21 +956,23 @@ public class LongArrayArgsTest {
     
     @Test(dataProvider = "checkNotExactValue_Pass_Data")
     public void checkNotExactValue_Pass(long[] arr, long exactValue) {
-        LongArrayArgs.checkNotExactValue(arr, exactValue, "arr");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(arr == LongArrayArgs.checkNotExactValue(arr, exactValue, "arr"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkNotExactValue(arr, exactValue, null);
-        LongArrayArgs.checkNotExactValue(arr, exactValue, "");
-        LongArrayArgs.checkNotExactValue(arr, exactValue, "   ");
+        Assert.assertTrue(arr == LongArrayArgs.checkNotExactValue(arr, exactValue, null));
+        Assert.assertTrue(arr == LongArrayArgs.checkNotExactValue(arr, exactValue, ""));
+        Assert.assertTrue(arr == LongArrayArgs.checkNotExactValue(arr, exactValue, "   "));
     }
     
     @Test(dataProvider = "checkNotExactValue_Pass_Data")
     public void checkNotExactValue_Pass2(long[] arr, long exactValue) {
         Long[] arr2 = toLongObjectArray(arr);
-        LongArrayArgs.checkNotExactValue(arr2, exactValue, "arr2");
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(arr2 == LongArrayArgs.checkNotExactValue(arr2, exactValue, "arr2"));
         // Demonstrate argName can be anything ridiculous.
-        LongArrayArgs.checkNotExactValue(arr2, exactValue, null);
-        LongArrayArgs.checkNotExactValue(arr2, exactValue, "");
-        LongArrayArgs.checkNotExactValue(arr2, exactValue, "   ");
+        Assert.assertTrue(arr2 == LongArrayArgs.checkNotExactValue(arr2, exactValue, null));
+        Assert.assertTrue(arr2 == LongArrayArgs.checkNotExactValue(arr2, exactValue, ""));
+        Assert.assertTrue(arr2 == LongArrayArgs.checkNotExactValue(arr2, exactValue, "   "));
     }
     
     @DataProvider

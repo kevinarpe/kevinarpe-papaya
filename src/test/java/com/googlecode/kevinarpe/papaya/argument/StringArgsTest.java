@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
+import org.junit.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -63,11 +64,12 @@ public class StringArgsTest {
     
     @Test(dataProvider = "_checkNotEmpty_Pass_Data")
     public void checkNotEmpty_Pass(String ref, String argName) {
-        StringArgs.checkNotEmpty(ref, argName);
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == StringArgs.checkNotEmpty(ref, argName));
         // Demonstrate argName can be anything ridiculous.
-        StringArgs.checkNotEmpty(ref, null);
-        StringArgs.checkNotEmpty(ref, "");
-        StringArgs.checkNotEmpty(ref, "   ");
+        Assert.assertTrue(ref == StringArgs.checkNotEmpty(ref, null));
+        Assert.assertTrue(ref == StringArgs.checkNotEmpty(ref, ""));
+        Assert.assertTrue(ref == StringArgs.checkNotEmpty(ref, "   "));
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -108,12 +110,13 @@ public class StringArgsTest {
     }
     
     @Test(dataProvider = "_checkNotEmptyOrWhitespace_Pass_Data")
-    public void checkNotEmptyOrWhitespace_Pass(String s) {
-        StringArgs.checkNotEmptyOrWhitespace(s, "s");
+    public void checkNotEmptyOrWhitespace_Pass(String ref) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == StringArgs.checkNotEmptyOrWhitespace(ref, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        StringArgs.checkNotEmptyOrWhitespace(s, null);
-        StringArgs.checkNotEmptyOrWhitespace(s, "");
-        StringArgs.checkNotEmptyOrWhitespace(s, "   ");
+        Assert.assertTrue(ref == StringArgs.checkNotEmptyOrWhitespace(ref, null));
+        Assert.assertTrue(ref == StringArgs.checkNotEmptyOrWhitespace(ref, ""));
+        Assert.assertTrue(ref == StringArgs.checkNotEmptyOrWhitespace(ref, "   "));
     }
     
     @DataProvider
@@ -151,12 +154,13 @@ public class StringArgsTest {
     }
     
     @Test(dataProvider = "_checkLengthRange_Pass_Data")
-    public void checkLengthRange_Pass(String s, int minLen, int maxLen) {
-        StringArgs.checkLengthRange(s, minLen, maxLen, "s");
+    public void checkLengthRange_Pass(String ref, int minLen, int maxLen) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == StringArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        StringArgs.checkLengthRange(s, minLen, maxLen, null);
-        StringArgs.checkLengthRange(s, minLen, maxLen, "");
-        StringArgs.checkLengthRange(s, minLen, maxLen, "   ");
+        Assert.assertTrue(ref == StringArgs.checkLengthRange(ref, minLen, maxLen, null));
+        Assert.assertTrue(ref == StringArgs.checkLengthRange(ref, minLen, maxLen, ""));
+        Assert.assertTrue(ref == StringArgs.checkLengthRange(ref, minLen, maxLen, "   "));
     }
     
     @DataProvider
@@ -209,12 +213,13 @@ public class StringArgsTest {
     }
     
     @Test(dataProvider = "_checkMinLength_Pass_Data")
-    public void checkMinLength_Pass(String s, int minLen) {
-        StringArgs.checkMinLength(s, minLen, "s");
+    public void checkMinLength_Pass(String ref, int minLen) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == StringArgs.checkMinLength(ref, minLen, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        StringArgs.checkMinLength(s, minLen, null);
-        StringArgs.checkMinLength(s, minLen, "");
-        StringArgs.checkMinLength(s, minLen, "   ");
+        Assert.assertTrue(ref == StringArgs.checkMinLength(ref, minLen, null));
+        Assert.assertTrue(ref == StringArgs.checkMinLength(ref, minLen, ""));
+        Assert.assertTrue(ref == StringArgs.checkMinLength(ref, minLen, "   "));
     }
     
     @DataProvider
@@ -265,12 +270,13 @@ public class StringArgsTest {
     }
     
     @Test(dataProvider = "_checkMaxLength_Pass_Data")
-    public void checkMaxLength_Pass(String s, int maxLen) {
-        StringArgs.checkMaxLength(s, maxLen, "s");
+    public void checkMaxLength_Pass(String ref, int maxLen) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == StringArgs.checkMaxLength(ref, maxLen, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        StringArgs.checkMaxLength(s, maxLen, null);
-        StringArgs.checkMaxLength(s, maxLen, "");
-        StringArgs.checkMaxLength(s, maxLen, "   ");
+        Assert.assertTrue(ref == StringArgs.checkMaxLength(ref, maxLen, null));
+        Assert.assertTrue(ref == StringArgs.checkMaxLength(ref, maxLen, ""));
+        Assert.assertTrue(ref == StringArgs.checkMaxLength(ref, maxLen, "   "));
     }
     
     @DataProvider
@@ -319,12 +325,13 @@ public class StringArgsTest {
     }
     
     @Test(dataProvider = "_checkExactLength_Pass_Data")
-    public void checkExactLength_Pass(String s, int len) {
-        StringArgs.checkExactLength(s, len, "s");
+    public void checkExactLength_Pass(String ref, int len) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == StringArgs.checkExactLength(ref, len, "ref"));
         // Demonstrate argName can be anything ridiculous.
-        StringArgs.checkExactLength(s, len, null);
-        StringArgs.checkExactLength(s, len, "");
-        StringArgs.checkExactLength(s, len, "   ");
+        Assert.assertTrue(ref == StringArgs.checkExactLength(ref, len, null));
+        Assert.assertTrue(ref == StringArgs.checkExactLength(ref, len, ""));
+        Assert.assertTrue(ref == StringArgs.checkExactLength(ref, len, "   "));
     }
     
     @DataProvider
@@ -377,12 +384,13 @@ public class StringArgsTest {
     }
     
     @Test(dataProvider = "_checkInsertIndex_Pass_Data")
-    public void checkInsertIndex_Pass(String s, int index) {
-        StringArgs.checkInsertIndex(s, index, "s", "index");
+    public void checkInsertIndex_Pass(String ref, int index) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(index == StringArgs.checkInsertIndex(ref, index, "ref", "index"));
         // Demonstrate argName can be anything ridiculous.
-        StringArgs.checkInsertIndex(s, index, null, null);
-        StringArgs.checkInsertIndex(s, index, "", "");
-        StringArgs.checkInsertIndex(s, index, "   ", "   ");
+        Assert.assertTrue(index == StringArgs.checkInsertIndex(ref, index, null, null));
+        Assert.assertTrue(index == StringArgs.checkInsertIndex(ref, index, "", ""));
+        Assert.assertTrue(index == StringArgs.checkInsertIndex(ref, index, "   ", "   "));
     }
     
     @DataProvider
