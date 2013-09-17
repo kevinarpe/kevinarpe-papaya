@@ -374,4 +374,45 @@ public class ByteArgsTest {
     public void checkExactValue_FailWithInvalidInput(byte i, byte value) {
         ByteArgs.checkExactValue(i, value, "i");
     }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // ByteArgs.checkNotExactValue
+    //
+
+    @DataProvider
+    private static final Object[][] _checkNotExactValue_Pass_Data() {
+        return new Object[][] {
+                { (byte) 1, (byte) 2 },
+                { (byte) 0, (byte) 1 },
+                { (byte) -1, (byte) 0 },
+                { Byte.MAX_VALUE, Byte.MIN_VALUE },
+                { Byte.MIN_VALUE, Byte.MAX_VALUE },
+        };
+    }
+    
+    @Test(dataProvider = "_checkNotExactValue_Pass_Data")
+    public void checkNotExactValue_Pass(byte i, byte value) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == ByteArgs.checkNotExactValue(i, value, "i"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(i == ByteArgs.checkNotExactValue(i, value, null));
+        Assert.assertTrue(i == ByteArgs.checkNotExactValue(i, value, ""));
+        Assert.assertTrue(i == ByteArgs.checkNotExactValue(i, value, "   "));
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
+        return new Object[][] {
+                { (byte) 0, (byte) 0 },
+                { (byte) -1, (byte) -1 },
+                { (byte) -2, (byte) -2 },
+                { (byte) -3, (byte) -3 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkNotExactValue_FailWithInvalidInput_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkNotExactValue_FailWithInvalidInput(byte i, byte value) {
+        ByteArgs.checkNotExactValue(i, value, "i");
+    }
 }

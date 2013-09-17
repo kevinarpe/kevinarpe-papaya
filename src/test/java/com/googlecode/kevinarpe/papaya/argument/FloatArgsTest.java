@@ -382,4 +382,47 @@ public class FloatArgsTest {
     public void checkExactValue_FailWithInvalidInput(float i, float value) {
         FloatArgs.checkExactValue(i, value, "i");
     }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // FloatArgs.checkNotExactValue
+    //
+
+    @DataProvider
+    private static final Object[][] _checkNotExactValue_Pass_Data() {
+        return new Object[][] {
+            { 1.0f, 0.0f },
+            { 1.0f, -1.0f },
+            { -1.0f, -2.0f },
+            { -1.0f, -3.0f },
+        };
+    }
+    
+    @Test(dataProvider = "_checkNotExactValue_Pass_Data")
+    public void checkNotExactValue_Pass(float i, float value) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == FloatArgs.checkNotExactValue(i, value, "i"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(i == FloatArgs.checkNotExactValue(i, value, null));
+        Assert.assertTrue(i == FloatArgs.checkNotExactValue(i, value, ""));
+        Assert.assertTrue(i == FloatArgs.checkNotExactValue(i, value, "   "));
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
+        return new Object[][] {
+            { 1.0f, 1.0f },
+            { 0.0f, 0.0f },
+            { -1.0f, -1.0f },
+            { Float.MAX_VALUE, Float.MAX_VALUE },
+            { -Float.MAX_VALUE, -Float.MAX_VALUE },
+            { Float.MIN_VALUE, Float.MIN_VALUE },
+            { -Float.MIN_VALUE, -Float.MIN_VALUE },
+        };
+    }
+    
+    @Test(dataProvider = "_checkNotExactValue_FailWithInvalidInput_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkNotExactValue_FailWithInvalidInput(float i, float value) {
+        FloatArgs.checkNotExactValue(i, value, "i");
+    }
 }

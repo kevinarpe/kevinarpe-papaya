@@ -381,4 +381,47 @@ public class DoubleArgsTest {
     public void checkExactValue_FailWithInvalidInput(double i, double value) {
         DoubleArgs.checkExactValue(i, value, "i");
     }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // DoubleArgs.checkNotExactValue
+    //
+
+    @DataProvider
+    private static final Object[][] _checkNotExactValue_Pass_Data() {
+        return new Object[][] {
+            { 1.0d, 0.0d },
+            { 1.0d, -1.0d },
+            { -1.0d, -2.0d },
+            { -1.0d, -3.0d },
+        };
+    }
+    
+    @Test(dataProvider = "_checkNotExactValue_Pass_Data")
+    public void checkNotExactValue_Pass(double i, double value) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == DoubleArgs.checkNotExactValue(i, value, "i"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(i == DoubleArgs.checkNotExactValue(i, value, null));
+        Assert.assertTrue(i == DoubleArgs.checkNotExactValue(i, value, ""));
+        Assert.assertTrue(i == DoubleArgs.checkNotExactValue(i, value, "   "));
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
+        return new Object[][] {
+            { 1.0d, 1.0d },
+            { 0.0d, 0.0d },
+            { -1.0d, -1.0d },
+            { Double.MAX_VALUE, Double.MAX_VALUE },
+            { -Double.MAX_VALUE, -Double.MAX_VALUE },
+            { Double.MIN_VALUE, Double.MIN_VALUE },
+            { -Double.MIN_VALUE, -Double.MIN_VALUE },
+        };
+    }
+    
+    @Test(dataProvider = "_checkNotExactValue_FailWithInvalidInput_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkNotExactValue_FailWithInvalidInput(double i, double value) {
+        DoubleArgs.checkNotExactValue(i, value, "i");
+    }
 }

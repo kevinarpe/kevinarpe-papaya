@@ -1,7 +1,6 @@
 package com.googlecode.kevinarpe.papaya.argument;
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 
 /*
  * #%L
@@ -224,7 +223,7 @@ public final class LongArgs {
      * @see #checkMaxValue(long, long, String)
      * @see #checkExactValue(long, long, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static long checkNotExactValue(long value, long exactValue, String argName) {
         ComparableArgs.checkNotExactValue(value, exactValue, argName);
         return value;

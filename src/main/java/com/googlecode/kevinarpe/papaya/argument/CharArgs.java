@@ -97,4 +97,18 @@ public class CharArgs {
         ComparableArgs.checkExactValue(value, exactValue, argName);
         return value;
     }
+    
+    /**
+     * Convenience method to call
+     * {@link ComparableArgs#checkNotExactValue(Comparable, Comparable, String)}.
+     * 
+     * @see #checkValueRange(char, char, char, String)
+     * @see #checkMinValue(char, char, String)
+     * @see #checkMaxValue(char, char, String)
+     */
+    @FullyTested
+    public static char checkNotExactValue(char value, char exactValue, String argName) {
+        ComparableArgs.checkNotExactValue(value, exactValue, argName);
+        return value;
+    }
 }

@@ -374,4 +374,45 @@ public class IntArgsTest {
     public void checkExactValue_FailWithInvalidInput(int i, int value) {
         IntArgs.checkExactValue(i, value, "i");
     }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // IntArgs.checkNotExactValue
+    //
+
+    @DataProvider
+    private static final Object[][] _checkNotExactValue_Pass_Data() {
+        return new Object[][] {
+                { 1, 2 },
+                { 0, 1 },
+                { -1, 1 },
+                { Integer.MAX_VALUE, Integer.MIN_VALUE },
+                { Integer.MIN_VALUE, Integer.MAX_VALUE },
+        };
+    }
+    
+    @Test(dataProvider = "_checkNotExactValue_Pass_Data")
+    public void checkNotExactValue_Pass(int i, int value) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == IntArgs.checkNotExactValue(i, value, "i"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(i == IntArgs.checkNotExactValue(i, value, null));
+        Assert.assertTrue(i == IntArgs.checkNotExactValue(i, value, ""));
+        Assert.assertTrue(i == IntArgs.checkNotExactValue(i, value, "   "));
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
+        return new Object[][] {
+                { 0, 0 },
+                { -1, -1 },
+                { -2, -2 },
+                { -3, -3 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkNotExactValue_FailWithInvalidInput_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkNotExactValue_FailWithInvalidInput(int i, int value) {
+        IntArgs.checkNotExactValue(i, value, "i");
+    }
 }

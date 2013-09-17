@@ -37,8 +37,6 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 @FullyTested
 public final class ShortArgs {
     
-    // TODO: Add checkNotExactValue
-
     // Disable default constructor
     private ShortArgs() {
     }

@@ -164,7 +164,7 @@ public final class IntArgs {
      * @see #checkMaxValue(int, int, String)
      * @see #checkExactValue(int, int, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static int checkNotExactValue(int value, int exactValue, String argName) {
         ComparableArgs.checkNotExactValue(value, exactValue, argName);
         return value;

@@ -148,4 +148,18 @@ public final class ByteArgs {
         ComparableArgs.checkExactValue(value, exactValue, argName);
         return value;
     }
+    
+    /**
+     * Convenience method to call
+     * {@link ComparableArgs#checkNotExactValue(Comparable, Comparable, String)}.
+     * 
+     * @see #checkValueRange(byte, byte, byte, String)
+     * @see #checkMinValue(byte, byte, String)
+     * @see #checkMaxValue(byte, byte, String)
+     */
+    @FullyTested
+    public static byte checkNotExactValue(byte value, byte exactValue, String argName) {
+        ComparableArgs.checkNotExactValue(value, exactValue, argName);
+        return value;
+    }
 }

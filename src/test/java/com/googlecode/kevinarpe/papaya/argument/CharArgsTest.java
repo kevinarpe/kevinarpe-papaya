@@ -224,4 +224,45 @@ public class CharArgsTest {
     public void checkExactValue_FailWithInvalidInput(char i, char value) {
         CharArgs.checkExactValue(i, value, "i");
     }
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // CharArgs.checkNotExactValue
+    //
+
+    @DataProvider
+    private static final Object[][] _checkNotExactValue_Pass_Data() {
+        return new Object[][] {
+                { (char) -1, (char) 0 },
+                { (char) 0, (char) 1 },
+                { (char) 2, (char) 3 },
+                { Character.MAX_VALUE, Character.MIN_VALUE },
+                { Character.MIN_VALUE, Character.MAX_VALUE },
+        };
+    }
+    
+    @Test(dataProvider = "_checkNotExactValue_Pass_Data")
+    public void checkNotExactValue_Pass(char i, char value) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == CharArgs.checkNotExactValue(i, value, "i"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(i == CharArgs.checkNotExactValue(i, value, null));
+        Assert.assertTrue(i == CharArgs.checkNotExactValue(i, value, ""));
+        Assert.assertTrue(i == CharArgs.checkNotExactValue(i, value, "   "));
+    }
+    
+    @DataProvider
+    private static final Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
+        return new Object[][] {
+                { (char) -1, (char) -1 },
+                { (char) 0, (char) 0 },
+                { (char) 1, (char) 1 },
+                { (char) 2, (char) 2 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkNotExactValue_FailWithInvalidInput_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkNotExactValue_FailWithInvalidInput(char i, char value) {
+        CharArgs.checkNotExactValue(i, value, "i");
+    }
 }

@@ -146,7 +146,21 @@ public class FloatArgs {
      */
     @FullyTested
     public static float checkExactValue(float value, float exactValue, String argName) {
-        ComparableArgs.checkValueRange(value, exactValue, exactValue, argName);
+        ComparableArgs.checkExactValue(value, exactValue, argName);
+        return value;
+    }
+    
+    /**
+     * Convenience method to call
+     * {@link ComparableArgs#checkNotExactValue(Comparable, Comparable, String)}.
+     * 
+     * @see #checkValueRange(float, float, float, String)
+     * @see #checkMinValue(float, float, String)
+     * @see #checkMaxValue(float, float, String)
+     */
+    @FullyTested
+    public static float checkNotExactValue(float value, float exactValue, String argName) {
+        ComparableArgs.checkNotExactValue(value, exactValue, argName);
         return value;
     }
 }

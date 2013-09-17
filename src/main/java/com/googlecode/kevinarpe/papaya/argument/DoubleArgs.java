@@ -210,4 +210,19 @@ public class DoubleArgs {
         ComparableArgs.checkExactValue(value, exactValue, argName);
         return value;
     }
+    
+    /**
+     * Convenience method to call
+     * {@link ComparableArgs#checkNotExactValue(Comparable, Comparable, String)}.
+     * 
+     * @see #checkValueRange(double, double, double, String)
+     * @see #checkMinValue(double, double, String)
+     * @see #checkMaxValue(double, double, String)
+     */
+    @FullyTested
+    public static double checkNotExactValue(
+            double value, double exactValue, String argName) {
+        ComparableArgs.checkNotExactValue(value, exactValue, argName);
+        return value;
+    }
 }
