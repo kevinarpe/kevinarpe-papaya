@@ -664,6 +664,8 @@ public final class ArrayArgs {
      *
      * @throws NullPointerException
      *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code ref} is an empty array (length zero)
      * @throws IndexOutOfBoundsException
      * <ul>
      *   <li>if {@code index < 0}</li>
