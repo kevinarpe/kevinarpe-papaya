@@ -683,7 +683,7 @@ public final class ArrayArgs {
     }
     
     /**
-     * @see #checkInsertIndex(Object[], int, String, String)
+     * @see #checkAccessIndex(Object[], int, String, String)
      */
     @FullyTested
     public static int checkAccessIndex(
@@ -694,7 +694,7 @@ public final class ArrayArgs {
     }
 
     /**
-     * @see #checkInsertIndex(Object[], int, String, String)
+     * @see #checkAccessIndex(Object[], int, String, String)
      */
     @FullyTested
     public static int checkAccessIndex(
@@ -705,7 +705,7 @@ public final class ArrayArgs {
     }
 
     /**
-     * @see #checkInsertIndex(Object[], int, String, String)
+     * @see #checkAccessIndex(Object[], int, String, String)
      */
     @FullyTested
     public static int checkAccessIndex(
@@ -716,7 +716,7 @@ public final class ArrayArgs {
     }
 
     /**
-     * @see #checkInsertIndex(Object[], int, String, String)
+     * @see #checkAccessIndex(Object[], int, String, String)
      */
     @FullyTested
     public static int checkAccessIndex(
@@ -727,7 +727,7 @@ public final class ArrayArgs {
     }
 
     /**
-     * @see #checkInsertIndex(Object[], int, String, String)
+     * @see #checkAccessIndex(Object[], int, String, String)
      */
     @FullyTested
     public static int checkAccessIndex(
@@ -738,7 +738,7 @@ public final class ArrayArgs {
     }
 
     /**
-     * @see #checkInsertIndex(Object[], int, String, String)
+     * @see #checkAccessIndex(Object[], int, String, String)
      */
     @FullyTested
     public static int checkAccessIndex(
@@ -749,7 +749,7 @@ public final class ArrayArgs {
     }
 
     /**
-     * @see #checkInsertIndex(Object[], int, String, String)
+     * @see #checkAccessIndex(Object[], int, String, String)
      */
     @FullyTested
     public static int checkAccessIndex(
@@ -760,7 +760,7 @@ public final class ArrayArgs {
     }
 
     /**
-     * @see #checkInsertIndex(Object[], int, String, String)
+     * @see #checkAccessIndex(Object[], int, String, String)
      */
     @FullyTested
     public static int checkAccessIndex(
@@ -910,12 +910,12 @@ public final class ArrayArgs {
      *         if {@code ref} is {@code null}
      * @throws IllegalArgumentException
      * <ul>
-     *   <li>if {@code ref} is empty</li>
-     *   <li>if {@code index < 0}</li>
+     *   <li>if {@code ref} is an empty array (length zero)</li>
      *   <li>if {@code count < 0}</li>
      * </ul>
      * @throws IndexOutOfBoundsException
      * <ul>
+     *   <li>if {@code index < 0}</li>
      *   <li>if {@code index >= ref.length}</li>
      *   <li>if {@code index + count > ref.length}</li>
      * </ul>
@@ -932,7 +932,7 @@ public final class ArrayArgs {
         ContainerArgs._checkIndexAndCount(
             ref, "Array", len, index, count, arrArgName, indexArgName, countArgName);
     }
-    
+
     /**
      * @see #checkIndexAndCount(Object[], int, int, String, String, String)
      */
@@ -1060,7 +1060,7 @@ public final class ArrayArgs {
         ContainerArgs._checkIndexAndCount(
             ref, "Array", len, index, count, arrArgName, indexArgName, countArgName);
     }
-    
+
     /**
      * Tests if an array reference is not null, and 'from' and 'to' indices are valid
      * to access elements.
@@ -1082,6 +1082,8 @@ public final class ArrayArgs {
      *
      * @throws NullPointerException
      *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code ref} is an empty array (length zero)
      * @throws IndexOutOfBoundsException
      * <ul>
      *   <li>if {@code fromIndex < 0}</li>
@@ -1314,7 +1316,7 @@ public final class ArrayArgs {
      *         if {@code ref} is {@code null}
      * @throws IllegalArgumentException
      * <ul>
-     *   <li>if {@code ref} is empty</li>
+     *   <li>if {@code ref} is an empty array (length zero)</li>
      *   <li>if {@code ref} does not contain {@code value}</li>
      * </ul>
      * 

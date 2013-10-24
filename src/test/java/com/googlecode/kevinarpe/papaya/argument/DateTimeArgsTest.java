@@ -231,4 +231,45 @@ public class DateTimeArgsTest {
     public void checkExactValue_FailWithInvalidInput(DateTime dt, DateTime value) {
         DateTimeArgs.checkExactValue(dt, value, "dt");
     }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // DateTimeArgs.checkNotExactValue
+    //
+
+    @DataProvider
+    private static final Object[][] _checkNotExactValue_Pass_Data() {
+        DateTime dt = new DateTime();
+        return new Object[][] {
+                { dt, dt.minusDays(1) },
+                { dt, dt.minusDays(2) },
+                { dt.minusDays(2), dt.minusDays(3) },
+                { dt.minusDays(2), dt.minusDays(4) },
+        };
+    }
+
+    @Test(dataProvider = "_checkNotExactValue_Pass_Data")
+    public void checkNotExactValue_Pass(DateTime dt, DateTime value) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(dt == DateTimeArgs.checkNotExactValue(dt, value, "dt"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(dt == DateTimeArgs.checkNotExactValue(dt, value, null));
+        Assert.assertTrue(dt == DateTimeArgs.checkNotExactValue(dt, value, ""));
+        Assert.assertTrue(dt == DateTimeArgs.checkNotExactValue(dt, value, "   "));
+    }
+
+    @DataProvider
+    private static final Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
+        DateTime dt = new DateTime();
+        return new Object[][] {
+                { dt, dt },
+                { dt.minusDays(1), dt.minusDays(1) },
+                { dt.minusDays(2), dt.minusDays(2) },
+        };
+    }
+
+    @Test(dataProvider = "_checkNotExactValue_FailWithInvalidInput_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkNotExactValue_FailWithInvalidInput(DateTime dt, DateTime value) {
+        DateTimeArgs.checkNotExactValue(dt, value, "dt");
+    }
 }

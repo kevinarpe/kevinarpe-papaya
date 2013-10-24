@@ -2672,7 +2672,6 @@ public class ArrayArgsTest {
         };
     }
 
-    // TODO: Add more of these tests: *FailWithEmptyArray*
     @Test(dataProvider = "_checkAccessIndexByte_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkAccessIndexByte_FailWithEmptyArray(byte[] ref, int index) {
@@ -2735,6 +2734,21 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
+    private static Object[][] _checkAccessIndexShort_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new short[] { }, -1 },
+                { new short[] { }, 0 },
+                { new short[] { }, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkAccessIndexShort_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkAccessIndexShort_FailWithEmptyArray(short[] ref, int index) {
+        ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
     private static Object[][] _checkAccessIndexShort_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new short[] { 99 }, -1 },
@@ -2787,6 +2801,21 @@ public class ArrayArgsTest {
         Assert.assertTrue(index == ArrayArgs.checkAccessIndex(ref, index, null, null));
         Assert.assertTrue(index == ArrayArgs.checkAccessIndex(ref, index, "", ""));
         Assert.assertTrue(index == ArrayArgs.checkAccessIndex(ref, index, "   ", "   "));
+    }
+
+    @DataProvider
+    private static Object[][] _checkAccessIndexInteger_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new int[] { }, -1 },
+                { new int[] { }, 0 },
+                { new int[] { }, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkAccessIndexInteger_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkAccessIndexInteger_FailWithEmptyArray(int[] ref, int index) {
+        ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
     }
 
     @DataProvider
@@ -2845,6 +2874,21 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
+    private static Object[][] _checkAccessIndexLong_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new long[] { }, -1 },
+                { new long[] { }, 0 },
+                { new long[] { }, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkAccessIndexLong_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkAccessIndexLong_FailWithEmptyArray(long[] ref, int index) {
+        ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
     private static Object[][] _checkAccessIndexLong_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new long[] { 99 }, -1 },
@@ -2897,6 +2941,21 @@ public class ArrayArgsTest {
         Assert.assertTrue(index == ArrayArgs.checkAccessIndex(ref, index, null, null));
         Assert.assertTrue(index == ArrayArgs.checkAccessIndex(ref, index, "", ""));
         Assert.assertTrue(index == ArrayArgs.checkAccessIndex(ref, index, "   ", "   "));
+    }
+
+    @DataProvider
+    private static Object[][] _checkAccessIndexFloat_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new float[] { }, -1 },
+                { new float[] { }, 0 },
+                { new float[] { }, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkAccessIndexFloat_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkAccessIndexFloat_FailWithEmptyArray(float[] ref, int index) {
+        ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
     }
 
     @DataProvider
@@ -2955,6 +3014,21 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
+    private static Object[][] _checkAccessIndexDouble_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new double[] { }, -1 },
+                { new double[] { }, 0 },
+                { new double[] { }, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkAccessIndexDouble_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkAccessIndexDouble_FailWithEmptyArray(double[] ref, int index) {
+        ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
     private static Object[][] _checkAccessIndexDouble_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new double[] { 99 }, -1 },
@@ -3010,6 +3084,21 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
+    private static Object[][] _checkAccessIndexCharacter_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new char[] { }, -1 },
+                { new char[] { }, 0 },
+                { new char[] { }, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkAccessIndexCharacter_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkAccessIndexCharacter_FailWithEmptyArray(char[] ref, int index) {
+        ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
     private static Object[][] _checkAccessIndexCharacter_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new char[] { 99 }, -1 },
@@ -3062,6 +3151,21 @@ public class ArrayArgsTest {
         Assert.assertTrue(index == ArrayArgs.checkAccessIndex(ref, index, null, null));
         Assert.assertTrue(index == ArrayArgs.checkAccessIndex(ref, index, "", ""));
         Assert.assertTrue(index == ArrayArgs.checkAccessIndex(ref, index, "   ", "   "));
+    }
+
+    @DataProvider
+    private static Object[][] _checkAccessIndexBoolean_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new boolean[] { }, -1 },
+                { new boolean[] { }, 0 },
+                { new boolean[] { }, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkAccessIndexBoolean_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkAccessIndexBoolean_FailWithEmptyArray(boolean[] ref, int index) {
+        ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
     }
 
     @DataProvider
@@ -3663,6 +3767,21 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
+    private static Object[][] _checkIndexAndCountObject_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new String[] { }, -1, -1 },
+                { new String[] { }, 0, 0 },
+                { new String[] { }, 1, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkIndexAndCountObject_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <T> void checkIndexAndCountObject_FailWithEmptyArray(T[] ref, int index, int count) {
+        ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
     private static Object[][] _checkIndexAndCountObject_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new String[] { "a" }, -1, 0 },
@@ -3744,6 +3863,21 @@ public class ArrayArgsTest {
         ArrayArgs.checkIndexAndCount(ref, index, count, null, null, null);
         ArrayArgs.checkIndexAndCount(ref, index, count, "", "", "");
         ArrayArgs.checkIndexAndCount(ref, index, count, "   ", "   ", "   ");
+    }
+
+    @DataProvider
+    private static Object[][] _checkIndexAndCountByte_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new byte[] { }, -1, -1 },
+                { new byte[] { }, 0, 0 },
+                { new byte[] { }, 1, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkIndexAndCountByte_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkIndexAndCountByte_FailWithEmptyArray(byte[] ref, int index, int count) {
+        ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
     }
 
     @DataProvider
@@ -3831,6 +3965,21 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
+    private static Object[][] _checkIndexAndCountShort_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new short[] { }, -1, -1 },
+                { new short[] { }, 0, 0 },
+                { new short[] { }, 1, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkIndexAndCountShort_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkIndexAndCountShort_FailWithEmptyArray(short[] ref, int index, int count) {
+        ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
     private static Object[][] _checkIndexAndCountShort_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new short[] { 99 }, -1, 0 },
@@ -3912,6 +4061,21 @@ public class ArrayArgsTest {
         ArrayArgs.checkIndexAndCount(ref, index, count, null, null, null);
         ArrayArgs.checkIndexAndCount(ref, index, count, "", "", "");
         ArrayArgs.checkIndexAndCount(ref, index, count, "   ", "   ", "   ");
+    }
+
+    @DataProvider
+    private static Object[][] _checkIndexAndCountInteger_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new int[] { }, -1, -1 },
+                { new int[] { }, 0, 0 },
+                { new int[] { }, 1, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkIndexAndCountInteger_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkIndexAndCountInteger_FailWithEmptyArray(int[] ref, int index, int count) {
+        ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
     }
 
     @DataProvider
@@ -3999,6 +4163,21 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
+    private static Object[][] _checkIndexAndCountLong_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new long[] { }, -1, -1 },
+                { new long[] { }, 0, 0 },
+                { new long[] { }, 1, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkIndexAndCountLong_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkIndexAndCountLong_FailWithEmptyArray(long[] ref, int index, int count) {
+        ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
     private static Object[][] _checkIndexAndCountLong_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new long[] { 99 }, -1, 0 },
@@ -4080,6 +4259,21 @@ public class ArrayArgsTest {
         ArrayArgs.checkIndexAndCount(ref, index, count, null, null, null);
         ArrayArgs.checkIndexAndCount(ref, index, count, "", "", "");
         ArrayArgs.checkIndexAndCount(ref, index, count, "   ", "   ", "   ");
+    }
+
+    @DataProvider
+    private static Object[][] _checkIndexAndCountFloat_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new float[] { }, -1, -1 },
+                { new float[] { }, 0, 0 },
+                { new float[] { }, 1, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkIndexAndCountFloat_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkIndexAndCountFloat_FailWithEmptyArray(float[] ref, int index, int count) {
+        ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
     }
 
     @DataProvider
@@ -4167,6 +4361,21 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
+    private static Object[][] _checkIndexAndCountDouble_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new double[] { }, -1, -1 },
+                { new double[] { }, 0, 0 },
+                { new double[] { }, 1, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkIndexAndCountDouble_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkIndexAndCountDouble_FailWithEmptyArray(double[] ref, int index, int count) {
+        ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
     private static Object[][] _checkIndexAndCountDouble_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new double[] { 99 }, -1, 0 },
@@ -4248,6 +4457,21 @@ public class ArrayArgsTest {
         ArrayArgs.checkIndexAndCount(ref, index, count, null, null, null);
         ArrayArgs.checkIndexAndCount(ref, index, count, "", "", "");
         ArrayArgs.checkIndexAndCount(ref, index, count, "   ", "   ", "   ");
+    }
+
+    @DataProvider
+    private static Object[][] _checkIndexAndCountCharacter_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new char[] { }, -1, -1 },
+                { new char[] { }, 0, 0 },
+                { new char[] { }, 1, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkIndexAndCountCharacter_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkIndexAndCountCharacter_FailWithEmptyArray(char[] ref, int index, int count) {
+        ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
     }
 
     @DataProvider
@@ -4335,6 +4559,21 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
+    private static Object[][] _checkIndexAndCountBoolean_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new boolean[] { }, -1, -1 },
+                { new boolean[] { }, 0, 0 },
+                { new boolean[] { }, 1, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkIndexAndCountBoolean_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkIndexAndCountBoolean_FailWithEmptyArray(boolean[] ref, int index, int count) {
+        ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
     private static Object[][] _checkIndexAndCountBoolean_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new boolean[] { true }, -1, 0 },
@@ -4419,6 +4658,21 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
+    private static Object[][] _checkFromAndToIndicesObject_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new String[] { }, -1, -1 },
+                { new String[] { }, 0, 0 },
+                { new String[] { }, 1, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkFromAndToIndicesObject_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <T> void checkFromAndToIndicesObject_FailWithEmptyArray(T[] ref, int index, int count) {
+        ArrayArgs.checkFromAndToIndices(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
     private static Object[][] _checkFromAndToIndicesObject_FailWithInvalidIndices_Data() {
         return new Object[][] {
                 { new String[] { "a" }, -1, 0 },
@@ -4469,6 +4723,22 @@ public class ArrayArgsTest {
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, null, null, null);
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "", "", "");
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "   ", "   ", "   ");
+    }
+
+    @DataProvider
+    private static Object[][] _checkFromAndToIndicesByte_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new byte[] { }, -1, -1 },
+                { new byte[] { }, 0, 0 },
+                { new byte[] { }, 1, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkFromAndToIndicesByte_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkFromAndToIndicesByte_FailWithEmptyArray(
+            byte[] ref, int index, int count) {
+        ArrayArgs.checkFromAndToIndices(ref, index, count, "ref", "index", "count");
     }
 
     @DataProvider
@@ -4525,6 +4795,22 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
+    private static Object[][] _checkFromAndToIndicesShort_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new short[] { }, -1, -1 },
+                { new short[] { }, 0, 0 },
+                { new short[] { }, 1, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkFromAndToIndicesShort_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkFromAndToIndicesShort_FailWithEmptyArray(
+            short[] ref, int index, int count) {
+        ArrayArgs.checkFromAndToIndices(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
     private static Object[][] _checkFromAndToIndicesShort_FailWithInvalidIndices_Data() {
         return new Object[][] {
                 { new short[] { 99 }, -1, 0 },
@@ -4575,6 +4861,22 @@ public class ArrayArgsTest {
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, null, null, null);
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "", "", "");
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "   ", "   ", "   ");
+    }
+
+    @DataProvider
+    private static Object[][] _checkFromAndToIndicesInteger_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new int[] { }, -1, -1 },
+                { new int[] { }, 0, 0 },
+                { new int[] { }, 1, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkFromAndToIndicesInteger_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkFromAndToIndicesInteger_FailWithEmptyArray(
+            int[] ref, int index, int count) {
+        ArrayArgs.checkFromAndToIndices(ref, index, count, "ref", "index", "count");
     }
 
     @DataProvider
@@ -4631,6 +4933,22 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
+    private static Object[][] _checkFromAndToIndicesLong_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new long[] { }, -1, -1 },
+                { new long[] { }, 0, 0 },
+                { new long[] { }, 1, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkFromAndToIndicesLong_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkFromAndToIndicesLong_FailWithEmptyArray(
+            long[] ref, int index, int count) {
+        ArrayArgs.checkFromAndToIndices(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
     private static Object[][] _checkFromAndToIndicesLong_FailWithInvalidIndices_Data() {
         return new Object[][] {
                 { new long[] { 99 }, -1, 0 },
@@ -4681,6 +4999,22 @@ public class ArrayArgsTest {
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, null, null, null);
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "", "", "");
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "   ", "   ", "   ");
+    }
+
+    @DataProvider
+    private static Object[][] _checkFromAndToIndicesFloat_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new float[] { }, -1, -1 },
+                { new float[] { }, 0, 0 },
+                { new float[] { }, 1, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkFromAndToIndicesFloat_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkFromAndToIndicesFloat_FailWithEmptyArray(
+            float[] ref, int index, int count) {
+        ArrayArgs.checkFromAndToIndices(ref, index, count, "ref", "index", "count");
     }
 
     @DataProvider
@@ -4737,6 +5071,22 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
+    private static Object[][] _checkFromAndToIndicesDouble_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new double[] { }, -1, -1 },
+                { new double[] { }, 0, 0 },
+                { new double[] { }, 1, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkFromAndToIndicesDouble_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkFromAndToIndicesDouble_FailWithEmptyArray(
+            double[] ref, int index, int count) {
+        ArrayArgs.checkFromAndToIndices(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
     private static Object[][] _checkFromAndToIndicesDouble_FailWithInvalidIndices_Data() {
         return new Object[][] {
                 { new double[] { 99 }, -1, 0 },
@@ -4790,6 +5140,22 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
+    private static Object[][] _checkFromAndToIndicesCharacter_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new char[] { }, -1, -1 },
+                { new char[] { }, 0, 0 },
+                { new char[] { }, 1, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkFromAndToIndicesCharacter_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkFromAndToIndicesCharacter_FailWithEmptyArray(
+            char[] ref, int index, int count) {
+        ArrayArgs.checkFromAndToIndices(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
     private static Object[][] _checkFromAndToIndicesCharacter_FailWithInvalidIndices_Data() {
         return new Object[][] {
                 { new char[] { 99 }, -1, 0 },
@@ -4840,6 +5206,22 @@ public class ArrayArgsTest {
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, null, null, null);
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "", "", "");
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "   ", "   ", "   ");
+    }
+
+    @DataProvider
+    private static Object[][] _checkFromAndToIndicesBoolean_FailWithEmptyArray_Data() {
+        return new Object[][] {
+                { new boolean[] { }, -1, -1 },
+                { new boolean[] { }, 0, 0 },
+                { new boolean[] { }, 1, 1 },
+        };
+    }
+
+    @Test(dataProvider = "_checkFromAndToIndicesBoolean_FailWithEmptyArray_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void checkFromAndToIndicesBoolean_FailWithEmptyArray(
+            boolean[] ref, int index, int count) {
+        ArrayArgs.checkFromAndToIndices(ref, index, count, "ref", "index", "count");
     }
 
     @DataProvider

@@ -40,8 +40,6 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 @FullyTested
 public final class DateTimeArgs {
     
-    // TODO: Add checkNotExactValue
-    
     // Disable default constructor
     private DateTimeArgs() {
     }
@@ -53,6 +51,7 @@ public final class DateTimeArgs {
      * @see #checkMinValue(DateTime, DateTime, String)
      * @see #checkMaxValue(DateTime, DateTime, String)
      * @see #checkExactValue(DateTime, DateTime, String)
+     * @see #checkNotExactValue(DateTime, DateTime, String)
      */
     @FullyTested
     public static DateTime checkValueRange(
@@ -69,6 +68,7 @@ public final class DateTimeArgs {
      * @see #checkValueRange(DateTime, DateTime, DateTime, String)
      * @see #checkMaxValue(DateTime, DateTime, String)
      * @see #checkExactValue(DateTime, DateTime, String)
+     * @see #checkNotExactValue(DateTime, DateTime, String)
      */
     @FullyTested
     public static DateTime checkMinValue(
@@ -84,6 +84,7 @@ public final class DateTimeArgs {
      * @see #checkValueRange(DateTime, DateTime, DateTime, String)
      * @see #checkMinValue(DateTime, DateTime, String)
      * @see #checkExactValue(DateTime, DateTime, String)
+     * @see #checkNotExactValue(DateTime, DateTime, String)
      */
     @FullyTested
     public static DateTime checkMaxValue(
@@ -92,6 +93,8 @@ public final class DateTimeArgs {
         return dt;
     }
 
+    // TODO: Create a helper to build toString() arguments.
+
     /**
      * Convenience method to call
      * {@link ComparableArgs#checkExactValue(Comparable, Comparable, String)}.
@@ -99,11 +102,28 @@ public final class DateTimeArgs {
      * @see #checkValueRange(DateTime, DateTime, DateTime, String)
      * @see #checkMinValue(DateTime, DateTime, String)
      * @see #checkMaxValue(DateTime, DateTime, String)
+     * @see #checkNotExactValue(DateTime, DateTime, String)
      */
     @FullyTested
     public static DateTime checkExactValue(
             DateTime dt, DateTime exactDt, String argName) {
         ComparableArgs.checkExactValue((ReadableInstant) dt, (ReadableInstant) exactDt, argName);
+        return dt;
+    }
+
+    /**
+     * Convenience method to call
+     * {@link ComparableArgs#checkNotExactValue(Comparable, Comparable, String)}.
+     *
+     * @see #checkValueRange(DateTime, DateTime, DateTime, String)
+     * @see #checkMinValue(DateTime, DateTime, String)
+     * @see #checkMaxValue(DateTime, DateTime, String)
+     * @see #checkExactValue(DateTime, DateTime, String)
+     */
+    @FullyTested
+    public static DateTime checkNotExactValue(
+            DateTime dt, DateTime exactDt, String argName) {
+        ComparableArgs.checkNotExactValue((ReadableInstant) dt, (ReadableInstant) exactDt, argName);
         return dt;
     }
 }
