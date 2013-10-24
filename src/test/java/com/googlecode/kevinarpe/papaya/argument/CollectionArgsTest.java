@@ -451,6 +451,21 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
+    private static final Object[][] _checkAccessIndex_FailWithEmptyCollection_Data() {
+        return new Object[][] {
+                { ImmutableList.of(), -1 },
+                { ImmutableList.of(), -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkAccessIndex_FailWithEmptyCollection_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <T> void checkAccessIndex_FailWithEmptyCollection(
+            Collection<T> ref, int index) {
+        CollectionArgs.checkAccessIndex(ref, index, "ref", "index");
+    }
+
+    @DataProvider
     private static final Object[][] _checkAccessIndex_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), -1 },
@@ -459,7 +474,7 @@ public class CollectionArgsTest {
     }
     
     @Test(dataProvider = "_checkAccessIndex_FailWithNegativeIndex_Data",
-            expectedExceptions = IllegalArgumentException.class)
+            expectedExceptions = IndexOutOfBoundsException.class)
     public <T> void checkAccessIndex_FailWithNegativeIndex(
             Collection<T> ref, int index) {
         CollectionArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -533,7 +548,7 @@ public class CollectionArgsTest {
     }
     
     @Test(dataProvider = "_checkInsertIndex_FailWithNegativeIndex_Data",
-            expectedExceptions = IllegalArgumentException.class)
+            expectedExceptions = IndexOutOfBoundsException.class)
     public <T> void checkInsertIndex_FailWithNegativeIndex(
             Collection<T> ref, int index) {
         CollectionArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -599,6 +614,22 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
+    private static final Object[][] _checkIndexAndCount_FailWithEmptyCollection_Data() {
+        return new Object[][] {
+                { ImmutableList.of(), -1, -1 },
+                { ImmutableList.of(), 0, 0 },
+                { ImmutableList.of(), 1, 1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkIndexAndCount_FailWithEmptyCollection_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <T> void checkIndexAndCount_FailWithEmptyCollection(
+            Collection<T> ref, int index, int count) {
+        CollectionArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
+    }
+
+    @DataProvider
     private static final Object[][] _checkIndexAndCount_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), -1, 0 },
@@ -612,7 +643,7 @@ public class CollectionArgsTest {
     }
     
     @Test(dataProvider = "_checkIndexAndCount_FailWithNegativeIndex_Data",
-            expectedExceptions = IllegalArgumentException.class)
+            expectedExceptions = IndexOutOfBoundsException.class)
     public <T> void checkIndexAndCount_FailWithNegativeIndex(
             Collection<T> ref, int index, int count) {
         CollectionArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -700,6 +731,27 @@ public class CollectionArgsTest {
         CollectionArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "", "", "");
         CollectionArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "   ", "   ", "   ");
     }
+    
+    // TODO: Check all *FailWithNegativeIndices* tests if they need:
+    // (a) tests for empty arrays/collections
+    // (b) docs for throws IllegalArgumentException for empty arrays/collections
+
+    @DataProvider
+    private static final Object[][] _checkFromAndToIndices_FailWithEmptyCollection_Data() {
+        return new Object[][] {
+                { ImmutableList.of(), -1, 0 },
+                { ImmutableList.of(), 0, -1 },
+                { ImmutableList.of(), -1, -1 },
+        };
+    }
+    
+    @Test(dataProvider = "_checkFromAndToIndices_FailWithEmptyCollection_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <T> void checkFromAndToIndices_FailWithEmptyCollection(
+            Collection<T> ref, int fromIndex, int toIndex) {
+        CollectionArgs.checkFromAndToIndices(
+            ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
+    }
 
     @DataProvider
     private static final Object[][] _checkFromAndToIndices_FailWithNegativeIndices_Data() {
@@ -711,7 +763,7 @@ public class CollectionArgsTest {
     }
     
     @Test(dataProvider = "_checkFromAndToIndices_FailWithNegativeIndices_Data",
-            expectedExceptions = IllegalArgumentException.class)
+            expectedExceptions = IndexOutOfBoundsException.class)
     public <T> void checkFromAndToIndices_FailWithNegativeIndices(
             Collection<T> ref, int fromIndex, int toIndex) {
         CollectionArgs.checkFromAndToIndices(
@@ -774,6 +826,7 @@ public class CollectionArgsTest {
     @DataProvider
     private static final Object[][] _checkContains_Fail_Data() {
         return new Object[][] {
+                { Arrays.asList(), "x" },
                 { Arrays.asList("a"), "x" },
                 { Arrays.asList("a"), null },
                 { Arrays.asList("a", "b"), "x" },

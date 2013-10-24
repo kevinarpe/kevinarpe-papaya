@@ -1,7 +1,6 @@
 package com.googlecode.kevinarpe.papaya.argument;
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 
 /*
  * #%L

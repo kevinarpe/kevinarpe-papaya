@@ -255,6 +255,8 @@ public final class CollectionArgs {
      *
      * @throws NullPointerException
      *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code ref} is an empty collection (length zero)
      * @throws IndexOutOfBoundsException
      * <ul>
      *   <li>if {@code index < 0}</li>
@@ -330,12 +332,12 @@ public final class CollectionArgs {
      *         if {@code ref} is {@code null}
      * @throws IllegalArgumentException
      * <ul>
-     *   <li>if {@code ref} is empty</li>
-     *   <li>if {@code index < 0}</li>
+     *   <li>if {@code ref} is an empty collection (length zero)</li>
      *   <li>if {@code count < 0}</li>
      * </ul>
      * @throws IndexOutOfBoundsException
      * <ul>
+     *   <li>if {@code index < 0}</li>
      *   <li>if {@code index >= ref.size()}</li>
      *   <li>if {@code index + count > ref.size()}</li>
      * </ul>
@@ -374,6 +376,8 @@ public final class CollectionArgs {
      *
      * @throws NullPointerException
      *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code ref} is an empty collection (length zero)
      * @throws IndexOutOfBoundsException
      * <ul>
      *   <li>if {@code fromIndex < 0}</li>
@@ -418,7 +422,7 @@ public final class CollectionArgs {
      *         if {@code ref} is {@code null}
      * @throws IllegalArgumentException
      * <ul>
-     *   <li>if {@code ref} is empty</li>
+     *   <li>if {@code ref} is an empty collection (length zero)</li>
      *   <li>if {@code ref} does not contain {@code value}</li>
      * </ul>
      * 

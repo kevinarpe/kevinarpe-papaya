@@ -402,7 +402,7 @@ public class StringArgsTest {
     }
     
     @Test(dataProvider = "_checkInsertIndex_FailWithNegativeIndex_Data",
-            expectedExceptions = IllegalArgumentException.class)
+            expectedExceptions = IndexOutOfBoundsException.class)
     public void checkInsertIndex_FailWithNegativeIndex(String s, int index) {
         StringArgs.checkInsertIndex(s, index, "s", "index");
     }
@@ -478,7 +478,7 @@ public class StringArgsTest {
     }
     
     @Test(dataProvider = "_checkIndexAndCount_FailWithNegativeIndex_Data",
-            expectedExceptions = IllegalArgumentException.class)
+            expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCount_FailWithNegativeIndex(String s, int index, int count) {
         StringArgs.checkIndexAndCount(s, index, count, "s", "index", "count");
     }
