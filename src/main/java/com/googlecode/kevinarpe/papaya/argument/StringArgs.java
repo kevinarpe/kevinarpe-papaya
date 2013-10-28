@@ -389,11 +389,11 @@ public final class StringArgs {
      * @throws IllegalArgumentException
      * <ul>
      *   <li>if {@code ref} is empty</li>
-     *   <li>if {@code index < 0}</li>
      *   <li>if {@code count < 0}</li>
      * </ul>
      * @throws IndexOutOfBoundsException
      * <ul>
+     *   <li>if {@code index < 0}</li>
      *   <li>if {@code index >= ref.length()}</li>
      *   <li>if {@code index + count > ref.length()}</li>
      * </ul>

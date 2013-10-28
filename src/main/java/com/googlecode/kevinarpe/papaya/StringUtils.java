@@ -418,11 +418,11 @@ public final class StringUtils {
      * @throws IllegalArgumentException
      * <ul>
      *   <li>if {@code str} is empty</li>
-     *   <li>if {@code index < 0}</li>
      *   <li>if {@code count < 0}</li>
      * </ul>
      * @throws IndexOutOfBoundsException
      * <ul>
+     *   <li>if {@code index < 0}</li>
      *   <li>if {@code index >= str.length()}</li>
      *   <li>if {@code index + count > str.length()}</li>
      * </ul>

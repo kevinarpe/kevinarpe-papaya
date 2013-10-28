@@ -447,18 +447,33 @@ public class StringUtilsTest {
     public void removeCharAt_FailWithNull(String input, int index) {
         StringUtils.substringPrefix(input, index);
     }
-    
+
+    @DataProvider
+    private static final Object[][] _removeCharAt_FailWithEmptyString_Data() {
+        return new Object[][] {
+                { "", 0 },
+                { "", -1 },
+                { "", 3 },
+        };
+    }
+
+    @Test(dataProvider = "_removeCharAt_FailWithEmptyString_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public void removeCharAt_FailWithEmptyString(String input, int index) {
+        StringUtils.removeCharAt(input, index);
+    }
+
     @DataProvider
     private static final Object[][] _removeCharAt_FailWithInvalidIndex_Data() {
         return new Object[][] {
-                { "", 0 },
+                { "abc", 3 },
                 { "abc", -1 },
                 { "abc", -99 },
         };
     }
     
     @Test(dataProvider = "_removeCharAt_FailWithInvalidIndex_Data",
-            expectedExceptions = IllegalArgumentException.class)
+            expectedExceptions = IndexOutOfBoundsException.class)
     public void removeCharAt_FailWithInvalidIndex(String input, int index) {
         StringUtils.removeCharAt(input, index);
     }
