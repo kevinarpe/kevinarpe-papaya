@@ -28,6 +28,13 @@ package com.googlecode.kevinarpe.papaya.argument;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ValueAsTypeIterator._IValueAsLongIterator;
 
+/**
+ * Static methods to check {@code long[]} and {@code Long[]} arguments.
+ * <p>
+ * See {@link ObjectArgs} for an overview.
+ *
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public final class LongArrayArgs {
 
     // Disable default constructor

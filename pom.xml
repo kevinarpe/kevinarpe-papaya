@@ -78,7 +78,6 @@
     <testng.version>6.8.7</testng.version>
     <guava.version>15.0</guava.version>
     <guava-testlib.version>15.0</guava-testlib.version>
-    <commons-lang3.version>3.1</commons-lang3.version>
     <joda-time.version>2.2</joda-time.version>
   </properties>
 
@@ -251,11 +250,6 @@
       <artifactId>guava-testlib</artifactId>
       <version>${guava-testlib.version}</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>${commons-lang3.version}</version>
     </dependency>
     <dependency>
       <groupId>joda-time</groupId>

@@ -1,14 +1,48 @@
-This document contains notes about how to release this software:
+This document contains notes about how to release this software.
 
+Required Settings
+=================
+This process expects the following information exists in your Maven settings file:
+* Global  : $MAVEN_HOME/conf/settings.xml
+* Personal: $HOME/.m2/settings.xml
+
+Store your username and password for the Sonatype Open Source Software Nexus server: https://oss.sonatype.org/index.html
+
+  <servers>
+    <server>
+      <id>sonatype-nexus-snapshots</id>
+      <username>${username}</username>
+      <password>${password}</password>
+    </server>
+    <server>
+      <id>sonatype-nexus-staging</id>
+      <username>${username}</username>
+      <password>${password}</password>
+    </server>
+  </servers>
+
+Store your GNU OpenPGP password in a separate profile:
+
+  <profiles>
+    <profile>
+      <id>gpg</id>
+      <properties>
+        <gpg.passphrase>${gpg.passphrase}</gpg.passphrase>
+      </properties>
+    </profile>
+  </profiles>
+
+Release Process
+===============
 * mvn clean install site
 ** Any compiler errors or failed/skipped tests must be cleaned-up.
 ** Fix any Javadoc warnings.  Re-run as many times as necessary: mvn javadoc:javadoc
 * git commit -a
 * mvn release:clean
-* mvn release:prepare
+* mvn release:prepare -P gpg
 * After, git status will be "dirty".  Do not add -- procede to next step.
 * git push --tags origin master
-* mvn release:perform
+* mvn release:perform -P gpg
 * After, git status will be "clean".
 * https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide#SonatypeOSSMavenRepositoryUsageGuide-8a.ReleaseIt
 ** Do the Nexus dance to push the staged release.

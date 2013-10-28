@@ -55,14 +55,15 @@ import com.googlecode.kevinarpe.papaya.exception.TimeoutException;
  *   <li>Write data to STDIN: If data for STDIN is specified via
  *   {@link ProcessBuilder2#stdinData(byte[])} or {@link ProcessBuilder2#stdinText(String)}, a
  *   thread is spawned to write these bytes to the child process' STDIN stream.  A separate thread
- *   is used in event the operating system or child process cannot read the entire data array in a
- *   single read.</li>
+ *   is used to prevent blocking in the main thread if the operating system or child process cannot
+ *   read the entire data array in a single read.</li>
  *   <li>Read data from STDOUT: A thread is always spawned to read data from the child process'
  *   STDOUT stream.</li>
  *   <li>Read data from STDERR: If STDERR is <b>not</b> redirected to STDOUT via
  *   {@link ProcessBuilder2#redirectErrorStream(boolean)}, then a thread is spawned to read data
  *   from the child process' STDERR stream.</li>
  * </ul>
+ * <p>
  * In the standard JDK implementation of {@link Process}, the process' original argument list,
  * environment, directory, and if STDERR is redirected to STDOUT are not available.  This extended
  * version provides the following method to access immutable versions of this data:
@@ -72,6 +73,7 @@ import com.googlecode.kevinarpe.papaya.exception.TimeoutException;
  *   <li>{@link #directory()}</li>
  *   <li>{@link #redirectErrorStream()}</li>
  * </ul>
+ * <p>
  * Since this class and {@link ProcessBuilder2} both extend {@link AbstractProcessSettings}, all
  * settings for STDIN, STDOUT, and STDERR streams from {@link ProcessBuilder2} are available from
  * this class:
@@ -80,6 +82,7 @@ import com.googlecode.kevinarpe.papaya.exception.TimeoutException;
  *   <li>STDOUT config via {@link Process2#stdoutSettings()}</li>
  *   <li>STDERR config via {@link Process2#stderrSettings()}</li>
  * </ul>
+ * <p>
  * This class has many different ways to retrieve the child process exit value:
  * <ul>
  *   <li>{@link #exitValue()}:
@@ -105,6 +108,7 @@ import com.googlecode.kevinarpe.papaya.exception.TimeoutException;
  *   Waits (up to a maximum number of milliseconds) for child process to terminate,
  *   then validates the exit value</li>
  * </ul>
+ * <p>
  * Careful readers will note that many methods unexpectedly throw {@link IOException}.  This is a
  * wart of design.  If data is to be written to the child process STDIN stream, a separate thread
  * is spawned to prevent blocking in the main thread.  If an exception is caught in this background

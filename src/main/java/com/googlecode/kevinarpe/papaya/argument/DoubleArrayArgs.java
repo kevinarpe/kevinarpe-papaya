@@ -28,6 +28,13 @@ package com.googlecode.kevinarpe.papaya.argument;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ValueAsTypeIterator._IValueAsDoubleIterator;
 
+/**
+ * Static methods to check {@code double[]} and {@code Double[]} arguments.
+ * <p>
+ * See {@link ObjectArgs} for an overview.
+ *
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public final class DoubleArrayArgs {
 
     // Disable default constructor

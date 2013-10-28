@@ -165,7 +165,24 @@ final class ValueAsTypeIterator {
         
         abstract protected double getValueAsDouble(int index);
     }
-    
+
+    static class _UncheckedPrimitiveByteArrayAsLongIterator
+            extends _AbstractValueAsLongArrayIterator {
+
+        private byte[] _arr;
+
+        public _UncheckedPrimitiveByteArrayAsLongIterator(byte[] arr) {
+            super(arr.length);
+            _arr = arr;
+        }
+
+        @Override
+        protected long getValueAsLong(int index) {
+            long x = _arr[index];
+            return x;
+        }
+    }
+
     static class _UncheckedPrimitiveIntArrayAsLongIterator
     extends _AbstractValueAsLongArrayIterator {
         
@@ -233,12 +250,29 @@ final class ValueAsTypeIterator {
             return x;
         }
     }
-    
+
+    static class _UncheckedByteObjectArrayAsLongIterator
+            extends _AbstractValueAsLongArrayIterator {
+
+        private Byte[] _arr;
+
+        public _UncheckedByteObjectArrayAsLongIterator(Byte[] arr) {
+            super(arr.length);
+            _arr = arr;
+        }
+
+        @Override
+        protected long getValueAsLong(int index) {
+            long x = _arr[index];
+            return x;
+        }
+    }
+
     static class _UncheckedIntObjectArrayAsLongIterator
-    extends _AbstractValueAsLongArrayIterator {
-        
+            extends _AbstractValueAsLongArrayIterator {
+
         private Integer[] _arr;
-        
+
         public _UncheckedIntObjectArrayAsLongIterator(Integer[] arr) {
             super(arr.length);
             _arr = arr;
@@ -250,7 +284,7 @@ final class ValueAsTypeIterator {
             return x;
         }
     }
-    
+
     static class _UncheckedLongObjectArrayAsLongIterator
     extends _AbstractValueAsLongArrayIterator {
         
@@ -301,7 +335,22 @@ final class ValueAsTypeIterator {
             return x;
         }
     }
-    
+
+    static class _UncheckedByteObjectIterableAsLongIterator
+    extends _AbstractValueAsTypeIterableIterator<Byte>
+    implements _IValueAsLongIterator {
+
+        public _UncheckedByteObjectIterableAsLongIterator(Iterable<Byte> iterable) {
+            super(iterable);
+        }
+
+        @Override
+        public long nextAsLong() {
+            long x = next();
+            return x;
+        }
+    }
+
     static class _UncheckedIntObjectIterableAsLongIterator
     extends _AbstractValueAsTypeIterableIterator<Integer>
     implements _IValueAsLongIterator {

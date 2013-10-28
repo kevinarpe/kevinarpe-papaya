@@ -27,6 +27,13 @@ package com.googlecode.kevinarpe.papaya.argument;
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
+/**
+ * Static methods to check {@code Iterable<T>} arguments.
+ * <p>
+ * See {@link ObjectArgs} for an overview.
+ *
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public final class IterableArgs {
 
     // Disable default constructor
