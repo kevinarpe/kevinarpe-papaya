@@ -183,6 +183,23 @@ final class ValueAsTypeIterator {
         }
     }
 
+    static class _UncheckedPrimitiveCharArrayAsLongIterator
+            extends _AbstractValueAsLongArrayIterator {
+
+        private char[] _arr;
+
+        public _UncheckedPrimitiveCharArrayAsLongIterator(char[] arr) {
+            super(arr.length);
+            _arr = arr;
+        }
+
+        @Override
+        protected long getValueAsLong(int index) {
+            long x = _arr[index];
+            return x;
+        }
+    }
+
     static class _UncheckedPrimitiveIntArrayAsLongIterator
     extends _AbstractValueAsLongArrayIterator {
         
@@ -268,6 +285,23 @@ final class ValueAsTypeIterator {
         }
     }
 
+    static class _UncheckedCharObjectArrayAsLongIterator
+            extends _AbstractValueAsLongArrayIterator {
+
+        private Character[] _arr;
+
+        public _UncheckedCharObjectArrayAsLongIterator(Character[] arr) {
+            super(arr.length);
+            _arr = arr;
+        }
+
+        @Override
+        protected long getValueAsLong(int index) {
+            long x = _arr[index];
+            return x;
+        }
+    }
+
     static class _UncheckedIntObjectArrayAsLongIterator
             extends _AbstractValueAsLongArrayIterator {
 
@@ -341,6 +375,21 @@ final class ValueAsTypeIterator {
     implements _IValueAsLongIterator {
 
         public _UncheckedByteObjectIterableAsLongIterator(Iterable<Byte> iterable) {
+            super(iterable);
+        }
+
+        @Override
+        public long nextAsLong() {
+            long x = next();
+            return x;
+        }
+    }
+
+    static class _UncheckedCharObjectIterableAsLongIterator
+    extends _AbstractValueAsTypeIterableIterator<Character>
+    implements _IValueAsLongIterator {
+
+        public _UncheckedCharObjectIterableAsLongIterator(Iterable<Character> iterable) {
             super(iterable);
         }
 

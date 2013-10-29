@@ -28,240 +28,18 @@ package com.googlecode.kevinarpe.papaya.argument;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 /**
- * Static methods to check {@code byte[]} and {@code Byte[]} arguments.
+ * Static methods to check {@code char[]} and {@code Character[]} arguments.
  * <p>
- * See {@link ObjectArgs} for an overview.
+ * See {@link com.googlecode.kevinarpe.papaya.argument.ObjectArgs} for an overview.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class ByteArrayArgs {
+public class CharArrayArgs {
+
+    // TODO: Write tests
 
     // Disable default constructor
-    private ByteArrayArgs() {
-    }
-
-    /**
-     * Tests if all values in an array are positive: greater than zero.
-     *
-     * @param ref
-     *        array of values to test.  May be empty
-     * @param argName
-     *        argument name for {@code ref}, e.g., "valueList"
-     *
-     * @return the validated array
-     *
-     * @throws NullPointerException
-     *         if {@code ref} is {@code null}
-     * @throws IllegalArgumentException
-     *         if any value is not positive
-     *
-     * @see #checkPositive(Byte[], String)
-     * @see ByteIterableArgs#checkPositive(Iterable, String)
-     */
-    @FullyTested
-    public static byte[] checkPositive(byte[] ref, String argName) {
-        ObjectArgs.checkNotNull(ref, argName);
-
-        ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedPrimitiveByteArrayAsLongIterator(ref);
-        ValueAsTypeIterator._checkPositive(iter, argName);
-        return ref;
-    }
-
-    /**
-     * Tests if all values in an array are positive: greater than zero.
-     *
-     * @param ref
-     *        array of values to test.  May be empty.
-     * @param argName
-     *        argument name for {@code ref}, e.g., "valueList"
-     *
-     * @return the validated array
-     *
-     * @throws NullPointerException
-     *         if {@code ref} (or any element) is {@code null}
-     * @throws IllegalArgumentException
-     *         if any value is not positive
-     *
-     * @see #checkPositive(byte[], String)
-     * @see ByteIterableArgs#checkPositive(Iterable, String)
-     */
-    @FullyTested
-    public static Byte[] checkPositive(Byte[] ref, String argName) {
-        ArrayArgs.checkElementsNotNull(ref, argName);
-
-        ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedByteObjectArrayAsLongIterator(ref);
-        ValueAsTypeIterator._checkPositive(iter, argName);
-        return ref;
-    }
-
-    /**
-     * Tests if all values in an array are not positive: less than or equal to zero.
-     *
-     * @param ref
-     *        array of values to test.  May be empty
-     * @param argName
-     *        argument name for {@code ref}, e.g., "valueList"
-     *
-     * @return the validated array
-     *
-     * @throws NullPointerException
-     *         if {@code ref} is {@code null}
-     * @throws IllegalArgumentException
-     *         if any value is positive
-     *
-     * @see #checkNotPositive(Byte[], String)
-     * @see ByteIterableArgs#checkNotPositive(Iterable, String)
-     */
-    @FullyTested
-    public static byte[] checkNotPositive(byte[] ref, String argName) {
-        ObjectArgs.checkNotNull(ref, argName);
-
-        ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedPrimitiveByteArrayAsLongIterator(ref);
-        ValueAsTypeIterator._checkNotPositive(iter, argName);
-        return ref;
-    }
-
-    /**
-     * Tests if all values in an array are not positive: less than or equal to zero.
-     *
-     * @param ref
-     *        array of values to test.  May be empty
-     * @param argName
-     *        argument name for {@code ref}, e.g., "valueList"
-     *
-     * @return the validated array
-     *
-     * @throws NullPointerException
-     *         if {@code ref} (or any element) is {@code null}
-     * @throws IllegalArgumentException
-     *         if any value is positive
-     *
-     * @see #checkNotPositive(byte[], String)
-     * @see ByteIterableArgs#checkNotPositive(Iterable, String)
-     */
-    @FullyTested
-    public static Byte[] checkNotPositive(Byte[] ref, String argName) {
-        ArrayArgs.checkElementsNotNull(ref, argName);
-
-        ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedByteObjectArrayAsLongIterator(ref);
-        ValueAsTypeIterator._checkNotPositive(iter, argName);
-        return ref;
-    }
-
-    /**
-     * Tests if all values in an array are negative: less than zero.
-     *
-     * @param ref
-     *        array of values to test.  May be empty
-     * @param argName
-     *        argument name for {@code ref}, e.g., "valueList"
-     *
-     * @return the validated array
-     *
-     * @throws NullPointerException
-     *         if {@code ref} is {@code null}
-     * @throws IllegalArgumentException
-     *         if any value is not negative
-     *
-     * @see #checkNegative(Byte[], String)
-     * @see ByteIterableArgs#checkNegative(Iterable, String)
-     */
-    @FullyTested
-    public static byte[] checkNegative(byte[] ref, String argName) {
-        ObjectArgs.checkNotNull(ref, argName);
-
-        ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedPrimitiveByteArrayAsLongIterator(ref);
-        ValueAsTypeIterator._checkNegative(iter, argName);
-        return ref;
-    }
-
-    /**
-     * Tests if all values in an array are negative: less than zero.
-     *
-     * @param ref
-     *        array of values to test.  May be empty
-     * @param argName
-     *        argument name for {@code ref}, e.g., "valueList"
-     *
-     * @return the validated array
-     *
-     * @throws NullPointerException
-     *         if {@code ref} (or any element) is {@code null}
-     * @throws IllegalArgumentException
-     *         if any value is not negative
-     *
-     * @see #checkNegative(byte[], String)
-     * @see ByteIterableArgs#checkNegative(Iterable, String)
-     */
-    @FullyTested
-    public static Byte[] checkNegative(Byte[] ref, String argName) {
-        ArrayArgs.checkElementsNotNull(ref, argName);
-
-        ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedByteObjectArrayAsLongIterator(ref);
-        ValueAsTypeIterator._checkNegative(iter, argName);
-        return ref;
-    }
-
-    /**
-     * Tests if all values in an array are not negative: greater than or equal to zero.
-     *
-     * @param ref
-     *        array of values to test.  May be empty
-     * @param argName
-     *        argument name for {@code ref}, e.g., "valueList"
-     *
-     * @return the validated array
-     *
-     * @throws NullPointerException
-     *         if {@code ref} is {@code null}
-     * @throws IllegalArgumentException
-     *         if any value is negative
-     *
-     * @see #checkNotNegative(Byte[], String)
-     * @see ByteIterableArgs#checkNotNegative(Iterable, String)
-     */
-    @FullyTested
-    public static byte[] checkNotNegative(byte[] ref, String argName) {
-        ObjectArgs.checkNotNull(ref, argName);
-
-        ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedPrimitiveByteArrayAsLongIterator(ref);
-        ValueAsTypeIterator._checkNotNegative(iter, argName);
-        return ref;
-    }
-
-    /**
-     * Tests if all values in an array are not negative: greater than or equal to zero.
-     *
-     * @param ref
-     *        array of values to test.  May be empty
-     * @param argName
-     *        argument name for {@code ref}, e.g., "valueList"
-     *
-     * @return the validated array
-     *
-     * @throws NullPointerException
-     *         if {@code ref} (or any element) is {@code null}
-     * @throws IllegalArgumentException
-     *         if any value is negative
-     *
-     * @see #checkNotNegative(byte[], String)
-     * @see ByteIterableArgs#checkNotNegative(Iterable, String)
-     */
-    @FullyTested
-    public static Byte[] checkNotNegative(Byte[] ref, String argName) {
-        ArrayArgs.checkElementsNotNull(ref, argName);
-
-        ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedByteObjectArrayAsLongIterator(ref);
-        ValueAsTypeIterator._checkNotNegative(iter, argName);
-        return ref;
+    private CharArrayArgs() {
     }
 
     /**
@@ -289,16 +67,16 @@ public class ByteArrayArgs {
      *   <li>if any value of {@code ref} is outside allowed range</li>
      * </ul>
      *
-     * @see #checkValueInsideRange(Byte[], byte, byte, String)
-     * @see ByteIterableArgs#checkValueInsideRange(Iterable, byte, byte, String)
+     * @see #checkValueInsideRange(Character[], char, char, String)
+     * @see com.googlecode.kevinarpe.papaya.argument.ByteIterableArgs#checkValueInsideRange(Iterable, char, char, String)
      */
     @FullyTested
-    public static byte[] checkValueInsideRange(
-            byte[] ref, byte minRangeValue, byte maxRangeValue, String argName) {
+    public static char[] checkValueInsideRange(
+            char[] ref, char minRangeValue, char maxRangeValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedPrimitiveByteArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedPrimitiveCharArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkValueInsideRange(iter, minRangeValue, maxRangeValue, argName);
         return ref;
     }
@@ -328,16 +106,16 @@ public class ByteArrayArgs {
      *   <li>if any value of {@code ref} is outside allowed range</li>
      * </ul>
      *
-     * @see #checkValueInsideRange(byte[], byte, byte, String)
-     * @see ByteIterableArgs#checkValueInsideRange(Iterable, byte, byte, String)
+     * @see #checkValueInsideRange(char[], char, char, String)
+     * @see com.googlecode.kevinarpe.papaya.argument.ByteIterableArgs#checkValueInsideRange(Iterable, char, char, String)
      */
     @FullyTested
-    public static Byte[] checkValueInsideRange(
-            Byte[] ref, byte minRangeValue, byte maxRangeValue, String argName) {
+    public static Character[] checkValueInsideRange(
+            Character[] ref, char minRangeValue, char maxRangeValue, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedByteObjectArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedCharObjectArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkValueInsideRange(iter, minRangeValue, maxRangeValue, argName);
         return ref;
     }
@@ -367,16 +145,16 @@ public class ByteArrayArgs {
      *   <li>if any value of {@code ref} is inside not-allowed range</li>
      * </ul>
      *
-     * @see #checkValueOutsideRange(Byte[], byte, byte, String)
-     * @see ByteIterableArgs#checkValueOutsideRange(Iterable, byte, byte, String)
+     * @see #checkValueOutsideRange(Character[], char, char, String)
+     * @see com.googlecode.kevinarpe.papaya.argument.ByteIterableArgs#checkValueOutsideRange(Iterable, char, char, String)
      */
     @FullyTested
-    public static byte[] checkValueOutsideRange(
-            byte[] ref, byte minRangeValue, byte maxRangeValue, String argName) {
+    public static char[] checkValueOutsideRange(
+            char[] ref, char minRangeValue, char maxRangeValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedPrimitiveByteArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedPrimitiveCharArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkValueOutsideRange(iter, minRangeValue, maxRangeValue, argName);
         return ref;
     }
@@ -406,16 +184,16 @@ public class ByteArrayArgs {
      *   <li>if any value of {@code ref} is inside not-allowed range</li>
      * </ul>
      *
-     * @see #checkValueOutsideRange(byte[], byte, byte, String)
-     * @see ByteIterableArgs#checkValueOutsideRange(Iterable, byte, byte, String)
+     * @see #checkValueOutsideRange(char[], char, char, String)
+     * @see com.googlecode.kevinarpe.papaya.argument.ByteIterableArgs#checkValueOutsideRange(Iterable, char, char, String)
      */
     @FullyTested
-    public static Byte[] checkValueOutsideRange(
-            Byte[] ref, byte minRangeValue, byte maxRangeValue, String argName) {
+    public static Character[] checkValueOutsideRange(
+            Character[] ref, char minRangeValue, char maxRangeValue, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedByteObjectArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedCharObjectArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkValueOutsideRange(iter, minRangeValue, maxRangeValue, argName);
         return ref;
     }
@@ -437,15 +215,15 @@ public class ByteArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is less than {@code minValue}
      *
-     * @see #checkMinValue(Byte[], byte, String)
-     * @see ByteIterableArgs#checkMinValue(Iterable, byte, String)
+     * @see #checkMinValue(Character[], char, String)
+     * @see com.googlecode.kevinarpe.papaya.argument.ByteIterableArgs#checkMinValue(Iterable, char, String)
      */
     @FullyTested
-    public static byte[] checkMinValue(byte[] ref, byte minValue, String argName) {
+    public static char[] checkMinValue(char[] ref, char minValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedPrimitiveByteArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedPrimitiveCharArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkMinValue(iter, minValue, argName);
         return ref;
     }
@@ -467,15 +245,15 @@ public class ByteArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is less than {@code minValue}
      *
-     * @see #checkMinValue(byte[], byte, String)
-     * @see ByteIterableArgs#checkMinValue(Iterable, byte, String)
+     * @see #checkMinValue(char[], char, String)
+     * @see com.googlecode.kevinarpe.papaya.argument.ByteIterableArgs#checkMinValue(Iterable, char, String)
      */
     @FullyTested
-    public static Byte[] checkMinValue(Byte[] ref, byte minValue, String argName) {
+    public static Character[] checkMinValue(Character[] ref, char minValue, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedByteObjectArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedCharObjectArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkMinValue(iter, minValue, argName);
         return ref;
     }
@@ -497,15 +275,15 @@ public class ByteArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is greater than {@code maxValue}
      *
-     * @see #checkMaxValue(Byte[], byte, String)
-     * @see ByteIterableArgs#checkMaxValue(Iterable, byte, String)
+     * @see #checkMaxValue(Character[], char, String)
+     * @see com.googlecode.kevinarpe.papaya.argument.ByteIterableArgs#checkMaxValue(Iterable, char, String)
      */
     @FullyTested
-    public static byte[] checkMaxValue(byte[] ref, byte maxValue, String argName) {
+    public static char[] checkMaxValue(char[] ref, char maxValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedPrimitiveByteArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedPrimitiveCharArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkMaxValue(iter, maxValue, argName);
         return ref;
     }
@@ -527,15 +305,15 @@ public class ByteArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is greater than {@code maxValue}
      *
-     * @see #checkMaxValue(byte[], byte, String)
-     * @see ByteIterableArgs#checkMaxValue(Iterable, byte, String)
+     * @see #checkMaxValue(char[], char, String)
+     * @see com.googlecode.kevinarpe.papaya.argument.ByteIterableArgs#checkMaxValue(Iterable, char, String)
      */
     @FullyTested
-    public static Byte[] checkMaxValue(Byte[] ref, byte maxValue, String argName) {
+    public static Character[] checkMaxValue(Character[] ref, char maxValue, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedByteObjectArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedCharObjectArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkMaxValue(iter, maxValue, argName);
         return ref;
     }
@@ -557,15 +335,15 @@ public class ByteArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is not {@code exactValue}
      *
-     * @see #checkExactValue(Byte[], byte, String)
-     * @see ByteIterableArgs#checkExactValue(Iterable, byte, String)
+     * @see #checkExactValue(Character[], char, String)
+     * @see com.googlecode.kevinarpe.papaya.argument.ByteIterableArgs#checkExactValue(Iterable, char, String)
      */
     @FullyTested
-    public static byte[] checkExactValue(byte[] ref, byte exactValue, String argName) {
+    public static char[] checkExactValue(char[] ref, char exactValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedPrimitiveByteArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedPrimitiveCharArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkExactValue(iter, exactValue, argName);
         return ref;
     }
@@ -587,15 +365,15 @@ public class ByteArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is not {@code exactValue}
      *
-     * @see #checkExactValue(byte[], byte, String)
-     * @see ByteIterableArgs#checkExactValue(Iterable, byte, String)
+     * @see #checkExactValue(char[], char, String)
+     * @see com.googlecode.kevinarpe.papaya.argument.ByteIterableArgs#checkExactValue(Iterable, char, String)
      */
     @FullyTested
-    public static Byte[] checkExactValue(Byte[] ref, byte exactValue, String argName) {
+    public static Character[] checkExactValue(Character[] ref, char exactValue, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedByteObjectArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedCharObjectArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkExactValue(iter, exactValue, argName);
         return ref;
     }
@@ -617,15 +395,15 @@ public class ByteArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is {@code exactValue}
      *
-     * @see #checkNotExactValue(Byte[], byte, String)
-     * @see ByteIterableArgs#checkNotExactValue(Iterable, byte, String)
+     * @see #checkNotExactValue(Character[], char, String)
+     * @see com.googlecode.kevinarpe.papaya.argument.ByteIterableArgs#checkNotExactValue(Iterable, char, String)
      */
     @FullyTested
-    public static byte[] checkNotExactValue(byte[] ref, byte exactValue, String argName) {
+    public static char[] checkNotExactValue(char[] ref, char exactValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedPrimitiveByteArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedPrimitiveCharArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkNotExactValue(iter, exactValue, argName);
         return ref;
     }
@@ -647,15 +425,15 @@ public class ByteArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is {@code exactValue}
      *
-     * @see #checkNotExactValue(byte[], byte, String)
-     * @see ByteIterableArgs#checkNotExactValue(Iterable, byte, String)
+     * @see #checkNotExactValue(char[], char, String)
+     * @see com.googlecode.kevinarpe.papaya.argument.ByteIterableArgs#checkNotExactValue(Iterable, char, String)
      */
     @FullyTested
-    public static Byte[] checkNotExactValue(Byte[] ref, byte exactValue, String argName) {
+    public static Character[] checkNotExactValue(Character[] ref, char exactValue, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedByteObjectArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedCharObjectArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkNotExactValue(iter, exactValue, argName);
         return ref;
     }
