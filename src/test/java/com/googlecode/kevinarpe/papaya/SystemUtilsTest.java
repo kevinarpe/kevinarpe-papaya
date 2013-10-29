@@ -46,7 +46,7 @@ public class SystemUtilsTest {
     //
 
     @DataProvider
-    private static final SystemUtils.OperatingSystem[][][] _dataForShouldCheckCurrentOperatingSystem() {
+    public static SystemUtils.OperatingSystem[][][] _dataForShouldCheckCurrentOperatingSystem() {
         SystemUtils.OperatingSystem os = SystemUtils.getCurrentOperatingSystem();
         return new SystemUtils.OperatingSystem[][][] {
                 { new SystemUtils.OperatingSystem[] { os } },
@@ -62,7 +62,7 @@ public class SystemUtilsTest {
     }
 
     @DataProvider
-    private static final SystemUtils.OperatingSystem[][][] _dataForShouldNotCheckCurrentOperatingSystem() {
+    public static SystemUtils.OperatingSystem[][][] _dataForShouldNotCheckCurrentOperatingSystem() {
         SystemUtils.OperatingSystem os = SystemUtils.getCurrentOperatingSystem();
         SystemUtils.OperatingSystem notThisOs1 = null;
         SystemUtils.OperatingSystem notThisOs2 = null;
@@ -91,7 +91,7 @@ public class SystemUtilsTest {
     }
 
     @DataProvider
-    private static final SystemUtils.OperatingSystem[][][] _dataForShouldNotCheckCurrentOperatingSystemWithNullRefs() {
+    public static SystemUtils.OperatingSystem[][][] _dataForShouldNotCheckCurrentOperatingSystemWithNullRefs() {
         SystemUtils.OperatingSystem os = SystemUtils.getCurrentOperatingSystem();
         return new SystemUtils.OperatingSystem[][][] {
                 { new SystemUtils.OperatingSystem[] { null } },
@@ -119,7 +119,7 @@ public class SystemUtilsTest {
     //
 
     @DataProvider
-    private static final SystemUtils.OperatingSystemCategory[][][] _dataForShouldCheckCurrentOperatingSystemCategory() {
+    public static SystemUtils.OperatingSystemCategory[][][] _dataForShouldCheckCurrentOperatingSystemCategory() {
         SystemUtils.OperatingSystemCategory cat =
             SystemUtils.getCurrentOperatingSystem().getCategory();
         return new SystemUtils.OperatingSystemCategory[][][] {
@@ -136,7 +136,7 @@ public class SystemUtilsTest {
     }
 
     @DataProvider
-    private static final SystemUtils.OperatingSystemCategory[][][] _dataForShouldNotCheckCurrentOperatingSystemCategory() {
+    public static SystemUtils.OperatingSystemCategory[][][] _dataForShouldNotCheckCurrentOperatingSystemCategory() {
         SystemUtils.OperatingSystemCategory cat =
             SystemUtils.getCurrentOperatingSystem().getCategory();
         SystemUtils.OperatingSystemCategory notThisCat1 = null;
@@ -168,7 +168,7 @@ public class SystemUtilsTest {
     }
 
     @DataProvider
-    private static final SystemUtils.OperatingSystemCategory[][][] _dataForShouldNotCheckCurrentOperatingSystemCategoryWithNullRefs() {
+    public static SystemUtils.OperatingSystemCategory[][][] _dataForShouldNotCheckCurrentOperatingSystemCategoryWithNullRefs() {
         SystemUtils.OperatingSystemCategory cat =
             SystemUtils.getCurrentOperatingSystem().getCategory();
         return new SystemUtils.OperatingSystemCategory[][][] {

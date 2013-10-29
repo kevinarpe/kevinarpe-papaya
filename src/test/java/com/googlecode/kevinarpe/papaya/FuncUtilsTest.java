@@ -46,7 +46,7 @@ public class FuncUtilsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldParseBooleanFromString() {
+    public static Object[][] _dataForShouldParseBooleanFromString() {
         return new Object[][] {
                 { "true", true },
                 { "True", true },

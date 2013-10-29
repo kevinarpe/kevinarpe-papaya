@@ -25,14 +25,12 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.PrimitiveTypeUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import com.googlecode.kevinarpe.papaya.PrimitiveTypeUtils;
-import com.googlecode.kevinarpe.papaya.argument.DoubleArgs;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -52,7 +50,7 @@ public class DoubleArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkPositive_Pass_Data() {
+    private static Object[][] _checkPositive_Pass_Data() {
         return new Object[][] {
                 { 1.0d },
                 { 99.0d },
@@ -73,7 +71,7 @@ public class DoubleArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkPositive_FailWithNonPositiveInput_Data() {
+    private static Object[][] _checkPositive_FailWithNonPositiveInput_Data() {
         return new Object[][] {
                 { 0.0d },
                 { -1.0d },
@@ -93,7 +91,7 @@ public class DoubleArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotPositive_Pass_Data() {
+    private static Object[][] _checkNotPositive_Pass_Data() {
         return new Object[][] {
                 { 0.0d },
                 { -99.0d },
@@ -113,7 +111,7 @@ public class DoubleArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkNotPositive_FailWithPositiveInput_Data() {
+    private static Object[][] _checkNotPositive_FailWithPositiveInput_Data() {
         return new Object[][] {
                 { 1.0d },
                 { Double.MAX_VALUE },
@@ -131,7 +129,7 @@ public class DoubleArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNegative_Pass_Data() {
+    private static Object[][] _checkNegative_Pass_Data() {
         return new Object[][] {
                 { -1.0d },
                 { -99.0d },
@@ -150,7 +148,7 @@ public class DoubleArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkNegative_FailWithNonNegativeInput_Data() {
+    private static Object[][] _checkNegative_FailWithNonNegativeInput_Data() {
         return new Object[][] {
                 { 0.0d },
                 { 1.0d },
@@ -169,7 +167,7 @@ public class DoubleArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotNegative_Pass_Data() {
+    private static Object[][] _checkNotNegative_Pass_Data() {
         return new Object[][] {
                 { 0.0d },
                 { 99.0d },
@@ -188,7 +186,7 @@ public class DoubleArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkNotNegative_FailWithNegativeInput_Data() {
+    private static Object[][] _checkNotNegative_FailWithNegativeInput_Data() {
         return new Object[][] {
                 { -1.0d },
                 { -Double.MIN_VALUE },
@@ -206,7 +204,7 @@ public class DoubleArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkValueRange_Pass_Data() {
+    private static Object[][] _checkValueRange_Pass_Data() {
         return new Object[][] {
                 { 1.0d, -1.0d, 2.0d },
                 { 1.0d, -1.0d, 1.0d },
@@ -228,7 +226,7 @@ public class DoubleArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkValueRange_FailWithInvalidInput_Data() {
+    private static Object[][] _checkValueRange_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { 1.0d, -1.0d, 0.0d },
                 { 1.0d, 0.0d, 0.0d },
@@ -258,7 +256,7 @@ public class DoubleArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkMinValue_Pass_Data() {
+    private static Object[][] _checkMinValue_Pass_Data() {
         return new Object[][] {
                 { 1.0d, -1.0d },
                 { 1.0d, 0.0d },
@@ -281,7 +279,7 @@ public class DoubleArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMinValue_FailWithInvalidInput_Data() {
+    private static Object[][] _checkMinValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { 1.0d, 2.0d },
                 { 1.0d, 3.0d },
@@ -301,7 +299,7 @@ public class DoubleArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkMaxValue_Pass_Data() {
+    private static Object[][] _checkMaxValue_Pass_Data() {
         return new Object[][] {
                 { 1.0d, 1.0d },
                 { 1.0d, 2.0d },
@@ -324,7 +322,7 @@ public class DoubleArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMaxValue_FailWithInvalidInput_Data() {
+    private static Object[][] _checkMaxValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { 1.0d, 0.0d },
                 { 1.0d, -1.0d },
@@ -344,7 +342,7 @@ public class DoubleArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkExactValue_Pass_Data() {
+    private static Object[][] _checkExactValue_Pass_Data() {
         return new Object[][] {
                 { 1.0d, 1.0d },
                 { 0.0d, 0.0d },
@@ -367,7 +365,7 @@ public class DoubleArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkExactValue_FailWithInvalidInput_Data() {
+    private static Object[][] _checkExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { 1.0d, 0.0d },
                 { 1.0d, -1.0d },
@@ -387,7 +385,7 @@ public class DoubleArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotExactValue_Pass_Data() {
+    private static Object[][] _checkNotExactValue_Pass_Data() {
         return new Object[][] {
             { 1.0d, 0.0d },
             { 1.0d, -1.0d },
@@ -407,7 +405,7 @@ public class DoubleArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
+    private static Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
             { 1.0d, 1.0d },
             { 0.0d, 0.0d },

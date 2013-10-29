@@ -37,7 +37,7 @@ import com.googlecode.kevinarpe.papaya.exception.ClassResourceNotFoundException;
 public final class ClassResourceNotFoundExceptionTest {
 
     @DataProvider
-    private static final Object[][] _Pass_Data() {
+    public static Object[][] _Pass_Data() {
         return new Object[][] {
                 {
                     String.class,
@@ -59,7 +59,7 @@ public final class ClassResourceNotFoundExceptionTest {
     }
     
     @DataProvider
-    private static final Object[][] _Fail_Data() {
+    public static Object[][] _Fail_Data() {
         return new Object[][] {
                 ///////////////////////////////////////////////////////////////
                 // Group w/o null optCause

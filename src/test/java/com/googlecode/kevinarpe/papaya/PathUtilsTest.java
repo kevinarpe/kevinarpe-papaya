@@ -72,7 +72,7 @@ public class PathUtilsTest {
     //
 
     @DataProvider
-    private static final Object[][] _dataForShouldTestIsRootDirectoryCorrectly() {
+    public static Object[][] _dataForShouldTestIsRootDirectoryCorrectly() {
         String relativeDirPath = PathUtilsTest.class.getPackage().getName().replace('.', '/');
         return new Object[][] {
                 { _convertPath(relativeDirPath), false },

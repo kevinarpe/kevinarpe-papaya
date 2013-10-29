@@ -51,7 +51,7 @@ public class CharArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkValueRange_Pass_Data() {
+    public static Object[][] _checkValueRange_Pass_Data() {
         return new Object[][] {
                 { (char) 2, (char) 0, (char) 3 },
                 { (char) 2, (char) 0, (char) 2 },
@@ -73,7 +73,7 @@ public class CharArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkValueRange_FailWithInvalidInput_Data() {
+    public static Object[][] _checkValueRange_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (char) 2, (char) 0, (char) 1 },
                 { (char) 1, (char) 0, (char) 0 },
@@ -103,7 +103,7 @@ public class CharArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkMinValue_Pass_Data() {
+    public static Object[][] _checkMinValue_Pass_Data() {
         return new Object[][] {
                 { (char) 2, (char) 0 },
                 { (char) 1, (char) 0 },
@@ -126,7 +126,7 @@ public class CharArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMinValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkMinValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (char) 1, (char) 2 },
                 { (char) 1, (char) 3 },
@@ -146,7 +146,7 @@ public class CharArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkMaxValue_Pass_Data() {
+    public static Object[][] _checkMaxValue_Pass_Data() {
         return new Object[][] {
                 { (char) 1, (char) 1 },
                 { (char) 1, (char) 2 },
@@ -169,7 +169,7 @@ public class CharArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMaxValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkMaxValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (char) 2, (char) 1 },
                 { (char) 2, (char) 0 },
@@ -189,7 +189,7 @@ public class CharArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkExactValue_Pass_Data() {
+    public static Object[][] _checkExactValue_Pass_Data() {
         return new Object[][] {
                 { (char) 1, (char) 1 },
                 { (char) 0, (char) 0 },
@@ -210,7 +210,7 @@ public class CharArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (char) 2, (char) 1 },
                 { (char) 2, (char) 0 },
@@ -230,7 +230,7 @@ public class CharArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotExactValue_Pass_Data() {
+    public static Object[][] _checkNotExactValue_Pass_Data() {
         return new Object[][] {
                 { (char) -1, (char) 0 },
                 { (char) 0, (char) 1 },
@@ -251,7 +251,7 @@ public class CharArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (char) -1, (char) -1 },
                 { (char) 0, (char) 0 },

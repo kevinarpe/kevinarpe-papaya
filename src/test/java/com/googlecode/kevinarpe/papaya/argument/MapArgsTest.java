@@ -52,7 +52,7 @@ public class MapArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkSizeRange_Pass_Data() {
+    public static Object[][] _checkSizeRange_Pass_Data() {
         return new Object[][] {
                 { new HashMap<Object, Object>(), 0, 10 },
                 { new HashMap<Object, Object>(), 0, 0 },
@@ -83,7 +83,7 @@ public class MapArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkSizeRange_FailWithInvalidMinOrMaxLen_Data() {
+    public static Object[][] _checkSizeRange_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { new HashMap<Object, Object>(), 3, 4 },
                 { _asMap("a", 1), -3, 3 },
@@ -103,7 +103,7 @@ public class MapArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkSizeRange_FailWithNullMap_Data() {
+    public static Object[][] _checkSizeRange_FailWithNullMap_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -123,7 +123,7 @@ public class MapArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotEmpty_Pass_Data() {
+    public static Object[][] _checkNotEmpty_Pass_Data() {
         return new Object[][] {
                 { _asMap("a", 1) },
                 { _asMap("a", 1, "b", 2) },
@@ -142,7 +142,7 @@ public class MapArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkNotEmpty_FailWithEmptyMap_Data() {
+    public static Object[][] _checkNotEmpty_FailWithEmptyMap_Data() {
         return new Object[][] {
                 { ImmutableMap.of() },
                 { new HashMap<String, String>() },
@@ -166,7 +166,7 @@ public class MapArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkMinSize_Pass_Data() {
+    public static Object[][] _checkMinSize_Pass_Data() {
         return new Object[][] {
                 { new HashMap<String, String>(), 0 },
                 { _asMap("a", 1), 0 },
@@ -188,7 +188,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMinSize_FailWithInvalidMinLen_Data() {
+    public static Object[][] _checkMinSize_FailWithInvalidMinLen_Data() {
         return new Object[][] {
                 { new HashMap<String, String>(), -2 },
                 { new HashMap<String, String>(), 2 },
@@ -205,7 +205,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMinSize_FailWithNullMap_Data() {
+    public static Object[][] _checkMinSize_FailWithNullMap_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -225,7 +225,7 @@ public class MapArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkMaxSize_Pass_Data() {
+    public static Object[][] _checkMaxSize_Pass_Data() {
         return new Object[][] {
                 { new HashMap<String, String>(), 0 },
                 { new HashMap<String, String>(), 99 },
@@ -247,7 +247,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMaxSize_FailWithInvalidMaxLen_Data() {
+    public static Object[][] _checkMaxSize_FailWithInvalidMaxLen_Data() {
         return new Object[][] {
                 { new HashMap<String, String>(), -2 },
                 { _asMap("a", 1), -3 },
@@ -263,7 +263,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMaxSize_FailWithNullMap_Data() {
+    public static Object[][] _checkMaxSize_FailWithNullMap_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -283,7 +283,7 @@ public class MapArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkExactSize_Pass_Data() {
+    public static Object[][] _checkExactSize_Pass_Data() {
         return new Object[][] {
                 { new HashMap<String, String>(), 0 },
                 { _asMap("a", 1), 1 },
@@ -302,7 +302,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkExactSize_FailWithInvalidExactLen_Data() {
+    public static Object[][] _checkExactSize_FailWithInvalidExactLen_Data() {
         return new Object[][] {
                 { new HashMap<String, String>(), -2 },
                 { new HashMap<String, String>(), 2 },
@@ -319,7 +319,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkExactSize_FailWithNullMap_Data() {
+    public static Object[][] _checkExactSize_FailWithNullMap_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -339,7 +339,7 @@ public class MapArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkKeysNotNull_Pass_Data() {
+    public static Object[][] _checkKeysNotNull_Pass_Data() {
         return new Object[][] {
                 { new HashMap<Object, Object>() },
                 { _asMap("abc", 123) },
@@ -360,7 +360,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkKeysNotNull_FailWithNullKey_Data() {
+    public static Object[][] _checkKeysNotNull_FailWithNullKey_Data() {
         return new Object[][] {
                 { _asMap(null, 123) },
                 { _asMap(null, null) },
@@ -386,7 +386,7 @@ public class MapArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkValuesNotNull_Pass_Data() {
+    public static Object[][] _checkValuesNotNull_Pass_Data() {
         return new Object[][] {
                 { new HashMap<Object, Object>() },
                 { _asMap("abc", 123) },
@@ -407,7 +407,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkValuesNotNull_FailWithNullValue_Data() {
+    public static Object[][] _checkValuesNotNull_FailWithNullValue_Data() {
         return new Object[][] {
                 { _asMap(123, null) },
                 { _asMap(null, null) },
@@ -433,7 +433,7 @@ public class MapArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkKeysAndValuesNotNull_Pass_Data() {
+    public static Object[][] _checkKeysAndValuesNotNull_Pass_Data() {
         return new Object[][] {
                 { new HashMap<Object, Object>() },
                 { _asMap("abc", 123) },
@@ -452,7 +452,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkKeysAndValuesNotNull_FailWithNullKeyOrValue_Data() {
+    public static Object[][] _checkKeysAndValuesNotNull_FailWithNullKeyOrValue_Data() {
         return new Object[][] {
                 { _asMap(null, 123) },
                 { _asMap(null, null) },
@@ -487,7 +487,7 @@ public class MapArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkNotEmptyAndKeysNotNull_Pass_Data() {
+    public static Object[][] _checkNotEmptyAndKeysNotNull_Pass_Data() {
         return new Object[][] {
                 { _asMap("abc", 123) },
                 { _asMap("abc", null) },
@@ -507,7 +507,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkNotEmptyAndKeysNotNull_FailWithNullKey_Data() {
+    public static Object[][] _checkNotEmptyAndKeysNotNull_FailWithNullKey_Data() {
         return new Object[][] {
                 { _asMap(null, 123) },
                 { _asMap(null, null) },
@@ -524,7 +524,7 @@ public class MapArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkNotEmptyAndKeysNotNull_FailWithEmptyMap_Data() {
+    public static Object[][] _checkNotEmptyAndKeysNotNull_FailWithEmptyMap_Data() {
         return new Object[][] {
                 { ImmutableMap.of() },
                 { new HashMap<String, String>() },
@@ -548,7 +548,7 @@ public class MapArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkNotEmptyAndValuesNotNull_Pass_Data() {
+    public static Object[][] _checkNotEmptyAndValuesNotNull_Pass_Data() {
         return new Object[][] {
                 { _asMap("abc", 123) },
                 { _asMap(null, 123) },
@@ -568,7 +568,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkNotEmptyAndValuesNotNull_FailWithNullValue_Data() {
+    public static Object[][] _checkNotEmptyAndValuesNotNull_FailWithNullValue_Data() {
         return new Object[][] {
                 { _asMap(123, null) },
                 { _asMap(null, null) },
@@ -586,7 +586,7 @@ public class MapArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkNotEmptyAndValuesNotNull_FailWithEmptyMap_Data() {
+    public static Object[][] _checkNotEmptyAndValuesNotNull_FailWithEmptyMap_Data() {
         return new Object[][] {
                 { ImmutableMap.of() },
                 { new HashMap<String, String>() },
@@ -610,7 +610,7 @@ public class MapArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkNotEmptyAndKeysAndValuesNotNull_Pass_Data() {
+    public static Object[][] _checkNotEmptyAndKeysAndValuesNotNull_Pass_Data() {
         return new Object[][] {
                 { _asMap("abc", 123) },
                 { _asMap("abc", 123, "def", 456) },
@@ -633,7 +633,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkNotEmptyAndKeysAndValuesNotNull_FailWithNullKeyOrValue_Data() {
+    public static Object[][] _checkNotEmptyAndKeysAndValuesNotNull_FailWithNullKeyOrValue_Data() {
         return new Object[][] {
                 { _asMap(null, 123) },
                 { _asMap(null, null) },
@@ -651,7 +651,7 @@ public class MapArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkNotEmptyAndKeysAndValuesNotNull_FailWithEmptyMap_Data() {
+    public static Object[][] _checkNotEmptyAndKeysAndValuesNotNull_FailWithEmptyMap_Data() {
         return new Object[][] {
                 { ImmutableMap.of() },
                 { new HashMap<String, String>() },

@@ -52,7 +52,7 @@ public class LongArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkPositive_Pass_Data() {
+    public static Object[][] _checkPositive_Pass_Data() {
         return new Object[][] {
                 { 1 },
                 { 99 },
@@ -75,7 +75,7 @@ public class LongArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkPositive_FailWithNonPositiveInput_Data() {
+    public static Object[][] _checkPositive_FailWithNonPositiveInput_Data() {
         return new Object[][] {
                 { 0 },
                 { -1 },
@@ -94,7 +94,7 @@ public class LongArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotPositive_Pass_Data() {
+    public static Object[][] _checkNotPositive_Pass_Data() {
         return new Object[][] {
                 { 0 },
                 { -99 },
@@ -113,7 +113,7 @@ public class LongArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkNotPositive_FailWithPositiveInput_Data() {
+    public static Object[][] _checkNotPositive_FailWithPositiveInput_Data() {
         return new Object[][] {
                 { 1 },
                 { Long.MAX_VALUE },
@@ -131,7 +131,7 @@ public class LongArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNegative_Pass_Data() {
+    public static Object[][] _checkNegative_Pass_Data() {
         return new Object[][] {
                 { -1 },
                 { -99 },
@@ -150,7 +150,7 @@ public class LongArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkNegative_FailWithNonNegativeInput_Data() {
+    public static Object[][] _checkNegative_FailWithNonNegativeInput_Data() {
         return new Object[][] {
                 { 0 },
                 { 1 },
@@ -169,7 +169,7 @@ public class LongArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotNegative_Pass_Data() {
+    public static Object[][] _checkNotNegative_Pass_Data() {
         return new Object[][] {
                 { 0 },
                 { 99 },
@@ -188,7 +188,7 @@ public class LongArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkNotNegative_FailWithNegativeInput_Data() {
+    public static Object[][] _checkNotNegative_FailWithNegativeInput_Data() {
         return new Object[][] {
                 { -1 },
                 { Long.MIN_VALUE },
@@ -206,7 +206,7 @@ public class LongArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkValueRange_Pass_Data() {
+    public static Object[][] _checkValueRange_Pass_Data() {
         return new Object[][] {
                 { 1, -1, 2 },
                 { 1, -1, 1 },
@@ -228,7 +228,7 @@ public class LongArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkValueRange_FailWithInvalidInput_Data() {
+    public static Object[][] _checkValueRange_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { 1, -1, 0 },
                 { 1, 0, 0 },
@@ -258,7 +258,7 @@ public class LongArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkMinValue_Pass_Data() {
+    public static Object[][] _checkMinValue_Pass_Data() {
         return new Object[][] {
                 { 1, -1 },
                 { 1, 0 },
@@ -281,7 +281,7 @@ public class LongArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMinValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkMinValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { 1, 2 },
                 { 1, 3 },
@@ -301,7 +301,7 @@ public class LongArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkMaxValue_Pass_Data() {
+    public static Object[][] _checkMaxValue_Pass_Data() {
         return new Object[][] {
                 { 1, 1 },
                 { 1, 2 },
@@ -324,7 +324,7 @@ public class LongArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMaxValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkMaxValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { 1, 0 },
                 { 1, -1 },
@@ -344,7 +344,7 @@ public class LongArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkExactValue_Pass_Data() {
+    public static Object[][] _checkExactValue_Pass_Data() {
         return new Object[][] {
                 { 1, 1 },
                 { 0, 0 },
@@ -365,7 +365,7 @@ public class LongArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { 1, 0 },
                 { 1, -1 },
@@ -385,7 +385,7 @@ public class LongArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotExactValue_Pass_Data() {
+    public static Object[][] _checkNotExactValue_Pass_Data() {
         return new Object[][] {
             { 1, 0 },
             { 1, -1 },
@@ -405,7 +405,7 @@ public class LongArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
             { 1, 1 },
             { 0, 0 },

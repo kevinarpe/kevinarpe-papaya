@@ -38,7 +38,7 @@ public final class ByteArraySimpleBuilderTest {
     //
     
     @DataProvider
-    private static final Object[][] _ctor_Pass_Data() {
+    public static Object[][] _ctor_Pass_Data() {
         return new Object[][] {
                 { 1 },
                 { 99 },
@@ -52,7 +52,7 @@ public final class ByteArraySimpleBuilderTest {
     }
     
     @DataProvider
-    private static final Object[][] _ctor_Fail_Data() {
+    public static Object[][] _ctor_Fail_Data() {
         return new Object[][] {
                 { 0 },
                 { -99 },
@@ -90,7 +90,7 @@ public final class ByteArraySimpleBuilderTest {
     //
     
     @DataProvider
-    private static final Object[][] _appendByteArr_Pass_Data() {
+    public static Object[][] _appendByteArr_Pass_Data() {
         return new Object[][] {
                 { new byte[] { } },
                 { new byte[] { 99 } },
@@ -120,7 +120,7 @@ public final class ByteArraySimpleBuilderTest {
     //
     
     @DataProvider
-    private static final Object[][] _appendByteArr2_Pass_Data() {
+    public static Object[][] _appendByteArr2_Pass_Data() {
         return new Object[][] {
                 { new byte[] { 99 }, 0, 0 },
                 { new byte[] { 99 }, 0, 1 },
@@ -152,7 +152,7 @@ public final class ByteArraySimpleBuilderTest {
     }
     
     @DataProvider
-    private static final Object[][] _appendByteArr2_FailWithNullArray_Data() {
+    public static Object[][] _appendByteArr2_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 0, 0 },
                 { null, 1, 0 },
@@ -172,7 +172,7 @@ public final class ByteArraySimpleBuilderTest {
     }
     
     @DataProvider
-    private static final Object[][] _appendByteArr2_FailWithEmptyArray_Data() {
+    public static Object[][] _appendByteArr2_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new byte[] { }, 0, 0 },
                 { new byte[] { }, 1, 0 },

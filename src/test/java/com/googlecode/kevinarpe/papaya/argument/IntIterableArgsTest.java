@@ -39,7 +39,7 @@ public class IntIterableArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkPositive_Pass_Data() {
+    public static Object[][] _checkPositive_Pass_Data() {
         return IntArrayArgsTest.checkPositive_Pass_Data();
     }
     
@@ -56,7 +56,7 @@ public class IntIterableArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkPositive_FailWithNonPositiveInput_Data() {
+    public static Object[][] checkPositive_FailWithNonPositiveInput_Data() {
         return IntArrayArgsTest.checkPositive_FailWithNonPositiveInput_Data();
     }
     
@@ -74,7 +74,7 @@ public class IntIterableArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] checkPositive_FailWithNullElement_Data() {
+    public static Object[][] checkPositive_FailWithNullElement_Data() {
         return IntArrayArgsTest.checkPositive_FailWithNullElement_Data();
     }
     
@@ -90,7 +90,7 @@ public class IntIterableArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotPositive_Pass_Data() {
+    public static Object[][] _checkNotPositive_Pass_Data() {
         return IntArrayArgsTest.checkNotPositive_Pass_Data();
     }
     
@@ -107,7 +107,7 @@ public class IntIterableArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNotPositive_FailWithNonPositiveInput_Data() {
+    public static Object[][] checkNotPositive_FailWithNonPositiveInput_Data() {
         return IntArrayArgsTest.checkNotPositive_FailWithPositiveInput_Data();
     }
     
@@ -125,7 +125,7 @@ public class IntIterableArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] checkNotPositive_FailWithNullElement_Data() {
+    public static Object[][] checkNotPositive_FailWithNullElement_Data() {
         return IntArrayArgsTest.checkNotPositive_FailWithNullElement_Data();
     }
     
@@ -141,7 +141,7 @@ public class IntIterableArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNegative_Pass_Data() {
+    public static Object[][] _checkNegative_Pass_Data() {
         return IntArrayArgsTest.checkNegative_Pass_Data();
     }
     
@@ -158,7 +158,7 @@ public class IntIterableArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNegative_FailWithNonNegativeInput_Data() {
+    public static Object[][] checkNegative_FailWithNonNegativeInput_Data() {
         return IntArrayArgsTest.checkNegative_FailWithNonNegativeInput_Data();
     }
     
@@ -176,7 +176,7 @@ public class IntIterableArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] checkNegative_FailWithNullElement_Data() {
+    public static Object[][] checkNegative_FailWithNullElement_Data() {
         return IntArrayArgsTest.checkNegative_FailWithNullElement_Data();
     }
     
@@ -192,7 +192,7 @@ public class IntIterableArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotNegative_Pass_Data() {
+    public static Object[][] _checkNotNegative_Pass_Data() {
         return IntArrayArgsTest.checkNotNegative_Pass_Data();
     }
     
@@ -209,7 +209,7 @@ public class IntIterableArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNotNegative_FailWithNonNegativeInput_Data() {
+    public static Object[][] checkNotNegative_FailWithNonNegativeInput_Data() {
         return IntArrayArgsTest.checkNotNegative_FailWithNegativeInput_Data();
     }
     
@@ -227,7 +227,7 @@ public class IntIterableArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] checkNotNegative_FailWithNullElement_Data() {
+    public static Object[][] checkNotNegative_FailWithNullElement_Data() {
         return IntArrayArgsTest.checkNotNegative_FailWithNullElement_Data();
     }
     
@@ -243,7 +243,7 @@ public class IntIterableArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkValueInsideRange_Pass_Data() {
+    public static Object[][] checkValueInsideRange_Pass_Data() {
         return IntArrayArgsTest.checkValueInsideRange_Pass_Data();
     }
     
@@ -264,7 +264,7 @@ public class IntIterableArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkValueInsideRange_FailWithInvalidInput_Data() {
+    public static Object[][] checkValueInsideRange_FailWithInvalidInput_Data() {
         return IntArrayArgsTest.checkValueInsideRange_FailWithInvalidInput_Data();
     }
     
@@ -283,7 +283,7 @@ public class IntIterableArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkValueInsideRange_FailWithNullElement_Data() {
+    public static Object[][] checkValueInsideRange_FailWithNullElement_Data() {
         return IntArrayArgsTest.checkValueInsideRange_FailWithNullElement_Data();
     }
     
@@ -299,7 +299,7 @@ public class IntIterableArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkValueOutsideRange_Pass_Data() {
+    public static Object[][] checkValueOutsideRange_Pass_Data() {
         return IntArrayArgsTest.checkValueOutsideRange_Pass_Data();
     }
     
@@ -320,7 +320,7 @@ public class IntIterableArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkValueOutsideRange_FailWithInvalidInput_Data() {
+    public static Object[][] checkValueOutsideRange_FailWithInvalidInput_Data() {
         return IntArrayArgsTest.checkValueOutsideRange_FailWithInvalidInput_Data();
     }
     
@@ -339,7 +339,7 @@ public class IntIterableArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkValueOutsideRange_FailWithNullElement_Data() {
+    public static Object[][] checkValueOutsideRange_FailWithNullElement_Data() {
         return IntArrayArgsTest.checkValueOutsideRange_FailWithNullElement_Data();
     }
     
@@ -355,7 +355,7 @@ public class IntIterableArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkMinValue_Pass_Data() {
+    public static Object[][] checkMinValue_Pass_Data() {
         return IntArrayArgsTest.checkMinValue_Pass_Data();
     }
     
@@ -372,7 +372,7 @@ public class IntIterableArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkMinValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkMinValue_FailWithInvalidInput_Data() {
         return IntArrayArgsTest.checkMinValue_FailWithInvalidInput_Data();
     }
     
@@ -390,7 +390,7 @@ public class IntIterableArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkMinValue_FailWithNullElement_Data() {
+    public static Object[][] checkMinValue_FailWithNullElement_Data() {
         return IntArrayArgsTest.checkMinValue_FailWithNullElement_Data();
     }
     
@@ -406,7 +406,7 @@ public class IntIterableArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkMaxValue_Pass_Data() {
+    public static Object[][] checkMaxValue_Pass_Data() {
         return IntArrayArgsTest.checkMaxValue_Pass_Data();
     }
     
@@ -423,7 +423,7 @@ public class IntIterableArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkMaxValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkMaxValue_FailWithInvalidInput_Data() {
         return IntArrayArgsTest.checkMaxValue_FailWithInvalidInput_Data();
     }
     
@@ -441,7 +441,7 @@ public class IntIterableArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkMaxValue_FailWithNullElement_Data() {
+    public static Object[][] checkMaxValue_FailWithNullElement_Data() {
         return IntArrayArgsTest.checkMaxValue_FailWithNullElement_Data();
     }
     
@@ -457,7 +457,7 @@ public class IntIterableArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkExactValue_Pass_Data() {
+    public static Object[][] checkExactValue_Pass_Data() {
         return IntArrayArgsTest.checkExactValue_Pass_Data();
     }
     
@@ -474,7 +474,7 @@ public class IntIterableArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkExactValue_FailWithInvalidInput_Data() {
         return IntArrayArgsTest.checkExactValue_FailWithInvalidInput_Data();
     }
     
@@ -492,7 +492,7 @@ public class IntIterableArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkExactValue_FailWithNullElement_Data() {
+    public static Object[][] checkExactValue_FailWithNullElement_Data() {
         return IntArrayArgsTest.checkExactValue_FailWithNullElement_Data();
     }
     
@@ -508,7 +508,7 @@ public class IntIterableArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkNotExactValue_Pass_Data() {
+    public static Object[][] checkNotExactValue_Pass_Data() {
         return IntArrayArgsTest.checkNotExactValue_Pass_Data();
     }
     
@@ -525,7 +525,7 @@ public class IntIterableArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkNotExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkNotExactValue_FailWithInvalidInput_Data() {
         return IntArrayArgsTest.checkNotExactValue_FailWithInvalidInput_Data();
     }
     
@@ -543,7 +543,7 @@ public class IntIterableArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNotExactValue_FailWithNullElement_Data() {
+    public static Object[][] checkNotExactValue_FailWithNullElement_Data() {
         return IntArrayArgsTest.checkNotExactValue_FailWithNullElement_Data();
     }
     

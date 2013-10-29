@@ -44,7 +44,7 @@ import com.googlecode.kevinarpe.papaya.test.TestCharsetUtils;
 public class ProcessOutputStreamSettingsTest {
     
     @DataProvider
-    private static final Object[][] _dataForStdxxxSettings() {
+    public static Object[][] _dataForStdxxxSettings() {
         ProcessBuilder2 x = new ProcessBuilder2();
         return new Object[][] {
                 { x.stdoutSettings() },

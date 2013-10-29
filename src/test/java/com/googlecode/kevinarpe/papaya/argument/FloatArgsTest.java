@@ -52,7 +52,7 @@ public class FloatArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkPositive_Pass_Data() {
+    public static Object[][] _checkPositive_Pass_Data() {
         return new Object[][] {
                 { 1.0f },
                 { 99.0f },
@@ -72,7 +72,7 @@ public class FloatArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkPositive_FailWithNonPositiveInput_Data() {
+    public static Object[][] _checkPositive_FailWithNonPositiveInput_Data() {
         return new Object[][] {
                 { 0.0f },
                 { -1.0f },
@@ -92,7 +92,7 @@ public class FloatArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotPositive_Pass_Data() {
+    public static Object[][] _checkNotPositive_Pass_Data() {
         return new Object[][] {
                 { 0.0f },
                 { -99.0f },
@@ -112,7 +112,7 @@ public class FloatArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkNotPositive_FailWithPositiveInput_Data() {
+    public static Object[][] _checkNotPositive_FailWithPositiveInput_Data() {
         return new Object[][] {
                 { 1.0f },
                 { Float.MAX_VALUE },
@@ -130,7 +130,7 @@ public class FloatArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNegative_Pass_Data() {
+    public static Object[][] _checkNegative_Pass_Data() {
         return new Object[][] {
                 { -1.0f },
                 { -99.0f },
@@ -151,7 +151,7 @@ public class FloatArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkNegative_FailWithNonNegativeInput_Data() {
+    public static Object[][] _checkNegative_FailWithNonNegativeInput_Data() {
         return new Object[][] {
                 { 0.0f },
                 { 1.0f },
@@ -170,7 +170,7 @@ public class FloatArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotNegative_Pass_Data() {
+    public static Object[][] _checkNotNegative_Pass_Data() {
         return new Object[][] {
                 { 0.0f },
                 { 99.0f },
@@ -189,7 +189,7 @@ public class FloatArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkNotNegative_FailWithNegativeInput_Data() {
+    public static Object[][] _checkNotNegative_FailWithNegativeInput_Data() {
         return new Object[][] {
                 { -1.0f },
                 { -Float.MIN_VALUE },
@@ -207,7 +207,7 @@ public class FloatArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkValueRange_Pass_Data() {
+    public static Object[][] _checkValueRange_Pass_Data() {
         return new Object[][] {
                 { 1.0f, -1.0f, 2.0f },
                 { 1.0f, -1.0f, 1.0f },
@@ -229,7 +229,7 @@ public class FloatArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkValueRange_FailWithInvalidInput_Data() {
+    public static Object[][] _checkValueRange_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { 1.0f, -1.0f, 0.0f },
                 { 1.0f, 0.0f, 0.0f },
@@ -259,7 +259,7 @@ public class FloatArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkMinValue_Pass_Data() {
+    public static Object[][] _checkMinValue_Pass_Data() {
         return new Object[][] {
                 { 1.0f, -1.0f },
                 { 1.0f, 0.0f },
@@ -282,7 +282,7 @@ public class FloatArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMinValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkMinValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { 1.0f, 2.0f },
                 { 1.0f, 3.0f },
@@ -302,7 +302,7 @@ public class FloatArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkMaxValue_Pass_Data() {
+    public static Object[][] _checkMaxValue_Pass_Data() {
         return new Object[][] {
                 { 1.0f, 1.0f },
                 { 1.0f, 2.0f },
@@ -325,7 +325,7 @@ public class FloatArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMaxValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkMaxValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { 1.0f, 0.0f },
                 { 1.0f, -1.0f },
@@ -345,7 +345,7 @@ public class FloatArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkExactValue_Pass_Data() {
+    public static Object[][] _checkExactValue_Pass_Data() {
         return new Object[][] {
                 { 1.0f, 1.0f },
                 { 0.0f, 0.0f },
@@ -368,7 +368,7 @@ public class FloatArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { 1.0f, 0.0f },
                 { 1.0f, -1.0f },
@@ -388,7 +388,7 @@ public class FloatArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotExactValue_Pass_Data() {
+    public static Object[][] _checkNotExactValue_Pass_Data() {
         return new Object[][] {
             { 1.0f, 0.0f },
             { 1.0f, -1.0f },
@@ -408,7 +408,7 @@ public class FloatArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
             { 1.0f, 1.0f },
             { 0.0f, 0.0f },

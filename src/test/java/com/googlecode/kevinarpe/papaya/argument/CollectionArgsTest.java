@@ -25,21 +25,15 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
+import java.util.*;
 
 public class CollectionArgsTest {
 
@@ -56,7 +50,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkSizeRange_Pass_Data() {
+    public static Object[][] _checkSizeRange_Pass_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), 0, 10 },
                 { new ArrayList<String>(), 0, 0 },
@@ -86,7 +80,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkSizeRange_FailWithInvalidMinOrMaxLen_Data() {
+    public static Object[][] _checkSizeRange_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), 3, 4 },
                 { ImmutableList.of("a"), -3, 3 },
@@ -106,7 +100,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkSizeRange_FailWithNullCollection_Data() {
+    public static Object[][] _checkSizeRange_FailWithNullCollection_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -126,7 +120,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotEmpty_Pass_Data() {
+    public static Object[][] _checkNotEmpty_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of("a") },
                 { ImmutableList.of("a", "b") },
@@ -145,7 +139,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkNotEmpty_FailWithEmptyCollection_Data() {
+    public static Object[][] _checkNotEmpty_FailWithEmptyCollection_Data() {
         return new Object[][] {
                 { ImmutableList.of() },
                 { ImmutableSet.of() },
@@ -170,7 +164,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkMinSize_Pass_Data() {
+    public static Object[][] _checkMinSize_Pass_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), 0 },
                 { ImmutableList.of("a"), 0 },
@@ -192,7 +186,7 @@ public class CollectionArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMinSize_FailWithInvalidMinLen_Data() {
+    public static Object[][] _checkMinSize_FailWithInvalidMinLen_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), -2 },
                 { new ArrayList<String>(), 2 },
@@ -208,7 +202,7 @@ public class CollectionArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMinSize_FailWithNullCollection_Data() {
+    public static Object[][] _checkMinSize_FailWithNullCollection_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -227,7 +221,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkMaxSize_Pass_Data() {
+    public static Object[][] _checkMaxSize_Pass_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), 0 },
                 { new ArrayList<String>(), 99 },
@@ -249,7 +243,7 @@ public class CollectionArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMaxSize_FailWithInvalidMaxLen_Data() {
+    public static Object[][] _checkMaxSize_FailWithInvalidMaxLen_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), -2 },
                 { ImmutableList.of("a"), -3 },
@@ -264,7 +258,7 @@ public class CollectionArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMaxSize_FailWithNullCollection_Data() {
+    public static Object[][] _checkMaxSize_FailWithNullCollection_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -283,7 +277,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkExactSize_Pass_Data() {
+    public static Object[][] _checkExactSize_Pass_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), 0 },
                 { ImmutableList.of("a"), 1 },
@@ -302,7 +296,7 @@ public class CollectionArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkExactSize_FailWithInvalidExactLen_Data() {
+    public static Object[][] _checkExactSize_FailWithInvalidExactLen_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), -2 },
                 { new ArrayList<String>(), 2 },
@@ -319,7 +313,7 @@ public class CollectionArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkExactSize_FailWithNullCollection_Data() {
+    public static Object[][] _checkExactSize_FailWithNullCollection_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -339,7 +333,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkElementsNotNull_Pass_Data() {
+    public static Object[][] checkElementsNotNull_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of() },
                 { ImmutableList.of("a") },
@@ -358,7 +352,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkElementsNotNull_FailWithNullElements_Data() {
+    public static Object[][] checkElementsNotNull_FailWithNullElements_Data() {
         return new Object[][] {
                 { Arrays.asList(new Object[] { null }) },
                 { Arrays.asList("a", null) },
@@ -385,7 +379,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotEmptyAndElementsNotNull_Pass_Data() {
+    public static Object[][] _checkNotEmptyAndElementsNotNull_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of("a") },
                 { ImmutableList.of("a", "b") },
@@ -408,7 +402,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkNotEmptyAndElementsNotNull_FailWithNullElements_Data() {
+    public static Object[][] _checkNotEmptyAndElementsNotNull_FailWithNullElements_Data() {
         return new Object[][] {
                 { null },
                 { Arrays.asList(new Object[] { null }) },
@@ -432,7 +426,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkAccessIndex_Pass_Data() {
+    public static Object[][] _checkAccessIndex_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 0 },
                 { ImmutableList.of("a", "b"), 0 },
@@ -451,7 +445,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkAccessIndex_FailWithEmptyCollection_Data() {
+    public static Object[][] _checkAccessIndex_FailWithEmptyCollection_Data() {
         return new Object[][] {
                 { ImmutableList.of(), -1 },
                 { ImmutableList.of(), -1 },
@@ -466,7 +460,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkAccessIndex_FailWithNegativeIndex_Data() {
+    public static Object[][] _checkAccessIndex_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), -1 },
                 { ImmutableList.of("a", "b"), -1 },
@@ -481,7 +475,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkAccessIndex_FailWithInvalidIndex_Data() {
+    public static Object[][] _checkAccessIndex_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 1 },
                 { ImmutableList.of("a", "b"), 2 },
@@ -497,7 +491,7 @@ public class CollectionArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkAccessIndex_FailWithNullCollection_Data() {
+    public static Object[][] _checkAccessIndex_FailWithNullCollection_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -517,7 +511,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkInsertIndex_Pass_Data() {
+    public static Object[][] _checkInsertIndex_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of(), 0 },
                 { ImmutableList.of("a"), 0 },
@@ -539,7 +533,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkInsertIndex_FailWithNegativeIndex_Data() {
+    public static Object[][] _checkInsertIndex_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of(), -1 },
                 { ImmutableList.of("a"), -1 },
@@ -555,7 +549,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkInsertIndex_FailWithInvalidIndex_Data() {
+    public static Object[][] _checkInsertIndex_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of(), 1 },
                 { ImmutableList.of("a"), 2 },
@@ -572,7 +566,7 @@ public class CollectionArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkInsertIndex_FailWithNullCollection_Data() {
+    public static Object[][] _checkInsertIndex_FailWithNullCollection_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -592,7 +586,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkIndexAndCount_Pass_Data() {
+    public static Object[][] _checkIndexAndCount_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 0, 0 },
                 { ImmutableList.of("a"), 0, 1 },
@@ -614,7 +608,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkIndexAndCount_FailWithEmptyCollection_Data() {
+    public static Object[][] _checkIndexAndCount_FailWithEmptyCollection_Data() {
         return new Object[][] {
                 { ImmutableList.of(), -1, -1 },
                 { ImmutableList.of(), 0, 0 },
@@ -630,7 +624,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkIndexAndCount_FailWithNegativeIndex_Data() {
+    public static Object[][] _checkIndexAndCount_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), -1, 0 },
                 { ImmutableList.of("a"), -99, 0 },
@@ -650,7 +644,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkIndexAndCount_FailWithInvalidIndex_Data() {
+    public static Object[][] _checkIndexAndCount_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 1, 1 },
                 { ImmutableList.of("a", "b"), 3, 1 },
@@ -666,7 +660,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkIndexAndCount_FailWithNegativeCount_Data() {
+    public static Object[][] _checkIndexAndCount_FailWithNegativeCount_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 0, -1 },
                 { ImmutableList.of("a", "b"), 0, -1 },
@@ -682,7 +676,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkIndexAndCount_FailWithInvalidCount_Data() {
+    public static Object[][] _checkIndexAndCount_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 0, 2 },
                 { ImmutableList.of("a"), 0, 99 },
@@ -710,7 +704,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkFromAndToIndices_Pass_Data() {
+    public static Object[][] _checkFromAndToIndices_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 0, 0 },
                 { ImmutableList.of("a"), 0, 1 },
@@ -737,7 +731,7 @@ public class CollectionArgsTest {
     // (b) docs for throws IllegalArgumentException for empty arrays/collections
 
     @DataProvider
-    private static final Object[][] _checkFromAndToIndices_FailWithEmptyCollection_Data() {
+    public static Object[][] _checkFromAndToIndices_FailWithEmptyCollection_Data() {
         return new Object[][] {
                 { ImmutableList.of(), -1, 0 },
                 { ImmutableList.of(), 0, -1 },
@@ -754,7 +748,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkFromAndToIndices_FailWithNegativeIndices_Data() {
+    public static Object[][] _checkFromAndToIndices_FailWithNegativeIndices_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), -1, 0 },
                 { ImmutableList.of("a"), 0, -1 },
@@ -771,7 +765,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkFromAndToIndices_FailWithInvalidIndices_Data() {
+    public static Object[][] _checkFromAndToIndices_FailWithInvalidIndices_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 1, 1 },
                 { ImmutableList.of("a"), 1, 0 },
@@ -800,7 +794,7 @@ public class CollectionArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkContains_Pass_Data() {
+    public static Object[][] _checkContains_Pass_Data() {
         return new Object[][] {
                 { Arrays.asList("a"), "a" },
                 { Arrays.asList("a", "b"), "b" },
@@ -824,7 +818,7 @@ public class CollectionArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkContains_Fail_Data() {
+    public static Object[][] _checkContains_Fail_Data() {
         return new Object[][] {
                 { Arrays.asList(), "x" },
                 { Arrays.asList("a"), "x" },

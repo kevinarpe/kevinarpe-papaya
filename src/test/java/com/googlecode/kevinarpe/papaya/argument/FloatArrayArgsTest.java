@@ -46,7 +46,7 @@ public class FloatArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkPositive_Pass_Data() {
+    public static Object[][] checkPositive_Pass_Data() {
         return new Object[][] {
                 { new float[] { 1 } },
                 { new float[] { 1, 2, 3 } },
@@ -79,7 +79,7 @@ public class FloatArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkPositive_FailWithNonPositiveInput_Data() {
+    public static Object[][] checkPositive_FailWithNonPositiveInput_Data() {
         return new Object[][] {
                 { new float[] { 0, 4, 5, 6 } },
                 { new float[] { 4, 0, 5, 6 } },
@@ -125,7 +125,7 @@ public class FloatArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkPositive_FailWithNullElement_Data() {
+    public static Object[][] checkPositive_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Float[] { null, 1.0f } },
                 { new Float[] { 1.0f, null } },
@@ -143,7 +143,7 @@ public class FloatArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkNotPositive_Pass_Data() {
+    public static Object[][] checkNotPositive_Pass_Data() {
         return new Object[][] {
                 { new float[] { 0.0f } },
                 { new float[] { 0.0f, -1.0f, -2.0f, -3.0f } },
@@ -178,7 +178,7 @@ public class FloatArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkNotPositive_FailWithPositiveInput_Data() {
+    public static Object[][] checkNotPositive_FailWithPositiveInput_Data() {
         return new Object[][] {
                 { new float[] { 1.0f } },
                 { new float[] { 1.0f, 2.0f, 3.0f } },
@@ -215,7 +215,7 @@ public class FloatArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNotPositive_FailWithNullElement_Data() {
+    public static Object[][] checkNotPositive_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Float[] { null, 1.0f } },
                 { new Float[] { 1.0f, null } },
@@ -233,7 +233,7 @@ public class FloatArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkNegative_Pass_Data() {
+    public static Object[][] checkNegative_Pass_Data() {
         return new Object[][] {
                 { new float[] { -1.0f } },
                 { new float[] { -1.0f, -2.0f, -3.0f } },
@@ -266,7 +266,7 @@ public class FloatArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNegative_FailWithNonNegativeInput_Data() {
+    public static Object[][] checkNegative_FailWithNonNegativeInput_Data() {
         return new Object[][] {
                 { new float[] { 0.0f, 1.0f, 2.0f, 3.0f } },
                 { new float[] { 1.0f, 0.0f, 2.0f, 3.0f } },
@@ -302,7 +302,7 @@ public class FloatArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNegative_FailWithNullElement_Data() {
+    public static Object[][] checkNegative_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Float[] { null, 1.0f } },
                 { new Float[] { 1.0f, null } },
@@ -320,7 +320,7 @@ public class FloatArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkNotNegative_Pass_Data() {
+    public static Object[][] checkNotNegative_Pass_Data() {
         return new Object[][] {
                 { new float[] { 0.0f } },
                 { new float[] { 0.0f, 1.0f, 2.0f } },
@@ -353,7 +353,7 @@ public class FloatArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNotNegative_FailWithNegativeInput_Data() {
+    public static Object[][] checkNotNegative_FailWithNegativeInput_Data() {
         return new Object[][] {
                 { new float[] { -1.0f, 4.0f, 5.0f, 6.0f } },
                 { new float[] { 4.0f, -1.0f, 5.0f, 6.0f } },
@@ -394,7 +394,7 @@ public class FloatArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNotNegative_FailWithNullElement_Data() {
+    public static Object[][] checkNotNegative_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Float[] { null, 1.0f } },
                 { new Float[] { 1.0f, null } },
@@ -412,7 +412,7 @@ public class FloatArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkValueInsideRange_Pass_Data() {
+    public static Object[][] checkValueInsideRange_Pass_Data() {
         return new Object[][] {
                 { new float[] { 1.0f }, -1.0f, 2.0f },
                 { new float[] { 1.0f }, -1.0f, 1.0f },
@@ -460,7 +460,7 @@ public class FloatArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkValueInsideRange_FailWithInvalidInput_Data() {
+    public static Object[][] checkValueInsideRange_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { new float[] { 1.0f }, -1.0f, 0.0f },
                 { new float[] { 1.0f }, 0.0f, 0.0f },
@@ -532,7 +532,7 @@ public class FloatArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkValueInsideRange_FailWithNullElement_Data() {
+    public static Object[][] checkValueInsideRange_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Float[] { null, 1.0f } },
                 { new Float[] { 1.0f, null } },
@@ -550,7 +550,7 @@ public class FloatArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkValueOutsideRange_Pass_Data() {
+    public static Object[][] checkValueOutsideRange_Pass_Data() {
         return new Object[][] {
                 { new float[] { 3.0f }, -1.0f, 2.0f },
                 { new float[] { 3.0f }, -1.0f, 1.0f },
@@ -598,7 +598,7 @@ public class FloatArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkValueOutsideRange_FailWithInvalidInput_Data() {
+    public static Object[][] checkValueOutsideRange_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { new float[] { 0.0f }, -1.0f, 0.0f },
                 { new float[] { 0.0f }, 0.0f, 0.0f },
@@ -670,7 +670,7 @@ public class FloatArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkValueOutsideRange_FailWithNullElement_Data() {
+    public static Object[][] checkValueOutsideRange_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Float[] { null, 1.0f } },
                 { new Float[] { 1.0f, null } },
@@ -688,7 +688,7 @@ public class FloatArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkMinValue_Pass_Data() {
+    public static Object[][] checkMinValue_Pass_Data() {
         return new Object[][] {
                 { new float[] { 1.0f, 2.0f, 3.0f }, -1.0f },
                 { new float[] { 1.0f, 2.0f, 3.0f }, 0.0f },
@@ -722,7 +722,7 @@ public class FloatArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkMinValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkMinValue_FailWithInvalidInput_Data() {
         return new Object[][] {
             { new float[] { 1.0f, 2.0f, 3.0f }, 2.0f },
             { new float[] { 1.0f, 2.0f, 3.0f }, 3.0f },
@@ -758,7 +758,7 @@ public class FloatArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkMinValue_FailWithNullElement_Data() {
+    public static Object[][] checkMinValue_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Float[] { null, 1.0f } },
                 { new Float[] { 1.0f, null } },
@@ -776,7 +776,7 @@ public class FloatArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkMaxValue_Pass_Data() {
+    public static Object[][] checkMaxValue_Pass_Data() {
         return new Object[][] {
                 { new float[] { 1.0f, 2.0f, 3.0f }, 3.0f },
                 { new float[] { 1.0f, 2.0f, 3.0f }, 4.0f },
@@ -810,7 +810,7 @@ public class FloatArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkMaxValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkMaxValue_FailWithInvalidInput_Data() {
         return new Object[][] {
             { new float[] { 1.0f, 2.0f, 3.0f }, -1.0f },
             { new float[] { 1.0f, 2.0f, 3.0f }, 0.0f },
@@ -846,7 +846,7 @@ public class FloatArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkMaxValue_FailWithNullElement_Data() {
+    public static Object[][] checkMaxValue_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Float[] { null, 1.0f } },
                 { new Float[] { 1.0f, null } },
@@ -864,7 +864,7 @@ public class FloatArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkExactValue_Pass_Data() {
+    public static Object[][] checkExactValue_Pass_Data() {
         return new Object[][] {
             { new float[] { 1.0f }, 1.0f },
             { new float[] { 1.0f, 1.0f }, 1.0f },
@@ -898,7 +898,7 @@ public class FloatArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
             { new float[] { 1.0f, 2.0f, 3.0f }, -1.0f },
             { new float[] { 1.0f, 2.0f, 3.0f }, 0.0f },
@@ -934,7 +934,7 @@ public class FloatArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkExactValue_FailWithNullElement_Data() {
+    public static Object[][] checkExactValue_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Float[] { null, 1.0f } },
                 { new Float[] { 1.0f, null } },
@@ -952,7 +952,7 @@ public class FloatArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkNotExactValue_Pass_Data() {
+    public static Object[][] checkNotExactValue_Pass_Data() {
         return new Object[][] {
             { new float[] { 1.0f }, 2.0f },
             { new float[] { 1.0f, 1.0f }, 2.0f },
@@ -986,7 +986,7 @@ public class FloatArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkNotExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkNotExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
             { new float[] { 1.0f, 2.0f, 3.0f }, 1.0f },
             { new float[] { 1.0f, 2.0f, 3.0f }, 2.0f },
@@ -1022,7 +1022,7 @@ public class FloatArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNotExactValue_FailWithNullElement_Data() {
+    public static Object[][] checkNotExactValue_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Float[] { null, 1.0f } },
                 { new Float[] { 1.0f, null } },

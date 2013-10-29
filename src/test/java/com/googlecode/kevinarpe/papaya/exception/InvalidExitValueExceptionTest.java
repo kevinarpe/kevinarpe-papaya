@@ -40,7 +40,7 @@ import com.googlecode.kevinarpe.papaya.exception.InvalidExitValueException;
 public final class InvalidExitValueExceptionTest {
 
     @DataProvider
-    private static final Object[][] _Pass_Data() {
+    public static Object[][] _Pass_Data() {
         return new Object[][] {
                 {
                     0,  // exitValue
@@ -64,7 +64,7 @@ public final class InvalidExitValueExceptionTest {
     }
     
     @DataProvider
-    private static final Object[][] _Fail_Data() {
+    public static Object[][] _Fail_Data() {
         return new Object[][] {
                 ///////////////////////////////////////////////////////////////
                 // Group 1 w/ non-null optCause

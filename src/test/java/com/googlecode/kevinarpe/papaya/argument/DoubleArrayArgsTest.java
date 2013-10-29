@@ -46,7 +46,7 @@ public class DoubleArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkPositive_Pass_Data() {
+    public static Object[][] checkPositive_Pass_Data() {
         return new Object[][] {
                 { new double[] { 1 } },
                 { new double[] { 1, 2, 3 } },
@@ -80,7 +80,7 @@ public class DoubleArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkPositive_FailWithNonPositiveInput_Data() {
+    public static Object[][] checkPositive_FailWithNonPositiveInput_Data() {
         return new Object[][] {
                 { new double[] { 0, 4, 5, 6 } },
                 { new double[] { 4, 0, 5, 6 } },
@@ -126,7 +126,7 @@ public class DoubleArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkPositive_FailWithNullElement_Data() {
+    public static Object[][] checkPositive_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Double[] { null, 1.0d } },
                 { new Double[] { 1.0d, null } },
@@ -144,7 +144,7 @@ public class DoubleArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkNotPositive_Pass_Data() {
+    public static Object[][] checkNotPositive_Pass_Data() {
         return new Object[][] {
                 { new double[] { 0.0d } },
                 { new double[] { 0.0d, -1.0d, -2.0d, -3.0d } },
@@ -179,7 +179,7 @@ public class DoubleArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkNotPositive_FailWithPositiveInput_Data() {
+    public static Object[][] checkNotPositive_FailWithPositiveInput_Data() {
         return new Object[][] {
                 { new double[] { 1.0d } },
                 { new double[] { 1.0d, 2.0d, 3.0d } },
@@ -216,7 +216,7 @@ public class DoubleArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNotPositive_FailWithNullElement_Data() {
+    public static Object[][] checkNotPositive_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Double[] { null, 1.0d } },
                 { new Double[] { 1.0d, null } },
@@ -234,7 +234,7 @@ public class DoubleArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkNegative_Pass_Data() {
+    public static Object[][] checkNegative_Pass_Data() {
         return new Object[][] {
                 { new double[] { -1.0d } },
                 { new double[] { -1.0d, -2.0d, -3.0d } },
@@ -267,7 +267,7 @@ public class DoubleArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNegative_FailWithNonNegativeInput_Data() {
+    public static Object[][] checkNegative_FailWithNonNegativeInput_Data() {
         return new Object[][] {
                 { new double[] { 0.0d, 1.0d, 2.0d, 3.0d } },
                 { new double[] { 1.0d, 0.0d, 2.0d, 3.0d } },
@@ -303,7 +303,7 @@ public class DoubleArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNegative_FailWithNullElement_Data() {
+    public static Object[][] checkNegative_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Double[] { null, 1.0d } },
                 { new Double[] { 1.0d, null } },
@@ -321,7 +321,7 @@ public class DoubleArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkNotNegative_Pass_Data() {
+    public static Object[][] checkNotNegative_Pass_Data() {
         return new Object[][] {
                 { new double[] { 0.0d } },
                 { new double[] { 0.0d, 1.0d, 2.0d } },
@@ -354,7 +354,7 @@ public class DoubleArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNotNegative_FailWithNegativeInput_Data() {
+    public static Object[][] checkNotNegative_FailWithNegativeInput_Data() {
         return new Object[][] {
                 { new double[] { -1.0d, 4.0d, 5.0d, 6.0d } },
                 { new double[] { 4.0d, -1.0d, 5.0d, 6.0d } },
@@ -395,7 +395,7 @@ public class DoubleArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNotNegative_FailWithNullElement_Data() {
+    public static Object[][] checkNotNegative_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Double[] { null, 1.0d } },
                 { new Double[] { 1.0d, null } },
@@ -413,7 +413,7 @@ public class DoubleArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkValueInsideRange_Pass_Data() {
+    public static Object[][] checkValueInsideRange_Pass_Data() {
         return new Object[][] {
                 { new double[] { 1.0d }, -1.0d, 2.0d },
                 { new double[] { 1.0d }, -1.0d, 1.0d },
@@ -461,7 +461,7 @@ public class DoubleArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkValueInsideRange_FailWithInvalidInput_Data() {
+    public static Object[][] checkValueInsideRange_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { new double[] { 1.0d }, -1.0d, 0.0d },
                 { new double[] { 1.0d }, 0.0d, 0.0d },
@@ -533,7 +533,7 @@ public class DoubleArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkValueInsideRange_FailWithNullElement_Data() {
+    public static Object[][] checkValueInsideRange_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Double[] { null, 1.0d } },
                 { new Double[] { 1.0d, null } },
@@ -551,7 +551,7 @@ public class DoubleArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkValueOutsideRange_Pass_Data() {
+    public static Object[][] checkValueOutsideRange_Pass_Data() {
         return new Object[][] {
                 { new double[] { 3.0d }, -1.0d, 2.0d },
                 { new double[] { 3.0d }, -1.0d, 1.0d },
@@ -599,7 +599,7 @@ public class DoubleArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkValueOutsideRange_FailWithInvalidInput_Data() {
+    public static Object[][] checkValueOutsideRange_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { new double[] { 0.0d }, -1.0d, 0.0d },
                 { new double[] { 0.0d }, 0.0d, 0.0d },
@@ -671,7 +671,7 @@ public class DoubleArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkValueOutsideRange_FailWithNullElement_Data() {
+    public static Object[][] checkValueOutsideRange_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Double[] { null, 1.0d } },
                 { new Double[] { 1.0d, null } },
@@ -689,7 +689,7 @@ public class DoubleArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkMinValue_Pass_Data() {
+    public static Object[][] checkMinValue_Pass_Data() {
         return new Object[][] {
                 { new double[] { 1.0d, 2.0d, 3.0d }, -1.0d },
                 { new double[] { 1.0d, 2.0d, 3.0d }, 0.0d },
@@ -723,7 +723,7 @@ public class DoubleArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkMinValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkMinValue_FailWithInvalidInput_Data() {
         return new Object[][] {
             { new double[] { 1.0d, 2.0d, 3.0d }, 2.0d },
             { new double[] { 1.0d, 2.0d, 3.0d }, 3.0d },
@@ -759,7 +759,7 @@ public class DoubleArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkMinValue_FailWithNullElement_Data() {
+    public static Object[][] checkMinValue_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Double[] { null, 1.0d } },
                 { new Double[] { 1.0d, null } },
@@ -777,7 +777,7 @@ public class DoubleArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkMaxValue_Pass_Data() {
+    public static Object[][] checkMaxValue_Pass_Data() {
         return new Object[][] {
                 { new double[] { 1.0d, 2.0d, 3.0d }, 3.0d },
                 { new double[] { 1.0d, 2.0d, 3.0d }, 4.0d },
@@ -811,7 +811,7 @@ public class DoubleArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkMaxValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkMaxValue_FailWithInvalidInput_Data() {
         return new Object[][] {
             { new double[] { 1.0d, 2.0d, 3.0d }, -1.0d },
             { new double[] { 1.0d, 2.0d, 3.0d }, 0.0d },
@@ -847,7 +847,7 @@ public class DoubleArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkMaxValue_FailWithNullElement_Data() {
+    public static Object[][] checkMaxValue_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Double[] { null, 1.0d } },
                 { new Double[] { 1.0d, null } },
@@ -865,7 +865,7 @@ public class DoubleArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkExactValue_Pass_Data() {
+    public static Object[][] checkExactValue_Pass_Data() {
         return new Object[][] {
             { new double[] { 1.0d }, 1.0d },
             { new double[] { 1.0d, 1.0d }, 1.0d },
@@ -899,7 +899,7 @@ public class DoubleArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
             { new double[] { 1.0d, 2.0d, 3.0d }, -1.0d },
             { new double[] { 1.0d, 2.0d, 3.0d }, 0.0d },
@@ -935,7 +935,7 @@ public class DoubleArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkExactValue_FailWithNullElement_Data() {
+    public static Object[][] checkExactValue_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Double[] { null, 1.0d } },
                 { new Double[] { 1.0d, null } },
@@ -953,7 +953,7 @@ public class DoubleArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkNotExactValue_Pass_Data() {
+    public static Object[][] checkNotExactValue_Pass_Data() {
         return new Object[][] {
             { new double[] { 1.0d }, 2.0d },
             { new double[] { 1.0d, 1.0d }, 2.0d },
@@ -987,7 +987,7 @@ public class DoubleArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkNotExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkNotExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
             { new double[] { 1.0d, 2.0d, 3.0d }, 1.0d },
             { new double[] { 1.0d, 2.0d, 3.0d }, 2.0d },
@@ -1023,7 +1023,7 @@ public class DoubleArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNotExactValue_FailWithNullElement_Data() {
+    public static Object[][] checkNotExactValue_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Double[] { null, 1.0d } },
                 { new Double[] { 1.0d, null } },

@@ -509,7 +509,7 @@ public class ProcessBuilder2_And_Process2_Test {
     //
 
     @DataProvider
-    private static final Object[][] _ctor_Pass_Data() {
+    public static Object[][] _ctor_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.<String>of("abc") },
                 { ImmutableList.<String>of("abc", "def") },
@@ -528,7 +528,7 @@ public class ProcessBuilder2_And_Process2_Test {
     }
     
     @DataProvider
-    private static final Object[][] _ctor_FailWithNullsInList_Data() {
+    public static Object[][] _ctor_FailWithNullsInList_Data() {
         return new Object[][] {
                 { new ArrayList<String>(Arrays.asList((String) null)) },
                 { new ArrayList<String>(Arrays.asList("abc", null)) },
@@ -548,7 +548,7 @@ public class ProcessBuilder2_And_Process2_Test {
     //
 
     @DataProvider
-    private static final Object[][] _ctor2_Pass_Data() {
+    public static Object[][] _ctor2_Pass_Data() {
         return new Object[][] {
                 { new String[] { "abc" } },
                 { new String[] { "abc", "def" } },
@@ -562,7 +562,7 @@ public class ProcessBuilder2_And_Process2_Test {
     }
     
     @DataProvider
-    private static final Object[][] _ctor2_FailWithNullsInList_Data() {
+    public static Object[][] _ctor2_FailWithNullsInList_Data() {
         return new Object[][] {
                 { new String[] { null } },
                 { new String[] { "abc", null } },

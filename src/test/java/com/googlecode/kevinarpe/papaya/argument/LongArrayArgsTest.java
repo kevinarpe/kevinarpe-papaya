@@ -46,7 +46,7 @@ public class LongArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkPositive_Pass_Data() {
+    public static Object[][] checkPositive_Pass_Data() {
         return new Object[][] {
                 { new long[] { 1 } },
                 { new long[] { 1, 2, 3 } },
@@ -82,7 +82,7 @@ public class LongArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkPositive_FailWithNonPositiveInput_Data() {
+    public static Object[][] checkPositive_FailWithNonPositiveInput_Data() {
         return new Object[][] {
                 { new long[] { 0, 4, 5, 6 } },
                 { new long[] { 4, 0, 5, 6 } },
@@ -124,7 +124,7 @@ public class LongArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkPositive_FailWithNullElement_Data() {
+    public static Object[][] checkPositive_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Long[] { null, 1L } },
                 { new Long[] { 1L, null } },
@@ -142,7 +142,7 @@ public class LongArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkNotPositive_Pass_Data() {
+    public static Object[][] checkNotPositive_Pass_Data() {
         return new Object[][] {
                 { new long[] { 0 } },
                 { new long[] { 0, -1, -2, -3 } },
@@ -177,7 +177,7 @@ public class LongArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkNotPositive_FailWithPositiveInput_Data() {
+    public static Object[][] checkNotPositive_FailWithPositiveInput_Data() {
         return new Object[][] {
                 { new long[] { 1 } },
                 { new long[] { 1, 2, 3 } },
@@ -212,7 +212,7 @@ public class LongArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNotPositive_FailWithNullElement_Data() {
+    public static Object[][] checkNotPositive_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Long[] { null, 1L } },
                 { new Long[] { 1L, null } },
@@ -230,7 +230,7 @@ public class LongArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkNegative_Pass_Data() {
+    public static Object[][] checkNegative_Pass_Data() {
         return new Object[][] {
                 { new long[] { -1 } },
                 { new long[] { -1, -2, -3 } },
@@ -262,7 +262,7 @@ public class LongArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNegative_FailWithNonNegativeInput_Data() {
+    public static Object[][] checkNegative_FailWithNonNegativeInput_Data() {
         return new Object[][] {
                 { new long[] { 0, 1, 2, 3 } },
                 { new long[] { 1, 0, 2, 3 } },
@@ -297,7 +297,7 @@ public class LongArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNegative_FailWithNullElement_Data() {
+    public static Object[][] checkNegative_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Long[] { null, 1L } },
                 { new Long[] { 1L, null } },
@@ -315,7 +315,7 @@ public class LongArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkNotNegative_Pass_Data() {
+    public static Object[][] checkNotNegative_Pass_Data() {
         return new Object[][] {
                 { new long[] { 0 } },
                 { new long[] { 0, 1, 2 } },
@@ -347,7 +347,7 @@ public class LongArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNotNegative_FailWithNegativeInput_Data() {
+    public static Object[][] checkNotNegative_FailWithNegativeInput_Data() {
         return new Object[][] {
                 { new long[] { -1, 4, 5, 6 } },
                 { new long[] { 4, -1, 5, 6 } },
@@ -384,7 +384,7 @@ public class LongArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNotNegative_FailWithNullElement_Data() {
+    public static Object[][] checkNotNegative_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Long[] { null, 1L } },
                 { new Long[] { 1L, null } },
@@ -402,7 +402,7 @@ public class LongArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkValueInsideRange_Pass_Data() {
+    public static Object[][] checkValueInsideRange_Pass_Data() {
         return new Object[][] {
                 { new long[] { 1 }, -1, 2 },
                 { new long[] { 1 }, -1, 1 },
@@ -450,7 +450,7 @@ public class LongArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkValueInsideRange_FailWithInvalidInput_Data() {
+    public static Object[][] checkValueInsideRange_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { new long[] { 1 }, -1, 0 },
                 { new long[] { 1 }, 0, 0 },
@@ -522,7 +522,7 @@ public class LongArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkValueInsideRange_FailWithNullElement_Data() {
+    public static Object[][] checkValueInsideRange_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Long[] { null, 1L } },
                 { new Long[] { 1L, null } },
@@ -540,7 +540,7 @@ public class LongArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkValueOutsideRange_Pass_Data() {
+    public static Object[][] checkValueOutsideRange_Pass_Data() {
         return new Object[][] {
                 { new long[] { 3 }, -1, 2 },
                 { new long[] { 3 }, -1, 1 },
@@ -588,7 +588,7 @@ public class LongArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkValueOutsideRange_FailWithInvalidInput_Data() {
+    public static Object[][] checkValueOutsideRange_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { new long[] { 0 }, -1, 0 },
                 { new long[] { 0 }, 0, 0 },
@@ -660,7 +660,7 @@ public class LongArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkValueOutsideRange_FailWithNullElement_Data() {
+    public static Object[][] checkValueOutsideRange_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Long[] { null, 1L } },
                 { new Long[] { 1L, null } },
@@ -678,7 +678,7 @@ public class LongArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkMinValue_Pass_Data() {
+    public static Object[][] checkMinValue_Pass_Data() {
         return new Object[][] {
                 { new long[] { 1, 2, 3 }, -1 },
                 { new long[] { 1, 2, 3 }, 0 },
@@ -712,7 +712,7 @@ public class LongArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkMinValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkMinValue_FailWithInvalidInput_Data() {
         return new Object[][] {
             { new long[] { 1, 2, 3 }, 2 },
             { new long[] { 1, 2, 3 }, 3 },
@@ -748,7 +748,7 @@ public class LongArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkMinValue_FailWithNullElement_Data() {
+    public static Object[][] checkMinValue_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Long[] { null, 1L } },
                 { new Long[] { 1L, null } },
@@ -766,7 +766,7 @@ public class LongArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkMaxValue_Pass_Data() {
+    public static Object[][] checkMaxValue_Pass_Data() {
         return new Object[][] {
                 { new long[] { 1, 2, 3 }, 3 },
                 { new long[] { 1, 2, 3 }, 4 },
@@ -800,7 +800,7 @@ public class LongArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkMaxValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkMaxValue_FailWithInvalidInput_Data() {
         return new Object[][] {
             { new long[] { 1, 2, 3 }, -1 },
             { new long[] { 1, 2, 3 }, 0 },
@@ -836,7 +836,7 @@ public class LongArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkMaxValue_FailWithNullElement_Data() {
+    public static Object[][] checkMaxValue_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Long[] { null, 1L } },
                 { new Long[] { 1L, null } },
@@ -854,7 +854,7 @@ public class LongArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkExactValue_Pass_Data() {
+    public static Object[][] checkExactValue_Pass_Data() {
         return new Object[][] {
             { new long[] { 1 }, 1 },
             { new long[] { 1, 1 }, 1 },
@@ -888,7 +888,7 @@ public class LongArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
             { new long[] { 1, 2, 3 }, -1 },
             { new long[] { 1, 2, 3 }, 0 },
@@ -924,7 +924,7 @@ public class LongArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkExactValue_FailWithNullElement_Data() {
+    public static Object[][] checkExactValue_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Long[] { null, 1L } },
                 { new Long[] { 1L, null } },
@@ -942,7 +942,7 @@ public class LongArrayArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkNotExactValue_Pass_Data() {
+    public static Object[][] checkNotExactValue_Pass_Data() {
         return new Object[][] {
             { new long[] { 1 }, 2 },
             { new long[] { 1, 1 }, 2 },
@@ -976,7 +976,7 @@ public class LongArrayArgsTest {
     }
     
     @DataProvider
-    public static final Object[][] checkNotExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkNotExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
             { new long[] { 1, 2, 3 }, 1 },
             { new long[] { 1, 2, 3 }, 2 },
@@ -1012,7 +1012,7 @@ public class LongArrayArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkNotExactValue_FailWithNullElement_Data() {
+    public static Object[][] checkNotExactValue_FailWithNullElement_Data() {
         return new Object[][] {
                 { new Long[] { null, 1L } },
                 { new Long[] { 1L, null } },

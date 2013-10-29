@@ -48,7 +48,7 @@ public final class PathExceptionTest {
     }
     
     @DataProvider
-    private static final Object[][] _Pass_Data() {
+    public static Object[][] _Pass_Data() {
         return new Object[][] {
                 { PathExceptionReason.PATH_DOES_NOT_EXIST,
                     new File(UUID.randomUUID().toString()),
@@ -70,7 +70,7 @@ public final class PathExceptionTest {
     }
     
     @DataProvider
-    private static final Object[][] _Fail_Data() {
+    public static Object[][] _Fail_Data() {
         return new Object[][] {
                 ///////////////////////////////////////////////////////////////
                 // Group 1 w/ non-null optCause

@@ -52,7 +52,7 @@ public class StringUtilsTest {
     //
 
     @DataProvider
-    private static final Object[][] _trimWhitespacePrefix_Pass_Data() {
+    public static Object[][] _trimWhitespacePrefix_Pass_Data() {
         return new Object[][] {
                 { " ", "" },  // ASCII space
                 { "\t", "" },
@@ -112,7 +112,7 @@ public class StringUtilsTest {
     //
 
     @DataProvider
-    private static final Object[][] _trimWhitespaceSuffix_Pass_Data() {
+    public static Object[][] _trimWhitespaceSuffix_Pass_Data() {
         return new Object[][] {
                 { " ", "" },  // ASCII space
                 { "\t", "" },
@@ -172,7 +172,7 @@ public class StringUtilsTest {
     //
 
     @DataProvider
-    private static final Object[][] _parseBoolean_Pass_Data() {
+    public static Object[][] _parseBoolean_Pass_Data() {
         return new Object[][] {
                 { "true", true },
                 { "True", true },
@@ -203,7 +203,7 @@ public class StringUtilsTest {
     }
 
     @DataProvider
-    private static final Object[][] _parseBoolean_FailWithInvalidInput_Data() {
+    public static Object[][] _parseBoolean_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { "" },
                 { "\t" },
@@ -232,7 +232,7 @@ public class StringUtilsTest {
     //
 
     @DataProvider
-    private static final Object[][] _isWhitespace_Pass_Data() {
+    public static Object[][] _isWhitespace_Pass_Data() {
         return new Object[][] {
                 { "", true },
                 { "\t", true },
@@ -263,7 +263,7 @@ public class StringUtilsTest {
     //
     
     @DataProvider
-    private static final Object[][] _substringPrefix_Pass_Data() {
+    public static Object[][] _substringPrefix_Pass_Data() {
         return new Object[][] {
                 { "abc", 0, "" },
                 { "abc", 1, "a" },
@@ -300,7 +300,7 @@ public class StringUtilsTest {
     }
     
     @DataProvider
-    private static final Object[][] _substringPrefix_FailWithNull_Data() {
+    public static Object[][] _substringPrefix_FailWithNull_Data() {
         return new Object[][] {
                 { null, 0 },
                 { null, 2 },
@@ -317,7 +317,7 @@ public class StringUtilsTest {
     }
     
     @DataProvider
-    private static final Object[][] _substringPrefix_FailWithInvalidCount_Data() {
+    public static Object[][] _substringPrefix_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { "", -1 },
                 { "", -99 },
@@ -337,7 +337,7 @@ public class StringUtilsTest {
     //
     
     @DataProvider
-    private static final Object[][] _substringSuffix_Pass_Data() {
+    public static Object[][] _substringSuffix_Pass_Data() {
         return new Object[][] {
                 { "abc", 0, "" },
                 { "abc", 1, "c" },
@@ -379,7 +379,7 @@ public class StringUtilsTest {
     }
     
     @DataProvider
-    private static final Object[][] _substringSuffix_FailWithNull_Data() {
+    public static Object[][] _substringSuffix_FailWithNull_Data() {
         return new Object[][] {
                 { null, 0 },
                 { null, 2 },
@@ -396,7 +396,7 @@ public class StringUtilsTest {
     }
     
     @DataProvider
-    private static final Object[][] _substringSuffix_FailWithInvalidCount_Data() {
+    public static Object[][] _substringSuffix_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { "", -1 },
                 { "", -99 },
@@ -416,7 +416,7 @@ public class StringUtilsTest {
     //
     
     @DataProvider
-    private static final Object[][] _removeCharAt_Pass_Data() {
+    public static Object[][] _removeCharAt_Pass_Data() {
         return new Object[][] {
                 { "abc", 0, "bc" },
                 { "abc", 1, "ac" },
@@ -432,7 +432,7 @@ public class StringUtilsTest {
     }
     
     @DataProvider
-    private static final Object[][] _removeCharAt_FailWithNull_Data() {
+    public static Object[][] _removeCharAt_FailWithNull_Data() {
         return new Object[][] {
                 { null, 0 },
                 { null, 2 },
@@ -449,7 +449,7 @@ public class StringUtilsTest {
     }
 
     @DataProvider
-    private static final Object[][] _removeCharAt_FailWithEmptyString_Data() {
+    public static Object[][] _removeCharAt_FailWithEmptyString_Data() {
         return new Object[][] {
                 { "", 0 },
                 { "", -1 },
@@ -464,7 +464,7 @@ public class StringUtilsTest {
     }
 
     @DataProvider
-    private static final Object[][] _removeCharAt_FailWithInvalidIndex_Data() {
+    public static Object[][] _removeCharAt_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { "abc", 3 },
                 { "abc", -1 },
@@ -479,7 +479,7 @@ public class StringUtilsTest {
     }
     
     @DataProvider
-    private static final Object[][] _removeCharAt_FailWithInvalidIndex2_Data() {
+    public static Object[][] _removeCharAt_FailWithInvalidIndex2_Data() {
         return new Object[][] {
                 { "abc", 3 },
                 { "abc", 99 },
@@ -497,7 +497,7 @@ public class StringUtilsTest {
     //
     
     @DataProvider
-    private static final Object[][] _addPrefixAndSuffixPerLine_Pass_Data() {
+    public static Object[][] _addPrefixAndSuffixPerLine_Pass_Data() {
         return new Object[][] {
                 ///////////////////////////////////////////////////////////////
                 // both optLinePrefix & optLineSuffix are not null and not empty
@@ -786,7 +786,7 @@ public class StringUtilsTest {
     }
     
     @DataProvider
-    private static final Object[][] _addPrefixAndSuffixPerLine_Fail_Data() {
+    public static Object[][] _addPrefixAndSuffixPerLine_Fail_Data() {
         return new Object[][] {
                 {
                     null,  // textBlock (bad)
@@ -872,14 +872,14 @@ public class StringUtilsTest {
     //
 
     @DataProvider
-    private static final Object[][] _addPrefixPerLine_Pass_Data() {
+    public static Object[][] _addPrefixPerLine_Pass_Data() {
         Object[][] x = _addPrefixAndSuffixPerLine_Pass_Data();
         Object[][] y = _create_Data(x, 2);  // optLineSuffix
         return y;
     }
 
     @DataProvider
-    private static final Object[][] _addPrefixPerLine_Fail_Data() {
+    public static Object[][] _addPrefixPerLine_Fail_Data() {
         Object[][] x = _addPrefixAndSuffixPerLine_Fail_Data();
         Object[][] y = _create_Data(x, 2);  // optLineSuffix
         return y;
@@ -942,14 +942,14 @@ public class StringUtilsTest {
     //
 
     @DataProvider
-    private static final Object[][] _addSuffixPerLine_Pass_Data() {
+    public static Object[][] _addSuffixPerLine_Pass_Data() {
         Object[][] x = _addPrefixAndSuffixPerLine_Pass_Data();
         Object[][] y = _create_Data(x, 1);  // optLinePrefix
         return y;
     }
 
     @DataProvider
-    private static final Object[][] _addSuffixPerLine_Fail_Data() {
+    public static Object[][] _addSuffixPerLine_Fail_Data() {
         Object[][] x = _addPrefixAndSuffixPerLine_Fail_Data();
         Object[][] y = _create_Data(x, 1);  // optLinePrefix
         return y;

@@ -55,7 +55,7 @@ public class ObjectArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkNotNull_Pass_Data() {
+    public static Object[][] _checkNotNull_Pass_Data() {
         return new Object[][] {
                 { (byte)7 },
                 { (short)7 },
@@ -84,7 +84,7 @@ public class ObjectArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkNotNull_FailWithNull_Data() {
+    public static Object[][] _checkNotNull_FailWithNull_Data() {
         return new Object[][] {
                 { null, null },
                 { null, "value" },
@@ -105,7 +105,7 @@ public class ObjectArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkInstanceOfType_Pass_Data() {
+    public static Object[][] _checkInstanceOfType_Pass_Data() {
         return new Object[][] {
                 { new String(), String.class },
                 { new String(), CharSequence.class },
@@ -147,7 +147,7 @@ public class ObjectArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkInstanceOfType_FailWithInvalidDestClass_Data() {
+    public static Object[][] _checkInstanceOfType_FailWithInvalidDestClass_Data() {
         return new Object[][] {
                 { new String(), Integer.class },
                 { new StringBuilder(), String.class },
@@ -167,7 +167,7 @@ public class ObjectArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkInstanceOfType_FailWithNulls_Data() {
+    public static Object[][] _checkInstanceOfType_FailWithNulls_Data() {
         return new Object[][] {
                 { null, null },
                 { null, String.class },
@@ -192,7 +192,7 @@ public class ObjectArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkAssignableToType_Pass_Data() {
+    public static Object[][] _checkAssignableToType_Pass_Data() {
         return new Object[][] {
                 { String.class, String.class },
                 { String.class, CharSequence.class },
@@ -229,7 +229,7 @@ public class ObjectArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkAssignableToType_FailWithInvalidDestClass_Data() {
+    public static Object[][] _checkAssignableToType_FailWithInvalidDestClass_Data() {
         return new Object[][] {
                 { String.class, Integer.class },
                 { StringBuilder.class, String.class },
@@ -252,7 +252,7 @@ public class ObjectArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkAssignableToType_FailWithNulls_Data() {
+    public static Object[][] _checkAssignableToType_FailWithNulls_Data() {
         return new Object[][] {
                 { null, null },
                 { null, String.class },

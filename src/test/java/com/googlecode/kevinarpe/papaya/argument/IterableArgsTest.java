@@ -36,7 +36,7 @@ public class IterableArgsTest {
     //
 
     @DataProvider
-    public static final Object[][] checkElementsNotNull_Pass_Data() {
+    public static Object[][] checkElementsNotNull_Pass_Data() {
         return CollectionArgsTest.checkElementsNotNull_Pass_Data();
     }
     
@@ -51,7 +51,7 @@ public class IterableArgsTest {
     }
 
     @DataProvider
-    public static final Object[][] checkElementsNotNull_FailWithNullElements_Data() {
+    public static Object[][] checkElementsNotNull_FailWithNullElements_Data() {
         return CollectionArgsTest.checkElementsNotNull_FailWithNullElements_Data();
     }
     

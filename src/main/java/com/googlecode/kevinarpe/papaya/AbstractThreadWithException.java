@@ -113,7 +113,7 @@ extends Thread {
      * Subclasses must override this method, which is called by {@link #run()}.  Implementations
      * are welcome to throw exceptions of type {@code TException}.
      * 
-     * @throws TException
+     * @throws Exception
      *         on error
      * 
      * @see #getException()

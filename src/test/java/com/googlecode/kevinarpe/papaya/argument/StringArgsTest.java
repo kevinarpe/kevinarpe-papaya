@@ -51,7 +51,7 @@ public class StringArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkNotEmpty_Pass_Data() {
+    public static Object[][] _checkNotEmpty_Pass_Data() {
         return new Object[][] {
                 { " ", "dummy" },  // ASCII space
                 { "\t", "dummy" },
@@ -78,7 +78,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkNotEmpty_FailWithNullString_Data() {
+    public static Object[][] _checkNotEmpty_FailWithNullString_Data() {
         return new Object[][] {
                 { null, "dummy" },
                 { null, "" },
@@ -98,7 +98,7 @@ public class StringArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkNotEmptyOrWhitespace_Pass_Data() {
+    public static Object[][] _checkNotEmptyOrWhitespace_Pass_Data() {
         return new Object[][] {
                 { " abc" },  // ASCII space
                 { "\tabc" },
@@ -120,7 +120,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkNotEmptyOrWhitespace_FailWithInvalidString_Data() {
+    public static Object[][] _checkNotEmptyOrWhitespace_FailWithInvalidString_Data() {
         return new Object[][] {
                 { "" },
                 { "\t" },
@@ -140,7 +140,7 @@ public class StringArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkLengthRange_Pass_Data() {
+    public static Object[][] _checkLengthRange_Pass_Data() {
         return new Object[][] {
                 { "東京", 1, 2 },
                 { "abc", 3, 3 },
@@ -164,7 +164,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkLengthRange_FailWithInvalidMinOrMaxLen_Data() {
+    public static Object[][] _checkLengthRange_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { "東京", 3, 4 },
                 { "abc", -3, 3 },
@@ -183,7 +183,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkLengthRange_FailWithNullString_Data() {
+    public static Object[][] _checkLengthRange_FailWithNullString_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -202,7 +202,7 @@ public class StringArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkMinLength_Pass_Data() {
+    public static Object[][] _checkMinLength_Pass_Data() {
         return new Object[][] {
                 { "東京", 2 },
                 { "abc", 3 },
@@ -223,7 +223,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMinLength_FailWithInvalidMinLen_Data() {
+    public static Object[][] _checkMinLength_FailWithInvalidMinLen_Data() {
         return new Object[][] {
                 { "東京", 3 },
                 { "abc", -3 },
@@ -239,7 +239,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMinLength_FailWithNullString_Data() {
+    public static Object[][] _checkMinLength_FailWithNullString_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -258,7 +258,7 @@ public class StringArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkMaxLength_Pass_Data() {
+    public static Object[][] _checkMaxLength_Pass_Data() {
         return new Object[][] {
                 { "東京", 2 },
                 { "abc", 3 },
@@ -280,7 +280,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMaxLength_FailWithInvalidMaxLen_Data() {
+    public static Object[][] _checkMaxLength_FailWithInvalidMaxLen_Data() {
         return new Object[][] {
                 { "東京", 0 },
                 { "東京", 1 },
@@ -297,7 +297,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMaxLength_FailWithNullString_Data() {
+    public static Object[][] _checkMaxLength_FailWithNullString_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -316,7 +316,7 @@ public class StringArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkExactLength_Pass_Data() {
+    public static Object[][] _checkExactLength_Pass_Data() {
         return new Object[][] {
                 { "東京", 2 },
                 { "abc", 3 },
@@ -335,7 +335,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkExactLength_FailWithInvalidExactLen_Data() {
+    public static Object[][] _checkExactLength_FailWithInvalidExactLen_Data() {
         return new Object[][] {
                 { "東京", 1 },
                 { "abc", -3 },
@@ -351,7 +351,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkExactLength_FailWithNullString_Data() {
+    public static Object[][] _checkExactLength_FailWithNullString_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -370,7 +370,7 @@ public class StringArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkInsertIndex_Pass_Data() {
+    public static Object[][] _checkInsertIndex_Pass_Data() {
         return new Object[][] {
                 { "東京", 0 },
                 { "東京", 1 },
@@ -394,7 +394,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkInsertIndex_FailWithNegativeIndex_Data() {
+    public static Object[][] _checkInsertIndex_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { "東京", -1 },
                 { "abc", -3 },
@@ -408,7 +408,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkInsertIndex_FailWithInvalidIndex_Data() {
+    public static Object[][] _checkInsertIndex_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { "東京", 3 },
                 { "abc", 4 },
@@ -422,7 +422,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkInsertIndex_FailWithNullString_Data() {
+    public static Object[][] _checkInsertIndex_FailWithNullString_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -441,7 +441,7 @@ public class StringArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkIndexAndCount_Pass_Data() {
+    public static Object[][] _checkIndexAndCount_Pass_Data() {
         return new Object[][] {
                 { "東京", 0, 0 },
                 { "東京", 0, 1 },
@@ -470,7 +470,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkIndexAndCount_FailWithNegativeIndex_Data() {
+    public static Object[][] _checkIndexAndCount_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { "東京", -1, 1 },
                 { "abc", -3, 1 },
@@ -484,7 +484,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkIndexAndCount_FailWithInvalidIndex_Data() {
+    public static Object[][] _checkIndexAndCount_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { "東京", 2, 2 },
                 { "東京", 3, 2 },
@@ -499,7 +499,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkIndexAndCount_FailWithNegativeCount_Data() {
+    public static Object[][] _checkIndexAndCount_FailWithNegativeCount_Data() {
         return new Object[][] {
                 { "東京", 0, -1 },
                 { "abc", 0, -1 },
@@ -513,7 +513,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkIndexAndCount_FailWithInvalidCount_Data() {
+    public static Object[][] _checkIndexAndCount_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { "東京", 1, 2 },
                 { "abc", 2, 2 },
@@ -527,7 +527,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkIndexAndCount_FailWithNullString_Data() {
+    public static Object[][] _checkIndexAndCount_FailWithNullString_Data() {
         return new Object[][] {
                 { null, 4, 2 },
                 { null, 6, 2 },

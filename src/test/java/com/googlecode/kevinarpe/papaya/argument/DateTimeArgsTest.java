@@ -32,8 +32,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.argument.DateTimeArgs;
-
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
@@ -52,7 +50,7 @@ public class DateTimeArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkValueRange_Pass_Data() {
+    public static Object[][] _checkValueRange_Pass_Data() {
         DateTime dt = new DateTime();
         return new Object[][] {
                 { dt, dt.minusDays(2), dt.plusDays(1) },
@@ -75,7 +73,7 @@ public class DateTimeArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkValueRange_FailWithInvalidInput_Data() {
+    public static Object[][] _checkValueRange_FailWithInvalidInput_Data() {
         DateTime dt = new DateTime();
         return new Object[][] {
                 { dt, dt.minusDays(2), dt.minusDays(1) },
@@ -106,7 +104,7 @@ public class DateTimeArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkMinValue_Pass_Data() {
+    public static Object[][] _checkMinValue_Pass_Data() {
         DateTime dt = new DateTime();
         return new Object[][] {
                 { dt, dt.minusDays(2) },
@@ -130,7 +128,7 @@ public class DateTimeArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMinValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkMinValue_FailWithInvalidInput_Data() {
         DateTime dt = new DateTime();
         return new Object[][] {
                 { dt, dt.plusDays(1) },
@@ -151,7 +149,7 @@ public class DateTimeArgsTest {
     //
     
     @DataProvider
-    private static final Object[][] _checkMaxValue_Pass_Data() {
+    public static Object[][] _checkMaxValue_Pass_Data() {
         DateTime dt = new DateTime();
         return new Object[][] {
                 { dt, dt },
@@ -175,7 +173,7 @@ public class DateTimeArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMaxValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkMaxValue_FailWithInvalidInput_Data() {
         DateTime dt = new DateTime();
         return new Object[][] {
                 { dt, dt.minusDays(1) },
@@ -196,7 +194,7 @@ public class DateTimeArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkExactValue_Pass_Data() {
+    public static Object[][] _checkExactValue_Pass_Data() {
         DateTime dt = new DateTime();
         return new Object[][] {
                 { dt, dt },
@@ -216,7 +214,7 @@ public class DateTimeArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkExactValue_FailWithInvalidInput_Data() {
         DateTime dt = new DateTime();
         return new Object[][] {
                 { dt, dt.minusDays(1) },
@@ -237,7 +235,7 @@ public class DateTimeArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotExactValue_Pass_Data() {
+    public static Object[][] _checkNotExactValue_Pass_Data() {
         DateTime dt = new DateTime();
         return new Object[][] {
                 { dt, dt.minusDays(1) },
@@ -258,7 +256,7 @@ public class DateTimeArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
         DateTime dt = new DateTime();
         return new Object[][] {
                 { dt, dt },

@@ -51,7 +51,7 @@ public class ByteArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkPositive_Pass_Data() {
+    public static Object[][] _checkPositive_Pass_Data() {
         return new Object[][] {
                 { (byte) 1 },
                 { (byte) 99 },
@@ -70,7 +70,7 @@ public class ByteArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkPositive_FailWithNonPositiveInput_Data() {
+    public static Object[][] _checkPositive_FailWithNonPositiveInput_Data() {
         return new Object[][] {
                 { (byte) 0 },
                 { (byte) -1 },
@@ -89,7 +89,7 @@ public class ByteArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotPositive_Pass_Data() {
+    public static Object[][] _checkNotPositive_Pass_Data() {
         return new Object[][] {
                 { (byte) 0 },
                 { (byte) -99 },
@@ -108,7 +108,7 @@ public class ByteArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkNotPositive_FailWithPositiveInput_Data() {
+    public static Object[][] _checkNotPositive_FailWithPositiveInput_Data() {
         return new Object[][] {
                 { (byte) 1 },
                 { Byte.MAX_VALUE },
@@ -126,7 +126,7 @@ public class ByteArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNegative_Pass_Data() {
+    public static Object[][] _checkNegative_Pass_Data() {
         return new Object[][] {
                 { (byte) -1 },
                 { (byte) -99 },
@@ -145,7 +145,7 @@ public class ByteArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkNegative_FailWithNonNegativeInput_Data() {
+    public static Object[][] _checkNegative_FailWithNonNegativeInput_Data() {
         return new Object[][] {
                 { (byte) 0 },
                 { (byte) 1 },
@@ -164,7 +164,7 @@ public class ByteArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotNegative_Pass_Data() {
+    public static Object[][] _checkNotNegative_Pass_Data() {
         return new Object[][] {
                 { (byte) 0 },
                 { (byte) 99 },
@@ -183,7 +183,7 @@ public class ByteArgsTest {
     }
 
     @DataProvider
-    private static final Object[][] _checkNotNegative_FailWithNegativeInput_Data() {
+    public static Object[][] _checkNotNegative_FailWithNegativeInput_Data() {
         return new Object[][] {
                 { (byte) -1 },
                 { Byte.MIN_VALUE },
@@ -201,7 +201,7 @@ public class ByteArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkValueRange_Pass_Data() {
+    public static Object[][] _checkValueRange_Pass_Data() {
         return new Object[][] {
                 { (byte) 1, (byte) -1, (byte) 2 },
                 { (byte) 1, (byte) -1, (byte) 1 },
@@ -223,7 +223,7 @@ public class ByteArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkValueRange_FailWithInvalidInput_Data() {
+    public static Object[][] _checkValueRange_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (byte) 1, (byte) -1, (byte) 0 },
                 { (byte) 1, (byte) 0, (byte) 0 },
@@ -253,7 +253,7 @@ public class ByteArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkMinValue_Pass_Data() {
+    public static Object[][] _checkMinValue_Pass_Data() {
         return new Object[][] {
                 { (byte) 1, (byte) -1 },
                 { (byte) 1, (byte) 0 },
@@ -276,7 +276,7 @@ public class ByteArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMinValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkMinValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (byte) 1, (byte) 2 },
                 { (byte) 1, (byte) 3 },
@@ -296,7 +296,7 @@ public class ByteArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkMaxValue_Pass_Data() {
+    public static Object[][] _checkMaxValue_Pass_Data() {
         return new Object[][] {
                 { (byte) 1, (byte) 1 },
                 { (byte) 1, (byte) 2 },
@@ -319,7 +319,7 @@ public class ByteArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkMaxValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkMaxValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (byte) 1, (byte) 0 },
                 { (byte) 1, (byte) -1 },
@@ -339,7 +339,7 @@ public class ByteArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkExactValue_Pass_Data() {
+    public static Object[][] _checkExactValue_Pass_Data() {
         return new Object[][] {
                 { (byte) 1, (byte) 1 },
                 { (byte) 0, (byte) 0 },
@@ -360,7 +360,7 @@ public class ByteArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (byte) 1, (byte) 0 },
                 { (byte) 1, (byte) -1 },
@@ -380,7 +380,7 @@ public class ByteArgsTest {
     //
 
     @DataProvider
-    private static final Object[][] _checkNotExactValue_Pass_Data() {
+    public static Object[][] _checkNotExactValue_Pass_Data() {
         return new Object[][] {
                 { (byte) 1, (byte) 2 },
                 { (byte) 0, (byte) 1 },
@@ -401,7 +401,7 @@ public class ByteArgsTest {
     }
     
     @DataProvider
-    private static final Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (byte) 0, (byte) 0 },
                 { (byte) -1, (byte) -1 },
