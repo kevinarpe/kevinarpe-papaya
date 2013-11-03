@@ -39,7 +39,7 @@ public class ByteIterableArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkPositive_Pass_Data() {
+    private static Object[][] checkPositive_Pass_Data() {
         return ByteArrayArgsTest.checkPositive_Pass_Data();
     }
     
@@ -90,7 +90,7 @@ public class ByteIterableArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkNotPositive_Pass_Data() {
+    private static Object[][] checkNotPositive_Pass_Data() {
         return ByteArrayArgsTest.checkNotPositive_Pass_Data();
     }
     
@@ -141,7 +141,7 @@ public class ByteIterableArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkNegative_Pass_Data() {
+    private static Object[][] checkNegative_Pass_Data() {
         return ByteArrayArgsTest.checkNegative_Pass_Data();
     }
     
@@ -192,7 +192,7 @@ public class ByteIterableArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkNotNegative_Pass_Data() {
+    private static Object[][] checkNotNegative_Pass_Data() {
         return ByteArrayArgsTest.checkNotNegative_Pass_Data();
     }
     

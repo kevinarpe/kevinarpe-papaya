@@ -63,7 +63,7 @@ public class PathArgsTest {
     private static final String SAMPLE2_RESOURCE_ABSOLUTE_PATHNAME = "/com/googlecode/kevinarpe/papaya/args/sample2.txt";
     
     @DataProvider
-    private static Object[][] _checkResourceAsStreamExists_Pass_Data() {
+    private static Object[][] checkResourceAsStreamExists_Pass_Data() {
         return new Object[][] {
                 { SAMPLE_RESOURCE_ABSOLUTE_PATHNAME },
                 //{ SAMPLE2_RESOURCE_RELATIVE_PATHNAME },
@@ -86,7 +86,7 @@ public class PathArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkResourceAsStreamExists_FailWithNulls_Data() {
+    private static Object[][] checkResourceAsStreamExists_FailWithNulls_Data() {
         return new Object[][] {
                 { null, null, "filePath" },
                 { PathArgsTest.class, null, "filePath" },
@@ -175,7 +175,7 @@ public class PathArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkNotFile_FailWithNullPath_Data() {
+    private static Object[][] checkNotFile_FailWithNullPath_Data() {
         return new Object[][] {
                 { null, "filePath" },
                 { null, "" },
@@ -402,7 +402,7 @@ public class PathArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkFileExists_FailWithNullPath_Data() {
+    private static Object[][] checkFileExists_FailWithNullPath_Data() {
         return new Object[][] {
                 { null, "filePath" },
                 { null, "" },
@@ -500,7 +500,7 @@ public class PathArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkNotDirectory_FailWithNullPath_Data() {
+    private static Object[][] checkNotDirectory_FailWithNullPath_Data() {
         return new Object[][] {
                 { null, "filePath" },
                 { null, "" },
@@ -695,7 +695,7 @@ public class PathArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkDirectoryExists_FailWithNullPath_Data() {
+    private static Object[][] checkDirectoryExists_FailWithNullPath_Data() {
         return new Object[][] {
                 { null, "filePath" },
                 { null, "" },

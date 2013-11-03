@@ -46,7 +46,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkLengthRangeObject_Pass_Data() {
+    private static Object[][] checkLengthRangeObject_Pass_Data() {
         return new Object[][] {
                 { new String[] { }, 0, 0 },
                 { new String[] { "a" }, 0, 10 },
@@ -76,7 +76,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkLengthRangeObject_FailWithInvalidMinOrMaxLen_Data() {
+    private static Object[][] checkLengthRangeObject_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { new String[] { }, 3, 4 },
                 { new String[] { "a" }, -3, 3 },
@@ -96,7 +96,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkLengthRangeObject_FailWithNullArray_Data() {
+    private static Object[][] checkLengthRangeObject_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -115,7 +115,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkLengthRangeByte_Pass_Data() {
+    private static Object[][] checkLengthRangeByte_Pass_Data() {
         return new Object[][] {
                 { new byte[] { }, 0, 0 },
                 { new byte[] { 99 }, 0, 10 },
@@ -145,7 +145,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkLengthRangeByte_FailWithInvalidMinOrMaxLen_Data() {
+    private static Object[][] checkLengthRangeByte_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { new byte[] { }, 3, 4 },
                 { new byte[] { 99 }, -3, 3 },
@@ -165,7 +165,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkLengthRangeByte_FailWithNullArray_Data() {
+    private static Object[][] checkLengthRangeByte_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -184,7 +184,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkLengthRangeShort_Pass_Data() {
+    private static Object[][] checkLengthRangeShort_Pass_Data() {
         return new Object[][] {
                 { new short[] { }, 0, 0 },
                 { new short[] { 99 }, 0, 10 },
@@ -214,7 +214,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkLengthRangeShort_FailWithInvalidMinOrMaxLen_Data() {
+    private static Object[][] checkLengthRangeShort_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { new short[] { }, 3, 4 },
                 { new short[] { 99 }, -3, 3 },
@@ -234,7 +234,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkLengthRangeShort_FailWithNullArray_Data() {
+    private static Object[][] checkLengthRangeShort_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -253,7 +253,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkLengthRangeInteger_Pass_Data() {
+    private static Object[][] checkLengthRangeInteger_Pass_Data() {
         return new Object[][] {
                 { new int[] { }, 0, 0 },
                 { new int[] { 99 }, 0, 10 },
@@ -283,7 +283,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkLengthRangeInteger_FailWithInvalidMinOrMaxLen_Data() {
+    private static Object[][] checkLengthRangeInteger_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { new int[] { }, 3, 4 },
                 { new int[] { 99 }, -3, 3 },
@@ -303,7 +303,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkLengthRangeInteger_FailWithNullArray_Data() {
+    private static Object[][] checkLengthRangeInteger_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -322,7 +322,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkLengthRangeLong_Pass_Data() {
+    private static Object[][] checkLengthRangeLong_Pass_Data() {
         return new Object[][] {
                 { new long[] { }, 0, 0 },
                 { new long[] { 99 }, 0, 10 },
@@ -352,7 +352,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkLengthRangeLong_FailWithInvalidMinOrMaxLen_Data() {
+    private static Object[][] checkLengthRangeLong_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { new long[] { }, 3, 4 },
                 { new long[] { 99 }, -3, 3 },
@@ -372,7 +372,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkLengthRangeLong_FailWithNullArray_Data() {
+    private static Object[][] checkLengthRangeLong_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -391,7 +391,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkLengthRangeFloat_Pass_Data() {
+    private static Object[][] checkLengthRangeFloat_Pass_Data() {
         return new Object[][] {
                 { new float[] { }, 0, 0 },
                 { new float[] { 99 }, 0, 10 },
@@ -421,7 +421,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkLengthRangeFloat_FailWithInvalidMinOrMaxLen_Data() {
+    private static Object[][] checkLengthRangeFloat_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { new float[] { }, 3, 4 },
                 { new float[] { 99 }, -3, 3 },
@@ -441,7 +441,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkLengthRangeFloat_FailWithNullArray_Data() {
+    private static Object[][] checkLengthRangeFloat_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -460,7 +460,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkLengthRangeDouble_Pass_Data() {
+    private static Object[][] checkLengthRangeDouble_Pass_Data() {
         return new Object[][] {
                 { new double[] { }, 0, 0 },
                 { new double[] { 99 }, 0, 10 },
@@ -490,7 +490,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkLengthRangeDouble_FailWithInvalidMinOrMaxLen_Data() {
+    private static Object[][] checkLengthRangeDouble_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { new double[] { }, 3, 4 },
                 { new double[] { 99 }, -3, 3 },
@@ -510,7 +510,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkLengthRangeDouble_FailWithNullArray_Data() {
+    private static Object[][] checkLengthRangeDouble_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -529,7 +529,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkLengthRangeCharacter_Pass_Data() {
+    private static Object[][] checkLengthRangeCharacter_Pass_Data() {
         return new Object[][] {
                 { new char[] { }, 0, 0 },
                 { new char[] { 'a' }, 0, 10 },
@@ -559,7 +559,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkLengthRangeCharacter_FailWithInvalidMinOrMaxLen_Data() {
+    private static Object[][] checkLengthRangeCharacter_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { new char[] { }, 3, 4 },
                 { new char[] { 'a' }, -3, 3 },
@@ -579,7 +579,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkLengthRangeCharacter_FailWithNullArray_Data() {
+    private static Object[][] checkLengthRangeCharacter_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -598,7 +598,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkLengthRangeBoolean_Pass_Data() {
+    private static Object[][] checkLengthRangeBoolean_Pass_Data() {
         return new Object[][] {
                 { new boolean[] { }, 0, 0 },
                 { new boolean[] { true }, 0, 10 },
@@ -628,7 +628,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkLengthRangeBoolean_FailWithInvalidMinOrMaxLen_Data() {
+    private static Object[][] checkLengthRangeBoolean_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { new boolean[] { }, 3, 4 },
                 { new boolean[] { true }, -3, 3 },
@@ -648,7 +648,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkLengthRangeBoolean_FailWithNullArray_Data() {
+    private static Object[][] checkLengthRangeBoolean_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -667,7 +667,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkNotEmptyObject_Pass_Data() {
+    private static Object[][] checkNotEmptyObject_Pass_Data() {
         return new Object[][] {
                 { new String[] { "a" } },
                 { new String[] { "a", "b" } },
@@ -686,7 +686,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkNotEmptyObject_FailWithEmptyArray_Data() {
+    private static Object[][] checkNotEmptyObject_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new String[] { } },
                 { new Object[] { } },
@@ -709,7 +709,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkNotEmptyByte_Pass_Data() {
+    private static Object[][] checkNotEmptyByte_Pass_Data() {
         return new Object[][] {
                 { new byte[] { 99 } },
                 { new byte[] { 99, 101 } },
@@ -742,7 +742,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkNotEmptyShort_Pass_Data() {
+    private static Object[][] checkNotEmptyShort_Pass_Data() {
         return new Object[][] {
                 { new short[] { 99 } },
                 { new short[] { 99, 101 } },
@@ -775,7 +775,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkNotEmptyInteger_Pass_Data() {
+    private static Object[][] checkNotEmptyInteger_Pass_Data() {
         return new Object[][] {
                 { new int[] { 99 } },
                 { new int[] { 99, 101 } },
@@ -808,7 +808,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkNotEmptyLong_Pass_Data() {
+    private static Object[][] checkNotEmptyLong_Pass_Data() {
         return new Object[][] {
                 { new long[] { 99 } },
                 { new long[] { 99, 101 } },
@@ -841,7 +841,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkNotEmptyFloat_Pass_Data() {
+    private static Object[][] checkNotEmptyFloat_Pass_Data() {
         return new Object[][] {
                 { new float[] { 99 } },
                 { new float[] { 99, 101 } },
@@ -874,7 +874,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkNotEmptyDouble_Pass_Data() {
+    private static Object[][] checkNotEmptyDouble_Pass_Data() {
         return new Object[][] {
                 { new double[] { 99 } },
                 { new double[] { 99, 101 } },
@@ -907,7 +907,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkNotEmptyCharacter_Pass_Data() {
+    private static Object[][] checkNotEmptyCharacter_Pass_Data() {
         return new Object[][] {
                 { new char[] { 99 } },
                 { new char[] { 99, 101 } },
@@ -940,7 +940,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkNotEmptyBoolean_Pass_Data() {
+    private static Object[][] checkNotEmptyBoolean_Pass_Data() {
         return new Object[][] {
                 { new boolean[] { true } },
                 { new boolean[] { true, false } },
@@ -973,7 +973,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkMinLengthObject_Pass_Data() {
+    private static Object[][] checkMinLengthObject_Pass_Data() {
         return new Object[][] {
                 { new String[] { }, 0 },
                 { new String[] { "a" }, 0 },
@@ -995,7 +995,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMinLengthObject_FailWithInvalidMinLen_Data() {
+    private static Object[][] checkMinLengthObject_FailWithInvalidMinLen_Data() {
         return new Object[][] {
                 { new String[] { }, -2 },
                 { new String[] { }, 2 },
@@ -1011,7 +1011,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMinLengthObject_FailWithNullArray_Data() {
+    private static Object[][] checkMinLengthObject_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -1030,7 +1030,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkMinLengthByte_Pass_Data() {
+    private static Object[][] checkMinLengthByte_Pass_Data() {
         return new Object[][] {
                 { new byte[] { }, 0 },
                 { new byte[] { 99 }, 0 },
@@ -1052,7 +1052,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMinLengthByte_FailWithInvalidMinLen_Data() {
+    private static Object[][] checkMinLengthByte_FailWithInvalidMinLen_Data() {
         return new Object[][] {
                 { new byte[] { }, -2 },
                 { new byte[] { }, 2 },
@@ -1068,7 +1068,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMinLengthByte_FailWithNullArray_Data() {
+    private static Object[][] checkMinLengthByte_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -1087,7 +1087,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkMinLengthShort_Pass_Data() {
+    private static Object[][] checkMinLengthShort_Pass_Data() {
         return new Object[][] {
                 { new short[] { }, 0 },
                 { new short[] { 99 }, 0 },
@@ -1109,7 +1109,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMinLengthShort_FailWithInvalidMinLen_Data() {
+    private static Object[][] checkMinLengthShort_FailWithInvalidMinLen_Data() {
         return new Object[][] {
                 { new short[] { }, -2 },
                 { new short[] { }, 2 },
@@ -1125,7 +1125,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMinLengthShort_FailWithNullArray_Data() {
+    private static Object[][] checkMinLengthShort_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -1144,7 +1144,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkMinLengthInteger_Pass_Data() {
+    private static Object[][] checkMinLengthInteger_Pass_Data() {
         return new Object[][] {
                 { new int[] { }, 0 },
                 { new int[] { 99 }, 0 },
@@ -1166,7 +1166,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMinLengthInteger_FailWithInvalidMinLen_Data() {
+    private static Object[][] checkMinLengthInteger_FailWithInvalidMinLen_Data() {
         return new Object[][] {
                 { new int[] { }, -2 },
                 { new int[] { }, 2 },
@@ -1182,7 +1182,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMinLengthInteger_FailWithNullArray_Data() {
+    private static Object[][] checkMinLengthInteger_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -1201,7 +1201,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkMinLengthLong_Pass_Data() {
+    private static Object[][] checkMinLengthLong_Pass_Data() {
         return new Object[][] {
                 { new long[] { }, 0 },
                 { new long[] { 99 }, 0 },
@@ -1223,7 +1223,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMinLengthLong_FailWithInvalidMinLen_Data() {
+    private static Object[][] checkMinLengthLong_FailWithInvalidMinLen_Data() {
         return new Object[][] {
                 { new long[] { }, -2 },
                 { new long[] { }, 2 },
@@ -1239,7 +1239,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMinLengthLong_FailWithNullArray_Data() {
+    private static Object[][] checkMinLengthLong_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -1258,7 +1258,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkMinLengthFloat_Pass_Data() {
+    private static Object[][] checkMinLengthFloat_Pass_Data() {
         return new Object[][] {
                 { new float[] { }, 0 },
                 { new float[] { 99 }, 0 },
@@ -1280,7 +1280,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMinLengthFloat_FailWithInvalidMinLen_Data() {
+    private static Object[][] checkMinLengthFloat_FailWithInvalidMinLen_Data() {
         return new Object[][] {
                 { new float[] { }, -2 },
                 { new float[] { }, 2 },
@@ -1296,7 +1296,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMinLengthFloat_FailWithNullArray_Data() {
+    private static Object[][] checkMinLengthFloat_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -1315,7 +1315,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkMinLengthDouble_Pass_Data() {
+    private static Object[][] checkMinLengthDouble_Pass_Data() {
         return new Object[][] {
                 { new double[] { }, 0 },
                 { new double[] { 99 }, 0 },
@@ -1337,7 +1337,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMinLengthDouble_FailWithInvalidMinLen_Data() {
+    private static Object[][] checkMinLengthDouble_FailWithInvalidMinLen_Data() {
         return new Object[][] {
                 { new double[] { }, -2 },
                 { new double[] { }, 2 },
@@ -1353,7 +1353,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMinLengthDouble_FailWithNullArray_Data() {
+    private static Object[][] checkMinLengthDouble_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -1372,7 +1372,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkMinLengthCharacter_Pass_Data() {
+    private static Object[][] checkMinLengthCharacter_Pass_Data() {
         return new Object[][] {
                 { new char[] { }, 0 },
                 { new char[] { 99 }, 0 },
@@ -1394,7 +1394,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMinLengthCharacter_FailWithInvalidMinLen_Data() {
+    private static Object[][] checkMinLengthCharacter_FailWithInvalidMinLen_Data() {
         return new Object[][] {
                 { new char[] { }, -2 },
                 { new char[] { }, 2 },
@@ -1410,7 +1410,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMinLengthCharacter_FailWithNullArray_Data() {
+    private static Object[][] checkMinLengthCharacter_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -1429,7 +1429,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkMinLengthBoolean_Pass_Data() {
+    private static Object[][] checkMinLengthBoolean_Pass_Data() {
         return new Object[][] {
                 { new boolean[] { }, 0 },
                 { new boolean[] { true }, 0 },
@@ -1451,7 +1451,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMinLengthBoolean_FailWithInvalidMinLen_Data() {
+    private static Object[][] checkMinLengthBoolean_FailWithInvalidMinLen_Data() {
         return new Object[][] {
                 { new boolean[] { }, -2 },
                 { new boolean[] { }, 2 },
@@ -1467,7 +1467,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMinLengthBoolean_FailWithNullArray_Data() {
+    private static Object[][] checkMinLengthBoolean_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -1486,7 +1486,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkMaxLengthObject_Pass_Data() {
+    private static Object[][] checkMaxLengthObject_Pass_Data() {
         return new Object[][] {
                 { new String[] { }, 0 },
                 { new String[] { }, 99 },
@@ -1508,7 +1508,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMaxLengthObject_FailWithInvalidMaxLen_Data() {
+    private static Object[][] checkMaxLengthObject_FailWithInvalidMaxLen_Data() {
         return new Object[][] {
                 { new String[] { }, -2 },
                 { new String[] { "a" }, -3 },
@@ -1523,7 +1523,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMaxLengthObject_FailWithNullArray_Data() {
+    private static Object[][] checkMaxLengthObject_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -1542,7 +1542,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkMaxLengthByte_Pass_Data() {
+    private static Object[][] checkMaxLengthByte_Pass_Data() {
         return new Object[][] {
                 { new byte[] { }, 0 },
                 { new byte[] { }, 99 },
@@ -1564,7 +1564,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMaxLengthByte_FailWithInvalidMaxLen_Data() {
+    private static Object[][] checkMaxLengthByte_FailWithInvalidMaxLen_Data() {
         return new Object[][] {
                 { new byte[] { }, -2 },
                 { new byte[] { 99 }, -3 },
@@ -1579,7 +1579,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMaxLengthByte_FailWithNullArray_Data() {
+    private static Object[][] checkMaxLengthByte_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -1598,7 +1598,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkMaxLengthShort_Pass_Data() {
+    private static Object[][] checkMaxLengthShort_Pass_Data() {
         return new Object[][] {
                 { new short[] { }, 0 },
                 { new short[] { }, 99 },
@@ -1620,7 +1620,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMaxLengthShort_FailWithInvalidMaxLen_Data() {
+    private static Object[][] checkMaxLengthShort_FailWithInvalidMaxLen_Data() {
         return new Object[][] {
                 { new short[] { }, -2 },
                 { new short[] { 99 }, -3 },
@@ -1635,7 +1635,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMaxLengthShort_FailWithNullArray_Data() {
+    private static Object[][] checkMaxLengthShort_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -1654,7 +1654,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkMaxLengthInteger_Pass_Data() {
+    private static Object[][] checkMaxLengthInteger_Pass_Data() {
         return new Object[][] {
                 { new int[] { }, 0 },
                 { new int[] { }, 99 },
@@ -1676,7 +1676,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMaxLengthInteger_FailWithInvalidMaxLen_Data() {
+    private static Object[][] checkMaxLengthInteger_FailWithInvalidMaxLen_Data() {
         return new Object[][] {
                 { new int[] { }, -2 },
                 { new int[] { 99 }, -3 },
@@ -1691,7 +1691,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMaxLengthInteger_FailWithNullArray_Data() {
+    private static Object[][] checkMaxLengthInteger_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -1710,7 +1710,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkMaxLengthLong_Pass_Data() {
+    private static Object[][] checkMaxLengthLong_Pass_Data() {
         return new Object[][] {
                 { new long[] { }, 0 },
                 { new long[] { }, 99 },
@@ -1732,7 +1732,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMaxLengthLong_FailWithInvalidMaxLen_Data() {
+    private static Object[][] checkMaxLengthLong_FailWithInvalidMaxLen_Data() {
         return new Object[][] {
                 { new long[] { }, -2 },
                 { new long[] { 99 }, -3 },
@@ -1747,7 +1747,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMaxLengthLong_FailWithNullArray_Data() {
+    private static Object[][] checkMaxLengthLong_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -1766,7 +1766,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkMaxLengthFloat_Pass_Data() {
+    private static Object[][] checkMaxLengthFloat_Pass_Data() {
         return new Object[][] {
                 { new float[] { }, 0 },
                 { new float[] { }, 99 },
@@ -1788,7 +1788,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMaxLengthFloat_FailWithInvalidMaxLen_Data() {
+    private static Object[][] checkMaxLengthFloat_FailWithInvalidMaxLen_Data() {
         return new Object[][] {
                 { new float[] { }, -2 },
                 { new float[] { 99 }, -3 },
@@ -1803,7 +1803,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMaxLengthFloat_FailWithNullArray_Data() {
+    private static Object[][] checkMaxLengthFloat_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -1822,7 +1822,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkMaxLengthDouble_Pass_Data() {
+    private static Object[][] checkMaxLengthDouble_Pass_Data() {
         return new Object[][] {
                 { new double[] { }, 0 },
                 { new double[] { }, 99 },
@@ -1844,7 +1844,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMaxLengthDouble_FailWithInvalidMaxLen_Data() {
+    private static Object[][] checkMaxLengthDouble_FailWithInvalidMaxLen_Data() {
         return new Object[][] {
                 { new double[] { }, -2 },
                 { new double[] { 99 }, -3 },
@@ -1859,7 +1859,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMaxLengthDouble_FailWithNullArray_Data() {
+    private static Object[][] checkMaxLengthDouble_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -1878,7 +1878,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkMaxLengthCharacter_Pass_Data() {
+    private static Object[][] checkMaxLengthCharacter_Pass_Data() {
         return new Object[][] {
                 { new char[] { }, 0 },
                 { new char[] { }, 99 },
@@ -1900,7 +1900,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMaxLengthCharacter_FailWithInvalidMaxLen_Data() {
+    private static Object[][] checkMaxLengthCharacter_FailWithInvalidMaxLen_Data() {
         return new Object[][] {
                 { new char[] { }, -2 },
                 { new char[] { 99 }, -3 },
@@ -1915,7 +1915,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMaxLengthCharacter_FailWithNullArray_Data() {
+    private static Object[][] checkMaxLengthCharacter_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -1934,7 +1934,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkMaxLengthBoolean_Pass_Data() {
+    private static Object[][] checkMaxLengthBoolean_Pass_Data() {
         return new Object[][] {
                 { new boolean[] { }, 0 },
                 { new boolean[] { }, 99 },
@@ -1956,7 +1956,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMaxLengthBoolean_FailWithInvalidMaxLen_Data() {
+    private static Object[][] checkMaxLengthBoolean_FailWithInvalidMaxLen_Data() {
         return new Object[][] {
                 { new boolean[] { }, -2 },
                 { new boolean[] { true }, -3 },
@@ -1971,7 +1971,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkMaxLengthBoolean_FailWithNullArray_Data() {
+    private static Object[][] checkMaxLengthBoolean_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -1990,7 +1990,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkExactLengthObject_Pass_Data() {
+    private static Object[][] checkExactLengthObject_Pass_Data() {
         return new Object[][] {
                 { new String[] { }, 0 },
                 { new String[] { "a" }, 1 },
@@ -2009,7 +2009,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkExactLengthObject_FailWithInvalidExactLen_Data() {
+    private static Object[][] checkExactLengthObject_FailWithInvalidExactLen_Data() {
         return new Object[][] {
                 { new String[] { }, -2 },
                 { new String[] { }, 2 },
@@ -2025,7 +2025,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkExactLengthObject_FailWithNullArray_Data() {
+    private static Object[][] checkExactLengthObject_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -2044,7 +2044,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkExactLengthByte_Pass_Data() {
+    private static Object[][] checkExactLengthByte_Pass_Data() {
         return new Object[][] {
                 { new byte[] { }, 0 },
                 { new byte[] { 99 }, 1 },
@@ -2063,7 +2063,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkExactLengthByte_FailWithInvalidExactLen_Data() {
+    private static Object[][] checkExactLengthByte_FailWithInvalidExactLen_Data() {
         return new Object[][] {
                 { new byte[] { }, -2 },
                 { new byte[] { }, 2 },
@@ -2079,7 +2079,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkExactLengthByte_FailWithNullArray_Data() {
+    private static Object[][] checkExactLengthByte_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -2098,7 +2098,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkExactLengthShort_Pass_Data() {
+    private static Object[][] checkExactLengthShort_Pass_Data() {
         return new Object[][] {
                 { new short[] { }, 0 },
                 { new short[] { 99 }, 1 },
@@ -2117,7 +2117,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkExactLengthShort_FailWithInvalidExactLen_Data() {
+    private static Object[][] checkExactLengthShort_FailWithInvalidExactLen_Data() {
         return new Object[][] {
                 { new short[] { }, -2 },
                 { new short[] { }, 2 },
@@ -2133,7 +2133,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkExactLengthShort_FailWithNullArray_Data() {
+    private static Object[][] checkExactLengthShort_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -2152,7 +2152,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkExactLengthInteger_Pass_Data() {
+    private static Object[][] checkExactLengthInteger_Pass_Data() {
         return new Object[][] {
                 { new int[] { }, 0 },
                 { new int[] { 99 }, 1 },
@@ -2171,7 +2171,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkExactLengthInteger_FailWithInvalidExactLen_Data() {
+    private static Object[][] checkExactLengthInteger_FailWithInvalidExactLen_Data() {
         return new Object[][] {
                 { new int[] { }, -2 },
                 { new int[] { }, 2 },
@@ -2187,7 +2187,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkExactLengthInteger_FailWithNullArray_Data() {
+    private static Object[][] checkExactLengthInteger_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -2206,7 +2206,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkExactLengthLong_Pass_Data() {
+    private static Object[][] checkExactLengthLong_Pass_Data() {
         return new Object[][] {
                 { new long[] { }, 0 },
                 { new long[] { 99 }, 1 },
@@ -2225,7 +2225,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkExactLengthLong_FailWithInvalidExactLen_Data() {
+    private static Object[][] checkExactLengthLong_FailWithInvalidExactLen_Data() {
         return new Object[][] {
                 { new long[] { }, -2 },
                 { new long[] { }, 2 },
@@ -2241,7 +2241,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkExactLengthLong_FailWithNullArray_Data() {
+    private static Object[][] checkExactLengthLong_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -2260,7 +2260,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkExactLengthFloat_Pass_Data() {
+    private static Object[][] checkExactLengthFloat_Pass_Data() {
         return new Object[][] {
                 { new float[] { }, 0 },
                 { new float[] { 99 }, 1 },
@@ -2279,7 +2279,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkExactLengthFloat_FailWithInvalidExactLen_Data() {
+    private static Object[][] checkExactLengthFloat_FailWithInvalidExactLen_Data() {
         return new Object[][] {
                 { new float[] { }, -2 },
                 { new float[] { }, 2 },
@@ -2295,7 +2295,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkExactLengthFloat_FailWithNullArray_Data() {
+    private static Object[][] checkExactLengthFloat_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -2314,7 +2314,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkExactLengthDouble_Pass_Data() {
+    private static Object[][] checkExactLengthDouble_Pass_Data() {
         return new Object[][] {
                 { new double[] { }, 0 },
                 { new double[] { 99 }, 1 },
@@ -2333,7 +2333,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkExactLengthDouble_FailWithInvalidExactLen_Data() {
+    private static Object[][] checkExactLengthDouble_FailWithInvalidExactLen_Data() {
         return new Object[][] {
                 { new double[] { }, -2 },
                 { new double[] { }, 2 },
@@ -2349,7 +2349,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkExactLengthDouble_FailWithNullArray_Data() {
+    private static Object[][] checkExactLengthDouble_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -2368,7 +2368,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkExactLengthCharacter_Pass_Data() {
+    private static Object[][] checkExactLengthCharacter_Pass_Data() {
         return new Object[][] {
                 { new char[] { }, 0 },
                 { new char[] { 99 }, 1 },
@@ -2387,7 +2387,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkExactLengthCharacter_FailWithInvalidExactLen_Data() {
+    private static Object[][] checkExactLengthCharacter_FailWithInvalidExactLen_Data() {
         return new Object[][] {
                 { new char[] { }, -2 },
                 { new char[] { }, 2 },
@@ -2403,7 +2403,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkExactLengthCharacter_FailWithNullArray_Data() {
+    private static Object[][] checkExactLengthCharacter_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -2422,7 +2422,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkExactLengthBoolean_Pass_Data() {
+    private static Object[][] checkExactLengthBoolean_Pass_Data() {
         return new Object[][] {
                 { new boolean[] { }, 0 },
                 { new boolean[] { true }, 1 },
@@ -2441,7 +2441,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkExactLengthBoolean_FailWithInvalidExactLen_Data() {
+    private static Object[][] checkExactLengthBoolean_FailWithInvalidExactLen_Data() {
         return new Object[][] {
                 { new boolean[] { }, -2 },
                 { new boolean[] { }, 2 },
@@ -2457,7 +2457,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkExactLengthBoolean_FailWithNullArray_Data() {
+    private static Object[][] checkExactLengthBoolean_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -2476,7 +2476,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkElementsNotNull_Pass_Data() {
+    private static Object[][] checkElementsNotNull_Pass_Data() {
         return new Object[][] {
                 { new String[] { } },
                 { new String[] { "a" } },
@@ -2495,7 +2495,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkElementsNotNull_FailWithNullElements_Data() {
+    private static Object[][] checkElementsNotNull_FailWithNullElements_Data() {
         return new Object[][] {
                 { new String[] { null } },
                 { new String[] { "a", null } },
@@ -2522,7 +2522,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkNotEmptyAndElementsNotNull_Pass_Data() {
+    private static Object[][] checkNotEmptyAndElementsNotNull_Pass_Data() {
         return new Object[][] {
                 { new String[] { "a" } },
                 { new String[] { "a", "b" } },
@@ -2541,7 +2541,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkNotEmptyAndElementsNotNull_FailWithNullElements_Data() {
+    private static Object[][] checkNotEmptyAndElementsNotNull_FailWithNullElements_Data() {
         return new Object[][] {
                 { new String[] { null } },
                 { new String[] { "a", null } },
@@ -2573,7 +2573,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkAccessIndexObject_Pass_Data() {
+    private static Object[][] checkAccessIndexObject_Pass_Data() {
         return new Object[][] {
                 { new String[] { "a" }, 0 },
                 { new String[] { "a", "b" }, 0 },
@@ -2592,7 +2592,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkAccessIndexObject_FailWithEmptyArray_Data() {
+    private static Object[][] checkAccessIndexObject_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new String[] { }, -1 },
                 { new String[] { }, 0 },
@@ -2607,7 +2607,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkAccessIndexObject_FailWithInvalidIndex_Data() {
+    private static Object[][] checkAccessIndexObject_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new String[] { "a" }, -1 },
                 { new String[] { "a", "b" }, -1 },
@@ -2624,7 +2624,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkAccessIndexObject_FailWithNullArray_Data() {
+    private static Object[][] checkAccessIndexObject_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -2643,7 +2643,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkAccessIndexByte_Pass_Data() {
+    private static Object[][] checkAccessIndexByte_Pass_Data() {
         return new Object[][] {
                 { new byte[] { 99 }, 0 },
                 { new byte[] { 99, 101 }, 0 },
@@ -2662,7 +2662,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkAccessIndexByte_FailWithEmptyArray_Data() {
+    private static Object[][] checkAccessIndexByte_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new byte[] { }, -1 },
                 { new byte[] { }, 0 },
@@ -2677,7 +2677,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkAccessIndexByte_FailWithInvalidIndex_Data() {
+    private static Object[][] checkAccessIndexByte_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new byte[] { 99 }, -1 },
                 { new byte[] { 99, 101 }, -1 },
@@ -2694,7 +2694,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkAccessIndexByte_FailWithNullArray_Data() {
+    private static Object[][] checkAccessIndexByte_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -2713,7 +2713,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkAccessIndexShort_Pass_Data() {
+    private static Object[][] checkAccessIndexShort_Pass_Data() {
         return new Object[][] {
                 { new short[] { 99 }, 0 },
                 { new short[] { 99, 101 }, 0 },
@@ -2732,7 +2732,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkAccessIndexShort_FailWithEmptyArray_Data() {
+    private static Object[][] checkAccessIndexShort_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new short[] { }, -1 },
                 { new short[] { }, 0 },
@@ -2747,7 +2747,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkAccessIndexShort_FailWithInvalidIndex_Data() {
+    private static Object[][] checkAccessIndexShort_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new short[] { 99 }, -1 },
                 { new short[] { 99, 101 }, -1 },
@@ -2764,7 +2764,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkAccessIndexShort_FailWithNullArray_Data() {
+    private static Object[][] checkAccessIndexShort_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -2783,7 +2783,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkAccessIndexInteger_Pass_Data() {
+    private static Object[][] checkAccessIndexInteger_Pass_Data() {
         return new Object[][] {
                 { new int[] { 99 }, 0 },
                 { new int[] { 99, 101 }, 0 },
@@ -2802,7 +2802,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkAccessIndexInteger_FailWithEmptyArray_Data() {
+    private static Object[][] checkAccessIndexInteger_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new int[] { }, -1 },
                 { new int[] { }, 0 },
@@ -2817,7 +2817,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkAccessIndexInteger_FailWithInvalidIndex_Data() {
+    private static Object[][] checkAccessIndexInteger_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new int[] { 99 }, -1 },
                 { new int[] { 99, 101 }, -1 },
@@ -2834,7 +2834,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkAccessIndexInteger_FailWithNullArray_Data() {
+    private static Object[][] checkAccessIndexInteger_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -2853,7 +2853,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkAccessIndexLong_Pass_Data() {
+    private static Object[][] checkAccessIndexLong_Pass_Data() {
         return new Object[][] {
                 { new long[] { 99 }, 0 },
                 { new long[] { 99, 101 }, 0 },
@@ -2872,7 +2872,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkAccessIndexLong_FailWithEmptyArray_Data() {
+    private static Object[][] checkAccessIndexLong_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new long[] { }, -1 },
                 { new long[] { }, 0 },
@@ -2887,7 +2887,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkAccessIndexLong_FailWithInvalidIndex_Data() {
+    private static Object[][] checkAccessIndexLong_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new long[] { 99 }, -1 },
                 { new long[] { 99, 101 }, -1 },
@@ -2904,7 +2904,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkAccessIndexLong_FailWithNullArray_Data() {
+    private static Object[][] checkAccessIndexLong_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -2923,7 +2923,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkAccessIndexFloat_Pass_Data() {
+    private static Object[][] checkAccessIndexFloat_Pass_Data() {
         return new Object[][] {
                 { new float[] { 99 }, 0 },
                 { new float[] { 99, 101 }, 0 },
@@ -2942,7 +2942,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkAccessIndexFloat_FailWithEmptyArray_Data() {
+    private static Object[][] checkAccessIndexFloat_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new float[] { }, -1 },
                 { new float[] { }, 0 },
@@ -2957,7 +2957,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkAccessIndexFloat_FailWithInvalidIndex_Data() {
+    private static Object[][] checkAccessIndexFloat_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new float[] { 99 }, -1 },
                 { new float[] { 99, 101 }, -1 },
@@ -2974,7 +2974,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkAccessIndexFloat_FailWithNullArray_Data() {
+    private static Object[][] checkAccessIndexFloat_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -2993,7 +2993,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkAccessIndexDouble_Pass_Data() {
+    private static Object[][] checkAccessIndexDouble_Pass_Data() {
         return new Object[][] {
                 { new double[] { 99 }, 0 },
                 { new double[] { 99, 101 }, 0 },
@@ -3012,7 +3012,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkAccessIndexDouble_FailWithEmptyArray_Data() {
+    private static Object[][] checkAccessIndexDouble_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new double[] { }, -1 },
                 { new double[] { }, 0 },
@@ -3027,7 +3027,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkAccessIndexDouble_FailWithInvalidIndex_Data() {
+    private static Object[][] checkAccessIndexDouble_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new double[] { 99 }, -1 },
                 { new double[] { 99, 101 }, -1 },
@@ -3044,7 +3044,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkAccessIndexDouble_FailWithNullArray_Data() {
+    private static Object[][] checkAccessIndexDouble_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -3063,7 +3063,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkAccessIndexCharacter_Pass_Data() {
+    private static Object[][] checkAccessIndexCharacter_Pass_Data() {
         return new Object[][] {
                 { new char[] { 99 }, 0 },
                 { new char[] { 99, 101 }, 0 },
@@ -3082,7 +3082,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkAccessIndexCharacter_FailWithEmptyArray_Data() {
+    private static Object[][] checkAccessIndexCharacter_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new char[] { }, -1 },
                 { new char[] { }, 0 },
@@ -3097,7 +3097,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkAccessIndexCharacter_FailWithInvalidIndex_Data() {
+    private static Object[][] checkAccessIndexCharacter_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new char[] { 99 }, -1 },
                 { new char[] { 99, 101 }, -1 },
@@ -3114,7 +3114,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkAccessIndexCharacter_FailWithNullArray_Data() {
+    private static Object[][] checkAccessIndexCharacter_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -3133,7 +3133,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkAccessIndexBoolean_Pass_Data() {
+    private static Object[][] checkAccessIndexBoolean_Pass_Data() {
         return new Object[][] {
                 { new boolean[] { true }, 0 },
                 { new boolean[] { true, false }, 0 },
@@ -3152,7 +3152,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkAccessIndexBoolean_FailWithEmptyArray_Data() {
+    private static Object[][] checkAccessIndexBoolean_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new boolean[] { }, -1 },
                 { new boolean[] { }, 0 },
@@ -3167,7 +3167,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkAccessIndexBoolean_FailWithInvalidIndex_Data() {
+    private static Object[][] checkAccessIndexBoolean_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new boolean[] { true }, -1 },
                 { new boolean[] { true, false }, -1 },
@@ -3184,7 +3184,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkAccessIndexBoolean_FailWithNullArray_Data() {
+    private static Object[][] checkAccessIndexBoolean_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -3203,7 +3203,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkInsertIndexObject_Pass_Data() {
+    private static Object[][] checkInsertIndexObject_Pass_Data() {
         return new Object[][] {
                 { new String[] { }, 0 },
                 { new String[] { "a" }, 0 },
@@ -3225,7 +3225,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkInsertIndexObject_FailWithInvalidIndex_Data() {
+    private static Object[][] checkInsertIndexObject_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new String[] { }, -1 },
                 { new String[] { "a" }, -1 },
@@ -3244,7 +3244,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkInsertIndexObject_FailWithNullArray_Data() {
+    private static Object[][] checkInsertIndexObject_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -3263,7 +3263,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkInsertIndexByte_Pass_Data() {
+    private static Object[][] checkInsertIndexByte_Pass_Data() {
         return new Object[][] {
                 { new byte[] { }, 0 },
                 { new byte[] { 99 }, 0 },
@@ -3285,7 +3285,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkInsertIndexByte_FailWithInvalidIndex_Data() {
+    private static Object[][] checkInsertIndexByte_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new byte[] { }, -1 },
                 { new byte[] { 99 }, -1 },
@@ -3304,7 +3304,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkInsertIndexByte_FailWithNullArray_Data() {
+    private static Object[][] checkInsertIndexByte_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -3323,7 +3323,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkInsertIndexShort_Pass_Data() {
+    private static Object[][] checkInsertIndexShort_Pass_Data() {
         return new Object[][] {
                 { new short[] { }, 0 },
                 { new short[] { 99 }, 0 },
@@ -3345,7 +3345,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkInsertIndexShort_FailWithInvalidIndex_Data() {
+    private static Object[][] checkInsertIndexShort_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new short[] { }, -1 },
                 { new short[] { 99 }, -1 },
@@ -3364,7 +3364,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkInsertIndexShort_FailWithNullArray_Data() {
+    private static Object[][] checkInsertIndexShort_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -3383,7 +3383,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkInsertIndexInteger_Pass_Data() {
+    private static Object[][] checkInsertIndexInteger_Pass_Data() {
         return new Object[][] {
                 { new int[] { }, 0 },
                 { new int[] { 99 }, 0 },
@@ -3405,7 +3405,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkInsertIndexInteger_FailWithInvalidIndex_Data() {
+    private static Object[][] checkInsertIndexInteger_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new int[] { }, -1 },
                 { new int[] { 99 }, -1 },
@@ -3424,7 +3424,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkInsertIndexInteger_FailWithNullArray_Data() {
+    private static Object[][] checkInsertIndexInteger_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -3443,7 +3443,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkInsertIndexLong_Pass_Data() {
+    private static Object[][] checkInsertIndexLong_Pass_Data() {
         return new Object[][] {
                 { new long[] { }, 0 },
                 { new long[] { 99 }, 0 },
@@ -3465,7 +3465,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkInsertIndexLong_FailWithInvalidIndex_Data() {
+    private static Object[][] checkInsertIndexLong_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new long[] { }, -1 },
                 { new long[] { 99 }, -1 },
@@ -3484,7 +3484,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkInsertIndexLong_FailWithNullArray_Data() {
+    private static Object[][] checkInsertIndexLong_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -3503,7 +3503,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkInsertIndexFloat_Pass_Data() {
+    private static Object[][] checkInsertIndexFloat_Pass_Data() {
         return new Object[][] {
                 { new float[] { }, 0 },
                 { new float[] { 99 }, 0 },
@@ -3525,7 +3525,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkInsertIndexFloat_FailWithInvalidIndex_Data() {
+    private static Object[][] checkInsertIndexFloat_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new float[] { }, -1 },
                 { new float[] { 99 }, -1 },
@@ -3544,7 +3544,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkInsertIndexFloat_FailWithNullArray_Data() {
+    private static Object[][] checkInsertIndexFloat_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -3563,7 +3563,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkInsertIndexDouble_Pass_Data() {
+    private static Object[][] checkInsertIndexDouble_Pass_Data() {
         return new Object[][] {
                 { new double[] { }, 0 },
                 { new double[] { 99 }, 0 },
@@ -3585,7 +3585,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkInsertIndexDouble_FailWithInvalidIndex_Data() {
+    private static Object[][] checkInsertIndexDouble_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new double[] { }, -1 },
                 { new double[] { 99 }, -1 },
@@ -3604,7 +3604,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkInsertIndexDouble_FailWithNullArray_Data() {
+    private static Object[][] checkInsertIndexDouble_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -3623,7 +3623,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkInsertIndexCharacter_Pass_Data() {
+    private static Object[][] checkInsertIndexCharacter_Pass_Data() {
         return new Object[][] {
                 { new char[] { }, 0 },
                 { new char[] { 99 }, 0 },
@@ -3645,7 +3645,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkInsertIndexCharacter_FailWithInvalidIndex_Data() {
+    private static Object[][] checkInsertIndexCharacter_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new char[] { }, -1 },
                 { new char[] { 99 }, -1 },
@@ -3664,7 +3664,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkInsertIndexCharacter_FailWithNullArray_Data() {
+    private static Object[][] checkInsertIndexCharacter_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -3683,7 +3683,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkInsertIndexBoolean_Pass_Data() {
+    private static Object[][] checkInsertIndexBoolean_Pass_Data() {
         return new Object[][] {
                 { new boolean[] { }, 0 },
                 { new boolean[] { true }, 0 },
@@ -3705,7 +3705,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkInsertIndexBoolean_FailWithInvalidIndex_Data() {
+    private static Object[][] checkInsertIndexBoolean_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new boolean[] { }, -1 },
                 { new boolean[] { true }, -1 },
@@ -3724,7 +3724,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkInsertIndexBoolean_FailWithNullArray_Data() {
+    private static Object[][] checkInsertIndexBoolean_FailWithNullArray_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -3743,7 +3743,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountObject_Pass_Data() {
+    private static Object[][] checkIndexAndCountObject_Pass_Data() {
         return new Object[][] {
                 { new String[] { "a" }, 0, 0 },
                 { new String[] { "a" }, 0, 1 },
@@ -3765,7 +3765,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountObject_FailWithEmptyArray_Data() {
+    private static Object[][] checkIndexAndCountObject_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new String[] { }, -1, -1 },
                 { new String[] { }, 0, 0 },
@@ -3780,7 +3780,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountObject_FailWithInvalidIndex_Data() {
+    private static Object[][] checkIndexAndCountObject_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new String[] { "a" }, -1, 0 },
                 { new String[] { "a", "b" }, -1, 0 },
@@ -3798,7 +3798,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountObject_FailWithNegativeCount_Data() {
+    private static Object[][] checkIndexAndCountObject_FailWithNegativeCount_Data() {
         return new Object[][] {
                 { new String[] { "a" }, 0, -1 },
                 { new String[] { "a", "b" }, 0, -1 },
@@ -3814,7 +3814,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountObject_FailWithInvalidCount_Data() {
+    private static Object[][] checkIndexAndCountObject_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { new String[] { "a" }, 0, 2 },
                 { new String[] { "a" }, 0, 99 },
@@ -3842,7 +3842,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountByte_Pass_Data() {
+    private static Object[][] checkIndexAndCountByte_Pass_Data() {
         return new Object[][] {
                 { new byte[] { 99 }, 0, 0 },
                 { new byte[] { 99 }, 0, 1 },
@@ -3864,7 +3864,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountByte_FailWithEmptyArray_Data() {
+    private static Object[][] checkIndexAndCountByte_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new byte[] { }, -1, -1 },
                 { new byte[] { }, 0, 0 },
@@ -3879,7 +3879,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountByte_FailWithInvalidIndex_Data() {
+    private static Object[][] checkIndexAndCountByte_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new byte[] { 99 }, -1, 0 },
                 { new byte[] { 99, 101 }, -1, 0 },
@@ -3897,7 +3897,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountByte_FailWithNegativeCount_Data() {
+    private static Object[][] checkIndexAndCountByte_FailWithNegativeCount_Data() {
         return new Object[][] {
                 { new byte[] { 99 }, 0, -1 },
                 { new byte[] { 99, 101 }, 0, -1 },
@@ -3913,7 +3913,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountByte_FailWithInvalidCount_Data() {
+    private static Object[][] checkIndexAndCountByte_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { new byte[] { 99 }, 0, 2 },
                 { new byte[] { 99 }, 0, 99 },
@@ -3941,7 +3941,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountShort_Pass_Data() {
+    private static Object[][] checkIndexAndCountShort_Pass_Data() {
         return new Object[][] {
                 { new short[] { 99 }, 0, 0 },
                 { new short[] { 99 }, 0, 1 },
@@ -3963,7 +3963,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountShort_FailWithEmptyArray_Data() {
+    private static Object[][] checkIndexAndCountShort_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new short[] { }, -1, -1 },
                 { new short[] { }, 0, 0 },
@@ -3978,7 +3978,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountShort_FailWithInvalidIndex_Data() {
+    private static Object[][] checkIndexAndCountShort_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new short[] { 99 }, -1, 0 },
                 { new short[] { 99, 101 }, -1, 0 },
@@ -3996,7 +3996,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountShort_FailWithNegativeCount_Data() {
+    private static Object[][] checkIndexAndCountShort_FailWithNegativeCount_Data() {
         return new Object[][] {
                 { new short[] { 99 }, 0, -1 },
                 { new short[] { 99, 101 }, 0, -1 },
@@ -4012,7 +4012,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountShort_FailWithInvalidCount_Data() {
+    private static Object[][] checkIndexAndCountShort_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { new short[] { 99 }, 0, 2 },
                 { new short[] { 99 }, 0, 99 },
@@ -4040,7 +4040,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountInteger_Pass_Data() {
+    private static Object[][] checkIndexAndCountInteger_Pass_Data() {
         return new Object[][] {
                 { new int[] { 99 }, 0, 0 },
                 { new int[] { 99 }, 0, 1 },
@@ -4062,7 +4062,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountInteger_FailWithEmptyArray_Data() {
+    private static Object[][] checkIndexAndCountInteger_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new int[] { }, -1, -1 },
                 { new int[] { }, 0, 0 },
@@ -4077,7 +4077,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountInteger_FailWithInvalidIndex_Data() {
+    private static Object[][] checkIndexAndCountInteger_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new int[] { 99 }, -1, 0 },
                 { new int[] { 99, 101 }, -1, 0 },
@@ -4095,7 +4095,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountInteger_FailWithNegativeCount_Data() {
+    private static Object[][] checkIndexAndCountInteger_FailWithNegativeCount_Data() {
         return new Object[][] {
                 { new int[] { 99 }, 0, -1 },
                 { new int[] { 99, 101 }, 0, -1 },
@@ -4111,7 +4111,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountInteger_FailWithInvalidCount_Data() {
+    private static Object[][] checkIndexAndCountInteger_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { new int[] { 99 }, 0, 2 },
                 { new int[] { 99 }, 0, 99 },
@@ -4139,7 +4139,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountLong_Pass_Data() {
+    private static Object[][] checkIndexAndCountLong_Pass_Data() {
         return new Object[][] {
                 { new long[] { 99 }, 0, 0 },
                 { new long[] { 99 }, 0, 1 },
@@ -4161,7 +4161,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountLong_FailWithEmptyArray_Data() {
+    private static Object[][] checkIndexAndCountLong_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new long[] { }, -1, -1 },
                 { new long[] { }, 0, 0 },
@@ -4176,7 +4176,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountLong_FailWithInvalidIndex_Data() {
+    private static Object[][] checkIndexAndCountLong_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new long[] { 99 }, -1, 0 },
                 { new long[] { 99, 101 }, -1, 0 },
@@ -4194,7 +4194,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountLong_FailWithNegativeCount_Data() {
+    private static Object[][] checkIndexAndCountLong_FailWithNegativeCount_Data() {
         return new Object[][] {
                 { new long[] { 99 }, 0, -1 },
                 { new long[] { 99, 101 }, 0, -1 },
@@ -4210,7 +4210,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountLong_FailWithInvalidCount_Data() {
+    private static Object[][] checkIndexAndCountLong_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { new long[] { 99 }, 0, 2 },
                 { new long[] { 99 }, 0, 99 },
@@ -4238,7 +4238,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountFloat_Pass_Data() {
+    private static Object[][] checkIndexAndCountFloat_Pass_Data() {
         return new Object[][] {
                 { new float[] { 99 }, 0, 0 },
                 { new float[] { 99 }, 0, 1 },
@@ -4260,7 +4260,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountFloat_FailWithEmptyArray_Data() {
+    private static Object[][] checkIndexAndCountFloat_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new float[] { }, -1, -1 },
                 { new float[] { }, 0, 0 },
@@ -4275,7 +4275,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountFloat_FailWithInvalidIndex_Data() {
+    private static Object[][] checkIndexAndCountFloat_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new float[] { 99 }, -1, 0 },
                 { new float[] { 99, 101 }, -1, 0 },
@@ -4293,7 +4293,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountFloat_FailWithNegativeCount_Data() {
+    private static Object[][] checkIndexAndCountFloat_FailWithNegativeCount_Data() {
         return new Object[][] {
                 { new float[] { 99 }, 0, -1 },
                 { new float[] { 99, 101 }, 0, -1 },
@@ -4309,7 +4309,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountFloat_FailWithInvalidCount_Data() {
+    private static Object[][] checkIndexAndCountFloat_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { new float[] { 99 }, 0, 2 },
                 { new float[] { 99 }, 0, 99 },
@@ -4337,7 +4337,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountDouble_Pass_Data() {
+    private static Object[][] checkIndexAndCountDouble_Pass_Data() {
         return new Object[][] {
                 { new double[] { 99 }, 0, 0 },
                 { new double[] { 99 }, 0, 1 },
@@ -4359,7 +4359,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountDouble_FailWithEmptyArray_Data() {
+    private static Object[][] checkIndexAndCountDouble_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new double[] { }, -1, -1 },
                 { new double[] { }, 0, 0 },
@@ -4374,7 +4374,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountDouble_FailWithInvalidIndex_Data() {
+    private static Object[][] checkIndexAndCountDouble_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new double[] { 99 }, -1, 0 },
                 { new double[] { 99, 101 }, -1, 0 },
@@ -4392,7 +4392,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountDouble_FailWithNegativeCount_Data() {
+    private static Object[][] checkIndexAndCountDouble_FailWithNegativeCount_Data() {
         return new Object[][] {
                 { new double[] { 99 }, 0, -1 },
                 { new double[] { 99, 101 }, 0, -1 },
@@ -4408,7 +4408,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountDouble_FailWithInvalidCount_Data() {
+    private static Object[][] checkIndexAndCountDouble_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { new double[] { 99 }, 0, 2 },
                 { new double[] { 99 }, 0, 99 },
@@ -4436,7 +4436,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountCharacter_Pass_Data() {
+    private static Object[][] checkIndexAndCountCharacter_Pass_Data() {
         return new Object[][] {
                 { new char[] { 99 }, 0, 0 },
                 { new char[] { 99 }, 0, 1 },
@@ -4458,7 +4458,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountCharacter_FailWithEmptyArray_Data() {
+    private static Object[][] checkIndexAndCountCharacter_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new char[] { }, -1, -1 },
                 { new char[] { }, 0, 0 },
@@ -4473,7 +4473,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountCharacter_FailWithInvalidIndex_Data() {
+    private static Object[][] checkIndexAndCountCharacter_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new char[] { 99 }, -1, 0 },
                 { new char[] { 99, 101 }, -1, 0 },
@@ -4491,7 +4491,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountCharacter_FailWithNegativeCount_Data() {
+    private static Object[][] checkIndexAndCountCharacter_FailWithNegativeCount_Data() {
         return new Object[][] {
                 { new char[] { 99 }, 0, -1 },
                 { new char[] { 99, 101 }, 0, -1 },
@@ -4507,7 +4507,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountCharacter_FailWithInvalidCount_Data() {
+    private static Object[][] checkIndexAndCountCharacter_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { new char[] { 99 }, 0, 2 },
                 { new char[] { 99 }, 0, 99 },
@@ -4535,7 +4535,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountBoolean_Pass_Data() {
+    private static Object[][] checkIndexAndCountBoolean_Pass_Data() {
         return new Object[][] {
                 { new boolean[] { true }, 0, 0 },
                 { new boolean[] { true }, 0, 1 },
@@ -4557,7 +4557,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountBoolean_FailWithEmptyArray_Data() {
+    private static Object[][] checkIndexAndCountBoolean_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new boolean[] { }, -1, -1 },
                 { new boolean[] { }, 0, 0 },
@@ -4572,7 +4572,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountBoolean_FailWithInvalidIndex_Data() {
+    private static Object[][] checkIndexAndCountBoolean_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { new boolean[] { true }, -1, 0 },
                 { new boolean[] { true, false }, -1, 0 },
@@ -4590,7 +4590,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountBoolean_FailWithNegativeCount_Data() {
+    private static Object[][] checkIndexAndCountBoolean_FailWithNegativeCount_Data() {
         return new Object[][] {
                 { new boolean[] { true }, 0, -1 },
                 { new boolean[] { true, false }, 0, -1 },
@@ -4606,7 +4606,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkIndexAndCountBoolean_FailWithInvalidCount_Data() {
+    private static Object[][] checkIndexAndCountBoolean_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { new boolean[] { true }, 0, 2 },
                 { new boolean[] { true }, 0, 99 },
@@ -4634,7 +4634,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesObject_Pass_Data() {
+    private static Object[][] checkFromAndToIndicesObject_Pass_Data() {
         return new Object[][] {
                 { new String[] { "a" }, 0, 0 },
                 { new String[] { "a" }, 0, 1 },
@@ -4656,7 +4656,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesObject_FailWithEmptyArray_Data() {
+    private static Object[][] checkFromAndToIndicesObject_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new String[] { }, -1, -1 },
                 { new String[] { }, 0, 0 },
@@ -4671,7 +4671,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesObject_FailWithInvalidIndices_Data() {
+    private static Object[][] checkFromAndToIndicesObject_FailWithInvalidIndices_Data() {
         return new Object[][] {
                 { new String[] { "a" }, -1, 0 },
                 { new String[] { "a" }, 0, -1 },
@@ -4702,7 +4702,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesByte_Pass_Data() {
+    private static Object[][] checkFromAndToIndicesByte_Pass_Data() {
         return new Object[][] {
                 { new byte[] { 99 }, 0, 0 },
                 { new byte[] { 99 }, 0, 1 },
@@ -4724,7 +4724,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesByte_FailWithEmptyArray_Data() {
+    private static Object[][] checkFromAndToIndicesByte_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new byte[] { }, -1, -1 },
                 { new byte[] { }, 0, 0 },
@@ -4740,7 +4740,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesByte_FailWithInvalidIndices_Data() {
+    private static Object[][] checkFromAndToIndicesByte_FailWithInvalidIndices_Data() {
         return new Object[][] {
                 { new byte[] { 99 }, -1, 0 },
                 { new byte[] { 99 }, 0, -1 },
@@ -4771,7 +4771,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesShort_Pass_Data() {
+    private static Object[][] checkFromAndToIndicesShort_Pass_Data() {
         return new Object[][] {
                 { new short[] { 99 }, 0, 0 },
                 { new short[] { 99 }, 0, 1 },
@@ -4793,7 +4793,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesShort_FailWithEmptyArray_Data() {
+    private static Object[][] checkFromAndToIndicesShort_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new short[] { }, -1, -1 },
                 { new short[] { }, 0, 0 },
@@ -4809,7 +4809,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesShort_FailWithInvalidIndices_Data() {
+    private static Object[][] checkFromAndToIndicesShort_FailWithInvalidIndices_Data() {
         return new Object[][] {
                 { new short[] { 99 }, -1, 0 },
                 { new short[] { 99 }, 0, -1 },
@@ -4840,7 +4840,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesInteger_Pass_Data() {
+    private static Object[][] checkFromAndToIndicesInteger_Pass_Data() {
         return new Object[][] {
                 { new int[] { 99 }, 0, 0 },
                 { new int[] { 99 }, 0, 1 },
@@ -4862,7 +4862,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesInteger_FailWithEmptyArray_Data() {
+    private static Object[][] checkFromAndToIndicesInteger_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new int[] { }, -1, -1 },
                 { new int[] { }, 0, 0 },
@@ -4878,7 +4878,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesInteger_FailWithInvalidIndices_Data() {
+    private static Object[][] checkFromAndToIndicesInteger_FailWithInvalidIndices_Data() {
         return new Object[][] {
                 { new int[] { 99 }, -1, 0 },
                 { new int[] { 99 }, 0, -1 },
@@ -4909,7 +4909,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesLong_Pass_Data() {
+    private static Object[][] checkFromAndToIndicesLong_Pass_Data() {
         return new Object[][] {
                 { new long[] { 99 }, 0, 0 },
                 { new long[] { 99 }, 0, 1 },
@@ -4931,7 +4931,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesLong_FailWithEmptyArray_Data() {
+    private static Object[][] checkFromAndToIndicesLong_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new long[] { }, -1, -1 },
                 { new long[] { }, 0, 0 },
@@ -4947,7 +4947,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesLong_FailWithInvalidIndices_Data() {
+    private static Object[][] checkFromAndToIndicesLong_FailWithInvalidIndices_Data() {
         return new Object[][] {
                 { new long[] { 99 }, -1, 0 },
                 { new long[] { 99 }, 0, -1 },
@@ -4978,7 +4978,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesFloat_Pass_Data() {
+    private static Object[][] checkFromAndToIndicesFloat_Pass_Data() {
         return new Object[][] {
                 { new float[] { 99 }, 0, 0 },
                 { new float[] { 99 }, 0, 1 },
@@ -5000,7 +5000,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesFloat_FailWithEmptyArray_Data() {
+    private static Object[][] checkFromAndToIndicesFloat_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new float[] { }, -1, -1 },
                 { new float[] { }, 0, 0 },
@@ -5016,7 +5016,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesFloat_FailWithInvalidIndices_Data() {
+    private static Object[][] checkFromAndToIndicesFloat_FailWithInvalidIndices_Data() {
         return new Object[][] {
                 { new float[] { 99 }, -1, 0 },
                 { new float[] { 99 }, 0, -1 },
@@ -5047,7 +5047,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesDouble_Pass_Data() {
+    private static Object[][] checkFromAndToIndicesDouble_Pass_Data() {
         return new Object[][] {
                 { new double[] { 99 }, 0, 0 },
                 { new double[] { 99 }, 0, 1 },
@@ -5069,7 +5069,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesDouble_FailWithEmptyArray_Data() {
+    private static Object[][] checkFromAndToIndicesDouble_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new double[] { }, -1, -1 },
                 { new double[] { }, 0, 0 },
@@ -5085,7 +5085,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesDouble_FailWithInvalidIndices_Data() {
+    private static Object[][] checkFromAndToIndicesDouble_FailWithInvalidIndices_Data() {
         return new Object[][] {
                 { new double[] { 99 }, -1, 0 },
                 { new double[] { 99 }, 0, -1 },
@@ -5116,7 +5116,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesCharacter_Pass_Data() {
+    private static Object[][] checkFromAndToIndicesCharacter_Pass_Data() {
         return new Object[][] {
                 { new char[] { 99 }, 0, 0 },
                 { new char[] { 99 }, 0, 1 },
@@ -5138,7 +5138,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesCharacter_FailWithEmptyArray_Data() {
+    private static Object[][] checkFromAndToIndicesCharacter_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new char[] { }, -1, -1 },
                 { new char[] { }, 0, 0 },
@@ -5154,7 +5154,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesCharacter_FailWithInvalidIndices_Data() {
+    private static Object[][] checkFromAndToIndicesCharacter_FailWithInvalidIndices_Data() {
         return new Object[][] {
                 { new char[] { 99 }, -1, 0 },
                 { new char[] { 99 }, 0, -1 },
@@ -5185,7 +5185,7 @@ public class ArrayArgsTest {
     //
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesBoolean_Pass_Data() {
+    private static Object[][] checkFromAndToIndicesBoolean_Pass_Data() {
         return new Object[][] {
                 { new boolean[] { true }, 0, 0 },
                 { new boolean[] { true }, 0, 1 },
@@ -5207,7 +5207,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesBoolean_FailWithEmptyArray_Data() {
+    private static Object[][] checkFromAndToIndicesBoolean_FailWithEmptyArray_Data() {
         return new Object[][] {
                 { new boolean[] { }, -1, -1 },
                 { new boolean[] { }, 0, 0 },
@@ -5223,7 +5223,7 @@ public class ArrayArgsTest {
     }
 
     @DataProvider
-    private static Object[][] _checkFromAndToIndicesBoolean_FailWithInvalidIndices_Data() {
+    private static Object[][] checkFromAndToIndicesBoolean_FailWithInvalidIndices_Data() {
         return new Object[][] {
                 { new boolean[] { true }, -1, 0 },
                 { new boolean[] { true }, 0, -1 },
@@ -5254,7 +5254,7 @@ public class ArrayArgsTest {
     //
     
     @DataProvider
-    private static Object[][] _checkContainsObject_Pass_Data() {
+    private static Object[][] checkContainsObject_Pass_Data() {
         return new Object[][] {
                 { new String[] { "a" }, "a" },
                 { new String[] { "a", "b" }, "b" },
@@ -5278,7 +5278,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkContainsObject_Fail_Data() {
+    private static Object[][] checkContainsObject_Fail_Data() {
         return new Object[][] {
                 { new String[] { "a" }, "x" },
                 { new String[] { "a" }, null },
@@ -5313,7 +5313,7 @@ public class ArrayArgsTest {
     //
     
     @DataProvider
-    private static Object[][] _checkContainsByte_Pass_Data() {
+    private static Object[][] checkContainsByte_Pass_Data() {
         return new Object[][] {
                 { new byte[] { 1 }, (byte) 1 },
                 { new byte[] { 1, 2 }, (byte) 2 },
@@ -5333,7 +5333,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkContainsByte_Fail_Data() {
+    private static Object[][] checkContainsByte_Fail_Data() {
         return new Object[][] {
                 { new byte[] { 1 }, (byte) 99 },
                 { new byte[] { 1, 2 }, (byte) 99 },
@@ -5363,7 +5363,7 @@ public class ArrayArgsTest {
     //
     
     @DataProvider
-    private static Object[][] _checkContainsShort_Pass_Data() {
+    private static Object[][] checkContainsShort_Pass_Data() {
         return new Object[][] {
                 { new short[] { 1 }, (short) 1 },
                 { new short[] { 1, 2 }, (short) 2 },
@@ -5383,7 +5383,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkContainsShort_Fail_Data() {
+    private static Object[][] checkContainsShort_Fail_Data() {
         return new Object[][] {
                 { new short[] { 1 }, (short) 99 },
                 { new short[] { 1, 2 }, (short) 99 },
@@ -5413,7 +5413,7 @@ public class ArrayArgsTest {
     //
     
     @DataProvider
-    private static Object[][] _checkContainsInteger_Pass_Data() {
+    private static Object[][] checkContainsInteger_Pass_Data() {
         return new Object[][] {
                 { new int[] { 1 }, (int) 1 },
                 { new int[] { 1, 2 }, (int) 2 },
@@ -5433,7 +5433,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkContainsInteger_Fail_Data() {
+    private static Object[][] checkContainsInteger_Fail_Data() {
         return new Object[][] {
                 { new int[] { 1 }, (int) 99 },
                 { new int[] { 1, 2 }, (int) 99 },
@@ -5463,7 +5463,7 @@ public class ArrayArgsTest {
     //
     
     @DataProvider
-    private static Object[][] _checkContainsLong_Pass_Data() {
+    private static Object[][] checkContainsLong_Pass_Data() {
         return new Object[][] {
                 { new long[] { 1 }, (long) 1 },
                 { new long[] { 1, 2 }, (long) 2 },
@@ -5483,7 +5483,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkContainsLong_Fail_Data() {
+    private static Object[][] checkContainsLong_Fail_Data() {
         return new Object[][] {
                 { new long[] { 1 }, (long) 99 },
                 { new long[] { 1, 2 }, (long) 99 },
@@ -5513,7 +5513,7 @@ public class ArrayArgsTest {
     //
     
     @DataProvider
-    private static Object[][] _checkContainsFloat_Pass_Data() {
+    private static Object[][] checkContainsFloat_Pass_Data() {
         return new Object[][] {
                 { new float[] { 1 }, (float) 1 },
                 { new float[] { 1, 2 }, (float) 2 },
@@ -5533,7 +5533,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkContainsFloat_Fail_Data() {
+    private static Object[][] checkContainsFloat_Fail_Data() {
         return new Object[][] {
                 { new float[] { 1 }, (float) 99 },
                 { new float[] { 1, 2 }, (float) 99 },
@@ -5563,7 +5563,7 @@ public class ArrayArgsTest {
     //
     
     @DataProvider
-    private static Object[][] _checkContainsDouble_Pass_Data() {
+    private static Object[][] checkContainsDouble_Pass_Data() {
         return new Object[][] {
                 { new double[] { 1 }, (double) 1 },
                 { new double[] { 1, 2 }, (double) 2 },
@@ -5583,7 +5583,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkContainsDouble_Fail_Data() {
+    private static Object[][] checkContainsDouble_Fail_Data() {
         return new Object[][] {
                 { new double[] { 1 }, (double) 99 },
                 { new double[] { 1, 2 }, (double) 99 },
@@ -5613,7 +5613,7 @@ public class ArrayArgsTest {
     //
     
     @DataProvider
-    private static Object[][] _checkContainsCharacter_Pass_Data() {
+    private static Object[][] checkContainsCharacter_Pass_Data() {
         return new Object[][] {
                 { new char[] { 'a' }, 'a' },
                 { new char[] { 'a', 'b' }, 'b' },
@@ -5633,7 +5633,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkContainsCharacter_Fail_Data() {
+    private static Object[][] checkContainsCharacter_Fail_Data() {
         return new Object[][] {
                 { new char[] { 'a' }, 'x' },
                 { new char[] { 'a', 'b' }, 'x' },
@@ -5663,7 +5663,7 @@ public class ArrayArgsTest {
     //
     
     @DataProvider
-    private static Object[][] _checkContainsBoolean_Pass_Data() {
+    private static Object[][] checkContainsBoolean_Pass_Data() {
         return new Object[][] {
                 { new boolean[] { true }, true },
                 { new boolean[] { true, false }, false },
@@ -5683,7 +5683,7 @@ public class ArrayArgsTest {
     }
     
     @DataProvider
-    private static Object[][] _checkContainsBoolean_Fail_Data() {
+    private static Object[][] checkContainsBoolean_Fail_Data() {
         return new Object[][] {
                 { new boolean[] { true }, false },
                 { new boolean[] { false }, true },
