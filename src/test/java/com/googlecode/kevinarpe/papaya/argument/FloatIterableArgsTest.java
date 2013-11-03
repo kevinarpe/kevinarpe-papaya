@@ -39,11 +39,11 @@ public class FloatIterableArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkPositive_Pass_Data() {
+    public static Object[][] checkPositive_Pass_Data() {
         return FloatArrayArgsTest.checkPositive_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkPositive_Pass_Data")
+    @Test(dataProvider = "checkPositive_Pass_Data")
     public void checkPositive_Pass(float[] arr) {
         Float[] arr2 = FloatArrayArgsTest.toFloatObjectArray(arr);
         List<Float> list = Arrays.asList(arr2);
@@ -90,11 +90,11 @@ public class FloatIterableArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNotPositive_Pass_Data() {
+    public static Object[][] checkNotPositive_Pass_Data() {
         return FloatArrayArgsTest.checkNotPositive_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkNotPositive_Pass_Data")
+    @Test(dataProvider = "checkNotPositive_Pass_Data")
     public void checkNotPositive_Pass(float[] arr) {
         Float[] arr2 = FloatArrayArgsTest.toFloatObjectArray(arr);
         List<Float> list = Arrays.asList(arr2);
@@ -141,11 +141,11 @@ public class FloatIterableArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNegative_Pass_Data() {
+    public static Object[][] checkNegative_Pass_Data() {
         return FloatArrayArgsTest.checkNegative_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkNegative_Pass_Data")
+    @Test(dataProvider = "checkNegative_Pass_Data")
     public void checkNegative_Pass(float[] arr) {
         Float[] arr2 = FloatArrayArgsTest.toFloatObjectArray(arr);
         List<Float> list = Arrays.asList(arr2);
@@ -192,11 +192,11 @@ public class FloatIterableArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNotNegative_Pass_Data() {
+    public static Object[][] checkNotNegative_Pass_Data() {
         return FloatArrayArgsTest.checkNotNegative_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkNotNegative_Pass_Data")
+    @Test(dataProvider = "checkNotNegative_Pass_Data")
     public void checkNotNegative_Pass(float[] arr) {
         Float[] arr2 = FloatArrayArgsTest.toFloatObjectArray(arr);
         List<Float> list = Arrays.asList(arr2);

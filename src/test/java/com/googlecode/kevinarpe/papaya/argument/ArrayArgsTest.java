@@ -31,8 +31,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
-
 public class ArrayArgsTest {
 
     @BeforeClass
@@ -67,7 +65,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeObject_Pass_Data")
+    @Test(dataProvider = "checkLengthRangeObject_Pass_Data")
     public <T> void checkLengthRangeObject_Pass(T ref[], int minLen, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
@@ -90,7 +88,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeObject_FailWithInvalidMinOrMaxLen_Data",
+    @Test(dataProvider = "checkLengthRangeObject_FailWithInvalidMinOrMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <T> void checkLengthRangeObject_FailWithInvalidMinOrMaxLen(
             T[] ref, int minLen, int maxLen) {
@@ -106,7 +104,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeObject_FailWithNullArray_Data",
+    @Test(dataProvider = "checkLengthRangeObject_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public <T> void checkLengthRangeObject_FailWithNullArray(T[] ref, int minLen, int maxLen) {
         ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
@@ -136,7 +134,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeByte_Pass_Data")
+    @Test(dataProvider = "checkLengthRangeByte_Pass_Data")
     public void checkLengthRangeByte_Pass(byte ref[], int minLen, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
@@ -159,7 +157,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeByte_FailWithInvalidMinOrMaxLen_Data",
+    @Test(dataProvider = "checkLengthRangeByte_FailWithInvalidMinOrMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkLengthRangeByte_FailWithInvalidMinOrMaxLen(
             byte[] ref, int minLen, int maxLen) {
@@ -175,7 +173,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeByte_FailWithNullArray_Data",
+    @Test(dataProvider = "checkLengthRangeByte_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkLengthRangeByte_FailWithNullArray(byte[] ref, int minLen, int maxLen) {
         ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
@@ -205,7 +203,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeShort_Pass_Data")
+    @Test(dataProvider = "checkLengthRangeShort_Pass_Data")
     public void checkLengthRangeShort_Pass(short ref[], int minLen, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
@@ -228,7 +226,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeShort_FailWithInvalidMinOrMaxLen_Data",
+    @Test(dataProvider = "checkLengthRangeShort_FailWithInvalidMinOrMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkLengthRangeShort_FailWithInvalidMinOrMaxLen(
             short[] ref, int minLen, int maxLen) {
@@ -244,7 +242,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeShort_FailWithNullArray_Data",
+    @Test(dataProvider = "checkLengthRangeShort_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkLengthRangeShort_FailWithNullArray(short[] ref, int minLen, int maxLen) {
         ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
@@ -274,7 +272,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeInteger_Pass_Data")
+    @Test(dataProvider = "checkLengthRangeInteger_Pass_Data")
     public void checkLengthRangeInteger_Pass(int ref[], int minLen, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
@@ -297,7 +295,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeInteger_FailWithInvalidMinOrMaxLen_Data",
+    @Test(dataProvider = "checkLengthRangeInteger_FailWithInvalidMinOrMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkLengthRangeInteger_FailWithInvalidMinOrMaxLen(
             int[] ref, int minLen, int maxLen) {
@@ -313,7 +311,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeInteger_FailWithNullArray_Data",
+    @Test(dataProvider = "checkLengthRangeInteger_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkLengthRangeInteger_FailWithNullArray(int[] ref, int minLen, int maxLen) {
         ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
@@ -343,7 +341,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeLong_Pass_Data")
+    @Test(dataProvider = "checkLengthRangeLong_Pass_Data")
     public void checkLengthRangeLong_Pass(long ref[], int minLen, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
@@ -366,7 +364,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeLong_FailWithInvalidMinOrMaxLen_Data",
+    @Test(dataProvider = "checkLengthRangeLong_FailWithInvalidMinOrMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkLengthRangeLong_FailWithInvalidMinOrMaxLen(
             long[] ref, int minLen, int maxLen) {
@@ -382,7 +380,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeLong_FailWithNullArray_Data",
+    @Test(dataProvider = "checkLengthRangeLong_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkLengthRangeLong_FailWithNullArray(long[] ref, int minLen, int maxLen) {
         ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
@@ -412,7 +410,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeFloat_Pass_Data")
+    @Test(dataProvider = "checkLengthRangeFloat_Pass_Data")
     public void checkLengthRangeFloat_Pass(float ref[], int minLen, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
@@ -435,7 +433,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeFloat_FailWithInvalidMinOrMaxLen_Data",
+    @Test(dataProvider = "checkLengthRangeFloat_FailWithInvalidMinOrMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkLengthRangeFloat_FailWithInvalidMinOrMaxLen(
             float[] ref, int minLen, int maxLen) {
@@ -451,7 +449,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeFloat_FailWithNullArray_Data",
+    @Test(dataProvider = "checkLengthRangeFloat_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkLengthRangeFloat_FailWithNullArray(float[] ref, int minLen, int maxLen) {
         ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
@@ -481,7 +479,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeDouble_Pass_Data")
+    @Test(dataProvider = "checkLengthRangeDouble_Pass_Data")
     public void checkLengthRangeDouble_Pass(double ref[], int minLen, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
@@ -504,7 +502,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeDouble_FailWithInvalidMinOrMaxLen_Data",
+    @Test(dataProvider = "checkLengthRangeDouble_FailWithInvalidMinOrMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkLengthRangeDouble_FailWithInvalidMinOrMaxLen(
             double[] ref, int minLen, int maxLen) {
@@ -520,7 +518,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeDouble_FailWithNullArray_Data",
+    @Test(dataProvider = "checkLengthRangeDouble_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkLengthRangeDouble_FailWithNullArray(double[] ref, int minLen, int maxLen) {
         ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
@@ -550,7 +548,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeCharacter_Pass_Data")
+    @Test(dataProvider = "checkLengthRangeCharacter_Pass_Data")
     public void checkLengthRangeCharacter_Pass(char ref[], int minLen, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
@@ -573,7 +571,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeCharacter_FailWithInvalidMinOrMaxLen_Data",
+    @Test(dataProvider = "checkLengthRangeCharacter_FailWithInvalidMinOrMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkLengthRangeCharacter_FailWithInvalidMinOrMaxLen(
             char[] ref, int minLen, int maxLen) {
@@ -589,7 +587,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeCharacter_FailWithNullArray_Data",
+    @Test(dataProvider = "checkLengthRangeCharacter_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkLengthRangeCharacter_FailWithNullArray(char[] ref, int minLen, int maxLen) {
         ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
@@ -619,7 +617,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeBoolean_Pass_Data")
+    @Test(dataProvider = "checkLengthRangeBoolean_Pass_Data")
     public void checkLengthRangeBoolean_Pass(boolean ref[], int minLen, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
@@ -642,7 +640,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeBoolean_FailWithInvalidMinOrMaxLen_Data",
+    @Test(dataProvider = "checkLengthRangeBoolean_FailWithInvalidMinOrMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkLengthRangeBoolean_FailWithInvalidMinOrMaxLen(
             boolean[] ref, int minLen, int maxLen) {
@@ -658,7 +656,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRangeBoolean_FailWithNullArray_Data",
+    @Test(dataProvider = "checkLengthRangeBoolean_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkLengthRangeBoolean_FailWithNullArray(boolean[] ref, int minLen, int maxLen) {
         ArrayArgs.checkLengthRange(ref, minLen, maxLen, "ref");
@@ -677,7 +675,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyObject_Pass_Data")
+    @Test(dataProvider = "checkNotEmptyObject_Pass_Data")
     public <T> void checkNotEmptyObject_Pass(T[] ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkNotEmpty(ref, "ref"));
@@ -695,7 +693,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyObject_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkNotEmptyObject_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <T> void checkNotEmptyObject_FailWithEmptyArray(T[] ref) {
         ArrayArgs.checkNotEmpty(ref, "ref");
@@ -719,7 +717,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyByte_Pass_Data")
+    @Test(dataProvider = "checkNotEmptyByte_Pass_Data")
     public void checkNotEmptyByte_Pass(byte[] ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkNotEmpty(ref, "ref"));
@@ -752,7 +750,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyShort_Pass_Data")
+    @Test(dataProvider = "checkNotEmptyShort_Pass_Data")
     public void checkNotEmptyShort_Pass(short[] ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkNotEmpty(ref, "ref"));
@@ -785,7 +783,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyInteger_Pass_Data")
+    @Test(dataProvider = "checkNotEmptyInteger_Pass_Data")
     public void checkNotEmptyInteger_Pass(int[] ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkNotEmpty(ref, "ref"));
@@ -818,7 +816,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyLong_Pass_Data")
+    @Test(dataProvider = "checkNotEmptyLong_Pass_Data")
     public void checkNotEmptyLong_Pass(long[] ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkNotEmpty(ref, "ref"));
@@ -851,7 +849,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyFloat_Pass_Data")
+    @Test(dataProvider = "checkNotEmptyFloat_Pass_Data")
     public void checkNotEmptyFloat_Pass(float[] ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkNotEmpty(ref, "ref"));
@@ -884,7 +882,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyDouble_Pass_Data")
+    @Test(dataProvider = "checkNotEmptyDouble_Pass_Data")
     public void checkNotEmptyDouble_Pass(double[] ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkNotEmpty(ref, "ref"));
@@ -917,7 +915,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyCharacter_Pass_Data")
+    @Test(dataProvider = "checkNotEmptyCharacter_Pass_Data")
     public void checkNotEmptyCharacter_Pass(char[] ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkNotEmpty(ref, "ref"));
@@ -950,7 +948,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyBoolean_Pass_Data")
+    @Test(dataProvider = "checkNotEmptyBoolean_Pass_Data")
     public void checkNotEmptyBoolean_Pass(boolean[] ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkNotEmpty(ref, "ref"));
@@ -986,7 +984,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthObject_Pass_Data")
+    @Test(dataProvider = "checkMinLengthObject_Pass_Data")
     public <T> void checkMinLengthObject_Pass(T[] ref, int minLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkMinLength(ref, minLen, "ref"));
@@ -1006,7 +1004,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthObject_FailWithInvalidMinLen_Data",
+    @Test(dataProvider = "checkMinLengthObject_FailWithInvalidMinLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <T> void checkMinLengthObject_FailWithInvalidMinLen(T[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
@@ -1021,7 +1019,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthObject_FailWithNullArray_Data",
+    @Test(dataProvider = "checkMinLengthObject_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public <T> void checkMinLengthObject_FailWithNullArray(T[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
@@ -1043,7 +1041,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthByte_Pass_Data")
+    @Test(dataProvider = "checkMinLengthByte_Pass_Data")
     public void checkMinLengthByte_Pass(byte[] ref, int minLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkMinLength(ref, minLen, "ref"));
@@ -1063,7 +1061,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthByte_FailWithInvalidMinLen_Data",
+    @Test(dataProvider = "checkMinLengthByte_FailWithInvalidMinLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMinLengthByte_FailWithInvalidMinLen(byte[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
@@ -1078,7 +1076,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthByte_FailWithNullArray_Data",
+    @Test(dataProvider = "checkMinLengthByte_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkMinLengthByte_FailWithNullArray(byte[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
@@ -1100,7 +1098,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthShort_Pass_Data")
+    @Test(dataProvider = "checkMinLengthShort_Pass_Data")
     public void checkMinLengthShort_Pass(short[] ref, int minLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkMinLength(ref, minLen, "ref"));
@@ -1120,7 +1118,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthShort_FailWithInvalidMinLen_Data",
+    @Test(dataProvider = "checkMinLengthShort_FailWithInvalidMinLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMinLengthShort_FailWithInvalidMinLen(short[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
@@ -1135,7 +1133,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthShort_FailWithNullArray_Data",
+    @Test(dataProvider = "checkMinLengthShort_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkMinLengthShort_FailWithNullArray(short[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
@@ -1157,7 +1155,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthInteger_Pass_Data")
+    @Test(dataProvider = "checkMinLengthInteger_Pass_Data")
     public void checkMinLengthInteger_Pass(int[] ref, int minLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkMinLength(ref, minLen, "ref"));
@@ -1177,7 +1175,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthInteger_FailWithInvalidMinLen_Data",
+    @Test(dataProvider = "checkMinLengthInteger_FailWithInvalidMinLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMinLengthInteger_FailWithInvalidMinLen(int[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
@@ -1192,7 +1190,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthInteger_FailWithNullArray_Data",
+    @Test(dataProvider = "checkMinLengthInteger_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkMinLengthInteger_FailWithNullArray(int[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
@@ -1214,7 +1212,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthLong_Pass_Data")
+    @Test(dataProvider = "checkMinLengthLong_Pass_Data")
     public void checkMinLengthLong_Pass(long[] ref, int minLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkMinLength(ref, minLen, "ref"));
@@ -1234,7 +1232,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthLong_FailWithInvalidMinLen_Data",
+    @Test(dataProvider = "checkMinLengthLong_FailWithInvalidMinLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMinLengthLong_FailWithInvalidMinLen(long[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
@@ -1249,7 +1247,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthLong_FailWithNullArray_Data",
+    @Test(dataProvider = "checkMinLengthLong_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkMinLengthLong_FailWithNullArray(long[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
@@ -1271,7 +1269,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthFloat_Pass_Data")
+    @Test(dataProvider = "checkMinLengthFloat_Pass_Data")
     public void checkMinLengthFloat_Pass(float[] ref, int minLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkMinLength(ref, minLen, "ref"));
@@ -1291,7 +1289,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthFloat_FailWithInvalidMinLen_Data",
+    @Test(dataProvider = "checkMinLengthFloat_FailWithInvalidMinLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMinLengthFloat_FailWithInvalidMinLen(float[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
@@ -1306,7 +1304,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthFloat_FailWithNullArray_Data",
+    @Test(dataProvider = "checkMinLengthFloat_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkMinLengthFloat_FailWithNullArray(float[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
@@ -1328,7 +1326,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthDouble_Pass_Data")
+    @Test(dataProvider = "checkMinLengthDouble_Pass_Data")
     public void checkMinLengthDouble_Pass(double[] ref, int minLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkMinLength(ref, minLen, "ref"));
@@ -1348,7 +1346,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthDouble_FailWithInvalidMinLen_Data",
+    @Test(dataProvider = "checkMinLengthDouble_FailWithInvalidMinLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMinLengthDouble_FailWithInvalidMinLen(double[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
@@ -1363,7 +1361,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthDouble_FailWithNullArray_Data",
+    @Test(dataProvider = "checkMinLengthDouble_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkMinLengthDouble_FailWithNullArray(double[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
@@ -1385,7 +1383,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthCharacter_Pass_Data")
+    @Test(dataProvider = "checkMinLengthCharacter_Pass_Data")
     public void checkMinLengthCharacter_Pass(char[] ref, int minLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkMinLength(ref, minLen, "ref"));
@@ -1405,7 +1403,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthCharacter_FailWithInvalidMinLen_Data",
+    @Test(dataProvider = "checkMinLengthCharacter_FailWithInvalidMinLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMinLengthCharacter_FailWithInvalidMinLen(char[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
@@ -1420,7 +1418,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthCharacter_FailWithNullArray_Data",
+    @Test(dataProvider = "checkMinLengthCharacter_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkMinLengthCharacter_FailWithNullArray(char[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
@@ -1442,7 +1440,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthBoolean_Pass_Data")
+    @Test(dataProvider = "checkMinLengthBoolean_Pass_Data")
     public void checkMinLengthBoolean_Pass(boolean[] ref, int minLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkMinLength(ref, minLen, "ref"));
@@ -1462,7 +1460,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthBoolean_FailWithInvalidMinLen_Data",
+    @Test(dataProvider = "checkMinLengthBoolean_FailWithInvalidMinLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMinLengthBoolean_FailWithInvalidMinLen(boolean[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
@@ -1477,7 +1475,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLengthBoolean_FailWithNullArray_Data",
+    @Test(dataProvider = "checkMinLengthBoolean_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkMinLengthBoolean_FailWithNullArray(boolean[] ref, int minLen) {
         ArrayArgs.checkMinLength(ref, minLen, "ref");
@@ -1499,7 +1497,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthObject_Pass_Data")
+    @Test(dataProvider = "checkMaxLengthObject_Pass_Data")
     public <T> void checkMaxLengthObject_Pass(T[] ref, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkMaxLength(ref, maxLen, "ref"));
@@ -1518,7 +1516,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthObject_FailWithInvalidMaxLen_Data",
+    @Test(dataProvider = "checkMaxLengthObject_FailWithInvalidMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <T> void checkMaxLengthObject_FailWithInvalidMaxLen(T[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
@@ -1533,7 +1531,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthObject_FailWithNullArray_Data",
+    @Test(dataProvider = "checkMaxLengthObject_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public <T> void checkMaxLengthObject_FailWithNullArray(T[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
@@ -1555,7 +1553,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthByte_Pass_Data")
+    @Test(dataProvider = "checkMaxLengthByte_Pass_Data")
     public void checkMaxLengthByte_Pass(byte[] ref, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkMaxLength(ref, maxLen, "ref"));
@@ -1574,7 +1572,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthByte_FailWithInvalidMaxLen_Data",
+    @Test(dataProvider = "checkMaxLengthByte_FailWithInvalidMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMaxLengthByte_FailWithInvalidMaxLen(byte[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
@@ -1589,7 +1587,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthByte_FailWithNullArray_Data",
+    @Test(dataProvider = "checkMaxLengthByte_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkMaxLengthByte_FailWithNullArray(byte[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
@@ -1611,7 +1609,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthShort_Pass_Data")
+    @Test(dataProvider = "checkMaxLengthShort_Pass_Data")
     public void checkMaxLengthShort_Pass(short[] ref, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkMaxLength(ref, maxLen, "ref"));
@@ -1630,7 +1628,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthShort_FailWithInvalidMaxLen_Data",
+    @Test(dataProvider = "checkMaxLengthShort_FailWithInvalidMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMaxLengthShort_FailWithInvalidMaxLen(short[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
@@ -1645,7 +1643,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthShort_FailWithNullArray_Data",
+    @Test(dataProvider = "checkMaxLengthShort_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkMaxLengthShort_FailWithNullArray(short[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
@@ -1667,7 +1665,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthInteger_Pass_Data")
+    @Test(dataProvider = "checkMaxLengthInteger_Pass_Data")
     public void checkMaxLengthInteger_Pass(int[] ref, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkMaxLength(ref, maxLen, "ref"));
@@ -1686,7 +1684,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthInteger_FailWithInvalidMaxLen_Data",
+    @Test(dataProvider = "checkMaxLengthInteger_FailWithInvalidMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMaxLengthInteger_FailWithInvalidMaxLen(int[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
@@ -1701,7 +1699,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthInteger_FailWithNullArray_Data",
+    @Test(dataProvider = "checkMaxLengthInteger_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkMaxLengthInteger_FailWithNullArray(int[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
@@ -1723,7 +1721,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthLong_Pass_Data")
+    @Test(dataProvider = "checkMaxLengthLong_Pass_Data")
     public void checkMaxLengthLong_Pass(long[] ref, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkMaxLength(ref, maxLen, "ref"));
@@ -1742,7 +1740,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthLong_FailWithInvalidMaxLen_Data",
+    @Test(dataProvider = "checkMaxLengthLong_FailWithInvalidMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMaxLengthLong_FailWithInvalidMaxLen(long[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
@@ -1757,7 +1755,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthLong_FailWithNullArray_Data",
+    @Test(dataProvider = "checkMaxLengthLong_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkMaxLengthLong_FailWithNullArray(long[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
@@ -1779,7 +1777,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthFloat_Pass_Data")
+    @Test(dataProvider = "checkMaxLengthFloat_Pass_Data")
     public void checkMaxLengthFloat_Pass(float[] ref, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkMaxLength(ref, maxLen, "ref"));
@@ -1798,7 +1796,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthFloat_FailWithInvalidMaxLen_Data",
+    @Test(dataProvider = "checkMaxLengthFloat_FailWithInvalidMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMaxLengthFloat_FailWithInvalidMaxLen(float[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
@@ -1813,7 +1811,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthFloat_FailWithNullArray_Data",
+    @Test(dataProvider = "checkMaxLengthFloat_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkMaxLengthFloat_FailWithNullArray(float[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
@@ -1835,7 +1833,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthDouble_Pass_Data")
+    @Test(dataProvider = "checkMaxLengthDouble_Pass_Data")
     public void checkMaxLengthDouble_Pass(double[] ref, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkMaxLength(ref, maxLen, "ref"));
@@ -1854,7 +1852,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthDouble_FailWithInvalidMaxLen_Data",
+    @Test(dataProvider = "checkMaxLengthDouble_FailWithInvalidMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMaxLengthDouble_FailWithInvalidMaxLen(double[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
@@ -1869,7 +1867,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthDouble_FailWithNullArray_Data",
+    @Test(dataProvider = "checkMaxLengthDouble_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkMaxLengthDouble_FailWithNullArray(double[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
@@ -1891,7 +1889,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthCharacter_Pass_Data")
+    @Test(dataProvider = "checkMaxLengthCharacter_Pass_Data")
     public void checkMaxLengthCharacter_Pass(char[] ref, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkMaxLength(ref, maxLen, "ref"));
@@ -1910,7 +1908,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthCharacter_FailWithInvalidMaxLen_Data",
+    @Test(dataProvider = "checkMaxLengthCharacter_FailWithInvalidMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMaxLengthCharacter_FailWithInvalidMaxLen(char[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
@@ -1925,7 +1923,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthCharacter_FailWithNullArray_Data",
+    @Test(dataProvider = "checkMaxLengthCharacter_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkMaxLengthCharacter_FailWithNullArray(char[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
@@ -1947,7 +1945,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthBoolean_Pass_Data")
+    @Test(dataProvider = "checkMaxLengthBoolean_Pass_Data")
     public void checkMaxLengthBoolean_Pass(boolean[] ref, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkMaxLength(ref, maxLen, "ref"));
@@ -1966,7 +1964,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthBoolean_FailWithInvalidMaxLen_Data",
+    @Test(dataProvider = "checkMaxLengthBoolean_FailWithInvalidMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMaxLengthBoolean_FailWithInvalidMaxLen(boolean[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
@@ -1981,7 +1979,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLengthBoolean_FailWithNullArray_Data",
+    @Test(dataProvider = "checkMaxLengthBoolean_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkMaxLengthBoolean_FailWithNullArray(boolean[] ref, int maxLen) {
         ArrayArgs.checkMaxLength(ref, maxLen, "ref");
@@ -2000,7 +1998,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthObject_Pass_Data")
+    @Test(dataProvider = "checkExactLengthObject_Pass_Data")
     public <T> void checkExactLengthObject_Pass(T[] ref, int exactLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkExactLength(ref, exactLen, "ref"));
@@ -2020,7 +2018,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthObject_FailWithInvalidExactLen_Data",
+    @Test(dataProvider = "checkExactLengthObject_FailWithInvalidExactLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <T> void checkExactLengthObject_FailWithInvalidExactLen(T[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
@@ -2035,7 +2033,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthObject_FailWithNullArray_Data",
+    @Test(dataProvider = "checkExactLengthObject_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public <T> void checkExactLengthObject_FailWithNullArray(T[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
@@ -2054,7 +2052,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthByte_Pass_Data")
+    @Test(dataProvider = "checkExactLengthByte_Pass_Data")
     public void checkExactLengthByte_Pass(byte[] ref, int exactLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkExactLength(ref, exactLen, "ref"));
@@ -2074,7 +2072,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthByte_FailWithInvalidExactLen_Data",
+    @Test(dataProvider = "checkExactLengthByte_FailWithInvalidExactLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkExactLengthByte_FailWithInvalidExactLen(byte[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
@@ -2089,7 +2087,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthByte_FailWithNullArray_Data",
+    @Test(dataProvider = "checkExactLengthByte_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkExactLengthByte_FailWithNullArray(byte[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
@@ -2108,7 +2106,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthShort_Pass_Data")
+    @Test(dataProvider = "checkExactLengthShort_Pass_Data")
     public void checkExactLengthShort_Pass(short[] ref, int exactLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkExactLength(ref, exactLen, "ref"));
@@ -2128,7 +2126,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthShort_FailWithInvalidExactLen_Data",
+    @Test(dataProvider = "checkExactLengthShort_FailWithInvalidExactLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkExactLengthShort_FailWithInvalidExactLen(short[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
@@ -2143,7 +2141,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthShort_FailWithNullArray_Data",
+    @Test(dataProvider = "checkExactLengthShort_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkExactLengthShort_FailWithNullArray(short[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
@@ -2162,7 +2160,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthInteger_Pass_Data")
+    @Test(dataProvider = "checkExactLengthInteger_Pass_Data")
     public void checkExactLengthInteger_Pass(int[] ref, int exactLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkExactLength(ref, exactLen, "ref"));
@@ -2182,7 +2180,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthInteger_FailWithInvalidExactLen_Data",
+    @Test(dataProvider = "checkExactLengthInteger_FailWithInvalidExactLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkExactLengthInteger_FailWithInvalidExactLen(int[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
@@ -2197,7 +2195,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthInteger_FailWithNullArray_Data",
+    @Test(dataProvider = "checkExactLengthInteger_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkExactLengthInteger_FailWithNullArray(int[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
@@ -2216,7 +2214,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthLong_Pass_Data")
+    @Test(dataProvider = "checkExactLengthLong_Pass_Data")
     public void checkExactLengthLong_Pass(long[] ref, int exactLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkExactLength(ref, exactLen, "ref"));
@@ -2236,7 +2234,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthLong_FailWithInvalidExactLen_Data",
+    @Test(dataProvider = "checkExactLengthLong_FailWithInvalidExactLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkExactLengthLong_FailWithInvalidExactLen(long[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
@@ -2251,7 +2249,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthLong_FailWithNullArray_Data",
+    @Test(dataProvider = "checkExactLengthLong_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkExactLengthLong_FailWithNullArray(long[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
@@ -2270,7 +2268,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthFloat_Pass_Data")
+    @Test(dataProvider = "checkExactLengthFloat_Pass_Data")
     public void checkExactLengthFloat_Pass(float[] ref, int exactLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkExactLength(ref, exactLen, "ref"));
@@ -2290,7 +2288,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthFloat_FailWithInvalidExactLen_Data",
+    @Test(dataProvider = "checkExactLengthFloat_FailWithInvalidExactLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkExactLengthFloat_FailWithInvalidExactLen(float[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
@@ -2305,7 +2303,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthFloat_FailWithNullArray_Data",
+    @Test(dataProvider = "checkExactLengthFloat_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkExactLengthFloat_FailWithNullArray(float[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
@@ -2324,7 +2322,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthDouble_Pass_Data")
+    @Test(dataProvider = "checkExactLengthDouble_Pass_Data")
     public void checkExactLengthDouble_Pass(double[] ref, int exactLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkExactLength(ref, exactLen, "ref"));
@@ -2344,7 +2342,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthDouble_FailWithInvalidExactLen_Data",
+    @Test(dataProvider = "checkExactLengthDouble_FailWithInvalidExactLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkExactLengthDouble_FailWithInvalidExactLen(double[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
@@ -2359,7 +2357,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthDouble_FailWithNullArray_Data",
+    @Test(dataProvider = "checkExactLengthDouble_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkExactLengthDouble_FailWithNullArray(double[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
@@ -2378,7 +2376,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthCharacter_Pass_Data")
+    @Test(dataProvider = "checkExactLengthCharacter_Pass_Data")
     public void checkExactLengthCharacter_Pass(char[] ref, int exactLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkExactLength(ref, exactLen, "ref"));
@@ -2398,7 +2396,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthCharacter_FailWithInvalidExactLen_Data",
+    @Test(dataProvider = "checkExactLengthCharacter_FailWithInvalidExactLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkExactLengthCharacter_FailWithInvalidExactLen(char[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
@@ -2413,7 +2411,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthCharacter_FailWithNullArray_Data",
+    @Test(dataProvider = "checkExactLengthCharacter_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkExactLengthCharacter_FailWithNullArray(char[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
@@ -2432,7 +2430,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthBoolean_Pass_Data")
+    @Test(dataProvider = "checkExactLengthBoolean_Pass_Data")
     public void checkExactLengthBoolean_Pass(boolean[] ref, int exactLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkExactLength(ref, exactLen, "ref"));
@@ -2452,7 +2450,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthBoolean_FailWithInvalidExactLen_Data",
+    @Test(dataProvider = "checkExactLengthBoolean_FailWithInvalidExactLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkExactLengthBoolean_FailWithInvalidExactLen(boolean[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
@@ -2467,7 +2465,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLengthBoolean_FailWithNullArray_Data",
+    @Test(dataProvider = "checkExactLengthBoolean_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkExactLengthBoolean_FailWithNullArray(boolean[] ref, int exactLen) {
         ArrayArgs.checkExactLength(ref, exactLen, "ref");
@@ -2486,7 +2484,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkElementsNotNull_Pass_Data")
+    @Test(dataProvider = "checkElementsNotNull_Pass_Data")
     public <T> void checkElementsNotNull_Pass(T[] ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkElementsNotNull(ref, "ref"));
@@ -2508,7 +2506,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkElementsNotNull_FailWithNullElements_Data",
+    @Test(dataProvider = "checkElementsNotNull_FailWithNullElements_Data",
             expectedExceptions = NullPointerException.class)
     public <T> void checkElementsNotNull_FailWithNullElements(T[] ref) {
         ArrayArgs.checkElementsNotNull(ref, "ref");
@@ -2532,7 +2530,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyAndElementsNotNull_Pass_Data")
+    @Test(dataProvider = "checkNotEmptyAndElementsNotNull_Pass_Data")
     public <T> void checkNotEmptyAndElementsNotNull_Pass(T[] ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == ArrayArgs.checkNotEmptyAndElementsNotNull(ref, "ref"));
@@ -2554,7 +2552,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyAndElementsNotNull_FailWithNullElements_Data",
+    @Test(dataProvider = "checkNotEmptyAndElementsNotNull_FailWithNullElements_Data",
             expectedExceptions = NullPointerException.class)
     public <T> void checkNotEmptyAndElementsNotNull_FailWithNullElements(T[] ref) {
         ArrayArgs.checkNotEmptyAndElementsNotNull(ref, "ref");
@@ -2583,7 +2581,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexObject_Pass_Data")
+    @Test(dataProvider = "checkAccessIndexObject_Pass_Data")
     public <T> void checkAccessIndexObject_Pass(T[] ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == ArrayArgs.checkAccessIndex(ref, index, "ref", "index"));
@@ -2602,7 +2600,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkAccessIndexObject_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkAccessIndexObject_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <T> void checkAccessIndexObject_FailWithEmptyArray(T[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -2619,7 +2617,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexObject_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkAccessIndexObject_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public <T> void checkAccessIndexObject_FailWithInvalidIndex(T[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -2634,7 +2632,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexObject_FailWithNullArray_Data",
+    @Test(dataProvider = "checkAccessIndexObject_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public <T> void checkAccessIndexObject_FailWithNullArray(T[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -2653,7 +2651,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexByte_Pass_Data")
+    @Test(dataProvider = "checkAccessIndexByte_Pass_Data")
     public void checkAccessIndexByte_Pass(byte[] ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == ArrayArgs.checkAccessIndex(ref, index, "ref", "index"));
@@ -2672,7 +2670,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkAccessIndexByte_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkAccessIndexByte_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkAccessIndexByte_FailWithEmptyArray(byte[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -2689,7 +2687,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexByte_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkAccessIndexByte_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkAccessIndexByte_FailWithInvalidIndex(byte[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -2704,7 +2702,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexByte_FailWithNullArray_Data",
+    @Test(dataProvider = "checkAccessIndexByte_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkAccessIndexByte_FailWithNullArray(byte[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -2723,7 +2721,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexShort_Pass_Data")
+    @Test(dataProvider = "checkAccessIndexShort_Pass_Data")
     public void checkAccessIndexShort_Pass(short[] ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == ArrayArgs.checkAccessIndex(ref, index, "ref", "index"));
@@ -2742,7 +2740,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkAccessIndexShort_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkAccessIndexShort_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkAccessIndexShort_FailWithEmptyArray(short[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -2759,7 +2757,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexShort_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkAccessIndexShort_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkAccessIndexShort_FailWithInvalidIndex(short[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -2774,7 +2772,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexShort_FailWithNullArray_Data",
+    @Test(dataProvider = "checkAccessIndexShort_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkAccessIndexShort_FailWithNullArray(short[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -2793,7 +2791,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexInteger_Pass_Data")
+    @Test(dataProvider = "checkAccessIndexInteger_Pass_Data")
     public void checkAccessIndexInteger_Pass(int[] ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == ArrayArgs.checkAccessIndex(ref, index, "ref", "index"));
@@ -2812,7 +2810,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkAccessIndexInteger_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkAccessIndexInteger_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkAccessIndexInteger_FailWithEmptyArray(int[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -2829,7 +2827,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexInteger_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkAccessIndexInteger_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkAccessIndexInteger_FailWithInvalidIndex(int[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -2844,7 +2842,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexInteger_FailWithNullArray_Data",
+    @Test(dataProvider = "checkAccessIndexInteger_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkAccessIndexInteger_FailWithNullArray(int[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -2863,7 +2861,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexLong_Pass_Data")
+    @Test(dataProvider = "checkAccessIndexLong_Pass_Data")
     public void checkAccessIndexLong_Pass(long[] ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == ArrayArgs.checkAccessIndex(ref, index, "ref", "index"));
@@ -2882,7 +2880,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkAccessIndexLong_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkAccessIndexLong_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkAccessIndexLong_FailWithEmptyArray(long[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -2899,7 +2897,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexLong_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkAccessIndexLong_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkAccessIndexLong_FailWithInvalidIndex(long[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -2914,7 +2912,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexLong_FailWithNullArray_Data",
+    @Test(dataProvider = "checkAccessIndexLong_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkAccessIndexLong_FailWithNullArray(long[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -2933,7 +2931,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexFloat_Pass_Data")
+    @Test(dataProvider = "checkAccessIndexFloat_Pass_Data")
     public void checkAccessIndexFloat_Pass(float[] ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == ArrayArgs.checkAccessIndex(ref, index, "ref", "index"));
@@ -2952,7 +2950,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkAccessIndexFloat_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkAccessIndexFloat_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkAccessIndexFloat_FailWithEmptyArray(float[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -2969,7 +2967,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexFloat_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkAccessIndexFloat_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkAccessIndexFloat_FailWithInvalidIndex(float[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -2984,7 +2982,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexFloat_FailWithNullArray_Data",
+    @Test(dataProvider = "checkAccessIndexFloat_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkAccessIndexFloat_FailWithNullArray(float[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -3003,7 +3001,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexDouble_Pass_Data")
+    @Test(dataProvider = "checkAccessIndexDouble_Pass_Data")
     public void checkAccessIndexDouble_Pass(double[] ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == ArrayArgs.checkAccessIndex(ref, index, "ref", "index"));
@@ -3022,7 +3020,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkAccessIndexDouble_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkAccessIndexDouble_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkAccessIndexDouble_FailWithEmptyArray(double[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -3039,7 +3037,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexDouble_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkAccessIndexDouble_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkAccessIndexDouble_FailWithInvalidIndex(double[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -3054,7 +3052,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexDouble_FailWithNullArray_Data",
+    @Test(dataProvider = "checkAccessIndexDouble_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkAccessIndexDouble_FailWithNullArray(double[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -3073,7 +3071,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexCharacter_Pass_Data")
+    @Test(dataProvider = "checkAccessIndexCharacter_Pass_Data")
     public void checkAccessIndexCharacter_Pass(char[] ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == ArrayArgs.checkAccessIndex(ref, index, "ref", "index"));
@@ -3092,7 +3090,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkAccessIndexCharacter_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkAccessIndexCharacter_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkAccessIndexCharacter_FailWithEmptyArray(char[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -3109,7 +3107,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexCharacter_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkAccessIndexCharacter_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkAccessIndexCharacter_FailWithInvalidIndex(char[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -3124,7 +3122,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexCharacter_FailWithNullArray_Data",
+    @Test(dataProvider = "checkAccessIndexCharacter_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkAccessIndexCharacter_FailWithNullArray(char[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -3143,7 +3141,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexBoolean_Pass_Data")
+    @Test(dataProvider = "checkAccessIndexBoolean_Pass_Data")
     public void checkAccessIndexBoolean_Pass(boolean[] ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == ArrayArgs.checkAccessIndex(ref, index, "ref", "index"));
@@ -3162,7 +3160,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkAccessIndexBoolean_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkAccessIndexBoolean_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkAccessIndexBoolean_FailWithEmptyArray(boolean[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -3179,7 +3177,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexBoolean_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkAccessIndexBoolean_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkAccessIndexBoolean_FailWithInvalidIndex(boolean[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -3194,7 +3192,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndexBoolean_FailWithNullArray_Data",
+    @Test(dataProvider = "checkAccessIndexBoolean_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkAccessIndexBoolean_FailWithNullArray(boolean[] ref, int index) {
         ArrayArgs.checkAccessIndex(ref, index, "ref", "index");
@@ -3216,7 +3214,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexObject_Pass_Data")
+    @Test(dataProvider = "checkInsertIndexObject_Pass_Data")
     public <T> void checkInsertIndexObject_Pass(T[] ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == ArrayArgs.checkInsertIndex(ref, index, "ref", "index"));
@@ -3239,7 +3237,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexObject_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkInsertIndexObject_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public <T> void checkInsertIndexObject_FailWithInvalidIndex(T[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -3254,7 +3252,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexObject_FailWithNullArray_Data",
+    @Test(dataProvider = "checkInsertIndexObject_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public <T> void checkInsertIndexObject_FailWithNullArray(T[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -3276,7 +3274,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexByte_Pass_Data")
+    @Test(dataProvider = "checkInsertIndexByte_Pass_Data")
     public void checkInsertIndexByte_Pass(byte[] ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == ArrayArgs.checkInsertIndex(ref, index, "ref", "index"));
@@ -3299,7 +3297,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexByte_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkInsertIndexByte_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkInsertIndexByte_FailWithInvalidIndex(byte[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -3314,7 +3312,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexByte_FailWithNullArray_Data",
+    @Test(dataProvider = "checkInsertIndexByte_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkInsertIndexByte_FailWithNullArray(byte[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -3336,7 +3334,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexShort_Pass_Data")
+    @Test(dataProvider = "checkInsertIndexShort_Pass_Data")
     public void checkInsertIndexShort_Pass(short[] ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == ArrayArgs.checkInsertIndex(ref, index, "ref", "index"));
@@ -3359,7 +3357,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexShort_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkInsertIndexShort_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkInsertIndexShort_FailWithInvalidIndex(short[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -3374,7 +3372,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexShort_FailWithNullArray_Data",
+    @Test(dataProvider = "checkInsertIndexShort_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkInsertIndexShort_FailWithNullArray(short[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -3396,7 +3394,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexInteger_Pass_Data")
+    @Test(dataProvider = "checkInsertIndexInteger_Pass_Data")
     public void checkInsertIndexInteger_Pass(int[] ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == ArrayArgs.checkInsertIndex(ref, index, "ref", "index"));
@@ -3419,7 +3417,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexInteger_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkInsertIndexInteger_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkInsertIndexInteger_FailWithInvalidIndex(int[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -3434,7 +3432,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexInteger_FailWithNullArray_Data",
+    @Test(dataProvider = "checkInsertIndexInteger_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkInsertIndexInteger_FailWithNullArray(int[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -3456,7 +3454,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexLong_Pass_Data")
+    @Test(dataProvider = "checkInsertIndexLong_Pass_Data")
     public void checkInsertIndexLong_Pass(long[] ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == ArrayArgs.checkInsertIndex(ref, index, "ref", "index"));
@@ -3479,7 +3477,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexLong_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkInsertIndexLong_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkInsertIndexLong_FailWithInvalidIndex(long[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -3494,7 +3492,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexLong_FailWithNullArray_Data",
+    @Test(dataProvider = "checkInsertIndexLong_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkInsertIndexLong_FailWithNullArray(long[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -3516,7 +3514,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexFloat_Pass_Data")
+    @Test(dataProvider = "checkInsertIndexFloat_Pass_Data")
     public void checkInsertIndexFloat_Pass(float[] ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == ArrayArgs.checkInsertIndex(ref, index, "ref", "index"));
@@ -3539,7 +3537,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexFloat_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkInsertIndexFloat_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkInsertIndexFloat_FailWithInvalidIndex(float[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -3554,7 +3552,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexFloat_FailWithNullArray_Data",
+    @Test(dataProvider = "checkInsertIndexFloat_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkInsertIndexFloat_FailWithNullArray(float[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -3576,7 +3574,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexDouble_Pass_Data")
+    @Test(dataProvider = "checkInsertIndexDouble_Pass_Data")
     public void checkInsertIndexDouble_Pass(double[] ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == ArrayArgs.checkInsertIndex(ref, index, "ref", "index"));
@@ -3599,7 +3597,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexDouble_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkInsertIndexDouble_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkInsertIndexDouble_FailWithInvalidIndex(double[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -3614,7 +3612,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexDouble_FailWithNullArray_Data",
+    @Test(dataProvider = "checkInsertIndexDouble_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkInsertIndexDouble_FailWithNullArray(double[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -3636,7 +3634,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexCharacter_Pass_Data")
+    @Test(dataProvider = "checkInsertIndexCharacter_Pass_Data")
     public void checkInsertIndexCharacter_Pass(char[] ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == ArrayArgs.checkInsertIndex(ref, index, "ref", "index"));
@@ -3659,7 +3657,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexCharacter_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkInsertIndexCharacter_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkInsertIndexCharacter_FailWithInvalidIndex(char[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -3674,7 +3672,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexCharacter_FailWithNullArray_Data",
+    @Test(dataProvider = "checkInsertIndexCharacter_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkInsertIndexCharacter_FailWithNullArray(char[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -3696,7 +3694,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexBoolean_Pass_Data")
+    @Test(dataProvider = "checkInsertIndexBoolean_Pass_Data")
     public void checkInsertIndexBoolean_Pass(boolean[] ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == ArrayArgs.checkInsertIndex(ref, index, "ref", "index"));
@@ -3719,7 +3717,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexBoolean_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkInsertIndexBoolean_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkInsertIndexBoolean_FailWithInvalidIndex(boolean[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -3734,7 +3732,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndexBoolean_FailWithNullArray_Data",
+    @Test(dataProvider = "checkInsertIndexBoolean_FailWithNullArray_Data",
             expectedExceptions = NullPointerException.class)
     public void checkInsertIndexBoolean_FailWithNullArray(boolean[] ref, int index) {
         ArrayArgs.checkInsertIndex(ref, index, "ref", "index");
@@ -3757,7 +3755,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountObject_Pass_Data")
+    @Test(dataProvider = "checkIndexAndCountObject_Pass_Data")
     public <T> void checkIndexAndCountObject_Pass(T[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
         // Demonstrate argName can be anything ridiculous.
@@ -3775,7 +3773,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkIndexAndCountObject_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkIndexAndCountObject_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <T> void checkIndexAndCountObject_FailWithEmptyArray(T[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -3792,7 +3790,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountObject_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkIndexAndCountObject_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public <T> void checkIndexAndCountObject_FailWithInvalidIndex(
             T[] ref, int index, int count) {
@@ -3808,7 +3806,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountObject_FailWithNegativeCount_Data",
+    @Test(dataProvider = "checkIndexAndCountObject_FailWithNegativeCount_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <T> void checkIndexAndCountObject_FailWithNegativeCount(
             T[] ref, int index, int count) {
@@ -3827,7 +3825,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountObject_FailWithInvalidCount_Data",
+    @Test(dataProvider = "checkIndexAndCountObject_FailWithInvalidCount_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public <T> void checkIndexAndCountObject_FailWithInvalidCount(
             T[] ref, int index, int count) {
@@ -3856,7 +3854,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountByte_Pass_Data")
+    @Test(dataProvider = "checkIndexAndCountByte_Pass_Data")
     public void checkIndexAndCountByte_Pass(byte[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
         // Demonstrate argName can be anything ridiculous.
@@ -3874,7 +3872,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkIndexAndCountByte_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkIndexAndCountByte_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountByte_FailWithEmptyArray(byte[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -3891,7 +3889,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountByte_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkIndexAndCountByte_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCountByte_FailWithInvalidIndex(
             byte[] ref, int index, int count) {
@@ -3907,7 +3905,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountByte_FailWithNegativeCount_Data",
+    @Test(dataProvider = "checkIndexAndCountByte_FailWithNegativeCount_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountByte_FailWithNegativeCount(
             byte[] ref, int index, int count) {
@@ -3926,7 +3924,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountByte_FailWithInvalidCount_Data",
+    @Test(dataProvider = "checkIndexAndCountByte_FailWithInvalidCount_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCountByte_FailWithInvalidCount(
             byte[] ref, int index, int count) {
@@ -3955,7 +3953,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountShort_Pass_Data")
+    @Test(dataProvider = "checkIndexAndCountShort_Pass_Data")
     public void checkIndexAndCountShort_Pass(short[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
         // Demonstrate argName can be anything ridiculous.
@@ -3973,7 +3971,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkIndexAndCountShort_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkIndexAndCountShort_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountShort_FailWithEmptyArray(short[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -3990,7 +3988,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountShort_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkIndexAndCountShort_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCountShort_FailWithInvalidIndex(
             short[] ref, int index, int count) {
@@ -4006,7 +4004,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountShort_FailWithNegativeCount_Data",
+    @Test(dataProvider = "checkIndexAndCountShort_FailWithNegativeCount_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountShort_FailWithNegativeCount(
             short[] ref, int index, int count) {
@@ -4025,7 +4023,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountShort_FailWithInvalidCount_Data",
+    @Test(dataProvider = "checkIndexAndCountShort_FailWithInvalidCount_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCountShort_FailWithInvalidCount(
             short[] ref, int index, int count) {
@@ -4054,7 +4052,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountInteger_Pass_Data")
+    @Test(dataProvider = "checkIndexAndCountInteger_Pass_Data")
     public void checkIndexAndCountInteger_Pass(int[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
         // Demonstrate argName can be anything ridiculous.
@@ -4072,7 +4070,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkIndexAndCountInteger_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkIndexAndCountInteger_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountInteger_FailWithEmptyArray(int[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -4089,7 +4087,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountInteger_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkIndexAndCountInteger_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCountInteger_FailWithInvalidIndex(
             int[] ref, int index, int count) {
@@ -4105,7 +4103,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountInteger_FailWithNegativeCount_Data",
+    @Test(dataProvider = "checkIndexAndCountInteger_FailWithNegativeCount_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountInteger_FailWithNegativeCount(
             int[] ref, int index, int count) {
@@ -4124,7 +4122,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountInteger_FailWithInvalidCount_Data",
+    @Test(dataProvider = "checkIndexAndCountInteger_FailWithInvalidCount_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCountInteger_FailWithInvalidCount(
             int[] ref, int index, int count) {
@@ -4153,7 +4151,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountLong_Pass_Data")
+    @Test(dataProvider = "checkIndexAndCountLong_Pass_Data")
     public void checkIndexAndCountLong_Pass(long[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
         // Demonstrate argName can be anything ridiculous.
@@ -4171,7 +4169,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkIndexAndCountLong_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkIndexAndCountLong_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountLong_FailWithEmptyArray(long[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -4188,7 +4186,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountLong_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkIndexAndCountLong_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCountLong_FailWithInvalidIndex(
             long[] ref, int index, int count) {
@@ -4204,7 +4202,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountLong_FailWithNegativeCount_Data",
+    @Test(dataProvider = "checkIndexAndCountLong_FailWithNegativeCount_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountLong_FailWithNegativeCount(
             long[] ref, int index, int count) {
@@ -4223,7 +4221,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountLong_FailWithInvalidCount_Data",
+    @Test(dataProvider = "checkIndexAndCountLong_FailWithInvalidCount_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCountLong_FailWithInvalidCount(
             long[] ref, int index, int count) {
@@ -4252,7 +4250,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountFloat_Pass_Data")
+    @Test(dataProvider = "checkIndexAndCountFloat_Pass_Data")
     public void checkIndexAndCountFloat_Pass(float[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
         // Demonstrate argName can be anything ridiculous.
@@ -4270,7 +4268,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkIndexAndCountFloat_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkIndexAndCountFloat_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountFloat_FailWithEmptyArray(float[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -4287,7 +4285,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountFloat_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkIndexAndCountFloat_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCountFloat_FailWithInvalidIndex(
             float[] ref, int index, int count) {
@@ -4303,7 +4301,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountFloat_FailWithNegativeCount_Data",
+    @Test(dataProvider = "checkIndexAndCountFloat_FailWithNegativeCount_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountFloat_FailWithNegativeCount(
             float[] ref, int index, int count) {
@@ -4322,7 +4320,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountFloat_FailWithInvalidCount_Data",
+    @Test(dataProvider = "checkIndexAndCountFloat_FailWithInvalidCount_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCountFloat_FailWithInvalidCount(
             float[] ref, int index, int count) {
@@ -4351,7 +4349,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountDouble_Pass_Data")
+    @Test(dataProvider = "checkIndexAndCountDouble_Pass_Data")
     public void checkIndexAndCountDouble_Pass(double[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
         // Demonstrate argName can be anything ridiculous.
@@ -4369,7 +4367,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkIndexAndCountDouble_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkIndexAndCountDouble_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountDouble_FailWithEmptyArray(double[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -4386,7 +4384,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountDouble_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkIndexAndCountDouble_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCountDouble_FailWithInvalidIndex(
             double[] ref, int index, int count) {
@@ -4402,7 +4400,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountDouble_FailWithNegativeCount_Data",
+    @Test(dataProvider = "checkIndexAndCountDouble_FailWithNegativeCount_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountDouble_FailWithNegativeCount(
             double[] ref, int index, int count) {
@@ -4421,7 +4419,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountDouble_FailWithInvalidCount_Data",
+    @Test(dataProvider = "checkIndexAndCountDouble_FailWithInvalidCount_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCountDouble_FailWithInvalidCount(
             double[] ref, int index, int count) {
@@ -4450,7 +4448,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountCharacter_Pass_Data")
+    @Test(dataProvider = "checkIndexAndCountCharacter_Pass_Data")
     public void checkIndexAndCountCharacter_Pass(char[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
         // Demonstrate argName can be anything ridiculous.
@@ -4468,7 +4466,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkIndexAndCountCharacter_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkIndexAndCountCharacter_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountCharacter_FailWithEmptyArray(char[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -4485,7 +4483,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountCharacter_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkIndexAndCountCharacter_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCountCharacter_FailWithInvalidIndex(
             char[] ref, int index, int count) {
@@ -4501,7 +4499,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountCharacter_FailWithNegativeCount_Data",
+    @Test(dataProvider = "checkIndexAndCountCharacter_FailWithNegativeCount_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountCharacter_FailWithNegativeCount(
             char[] ref, int index, int count) {
@@ -4520,7 +4518,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountCharacter_FailWithInvalidCount_Data",
+    @Test(dataProvider = "checkIndexAndCountCharacter_FailWithInvalidCount_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCountCharacter_FailWithInvalidCount(
             char[] ref, int index, int count) {
@@ -4549,7 +4547,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountBoolean_Pass_Data")
+    @Test(dataProvider = "checkIndexAndCountBoolean_Pass_Data")
     public void checkIndexAndCountBoolean_Pass(boolean[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
         // Demonstrate argName can be anything ridiculous.
@@ -4567,7 +4565,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkIndexAndCountBoolean_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkIndexAndCountBoolean_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountBoolean_FailWithEmptyArray(boolean[] ref, int index, int count) {
         ArrayArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
@@ -4584,7 +4582,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountBoolean_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkIndexAndCountBoolean_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCountBoolean_FailWithInvalidIndex(
             boolean[] ref, int index, int count) {
@@ -4600,7 +4598,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountBoolean_FailWithNegativeCount_Data",
+    @Test(dataProvider = "checkIndexAndCountBoolean_FailWithNegativeCount_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCountBoolean_FailWithNegativeCount(
             boolean[] ref, int index, int count) {
@@ -4619,7 +4617,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCountBoolean_FailWithInvalidCount_Data",
+    @Test(dataProvider = "checkIndexAndCountBoolean_FailWithInvalidCount_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCountBoolean_FailWithInvalidCount(
             boolean[] ref, int index, int count) {
@@ -4648,7 +4646,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndicesObject_Pass_Data")
+    @Test(dataProvider = "checkFromAndToIndicesObject_Pass_Data")
     public <T> void checkFromAndToIndicesObject_Pass(T[] ref, int fromIndex, int toIndex) {
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
         // Demonstrate argName can be anything ridiculous.
@@ -4666,7 +4664,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkFromAndToIndicesObject_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkFromAndToIndicesObject_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <T> void checkFromAndToIndicesObject_FailWithEmptyArray(T[] ref, int index, int count) {
         ArrayArgs.checkFromAndToIndices(ref, index, count, "ref", "index", "count");
@@ -4687,7 +4685,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndicesObject_FailWithInvalidIndices_Data",
+    @Test(dataProvider = "checkFromAndToIndicesObject_FailWithInvalidIndices_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public <T> void checkFromAndToIndicesObject_FailWithInvalidIndices(
             T[] ref, int fromIndex, int toIndex) {
@@ -4716,7 +4714,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndicesByte_Pass_Data")
+    @Test(dataProvider = "checkFromAndToIndicesByte_Pass_Data")
     public void checkFromAndToIndicesByte_Pass(byte[] ref, int fromIndex, int toIndex) {
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
         // Demonstrate argName can be anything ridiculous.
@@ -4734,7 +4732,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkFromAndToIndicesByte_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkFromAndToIndicesByte_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkFromAndToIndicesByte_FailWithEmptyArray(
             byte[] ref, int index, int count) {
@@ -4756,7 +4754,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndicesByte_FailWithInvalidIndices_Data",
+    @Test(dataProvider = "checkFromAndToIndicesByte_FailWithInvalidIndices_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkFromAndToIndicesByte_FailWithInvalidIndices(
             byte[] ref, int fromIndex, int toIndex) {
@@ -4785,7 +4783,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndicesShort_Pass_Data")
+    @Test(dataProvider = "checkFromAndToIndicesShort_Pass_Data")
     public void checkFromAndToIndicesShort_Pass(short[] ref, int fromIndex, int toIndex) {
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
         // Demonstrate argName can be anything ridiculous.
@@ -4803,7 +4801,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkFromAndToIndicesShort_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkFromAndToIndicesShort_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkFromAndToIndicesShort_FailWithEmptyArray(
             short[] ref, int index, int count) {
@@ -4825,7 +4823,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndicesShort_FailWithInvalidIndices_Data",
+    @Test(dataProvider = "checkFromAndToIndicesShort_FailWithInvalidIndices_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkFromAndToIndicesShort_FailWithInvalidIndices(
             short[] ref, int fromIndex, int toIndex) {
@@ -4854,7 +4852,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndicesInteger_Pass_Data")
+    @Test(dataProvider = "checkFromAndToIndicesInteger_Pass_Data")
     public void checkFromAndToIndicesInteger_Pass(int[] ref, int fromIndex, int toIndex) {
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
         // Demonstrate argName can be anything ridiculous.
@@ -4872,7 +4870,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkFromAndToIndicesInteger_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkFromAndToIndicesInteger_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkFromAndToIndicesInteger_FailWithEmptyArray(
             int[] ref, int index, int count) {
@@ -4894,7 +4892,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndicesInteger_FailWithInvalidIndices_Data",
+    @Test(dataProvider = "checkFromAndToIndicesInteger_FailWithInvalidIndices_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkFromAndToIndicesInteger_FailWithInvalidIndices(
             int[] ref, int fromIndex, int toIndex) {
@@ -4923,7 +4921,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndicesLong_Pass_Data")
+    @Test(dataProvider = "checkFromAndToIndicesLong_Pass_Data")
     public void checkFromAndToIndicesLong_Pass(long[] ref, int fromIndex, int toIndex) {
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
         // Demonstrate argName can be anything ridiculous.
@@ -4941,7 +4939,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkFromAndToIndicesLong_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkFromAndToIndicesLong_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkFromAndToIndicesLong_FailWithEmptyArray(
             long[] ref, int index, int count) {
@@ -4963,7 +4961,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndicesLong_FailWithInvalidIndices_Data",
+    @Test(dataProvider = "checkFromAndToIndicesLong_FailWithInvalidIndices_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkFromAndToIndicesLong_FailWithInvalidIndices(
             long[] ref, int fromIndex, int toIndex) {
@@ -4992,7 +4990,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndicesFloat_Pass_Data")
+    @Test(dataProvider = "checkFromAndToIndicesFloat_Pass_Data")
     public void checkFromAndToIndicesFloat_Pass(float[] ref, int fromIndex, int toIndex) {
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
         // Demonstrate argName can be anything ridiculous.
@@ -5010,7 +5008,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkFromAndToIndicesFloat_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkFromAndToIndicesFloat_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkFromAndToIndicesFloat_FailWithEmptyArray(
             float[] ref, int index, int count) {
@@ -5032,7 +5030,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndicesFloat_FailWithInvalidIndices_Data",
+    @Test(dataProvider = "checkFromAndToIndicesFloat_FailWithInvalidIndices_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkFromAndToIndicesFloat_FailWithInvalidIndices(
             float[] ref, int fromIndex, int toIndex) {
@@ -5061,7 +5059,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndicesDouble_Pass_Data")
+    @Test(dataProvider = "checkFromAndToIndicesDouble_Pass_Data")
     public void checkFromAndToIndicesDouble_Pass(double[] ref, int fromIndex, int toIndex) {
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
         // Demonstrate argName can be anything ridiculous.
@@ -5079,7 +5077,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkFromAndToIndicesDouble_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkFromAndToIndicesDouble_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkFromAndToIndicesDouble_FailWithEmptyArray(
             double[] ref, int index, int count) {
@@ -5101,7 +5099,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndicesDouble_FailWithInvalidIndices_Data",
+    @Test(dataProvider = "checkFromAndToIndicesDouble_FailWithInvalidIndices_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkFromAndToIndicesDouble_FailWithInvalidIndices(
             double[] ref, int fromIndex, int toIndex) {
@@ -5130,7 +5128,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndicesCharacter_Pass_Data")
+    @Test(dataProvider = "checkFromAndToIndicesCharacter_Pass_Data")
     public void checkFromAndToIndicesCharacter_Pass(char[] ref, int fromIndex, int toIndex) {
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
         // Demonstrate argName can be anything ridiculous.
@@ -5148,7 +5146,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkFromAndToIndicesCharacter_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkFromAndToIndicesCharacter_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkFromAndToIndicesCharacter_FailWithEmptyArray(
             char[] ref, int index, int count) {
@@ -5170,7 +5168,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndicesCharacter_FailWithInvalidIndices_Data",
+    @Test(dataProvider = "checkFromAndToIndicesCharacter_FailWithInvalidIndices_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkFromAndToIndicesCharacter_FailWithInvalidIndices(
             char[] ref, int fromIndex, int toIndex) {
@@ -5199,7 +5197,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndicesBoolean_Pass_Data")
+    @Test(dataProvider = "checkFromAndToIndicesBoolean_Pass_Data")
     public void checkFromAndToIndicesBoolean_Pass(boolean[] ref, int fromIndex, int toIndex) {
         ArrayArgs.checkFromAndToIndices(ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
         // Demonstrate argName can be anything ridiculous.
@@ -5217,7 +5215,7 @@ public class ArrayArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkFromAndToIndicesBoolean_FailWithEmptyArray_Data",
+    @Test(dataProvider = "checkFromAndToIndicesBoolean_FailWithEmptyArray_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkFromAndToIndicesBoolean_FailWithEmptyArray(
             boolean[] ref, int index, int count) {
@@ -5239,7 +5237,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndicesBoolean_FailWithInvalidIndices_Data",
+    @Test(dataProvider = "checkFromAndToIndicesBoolean_FailWithInvalidIndices_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkFromAndToIndicesBoolean_FailWithInvalidIndices(
             boolean[] ref, int fromIndex, int toIndex) {
@@ -5268,7 +5266,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContainsObject_Pass_Data")
+    @Test(dataProvider = "checkContainsObject_Pass_Data")
     public <THaystack, TNeedle extends THaystack>
     void checkContainsObject_Pass(THaystack[] ref, TNeedle value) {
         // Two steps here: (1) call the method, (2) assert the result
@@ -5293,7 +5291,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContainsObject_Fail_Data",
+    @Test(dataProvider = "checkContainsObject_Fail_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <THaystack, TNeedle extends THaystack>
     void checkContainsObject_Fail(THaystack[] ref, TNeedle value) {
@@ -5324,7 +5322,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContainsByte_Pass_Data")
+    @Test(dataProvider = "checkContainsByte_Pass_Data")
     public void checkContainsByte_Pass(byte[] ref, byte value) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "ref"));
@@ -5344,7 +5342,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContainsByte_Fail_Data",
+    @Test(dataProvider = "checkContainsByte_Fail_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkContainsByte_Fail(byte[] ref, byte value) {
         ArrayArgs.checkContains(ref, value, "ref");
@@ -5374,7 +5372,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContainsShort_Pass_Data")
+    @Test(dataProvider = "checkContainsShort_Pass_Data")
     public void checkContainsShort_Pass(short[] ref, short value) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "ref"));
@@ -5394,7 +5392,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContainsShort_Fail_Data",
+    @Test(dataProvider = "checkContainsShort_Fail_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkContainsShort_Fail(short[] ref, short value) {
         ArrayArgs.checkContains(ref, value, "ref");
@@ -5424,7 +5422,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContainsInteger_Pass_Data")
+    @Test(dataProvider = "checkContainsInteger_Pass_Data")
     public void checkContainsInteger_Pass(int[] ref, int value) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "ref"));
@@ -5444,7 +5442,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContainsInteger_Fail_Data",
+    @Test(dataProvider = "checkContainsInteger_Fail_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkContainsInteger_Fail(int[] ref, int value) {
         ArrayArgs.checkContains(ref, value, "ref");
@@ -5474,7 +5472,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContainsLong_Pass_Data")
+    @Test(dataProvider = "checkContainsLong_Pass_Data")
     public void checkContainsLong_Pass(long[] ref, long value) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "ref"));
@@ -5494,7 +5492,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContainsLong_Fail_Data",
+    @Test(dataProvider = "checkContainsLong_Fail_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkContainsLong_Fail(long[] ref, long value) {
         ArrayArgs.checkContains(ref, value, "ref");
@@ -5524,7 +5522,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContainsFloat_Pass_Data")
+    @Test(dataProvider = "checkContainsFloat_Pass_Data")
     public void checkContainsFloat_Pass(float[] ref, float value) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "ref"));
@@ -5544,7 +5542,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContainsFloat_Fail_Data",
+    @Test(dataProvider = "checkContainsFloat_Fail_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkContainsFloat_Fail(float[] ref, float value) {
         ArrayArgs.checkContains(ref, value, "ref");
@@ -5574,7 +5572,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContainsDouble_Pass_Data")
+    @Test(dataProvider = "checkContainsDouble_Pass_Data")
     public void checkContainsDouble_Pass(double[] ref, double value) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "ref"));
@@ -5594,7 +5592,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContainsDouble_Fail_Data",
+    @Test(dataProvider = "checkContainsDouble_Fail_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkContainsDouble_Fail(double[] ref, double value) {
         ArrayArgs.checkContains(ref, value, "ref");
@@ -5624,7 +5622,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContainsCharacter_Pass_Data")
+    @Test(dataProvider = "checkContainsCharacter_Pass_Data")
     public void checkContainsCharacter_Pass(char[] ref, char value) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "ref"));
@@ -5644,7 +5642,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContainsObject_Fail_Data",
+    @Test(dataProvider = "checkContainsObject_Fail_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkContainsCharacter_Fail(char[] ref, char value) {
         ArrayArgs.checkContains(ref, value, "ref");
@@ -5674,7 +5672,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContainsBoolean_Pass_Data")
+    @Test(dataProvider = "checkContainsBoolean_Pass_Data")
     public void checkContainsBoolean_Pass(boolean[] ref, boolean value) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(value == ArrayArgs.checkContains(ref, value, "ref"));
@@ -5692,7 +5690,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContainsObject_Fail_Data",
+    @Test(dataProvider = "checkContainsObject_Fail_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkContainsBoolean_Fail(boolean[] ref, boolean value) {
         ArrayArgs.checkContains(ref, value, "ref");

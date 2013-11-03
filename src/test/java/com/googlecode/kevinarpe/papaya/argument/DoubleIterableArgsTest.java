@@ -39,11 +39,11 @@ public class DoubleIterableArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkPositive_Pass_Data() {
+    public static Object[][] checkPositive_Pass_Data() {
         return DoubleArrayArgsTest.checkPositive_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkPositive_Pass_Data")
+    @Test(dataProvider = "checkPositive_Pass_Data")
     public void checkPositive_Pass(double[] arr) {
         Double[] arr2 = DoubleArrayArgsTest.toDoubleObjectArray(arr);
         List<Double> list = Arrays.asList(arr2);
@@ -90,11 +90,11 @@ public class DoubleIterableArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNotPositive_Pass_Data() {
+    public static Object[][] checkNotPositive_Pass_Data() {
         return DoubleArrayArgsTest.checkNotPositive_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkNotPositive_Pass_Data")
+    @Test(dataProvider = "checkNotPositive_Pass_Data")
     public void checkNotPositive_Pass(double[] arr) {
         Double[] arr2 = DoubleArrayArgsTest.toDoubleObjectArray(arr);
         List<Double> list = Arrays.asList(arr2);
@@ -141,11 +141,11 @@ public class DoubleIterableArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNegative_Pass_Data() {
+    public static Object[][] checkNegative_Pass_Data() {
         return DoubleArrayArgsTest.checkNegative_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkNegative_Pass_Data")
+    @Test(dataProvider = "checkNegative_Pass_Data")
     public void checkNegative_Pass(double[] arr) {
         Double[] arr2 = DoubleArrayArgsTest.toDoubleObjectArray(arr);
         List<Double> list = Arrays.asList(arr2);
@@ -192,11 +192,11 @@ public class DoubleIterableArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNotNegative_Pass_Data() {
+    public static Object[][] checkNotNegative_Pass_Data() {
         return DoubleArrayArgsTest.checkNotNegative_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkNotNegative_Pass_Data")
+    @Test(dataProvider = "checkNotNegative_Pass_Data")
     public void checkNotNegative_Pass(double[] arr) {
         Double[] arr2 = DoubleArrayArgsTest.toDoubleObjectArray(arr);
         List<Double> list = Arrays.asList(arr2);

@@ -39,11 +39,11 @@ public class IntIterableArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkPositive_Pass_Data() {
+    public static Object[][] checkPositive_Pass_Data() {
         return IntArrayArgsTest.checkPositive_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkPositive_Pass_Data")
+    @Test(dataProvider = "checkPositive_Pass_Data")
     public void checkPositive_Pass(int[] arr) {
         Integer[] arr2 = IntArrayArgsTest.toIntObjectArray(arr);
         List<Integer> list = Arrays.asList(arr2);
@@ -90,11 +90,11 @@ public class IntIterableArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNotPositive_Pass_Data() {
+    public static Object[][] checkNotPositive_Pass_Data() {
         return IntArrayArgsTest.checkNotPositive_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkNotPositive_Pass_Data")
+    @Test(dataProvider = "checkNotPositive_Pass_Data")
     public void checkNotPositive_Pass(int[] arr) {
         Integer[] arr2 = IntArrayArgsTest.toIntObjectArray(arr);
         List<Integer> list = Arrays.asList(arr2);
@@ -141,11 +141,11 @@ public class IntIterableArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNegative_Pass_Data() {
+    public static Object[][] checkNegative_Pass_Data() {
         return IntArrayArgsTest.checkNegative_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkNegative_Pass_Data")
+    @Test(dataProvider = "checkNegative_Pass_Data")
     public void checkNegative_Pass(int[] arr) {
         Integer[] arr2 = IntArrayArgsTest.toIntObjectArray(arr);
         List<Integer> list = Arrays.asList(arr2);
@@ -192,11 +192,11 @@ public class IntIterableArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNotNegative_Pass_Data() {
+    public static Object[][] checkNotNegative_Pass_Data() {
         return IntArrayArgsTest.checkNotNegative_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkNotNegative_Pass_Data")
+    @Test(dataProvider = "checkNotNegative_Pass_Data")
     public void checkNotNegative_Pass(int[] arr) {
         Integer[] arr2 = IntArrayArgsTest.toIntObjectArray(arr);
         List<Integer> list = Arrays.asList(arr2);

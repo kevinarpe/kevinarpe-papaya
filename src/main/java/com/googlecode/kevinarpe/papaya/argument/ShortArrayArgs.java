@@ -28,16 +28,240 @@ package com.googlecode.kevinarpe.papaya.argument;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 /**
- * Static methods to check {@code char[]} and {@code Character[]} arguments.
+ * Static methods to check {@code short[]} and {@code Short[]} arguments.
  * <p>
  * See {@link com.googlecode.kevinarpe.papaya.argument.ObjectArgs} for an overview.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class CharArrayArgs {
+public class ShortArrayArgs {
 
     // Disable default constructor
-    private CharArrayArgs() {
+    private ShortArrayArgs() {
+    }
+
+    /**
+     * Tests if all values in an array are positive: greater than zero.
+     *
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     *
+     * @return the validated array
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value is not positive
+     *
+     * @see #checkPositive(Short[], String)
+     * @see ShortIterableArgs#checkPositive(Iterable, String)
+     */
+    @FullyTested
+    public static short[] checkPositive(short[] ref, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+
+        ValueAsTypeIterator._IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedPrimitiveShortArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkPositive(iter, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array are positive: greater than zero.
+     *
+     * @param ref
+     *        array of values to test.  May be empty.
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     *
+     * @return the validated array
+     *
+     * @throws NullPointerException
+     *         if {@code ref} (or any element) is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value is not positive
+     *
+     * @see #checkPositive(short[], String)
+     * @see ShortIterableArgs#checkPositive(Iterable, String)
+     */
+    @FullyTested
+    public static Short[] checkPositive(Short[] ref, String argName) {
+        ArrayArgs.checkElementsNotNull(ref, argName);
+
+        ValueAsTypeIterator._IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedShortObjectArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkPositive(iter, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array are not positive: less than or equal to zero.
+     *
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     *
+     * @return the validated array
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value is positive
+     *
+     * @see #checkNotPositive(Short[], String)
+     * @see ShortIterableArgs#checkNotPositive(Iterable, String)
+     */
+    @FullyTested
+    public static short[] checkNotPositive(short[] ref, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+
+        ValueAsTypeIterator._IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedPrimitiveShortArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkNotPositive(iter, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array are not positive: less than or equal to zero.
+     *
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     *
+     * @return the validated array
+     *
+     * @throws NullPointerException
+     *         if {@code ref} (or any element) is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value is positive
+     *
+     * @see #checkNotPositive(short[], String)
+     * @see ShortIterableArgs#checkNotPositive(Iterable, String)
+     */
+    @FullyTested
+    public static Short[] checkNotPositive(Short[] ref, String argName) {
+        ArrayArgs.checkElementsNotNull(ref, argName);
+
+        ValueAsTypeIterator._IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedShortObjectArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkNotPositive(iter, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array are negative: less than zero.
+     *
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     *
+     * @return the validated array
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value is not negative
+     *
+     * @see #checkNegative(Short[], String)
+     * @see ShortIterableArgs#checkNegative(Iterable, String)
+     */
+    @FullyTested
+    public static short[] checkNegative(short[] ref, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+
+        ValueAsTypeIterator._IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedPrimitiveShortArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkNegative(iter, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array are negative: less than zero.
+     *
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     *
+     * @return the validated array
+     *
+     * @throws NullPointerException
+     *         if {@code ref} (or any element) is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value is not negative
+     *
+     * @see #checkNegative(short[], String)
+     * @see ShortIterableArgs#checkNegative(Iterable, String)
+     */
+    @FullyTested
+    public static Short[] checkNegative(Short[] ref, String argName) {
+        ArrayArgs.checkElementsNotNull(ref, argName);
+
+        ValueAsTypeIterator._IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedShortObjectArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkNegative(iter, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array are not negative: greater than or equal to zero.
+     *
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     *
+     * @return the validated array
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value is negative
+     *
+     * @see #checkNotNegative(Short[], String)
+     * @see ShortIterableArgs#checkNotNegative(Iterable, String)
+     */
+    @FullyTested
+    public static short[] checkNotNegative(short[] ref, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+
+        ValueAsTypeIterator._IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedPrimitiveShortArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkNotNegative(iter, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if all values in an array are not negative: greater than or equal to zero.
+     *
+     * @param ref
+     *        array of values to test.  May be empty
+     * @param argName
+     *        argument name for {@code ref}, e.g., "valueList"
+     *
+     * @return the validated array
+     *
+     * @throws NullPointerException
+     *         if {@code ref} (or any element) is {@code null}
+     * @throws IllegalArgumentException
+     *         if any value is negative
+     *
+     * @see #checkNotNegative(short[], String)
+     * @see ShortIterableArgs#checkNotNegative(Iterable, String)
+     */
+    @FullyTested
+    public static Short[] checkNotNegative(Short[] ref, String argName) {
+        ArrayArgs.checkElementsNotNull(ref, argName);
+
+        ValueAsTypeIterator._IValueAsLongIterator iter =
+            new ValueAsTypeIterator._UncheckedShortObjectArrayAsLongIterator(ref);
+        ValueAsTypeIterator._checkNotNegative(iter, argName);
+        return ref;
     }
 
     /**
@@ -65,16 +289,16 @@ public class CharArrayArgs {
      *   <li>if any value of {@code ref} is outside allowed range</li>
      * </ul>
      *
-     * @see #checkValueInsideRange(Character[], char, char, String)
-     * @see CharIterableArgs#checkValueInsideRange(Iterable, char, char, String)
+     * @see #checkValueInsideRange(Short[], short, short, String)
+     * @see ShortIterableArgs#checkValueInsideRange(Iterable, short, short, String)
      */
     @FullyTested
-    public static char[] checkValueInsideRange(
-            char[] ref, char minRangeValue, char maxRangeValue, String argName) {
+    public static short[] checkValueInsideRange(
+            short[] ref, short minRangeValue, short maxRangeValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedPrimitiveCharArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedPrimitiveShortArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkValueInsideRange(iter, minRangeValue, maxRangeValue, argName);
         return ref;
     }
@@ -104,16 +328,16 @@ public class CharArrayArgs {
      *   <li>if any value of {@code ref} is outside allowed range</li>
      * </ul>
      *
-     * @see #checkValueInsideRange(char[], char, char, String)
-     * @see CharIterableArgs#checkValueInsideRange(Iterable, char, char, String)
+     * @see #checkValueInsideRange(short[], short, short, String)
+     * @see ShortIterableArgs#checkValueInsideRange(Iterable, short, short, String)
      */
     @FullyTested
-    public static Character[] checkValueInsideRange(
-            Character[] ref, char minRangeValue, char maxRangeValue, String argName) {
+    public static Short[] checkValueInsideRange(
+            Short[] ref, short minRangeValue, short maxRangeValue, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedCharObjectArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedShortObjectArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkValueInsideRange(iter, minRangeValue, maxRangeValue, argName);
         return ref;
     }
@@ -143,16 +367,16 @@ public class CharArrayArgs {
      *   <li>if any value of {@code ref} is inside not-allowed range</li>
      * </ul>
      *
-     * @see #checkValueOutsideRange(Character[], char, char, String)
-     * @see CharIterableArgs#checkValueOutsideRange(Iterable, char, char, String)
+     * @see #checkValueOutsideRange(Short[], short, short, String)
+     * @see ShortIterableArgs#checkValueOutsideRange(Iterable, short, short, String)
      */
     @FullyTested
-    public static char[] checkValueOutsideRange(
-            char[] ref, char minRangeValue, char maxRangeValue, String argName) {
+    public static short[] checkValueOutsideRange(
+            short[] ref, short minRangeValue, short maxRangeValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedPrimitiveCharArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedPrimitiveShortArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkValueOutsideRange(iter, minRangeValue, maxRangeValue, argName);
         return ref;
     }
@@ -182,16 +406,16 @@ public class CharArrayArgs {
      *   <li>if any value of {@code ref} is inside not-allowed range</li>
      * </ul>
      *
-     * @see #checkValueOutsideRange(char[], char, char, String)
-     * @see CharIterableArgs#checkValueOutsideRange(Iterable, char, char, String)
+     * @see #checkValueOutsideRange(short[], short, short, String)
+     * @see ShortIterableArgs#checkValueOutsideRange(Iterable, short, short, String)
      */
     @FullyTested
-    public static Character[] checkValueOutsideRange(
-            Character[] ref, char minRangeValue, char maxRangeValue, String argName) {
+    public static Short[] checkValueOutsideRange(
+            Short[] ref, short minRangeValue, short maxRangeValue, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedCharObjectArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedShortObjectArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkValueOutsideRange(iter, minRangeValue, maxRangeValue, argName);
         return ref;
     }
@@ -213,15 +437,15 @@ public class CharArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is less than {@code minValue}
      *
-     * @see #checkMinValue(Character[], char, String)
-     * @see CharIterableArgs#checkMinValue(Iterable, char, String)
+     * @see #checkMinValue(Short[], short, String)
+     * @see ShortIterableArgs#checkMinValue(Iterable, short, String)
      */
     @FullyTested
-    public static char[] checkMinValue(char[] ref, char minValue, String argName) {
+    public static short[] checkMinValue(short[] ref, short minValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedPrimitiveCharArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedPrimitiveShortArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkMinValue(iter, minValue, argName);
         return ref;
     }
@@ -243,15 +467,15 @@ public class CharArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is less than {@code minValue}
      *
-     * @see #checkMinValue(char[], char, String)
-     * @see CharIterableArgs#checkMinValue(Iterable, char, String)
+     * @see #checkMinValue(short[], short, String)
+     * @see ShortIterableArgs#checkMinValue(Iterable, short, String)
      */
     @FullyTested
-    public static Character[] checkMinValue(Character[] ref, char minValue, String argName) {
+    public static Short[] checkMinValue(Short[] ref, short minValue, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedCharObjectArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedShortObjectArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkMinValue(iter, minValue, argName);
         return ref;
     }
@@ -273,15 +497,15 @@ public class CharArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is greater than {@code maxValue}
      *
-     * @see #checkMaxValue(Character[], char, String)
-     * @see CharIterableArgs#checkMaxValue(Iterable, char, String)
+     * @see #checkMaxValue(Short[], short, String)
+     * @see ShortIterableArgs#checkMaxValue(Iterable, short, String)
      */
     @FullyTested
-    public static char[] checkMaxValue(char[] ref, char maxValue, String argName) {
+    public static short[] checkMaxValue(short[] ref, short maxValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedPrimitiveCharArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedPrimitiveShortArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkMaxValue(iter, maxValue, argName);
         return ref;
     }
@@ -303,15 +527,15 @@ public class CharArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is greater than {@code maxValue}
      *
-     * @see #checkMaxValue(char[], char, String)
-     * @see CharIterableArgs#checkMaxValue(Iterable, char, String)
+     * @see #checkMaxValue(short[], short, String)
+     * @see ShortIterableArgs#checkMaxValue(Iterable, short, String)
      */
     @FullyTested
-    public static Character[] checkMaxValue(Character[] ref, char maxValue, String argName) {
+    public static Short[] checkMaxValue(Short[] ref, short maxValue, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedCharObjectArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedShortObjectArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkMaxValue(iter, maxValue, argName);
         return ref;
     }
@@ -333,15 +557,15 @@ public class CharArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is not {@code exactValue}
      *
-     * @see #checkExactValue(Character[], char, String)
-     * @see CharIterableArgs#checkExactValue(Iterable, char, String)
+     * @see #checkExactValue(Short[], short, String)
+     * @see ShortIterableArgs#checkExactValue(Iterable, short, String)
      */
     @FullyTested
-    public static char[] checkExactValue(char[] ref, char exactValue, String argName) {
+    public static short[] checkExactValue(short[] ref, short exactValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedPrimitiveCharArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedPrimitiveShortArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkExactValue(iter, exactValue, argName);
         return ref;
     }
@@ -363,15 +587,15 @@ public class CharArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is not {@code exactValue}
      *
-     * @see #checkExactValue(char[], char, String)
-     * @see CharIterableArgs#checkExactValue(Iterable, char, String)
+     * @see #checkExactValue(short[], short, String)
+     * @see ShortIterableArgs#checkExactValue(Iterable, short, String)
      */
     @FullyTested
-    public static Character[] checkExactValue(Character[] ref, char exactValue, String argName) {
+    public static Short[] checkExactValue(Short[] ref, short exactValue, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedCharObjectArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedShortObjectArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkExactValue(iter, exactValue, argName);
         return ref;
     }
@@ -393,15 +617,15 @@ public class CharArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is {@code exactValue}
      *
-     * @see #checkNotExactValue(Character[], char, String)
-     * @see CharIterableArgs#checkNotExactValue(Iterable, char, String)
+     * @see #checkNotExactValue(Short[], short, String)
+     * @see ShortIterableArgs#checkNotExactValue(Iterable, short, String)
      */
     @FullyTested
-    public static char[] checkNotExactValue(char[] ref, char exactValue, String argName) {
+    public static short[] checkNotExactValue(short[] ref, short exactValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedPrimitiveCharArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedPrimitiveShortArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkNotExactValue(iter, exactValue, argName);
         return ref;
     }
@@ -423,15 +647,15 @@ public class CharArrayArgs {
      * @throws IllegalArgumentException
      *         if any value of {@code ref} is {@code exactValue}
      *
-     * @see #checkNotExactValue(char[], char, String)
-     * @see CharIterableArgs#checkNotExactValue(Iterable, char, String)
+     * @see #checkNotExactValue(short[], short, String)
+     * @see ShortIterableArgs#checkNotExactValue(Iterable, short, String)
      */
     @FullyTested
-    public static Character[] checkNotExactValue(Character[] ref, char exactValue, String argName) {
+    public static Short[] checkNotExactValue(Short[] ref, short exactValue, String argName) {
         ArrayArgs.checkElementsNotNull(ref, argName);
 
         ValueAsTypeIterator._IValueAsLongIterator iter =
-            new ValueAsTypeIterator._UncheckedCharObjectArrayAsLongIterator(ref);
+            new ValueAsTypeIterator._UncheckedShortObjectArrayAsLongIterator(ref);
         ValueAsTypeIterator._checkNotExactValue(iter, exactValue, argName);
         return ref;
     }

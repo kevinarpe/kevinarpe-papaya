@@ -60,7 +60,7 @@ public class DoubleArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkPositive_Pass_Data")
+    @Test(dataProvider = "checkPositive_Pass_Data")
     public void checkPositive_Pass(double i) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == DoubleArgs.checkPositive(i, "i"));
@@ -80,7 +80,7 @@ public class DoubleArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkPositive_FailWithNonPositiveInput_Data",
+    @Test(dataProvider = "checkPositive_FailWithNonPositiveInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkPositive_FailWithNonPositiveInput(double i) {
         DoubleArgs.checkPositive(i, "i");
@@ -100,7 +100,7 @@ public class DoubleArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotPositive_Pass_Data")
+    @Test(dataProvider = "checkNotPositive_Pass_Data")
     public void checkNotPositive_Pass(double i) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == DoubleArgs.checkNotPositive(i, "i"));
@@ -118,7 +118,7 @@ public class DoubleArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotPositive_FailWithPositiveInput_Data",
+    @Test(dataProvider = "checkNotPositive_FailWithPositiveInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkNotPositive_FailWithPositiveInput(double i) {
         DoubleArgs.checkNotPositive(i, "i");
@@ -137,7 +137,7 @@ public class DoubleArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNegative_Pass_Data")
+    @Test(dataProvider = "checkNegative_Pass_Data")
     public void checkNegative_Pass(double i) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == DoubleArgs.checkNegative(i, "i"));
@@ -156,7 +156,7 @@ public class DoubleArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNegative_FailWithNonNegativeInput_Data",
+    @Test(dataProvider = "checkNegative_FailWithNonNegativeInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkNegative_FailWithNonNegativeInput(double i) {
         DoubleArgs.checkNegative(i, "i");
@@ -175,7 +175,7 @@ public class DoubleArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotNegative_Pass_Data")
+    @Test(dataProvider = "checkNotNegative_Pass_Data")
     public void checkNotNegative_Pass(double i) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == DoubleArgs.checkNotNegative(i, "i"));
@@ -193,7 +193,7 @@ public class DoubleArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotNegative_FailWithNegativeInput_Data",
+    @Test(dataProvider = "checkNotNegative_FailWithNegativeInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkNotNegative_FailWithNegativeInput(double i) {
         DoubleArgs.checkNotNegative(i, "i");
@@ -215,7 +215,7 @@ public class DoubleArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkValueRange_Pass_Data")
+    @Test(dataProvider = "checkValueRange_Pass_Data")
     public void checkValueRange_Pass(double i, double minValue, double maxValue) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == DoubleArgs.checkValueRange(i, minValue, maxValue, "i"));
@@ -244,7 +244,7 @@ public class DoubleArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkValueRange_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkValueRange_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkValueRange_FailWithInvalidInput(
             double i, double minValue, double maxValue) {
@@ -268,7 +268,7 @@ public class DoubleArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinValue_Pass_Data")
+    @Test(dataProvider = "checkMinValue_Pass_Data")
     public void checkMinValue_Pass(double i, double minValue) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == DoubleArgs.checkMinValue(i, minValue, "i"));
@@ -288,7 +288,7 @@ public class DoubleArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinValue_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkMinValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMinValue_FailWithInvalidInput(double i, double minValue) {
         DoubleArgs.checkMinValue(i, minValue, "i");
@@ -311,7 +311,7 @@ public class DoubleArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxValue_Pass_Data")
+    @Test(dataProvider = "checkMaxValue_Pass_Data")
     public void checkMaxValue_Pass(double i, double maxValue) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == DoubleArgs.checkMaxValue(i, maxValue, "i"));
@@ -331,7 +331,7 @@ public class DoubleArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxValue_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkMaxValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMaxValue_FailWithInvalidInput(double i, double maxValue) {
         DoubleArgs.checkMaxValue(i, maxValue, "i");
@@ -354,7 +354,7 @@ public class DoubleArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactValue_Pass_Data")
+    @Test(dataProvider = "checkExactValue_Pass_Data")
     public void checkExactValue_Pass(double i, double value) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == DoubleArgs.checkExactValue(i, value, "i"));
@@ -374,7 +374,7 @@ public class DoubleArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactValue_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkExactValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkExactValue_FailWithInvalidInput(double i, double value) {
         DoubleArgs.checkExactValue(i, value, "i");
@@ -394,7 +394,7 @@ public class DoubleArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotExactValue_Pass_Data")
+    @Test(dataProvider = "checkNotExactValue_Pass_Data")
     public void checkNotExactValue_Pass(double i, double value) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == DoubleArgs.checkNotExactValue(i, value, "i"));
@@ -417,7 +417,7 @@ public class DoubleArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotExactValue_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkNotExactValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkNotExactValue_FailWithInvalidInput(double i, double value) {
         DoubleArgs.checkNotExactValue(i, value, "i");

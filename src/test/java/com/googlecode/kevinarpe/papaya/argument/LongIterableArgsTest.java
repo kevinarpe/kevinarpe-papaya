@@ -25,12 +25,12 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.junit.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class LongIterableArgsTest {
 
@@ -39,11 +39,11 @@ public class LongIterableArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkPositive_Pass_Data() {
+    public static Object[][] checkPositive_Pass_Data() {
         return LongArrayArgsTest.checkPositive_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkPositive_Pass_Data")
+    @Test(dataProvider = "checkPositive_Pass_Data")
     public void checkPositive_Pass(long[] arr) {
         Long[] arr2 = LongArrayArgsTest.toLongObjectArray(arr);
         List<Long> list = Arrays.asList(arr2);
@@ -90,11 +90,11 @@ public class LongIterableArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNotPositive_Pass_Data() {
+    public static Object[][] checkNotPositive_Pass_Data() {
         return LongArrayArgsTest.checkNotPositive_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkNotPositive_Pass_Data")
+    @Test(dataProvider = "checkNotPositive_Pass_Data")
     public void checkNotPositive_Pass(long[] arr) {
         Long[] arr2 = LongArrayArgsTest.toLongObjectArray(arr);
         List<Long> list = Arrays.asList(arr2);
@@ -141,11 +141,11 @@ public class LongIterableArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNegative_Pass_Data() {
+    public static Object[][] checkNegative_Pass_Data() {
         return LongArrayArgsTest.checkNegative_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkNegative_Pass_Data")
+    @Test(dataProvider = "checkNegative_Pass_Data")
     public void checkNegative_Pass(long[] arr) {
         Long[] arr2 = LongArrayArgsTest.toLongObjectArray(arr);
         List<Long> list = Arrays.asList(arr2);
@@ -192,11 +192,11 @@ public class LongIterableArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNotNegative_Pass_Data() {
+    public static Object[][] checkNotNegative_Pass_Data() {
         return LongArrayArgsTest.checkNotNegative_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkNotNegative_Pass_Data")
+    @Test(dataProvider = "checkNotNegative_Pass_Data")
     public void checkNotNegative_Pass(long[] arr) {
         Long[] arr2 = LongArrayArgsTest.toLongObjectArray(arr);
         List<Long> list = Arrays.asList(arr2);

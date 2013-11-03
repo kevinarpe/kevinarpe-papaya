@@ -71,7 +71,7 @@ public class PathArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkResourceAsStreamExists_Pass_Data")
+    @Test(dataProvider = "checkResourceAsStreamExists_Pass_Data")
     public void checkResourceAsStreamExists_Pass(String pathname)
     throws ClassResourceNotFoundException {
         Assert.assertNotNull(
@@ -97,7 +97,7 @@ public class PathArgsTest {
         };
     }
 
-    @Test(dataProvider = "_checkResourceAsStreamExists_FailWithNulls_Data",
+    @Test(dataProvider = "checkResourceAsStreamExists_FailWithNulls_Data",
             expectedExceptions = NullPointerException.class)
     public void checkResourceAsStreamExists_FailWithNulls(
             Class<?> clazz, String pathname, String argName)
@@ -184,14 +184,14 @@ public class PathArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotFile_FailWithNullPath_Data",
+    @Test(dataProvider = "checkNotFile_FailWithNullPath_Data",
             expectedExceptions = NullPointerException.class)
     public void checkNotFile_FailWithNullPathname(String pathname, String argName)
     throws PathException {
         PathArgs.checkNotFile(pathname, argName);
     }
     
-    @Test(dataProvider = "_checkNotFile_FailWithNullPath_Data",
+    @Test(dataProvider = "checkNotFile_FailWithNullPath_Data",
             expectedExceptions = NullPointerException.class)
     public void checkNotFile_FailWithNullPath(File path, String argName)
     throws PathException {
@@ -411,14 +411,14 @@ public class PathArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFileExists_FailWithNullPath_Data",
+    @Test(dataProvider = "checkFileExists_FailWithNullPath_Data",
             expectedExceptions = NullPointerException.class)
     public void checkFileExists_FailWithNullPathname(String pathname, String argName)
     throws PathException {
         PathArgs.checkFileExists(pathname, argName);
     }
     
-    @Test(dataProvider = "_checkFileExists_FailWithNullPath_Data",
+    @Test(dataProvider = "checkFileExists_FailWithNullPath_Data",
             expectedExceptions = NullPointerException.class)
     public void checkFileExists_FailWithNullPath(File path, String argName)
     throws PathException {
@@ -509,14 +509,14 @@ public class PathArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotDirectory_FailWithNullPath_Data",
+    @Test(dataProvider = "checkNotDirectory_FailWithNullPath_Data",
             expectedExceptions = NullPointerException.class)
     public void checkNotDirectory_FailWithNullPathname(String pathname, String argName)
     throws PathException {
         PathArgs.checkNotDirectory(pathname, argName);
     }
     
-    @Test(dataProvider = "_checkNotDirectory_FailWithNullPath_Data",
+    @Test(dataProvider = "checkNotDirectory_FailWithNullPath_Data",
             expectedExceptions = NullPointerException.class)
     public void checkNotDirectory_FailWithNullPath(File path, String argName)
     throws PathException {
@@ -704,14 +704,14 @@ public class PathArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkDirectoryExists_FailWithNullPath_Data",
+    @Test(dataProvider = "checkDirectoryExists_FailWithNullPath_Data",
             expectedExceptions = NullPointerException.class)
     public void checkDirectoryExists_FailWithNullPathname(String pathname, String argName)
     throws PathException {
         PathArgs.checkDirectoryExists(pathname, argName);
     }
     
-    @Test(dataProvider = "_checkDirectoryExists_FailWithNullPath_Data",
+    @Test(dataProvider = "checkDirectoryExists_FailWithNullPath_Data",
             expectedExceptions = NullPointerException.class)
     public void checkDirectoryExists_FailWithNullPath(File path, String argName)
     throws PathException {

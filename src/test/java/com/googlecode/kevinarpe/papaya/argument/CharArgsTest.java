@@ -51,7 +51,7 @@ public class CharArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkValueRange_Pass_Data() {
+    public static Object[][] checkValueRange_Pass_Data() {
         return new Object[][] {
                 { (char) 2, (char) 0, (char) 3 },
                 { (char) 2, (char) 0, (char) 2 },
@@ -62,7 +62,7 @@ public class CharArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkValueRange_Pass_Data")
+    @Test(dataProvider = "checkValueRange_Pass_Data")
     public void checkValueRange_Pass(char i, char minValue, char maxValue) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == CharArgs.checkValueRange(i, minValue, maxValue, "i"));
@@ -73,7 +73,7 @@ public class CharArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkValueRange_FailWithInvalidInput_Data() {
+    public static Object[][] checkValueRange_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (char) 2, (char) 0, (char) 1 },
                 { (char) 1, (char) 0, (char) 0 },
@@ -91,7 +91,7 @@ public class CharArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkValueRange_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkValueRange_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkValueRange_FailWithInvalidInput(
             char i, char minValue, char maxValue) {
@@ -103,7 +103,7 @@ public class CharArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkMinValue_Pass_Data() {
+    public static Object[][] checkMinValue_Pass_Data() {
         return new Object[][] {
                 { (char) 2, (char) 0 },
                 { (char) 1, (char) 0 },
@@ -115,7 +115,7 @@ public class CharArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinValue_Pass_Data")
+    @Test(dataProvider = "checkMinValue_Pass_Data")
     public void checkMinValue_Pass(char i, char minValue) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == CharArgs.checkMinValue(i, minValue, "i"));
@@ -126,7 +126,7 @@ public class CharArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkMinValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkMinValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (char) 1, (char) 2 },
                 { (char) 1, (char) 3 },
@@ -135,7 +135,7 @@ public class CharArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinValue_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkMinValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMinValue_FailWithInvalidInput(char i, char minValue) {
         CharArgs.checkMinValue(i, minValue, "i");
@@ -146,7 +146,7 @@ public class CharArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkMaxValue_Pass_Data() {
+    public static Object[][] checkMaxValue_Pass_Data() {
         return new Object[][] {
                 { (char) 1, (char) 1 },
                 { (char) 1, (char) 2 },
@@ -158,7 +158,7 @@ public class CharArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxValue_Pass_Data")
+    @Test(dataProvider = "checkMaxValue_Pass_Data")
     public void checkMaxValue_Pass(char i, char maxValue) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == CharArgs.checkMaxValue(i, maxValue, "i"));
@@ -169,7 +169,7 @@ public class CharArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkMaxValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkMaxValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (char) 2, (char) 1 },
                 { (char) 2, (char) 0 },
@@ -178,7 +178,7 @@ public class CharArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxValue_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkMaxValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMaxValue_FailWithInvalidInput(char i, char maxValue) {
         CharArgs.checkMaxValue(i, maxValue, "i");
@@ -189,7 +189,7 @@ public class CharArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkExactValue_Pass_Data() {
+    public static Object[][] checkExactValue_Pass_Data() {
         return new Object[][] {
                 { (char) 1, (char) 1 },
                 { (char) 0, (char) 0 },
@@ -199,7 +199,7 @@ public class CharArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactValue_Pass_Data")
+    @Test(dataProvider = "checkExactValue_Pass_Data")
     public void checkExactValue_Pass(char i, char value) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == CharArgs.checkExactValue(i, value, "i"));
@@ -210,7 +210,7 @@ public class CharArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (char) 2, (char) 1 },
                 { (char) 2, (char) 0 },
@@ -219,7 +219,7 @@ public class CharArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactValue_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkExactValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkExactValue_FailWithInvalidInput(char i, char value) {
         CharArgs.checkExactValue(i, value, "i");
@@ -230,7 +230,7 @@ public class CharArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNotExactValue_Pass_Data() {
+    public static Object[][] checkNotExactValue_Pass_Data() {
         return new Object[][] {
                 { (char) -1, (char) 0 },
                 { (char) 0, (char) 1 },
@@ -240,7 +240,7 @@ public class CharArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotExactValue_Pass_Data")
+    @Test(dataProvider = "checkNotExactValue_Pass_Data")
     public void checkNotExactValue_Pass(char i, char value) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == CharArgs.checkNotExactValue(i, value, "i"));
@@ -251,7 +251,7 @@ public class CharArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkNotExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (char) -1, (char) -1 },
                 { (char) 0, (char) 0 },
@@ -260,7 +260,7 @@ public class CharArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotExactValue_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkNotExactValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkNotExactValue_FailWithInvalidInput(char i, char value) {
         CharArgs.checkNotExactValue(i, value, "i");

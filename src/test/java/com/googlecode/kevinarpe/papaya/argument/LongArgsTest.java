@@ -52,7 +52,7 @@ public class LongArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkPositive_Pass_Data() {
+    public static Object[][] checkPositive_Pass_Data() {
         return new Object[][] {
                 { 1 },
                 { 99 },
@@ -64,7 +64,7 @@ public class LongArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkPositive_Pass_Data")
+    @Test(dataProvider = "checkPositive_Pass_Data")
     public void checkPositive_Pass(long i) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == LongArgs.checkPositive(i, "i"));
@@ -75,7 +75,7 @@ public class LongArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkPositive_FailWithNonPositiveInput_Data() {
+    public static Object[][] checkPositive_FailWithNonPositiveInput_Data() {
         return new Object[][] {
                 { 0 },
                 { -1 },
@@ -83,7 +83,7 @@ public class LongArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkPositive_FailWithNonPositiveInput_Data",
+    @Test(dataProvider = "checkPositive_FailWithNonPositiveInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkPositive_FailWithNonPositiveInput(long i) {
         LongArgs.checkPositive(i, "i");
@@ -94,7 +94,7 @@ public class LongArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNotPositive_Pass_Data() {
+    public static Object[][] checkNotPositive_Pass_Data() {
         return new Object[][] {
                 { 0 },
                 { -99 },
@@ -102,7 +102,7 @@ public class LongArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotPositive_Pass_Data")
+    @Test(dataProvider = "checkNotPositive_Pass_Data")
     public void checkNotPositive_Pass(long i) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == LongArgs.checkNotPositive(i, "i"));
@@ -113,14 +113,14 @@ public class LongArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkNotPositive_FailWithPositiveInput_Data() {
+    public static Object[][] checkNotPositive_FailWithPositiveInput_Data() {
         return new Object[][] {
                 { 1 },
                 { Long.MAX_VALUE },
         };
     }
     
-    @Test(dataProvider = "_checkNotPositive_FailWithPositiveInput_Data",
+    @Test(dataProvider = "checkNotPositive_FailWithPositiveInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkNotPositive_FailWithPositiveInput(long i) {
         LongArgs.checkNotPositive(i, "i");
@@ -131,7 +131,7 @@ public class LongArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNegative_Pass_Data() {
+    public static Object[][] checkNegative_Pass_Data() {
         return new Object[][] {
                 { -1 },
                 { -99 },
@@ -139,7 +139,7 @@ public class LongArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNegative_Pass_Data")
+    @Test(dataProvider = "checkNegative_Pass_Data")
     public void checkNegative_Pass(long i) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == LongArgs.checkNegative(i, "i"));
@@ -150,7 +150,7 @@ public class LongArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkNegative_FailWithNonNegativeInput_Data() {
+    public static Object[][] checkNegative_FailWithNonNegativeInput_Data() {
         return new Object[][] {
                 { 0 },
                 { 1 },
@@ -158,7 +158,7 @@ public class LongArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNegative_FailWithNonNegativeInput_Data",
+    @Test(dataProvider = "checkNegative_FailWithNonNegativeInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkNegative_FailWithNonNegativeInput(long i) {
         LongArgs.checkNegative(i, "i");
@@ -169,7 +169,7 @@ public class LongArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNotNegative_Pass_Data() {
+    public static Object[][] checkNotNegative_Pass_Data() {
         return new Object[][] {
                 { 0 },
                 { 99 },
@@ -177,7 +177,7 @@ public class LongArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotNegative_Pass_Data")
+    @Test(dataProvider = "checkNotNegative_Pass_Data")
     public void checkNotNegative_Pass(long i) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == LongArgs.checkNotNegative(i, "i"));
@@ -188,14 +188,14 @@ public class LongArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkNotNegative_FailWithNegativeInput_Data() {
+    public static Object[][] checkNotNegative_FailWithNegativeInput_Data() {
         return new Object[][] {
                 { -1 },
                 { Long.MIN_VALUE },
         };
     }
     
-    @Test(dataProvider = "_checkNotNegative_FailWithNegativeInput_Data",
+    @Test(dataProvider = "checkNotNegative_FailWithNegativeInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkNotNegative_FailWithNegativeInput(long i) {
         LongArgs.checkNotNegative(i, "i");
@@ -206,7 +206,7 @@ public class LongArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkValueRange_Pass_Data() {
+    public static Object[][] checkValueRange_Pass_Data() {
         return new Object[][] {
                 { 1, -1, 2 },
                 { 1, -1, 1 },
@@ -217,7 +217,7 @@ public class LongArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkValueRange_Pass_Data")
+    @Test(dataProvider = "checkValueRange_Pass_Data")
     public void checkValueRange_Pass(long i, long minValue, long maxValue) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == LongArgs.checkValueRange(i, minValue, maxValue, "i"));
@@ -228,7 +228,7 @@ public class LongArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkValueRange_FailWithInvalidInput_Data() {
+    public static Object[][] checkValueRange_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { 1, -1, 0 },
                 { 1, 0, 0 },
@@ -246,7 +246,7 @@ public class LongArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkValueRange_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkValueRange_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkValueRange_FailWithInvalidInput(
             long i, long minValue, long maxValue) {
@@ -258,7 +258,7 @@ public class LongArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkMinValue_Pass_Data() {
+    public static Object[][] checkMinValue_Pass_Data() {
         return new Object[][] {
                 { 1, -1 },
                 { 1, 0 },
@@ -270,7 +270,7 @@ public class LongArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinValue_Pass_Data")
+    @Test(dataProvider = "checkMinValue_Pass_Data")
     public void checkMinValue_Pass(long i, long minValue) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == LongArgs.checkMinValue(i, minValue, "i"));
@@ -281,7 +281,7 @@ public class LongArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkMinValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkMinValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { 1, 2 },
                 { 1, 3 },
@@ -290,7 +290,7 @@ public class LongArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinValue_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkMinValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMinValue_FailWithInvalidInput(long i, long minValue) {
         LongArgs.checkMinValue(i, minValue, "i");
@@ -301,7 +301,7 @@ public class LongArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkMaxValue_Pass_Data() {
+    public static Object[][] checkMaxValue_Pass_Data() {
         return new Object[][] {
                 { 1, 1 },
                 { 1, 2 },
@@ -313,7 +313,7 @@ public class LongArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxValue_Pass_Data")
+    @Test(dataProvider = "checkMaxValue_Pass_Data")
     public void checkMaxValue_Pass(long i, long maxValue) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == LongArgs.checkMaxValue(i, maxValue, "i"));
@@ -324,7 +324,7 @@ public class LongArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkMaxValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkMaxValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { 1, 0 },
                 { 1, -1 },
@@ -333,7 +333,7 @@ public class LongArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxValue_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkMaxValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMaxValue_FailWithInvalidInput(long i, long maxValue) {
         LongArgs.checkMaxValue(i, maxValue, "i");
@@ -344,7 +344,7 @@ public class LongArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkExactValue_Pass_Data() {
+    public static Object[][] checkExactValue_Pass_Data() {
         return new Object[][] {
                 { 1, 1 },
                 { 0, 0 },
@@ -354,7 +354,7 @@ public class LongArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactValue_Pass_Data")
+    @Test(dataProvider = "checkExactValue_Pass_Data")
     public void checkExactValue_Pass(long i, long value) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == LongArgs.checkExactValue(i, value, "i"));
@@ -365,7 +365,7 @@ public class LongArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { 1, 0 },
                 { 1, -1 },
@@ -374,7 +374,7 @@ public class LongArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactValue_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkExactValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkExactValue_FailWithInvalidInput(long i, long value) {
         LongArgs.checkExactValue(i, value, "i");
@@ -385,7 +385,7 @@ public class LongArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNotExactValue_Pass_Data() {
+    public static Object[][] checkNotExactValue_Pass_Data() {
         return new Object[][] {
             { 1, 0 },
             { 1, -1 },
@@ -394,7 +394,7 @@ public class LongArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotExactValue_Pass_Data")
+    @Test(dataProvider = "checkNotExactValue_Pass_Data")
     public void checkNotExactValue_Pass(long i, long value) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == LongArgs.checkNotExactValue(i, value, "i"));
@@ -405,7 +405,7 @@ public class LongArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkNotExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
             { 1, 1 },
             { 0, 0 },
@@ -415,7 +415,7 @@ public class LongArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotExactValue_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkNotExactValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkNotExactValue_FailWithInvalidInput(long i, long value) {
         LongArgs.checkNotExactValue(i, value, "i");

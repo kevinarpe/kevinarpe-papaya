@@ -51,7 +51,7 @@ public class StringArgsTest {
     //
     
     @DataProvider
-    public static Object[][] _checkNotEmpty_Pass_Data() {
+    public static Object[][] checkNotEmpty_Pass_Data() {
         return new Object[][] {
                 { " ", "dummy" },  // ASCII space
                 { "\t", "dummy" },
@@ -62,7 +62,7 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmpty_Pass_Data")
+    @Test(dataProvider = "checkNotEmpty_Pass_Data")
     public void checkNotEmpty_Pass(String ref, String argName) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == StringArgs.checkNotEmpty(ref, argName));
@@ -78,7 +78,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkNotEmpty_FailWithNullString_Data() {
+    public static Object[][] checkNotEmpty_FailWithNullString_Data() {
         return new Object[][] {
                 { null, "dummy" },
                 { null, "" },
@@ -88,7 +88,7 @@ public class StringArgsTest {
     }
     
     @Test(expectedExceptions = NullPointerException.class,
-            dataProvider = "_checkNotEmpty_FailWithNullString_Data")
+            dataProvider = "checkNotEmpty_FailWithNullString_Data")
     public void checkNotEmpty_FailWithNullString(String ref, String argName) {
         StringArgs.checkNotEmpty(ref, argName);
     }
@@ -98,7 +98,7 @@ public class StringArgsTest {
     //
     
     @DataProvider
-    public static Object[][] _checkNotEmptyOrWhitespace_Pass_Data() {
+    public static Object[][] checkNotEmptyOrWhitespace_Pass_Data() {
         return new Object[][] {
                 { " abc" },  // ASCII space
                 { "\tabc" },
@@ -109,7 +109,7 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyOrWhitespace_Pass_Data")
+    @Test(dataProvider = "checkNotEmptyOrWhitespace_Pass_Data")
     public void checkNotEmptyOrWhitespace_Pass(String ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == StringArgs.checkNotEmptyOrWhitespace(ref, "ref"));
@@ -120,7 +120,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkNotEmptyOrWhitespace_FailWithInvalidString_Data() {
+    public static Object[][] checkNotEmptyOrWhitespace_FailWithInvalidString_Data() {
         return new Object[][] {
                 { "" },
                 { "\t" },
@@ -129,7 +129,7 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyOrWhitespace_FailWithInvalidString_Data",
+    @Test(dataProvider = "checkNotEmptyOrWhitespace_FailWithInvalidString_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkNotEmptyOrWhitespace_FailWithInvalidString(String s) {
         StringArgs.checkNotEmptyOrWhitespace(s, "argName");
@@ -140,7 +140,7 @@ public class StringArgsTest {
     //
     
     @DataProvider
-    public static Object[][] _checkLengthRange_Pass_Data() {
+    public static Object[][] checkLengthRange_Pass_Data() {
         return new Object[][] {
                 { "東京", 1, 2 },
                 { "abc", 3, 3 },
@@ -153,7 +153,7 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRange_Pass_Data")
+    @Test(dataProvider = "checkLengthRange_Pass_Data")
     public void checkLengthRange_Pass(String ref, int minLen, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == StringArgs.checkLengthRange(ref, minLen, maxLen, "ref"));
@@ -164,7 +164,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkLengthRange_FailWithInvalidMinOrMaxLen_Data() {
+    public static Object[][] checkLengthRange_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { "東京", 3, 4 },
                 { "abc", -3, 3 },
@@ -176,14 +176,14 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRange_FailWithInvalidMinOrMaxLen_Data",
+    @Test(dataProvider = "checkLengthRange_FailWithInvalidMinOrMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkLengthRange_FailWithInvalidMinOrMaxLen(String s, int minLen, int maxLen) {
         StringArgs.checkLengthRange(s, minLen, maxLen, "s");
     }
     
     @DataProvider
-    public static Object[][] _checkLengthRange_FailWithNullString_Data() {
+    public static Object[][] checkLengthRange_FailWithNullString_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -191,7 +191,7 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkLengthRange_FailWithNullString_Data",
+    @Test(dataProvider = "checkLengthRange_FailWithNullString_Data",
             expectedExceptions = NullPointerException.class)
     public void checkLengthRange_FailWithNullString(String s, int minLen, int maxLen) {
         StringArgs.checkLengthRange(s, minLen, maxLen, "s");
@@ -202,7 +202,7 @@ public class StringArgsTest {
     //
     
     @DataProvider
-    public static Object[][] _checkMinLength_Pass_Data() {
+    public static Object[][] checkMinLength_Pass_Data() {
         return new Object[][] {
                 { "東京", 2 },
                 { "abc", 3 },
@@ -212,7 +212,7 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLength_Pass_Data")
+    @Test(dataProvider = "checkMinLength_Pass_Data")
     public void checkMinLength_Pass(String ref, int minLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == StringArgs.checkMinLength(ref, minLen, "ref"));
@@ -223,7 +223,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkMinLength_FailWithInvalidMinLen_Data() {
+    public static Object[][] checkMinLength_FailWithInvalidMinLen_Data() {
         return new Object[][] {
                 { "東京", 3 },
                 { "abc", -3 },
@@ -232,14 +232,14 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLength_FailWithInvalidMinLen_Data",
+    @Test(dataProvider = "checkMinLength_FailWithInvalidMinLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMinLength_FailWithInvalidMinLen(String s, int minLen) {
         StringArgs.checkMinLength(s, minLen, "s");
     }
     
     @DataProvider
-    public static Object[][] _checkMinLength_FailWithNullString_Data() {
+    public static Object[][] checkMinLength_FailWithNullString_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -247,7 +247,7 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinLength_FailWithNullString_Data",
+    @Test(dataProvider = "checkMinLength_FailWithNullString_Data",
             expectedExceptions = NullPointerException.class)
     public void checkMinLength_FailWithNullString(String s, int minLen) {
         StringArgs.checkMinLength(s, minLen, "s");
@@ -258,7 +258,7 @@ public class StringArgsTest {
     //
     
     @DataProvider
-    public static Object[][] _checkMaxLength_Pass_Data() {
+    public static Object[][] checkMaxLength_Pass_Data() {
         return new Object[][] {
                 { "東京", 2 },
                 { "abc", 3 },
@@ -269,7 +269,7 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLength_Pass_Data")
+    @Test(dataProvider = "checkMaxLength_Pass_Data")
     public void checkMaxLength_Pass(String ref, int maxLen) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == StringArgs.checkMaxLength(ref, maxLen, "ref"));
@@ -280,7 +280,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkMaxLength_FailWithInvalidMaxLen_Data() {
+    public static Object[][] checkMaxLength_FailWithInvalidMaxLen_Data() {
         return new Object[][] {
                 { "東京", 0 },
                 { "東京", 1 },
@@ -290,14 +290,14 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLength_FailWithInvalidMaxLen_Data",
+    @Test(dataProvider = "checkMaxLength_FailWithInvalidMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMaxLength_FailWithInvalidMaxLen(String s, int maxLen) {
         StringArgs.checkMaxLength(s, maxLen, "s");
     }
     
     @DataProvider
-    public static Object[][] _checkMaxLength_FailWithNullString_Data() {
+    public static Object[][] checkMaxLength_FailWithNullString_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -305,7 +305,7 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxLength_FailWithNullString_Data",
+    @Test(dataProvider = "checkMaxLength_FailWithNullString_Data",
             expectedExceptions = NullPointerException.class)
     public void checkMaxLength_FailWithNullString(String s, int maxLen) {
         StringArgs.checkMaxLength(s, maxLen, "s");
@@ -316,7 +316,7 @@ public class StringArgsTest {
     //
     
     @DataProvider
-    public static Object[][] _checkExactLength_Pass_Data() {
+    public static Object[][] checkExactLength_Pass_Data() {
         return new Object[][] {
                 { "東京", 2 },
                 { "abc", 3 },
@@ -324,7 +324,7 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLength_Pass_Data")
+    @Test(dataProvider = "checkExactLength_Pass_Data")
     public void checkExactLength_Pass(String ref, int len) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == StringArgs.checkExactLength(ref, len, "ref"));
@@ -335,7 +335,7 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkExactLength_FailWithInvalidExactLen_Data() {
+    public static Object[][] checkExactLength_FailWithInvalidExactLen_Data() {
         return new Object[][] {
                 { "東京", 1 },
                 { "abc", -3 },
@@ -344,14 +344,14 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLength_FailWithInvalidExactLen_Data",
+    @Test(dataProvider = "checkExactLength_FailWithInvalidExactLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkExactLength_FailWithInvalidExactLen(String s, int len) {
         StringArgs.checkExactLength(s, len, "s");
     }
     
     @DataProvider
-    public static Object[][] _checkExactLength_FailWithNullString_Data() {
+    public static Object[][] checkExactLength_FailWithNullString_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -359,7 +359,7 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactLength_FailWithNullString_Data",
+    @Test(dataProvider = "checkExactLength_FailWithNullString_Data",
             expectedExceptions = NullPointerException.class)
     public void checkExactLength_FailWithNullString(String s, int len) {
         StringArgs.checkExactLength(s, len, "s");
@@ -370,7 +370,7 @@ public class StringArgsTest {
     //
     
     @DataProvider
-    public static Object[][] _checkInsertIndex_Pass_Data() {
+    public static Object[][] checkInsertIndex_Pass_Data() {
         return new Object[][] {
                 { "東京", 0 },
                 { "東京", 1 },
@@ -383,7 +383,7 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndex_Pass_Data")
+    @Test(dataProvider = "checkInsertIndex_Pass_Data")
     public void checkInsertIndex_Pass(String ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == StringArgs.checkInsertIndex(ref, index, "ref", "index"));
@@ -394,35 +394,35 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkInsertIndex_FailWithNegativeIndex_Data() {
+    public static Object[][] checkInsertIndex_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { "東京", -1 },
                 { "abc", -3 },
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndex_FailWithNegativeIndex_Data",
+    @Test(dataProvider = "checkInsertIndex_FailWithNegativeIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkInsertIndex_FailWithNegativeIndex(String s, int index) {
         StringArgs.checkInsertIndex(s, index, "s", "index");
     }
     
     @DataProvider
-    public static Object[][] _checkInsertIndex_FailWithInvalidIndex_Data() {
+    public static Object[][] checkInsertIndex_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { "東京", 3 },
                 { "abc", 4 },
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndex_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkInsertIndex_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkInsertIndex_FailWithInvalidIndex(String s, int index) {
         StringArgs.checkInsertIndex(s, index, "s", "index");
     }
     
     @DataProvider
-    public static Object[][] _checkInsertIndex_FailWithNullString_Data() {
+    public static Object[][] checkInsertIndex_FailWithNullString_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -430,7 +430,7 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndex_FailWithNullString_Data",
+    @Test(dataProvider = "checkInsertIndex_FailWithNullString_Data",
             expectedExceptions = NullPointerException.class)
     public void checkInsertIndex_FailWithNullString(String s, int index) {
         StringArgs.checkInsertIndex(s, index, "s", "index");
@@ -441,7 +441,7 @@ public class StringArgsTest {
     //
     
     @DataProvider
-    public static Object[][] _checkIndexAndCount_Pass_Data() {
+    public static Object[][] checkIndexAndCount_Pass_Data() {
         return new Object[][] {
                 { "東京", 0, 0 },
                 { "東京", 0, 1 },
@@ -460,7 +460,7 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCount_Pass_Data")
+    @Test(dataProvider = "checkIndexAndCount_Pass_Data")
     public void checkIndexAndCount_Pass(String s, int index, int count) {
         StringArgs.checkIndexAndCount(s, index, count, "s", "index", "count");
         // Demonstrate argName can be anything ridiculous.
@@ -470,21 +470,21 @@ public class StringArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkIndexAndCount_FailWithNegativeIndex_Data() {
+    public static Object[][] checkIndexAndCount_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { "東京", -1, 1 },
                 { "abc", -3, 1 },
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCount_FailWithNegativeIndex_Data",
+    @Test(dataProvider = "checkIndexAndCount_FailWithNegativeIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCount_FailWithNegativeIndex(String s, int index, int count) {
         StringArgs.checkIndexAndCount(s, index, count, "s", "index", "count");
     }
     
     @DataProvider
-    public static Object[][] _checkIndexAndCount_FailWithInvalidIndex_Data() {
+    public static Object[][] checkIndexAndCount_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { "東京", 2, 2 },
                 { "東京", 3, 2 },
@@ -492,42 +492,42 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCount_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkIndexAndCount_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCount_FailWithInvalidIndex(String s, int index, int count) {
         StringArgs.checkIndexAndCount(s, index, count, "s", "index", "count");
     }
     
     @DataProvider
-    public static Object[][] _checkIndexAndCount_FailWithNegativeCount_Data() {
+    public static Object[][] checkIndexAndCount_FailWithNegativeCount_Data() {
         return new Object[][] {
                 { "東京", 0, -1 },
                 { "abc", 0, -1 },
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCount_FailWithNegativeCount_Data",
+    @Test(dataProvider = "checkIndexAndCount_FailWithNegativeCount_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkIndexAndCount_FailWithNegativeCount(String s, int index, int count) {
         StringArgs.checkIndexAndCount(s, index, count, "s", "index", "count");
     }
     
     @DataProvider
-    public static Object[][] _checkIndexAndCount_FailWithInvalidCount_Data() {
+    public static Object[][] checkIndexAndCount_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { "東京", 1, 2 },
                 { "abc", 2, 2 },
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCount_FailWithInvalidCount_Data",
+    @Test(dataProvider = "checkIndexAndCount_FailWithInvalidCount_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public void checkIndexAndCount_FailWithInvalidCount(String s, int index, int count) {
         StringArgs.checkIndexAndCount(s, index, count, "s", "index", "count");
     }
     
     @DataProvider
-    public static Object[][] _checkIndexAndCount_FailWithNullString_Data() {
+    public static Object[][] checkIndexAndCount_FailWithNullString_Data() {
         return new Object[][] {
                 { null, 4, 2 },
                 { null, 6, 2 },
@@ -535,7 +535,7 @@ public class StringArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCount_FailWithNullString_Data",
+    @Test(dataProvider = "checkIndexAndCount_FailWithNullString_Data",
             expectedExceptions = NullPointerException.class)
     public void checkIndexAndCount_FailWithNullString(String s, int index, int count) {
         StringArgs.checkIndexAndCount(s, index, count, "s", "index", "count");

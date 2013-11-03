@@ -78,13 +78,112 @@ public final class ComparableArgs {
         _checkRangeCore(ref, minValue, maxValue, argName);        
         return ref;
     }
-    
+
+    /**
+     * Tests if a Comparable reference is not null and its value within specified range.
+     *
+     * @param ref
+     *        an object reference
+     * @param minRangeValue
+     *        minimum value (inclusive)
+     * @param maxRangeValue
+     *        maximum value (inclusive)
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
+     * @return the validated object reference
+     *
+     * @throws NullPointerException
+     *         if {@code ref}, {@code minValue}, or {@code maxValue} is
+     *         {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code minValue > maxValue}</li>
+     *   <li>if value of {@code ref} is outside allowed range</li>
+     * </ul>
+     *
+     * @see ObjectArgs#checkNotNull(Object, String)
+     * @see #checkValueOutsideRange(Comparable, Comparable, Comparable, String)
+     * @see #checkMinValue(Comparable, Comparable, String)
+     * @see #checkMaxValue(Comparable, Comparable, String)
+     * @see #checkExactValue(Comparable, Comparable, String)
+     * @see #checkNotExactValue(Comparable, Comparable, String)
+     */
+    public static <T extends Comparable<T>> T checkValueInsideRange(
+            T ref, T minRangeValue, T maxRangeValue, String argName) {
+        ObjectArgs.checkNotNull(ref, "ref");
+        _checkMinAndMaxRangeValues(minRangeValue, maxRangeValue, argName);
+
+        if (ref.compareTo(minRangeValue) < 0 || ref.compareTo(maxRangeValue) > 0) {
+            final String w = StringArgs._getArgNameWarning(argName, "argName");
+            throw new IllegalArgumentException(String.format(
+                "Argument '%s': Value outside valid range: (min) %s <= %s <= %s (max)%s",
+                argName, minRangeValue, ref, maxRangeValue, w));
+        }
+        return ref;
+    }
+
+    /**
+     * Tests if a Comparable reference is not null and its value <b>not</b> within specified range.
+     *
+     * @param ref
+     *        an object reference
+     * @param minRangeValue
+     *        minimum value (inclusive)
+     * @param maxRangeValue
+     *        maximum value (inclusive)
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
+     * @return the validated object reference
+     *
+     * @throws NullPointerException
+     *         if {@code ref}, {@code minValue}, or {@code maxValue} is
+     *         {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *   <li>if {@code minValue > maxValue}</li>
+     *   <li>if value of {@code ref} is outside allowed range</li>
+     * </ul>
+     *
+     * @see ObjectArgs#checkNotNull(Object, String)
+     * @see #checkValueInsideRange(Comparable, Comparable, Comparable, String)
+     * @see #checkMinValue(Comparable, Comparable, String)
+     * @see #checkMaxValue(Comparable, Comparable, String)
+     * @see #checkExactValue(Comparable, Comparable, String)
+     * @see #checkNotExactValue(Comparable, Comparable, String)
+     */
+    public static <T extends Comparable<T>> T checkValueOutsideRange(
+            T ref, T minRangeValue, T maxRangeValue, String argName) {
+        ObjectArgs.checkNotNull(ref, "ref");
+        _checkMinAndMaxRangeValues(minRangeValue, maxRangeValue, argName);
+
+        if (ref.compareTo(minRangeValue) >= 0 && ref.compareTo(maxRangeValue) <= 0) {
+            final String w = StringArgs._getArgNameWarning(argName, "argName");
+            throw new IllegalArgumentException(String.format(
+                "Argument '%s': Value inside invalid range: (min) %s >= %s <= %s (max)%s",
+                argName, minRangeValue, ref, maxRangeValue, w));
+        }
+        return ref;
+    }
+
+    private static <T extends Comparable<T>> void _checkMinAndMaxRangeValues(
+            T minRangeValue, T maxRangeValue, String argName) {
+        ObjectArgs.checkNotNull(minRangeValue, "minRangeValue");
+        ObjectArgs.checkNotNull(maxRangeValue, "maxRangeValue");
+
+        if (minRangeValue.compareTo(maxRangeValue) > 0) {
+            final String w = StringArgs._getArgNameWarning(argName, "argName");
+            throw new IllegalArgumentException(String.format(
+                "Argument '%s': 'minRangeValue' > 'maxRangeValue': %s > %s%s",
+                argName, minRangeValue, maxRangeValue, w));
+        }
+    }
+
     private static <T extends Comparable<T>> void _checkRangeCore(
             T ref, T optMinValue, T optMaxValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);
-        if (null != optMinValue &&
-                null != optMaxValue &&
-                optMinValue.compareTo(optMaxValue) > 0) {
+        if (null != optMinValue && null != optMaxValue && optMinValue.compareTo(optMaxValue) > 0) {
             String w = StringArgs._getArgNameWarning(argName, "argName");
             throw new IllegalArgumentException(String.format(
                 "Argument '%s': 'minValue' > 'maxValue': %s > %s%s",

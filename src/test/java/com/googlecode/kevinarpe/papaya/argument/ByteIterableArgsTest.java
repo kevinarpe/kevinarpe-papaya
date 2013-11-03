@@ -43,7 +43,7 @@ public class ByteIterableArgsTest {
         return ByteArrayArgsTest.checkPositive_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkPositive_Pass_Data")
+    @Test(dataProvider = "checkPositive_Pass_Data")
     public void checkPositive_Pass(byte[] arr) {
         Byte[] arr2 = ByteArrayArgsTest.toByteObjectArray(arr);
         List<Byte> list = Arrays.asList(arr2);
@@ -94,7 +94,7 @@ public class ByteIterableArgsTest {
         return ByteArrayArgsTest.checkNotPositive_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkNotPositive_Pass_Data")
+    @Test(dataProvider = "checkNotPositive_Pass_Data")
     public void checkNotPositive_Pass(byte[] arr) {
         Byte[] arr2 = ByteArrayArgsTest.toByteObjectArray(arr);
         List<Byte> list = Arrays.asList(arr2);
@@ -145,7 +145,7 @@ public class ByteIterableArgsTest {
         return ByteArrayArgsTest.checkNegative_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkNegative_Pass_Data")
+    @Test(dataProvider = "checkNegative_Pass_Data")
     public void checkNegative_Pass(byte[] arr) {
         Byte[] arr2 = ByteArrayArgsTest.toByteObjectArray(arr);
         List<Byte> list = Arrays.asList(arr2);
@@ -196,7 +196,7 @@ public class ByteIterableArgsTest {
         return ByteArrayArgsTest.checkNotNegative_Pass_Data();
     }
     
-    @Test(dataProvider = "_checkNotNegative_Pass_Data")
+    @Test(dataProvider = "checkNotNegative_Pass_Data")
     public void checkNotNegative_Pass(byte[] arr) {
         Byte[] arr2 = ByteArrayArgsTest.toByteObjectArray(arr);
         List<Byte> list = Arrays.asList(arr2);

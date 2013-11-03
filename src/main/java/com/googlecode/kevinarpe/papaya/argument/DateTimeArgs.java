@@ -46,33 +46,58 @@ public final class DateTimeArgs {
 
     /**
      * Convenience method to call
-     * {@link ComparableArgs#checkValueRange(Comparable, Comparable, Comparable, String)}.
-     * 
+     * {@link ComparableArgs#checkValueInsideRange(Comparable, Comparable, Comparable, String)}.
+     *
+     * @see #checkValueOutsideRange(DateTime, DateTime, DateTime, String)
      * @see #checkMinValue(DateTime, DateTime, String)
      * @see #checkMaxValue(DateTime, DateTime, String)
      * @see #checkExactValue(DateTime, DateTime, String)
      * @see #checkNotExactValue(DateTime, DateTime, String)
      */
     @FullyTested
-    public static DateTime checkValueRange(
-            DateTime dt, DateTime minDt, DateTime maxDt, String argName) {
-        ComparableArgs.checkValueRange(
-            (ReadableInstant) dt, (ReadableInstant) minDt, (ReadableInstant) maxDt, argName);
-        return dt;
+    public static DateTime checkValueInsideRange(
+        DateTime ref, DateTime minRangeValue, DateTime maxRangeValue, String argName) {
+        ComparableArgs.checkValueInsideRange(
+            (ReadableInstant) ref,
+            (ReadableInstant) minRangeValue,
+            (ReadableInstant) maxRangeValue,
+            argName);
+        return ref;
+    }
+
+    /**
+     * Convenience method to call
+     * {@link ComparableArgs#checkValueOutsideRange(Comparable, Comparable, Comparable, String)}.
+     *
+     * @see #checkValueInsideRange(DateTime, DateTime, DateTime, String)
+     * @see #checkMinValue(DateTime, DateTime, String)
+     * @see #checkMaxValue(DateTime, DateTime, String)
+     * @see #checkExactValue(DateTime, DateTime, String)
+     * @see #checkNotExactValue(DateTime, DateTime, String)
+     */
+    @FullyTested
+    public static DateTime checkValueOutsideRange(
+        DateTime ref, DateTime minRangeValue, DateTime maxRangeValue, String argName) {
+        ComparableArgs.checkValueOutsideRange(
+            (ReadableInstant) ref,
+            (ReadableInstant) minRangeValue,
+            (ReadableInstant) maxRangeValue,
+            argName);
+        return ref;
     }
 
     /**
      * Convenience method to call
      * {@link ComparableArgs#checkMinValue(Comparable, Comparable, String)}.
      * 
-     * @see #checkValueRange(DateTime, DateTime, DateTime, String)
+     * @see #checkValueInsideRange(DateTime, DateTime, DateTime, String)
+     * @see #checkValueOutsideRange(DateTime, DateTime, DateTime, String)
      * @see #checkMaxValue(DateTime, DateTime, String)
      * @see #checkExactValue(DateTime, DateTime, String)
      * @see #checkNotExactValue(DateTime, DateTime, String)
      */
     @FullyTested
-    public static DateTime checkMinValue(
-            DateTime dt, DateTime minDt, String argName) {
+    public static DateTime checkMinValue(DateTime dt, DateTime minDt, String argName) {
         ComparableArgs.checkMinValue((ReadableInstant) dt, (ReadableInstant) minDt, argName);
         return dt;
     }
@@ -80,15 +105,15 @@ public final class DateTimeArgs {
     /**
      * Convenience method to call
      * {@link ComparableArgs#checkMaxValue(Comparable, Comparable, String)}.
-     * 
-     * @see #checkValueRange(DateTime, DateTime, DateTime, String)
+     *
+     * @see #checkValueInsideRange(DateTime, DateTime, DateTime, String)
+     * @see #checkValueOutsideRange(DateTime, DateTime, DateTime, String)
      * @see #checkMinValue(DateTime, DateTime, String)
      * @see #checkExactValue(DateTime, DateTime, String)
      * @see #checkNotExactValue(DateTime, DateTime, String)
      */
     @FullyTested
-    public static DateTime checkMaxValue(
-            DateTime dt, DateTime maxDt, String argName) {
+    public static DateTime checkMaxValue(DateTime dt, DateTime maxDt, String argName) {
         ComparableArgs.checkMaxValue((ReadableInstant) dt, (ReadableInstant) maxDt, argName);
         return dt;
     }
@@ -99,14 +124,14 @@ public final class DateTimeArgs {
      * Convenience method to call
      * {@link ComparableArgs#checkExactValue(Comparable, Comparable, String)}.
      * 
-     * @see #checkValueRange(DateTime, DateTime, DateTime, String)
+     * @see #checkValueInsideRange(DateTime, DateTime, DateTime, String)
+     * @see #checkValueOutsideRange(DateTime, DateTime, DateTime, String)
      * @see #checkMinValue(DateTime, DateTime, String)
      * @see #checkMaxValue(DateTime, DateTime, String)
      * @see #checkNotExactValue(DateTime, DateTime, String)
      */
     @FullyTested
-    public static DateTime checkExactValue(
-            DateTime dt, DateTime exactDt, String argName) {
+    public static DateTime checkExactValue(DateTime dt, DateTime exactDt, String argName) {
         ComparableArgs.checkExactValue((ReadableInstant) dt, (ReadableInstant) exactDt, argName);
         return dt;
     }
@@ -115,14 +140,14 @@ public final class DateTimeArgs {
      * Convenience method to call
      * {@link ComparableArgs#checkNotExactValue(Comparable, Comparable, String)}.
      *
-     * @see #checkValueRange(DateTime, DateTime, DateTime, String)
+     * @see #checkValueInsideRange(DateTime, DateTime, DateTime, String)
+     * @see #checkValueOutsideRange(DateTime, DateTime, DateTime, String)
      * @see #checkMinValue(DateTime, DateTime, String)
      * @see #checkMaxValue(DateTime, DateTime, String)
      * @see #checkExactValue(DateTime, DateTime, String)
      */
     @FullyTested
-    public static DateTime checkNotExactValue(
-            DateTime dt, DateTime exactDt, String argName) {
+    public static DateTime checkNotExactValue(DateTime dt, DateTime exactDt, String argName) {
         ComparableArgs.checkNotExactValue((ReadableInstant) dt, (ReadableInstant) exactDt, argName);
         return dt;
     }

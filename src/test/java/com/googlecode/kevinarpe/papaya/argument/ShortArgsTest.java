@@ -51,7 +51,7 @@ public class ShortArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkPositive_Pass_Data() {
+    public static Object[][] checkPositive_Pass_Data() {
         return new Object[][] {
                 { (short) 1 },
                 { (short) 99 },
@@ -59,7 +59,7 @@ public class ShortArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkPositive_Pass_Data")
+    @Test(dataProvider = "checkPositive_Pass_Data")
     public void checkPositive_Pass(short i) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == ShortArgs.checkPositive(i, "i"));
@@ -70,7 +70,7 @@ public class ShortArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkPositive_FailWithNonPositiveInput_Data() {
+    public static Object[][] checkPositive_FailWithNonPositiveInput_Data() {
         return new Object[][] {
                 { (short) 0 },
                 { (short) -1 },
@@ -78,7 +78,7 @@ public class ShortArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkPositive_FailWithNonPositiveInput_Data",
+    @Test(dataProvider = "checkPositive_FailWithNonPositiveInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkPositive_FailWithNonPositiveInput(short i) {
         ShortArgs.checkPositive(i, "i");
@@ -89,7 +89,7 @@ public class ShortArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNotPositive_Pass_Data() {
+    public static Object[][] checkNotPositive_Pass_Data() {
         return new Object[][] {
                 { (short) 0 },
                 { (short) -99 },
@@ -97,7 +97,7 @@ public class ShortArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotPositive_Pass_Data")
+    @Test(dataProvider = "checkNotPositive_Pass_Data")
     public void checkNotPositive_Pass(short i) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == ShortArgs.checkNotPositive(i, "i"));
@@ -108,14 +108,14 @@ public class ShortArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkNotPositive_FailWithPositiveInput_Data() {
+    public static Object[][] checkNotPositive_FailWithPositiveInput_Data() {
         return new Object[][] {
                 { (short) 1 },
                 { Short.MAX_VALUE },
         };
     }
     
-    @Test(dataProvider = "_checkNotPositive_FailWithPositiveInput_Data",
+    @Test(dataProvider = "checkNotPositive_FailWithPositiveInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkNotPositive_FailWithPositiveInput(short i) {
         ShortArgs.checkNotPositive(i, "i");
@@ -126,7 +126,7 @@ public class ShortArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNegative_Pass_Data() {
+    public static Object[][] checkNegative_Pass_Data() {
         return new Object[][] {
                 { (short) -1 },
                 { (short) -99 },
@@ -134,7 +134,7 @@ public class ShortArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNegative_Pass_Data")
+    @Test(dataProvider = "checkNegative_Pass_Data")
     public void checkNegative_Pass(short i) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == ShortArgs.checkNegative(i, "i"));
@@ -145,7 +145,7 @@ public class ShortArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkNegative_FailWithNonNegativeInput_Data() {
+    public static Object[][] checkNegative_FailWithNonNegativeInput_Data() {
         return new Object[][] {
                 { (short) 0 },
                 { (short) 1 },
@@ -153,7 +153,7 @@ public class ShortArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNegative_FailWithNonNegativeInput_Data",
+    @Test(dataProvider = "checkNegative_FailWithNonNegativeInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkNegative_FailWithNonNegativeInput(short i) {
         ShortArgs.checkNegative(i, "i");
@@ -164,7 +164,7 @@ public class ShortArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNotNegative_Pass_Data() {
+    public static Object[][] checkNotNegative_Pass_Data() {
         return new Object[][] {
                 { (short) 0 },
                 { (short) 99 },
@@ -172,7 +172,7 @@ public class ShortArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotNegative_Pass_Data")
+    @Test(dataProvider = "checkNotNegative_Pass_Data")
     public void checkNotNegative_Pass(short i) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == ShortArgs.checkNotNegative(i, "i"));
@@ -183,14 +183,14 @@ public class ShortArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkNotNegative_FailWithNegativeInput_Data() {
+    public static Object[][] checkNotNegative_FailWithNegativeInput_Data() {
         return new Object[][] {
                 { (short) -1 },
                 { Short.MIN_VALUE },
         };
     }
     
-    @Test(dataProvider = "_checkNotNegative_FailWithNegativeInput_Data",
+    @Test(dataProvider = "checkNotNegative_FailWithNegativeInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkNotNegative_FailWithNegativeInput(short i) {
         ShortArgs.checkNotNegative(i, "i");
@@ -201,7 +201,7 @@ public class ShortArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkValueRange_Pass_Data() {
+    public static Object[][] checkValueRange_Pass_Data() {
         return new Object[][] {
                 { (short) 1, (short) -1, (short) 2 },
                 { (short) 1, (short) -1, (short) 1 },
@@ -212,7 +212,7 @@ public class ShortArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkValueRange_Pass_Data")
+    @Test(dataProvider = "checkValueRange_Pass_Data")
     public void checkValueRange_Pass(short i, short minValue, short maxValue) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == ShortArgs.checkValueRange(i, minValue, maxValue, "i"));
@@ -223,7 +223,7 @@ public class ShortArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkValueRange_FailWithInvalidInput_Data() {
+    public static Object[][] checkValueRange_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (short) 1, (short) -1, (short) 0 },
                 { (short) 1, (short) 0, (short) 0 },
@@ -241,7 +241,7 @@ public class ShortArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkValueRange_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkValueRange_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkValueRange_FailWithInvalidInput(
             short i, short minValue, short maxValue) {
@@ -253,7 +253,7 @@ public class ShortArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkMinValue_Pass_Data() {
+    public static Object[][] checkMinValue_Pass_Data() {
         return new Object[][] {
                 { (short) 1, (short) -1 },
                 { (short) 1, (short) 0 },
@@ -265,7 +265,7 @@ public class ShortArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinValue_Pass_Data")
+    @Test(dataProvider = "checkMinValue_Pass_Data")
     public void checkMinValue_Pass(short i, short minValue) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == ShortArgs.checkMinValue(i, minValue, "i"));
@@ -276,7 +276,7 @@ public class ShortArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkMinValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkMinValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (short) 1, (short) 2 },
                 { (short) 1, (short) 3 },
@@ -285,7 +285,7 @@ public class ShortArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinValue_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkMinValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMinValue_FailWithInvalidInput(short i, short minValue) {
         ShortArgs.checkMinValue(i, minValue, "i");
@@ -296,7 +296,7 @@ public class ShortArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkMaxValue_Pass_Data() {
+    public static Object[][] checkMaxValue_Pass_Data() {
         return new Object[][] {
                 { (short) 1, (short) 1 },
                 { (short) 1, (short) 2 },
@@ -308,7 +308,7 @@ public class ShortArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxValue_Pass_Data")
+    @Test(dataProvider = "checkMaxValue_Pass_Data")
     public void checkMaxValue_Pass(short i, short maxValue) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == ShortArgs.checkMaxValue(i, maxValue, "i"));
@@ -319,7 +319,7 @@ public class ShortArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkMaxValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkMaxValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (short) 1, (short) 0 },
                 { (short) 1, (short) -1 },
@@ -328,7 +328,7 @@ public class ShortArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxValue_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkMaxValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkMaxValue_FailWithInvalidInput(short i, short maxValue) {
         ShortArgs.checkMaxValue(i, maxValue, "i");
@@ -339,7 +339,7 @@ public class ShortArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkExactValue_Pass_Data() {
+    public static Object[][] checkExactValue_Pass_Data() {
         return new Object[][] {
                 { (short) 1, (short) 1 },
                 { (short) 0, (short) 0 },
@@ -349,7 +349,7 @@ public class ShortArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactValue_Pass_Data")
+    @Test(dataProvider = "checkExactValue_Pass_Data")
     public void checkExactValue_Pass(short i, short value) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == ShortArgs.checkExactValue(i, value, "i"));
@@ -360,7 +360,7 @@ public class ShortArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (short) 1, (short) 0 },
                 { (short) 1, (short) -1 },
@@ -369,7 +369,7 @@ public class ShortArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactValue_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkExactValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkExactValue_FailWithInvalidInput(short i, short value) {
         ShortArgs.checkExactValue(i, value, "i");
@@ -380,7 +380,7 @@ public class ShortArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNotExactValue_Pass_Data() {
+    public static Object[][] checkNotExactValue_Pass_Data() {
         return new Object[][] {
                 { (short) 1, (short) 0 },
                 { (short) 1, (short) -1 },
@@ -389,7 +389,7 @@ public class ShortArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotExactValue_Pass_Data")
+    @Test(dataProvider = "checkNotExactValue_Pass_Data")
     public void checkNotExactValue_Pass(short i, short value) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(i == ShortArgs.checkNotExactValue(i, value, "i"));
@@ -400,7 +400,7 @@ public class ShortArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkNotExactValue_FailWithInvalidInput_Data() {
+    public static Object[][] checkNotExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
                 { (short) 1, (short) 1 },
                 { (short) 0, (short) 0 },
@@ -410,7 +410,7 @@ public class ShortArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotExactValue_FailWithInvalidInput_Data",
+    @Test(dataProvider = "checkNotExactValue_FailWithInvalidInput_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkNotExactValue_FailWithInvalidInput(short i, short value) {
         ShortArgs.checkNotExactValue(i, value, "i");

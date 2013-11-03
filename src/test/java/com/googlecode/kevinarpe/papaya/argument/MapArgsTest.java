@@ -52,7 +52,7 @@ public class MapArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkSizeRange_Pass_Data() {
+    public static Object[][] checkSizeRange_Pass_Data() {
         return new Object[][] {
                 { new HashMap<Object, Object>(), 0, 10 },
                 { new HashMap<Object, Object>(), 0, 0 },
@@ -71,7 +71,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkSizeRange_Pass_Data")
+    @Test(dataProvider = "checkSizeRange_Pass_Data")
     public <TKey, TValue> void checkSizeRange_Pass(
             Map<TKey, TValue> ref, int minSize, int maxSize) {
         // Two steps here: (1) call the method, (2) assert the result
@@ -83,7 +83,7 @@ public class MapArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkSizeRange_FailWithInvalidMinOrMaxLen_Data() {
+    public static Object[][] checkSizeRange_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { new HashMap<Object, Object>(), 3, 4 },
                 { _asMap("a", 1), -3, 3 },
@@ -95,7 +95,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkSizeRange_FailWithInvalidMinOrMaxLen_Data",
+    @Test(dataProvider = "checkSizeRange_FailWithInvalidMinOrMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <TKey, TValue> void checkSizeRange_FailWithInvalidMinOrMaxLen(
             Map<TKey, TValue> ref, int minSize, int maxSize) {
@@ -103,7 +103,7 @@ public class MapArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkSizeRange_FailWithNullMap_Data() {
+    public static Object[][] checkSizeRange_FailWithNullMap_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -111,7 +111,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkSizeRange_FailWithNullMap_Data",
+    @Test(dataProvider = "checkSizeRange_FailWithNullMap_Data",
             expectedExceptions = NullPointerException.class)
     public <TKey, TValue> void checkSizeRange_FailWithNullMap(
             Map<TKey, TValue> ref, int minSize, int maxSize) {
@@ -123,7 +123,7 @@ public class MapArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNotEmpty_Pass_Data() {
+    public static Object[][] checkNotEmpty_Pass_Data() {
         return new Object[][] {
                 { _asMap("a", 1) },
                 { _asMap("a", 1, "b", 2) },
@@ -131,7 +131,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmpty_Pass_Data")
+    @Test(dataProvider = "checkNotEmpty_Pass_Data")
     public <TKey, TValue> void checkNotEmpty_Pass(Map<TKey, TValue> ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == MapArgs.checkNotEmpty(ref, "ref"));
@@ -142,14 +142,14 @@ public class MapArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkNotEmpty_FailWithEmptyMap_Data() {
+    public static Object[][] checkNotEmpty_FailWithEmptyMap_Data() {
         return new Object[][] {
                 { ImmutableMap.of() },
                 { new HashMap<String, String>() },
         };
     }
     
-    @Test(dataProvider = "_checkNotEmpty_FailWithEmptyMap_Data",
+    @Test(dataProvider = "checkNotEmpty_FailWithEmptyMap_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <TKey, TValue> void checkNotEmpty_FailWithEmptyMap(Map<TKey, TValue> ref) {
         MapArgs.checkNotEmpty(ref, "ref");
@@ -166,7 +166,7 @@ public class MapArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkMinSize_Pass_Data() {
+    public static Object[][] checkMinSize_Pass_Data() {
         return new Object[][] {
                 { new HashMap<String, String>(), 0 },
                 { _asMap("a", 1), 0 },
@@ -177,7 +177,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinSize_Pass_Data")
+    @Test(dataProvider = "checkMinSize_Pass_Data")
     public <TKey, TValue> void checkMinSize_Pass(Map<TKey, TValue> ref, int minSize) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == MapArgs.checkMinSize(ref, minSize, "ref"));
@@ -188,7 +188,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkMinSize_FailWithInvalidMinLen_Data() {
+    public static Object[][] checkMinSize_FailWithInvalidMinLen_Data() {
         return new Object[][] {
                 { new HashMap<String, String>(), -2 },
                 { new HashMap<String, String>(), 2 },
@@ -197,7 +197,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinSize_FailWithInvalidMinLen_Data",
+    @Test(dataProvider = "checkMinSize_FailWithInvalidMinLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <TKey, TValue> void checkMinSize_FailWithInvalidMinLen(
             Map<TKey, TValue> ref, int minSize) {
@@ -205,7 +205,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkMinSize_FailWithNullMap_Data() {
+    public static Object[][] checkMinSize_FailWithNullMap_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -213,7 +213,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinSize_FailWithNullMap_Data",
+    @Test(dataProvider = "checkMinSize_FailWithNullMap_Data",
             expectedExceptions = NullPointerException.class)
     public <TKey, TValue> void checkMinSize_FailWithNullMap(
             Map<TKey, TValue> ref, int minSize) {
@@ -225,7 +225,7 @@ public class MapArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkMaxSize_Pass_Data() {
+    public static Object[][] checkMaxSize_Pass_Data() {
         return new Object[][] {
                 { new HashMap<String, String>(), 0 },
                 { new HashMap<String, String>(), 99 },
@@ -236,7 +236,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxSize_Pass_Data")
+    @Test(dataProvider = "checkMaxSize_Pass_Data")
     public <TKey, TValue> void checkMaxSize_Pass(Map<TKey, TValue> ref, int maxSize) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == MapArgs.checkMaxSize(ref, maxSize, "ref"));
@@ -247,7 +247,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkMaxSize_FailWithInvalidMaxLen_Data() {
+    public static Object[][] checkMaxSize_FailWithInvalidMaxLen_Data() {
         return new Object[][] {
                 { new HashMap<String, String>(), -2 },
                 { _asMap("a", 1), -3 },
@@ -255,7 +255,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxSize_FailWithInvalidMaxLen_Data",
+    @Test(dataProvider = "checkMaxSize_FailWithInvalidMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <TKey, TValue> void checkMaxSize_FailWithInvalidMaxLen(
             Map<TKey, TValue> ref, int maxSize) {
@@ -263,7 +263,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkMaxSize_FailWithNullMap_Data() {
+    public static Object[][] checkMaxSize_FailWithNullMap_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -271,7 +271,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxSize_FailWithNullMap_Data",
+    @Test(dataProvider = "checkMaxSize_FailWithNullMap_Data",
             expectedExceptions = NullPointerException.class)
     public <TKey, TValue> void checkMaxSize_FailWithNullMap(
             Map<TKey, TValue> ref, int maxSize) {
@@ -283,7 +283,7 @@ public class MapArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkExactSize_Pass_Data() {
+    public static Object[][] checkExactSize_Pass_Data() {
         return new Object[][] {
                 { new HashMap<String, String>(), 0 },
                 { _asMap("a", 1), 1 },
@@ -291,7 +291,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactSize_Pass_Data")
+    @Test(dataProvider = "checkExactSize_Pass_Data")
     public <TKey, TValue> void checkExactSize_Pass(Map<TKey, TValue> ref, int exactSize) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == MapArgs.checkExactSize(ref, exactSize, "ref"));
@@ -302,7 +302,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkExactSize_FailWithInvalidExactLen_Data() {
+    public static Object[][] checkExactSize_FailWithInvalidExactLen_Data() {
         return new Object[][] {
                 { new HashMap<String, String>(), -2 },
                 { new HashMap<String, String>(), 2 },
@@ -311,7 +311,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactSize_FailWithInvalidExactLen_Data",
+    @Test(dataProvider = "checkExactSize_FailWithInvalidExactLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <TKey, TValue> void checkExactSize_FailWithInvalidExactLen(
             Map<TKey, TValue> ref, int exactSize) {
@@ -319,7 +319,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkExactSize_FailWithNullMap_Data() {
+    public static Object[][] checkExactSize_FailWithNullMap_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -327,7 +327,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactSize_FailWithNullMap_Data",
+    @Test(dataProvider = "checkExactSize_FailWithNullMap_Data",
             expectedExceptions = NullPointerException.class)
     public <TKey, TValue> void checkExactSize_FailWithNullMap(
             Map<TKey, TValue> ref, int exactSize) {
@@ -339,7 +339,7 @@ public class MapArgsTest {
     //
     
     @DataProvider
-    public static Object[][] _checkKeysNotNull_Pass_Data() {
+    public static Object[][] checkKeysNotNull_Pass_Data() {
         return new Object[][] {
                 { new HashMap<Object, Object>() },
                 { _asMap("abc", 123) },
@@ -349,7 +349,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkKeysNotNull_Pass_Data")
+    @Test(dataProvider = "checkKeysNotNull_Pass_Data")
     public <TKey, TValue> void checkKeysNotNull_Pass(Map<TKey, TValue> ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == MapArgs.checkKeysNotNull(ref, "ref"));
@@ -360,7 +360,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkKeysNotNull_FailWithNullKey_Data() {
+    public static Object[][] checkKeysNotNull_FailWithNullKey_Data() {
         return new Object[][] {
                 { _asMap(null, 123) },
                 { _asMap(null, null) },
@@ -370,7 +370,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkKeysNotNull_FailWithNullKey_Data",
+    @Test(dataProvider = "checkKeysNotNull_FailWithNullKey_Data",
             expectedExceptions = NullPointerException.class)
     public <TKey, TValue> void checkKeysNotNull_FailWithNullKey(Map<TKey, TValue> ref) {
         MapArgs.checkKeysNotNull(ref, "ref");
@@ -386,7 +386,7 @@ public class MapArgsTest {
     //
     
     @DataProvider
-    public static Object[][] _checkValuesNotNull_Pass_Data() {
+    public static Object[][] checkValuesNotNull_Pass_Data() {
         return new Object[][] {
                 { new HashMap<Object, Object>() },
                 { _asMap("abc", 123) },
@@ -396,7 +396,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkValuesNotNull_Pass_Data")
+    @Test(dataProvider = "checkValuesNotNull_Pass_Data")
     public <TKey, TValue> void checkValuesNotNull_Pass(Map<TKey, TValue> ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == MapArgs.checkValuesNotNull(ref, "ref"));
@@ -407,7 +407,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkValuesNotNull_FailWithNullValue_Data() {
+    public static Object[][] checkValuesNotNull_FailWithNullValue_Data() {
         return new Object[][] {
                 { _asMap(123, null) },
                 { _asMap(null, null) },
@@ -417,7 +417,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkValuesNotNull_FailWithNullValue_Data",
+    @Test(dataProvider = "checkValuesNotNull_FailWithNullValue_Data",
             expectedExceptions = NullPointerException.class)
     public <TKey, TValue> void checkValuesNotNull_FailWithNullValue(Map<TKey, TValue> ref) {
         MapArgs.checkValuesNotNull(ref, "ref");
@@ -433,7 +433,7 @@ public class MapArgsTest {
     //
     
     @DataProvider
-    public static Object[][] _checkKeysAndValuesNotNull_Pass_Data() {
+    public static Object[][] checkKeysAndValuesNotNull_Pass_Data() {
         return new Object[][] {
                 { new HashMap<Object, Object>() },
                 { _asMap("abc", 123) },
@@ -441,7 +441,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkKeysAndValuesNotNull_Pass_Data")
+    @Test(dataProvider = "checkKeysAndValuesNotNull_Pass_Data")
     public <TKey, TValue> void checkKeysAndValuesNotNull_Pass(Map<TKey, TValue> ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == MapArgs.checkKeysAndValuesNotNull(ref, "ref"));
@@ -452,7 +452,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkKeysAndValuesNotNull_FailWithNullKeyOrValue_Data() {
+    public static Object[][] checkKeysAndValuesNotNull_FailWithNullKeyOrValue_Data() {
         return new Object[][] {
                 { _asMap(null, 123) },
                 { _asMap(null, null) },
@@ -470,7 +470,7 @@ public class MapArgsTest {
         return map;
     }
     
-    @Test(dataProvider = "_checkKeysAndValuesNotNull_FailWithNullKeyOrValue_Data",
+    @Test(dataProvider = "checkKeysAndValuesNotNull_FailWithNullKeyOrValue_Data",
             expectedExceptions = NullPointerException.class)
     public <TKey, TValue> void checkKeysAndValuesNotNull_FailWithNullKeyOrValue(
             Map<TKey, TValue> ref) {
@@ -487,7 +487,7 @@ public class MapArgsTest {
     //
     
     @DataProvider
-    public static Object[][] _checkNotEmptyAndKeysNotNull_Pass_Data() {
+    public static Object[][] checkNotEmptyAndKeysNotNull_Pass_Data() {
         return new Object[][] {
                 { _asMap("abc", 123) },
                 { _asMap("abc", null) },
@@ -496,7 +496,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyAndKeysNotNull_Pass_Data")
+    @Test(dataProvider = "checkNotEmptyAndKeysNotNull_Pass_Data")
     public <TKey, TValue> void checkNotEmptyAndKeysNotNull_Pass(Map<TKey, TValue> ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == MapArgs.checkNotEmptyAndKeysNotNull(ref, "ref"));
@@ -507,7 +507,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkNotEmptyAndKeysNotNull_FailWithNullKey_Data() {
+    public static Object[][] checkNotEmptyAndKeysNotNull_FailWithNullKey_Data() {
         return new Object[][] {
                 { _asMap(null, 123) },
                 { _asMap(null, null) },
@@ -517,21 +517,21 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyAndKeysNotNull_FailWithNullKey_Data",
+    @Test(dataProvider = "checkNotEmptyAndKeysNotNull_FailWithNullKey_Data",
             expectedExceptions = NullPointerException.class)
     public <TKey, TValue> void checkNotEmptyAndKeysNotNull_FailWithNullKey(Map<TKey, TValue> ref) {
         MapArgs.checkNotEmptyAndKeysNotNull(ref, "ref");
     }
 
     @DataProvider
-    public static Object[][] _checkNotEmptyAndKeysNotNull_FailWithEmptyMap_Data() {
+    public static Object[][] checkNotEmptyAndKeysNotNull_FailWithEmptyMap_Data() {
         return new Object[][] {
                 { ImmutableMap.of() },
                 { new HashMap<String, String>() },
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyAndKeysNotNull_FailWithEmptyMap_Data",
+    @Test(dataProvider = "checkNotEmptyAndKeysNotNull_FailWithEmptyMap_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <TKey, TValue> void checkNotEmptyAndKeysNotNull_FailWithEmptyMap(
             Map<TKey, TValue> ref) {
@@ -548,7 +548,7 @@ public class MapArgsTest {
     //
     
     @DataProvider
-    public static Object[][] _checkNotEmptyAndValuesNotNull_Pass_Data() {
+    public static Object[][] checkNotEmptyAndValuesNotNull_Pass_Data() {
         return new Object[][] {
                 { _asMap("abc", 123) },
                 { _asMap(null, 123) },
@@ -557,7 +557,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyAndValuesNotNull_Pass_Data")
+    @Test(dataProvider = "checkNotEmptyAndValuesNotNull_Pass_Data")
     public <TKey, TValue> void checkNotEmptyAndValuesNotNull_Pass(Map<TKey, TValue> ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == MapArgs.checkNotEmptyAndValuesNotNull(ref, "ref"));
@@ -568,7 +568,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkNotEmptyAndValuesNotNull_FailWithNullValue_Data() {
+    public static Object[][] checkNotEmptyAndValuesNotNull_FailWithNullValue_Data() {
         return new Object[][] {
                 { _asMap(123, null) },
                 { _asMap(null, null) },
@@ -578,7 +578,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyAndValuesNotNull_FailWithNullValue_Data",
+    @Test(dataProvider = "checkNotEmptyAndValuesNotNull_FailWithNullValue_Data",
             expectedExceptions = NullPointerException.class)
     public <TKey, TValue> void checkNotEmptyAndValuesNotNull_FailWithNullValue(
             Map<TKey, TValue> ref) {
@@ -586,14 +586,14 @@ public class MapArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkNotEmptyAndValuesNotNull_FailWithEmptyMap_Data() {
+    public static Object[][] checkNotEmptyAndValuesNotNull_FailWithEmptyMap_Data() {
         return new Object[][] {
                 { ImmutableMap.of() },
                 { new HashMap<String, String>() },
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyAndValuesNotNull_FailWithEmptyMap_Data",
+    @Test(dataProvider = "checkNotEmptyAndValuesNotNull_FailWithEmptyMap_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <TKey, TValue> void checkNotEmptyAndValuesNotNull_FailWithEmptyMap(
             Map<TKey, TValue> ref) {
@@ -610,14 +610,14 @@ public class MapArgsTest {
     //
     
     @DataProvider
-    public static Object[][] _checkNotEmptyAndKeysAndValuesNotNull_Pass_Data() {
+    public static Object[][] checkNotEmptyAndKeysAndValuesNotNull_Pass_Data() {
         return new Object[][] {
                 { _asMap("abc", 123) },
                 { _asMap("abc", 123, "def", 456) },
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyAndKeysAndValuesNotNull_Pass_Data")
+    @Test(dataProvider = "checkNotEmptyAndKeysAndValuesNotNull_Pass_Data")
     public <TKey, TValue> void checkNotEmptyAndKeysAndValuesNotNull_Pass(Map<TKey, TValue> ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == MapArgs.checkNotEmptyAndKeysAndValuesNotNull(ref, "ref"));
@@ -633,7 +633,7 @@ public class MapArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkNotEmptyAndKeysAndValuesNotNull_FailWithNullKeyOrValue_Data() {
+    public static Object[][] checkNotEmptyAndKeysAndValuesNotNull_FailWithNullKeyOrValue_Data() {
         return new Object[][] {
                 { _asMap(null, 123) },
                 { _asMap(null, null) },
@@ -643,7 +643,7 @@ public class MapArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyAndKeysAndValuesNotNull_FailWithNullKeyOrValue_Data",
+    @Test(dataProvider = "checkNotEmptyAndKeysAndValuesNotNull_FailWithNullKeyOrValue_Data",
             expectedExceptions = NullPointerException.class)
     public <TKey, TValue> void checkNotEmptyAndKeysAndValuesNotNull_FailWithNullKeyOrValue(
             Map<TKey, TValue> ref) {
@@ -651,14 +651,14 @@ public class MapArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkNotEmptyAndKeysAndValuesNotNull_FailWithEmptyMap_Data() {
+    public static Object[][] checkNotEmptyAndKeysAndValuesNotNull_FailWithEmptyMap_Data() {
         return new Object[][] {
                 { ImmutableMap.of() },
                 { new HashMap<String, String>() },
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyAndKeysAndValuesNotNull_FailWithEmptyMap_Data",
+    @Test(dataProvider = "checkNotEmptyAndKeysAndValuesNotNull_FailWithEmptyMap_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <TKey, TValue> void checkNotEmptyAndKeysAndValuesNotNull_FailWithEmptyMap(
             Map<TKey, TValue> ref) {

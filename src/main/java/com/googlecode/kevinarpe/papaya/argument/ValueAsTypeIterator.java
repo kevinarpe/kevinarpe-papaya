@@ -53,7 +53,13 @@ final class ValueAsTypeIterator {
         
         public double nextAsDouble();
     }
-    
+
+    interface _IValueAsComparableIterator<TValue extends Comparable<? super TValue>>
+    extends _IValueAsTypeIterator {
+
+        public TValue nextAsComparable();
+    }
+
     static abstract class _AbstractValueAsTypeIterator
     implements _IValueAsTypeIterator {
         
@@ -73,7 +79,7 @@ final class ValueAsTypeIterator {
             return 1 + _index;
         }
     }
-    
+
     static abstract class _AbstractValueAsTypeArrayIterator
     extends _AbstractValueAsTypeIterator {
 
@@ -166,8 +172,27 @@ final class ValueAsTypeIterator {
         abstract protected double getValueAsDouble(int index);
     }
 
+    static abstract class _AbstractValueAsComparableArrayIterator<TValue extends Comparable<? super TValue>>
+    extends _AbstractValueAsTypeArrayIterator
+    implements _IValueAsComparableIterator<TValue> {
+
+        public _AbstractValueAsComparableArrayIterator(int size) {
+            super(size);
+        }
+
+        @Override
+        public TValue nextAsComparable() {
+            int index = nextIndex();
+            TValue x = getValueAsComparable(index);
+            incrementIndex();
+            return x;
+        }
+
+        abstract protected TValue getValueAsComparable(int index);
+    }
+
     static class _UncheckedPrimitiveByteArrayAsLongIterator
-            extends _AbstractValueAsLongArrayIterator {
+    extends _AbstractValueAsLongArrayIterator {
 
         private byte[] _arr;
 
@@ -184,7 +209,7 @@ final class ValueAsTypeIterator {
     }
 
     static class _UncheckedPrimitiveCharArrayAsLongIterator
-            extends _AbstractValueAsLongArrayIterator {
+    extends _AbstractValueAsLongArrayIterator {
 
         private char[] _arr;
 
@@ -200,11 +225,28 @@ final class ValueAsTypeIterator {
         }
     }
 
+    static class _UncheckedPrimitiveShortArrayAsLongIterator
+    extends _AbstractValueAsLongArrayIterator {
+
+        private short[] _arr;
+
+        public _UncheckedPrimitiveShortArrayAsLongIterator(short[] arr) {
+            super(arr.length);
+            _arr = arr;
+        }
+
+        @Override
+        protected long getValueAsLong(int index) {
+            long x = _arr[index];
+            return x;
+        }
+    }
+
     static class _UncheckedPrimitiveIntArrayAsLongIterator
     extends _AbstractValueAsLongArrayIterator {
-        
+
         private int[] _arr;
-        
+
         public _UncheckedPrimitiveIntArrayAsLongIterator(int[] arr) {
             super(arr.length);
             _arr = arr;
@@ -216,7 +258,7 @@ final class ValueAsTypeIterator {
             return x;
         }
     }
-    
+
     static class _UncheckedPrimitiveLongArrayAsLongIterator
     extends _AbstractValueAsLongArrayIterator {
         
@@ -269,7 +311,7 @@ final class ValueAsTypeIterator {
     }
 
     static class _UncheckedByteObjectArrayAsLongIterator
-            extends _AbstractValueAsLongArrayIterator {
+    extends _AbstractValueAsLongArrayIterator {
 
         private Byte[] _arr;
 
@@ -286,7 +328,7 @@ final class ValueAsTypeIterator {
     }
 
     static class _UncheckedCharObjectArrayAsLongIterator
-            extends _AbstractValueAsLongArrayIterator {
+    extends _AbstractValueAsLongArrayIterator {
 
         private Character[] _arr;
 
@@ -302,8 +344,25 @@ final class ValueAsTypeIterator {
         }
     }
 
+    static class _UncheckedShortObjectArrayAsLongIterator
+    extends _AbstractValueAsLongArrayIterator {
+
+        private Short[] _arr;
+
+        public _UncheckedShortObjectArrayAsLongIterator(Short[] arr) {
+            super(arr.length);
+            _arr = arr;
+        }
+
+        @Override
+        protected long getValueAsLong(int index) {
+            long x = _arr[index];
+            return x;
+        }
+    }
+
     static class _UncheckedIntObjectArrayAsLongIterator
-            extends _AbstractValueAsLongArrayIterator {
+    extends _AbstractValueAsLongArrayIterator {
 
         private Integer[] _arr;
 
@@ -370,6 +429,23 @@ final class ValueAsTypeIterator {
         }
     }
 
+    static class _UncheckedComparableArrayAsComparableIterator<TValue extends Comparable<? super TValue>>
+    extends _AbstractValueAsComparableArrayIterator<TValue> {
+
+        private TValue[] _arr;
+
+        public _UncheckedComparableArrayAsComparableIterator(TValue[] arr) {
+            super(arr.length);
+            _arr = arr;
+        }
+
+        @Override
+        protected TValue getValueAsComparable(int index) {
+            TValue x = _arr[index];
+            return x;
+        }
+    }
+
     static class _UncheckedByteObjectIterableAsLongIterator
     extends _AbstractValueAsTypeIterableIterator<Byte>
     implements _IValueAsLongIterator {
@@ -390,6 +466,21 @@ final class ValueAsTypeIterator {
     implements _IValueAsLongIterator {
 
         public _UncheckedCharObjectIterableAsLongIterator(Iterable<Character> iterable) {
+            super(iterable);
+        }
+
+        @Override
+        public long nextAsLong() {
+            long x = next();
+            return x;
+        }
+    }
+
+    static class _UncheckedShortObjectIterableAsLongIterator
+    extends _AbstractValueAsTypeIterableIterator<Short>
+    implements _IValueAsLongIterator {
+
+        public _UncheckedShortObjectIterableAsLongIterator(Iterable<Short> iterable) {
             super(iterable);
         }
 
@@ -459,164 +550,155 @@ final class ValueAsTypeIterator {
             return x;
         }
     }
-    
+
+    static class _UncheckedComparableIterableAsComparableIterator<TValue extends Comparable<? super TValue>>
+    extends _AbstractValueAsTypeIterableIterator<TValue>
+    implements _IValueAsComparableIterator<TValue> {
+
+        public _UncheckedComparableIterableAsComparableIterator(Iterable<TValue> iterable) {
+            super(iterable);
+        }
+
+        @Override
+        public TValue nextAsComparable() {
+            TValue x = next();
+            return x;
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // _IValueAsLongIterator Helpers
     //
     
     static void _checkPositive(_IValueAsLongIterator iter, String argName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
         while (iter.hasNext()) {
             final long value = iter.nextAsLong();
             if (value <= 0) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d is not positive: %d%s",
-                    desc, argName, index, value, w));
+                throwPositiveException(iter, value, argName);
             }
         }
     }
     
     static void _checkNotPositive(_IValueAsLongIterator iter, String argName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
         while (iter.hasNext()) {
             final long value = iter.nextAsLong();
             if (value > 0) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d is positive: %d%s",
-                    desc, argName, index, value, w));
+                throwNotPositiveException(iter, value, argName);
             }
         }
     }
     
     static void _checkNegative(_IValueAsLongIterator iter, String argName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
         while (iter.hasNext()) {
             final long value = iter.nextAsLong();
             if (value >= 0) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d is not negative: %d%s",
-                    desc, argName, index, value, w));
+                throwNegativeException(iter, value, argName);
             }
         }
     }
     
     static void _checkNotNegative(_IValueAsLongIterator iter, String argName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
         while (iter.hasNext()) {
             final long value = iter.nextAsLong();
             if (value < 0) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d is negative: %d%s",
-                    desc, argName, index, value, w));
+                throwNotNegativeException(iter, value, argName);
             }
         }
     }
     
     private static void _checkMinAndMaxRangeValues(
-            _IValueAsLongIterator iter, long minRangeValue, long maxRangeValue, String argName) {
+            _IValueAsLongIterator iter,
+            long minRangeValue,
+            long maxRangeValue,
+            String iterArgName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
         if (minRangeValue > maxRangeValue) {
-            final String desc = iter.getUnderlyingDescription();
-            final String w = StringArgs._getArgNameWarning(argName, "argName");
-            throw new IllegalArgumentException(String.format(
-                "%s argument '%s': 'minRangeValue' > 'maxRangeValue': %d > %d%s",
-                desc, argName, minRangeValue, maxRangeValue, w));
+            throwMinAndMaxRangeValuesException(iter, minRangeValue, maxRangeValue, iterArgName);
         }
     }
     
     static void _checkValueInsideRange(
-            _IValueAsLongIterator iter, long minRangeValue, long maxRangeValue, String argName) {
-        _checkMinAndMaxRangeValues(iter, minRangeValue, maxRangeValue, argName);
+            _IValueAsLongIterator iter,
+            long minRangeValue,
+            long maxRangeValue,
+            String iterArgName) {
+        _checkMinAndMaxRangeValues(iter, minRangeValue, maxRangeValue, iterArgName);
         
         while (iter.hasNext()) {
             final long value = iter.nextAsLong();
             if (value < minRangeValue || value > maxRangeValue) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d outside valid range: (min) %d <= %d <= %d (max)%s",
-                    desc, argName, index, minRangeValue, value, maxRangeValue, w));
+                throwValueInsideRangeException(
+                    iter, value, minRangeValue, maxRangeValue, iterArgName);
             }
         }
     }
     
     static void _checkValueOutsideRange(
-            _IValueAsLongIterator iter, long minRangeValue, long maxRangeValue, String argName) {
-        _checkMinAndMaxRangeValues(iter, minRangeValue, maxRangeValue, argName);
+            _IValueAsLongIterator iter,
+            long minRangeValue,
+            long maxRangeValue,
+            String iterArgName) {
+        _checkMinAndMaxRangeValues(iter, minRangeValue, maxRangeValue, iterArgName);
         
         while (iter.hasNext()) {
             final long value = iter.nextAsLong();
             if (value >= minRangeValue && value <= maxRangeValue) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d inside invalid range: (min) %d >= %d <= %d (max)%s",
-                    desc, argName, index, minRangeValue, value, maxRangeValue, w));
+                throwValueOutsideRangeException(
+                    iter, value, minRangeValue, maxRangeValue, iterArgName);
             }
         }
     }
     
-    static void _checkMinValue(_IValueAsLongIterator iter, long minValue, String argName) {
+    static void _checkMinValue(_IValueAsLongIterator iter, long minValue, String iterArgName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
         while (iter.hasNext()) {
             final long value = iter.nextAsLong();
             if (value < minValue) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d < 'minValue': %d < %d%s",
-                    desc, argName, index, value, minValue, w));
+                throwMinValueException(iter, value, minValue, iterArgName);
             }
         }
     }
     
-    static void _checkMaxValue(_IValueAsLongIterator iter, long maxValue, String argName) {
+    static void _checkMaxValue(_IValueAsLongIterator iter, long maxValue, String iterArgName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
         while (iter.hasNext()) {
             final long value = iter.nextAsLong();
             if (value > maxValue) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d > 'maxValue': %d > %d%s",
-                    desc, argName, index, value, maxValue, w));
+                throwMaxValueException(iter, value, maxValue, iterArgName);
             }
         }
     }
     
-    static void _checkExactValue(_IValueAsLongIterator iter, long exactValue, String argName) {
+    static void _checkExactValue(_IValueAsLongIterator iter, long exactValue, String iterArgName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
         while (iter.hasNext()) {
             final long value = iter.nextAsLong();
             if (value != exactValue) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d != 'exactValue': %d != %d%s",
-                    desc, argName, index, value, exactValue, w));
+                throwExactValueException(iter, value, exactValue, iterArgName);
             }
         }
     }
     
-    static void _checkNotExactValue(_IValueAsLongIterator iter, long exactValue, String argName) {
+    static void _checkNotExactValue(
+            _IValueAsLongIterator iter, long exactValue, String iterArgName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
         while (iter.hasNext()) {
             final long value = iter.nextAsLong();
             if (value == exactValue) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d == 'exactValue': %d == %d%s",
-                    desc, argName, index, value, exactValue, w));
+                throwNotExactValueException(iter, value, exactValue, iterArgName);
             }
         }
     }
@@ -626,95 +708,82 @@ final class ValueAsTypeIterator {
     //
     
     static void _checkPositive(_IValueAsDoubleIterator iter, String argName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
         while (iter.hasNext()) {
             final double value = iter.nextAsDouble();
             if (value <= 0.0d) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d is not positive: %f%s",
-                    desc, argName, index, value, w));
+                throwPositiveException(iter, value, argName);
             }
         }
     }
-    
+
     static void _checkNotPositive(_IValueAsDoubleIterator iter, String argName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
         while (iter.hasNext()) {
             final double value = iter.nextAsDouble();
             if (value > 0.0d) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d is positive: %f%s",
-                    desc, argName, index, value, w));
+                throwNotPositiveException(iter, value, argName);
             }
         }
     }
-    
+
     static void _checkNegative(_IValueAsDoubleIterator iter, String argName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
         while (iter.hasNext()) {
             final double value = iter.nextAsDouble();
             if (value >= 0.0d) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d is not negative: %f%s",
-                    desc, argName, index, value, w));
+                throwNegativeException(iter, value, argName);
             }
         }
     }
-    
+
     static void _checkNotNegative(_IValueAsDoubleIterator iter, String argName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
         while (iter.hasNext()) {
             final double value = iter.nextAsDouble();
             if (value < 0.0d) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d is negative: %f%s",
-                    desc, argName, index, value, w));
+                throwNotNegativeException(iter, value, argName);
             }
         }
     }
-    
-    static void _checkValueRange(
-            _IValueAsDoubleIterator iter, double minValue, double maxValue, String argName) {
-        while (iter.hasNext()) {
-            final double value = iter.nextAsDouble();
-            if (value < minValue) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d < 'minValue': %f < %f%s",
-                    desc, argName, index, value, minValue, w));
-            }
-            if (value > maxValue) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d > 'maxValue': %f > %f%s",
-                    desc, argName, index, value, maxValue, w));
-            }
-        }
-    }
+
+    // TODO: Safe to remove?  Discovered on 2013-11-03
+//    static void _checkValueRange(
+//            _IValueAsDoubleIterator iter, double minValue, double maxValue, String argName) {
+//        while (iter.hasNext()) {
+//            final double value = iter.nextAsDouble();
+//            if (value < minValue) {
+//                final String desc = iter.getUnderlyingDescription();
+//                final int index = iter.nextIndex() - 1;
+//                final String w = StringArgs._getArgNameWarning(argName, "argName");
+//                throw new IllegalArgumentException(String.format(
+//                    "%s argument '%s': Value at index %d < 'minValue': %f < %f%s",
+//                    desc, argName, index, value, minValue, w));
+//            }
+//            if (value > maxValue) {
+//                final String desc = iter.getUnderlyingDescription();
+//                final int index = iter.nextIndex() - 1;
+//                final String w = StringArgs._getArgNameWarning(argName, "argName");
+//                throw new IllegalArgumentException(String.format(
+//                    "%s argument '%s': Value at index %d > 'maxValue': %f > %f%s",
+//                    desc, argName, index, value, maxValue, w));
+//            }
+//        }
+//    }
     
     private static void _checkMinAndMaxRangeValues(
             _IValueAsDoubleIterator iter,
             double minRangeValue,
             double maxRangeValue,
-            String argName) {
+            String iterArgName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
         if (minRangeValue > maxRangeValue) {
-            final String desc = iter.getUnderlyingDescription();
-            final String w = StringArgs._getArgNameWarning(argName, "argName");
-            throw new IllegalArgumentException(String.format(
-                "%s argument '%s': 'minRangeValue' > 'maxRangeValue': %f > %f%s",
-                desc, argName, minRangeValue, maxRangeValue, w));
+            throwMinAndMaxRangeValuesException(iter, minRangeValue, maxRangeValue, iterArgName);
         }
     }
     
@@ -722,18 +791,14 @@ final class ValueAsTypeIterator {
             _IValueAsDoubleIterator iter,
             double minRangeValue,
             double maxRangeValue,
-            String argName) {
-        _checkMinAndMaxRangeValues(iter, minRangeValue, maxRangeValue, argName);
+            String iterArgName) {
+        _checkMinAndMaxRangeValues(iter, minRangeValue, maxRangeValue, iterArgName);
         
         while (iter.hasNext()) {
             final double value = iter.nextAsDouble();
             if (value < minRangeValue || value > maxRangeValue) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d outside valid range: (min) %f <= %f >= %f (max)%s",
-                    desc, argName, index, minRangeValue, value, maxRangeValue, w));
+                throwValueInsideRangeException(
+                    iter, value, minRangeValue, maxRangeValue, iterArgName);
             }
         }
     }
@@ -742,76 +807,283 @@ final class ValueAsTypeIterator {
             _IValueAsDoubleIterator iter,
             double minRangeValue,
             double maxRangeValue,
-            String argName) {
-        _checkMinAndMaxRangeValues(iter, minRangeValue, maxRangeValue, argName);
+            String iterArgName) {
+        _checkMinAndMaxRangeValues(iter, minRangeValue, maxRangeValue, iterArgName);
         
         while (iter.hasNext()) {
             final double value = iter.nextAsDouble();
             if (value >= minRangeValue && value <= maxRangeValue) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d inside invalid range: (min) %f >= %f <= %f (max)%s",
-                    desc, argName, index, minRangeValue, value, maxRangeValue, w));
+                throwValueOutsideRangeException(
+                    iter, value, minRangeValue, maxRangeValue, iterArgName);
             }
         }
     }
     
-    static void _checkMinValue(_IValueAsDoubleIterator iter, double minValue, String argName) {
+    static void _checkMinValue(_IValueAsDoubleIterator iter, double minValue, String iterArgName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
         while (iter.hasNext()) {
             final double value = iter.nextAsDouble();
             if (value < minValue) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d < 'minValue': %f < %f%s",
-                    desc, argName, index, value, minValue, w));
+                throwMinValueException(iter, value, minValue, iterArgName);
             }
         }
     }
     
-    static void _checkMaxValue(_IValueAsDoubleIterator iter, double maxValue, String argName) {
+    static void _checkMaxValue(_IValueAsDoubleIterator iter, double maxValue, String iterArgName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
         while (iter.hasNext()) {
             final double value = iter.nextAsDouble();
             if (value > maxValue) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d > 'maxValue': %f > %f%s",
-                    desc, argName, index, value, maxValue, w));
+                throwMaxValueException(iter, value, maxValue, iterArgName);
             }
         }
     }
     
-    static void _checkExactValue(_IValueAsDoubleIterator iter, double exactValue, String argName) {
+    static void _checkExactValue(
+            _IValueAsDoubleIterator iter, double exactValue, String iterArgName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
         while (iter.hasNext()) {
             final double value = iter.nextAsDouble();
             if (value != exactValue) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d != 'exactValue': %f != %f%s",
-                    desc, argName, index, value, exactValue, w));
+                throwExactValueException(iter, value, exactValue, iterArgName);
             }
         }
     }
     
     static void _checkNotExactValue(
-            _IValueAsDoubleIterator iter, double exactValue, String argName) {
+            _IValueAsDoubleIterator iter, double exactValue, String iterArgName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
         while (iter.hasNext()) {
             final double value = iter.nextAsDouble();
             if (value == exactValue) {
-                final String desc = iter.getUnderlyingDescription();
-                final int index = iter.nextIndex() - 1;
-                final String w = StringArgs._getArgNameWarning(argName, "argName");
-                throw new IllegalArgumentException(String.format(
-                    "%s argument '%s': Value at index %d == 'exactValue': %f == %f%s",
-                    desc, argName, index, value, exactValue, w));
+                throwNotExactValueException(iter, value, exactValue, iterArgName);
             }
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // _IValueAsComparableIterator Helpers
+    //
+
+    private static <TValue extends Comparable<? super TValue>> void _checkMinAndMaxRangeValues(
+            _IValueAsComparableIterator<TValue> iter,
+            TValue minRangeValue,
+            TValue maxRangeValue,
+            String iterArgName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+        ObjectArgs.checkNotNull(minRangeValue, "minRangeValue");
+        ObjectArgs.checkNotNull(maxRangeValue, "maxRangeValue");
+
+        if (minRangeValue.compareTo(maxRangeValue) > 0) {
+            throwMinAndMaxRangeValuesException(iter, minRangeValue, maxRangeValue, iterArgName);
+        }
+    }
+
+    static <TValue extends Comparable<? super TValue>> void _checkValueInsideRange(
+            _IValueAsComparableIterator<TValue> iter,
+            TValue minRangeValue,
+            TValue maxRangeValue,
+            String iterArgName) {
+        _checkMinAndMaxRangeValues(iter, minRangeValue, maxRangeValue, iterArgName);
+
+        while (iter.hasNext()) {
+            final TValue value = iter.nextAsComparable();
+            if (value.compareTo(minRangeValue) < 0 || value.compareTo(maxRangeValue) > 0) {
+                throwValueInsideRangeException(iter, value, minRangeValue, maxRangeValue, iterArgName);
+            }
+        }
+    }
+
+    static <TValue extends Comparable<? super TValue>> void _checkValueOutsideRange(
+            _IValueAsComparableIterator<TValue> iter,
+            TValue minRangeValue,
+            TValue maxRangeValue,
+            String iterArgName) {
+        _checkMinAndMaxRangeValues(iter, minRangeValue, maxRangeValue, iterArgName);
+
+        while (iter.hasNext()) {
+            final TValue value = iter.nextAsComparable();
+            if (value.compareTo(minRangeValue) >= 0 && value.compareTo(maxRangeValue) <= 0) {
+                throwValueOutsideRangeException(iter, value, minRangeValue, maxRangeValue, iterArgName);
+            }
+        }
+    }
+
+    static <TValue extends Comparable<? super TValue>> void _checkMinValue(
+            _IValueAsComparableIterator<TValue> iter, TValue minValue, String iterArgName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+        ObjectArgs.checkNotNull(minValue, "minValue");
+
+        while (iter.hasNext()) {
+            final TValue value = iter.nextAsComparable();
+            if (value.compareTo(minValue) < 0) {
+                throwMinValueException(iter, value, minValue, iterArgName);
+            }
+        }
+    }
+
+    static <TValue extends Comparable<? super TValue>> void _checkMaxValue(
+            _IValueAsComparableIterator<TValue> iter, TValue maxValue, String iterArgName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+        ObjectArgs.checkNotNull(maxValue, "maxValue");
+
+        while (iter.hasNext()) {
+            final TValue value = iter.nextAsComparable();
+            if (value.compareTo(maxValue) > 0) {
+                throwMaxValueException(iter, value, maxValue, iterArgName);
+            }
+        }
+    }
+
+    static <TValue extends Comparable<? super TValue>> void _checkExactValue(
+        _IValueAsComparableIterator<TValue> iter, TValue exactValue, String iterArgName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
+        while (iter.hasNext()) {
+            final TValue value = iter.nextAsComparable();
+            if (value.compareTo(exactValue) != 0) {
+                throwExactValueException(iter, value, exactValue, iterArgName);
+            }
+        }
+    }
+
+    static <TValue extends Comparable<? super TValue>> void _checkNotExactValue(
+        _IValueAsComparableIterator<TValue> iter, TValue exactValue, String iterArgName) {
+        ObjectArgs.checkNotNull(iter, "iter");
+
+        while (iter.hasNext()) {
+            final TValue value = iter.nextAsComparable();
+            if (value.compareTo(exactValue) == 0) {
+                throwNotExactValueException(iter, value, exactValue, iterArgName);
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // throw*Exception Helpers
+    //
+
+    private static <TValue> void throwPositiveException(
+            _IValueAsTypeIterator iter, TValue value, String argName) {
+        final String desc = iter.getUnderlyingDescription();
+        final int index = iter.nextIndex() - 1;
+        final String w = StringArgs._getArgNameWarning(argName, "argName");
+        throw new IllegalArgumentException(String.format(
+            "%s argument '%s': Value at index %d is not positive: %s%s",
+            desc, argName, index, value, w));
+    }
+
+    private static <TValue> void throwNotPositiveException(
+            _IValueAsTypeIterator iter, TValue value, String argName) {
+        final String desc = iter.getUnderlyingDescription();
+        final int index = iter.nextIndex() - 1;
+        final String w = StringArgs._getArgNameWarning(argName, "argName");
+        throw new IllegalArgumentException(String.format(
+            "%s argument '%s': Value at index %d is positive: %s%s",
+            desc, argName, index, value, w));
+    }
+
+    private static <TValue> void throwNegativeException(
+            _IValueAsTypeIterator iter, TValue value, String argName) {
+        final String desc = iter.getUnderlyingDescription();
+        final int index = iter.nextIndex() - 1;
+        final String w = StringArgs._getArgNameWarning(argName, "argName");
+        throw new IllegalArgumentException(String.format(
+            "%s argument '%s': Value at index %d is not negative: %s%s",
+            desc, argName, index, value, w));
+    }
+
+    private static <TValue> void throwNotNegativeException(
+            _IValueAsTypeIterator iter, TValue value, String argName) {
+        final String desc = iter.getUnderlyingDescription();
+        final int index = iter.nextIndex() - 1;
+        final String w = StringArgs._getArgNameWarning(argName, "argName");
+        throw new IllegalArgumentException(String.format(
+            "%s argument '%s': Value at index %d is negative: %s%s",
+            desc, argName, index, value, w));
+    }
+
+    private static <TValue> void throwMinAndMaxRangeValuesException(
+            _IValueAsTypeIterator iter,
+            TValue minRangeValue,
+            TValue maxRangeValue,
+            String iterArgName) {
+        final String desc = iter.getUnderlyingDescription();
+        final String w = StringArgs._getArgNameWarning(iterArgName, "iterArgName");
+        throw new IllegalArgumentException(String.format(
+            "%s argument '%s': 'minRangeValue' > 'maxRangeValue': %s > %s%s",
+            desc, iterArgName, minRangeValue, maxRangeValue, w));
+    }
+
+    private static <TValue> void throwValueInsideRangeException(
+            _IValueAsTypeIterator iter,
+            TValue value,
+            TValue minRangeValue,
+            TValue maxRangeValue,
+            String iterArgName) {
+        final String desc = iter.getUnderlyingDescription();
+        final int index = iter.nextIndex() - 1;
+        final String w = StringArgs._getArgNameWarning(iterArgName, "iterArgName");
+        throw new IllegalArgumentException(String.format(
+            "%s argument '%s': Value at index %d outside valid range: (min) %s < %s > %s (max)%s",
+            desc, iterArgName, index, minRangeValue, value, maxRangeValue, w));
+    }
+
+    private static <TValue> void throwValueOutsideRangeException(
+            _IValueAsTypeIterator iter,
+            TValue value,
+            TValue minRangeValue,
+            TValue maxRangeValue,
+            String iterArgName) {
+        final String desc = iter.getUnderlyingDescription();
+        final int index = iter.nextIndex() - 1;
+        final String w = StringArgs._getArgNameWarning(iterArgName, "iterArgName");
+        throw new IllegalArgumentException(String.format(
+            "%s argument '%s': Value at index %d inside invalid range: (min) %s >= %s <= %s (max)%s",
+            desc, iterArgName, index, minRangeValue, value, maxRangeValue, w));
+    }
+
+    private static <TValue> void throwMinValueException(
+            _IValueAsTypeIterator iter, TValue value, TValue minValue, String iterArgName) {
+        final String desc = iter.getUnderlyingDescription();
+        final int index = iter.nextIndex() - 1;
+        final String w = StringArgs._getArgNameWarning(iterArgName, "iterArgName");
+        throw new IllegalArgumentException(String.format(
+            "%s argument '%s': Value at index %d < 'minValue': %s < %s%s",
+            desc, iterArgName, index, value, minValue, w));
+    }
+
+    private static <TValue> void throwMaxValueException(
+            _IValueAsTypeIterator iter, TValue value, TValue maxValue, String iterArgName) {
+        final String desc = iter.getUnderlyingDescription();
+        final int index = iter.nextIndex() - 1;
+        final String w = StringArgs._getArgNameWarning(iterArgName, "iterArgName");
+        throw new IllegalArgumentException(String.format(
+            "%s argument '%s': Value at index %d > 'maxValue': %s > %s%s",
+            desc, iterArgName, index, value, maxValue, w));
+    }
+
+    private static <TValue> void throwExactValueException(
+            _IValueAsTypeIterator iter, TValue value, TValue exactValue, String iterArgName) {
+        final String desc = iter.getUnderlyingDescription();
+        final int index = iter.nextIndex() - 1;
+        final String w = StringArgs._getArgNameWarning(iterArgName, "iterArgName");
+        throw new IllegalArgumentException(String.format(
+            "%s argument '%s': Value at index %d != 'exactValue': %s != %s%s",
+            desc, iterArgName, index, value, exactValue, w));
+    }
+
+    private static <TValue> void throwNotExactValueException(
+            _IValueAsTypeIterator iter, TValue value, TValue exactValue, String iterArgName) {
+        final String desc = iter.getUnderlyingDescription();
+        final int index = iter.nextIndex() - 1;
+        final String w = StringArgs._getArgNameWarning(iterArgName, "iterArgName");
+        throw new IllegalArgumentException(String.format(
+            "%s argument '%s': Value at index %d == 'exactValue': %s == %s%s",
+            desc, iterArgName, index, value, exactValue, w));
     }
 }

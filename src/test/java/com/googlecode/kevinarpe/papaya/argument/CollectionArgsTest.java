@@ -50,7 +50,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkSizeRange_Pass_Data() {
+    public static Object[][] checkSizeRange_Pass_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), 0, 10 },
                 { new ArrayList<String>(), 0, 0 },
@@ -69,7 +69,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkSizeRange_Pass_Data")
+    @Test(dataProvider = "checkSizeRange_Pass_Data")
     public <T> void checkSizeRange_Pass(Collection<T> ref, int minSize, int maxSize) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == CollectionArgs.checkSizeRange(ref, minSize, maxSize, "ref"));
@@ -80,7 +80,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkSizeRange_FailWithInvalidMinOrMaxLen_Data() {
+    public static Object[][] checkSizeRange_FailWithInvalidMinOrMaxLen_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), 3, 4 },
                 { ImmutableList.of("a"), -3, 3 },
@@ -92,7 +92,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkSizeRange_FailWithInvalidMinOrMaxLen_Data",
+    @Test(dataProvider = "checkSizeRange_FailWithInvalidMinOrMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <T> void checkSizeRange_FailWithInvalidMinOrMaxLen(
             Collection<T> ref, int minSize, int maxSize) {
@@ -100,7 +100,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkSizeRange_FailWithNullCollection_Data() {
+    public static Object[][] checkSizeRange_FailWithNullCollection_Data() {
         return new Object[][] {
                 { null, 4, 3 },
                 { null, 6, 7 },
@@ -108,7 +108,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkSizeRange_FailWithNullCollection_Data",
+    @Test(dataProvider = "checkSizeRange_FailWithNullCollection_Data",
             expectedExceptions = NullPointerException.class)
     public <T> void checkSizeRange_FailWithNullCollection(
             Collection<T> ref, int minSize, int maxSize) {
@@ -120,7 +120,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNotEmpty_Pass_Data() {
+    public static Object[][] checkNotEmpty_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of("a") },
                 { ImmutableList.of("a", "b") },
@@ -128,7 +128,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmpty_Pass_Data")
+    @Test(dataProvider = "checkNotEmpty_Pass_Data")
     public <T> void checkNotEmpty_Pass(Collection<T> ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == CollectionArgs.checkNotEmpty(ref, "ref"));
@@ -139,7 +139,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkNotEmpty_FailWithEmptyCollection_Data() {
+    public static Object[][] checkNotEmpty_FailWithEmptyCollection_Data() {
         return new Object[][] {
                 { ImmutableList.of() },
                 { ImmutableSet.of() },
@@ -148,7 +148,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmpty_FailWithEmptyCollection_Data",
+    @Test(dataProvider = "checkNotEmpty_FailWithEmptyCollection_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <T> void checkNotEmpty_FailWithEmptyCollection(Collection<T> ref) {
         CollectionArgs.checkNotEmpty(ref, "ref");
@@ -164,7 +164,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkMinSize_Pass_Data() {
+    public static Object[][] checkMinSize_Pass_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), 0 },
                 { ImmutableList.of("a"), 0 },
@@ -175,7 +175,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinSize_Pass_Data")
+    @Test(dataProvider = "checkMinSize_Pass_Data")
     public <T> void checkMinSize_Pass(Collection<T> ref, int minSize) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == CollectionArgs.checkMinSize(ref, minSize, "ref"));
@@ -186,7 +186,7 @@ public class CollectionArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkMinSize_FailWithInvalidMinLen_Data() {
+    public static Object[][] checkMinSize_FailWithInvalidMinLen_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), -2 },
                 { new ArrayList<String>(), 2 },
@@ -195,14 +195,14 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinSize_FailWithInvalidMinLen_Data",
+    @Test(dataProvider = "checkMinSize_FailWithInvalidMinLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <T> void checkMinSize_FailWithInvalidMinLen(Collection<T> ref, int minSize) {
         CollectionArgs.checkMinSize(ref, minSize, "ref");
     }
     
     @DataProvider
-    public static Object[][] _checkMinSize_FailWithNullCollection_Data() {
+    public static Object[][] checkMinSize_FailWithNullCollection_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -210,7 +210,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMinSize_FailWithNullCollection_Data",
+    @Test(dataProvider = "checkMinSize_FailWithNullCollection_Data",
             expectedExceptions = NullPointerException.class)
     public <T> void checkMinSize_FailWithNullCollection(Collection<T> ref, int minSize) {
         CollectionArgs.checkMinSize(ref, minSize, "ref");
@@ -221,7 +221,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkMaxSize_Pass_Data() {
+    public static Object[][] checkMaxSize_Pass_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), 0 },
                 { new ArrayList<String>(), 99 },
@@ -232,7 +232,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxSize_Pass_Data")
+    @Test(dataProvider = "checkMaxSize_Pass_Data")
     public <T> void checkMaxSize_Pass(Collection<T> ref, int maxSize) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == CollectionArgs.checkMaxSize(ref, maxSize, "ref"));
@@ -243,7 +243,7 @@ public class CollectionArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkMaxSize_FailWithInvalidMaxLen_Data() {
+    public static Object[][] checkMaxSize_FailWithInvalidMaxLen_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), -2 },
                 { ImmutableList.of("a"), -3 },
@@ -251,14 +251,14 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxSize_FailWithInvalidMaxLen_Data",
+    @Test(dataProvider = "checkMaxSize_FailWithInvalidMaxLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <T> void checkMaxSize_FailWithInvalidMaxLen(Collection<T> ref, int maxSize) {
         CollectionArgs.checkMaxSize(ref, maxSize, "ref");
     }
     
     @DataProvider
-    public static Object[][] _checkMaxSize_FailWithNullCollection_Data() {
+    public static Object[][] checkMaxSize_FailWithNullCollection_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -266,7 +266,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkMaxSize_FailWithNullCollection_Data",
+    @Test(dataProvider = "checkMaxSize_FailWithNullCollection_Data",
             expectedExceptions = NullPointerException.class)
     public <T> void checkMaxSize_FailWithNullCollection(Collection<T> ref, int maxSize) {
         CollectionArgs.checkMaxSize(ref, maxSize, "ref");
@@ -277,7 +277,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkExactSize_Pass_Data() {
+    public static Object[][] checkExactSize_Pass_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), 0 },
                 { ImmutableList.of("a"), 1 },
@@ -285,7 +285,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactSize_Pass_Data")
+    @Test(dataProvider = "checkExactSize_Pass_Data")
     public <T> void checkExactSize_Pass(Collection<T> ref, int exactSize) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == CollectionArgs.checkExactSize(ref, exactSize, "ref"));
@@ -296,7 +296,7 @@ public class CollectionArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkExactSize_FailWithInvalidExactLen_Data() {
+    public static Object[][] checkExactSize_FailWithInvalidExactLen_Data() {
         return new Object[][] {
                 { new ArrayList<String>(), -2 },
                 { new ArrayList<String>(), 2 },
@@ -305,7 +305,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactSize_FailWithInvalidExactLen_Data",
+    @Test(dataProvider = "checkExactSize_FailWithInvalidExactLen_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <T> void checkExactSize_FailWithInvalidExactLen(
             Collection<T> ref, int exactSize) {
@@ -313,7 +313,7 @@ public class CollectionArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkExactSize_FailWithNullCollection_Data() {
+    public static Object[][] checkExactSize_FailWithNullCollection_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -321,7 +321,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkExactSize_FailWithNullCollection_Data",
+    @Test(dataProvider = "checkExactSize_FailWithNullCollection_Data",
             expectedExceptions = NullPointerException.class)
     public <T> void checkExactSize_FailWithNullCollection(
             Collection<T> ref, int exactSize) {
@@ -379,14 +379,14 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkNotEmptyAndElementsNotNull_Pass_Data() {
+    public static Object[][] checkNotEmptyAndElementsNotNull_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of("a") },
                 { ImmutableList.of("a", "b") },
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyAndElementsNotNull_Pass_Data")
+    @Test(dataProvider = "checkNotEmptyAndElementsNotNull_Pass_Data")
     public <T> void checkNotEmptyAndElementsNotNull_Pass(Collection<T> ref) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(ref == CollectionArgs.checkNotEmptyAndElementsNotNull(ref, "ref"));
@@ -402,7 +402,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkNotEmptyAndElementsNotNull_FailWithNullElements_Data() {
+    public static Object[][] checkNotEmptyAndElementsNotNull_FailWithNullElements_Data() {
         return new Object[][] {
                 { null },
                 { Arrays.asList(new Object[] { null }) },
@@ -414,7 +414,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkNotEmptyAndElementsNotNull_FailWithNullElements_Data",
+    @Test(dataProvider = "checkNotEmptyAndElementsNotNull_FailWithNullElements_Data",
             expectedExceptions = NullPointerException.class)
     public <T> void checkNotEmptyAndElementsNotNull_FailWithNullElements(
             Collection<T> ref) {
@@ -426,7 +426,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkAccessIndex_Pass_Data() {
+    public static Object[][] checkAccessIndex_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 0 },
                 { ImmutableList.of("a", "b"), 0 },
@@ -434,7 +434,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndex_Pass_Data")
+    @Test(dataProvider = "checkAccessIndex_Pass_Data")
     public <T> void checkAccessIndex_Pass(Collection<T> ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == CollectionArgs.checkAccessIndex(ref, index, "ref", "index"));
@@ -445,14 +445,14 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkAccessIndex_FailWithEmptyCollection_Data() {
+    public static Object[][] checkAccessIndex_FailWithEmptyCollection_Data() {
         return new Object[][] {
                 { ImmutableList.of(), -1 },
                 { ImmutableList.of(), -1 },
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndex_FailWithEmptyCollection_Data",
+    @Test(dataProvider = "checkAccessIndex_FailWithEmptyCollection_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <T> void checkAccessIndex_FailWithEmptyCollection(
             Collection<T> ref, int index) {
@@ -460,14 +460,14 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkAccessIndex_FailWithNegativeIndex_Data() {
+    public static Object[][] checkAccessIndex_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), -1 },
                 { ImmutableList.of("a", "b"), -1 },
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndex_FailWithNegativeIndex_Data",
+    @Test(dataProvider = "checkAccessIndex_FailWithNegativeIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public <T> void checkAccessIndex_FailWithNegativeIndex(
             Collection<T> ref, int index) {
@@ -475,7 +475,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkAccessIndex_FailWithInvalidIndex_Data() {
+    public static Object[][] checkAccessIndex_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 1 },
                 { ImmutableList.of("a", "b"), 2 },
@@ -483,7 +483,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndex_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkAccessIndex_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public <T> void checkAccessIndex_FailWithInvalidIndex(
             Collection<T> ref, int index) {
@@ -491,7 +491,7 @@ public class CollectionArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkAccessIndex_FailWithNullCollection_Data() {
+    public static Object[][] checkAccessIndex_FailWithNullCollection_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -499,7 +499,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkAccessIndex_FailWithNullCollection_Data",
+    @Test(dataProvider = "checkAccessIndex_FailWithNullCollection_Data",
             expectedExceptions = NullPointerException.class)
     public <T> void checkAccessIndex_FailWithNullCollection(
             Collection<T> ref, int index) {
@@ -511,7 +511,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkInsertIndex_Pass_Data() {
+    public static Object[][] checkInsertIndex_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of(), 0 },
                 { ImmutableList.of("a"), 0 },
@@ -522,7 +522,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndex_Pass_Data")
+    @Test(dataProvider = "checkInsertIndex_Pass_Data")
     public <T> void checkInsertIndex_Pass(Collection<T> ref, int index) {
         // Two steps here: (1) call the method, (2) assert the result
         Assert.assertTrue(index == CollectionArgs.checkInsertIndex(ref, index, "ref", "index"));
@@ -533,7 +533,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkInsertIndex_FailWithNegativeIndex_Data() {
+    public static Object[][] checkInsertIndex_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of(), -1 },
                 { ImmutableList.of("a"), -1 },
@@ -541,7 +541,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndex_FailWithNegativeIndex_Data",
+    @Test(dataProvider = "checkInsertIndex_FailWithNegativeIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public <T> void checkInsertIndex_FailWithNegativeIndex(
             Collection<T> ref, int index) {
@@ -549,7 +549,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkInsertIndex_FailWithInvalidIndex_Data() {
+    public static Object[][] checkInsertIndex_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of(), 1 },
                 { ImmutableList.of("a"), 2 },
@@ -558,7 +558,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndex_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkInsertIndex_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public <T> void checkInsertIndex_FailWithInvalidIndex(
             Collection<T> ref, int index) {
@@ -566,7 +566,7 @@ public class CollectionArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkInsertIndex_FailWithNullCollection_Data() {
+    public static Object[][] checkInsertIndex_FailWithNullCollection_Data() {
         return new Object[][] {
                 { null, 4 },
                 { null, 6 },
@@ -574,7 +574,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkInsertIndex_FailWithNullCollection_Data",
+    @Test(dataProvider = "checkInsertIndex_FailWithNullCollection_Data",
             expectedExceptions = NullPointerException.class)
     public <T> void checkInsertIndex_FailWithNullCollection(
             Collection<T> ref, int index) {
@@ -586,7 +586,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkIndexAndCount_Pass_Data() {
+    public static Object[][] checkIndexAndCount_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 0, 0 },
                 { ImmutableList.of("a"), 0, 1 },
@@ -598,7 +598,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCount_Pass_Data")
+    @Test(dataProvider = "checkIndexAndCount_Pass_Data")
     public <T> void checkIndexAndCount_Pass(Collection<T> ref, int index, int count) {
         CollectionArgs.checkIndexAndCount(ref, index, count, "ref", "index", "count");
         // Demonstrate argName can be anything ridiculous.
@@ -608,7 +608,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkIndexAndCount_FailWithEmptyCollection_Data() {
+    public static Object[][] checkIndexAndCount_FailWithEmptyCollection_Data() {
         return new Object[][] {
                 { ImmutableList.of(), -1, -1 },
                 { ImmutableList.of(), 0, 0 },
@@ -616,7 +616,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCount_FailWithEmptyCollection_Data",
+    @Test(dataProvider = "checkIndexAndCount_FailWithEmptyCollection_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <T> void checkIndexAndCount_FailWithEmptyCollection(
             Collection<T> ref, int index, int count) {
@@ -624,7 +624,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkIndexAndCount_FailWithNegativeIndex_Data() {
+    public static Object[][] checkIndexAndCount_FailWithNegativeIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), -1, 0 },
                 { ImmutableList.of("a"), -99, 0 },
@@ -636,7 +636,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCount_FailWithNegativeIndex_Data",
+    @Test(dataProvider = "checkIndexAndCount_FailWithNegativeIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public <T> void checkIndexAndCount_FailWithNegativeIndex(
             Collection<T> ref, int index, int count) {
@@ -644,7 +644,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkIndexAndCount_FailWithInvalidIndex_Data() {
+    public static Object[][] checkIndexAndCount_FailWithInvalidIndex_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 1, 1 },
                 { ImmutableList.of("a", "b"), 3, 1 },
@@ -652,7 +652,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCount_FailWithInvalidIndex_Data",
+    @Test(dataProvider = "checkIndexAndCount_FailWithInvalidIndex_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public <T> void checkIndexAndCount_FailWithInvalidIndex(
             Collection<T> ref, int index, int count) {
@@ -660,7 +660,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkIndexAndCount_FailWithNegativeCount_Data() {
+    public static Object[][] checkIndexAndCount_FailWithNegativeCount_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 0, -1 },
                 { ImmutableList.of("a", "b"), 0, -1 },
@@ -668,7 +668,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCount_FailWithNegativeCount_Data",
+    @Test(dataProvider = "checkIndexAndCount_FailWithNegativeCount_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <T> void checkIndexAndCount_FailWithNegativeCount(
             Collection<T> ref, int index, int count) {
@@ -676,7 +676,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkIndexAndCount_FailWithInvalidCount_Data() {
+    public static Object[][] checkIndexAndCount_FailWithInvalidCount_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 0, 2 },
                 { ImmutableList.of("a"), 0, 99 },
@@ -687,7 +687,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkIndexAndCount_FailWithInvalidCount_Data",
+    @Test(dataProvider = "checkIndexAndCount_FailWithInvalidCount_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public <T> void checkIndexAndCount_FailWithInvalidCount(
             Collection<T> ref, int index, int count) {
@@ -704,7 +704,7 @@ public class CollectionArgsTest {
     //
 
     @DataProvider
-    public static Object[][] _checkFromAndToIndices_Pass_Data() {
+    public static Object[][] checkFromAndToIndices_Pass_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 0, 0 },
                 { ImmutableList.of("a"), 0, 1 },
@@ -716,7 +716,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndices_Pass_Data")
+    @Test(dataProvider = "checkFromAndToIndices_Pass_Data")
     public <T> void checkFromAndToIndices_Pass(Collection<T> ref, int fromIndex, int toIndex) {
         CollectionArgs.checkFromAndToIndices(
             ref, fromIndex, toIndex, "ref", "fromIndex", "toIndex");
@@ -731,7 +731,7 @@ public class CollectionArgsTest {
     // (b) docs for throws IllegalArgumentException for empty arrays/collections
 
     @DataProvider
-    public static Object[][] _checkFromAndToIndices_FailWithEmptyCollection_Data() {
+    public static Object[][] checkFromAndToIndices_FailWithEmptyCollection_Data() {
         return new Object[][] {
                 { ImmutableList.of(), -1, 0 },
                 { ImmutableList.of(), 0, -1 },
@@ -739,7 +739,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndices_FailWithEmptyCollection_Data",
+    @Test(dataProvider = "checkFromAndToIndices_FailWithEmptyCollection_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <T> void checkFromAndToIndices_FailWithEmptyCollection(
             Collection<T> ref, int fromIndex, int toIndex) {
@@ -748,7 +748,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkFromAndToIndices_FailWithNegativeIndices_Data() {
+    public static Object[][] checkFromAndToIndices_FailWithNegativeIndices_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), -1, 0 },
                 { ImmutableList.of("a"), 0, -1 },
@@ -756,7 +756,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndices_FailWithNegativeIndices_Data",
+    @Test(dataProvider = "checkFromAndToIndices_FailWithNegativeIndices_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public <T> void checkFromAndToIndices_FailWithNegativeIndices(
             Collection<T> ref, int fromIndex, int toIndex) {
@@ -765,7 +765,7 @@ public class CollectionArgsTest {
     }
 
     @DataProvider
-    public static Object[][] _checkFromAndToIndices_FailWithInvalidIndices_Data() {
+    public static Object[][] checkFromAndToIndices_FailWithInvalidIndices_Data() {
         return new Object[][] {
                 { ImmutableList.of("a"), 1, 1 },
                 { ImmutableList.of("a"), 1, 0 },
@@ -776,7 +776,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkFromAndToIndices_FailWithInvalidIndices_Data",
+    @Test(dataProvider = "checkFromAndToIndices_FailWithInvalidIndices_Data",
             expectedExceptions = IndexOutOfBoundsException.class)
     public <T> void checkFromAndToIndices_FailWithInvalidIndices(
             Collection<T> ref, int fromIndex, int toIndex) {
@@ -794,7 +794,7 @@ public class CollectionArgsTest {
     //
     
     @DataProvider
-    public static Object[][] _checkContains_Pass_Data() {
+    public static Object[][] checkContains_Pass_Data() {
         return new Object[][] {
                 { Arrays.asList("a"), "a" },
                 { Arrays.asList("a", "b"), "b" },
@@ -806,7 +806,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContains_Pass_Data")
+    @Test(dataProvider = "checkContains_Pass_Data")
     public <THaystack, TNeedle extends THaystack>
     void checkContains_Pass(Collection<THaystack> ref, TNeedle value) {
         // Two steps here: (1) call the method, (2) assert the result
@@ -818,7 +818,7 @@ public class CollectionArgsTest {
     }
     
     @DataProvider
-    public static Object[][] _checkContains_Fail_Data() {
+    public static Object[][] checkContains_Fail_Data() {
         return new Object[][] {
                 { Arrays.asList(), "x" },
                 { Arrays.asList("a"), "x" },
@@ -832,7 +832,7 @@ public class CollectionArgsTest {
         };
     }
     
-    @Test(dataProvider = "_checkContains_Fail_Data",
+    @Test(dataProvider = "checkContains_Fail_Data",
             expectedExceptions = IllegalArgumentException.class)
     public <THaystack, TNeedle extends THaystack>
     void checkContains_Fail(Collection<THaystack> ref, TNeedle value) {
