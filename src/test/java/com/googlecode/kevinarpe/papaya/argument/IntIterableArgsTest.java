@@ -28,7 +28,7 @@ package com.googlecode.kevinarpe.papaya.argument;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
