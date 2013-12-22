@@ -25,18 +25,21 @@ package com.googlecode.kevinarpe.papaya;
  * #L%
  */
 
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
+import com.google.common.collect.ImmutableList;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.exception.PathException;
+import com.googlecode.kevinarpe.papaya.exception.PathException.PathExceptionReason;
+import com.googlecode.kevinarpe.papaya.exception.PathExceptionTest;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.exception.PathException;
-import com.googlecode.kevinarpe.papaya.exception.PathExceptionTest;
-import com.googlecode.kevinarpe.papaya.exception.PathException.PathExceptionReason;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -880,5 +883,88 @@ public class PathUtilsTest {
                 path.delete();
             }
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // PathUtils.recursiveListFilePaths
+    //
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void recursiveListFilePaths_FailWithNull()
+    throws PathException {
+        PathUtils.recursiveListFilePaths(null);
+    }
+
+    @Test(expectedExceptions = PathException.class)
+    public void recursiveListFilePaths_FailWithPathNotExist()
+    throws PathException {
+        try {
+            PathUtils.recursiveListFilePaths(new File(UUID.randomUUID().toString()));
+        }
+        catch (PathException e) {
+            Assert.assertEquals(e.getReason(), PathExceptionReason.PATH_DOES_NOT_EXIST);
+            throw e;
+        }
+    }
+
+    @Test(expectedExceptions = PathException.class)
+    public void recursiveListFilePaths_FailWithPathIsFile()
+    throws IOException {
+        File filePath = new File(UUID.randomUUID().toString());
+        Assert.assertTrue(filePath.createNewFile());
+        try {
+            PathUtils.recursiveListFilePaths(filePath);
+        }
+        catch (PathException e) {
+            Assert.assertEquals(e.getReason(), PathExceptionReason.PATH_IS_FILE);
+            throw e;
+        }
+        finally {
+            Assert.assertTrue(filePath.delete());
+        }
+    }
+
+    @Test
+    public void recursiveListFilePaths_PassWithEmptyDir()
+    throws IOException {
+        File dirPath = new File(UUID.randomUUID().toString());
+        Assert.assertTrue(dirPath.mkdir());
+        try {
+            Assert.assertEquals(new ArrayList(), PathUtils.recursiveListFilePaths(dirPath));
+        }
+        finally {
+            Assert.assertTrue(dirPath.delete());
+        }
+    }
+
+    @Test
+    public void recursiveListFilePaths_Pass()
+    throws IOException {
+        File dirPath = new File(UUID.randomUUID().toString());
+        Assert.assertTrue(dirPath.mkdir());
+        File filePath = new File(UUID.randomUUID().toString());
+        Assert.assertTrue(filePath.createNewFile());
+        File dirPath2 = new File(dirPath, UUID.randomUUID().toString());
+        Assert.assertTrue(dirPath2.mkdir());
+        File filePath2 = new File(dirPath2, UUID.randomUUID().toString());
+        Assert.assertTrue(filePath2.createNewFile());
+        try {
+            Assert.assertEquals(
+                ImmutableList.of(filePath2, dirPath2, filePath, dirPath),
+                PathUtils.recursiveListFilePaths(dirPath));
+        }
+        finally {
+            Assert.assertTrue(filePath2.delete());
+            Assert.assertTrue(dirPath2.delete());
+            Assert.assertTrue(filePath.delete());
+            Assert.assertTrue(dirPath.delete());
+        }
+    }
+
+    private static void assertExceptionCauseClass(Exception actualException, Class<?> expectedCauseClass) {
+        ObjectArgs.checkNotNull(expectedCauseClass, "expectedCauseClass");
+        ObjectArgs.checkNotNull(actualException, "actualException");
+        ObjectArgs.checkNotNull(actualException.getCause(), "actualException.getCause()");
+        Assert.assertEquals(actualException.getCause().getClass(), expectedCauseClass);
     }
 }

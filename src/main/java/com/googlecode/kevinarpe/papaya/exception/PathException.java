@@ -25,13 +25,13 @@ package com.googlecode.kevinarpe.papaya.exception;
  * #L%
  */
 
-import java.io.File;
-import java.io.IOException;
-
 import com.google.common.base.Objects;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * This is a more specific version of {@link IOException} that focuses on path-related errors.
@@ -89,6 +89,14 @@ extends IOException {
          * {@link PathException#getOptAbsParentPath()} is always {@code null}.
          */
         PATH_IS_DIRECTORY(false),
+
+        /**
+         * {@link PathException#getAbsPath()} exists as a directory, but execute permissions are not
+         * set.  (Cannot list files stored within this path.)
+         * <p>
+         * {@link PathException#getOptAbsParentPath()} is always {@code null}.
+         */
+        PATH_IS_NON_EXECUTABLE_DIRECTORY(false),
 
         /**
          * {@link PathException#getOptAbsParentPath()} exists as a directory, but is not writable.
