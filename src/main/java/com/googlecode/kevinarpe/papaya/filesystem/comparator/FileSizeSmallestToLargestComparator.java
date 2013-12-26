@@ -1,17 +1,19 @@
 package com.googlecode.kevinarpe.papaya.filesystem.comparator;
 
-import java.io.File;
-import java.util.Comparator;
+import com.googlecode.kevinarpe.papaya.comparator.AbstractStatelessComparator;
 
-public class FileSizeComparator
-implements Comparator<File> {
+import java.io.File;
+
+public final class FileSizeSmallestToLargestComparator
+extends AbstractStatelessComparator<File> {
 
     @Override
     public int compare(File path1, File path2) {
+        // From Javadocs for File.isDirectory():
         // "The return value is unspecified if this pathname denotes a directory."
         final long pathSize1 = (path1.isDirectory() ? 0 : path1.length());
         final long pathSize2 = (path2.isDirectory() ? 0 : path2.length());
-
-        return Long.compare(pathSize1, pathSize2);
+        final int result = Long.compare(pathSize1, pathSize2);
+        return result;
     }
 }

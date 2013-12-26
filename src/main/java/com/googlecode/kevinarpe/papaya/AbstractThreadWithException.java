@@ -41,6 +41,7 @@ import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
  * @see #clearException()
  */
 @NotFullyTested
+// TODO: Re-write with delegates.  Use IntelliJ to generate the delegates!
 public abstract class AbstractThreadWithException
 extends Thread {
     

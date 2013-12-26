@@ -81,7 +81,7 @@ extends UnmodifiableForwardingList<File> {
 
         File[] childPathArr = _childPathArrAsFixedSizeList.getArrayRef();
         for (Comparator<File> comp : fileComparatorList) {
-            Arrays.sort(childPathArr);
+            Arrays.sort(childPathArr, comp);
         }
         return this;
     }

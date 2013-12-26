@@ -25,7 +25,10 @@ extends FixedSizeForwardingList<TValue> {
     private ArrayAsFixedSizeList(TValue[] arr, boolean shouldCloneArr) {
         ObjectArgs.checkNotNull(arr, "arr");
 
-        _arr = (shouldCloneArr ? arr.clone() : arr);
+        if (shouldCloneArr) {
+            arr = arr.clone();
+        }
+        _arr = arr;
         _arrAsList = Arrays.asList(_arr);
     }
 

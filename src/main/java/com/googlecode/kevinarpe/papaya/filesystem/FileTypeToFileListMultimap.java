@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
+// TODO: Dead class?
 public class FileTypeToFileListMultimap
 extends ForwardingListMultimap<FileType, File> {
 

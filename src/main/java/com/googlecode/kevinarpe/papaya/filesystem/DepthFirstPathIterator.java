@@ -1,37 +1,19 @@
 package com.googlecode.kevinarpe.papaya.filesystem;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.UnmodifiableIterator;
 import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.exception.PathException;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
+// TODO: Builder vs Iterator.  How does this work?  Public vs package-private?
 public class DepthFirstPathIterator
 extends UnmodifiableIterator {
-
-//    private static final FileFilter ALL_FILE_FILTER = new FileFilter() {
-//
-//        @Override
-//        public boolean accept(File pathname) {
-//            return true;
-//        }
-//    };
-
-    private static final PathFilter DIR_ONLY_PATH_FILTER = new PathFilter() {
-
-        @Override
-        public boolean accept(File path, int depth) {
-            return path.isDirectory();
-        }
-    };
-
-    // TODO: Create builder with options: List<Comparator<File>> fileComparatorList
 
     // TODO: Need two policy enums
     // (1) depth-first vs depth-last
@@ -39,115 +21,171 @@ extends UnmodifiableIterator {
 
     // TODO: What about ArrayAsIterable, ArrayIterator, ArrayUnmodifiableIterator
 
-//    private final File _dirPath;
-    private final PathFilter _descendDirFilter;
+    private boolean _isInitDone;
+    private final File _dirPath;
+    private final PathFilter _optDescendDirFilter;
     private final List<Comparator<File>> _descendFileComparatorList;
     private final PathFilter _optAscendFilter;
     private final List<Comparator<File>> _ascendFileComparatorList;
-    private final List<_PathListData> _pathListDataList;
-    private _PathListData _currentPathListData;
+    private final LinkedList<_Level> _levelList;
+    private _Level _currentLevel;
 
-    private static class _PathListData {
+    private _Level _addLevel(File dirPath) {
+        try {
+            _currentLevel = new _Level(dirPath, _levelList.size());
+        }
+        catch (PathException e) {
+            throw new RuntimeException(e);
+        }
+        _levelList.add(_currentLevel);
+        return _currentLevel;
+    }
 
-        public final PathList descendDirPathList;
-        public final PathList ascendPathList;
-        public final Iterator<File> descendDirPathListIter;
-        public final Iterator<File> ascendPathListIter;
+    private _Level _removeLevel() {
+        _Level x = _levelList.removeLast();
+        _currentLevel = (_levelList.isEmpty() ? null :_levelList.getLast());
+        return x;
+    }
 
-        private _PathListData(PathList descendDirPathList, PathList ascendPathList) {
-            this.descendDirPathList =
-                ObjectArgs.checkNotNull(descendDirPathList, "descendDirPathList");
-            this.ascendPathList =
-                ObjectArgs.checkNotNull(ascendPathList, "ascendPathList");
-            this.descendDirPathListIter = descendDirPathList.iterator();
-            this.ascendPathListIter = ascendPathList.iterator();
-            // TODO: Find a way to delay creating the ascendPathListIter.
-            // Also, can we delay creating the ascendPathList (including filter + sort)?
+    private class _Level {
+
+        private final int _depth;
+        private final PathList _origPathList;
+        private PathList _descendDirPathList;
+        private Iterator<File> _descendDirPathListIter;
+        private PathList _ascendPathList;
+        private Iterator<File> _ascendPathListIter;
+
+        // TODO: How to handle missing dirs?
+        // Many initial listFiles() shows a dir... but later, does not exist.  Handle well.
+        private _Level(File dirPath, int depth)
+        throws PathException {
+            _origPathList = PathList.from(dirPath);
+            _depth = depth;
+        }
+
+        public PathList getDescendDirPathList() {
+            if (null == _descendDirPathList) {
+                // TODO: Maybe PathList should be immutable... or have an immutable equivalent?
+                _descendDirPathList = _origPathList.filterInfoNewList(new FileFilter() {
+                    @Override
+                    public boolean accept(File path) {
+                        if (!path.isDirectory()) {
+                            return false;
+                        }
+                        if (null == DepthFirstPathIterator.this._optDescendDirFilter) {
+                            return true;
+                        }
+                        return DepthFirstPathIterator.this._optDescendDirFilter.accept(path, _depth);
+                    }
+                });
+                _descendDirPathList.sortInPlace(DepthFirstPathIterator.this._descendFileComparatorList);
+            }
+            return _descendDirPathList;
+        }
+
+        public Iterator<File> getDescendDirPathListIter() {
+            if (null == _descendDirPathListIter) {
+                PathList descendDirPathList = getDescendDirPathList();
+                _descendDirPathListIter = descendDirPathList.iterator();
+            }
+            return _descendDirPathListIter;
+        }
+
+        public PathList getAscendPathList() {
+            if (null == _ascendPathList) {
+                if (null == DepthFirstPathIterator.this._optAscendFilter) {
+                    _ascendPathList = new PathList(_origPathList);
+                }
+                else {
+                    _ascendPathList = _origPathList.filterInfoNewList(new FileFilter() {
+                        @Override
+                        public boolean accept(File path) {
+                            if (null == DepthFirstPathIterator.this._optAscendFilter) {
+                                return true;
+                            }
+                            return DepthFirstPathIterator.this._optAscendFilter.accept(path, _depth);
+                        }
+                    });
+                }
+                _ascendPathList.sortInPlace(DepthFirstPathIterator.this._ascendFileComparatorList);
+            }
+            return _ascendPathList;
+        }
+
+        public Iterator<File> getAscendPathListIter() {
+            if (null == _ascendPathListIter) {
+                PathList ascendPathList = getAscendPathList();
+                _ascendPathListIter = ascendPathList.iterator();
+            }
+            return _ascendPathListIter;
         }
     }
 
-    public DepthFirstPathIterator(
+    DepthFirstPathIterator(
             File dirPath,
-            final PathFilter optDescendDirFilter,
+            PathFilter optDescendDirFilter,
             List<Comparator<File>> descendFileComparatorList,
             PathFilter optAscendFilter,
-            List<Comparator<File>> ascendFileComparatorList)
-    throws IOException {
-//        _dirPath = PathArgs.checkDirectoryExists(dirPath, "dirPath");
+            List<Comparator<File>> ascendFileComparatorList) {
+        _isInitDone = false;
+        _dirPath = ObjectArgs.checkNotNull(dirPath, "dirPath");
 
-        if (null == optDescendDirFilter) {
-            _descendDirFilter = DIR_ONLY_PATH_FILTER;
-        }
-        else {
-            _descendDirFilter = new PathFilter() {
+        _optDescendDirFilter = optDescendDirFilter;
 
-                @Override
-                public boolean accept(File path, int depth) {
-                    if (!path.isDirectory()) {
-                        return false;
-                    }
-                    return optDescendDirFilter.accept(path, depth);
-                }
-            };
-        }
         _descendFileComparatorList =
-            CollectionArgs.checkElementsNotNull(
-                descendFileComparatorList, "descendFileComparatorList");
+            ImmutableList.copyOf(
+                CollectionArgs.checkElementsNotNull(
+                    descendFileComparatorList, "descendFileComparatorList"));
 
         _optAscendFilter = optAscendFilter;
 
         _ascendFileComparatorList =
-            CollectionArgs.checkElementsNotNull(
-                ascendFileComparatorList, "ascendFileComparatorList");
+            ImmutableList.copyOf(
+                CollectionArgs.checkElementsNotNull(
+                    ascendFileComparatorList, "ascendFileComparatorList"));
 
-        _pathListDataList = Lists.newLinkedList();
+        _levelList = Lists.newLinkedList();
+    }
 
-        PathList childPathList = PathList.from(dirPath);
-
-        final int depth = 0;  // _pathListDataList.size();
-        PathList descendDirPathList = childPathList.filterInfoNewList(new FileFilter() {
-            @Override
-            public boolean accept(File path) {
-                return _descendDirFilter.accept(path, depth);
+    private void _descend() {
+        if (null != _currentLevel) {
+            while (_currentLevel.getDescendDirPathListIter().hasNext()) {
+                File descendDirPath = _currentLevel.getDescendDirPathListIter().next();
+                _addLevel(descendDirPath);  // This call changes '_currentLevel'
             }
-        });
-        descendDirPathList.sortInPlace(_descendFileComparatorList);
-
-        PathList ascendDirPathList = childPathList;
-        if (null != _optAscendFilter) {
-            childPathList.filterInPlace(new FileFilter() {
-                @Override
-                public boolean accept(File path) {
-                    return _optAscendFilter.accept(path, depth);
-                }
-            });
         }
-        ascendDirPathList.sortInPlace(_ascendFileComparatorList);
-
-        _currentPathListData = new _PathListData(descendDirPathList, ascendDirPathList);
-        _pathListDataList.add(_currentPathListData);
     }
 
     @Override
     public boolean hasNext() {
-        boolean b = _currentPathListData.ascendPathListIter.hasNext();
-        if (b) {
-            return true;
+        if (!_isInitDone) {
+            _addLevel(_dirPath);  // This call changes '_currentLevel'
+            _descend();  // This call changes '_currentLevel'
+            _isInitDone = true;
         }
-//        _currentPathListData.descendDirPathListIter.hasNext()
-        // LAST
-        return false;
+        while (null != _currentLevel && !_currentLevel.getAscendPathListIter().hasNext()) {
+            _removeLevel();  // This call changes '_currentLevel'
+            _descend();  // This call changes '_currentLevel'
+        }
+        if (null == _currentLevel) {
+            return false;
+        }
+        return _currentLevel.getAscendPathListIter().hasNext();
     }
 
     @Override
     public File next() {
-        File x = _currentPathListData.ascendPathListIter.next();
-        return x;
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        File path = _currentLevel.getAscendPathListIter().next();
+        return path;
     }
 
     //TODO: @Override
     // Maybe add to a new interface... TraversePathIterator?
     public int depth() {
-        return _pathListDataList.size() - 1;
+        return _levelList.size() - 1;
     }
 }
