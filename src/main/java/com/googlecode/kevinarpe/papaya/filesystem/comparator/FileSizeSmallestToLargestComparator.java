@@ -4,6 +4,7 @@ import com.googlecode.kevinarpe.papaya.comparator.AbstractStatelessComparator;
 
 import java.io.File;
 
+// TODO: Remove 'SmallestToLargest' from class name?
 public final class FileSizeSmallestToLargestComparator
 extends AbstractStatelessComparator<File> {
 
