@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  */
 
 import com.google.common.collect.Maps;
+import com.google.common.primitives.Ints;
 import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.filesystem.FileType;
 
@@ -55,7 +56,7 @@ implements Comparator<File> {
         FileType fileType2 = checkFileType(path2);
         int fileTypeIndex1 = _fileTypeToIndexMap.get(fileType1);
         int fileTypeIndex2 = _fileTypeToIndexMap.get(fileType2);
-        int result = Integer.compare(fileTypeIndex1, fileTypeIndex2);
+        int result = Ints.compare(fileTypeIndex1, fileTypeIndex2);
         return result;
     }
 

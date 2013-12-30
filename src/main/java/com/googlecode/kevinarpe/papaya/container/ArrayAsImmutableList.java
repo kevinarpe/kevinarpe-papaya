@@ -84,7 +84,7 @@ extends UnmodifiableForwardingList<TValue> {
         ObjectArgs.checkNotNull(arr, "arr");
 
         _arr = arr.clone();
-        _arrAsList = Arrays.asList(arr);
+        _arrAsList = Arrays.asList(_arr);
     }
 
     @Override

@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  * #L%
  */
 
+import com.google.common.primitives.Longs;
 import com.googlecode.kevinarpe.papaya.comparator.AbstractStatelessComparator;
 import com.googlecode.kevinarpe.papaya.string.NumericPrefix;
 
@@ -48,7 +49,7 @@ extends AbstractStatelessComparator<File> {
 
         final long numericFileName1 = numericPrefix1.getNumericValue();
         final long numericFileName2 = numericPrefix2.getNumericValue();
-        final int result = Long.compare(numericFileName1, numericFileName2);
+        final int result = Longs.compare(numericFileName1, numericFileName2);
         return result;
     }
 }

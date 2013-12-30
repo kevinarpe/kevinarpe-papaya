@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  * #L%
  */
 
+import com.google.common.primitives.Longs;
 import com.googlecode.kevinarpe.papaya.comparator.AbstractStatelessComparator;
 
 import java.io.File;
@@ -36,7 +37,7 @@ extends AbstractStatelessComparator<File> {
     public int compare(File path1, File path2) {
         final long lastModified1 = path1.lastModified();
         final long lastModified2 = path2.lastModified();
-        final int result = Long.compare(lastModified1, lastModified2);
+        final int result = Longs.compare(lastModified1, lastModified2);
         return result;
     }
 }

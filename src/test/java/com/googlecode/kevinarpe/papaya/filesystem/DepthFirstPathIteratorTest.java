@@ -116,23 +116,28 @@ public class DepthFirstPathIteratorTest {
         _recursiveDeleteDir(baseDirPath);
         Assert.assertTrue(baseDirPath.mkdir());
 
-        int max = _createFiles(pathSpecArr);
-        int count = 0;
-        List<Comparator<File>> fileComparatorList =
-            ImmutableList.<Comparator<File>>of(new FileNameNumericSmallestToLargestComparator());
-        DepthFirstPathIterator dfpi =
-            TraversePathDepthFirst
-                .on(baseDirPath)
-                .withDescendFileComparatorList(fileComparatorList)
-                .withAscendFileComparatorList(fileComparatorList)
-                .iterator();
-        while (dfpi.hasNext()) {
-            ++count;
-            File path = dfpi.next();
-            long numericFileName = new NumericPrefix(path.getName()).getNumericValue();
-            Assert.assertEquals(count, numericFileName);
+        try {
+            int max = _createFiles(pathSpecArr);
+            int count = 0;
+            List<Comparator<File>> fileComparatorList =
+                ImmutableList.<Comparator<File>>of(new FileNameNumericSmallestToLargestComparator());
+            DepthFirstPathIterator dfpi =
+                TraversePathDepthFirst
+                    .on(baseDirPath)
+                    .withDescendFileComparatorList(fileComparatorList)
+                    .withAscendFileComparatorList(fileComparatorList)
+                    .iterator();
+            while (dfpi.hasNext()) {
+                ++count;
+                File path = dfpi.next();
+                long numericFileName = new NumericPrefix(path.getName()).getNumericValue();
+                Assert.assertEquals(count, numericFileName);
+            }
+            Assert.assertEquals(count, max);
         }
-        Assert.assertEquals(count, max);
+        finally {
+            _recursiveDeleteDir(baseDirPath);
+        }
     }
 
     private int _createFiles(String[] pathSpecArr)
