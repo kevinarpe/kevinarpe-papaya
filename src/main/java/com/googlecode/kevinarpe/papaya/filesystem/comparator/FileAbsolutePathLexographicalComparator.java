@@ -36,7 +36,10 @@ extends AbstractStatelessComparator<File> {
     public int compare(File path1, File path2) {
         final String absolutePath1 = path1.getAbsolutePath();
         final String absolutePath2 = path2.getAbsolutePath();
-        final int result = absolutePath1.compareTo(absolutePath2);
+        int result = absolutePath1.compareTo(absolutePath2);
+        if (0 != result) {
+            result /= Math.abs(result);  // -17 -> -1 and +17 -> +1
+        }
         return result;
     }
 }

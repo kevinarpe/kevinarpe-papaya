@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  */
 
 import com.google.common.primitives.Longs;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.comparator.AbstractStatelessComparator;
 import com.googlecode.kevinarpe.papaya.string.NumericPrefix;
 
@@ -36,6 +37,9 @@ extends AbstractStatelessComparator<File> {
 
     @Override
     public int compare(File path1, File path2) {
+        ObjectArgs.checkNotNull(path1, "path1");
+        ObjectArgs.checkNotNull(path2, "path2");
+
         final String fileName1 = path1.getName();
         final String fileName2 = path2.getName();
 

@@ -76,6 +76,7 @@
     <maven-surefire-report-plugin.version>2.16</maven-surefire-report-plugin.version>
     
     <testng.version>6.8.7</testng.version>
+    <mockito-all.version>1.9.5</mockito-all.version>
     <guava.version>15.0</guava.version>
     <guava-testlib.version>15.0</guava-testlib.version>
     <joda-time.version>2.3</joda-time.version>
@@ -238,6 +239,12 @@
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>${testng.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>${mockito-all.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
