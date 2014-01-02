@@ -1,10 +1,10 @@
-package com.googlecode.kevinarpe.papaya.filesystem.comparator;
+package com.googlecode.kevinarpe.papaya.comparator;
 
 /*
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,18 +25,29 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.comparator.AbstractStatelessComparator;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
-import java.io.File;
+import static org.testng.Assert.assertEquals;
 
-public final class FileNameLexographicalComparator
-extends AbstractStatelessComparator<File> {
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
+public class ComparatorUtilsTest {
 
-    @Override
-    public int compare(File path1, File path2) {
-        final String fileName1 = path1.getName();
-        final String fileName2 = path2.getName();
-        final int result = fileName1.compareTo(fileName2);
-        return result;
+    @DataProvider
+    private static Object[][] normalizeCompareResult_Pass_Data() {
+        return new Object[][] {
+            { -17, -1 },
+            { +17, +1 },
+            { -1, -1 },
+            { 0, 0 },
+            { +1, +1 },
+        };
+    }
+
+    @Test(dataProvider = "normalizeCompareResult_Pass_Data")
+    public void normalizeCompareResult_Pass(int rawCompareResult, int finalCompareResult) {
+        assertEquals(ComparatorUtils.normalizeCompareResult(rawCompareResult), finalCompareResult);
     }
 }

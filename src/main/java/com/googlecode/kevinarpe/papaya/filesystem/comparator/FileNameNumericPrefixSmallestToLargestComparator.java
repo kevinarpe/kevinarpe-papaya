@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,13 +27,16 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
 
 import com.google.common.primitives.Longs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.comparator.AbstractStatelessComparator;
+import com.googlecode.kevinarpe.papaya.comparator.ComparatorUtils;
+import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 import com.googlecode.kevinarpe.papaya.string.NumericPrefix;
 
 import java.io.File;
+import java.util.Comparator;
 
-public final class FileNameNumericSmallestToLargestComparator
-extends AbstractStatelessComparator<File> {
+public final class FileNameNumericPrefixSmallestToLargestComparator
+extends StatelessObject
+implements Comparator<File> {
 
     @Override
     public int compare(File path1, File path2) {
@@ -47,7 +50,8 @@ extends AbstractStatelessComparator<File> {
         final NumericPrefix numericPrefix2 = new NumericPrefix(fileName2);
 
         if (!numericPrefix1.hasNumericValue() || !numericPrefix2.hasNumericValue()) {
-            final int result = fileName1.compareTo(fileName2);
+            int result = fileName1.compareTo(fileName2);
+            result = ComparatorUtils.normalizeCompareResult(result);
             return result;
         }
 

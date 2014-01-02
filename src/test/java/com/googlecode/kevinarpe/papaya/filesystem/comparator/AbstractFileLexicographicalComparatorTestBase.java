@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,18 +25,26 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.comparator.AbstractStatelessComparator;
+import com.googlecode.kevinarpe.papaya.comparator.AbstractLexicographicalComparator;
+import com.googlecode.kevinarpe.papaya.comparator.CaseSensitive;
+import com.googlecode.kevinarpe.papaya.comparator.ComparatorUtils;
 
 import java.io.File;
 
-public final class FileNameLexographicalIgnoreCaseComparator
-extends AbstractStatelessComparator<File> {
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
+public abstract class AbstractFileLexicographicalComparatorTestBase
+        <TComparator extends AbstractLexicographicalComparator<File, TComparator>>
+extends AbstractFileComparatorTestBase<TComparator, String> {
 
     @Override
-    public int compare(File path1, File path2) {
-        final String fileName1 = path1.getName();
-        final String fileName2 = path2.getName();
-        final int result = fileName1.compareToIgnoreCase(fileName2);
+    public int compareStrings(TComparator comparator, String left, String right) {
+        int result = (comparator.isCaseSensitive() ?
+            left.compareTo(right) : left.compareToIgnoreCase(right));
+        result = ComparatorUtils.normalizeCompareResult(result);
         return result;
     }
+
+    protected abstract TComparator newComparator(CaseSensitive caseSensitive);
 }

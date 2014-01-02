@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.string;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,10 +29,12 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import static org.testng.Assert.assertEquals;
+
 public class NumericPrefixTest {
 
     ///////////////////////////////////////////////////////////////////////////
-    // NumericPrefix.ctor
+    // NumericPrefix.ctor()
     //
 
     @DataProvider
@@ -64,27 +66,15 @@ public class NumericPrefixTest {
     }
 
     @Test(dataProvider = "Pass_Data")
-    public void ctor_Pass(String str, Long expectedValue) {
-        new NumericPrefix<String>(str);
-    }
-
-    private <TString extends CharSequence> void core_ctor_Pass(TString str, Long expectedValue) {
-        NumericPrefix<TString> x = new NumericPrefix<TString>(str);
-        Assert.assertEquals(null != expectedValue, x.hasNumericValue());
-        if (null != expectedValue) {
-            Assert.assertEquals(expectedValue.longValue(), x.getNumericValue());
-        }
+    public void of_Pass(String str, Long expectedValue) {
+        new NumericPrefix(str);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void ctor_FailWithNull() {
-        new NumericPrefix<String>(null);
+        new NumericPrefix((String) null);
     }
 
-    @Test(expectedExceptions = NullPointerException.class)
-    public void ctor_FailWithNull2() {
-        new NumericPrefix<CharSequence>(null);
-    }
     @DataProvider
     private static Object[][] ctor_FailWithOutOfRangeNumber_Data() {
         return new Object[][] {
@@ -98,7 +88,7 @@ public class NumericPrefixTest {
     @Test(expectedExceptions = NumberFormatException.class,
             dataProvider = "ctor_FailWithOutOfRangeNumber_Data")
     public void ctor_FailWithOutOfRangeNumber(String str) {
-        new NumericPrefix<String>(str);
+        new NumericPrefix(str);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -107,8 +97,8 @@ public class NumericPrefixTest {
 
     @Test(dataProvider = "Pass_Data")
     public void getInput_Pass(String str, Long expectedValue) {
-        NumericPrefix<String> x = new NumericPrefix<String>(str);
-        Assert.assertEquals(str, x.getInput());
+        NumericPrefix x = new NumericPrefix(str);
+        assertEquals(x.getInput(), str);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -117,8 +107,8 @@ public class NumericPrefixTest {
 
     @Test(dataProvider = "Pass_Data")
     public void hasNumericValue_Pass(String str, Long expectedValue) {
-        NumericPrefix<String> x = new NumericPrefix<String>(str);
-        Assert.assertEquals(null != expectedValue, x.hasNumericValue());
+        NumericPrefix x = new NumericPrefix(str);
+        assertEquals(x.hasNumericValue(), null != expectedValue);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -127,7 +117,7 @@ public class NumericPrefixTest {
 
     @Test(dataProvider = "Pass_Data")
     public void getNumericValue_Pass(String str, Long expectedValue) {
-        NumericPrefix<String> x = new NumericPrefix<String>(str);
+        NumericPrefix x = new NumericPrefix(str);
         if (null == expectedValue) {
             try {
                 x.getNumericValue();
@@ -137,7 +127,7 @@ public class NumericPrefixTest {
             }
         }
         else {
-            Assert.assertEquals(expectedValue.longValue(), x.getNumericValue());
+            assertEquals(x.getNumericValue(), expectedValue.longValue());
         }
     }
 }

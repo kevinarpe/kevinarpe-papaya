@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.comparator;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +25,28 @@ package com.googlecode.kevinarpe.papaya.comparator;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+
 import java.util.Comparator;
 
-public abstract class AbstractStatelessComparator<TValue>
-implements Comparator<TValue> {
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
+@FullyTested
+public class ComparatorUtils {
 
-    @Override
-    public boolean equals(Object obj) {
-        return (this == obj || (null != obj && this.getClass().equals(obj.getClass())));
+    /**
+     * Converts a result from {@link Comparator#compare(Object, Object)} to -1, 0, or +1.
+     *
+     * @param result
+     *        raw result, e.g., -17, 0, +17, etc.
+     *
+     * @return normalized compare result: -1, 0, or +1
+     */
+    public static int normalizeCompareResult(int result) {
+        if (0 != result) {
+            result /= Math.abs(result);
+        }
+        return result;
     }
 }

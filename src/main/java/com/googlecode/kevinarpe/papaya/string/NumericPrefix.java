@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.string;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ package com.googlecode.kevinarpe.papaya.string;
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.filesystem.comparator.FileNameNumericSmallestToLargestComparator;
+import com.googlecode.kevinarpe.papaya.filesystem.comparator.FileNameNumericPrefixSmallestToLargestComparator;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,18 +37,15 @@ import java.util.regex.Pattern;
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @param <TString>
- *        data type to search; usually {@link String}
- *
- * @see FileNameNumericSmallestToLargestComparator
+ * @see FileNameNumericPrefixSmallestToLargestComparator
  */
 @FullyTested
-public final class NumericPrefix<TString extends CharSequence> {
+public final class NumericPrefix {
 
     private static final Pattern PATTERN = Pattern.compile("^([+-]?\\d+)");
     private static final long NOT_FOUND = -1;
 
-    private final TString _input;
+    private final String _input;
     private final long _value;
 
     /**
@@ -67,7 +64,7 @@ public final class NumericPrefix<TString extends CharSequence> {
      * @see #getNumericValue()
      * @see Long#parseLong(String)
      */
-    public NumericPrefix(TString str) {
+    public NumericPrefix(String str) {
         _input = ObjectArgs.checkNotNull(str, "str");
 
         Matcher matcher = PATTERN.matcher(str);
@@ -85,7 +82,7 @@ public final class NumericPrefix<TString extends CharSequence> {
      * @see #hasNumericValue()
      * @see #getNumericValue()
      */
-    public TString getInput() {
+    public String getInput() {
         return _input;
     }
 

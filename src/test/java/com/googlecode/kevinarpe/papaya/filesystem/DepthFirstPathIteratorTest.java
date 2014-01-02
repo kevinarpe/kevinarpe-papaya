@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
 import com.beust.jcommander.internal.Sets;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
-import com.googlecode.kevinarpe.papaya.filesystem.comparator.FileNameNumericSmallestToLargestComparator;
+import com.googlecode.kevinarpe.papaya.filesystem.comparator.FileNameNumericPrefixSmallestToLargestComparator;
 import com.googlecode.kevinarpe.papaya.string.NumericPrefix;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -120,7 +120,7 @@ public class DepthFirstPathIteratorTest {
             int max = _createFiles(pathSpecArr);
             int count = 0;
             List<Comparator<File>> fileComparatorList =
-                ImmutableList.<Comparator<File>>of(new FileNameNumericSmallestToLargestComparator());
+                ImmutableList.<Comparator<File>>of(new FileNameNumericPrefixSmallestToLargestComparator());
             DepthFirstPathIterator dfpi =
                 TraversePathDepthFirst
                     .on(baseDirPath)

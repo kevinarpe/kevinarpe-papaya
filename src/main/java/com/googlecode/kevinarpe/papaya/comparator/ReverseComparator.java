@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.comparator;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.comparator;
  */
 
 import com.google.common.collect.ImmutableList;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 import java.util.Collection;
@@ -45,6 +46,7 @@ import java.util.Comparator;
  * @see Comparator
  * @see #of(Comparator)
  */
+@FullyTested
 public final class ReverseComparator<TValue>
 implements Comparator<TValue> {
 
@@ -59,6 +61,9 @@ implements Comparator<TValue> {
      *        type of object to be compared
      *
      * @return {@link Comparator} that inverts the result of {@link #compare(Object, Object)}
+     *
+     * @throws NullPointerException
+     *         if {@code comparator} is {@code null}
      */
     public static <TValue> Comparator<TValue> of(Comparator<TValue> comparator) {
         ObjectArgs.checkNotNull(comparator, "comparator");
@@ -97,6 +102,19 @@ implements Comparator<TValue> {
                 this.comparator.equals(((ReverseComparator) obj).comparator)));
     }
 
+    /**
+     * @return hash code for inner comparator
+     */
+    @Override
+    public int hashCode() {
+        return this.comparator.hashCode();
+    }
+
+    /**
+     * Returns a string suitable for debugging.
+     * <hr/>
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         String x = String.format("%s {%n\t%s: %s (%s)%n}",

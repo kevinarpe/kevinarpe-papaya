@@ -1,10 +1,10 @@
-package com.googlecode.kevinarpe.papaya.filesystem.comparator;
+package com.googlecode.kevinarpe.papaya.object;
 
 /*
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,21 +25,18 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.comparator.AbstractStatelessComparator;
+import com.google.common.testing.EqualsTester;
+import org.testng.annotations.Test;
 
-import java.io.File;
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
+public class StatelessObjectTest {
 
-public final class FileAbsolutePathLexographicalComparator
-extends AbstractStatelessComparator<File> {
-
-    @Override
-    public int compare(File path1, File path2) {
-        final String absolutePath1 = path1.getAbsolutePath();
-        final String absolutePath2 = path2.getAbsolutePath();
-        int result = absolutePath1.compareTo(absolutePath2);
-        if (0 != result) {
-            result /= Math.abs(result);  // -17 -> -1 and +17 -> +1
-        }
-        return result;
+    @Test
+    public void hashCodeAndEquals_Pass() {
+        new EqualsTester()
+            .addEqualityGroup(new StatelessObject(), new StatelessObject())
+            .testEquals();
     }
 }

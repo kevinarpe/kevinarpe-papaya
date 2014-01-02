@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,12 +26,14 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  */
 
 import com.google.common.primitives.Longs;
-import com.googlecode.kevinarpe.papaya.comparator.AbstractStatelessComparator;
+import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
 import java.io.File;
+import java.util.Comparator;
 
 public final class FileLastModifiedOldestToNewestComparator
-extends AbstractStatelessComparator<File> {
+extends StatelessObject
+implements Comparator<File> {
 
     @Override
     public int compare(File path1, File path2) {
