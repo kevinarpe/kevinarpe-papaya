@@ -34,6 +34,11 @@ import org.testng.annotations.Test;
 public class StatelessObjectTest {
 
     @Test
+    public void ctor_Pass() {
+        new StatelessObject();
+    }
+
+    @Test
     public void hashCodeAndEquals_Pass() {
         new EqualsTester()
             .addEqualityGroup(new StatelessObject(), new StatelessObject())

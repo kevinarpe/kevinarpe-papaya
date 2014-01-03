@@ -46,6 +46,16 @@ extends AbstractFileLexicographicalComparatorTestBase<FileAbsolutePathLexicograp
             { "def/456", "abc/123" },
             { "abc/123", "abc/123" },
             { "abc/123", "ABC/123" },
+
+            { "ABC/123", "def/456" },
+            { "def/456", "ABC/123" },
+            { "ABC/123", "ABC/123" },
+
+            { "abc/123", "DEF/456" },
+            { "DEF/456", "abc/123" },
+
+            { "ABC/123", "DEF/456" },
+            { "DEF/456", "ABC/123" },
         };
     }
 

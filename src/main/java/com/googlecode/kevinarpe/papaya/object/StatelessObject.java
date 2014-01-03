@@ -37,6 +37,12 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 public class StatelessObject {
 
     /**
+     * Empty constructor.
+     */
+    public StatelessObject() {
+    }
+
+    /**
      * Compares {@link Class} references for {@code this} and {@code obj}.
      * <hr/>
      * {@inheritDoc}

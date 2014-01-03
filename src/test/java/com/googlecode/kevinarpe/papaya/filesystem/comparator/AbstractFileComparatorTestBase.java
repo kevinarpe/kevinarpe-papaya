@@ -91,7 +91,7 @@ public abstract class AbstractFileComparatorTestBase
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractFileComparatorTest.ctor()
+    // AbstractFileComparatorTestBase.ctor()
     //
 
     @Test
@@ -100,7 +100,7 @@ public abstract class AbstractFileComparatorTestBase
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractFileComparatorTest.compare()
+    // AbstractFileComparatorTestBase.compare()
     //
 
     protected void compare_Pass_core(TComparableValue leftValue, TComparableValue rightValue) {
@@ -160,7 +160,7 @@ public abstract class AbstractFileComparatorTestBase
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractFileComparatorTest.hashCode()/equals()
+    // AbstractFileComparatorTestBase.hashCode()/equals()
     //
 
     @Test

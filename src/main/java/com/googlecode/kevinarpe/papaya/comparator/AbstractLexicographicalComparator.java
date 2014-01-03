@@ -35,6 +35,10 @@ import java.util.Comparator;
  * Extends {@link Comparator} to provide case sensitivity option.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see #isCaseSensitive()
+ * @see #getCaseSensitive()
+ * @see #setCaseSensitive(CaseSensitive)
  */
 @FullyTested
 public abstract class AbstractLexicographicalComparator
@@ -49,6 +53,9 @@ implements Comparator<TValue> {
      *
      * @see CaseSensitive#YES
      * @see #AbstractLexicographicalComparator()
+     * @see #isCaseSensitive()
+     * @see #getCaseSensitive()
+     * @see #setCaseSensitive(CaseSensitive)
      */
     public static final CaseSensitive DEFAULT_CASE_SENSITIVE = CaseSensitive.YES;
 
@@ -68,6 +75,10 @@ implements Comparator<TValue> {
      *
      * @throws NullPointerException
      *         if {@code caseSensitive} is {@code null}
+     *
+     * @see #isCaseSensitive()
+     * @see #getCaseSensitive()
+     * @see #setCaseSensitive(CaseSensitive)
      */
     protected AbstractLexicographicalComparator(CaseSensitive caseSensitive) {
         setCaseSensitive(caseSensitive);
@@ -75,12 +86,16 @@ implements Comparator<TValue> {
 
     /**
      * @return {@code true} if {@link #getCaseSensitive()} equals {@link CaseSensitive#YES}
+     *
+     * @see #getCaseSensitive()
+     * @see #setCaseSensitive(CaseSensitive)
      */
     public final boolean isCaseSensitive() {
         return caseSensitive == CaseSensitive.YES;
     }
 
     /**
+     * @see #isCaseSensitive()
      * @see #setCaseSensitive(CaseSensitive)
      */
     public final CaseSensitive getCaseSensitive() {
@@ -95,6 +110,9 @@ implements Comparator<TValue> {
      *
      * @throws NullPointerException
      *         if {@code caseSensitive} is {@code null}
+     *
+     * @see #isCaseSensitive()
+     * @see #getCaseSensitive()
      */
     public final TSelf setCaseSensitive(CaseSensitive caseSensitive) {
         this.caseSensitive = ObjectArgs.checkNotNull(caseSensitive, "caseSensitive");
@@ -118,6 +136,9 @@ implements Comparator<TValue> {
      *         if {@code left} or {@code right} is {@code null}
      *
      * @see ComparatorUtils#normalizeCompareResult(int)
+     * @see #isCaseSensitive()
+     * @see #getCaseSensitive()
+     * @see #setCaseSensitive(CaseSensitive)
      */
     protected final int compareStrings(String left, String right) {
         ObjectArgs.checkNotNull(left, "left");

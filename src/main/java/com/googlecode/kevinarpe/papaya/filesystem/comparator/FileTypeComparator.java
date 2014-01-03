@@ -28,30 +28,84 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Ints;
 import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.filesystem.FileType;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Compares two {@link File} references using a list of {@link FileType}s to determine order.
+ *
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see #compare(File, File)
+ */
 public final class FileTypeComparator
 implements Comparator<File> {
 
     private final Map<FileType, Integer> _fileTypeToIndexMap;
 
+    /**
+     * Creates a new {@link Comparator} from a list of {@link FileType} references.  Callers may
+     * want to use {@link Arrays#asList(Object[])} to build a {@link List}.  The first value in the
+     * param list has the high priority and will sort first.  The last value has the lowest priority
+     * and will sort last.
+     * <p>
+     * Example: {@code Arrays.asList(FileType.REGULAR_FILE, FileType.DIRECTORY)} will sort all
+     * regular files before directories.
+     *
+     * @param fileTypeList
+     *        list of {@link FileType}s.  Must not be empty, contain {@code null}s, or contain
+     *        duplicate values.
+     *
+     * @see Arrays#asList(Object[])
+     * @see FileType
+     */
     public FileTypeComparator(List<FileType> fileTypeList) {
         CollectionArgs.checkNotEmptyAndElementsNotNull(fileTypeList, "fileTypeList");
+        CollectionArgs.checkElementsUnique(fileTypeList, "fileTypeList");
 
-        _fileTypeToIndexMap = Maps.newHashMap();
+        _fileTypeToIndexMap = Maps.newHashMapWithExpectedSize(fileTypeList.size());
         for (int i = 0; i < fileTypeList.size(); ++i) {
-            _fileTypeToIndexMap.put(fileTypeList.get(i), i);
+            FileType fileType = fileTypeList.get(i);
+            _fileTypeToIndexMap.put(fileType, i);
         }
     }
 
+    /**
+     * Compares the priority of {@link FileType} for paths.  This priority is determined by the
+     * list provided to the constructor.
+     * <hr/>
+     * {@inheritDoc}
+     *
+     * @param path1
+     *        must not be {@code null}
+     * @param path2
+     *        must not be {@code null}
+     *
+     * @return
+     * <li>
+     *     <ul>-1 if {@code path1} is less than {@code path2}</ul>
+     *     <ul>0 if {@code path1} is equal to {@code path2}</ul>
+     *     <ul>+1 if {@code path1} is greater than {@code path2}</ul>
+     * </li>
+     *
+     * @throws NullPointerException
+     *         if {@code path1} or {@code path2} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@link FileType} of {@code path1} or {@code path2} is not found in the internal
+     *         priority map
+     */
     @Override
     public int compare(File path1, File path2) {
+        ObjectArgs.checkNotNull(path1, "path1");
+        ObjectArgs.checkNotNull(path2, "path2");
+
         FileType fileType1 = checkFileType(path1);
         FileType fileType2 = checkFileType(path2);
         int fileTypeIndex1 = _fileTypeToIndexMap.get(fileType1);
@@ -79,13 +133,29 @@ implements Comparator<File> {
         }
     }
 
+    /**
+     * Equates by the priority {@link FileType}s.  This priority is determined by the list provided
+     * to the constructor.
+     * <hr/>
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
-        return (this == obj ||
-            (obj instanceof FileTypeComparator &&
-                this._fileTypeToIndexMap.equals(((FileTypeComparator) obj)._fileTypeToIndexMap)));
+        // Ref: http://stackoverflow.com/a/5039178/257299
+        boolean result = (this == obj);
+        if (!result && obj instanceof FileTypeComparator) {
+            final FileTypeComparator other = (FileTypeComparator) obj;
+            result = this._fileTypeToIndexMap.equals(other._fileTypeToIndexMap);
+        }
+        return result;
     }
 
+    /**
+     * Returns hash code of priority map of {@link FileType}s.  This priority is determined by the
+     * list provided to the constructor.
+     * <hr/>
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return _fileTypeToIndexMap.hashCode();

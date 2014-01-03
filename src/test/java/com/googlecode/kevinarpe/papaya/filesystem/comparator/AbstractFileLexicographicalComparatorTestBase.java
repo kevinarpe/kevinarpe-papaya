@@ -28,6 +28,7 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
 import com.googlecode.kevinarpe.papaya.comparator.AbstractLexicographicalComparator;
 import com.googlecode.kevinarpe.papaya.comparator.CaseSensitive;
 import com.googlecode.kevinarpe.papaya.comparator.ComparatorUtils;
+import org.testng.annotations.Test;
 
 import java.io.File;
 
@@ -38,6 +39,12 @@ public abstract class AbstractFileLexicographicalComparatorTestBase
         <TComparator extends AbstractLexicographicalComparator<File, TComparator>>
 extends AbstractFileComparatorTestBase<TComparator, String> {
 
+    protected abstract TComparator newComparator(CaseSensitive caseSensitive);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Helpers
+    //
+
     @Override
     public int compareStrings(TComparator comparator, String left, String right) {
         int result = (comparator.isCaseSensitive() ?
@@ -46,5 +53,14 @@ extends AbstractFileComparatorTestBase<TComparator, String> {
         return result;
     }
 
-    protected abstract TComparator newComparator(CaseSensitive caseSensitive);
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // AbstractFileLexicographicalComparatorTestBase.ctor()
+    //
+
+    @Test
+    public void ctor_Pass2() {
+        for (CaseSensitive cs : CaseSensitive.values()) {
+            newComparator(cs);
+        }
+    }
 }

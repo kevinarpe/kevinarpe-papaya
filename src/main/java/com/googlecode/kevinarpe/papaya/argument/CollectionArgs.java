@@ -25,10 +25,11 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+
 import java.util.Collection;
 import java.util.List;
-
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import java.util.Set;
 
 /**
  * Static methods to check {@link Collection} arguments.
@@ -225,7 +226,31 @@ public final class CollectionArgs {
         ContainerArgs._checkElementsNotNull(ref, "Collection", argName);
         return ref;
     }
-    
+
+    /**
+     * Tests if a {@link Collection} reference is not null and has unique elements.  Any instance
+     * of {@link Set} is automatically assumed to have unique elements.
+     *
+     * @param ref
+     *        a collection reference.  Empty collection is allowed.  Also, {@code null} elements
+     *        are allowed.
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
+     * @return the validated collection reference
+     *
+     * @throws NullPointerException
+     *         if {@code ref} is {@code null}
+     *
+     * @see #checkElementsNotNull(Collection, String)
+     */
+    @FullyTested
+    public static <TValue, TCollection extends Collection<TValue>>
+    TCollection checkElementsUnique(TCollection ref, String argName) {
+        ContainerArgs._checkElementsUnique(ref, "Collection", argName);
+        return ref;
+    }
+
     /**
      * This is a convenience method for {@link #checkNotEmpty(Collection, String)}
      * and {@link #checkElementsNotNull(Collection, String)}.
@@ -237,7 +262,7 @@ public final class CollectionArgs {
         checkElementsNotNull(ref, argName);
         return ref;
     }
-    
+
     /**
      * Tests if a {@link Collection} reference is not null and an index is valid to access
      * an element.

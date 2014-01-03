@@ -25,23 +25,63 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.comparator.AbstractLexicographicalComparator;
 import com.googlecode.kevinarpe.papaya.comparator.CaseSensitive;
 
 import java.io.File;
 
+/**
+ * Compares two {@link File} references using {@link File#getName()}.
+ *
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see AbstractLexicographicalComparator
+ * @see #isCaseSensitive()
+ * @see #getCaseSensitive()
+ * @see #setCaseSensitive(CaseSensitive)
+ * @see #compare(File, File)
+ */
+@FullyTested
 public final class FileNameLexicographicalComparator
 extends AbstractLexicographicalComparator<File, FileNameLexicographicalComparator> {
 
+    /**
+     * @see AbstractLexicographicalComparator#AbstractLexicographicalComparator()
+     */
     public FileNameLexicographicalComparator() {
         super();
     }
 
+    /**
+     * @see AbstractLexicographicalComparator#AbstractLexicographicalComparator(CaseSensitive)
+     */
     public FileNameLexicographicalComparator(CaseSensitive caseSensitive) {
         super(caseSensitive);
     }
 
+    /**
+     * Compares the results of {@link File#getName()} via
+     * {@link #compareStrings(String, String)}.
+     * <hr/>
+     * {@inheritDoc}
+     *
+     * @param path1
+     *        must not be {@code null}
+     * @param path2
+     *        must not be {@code null}
+     *
+     * @return
+     * <li>
+     *     <ul>-1 if {@code path1} is less than {@code path2}</ul>
+     *     <ul>0 if {@code path1} is equal to {@code path2}</ul>
+     *     <ul>+1 if {@code path1} is greater than {@code path2}</ul>
+     * </li>
+     *
+     * @throws NullPointerException
+     *         if {@code path1} or {@code path2} is {@code null}
+     */
     @Override
     public int compare(File path1, File path2) {
         ObjectArgs.checkNotNull(path1, "path1");

@@ -45,6 +45,10 @@ extends AbstractFileLexicographicalComparatorTestBase<FileNameLexicographicalCom
             { "abc", "def" },
             { "abc", "abc" },
             { "abc", "ABC" },
+            { "ABC", "abc" },
+            { "ABC", "def" },
+            { "abc", "DEF" },
+            { "ABC", "ABC" },
         };
     }
 

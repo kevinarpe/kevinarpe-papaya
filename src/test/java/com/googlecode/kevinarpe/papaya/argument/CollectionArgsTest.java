@@ -373,7 +373,55 @@ public class CollectionArgsTest {
     public void checkElementsNotNull_FailWithNullCollection() {
         CollectionArgs.checkElementsNotNull((Collection<Object>) null, "ref");
     }
-    
+
+    ///////////////////////////////////////////////////////////////////////////
+    // CollectionArgs.checkElementsUnique
+    //
+
+    @DataProvider
+    public static Object[][] checkElementsUnique_Pass_Data() {
+        return new Object[][] {
+            { Arrays.asList() },
+            { Arrays.asList(null) },
+            { Arrays.asList("a") },
+            { Arrays.asList("a", null) },
+            { Arrays.asList("a", "b") },
+            { Arrays.asList("a", null, "b") },
+        };
+    }
+
+    @Test(dataProvider = "checkElementsUnique_Pass_Data")
+    public <T> void checkElementsUnique_Pass(Collection<T> ref) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == CollectionArgs.checkElementsUnique(ref, "ref"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(ref == CollectionArgs.checkElementsUnique(ref, null));
+        Assert.assertTrue(ref == CollectionArgs.checkElementsUnique(ref, ""));
+        Assert.assertTrue(ref == CollectionArgs.checkElementsUnique(ref, "   "));
+    }
+
+    @DataProvider
+    public static Object[][] checkElementsUnique_FailWithDuplicateElements_Data() {
+        return new Object[][] {
+            { Arrays.asList(null, null) },
+            { Arrays.asList(null, null, "a") },
+            { Arrays.asList("a", "a") },
+            { Arrays.asList("a", "a", null) },
+            { Arrays.asList("a", "b", "a") },
+        };
+    }
+
+    @Test(dataProvider = "checkElementsUnique_FailWithDuplicateElements_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <T> void checkElementsUnique_FailWithNullElements(Collection<T> ref) {
+        CollectionArgs.checkElementsUnique(ref, "ref");
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void checkElementsUnique_FailWithNullCollection() {
+        CollectionArgs.checkElementsUnique((Collection<Object>) null, "ref");
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // CollectionArgs.checkNotEmptyAndElementsNotNull
     //

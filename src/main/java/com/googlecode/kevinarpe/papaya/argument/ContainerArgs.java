@@ -1,7 +1,11 @@
 package com.googlecode.kevinarpe.papaya.argument;
 
-import java.util.Collection;
 import com.google.common.base.Joiner;
+import com.google.common.collect.Sets;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /*
  * #%L
@@ -363,5 +367,54 @@ final class ContainerArgs {
             }
             ++count;
         }
+    }
+
+    static <TValue> void _checkElementsUnique(
+            Collection<TValue> ref, String containerType, String argName) {
+        ObjectArgs.checkNotNull(ref, argName);
+
+        if (ref instanceof Set) {
+            return;
+        }
+        final int size = ref.size();
+        if (0 == size) {
+            return;
+        }
+        HashSet<TValue> uniqSet = Sets.newHashSetWithExpectedSize(size);
+        HashSet<TValue> dupSet = Sets.newLinkedHashSet();
+        for (TValue value : ref) {
+            if (!uniqSet.add(value)) {
+                dupSet.add(value);
+            }
+        }
+        if (!dupSet.isEmpty()) {
+            String w = StringArgs._getArgNameWarning(argName, "argName");
+            throw new IllegalArgumentException(String.format(
+                "%s argument '%s': %d duplicate entries found: %s%nCollection: %s%s",
+                containerType,
+                argName,
+                dupSet.size(),
+                _joinIterable(dupSet),
+                _joinIterable(ref),
+                w));
+        }
+    }
+
+    static <TValue> String _joinIterable(Iterable<TValue> iter) {
+        StringBuilder sb = new StringBuilder();
+        for (TValue value : iter) {
+            if (0 != sb.length()) {
+                sb.append(", ");
+            }
+            if (null == value) {
+                sb.append("null");
+            }
+            else {
+                String x = "'" + value + "'";
+                sb.append(x);
+            }
+        }
+        String sbs = sb.toString();
+        return sbs;
     }
 }

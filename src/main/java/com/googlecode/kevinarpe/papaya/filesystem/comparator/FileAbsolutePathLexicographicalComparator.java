@@ -25,23 +25,63 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.comparator.AbstractLexicographicalComparator;
 import com.googlecode.kevinarpe.papaya.comparator.CaseSensitive;
 
 import java.io.File;
 
+/**
+ * Compares two {@link File} references using {@link File#getAbsolutePath()}.
+ *
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see AbstractLexicographicalComparator
+ * @see #isCaseSensitive()
+ * @see #getCaseSensitive()
+ * @see #setCaseSensitive(CaseSensitive)
+ * @see #compare(File, File)
+ */
+@FullyTested
 public final class FileAbsolutePathLexicographicalComparator
 extends AbstractLexicographicalComparator<File, FileAbsolutePathLexicographicalComparator> {
 
+    /**
+     * @see AbstractLexicographicalComparator#AbstractLexicographicalComparator()
+     */
     public FileAbsolutePathLexicographicalComparator() {
         super();
     }
 
+    /**
+     * @see AbstractLexicographicalComparator#AbstractLexicographicalComparator(CaseSensitive)
+     */
     public FileAbsolutePathLexicographicalComparator(CaseSensitive caseSensitive) {
         super(caseSensitive);
     }
 
+    /**
+     * Compares the results of {@link File#getAbsolutePath()} via
+     * {@link #compareStrings(String, String)}.
+     * <hr/>
+     * {@inheritDoc}
+     *
+     * @param path1
+     *        must not be {@code null}
+     * @param path2
+     *        must not be {@code null}
+     *
+     * @return
+     * <li>
+     *     <ul>-1 if {@code path1} is less than {@code path2}</ul>
+     *     <ul>0 if {@code path1} is equal to {@code path2}</ul>
+     *     <ul>+1 if {@code path1} is greater than {@code path2}</ul>
+     * </li>
+     *
+     * @throws NullPointerException
+     *         if {@code path1} or {@code path2} is {@code null}
+     */
     @Override
     public int compare(File path1, File path2) {
         ObjectArgs.checkNotNull(path1, "path1");
@@ -49,7 +89,7 @@ extends AbstractLexicographicalComparator<File, FileAbsolutePathLexicographicalC
 
         final String absolutePath1 = path1.getAbsolutePath();
         final String absolutePath2 = path2.getAbsolutePath();
-        final int result = this.compareStrings(absolutePath1, absolutePath2);
+        final int result = compareStrings(absolutePath1, absolutePath2);
         return result;
     }
 }
