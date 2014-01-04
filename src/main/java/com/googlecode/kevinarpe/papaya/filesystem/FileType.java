@@ -25,19 +25,53 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.filesystem.compare.FileTypeComparator;
 
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Classification for files: {@link #REGULAR_FILE} and {@link #DIRECTORY}.  Currently, Java 6 has
+ * no further file types, but this may increase in future versions.
+ * <p>
+ * For Windows users, the term "file" may be ambiguous.  UNIX terminology refers to all file system
+ * entries as files with classifications such as block special, character special, directory,
+ * regular, symbolic link, named pipe, and socket.
+ *
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see #from(File)
+ * @see #is(File)
+ * @see FileTypeComparator
+ */
+@FullyTested
 public enum FileType {
 
+    /**
+     * Files with this type return {@code true} from method {@link File#isFile()}.
+     * <p>
+     * The term "regular" was chosen to follow existing UNIX terminology.
+     *
+     * @see #DIRECTORY
+     * @see #is(File)
+     * @see #from(File)
+     */
     REGULAR_FILE {
         @Override
         protected boolean _is(File path) {
             return path.isFile();
         }
     },
+
+    /**
+     * Files with this type return {@code true} from method {@link File#isDirectory()}.
+     *
+     * @see #REGULAR_FILE
+     * @see #is(File)
+     * @see #from(File)
+     */
     DIRECTORY {
         @Override
         protected boolean _is(File path) {
@@ -45,6 +79,23 @@ public enum FileType {
         }
     };
 
+    /**
+     * Finds the file type for a file path.
+     *
+     * @param path
+     *        file path to find a file type.  Must not be {@code null}.
+     *
+     * @return matching file type for {@code path}
+     *
+     * @throws NullPointerException
+     *         if {@code path} is {@code null}
+     * @throws IOException
+     *         if {@code path} fails to match any known file types
+     *
+     * @see #is(File)
+     * @see #REGULAR_FILE
+     * @see #DIRECTORY
+     */
     public static FileType from(File path)
     throws IOException {
         ObjectArgs.checkNotNull(path, "path");
@@ -61,6 +112,19 @@ public enum FileType {
 
     protected abstract boolean _is(File path);
 
+    /**
+     * Tests if a path matches a file type.
+     *
+     * @param path
+     *        must not be {@code null}
+     *
+     * @return {@code true} if type of {@code path} matches this {@link FileType}
+     *
+     * @throws NullPointerException
+     *         if {@code path} is {@code null}
+     *
+     * @see #from(File)
+     */
     public boolean is(File path) {
         ObjectArgs.checkNotNull(path, "path");
 

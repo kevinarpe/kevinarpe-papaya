@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.filesystem.comparator;
+package com.googlecode.kevinarpe.papaya.filesystem.compare;
 
 /*
  * #%L
@@ -25,45 +25,39 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  * #L%
  */
 
+import com.google.common.primitives.Longs;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.comparator.AbstractLexicographicalComparator;
-import com.googlecode.kevinarpe.papaya.comparator.CaseSensitive;
+import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
 import java.io.File;
+import java.util.Comparator;
 
 /**
- * Compares two {@link File} references using {@link File#getName()}.
+ * Compares two {@link File} references using {@link File#lastModified()}.
+ * <p>
+ * This {@link Comparator} is stateless.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see AbstractLexicographicalComparator
- * @see #isCaseSensitive()
- * @see #getCaseSensitive()
- * @see #setCaseSensitive(CaseSensitive)
+ * @see StatelessObject
  * @see #compare(File, File)
  */
 @FullyTested
-public final class FileNameLexicographicalComparator
-extends AbstractLexicographicalComparator<File, FileNameLexicographicalComparator> {
+public final class FileLastModifiedOldestToNewestComparator
+extends StatelessObject
+implements Comparator<File> {
 
     /**
-     * @see AbstractLexicographicalComparator#AbstractLexicographicalComparator()
+     * @see StatelessObject#StatelessObject()
      */
-    public FileNameLexicographicalComparator() {
+    public FileLastModifiedOldestToNewestComparator() {
         super();
     }
 
     /**
-     * @see AbstractLexicographicalComparator#AbstractLexicographicalComparator(CaseSensitive)
-     */
-    public FileNameLexicographicalComparator(CaseSensitive caseSensitive) {
-        super(caseSensitive);
-    }
-
-    /**
-     * Compares the results of {@link File#getName()} via
-     * {@link #compareStrings(String, String)}.
+     * Compares the results of {@link File#lastModified()}  via
+     * {@link Longs#compare(long, long)}.
      * <hr/>
      * {@inheritDoc}
      *
@@ -87,9 +81,9 @@ extends AbstractLexicographicalComparator<File, FileNameLexicographicalComparato
         ObjectArgs.checkNotNull(path1, "path1");
         ObjectArgs.checkNotNull(path2, "path2");
 
-        final String fileName1 = path1.getName();
-        final String fileName2 = path2.getName();
-        int result = compareStrings(fileName1, fileName2);
+        final long lastModified1 = path1.lastModified();
+        final long lastModified2 = path2.lastModified();
+        final int result = Longs.compare(lastModified1, lastModified2);
         return result;
     }
 }

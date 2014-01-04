@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.filesystem.comparator;
+package com.googlecode.kevinarpe.papaya.filesystem.compare;
 
 /*
  * #%L
@@ -34,7 +34,7 @@ import java.io.File;
 import java.util.Comparator;
 
 /**
- * Compares two {@link File} references using {@link File#lastModified()}.
+ * Compares two {@link File} references using {@link File#length()}.
  * <p>
  * This {@link Comparator} is stateless.
  *
@@ -44,20 +44,20 @@ import java.util.Comparator;
  * @see #compare(File, File)
  */
 @FullyTested
-public final class FileLastModifiedOldestToNewestComparator
+public final class FileSizeSmallestToLargestComparator
 extends StatelessObject
 implements Comparator<File> {
 
     /**
      * @see StatelessObject#StatelessObject()
      */
-    public FileLastModifiedOldestToNewestComparator() {
+    public FileSizeSmallestToLargestComparator() {
         super();
     }
 
     /**
-     * Compares the results of {@link File#lastModified()}  via
-     * {@link Longs#compare(long, long)}.
+     * Compares the results of {@link File#length()}  via
+     * {@link Longs#compare(long, long)}.  Directories have defined length of zero.
      * <hr/>
      * {@inheritDoc}
      *
@@ -81,9 +81,11 @@ implements Comparator<File> {
         ObjectArgs.checkNotNull(path1, "path1");
         ObjectArgs.checkNotNull(path2, "path2");
 
-        final long lastModified1 = path1.lastModified();
-        final long lastModified2 = path2.lastModified();
-        final int result = Longs.compare(lastModified1, lastModified2);
+        // From Javadocs for File.isDirectory():
+        // "The return value is unspecified if this pathname denotes a directory."
+        final long pathSize1 = (path1.isDirectory() ? 0 : path1.length());
+        final long pathSize2 = (path2.isDirectory() ? 0 : path2.length());
+        final int result = Longs.compare(pathSize1, pathSize2);
         return result;
     }
 }

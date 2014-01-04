@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.filesystem.comparator;
+package com.googlecode.kevinarpe.papaya.filesystem.compare;
 
 /*
  * #%L
@@ -27,13 +27,13 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.comparator.AbstractLexicographicalComparator;
-import com.googlecode.kevinarpe.papaya.comparator.CaseSensitive;
+import com.googlecode.kevinarpe.papaya.compare.AbstractLexicographicalComparator;
+import com.googlecode.kevinarpe.papaya.compare.CaseSensitive;
 
 import java.io.File;
 
 /**
- * Compares two {@link File} references using {@link File#getAbsolutePath()}.
+ * Compares two {@link File} references using {@link File#getName()}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
@@ -44,25 +44,25 @@ import java.io.File;
  * @see #compare(File, File)
  */
 @FullyTested
-public final class FileAbsolutePathLexicographicalComparator
-extends AbstractLexicographicalComparator<File, FileAbsolutePathLexicographicalComparator> {
+public final class FileNameLexicographicalComparator
+extends AbstractLexicographicalComparator<File, FileNameLexicographicalComparator> {
 
     /**
      * @see AbstractLexicographicalComparator#AbstractLexicographicalComparator()
      */
-    public FileAbsolutePathLexicographicalComparator() {
+    public FileNameLexicographicalComparator() {
         super();
     }
 
     /**
      * @see AbstractLexicographicalComparator#AbstractLexicographicalComparator(CaseSensitive)
      */
-    public FileAbsolutePathLexicographicalComparator(CaseSensitive caseSensitive) {
+    public FileNameLexicographicalComparator(CaseSensitive caseSensitive) {
         super(caseSensitive);
     }
 
     /**
-     * Compares the results of {@link File#getAbsolutePath()} via
+     * Compares the results of {@link File#getName()} via
      * {@link #compareStrings(String, String)}.
      * <hr/>
      * {@inheritDoc}
@@ -87,9 +87,9 @@ extends AbstractLexicographicalComparator<File, FileAbsolutePathLexicographicalC
         ObjectArgs.checkNotNull(path1, "path1");
         ObjectArgs.checkNotNull(path2, "path2");
 
-        final String absolutePath1 = path1.getAbsolutePath();
-        final String absolutePath2 = path2.getAbsolutePath();
-        final int result = compareStrings(absolutePath1, absolutePath2);
+        final String fileName1 = path1.getName();
+        final String fileName2 = path2.getName();
+        int result = compareStrings(fileName1, fileName2);
         return result;
     }
 }

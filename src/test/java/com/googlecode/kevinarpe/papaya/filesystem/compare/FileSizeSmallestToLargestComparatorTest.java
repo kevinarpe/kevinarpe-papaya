@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.filesystem.comparator;
+package com.googlecode.kevinarpe.papaya.filesystem.compare;
 
 /*
  * #%L
@@ -25,7 +25,6 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.comparator.CaseSensitive;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -36,45 +35,36 @@ import static org.mockito.Mockito.when;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class FileNameLexicographicalComparatorTest
-extends AbstractFileLexicographicalComparatorTestBase<FileNameLexicographicalComparator> {
+public class FileSizeSmallestToLargestComparatorTest
+extends AbstractFileComparatorTestBase<FileSizeSmallestToLargestComparator, Long> {
 
     @DataProvider
     private static Object[][] compare_Pass_Data() {
         return new Object[][] {
-            { "abc", "def" },
-            { "abc", "abc" },
-            { "abc", "ABC" },
-            { "ABC", "abc" },
-            { "ABC", "def" },
-            { "abc", "DEF" },
-            { "ABC", "ABC" },
+            { 99, 17 },
+            { 17, 99 },
+            { 99, 99 },
         };
     }
 
     @Test(dataProvider = "compare_Pass_Data")
-    public void compare_Pass(String filename1, String filename2) {
-        compare_Pass_core(filename1, filename2);
+    public void compare_Pass(long fileSizeByteCount1, long fileSizeByteCount2) {
+        compare_Pass_core(fileSizeByteCount1, fileSizeByteCount2);
     }
 
     @Override
-    protected FileNameLexicographicalComparator newComparator() {
-        return new FileNameLexicographicalComparator();
+    protected FileSizeSmallestToLargestComparator newComparator() {
+        return new FileSizeSmallestToLargestComparator();
     }
 
     @Override
-    protected void setupMocksForComparePass(File mockPath, String mockReturnValue) {
-        when(mockPath.getName()).thenReturn(mockReturnValue);
+    protected void setupMocksForComparePass(File mockPath, Long mockReturnValue) {
+        when(mockPath.length()).thenReturn(mockReturnValue);
     }
 
     @Override
     protected int compareValues(
-            FileNameLexicographicalComparator comparator, String value1, String value2) {
-        return compareStrings(comparator, value1, value2);
-    }
-
-    @Override
-    protected FileNameLexicographicalComparator newComparator(CaseSensitive caseSensitive) {
-        return new FileNameLexicographicalComparator(caseSensitive);
+            FileSizeSmallestToLargestComparator comparator, Long value1, Long value2) {
+        return compareLongs(comparator, value1, value2);
     }
 }

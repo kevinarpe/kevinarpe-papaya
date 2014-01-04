@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.comparator;
+package com.googlecode.kevinarpe.papaya.compare;
 
 /*
  * #%L
@@ -25,28 +25,29 @@ package com.googlecode.kevinarpe.papaya.comparator;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
-import java.util.Comparator;
+import static org.testng.Assert.assertEquals;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@FullyTested
-public class ComparatorUtils {
+public class ComparatorUtilsTest {
 
-    /**
-     * Converts a result from {@link Comparator#compare(Object, Object)} to -1, 0, or +1.
-     *
-     * @param result
-     *        raw result, e.g., -17, 0, +17, etc.
-     *
-     * @return normalized compare result: -1, 0, or +1
-     */
-    public static int normalizeCompareResult(int result) {
-        if (0 != result) {
-            result /= Math.abs(result);
-        }
-        return result;
+    @DataProvider
+    private static Object[][] normalizeCompareResult_Pass_Data() {
+        return new Object[][] {
+            { -17, -1 },
+            { +17, +1 },
+            { -1, -1 },
+            { 0, 0 },
+            { +1, +1 },
+        };
+    }
+
+    @Test(dataProvider = "normalizeCompareResult_Pass_Data")
+    public void normalizeCompareResult_Pass(int rawCompareResult, int finalCompareResult) {
+        assertEquals(ComparatorUtils.normalizeCompareResult(rawCompareResult), finalCompareResult);
     }
 }

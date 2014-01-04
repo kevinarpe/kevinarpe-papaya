@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.filesystem.comparator;
+package com.googlecode.kevinarpe.papaya.filesystem.compare;
 
 /*
  * #%L
@@ -25,7 +25,7 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  * #L%
  */
 
-import org.joda.time.DateTime;
+import com.googlecode.kevinarpe.papaya.compare.CaseSensitive;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -36,40 +36,45 @@ import static org.mockito.Mockito.when;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class FileLastModifiedOldestToNewestComparatorTest
-extends AbstractFileComparatorTestBase<FileLastModifiedOldestToNewestComparator, Long> {
+public class FileNameLexicographicalComparatorTest
+extends AbstractFileLexicographicalComparatorTestBase<FileNameLexicographicalComparator> {
 
     @DataProvider
     private static Object[][] compare_Pass_Data() {
-        DateTime now = DateTime.now();
-        long nowMillis = now.getMillis();
-        long beforeNowMillis = now.minusHours(1).getMillis();
-
         return new Object[][] {
-            { nowMillis, beforeNowMillis },
-            { beforeNowMillis, nowMillis },
-            { nowMillis, nowMillis },
+            { "abc", "def" },
+            { "abc", "abc" },
+            { "abc", "ABC" },
+            { "ABC", "abc" },
+            { "ABC", "def" },
+            { "abc", "DEF" },
+            { "ABC", "ABC" },
         };
     }
 
     @Test(dataProvider = "compare_Pass_Data")
-    public void compare_Pass(long lastModifiedEpochMillis1, long lastModifiedEpochMillis2) {
-        compare_Pass_core(lastModifiedEpochMillis1, lastModifiedEpochMillis2);
+    public void compare_Pass(String filename1, String filename2) {
+        compare_Pass_core(filename1, filename2);
     }
 
     @Override
-    protected FileLastModifiedOldestToNewestComparator newComparator() {
-        return new FileLastModifiedOldestToNewestComparator();
+    protected FileNameLexicographicalComparator newComparator() {
+        return new FileNameLexicographicalComparator();
     }
 
     @Override
-    protected void setupMocksForComparePass(File mockPath, Long mockReturnValue) {
-        when(mockPath.lastModified()).thenReturn(mockReturnValue);
+    protected void setupMocksForComparePass(File mockPath, String mockReturnValue) {
+        when(mockPath.getName()).thenReturn(mockReturnValue);
     }
 
     @Override
     protected int compareValues(
-            FileLastModifiedOldestToNewestComparator comparator, Long value1, Long value2) {
-        return compareLongs(comparator, value1, value2);
+            FileNameLexicographicalComparator comparator, String value1, String value2) {
+        return compareStrings(comparator, value1, value2);
+    }
+
+    @Override
+    protected FileNameLexicographicalComparator newComparator(CaseSensitive caseSensitive) {
+        return new FileNameLexicographicalComparator(caseSensitive);
     }
 }

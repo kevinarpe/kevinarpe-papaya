@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.filesystem.comparator;
+package com.googlecode.kevinarpe.papaya.filesystem.compare;
 
 /*
  * #%L
@@ -25,9 +25,9 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.comparator.AbstractLexicographicalComparator;
-import com.googlecode.kevinarpe.papaya.comparator.CaseSensitive;
-import com.googlecode.kevinarpe.papaya.comparator.ComparatorUtils;
+import com.googlecode.kevinarpe.papaya.compare.AbstractLexicographicalComparator;
+import com.googlecode.kevinarpe.papaya.compare.CaseSensitive;
+import com.googlecode.kevinarpe.papaya.compare.ComparatorUtils;
 import org.testng.annotations.Test;
 
 import java.io.File;

@@ -27,7 +27,7 @@ package com.googlecode.kevinarpe.papaya.string;
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.filesystem.comparator.FileNameNumericPrefixSmallestToLargestComparator;
+import com.googlecode.kevinarpe.papaya.filesystem.compare.FileNameNumericPrefixSmallestToLargestComparator;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

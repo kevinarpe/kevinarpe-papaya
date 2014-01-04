@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.filesystem.comparator;
+package com.googlecode.kevinarpe.papaya.filesystem.compare;
 
 /*
  * #%L
@@ -27,7 +27,7 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
 
 import com.google.common.primitives.Longs;
 import com.google.common.testing.EqualsTester;
-import com.googlecode.kevinarpe.papaya.comparator.ComparatorUtils;
+import com.googlecode.kevinarpe.papaya.compare.ComparatorUtils;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

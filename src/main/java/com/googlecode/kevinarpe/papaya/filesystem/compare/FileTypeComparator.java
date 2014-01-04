@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.filesystem.comparator;
+package com.googlecode.kevinarpe.papaya.filesystem.compare;
 
 /*
  * #%L
@@ -27,6 +27,7 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
 
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Ints;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.filesystem.FileType;
@@ -44,7 +45,9 @@ import java.util.Map;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see #compare(File, File)
+ * @see FileType
  */
+@FullyTested
 public final class FileTypeComparator
 implements Comparator<File> {
 
@@ -134,8 +137,8 @@ implements Comparator<File> {
     }
 
     /**
-     * Equates by the priority {@link FileType}s.  This priority is determined by the list provided
-     * to the constructor.
+     * Equates by the priority map of {@link FileType}s.  This priority is determined by the list
+     * provided to the constructor.
      * <hr/>
      * {@inheritDoc}
      */

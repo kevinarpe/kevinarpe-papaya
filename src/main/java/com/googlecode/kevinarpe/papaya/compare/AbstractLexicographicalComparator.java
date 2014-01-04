@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.comparator;
+package com.googlecode.kevinarpe.papaya.compare;
 
 /*
  * #%L

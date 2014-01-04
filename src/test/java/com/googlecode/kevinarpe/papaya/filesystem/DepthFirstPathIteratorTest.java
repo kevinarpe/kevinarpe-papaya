@@ -28,7 +28,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
 import com.beust.jcommander.internal.Sets;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
-import com.googlecode.kevinarpe.papaya.filesystem.comparator.FileNameNumericPrefixSmallestToLargestComparator;
+import com.googlecode.kevinarpe.papaya.filesystem.compare.FileNameNumericPrefixSmallestToLargestComparator;
 import com.googlecode.kevinarpe.papaya.string.NumericPrefix;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;

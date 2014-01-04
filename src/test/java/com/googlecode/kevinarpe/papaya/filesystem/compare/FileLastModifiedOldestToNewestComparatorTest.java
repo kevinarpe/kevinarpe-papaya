@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.filesystem.comparator;
+package com.googlecode.kevinarpe.papaya.filesystem.compare;
 
 /*
  * #%L
@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  * #L%
  */
 
+import org.joda.time.DateTime;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -35,36 +36,40 @@ import static org.mockito.Mockito.when;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class FileSizeSmallestToLargestComparatorTest
-extends AbstractFileComparatorTestBase<FileSizeSmallestToLargestComparator, Long> {
+public class FileLastModifiedOldestToNewestComparatorTest
+extends AbstractFileComparatorTestBase<FileLastModifiedOldestToNewestComparator, Long> {
 
     @DataProvider
     private static Object[][] compare_Pass_Data() {
+        DateTime now = DateTime.now();
+        long nowMillis = now.getMillis();
+        long beforeNowMillis = now.minusHours(1).getMillis();
+
         return new Object[][] {
-            { 99, 17 },
-            { 17, 99 },
-            { 99, 99 },
+            { nowMillis, beforeNowMillis },
+            { beforeNowMillis, nowMillis },
+            { nowMillis, nowMillis },
         };
     }
 
     @Test(dataProvider = "compare_Pass_Data")
-    public void compare_Pass(long fileSizeByteCount1, long fileSizeByteCount2) {
-        compare_Pass_core(fileSizeByteCount1, fileSizeByteCount2);
+    public void compare_Pass(long lastModifiedEpochMillis1, long lastModifiedEpochMillis2) {
+        compare_Pass_core(lastModifiedEpochMillis1, lastModifiedEpochMillis2);
     }
 
     @Override
-    protected FileSizeSmallestToLargestComparator newComparator() {
-        return new FileSizeSmallestToLargestComparator();
+    protected FileLastModifiedOldestToNewestComparator newComparator() {
+        return new FileLastModifiedOldestToNewestComparator();
     }
 
     @Override
     protected void setupMocksForComparePass(File mockPath, Long mockReturnValue) {
-        when(mockPath.length()).thenReturn(mockReturnValue);
+        when(mockPath.lastModified()).thenReturn(mockReturnValue);
     }
 
     @Override
     protected int compareValues(
-            FileSizeSmallestToLargestComparator comparator, Long value1, Long value2) {
+            FileLastModifiedOldestToNewestComparator comparator, Long value1, Long value2) {
         return compareLongs(comparator, value1, value2);
     }
 }

@@ -1,4 +1,10 @@
-package com.googlecode.kevinarpe.papaya.comparator;
+/**
+ * Classes for {@link java.lang.String}
+ * <p>
+ * This package is a part of the open-source
+ * <a href="http://kevinarpe-papaya.googlecode.com">Papaya library</a>.
+ */
+package com.googlecode.kevinarpe.papaya.string;
 
 /*
  * #%L
@@ -24,30 +30,3 @@ package com.googlecode.kevinarpe.papaya.comparator;
  * along with Papaya.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import static org.testng.Assert.assertEquals;
-
-/**
- * @author Kevin Connor ARPE (kevinarpe@gmail.com)
- */
-public class ComparatorUtilsTest {
-
-    @DataProvider
-    private static Object[][] normalizeCompareResult_Pass_Data() {
-        return new Object[][] {
-            { -17, -1 },
-            { +17, +1 },
-            { -1, -1 },
-            { 0, 0 },
-            { +1, +1 },
-        };
-    }
-
-    @Test(dataProvider = "normalizeCompareResult_Pass_Data")
-    public void normalizeCompareResult_Pass(int rawCompareResult, int finalCompareResult) {
-        assertEquals(ComparatorUtils.normalizeCompareResult(rawCompareResult), finalCompareResult);
-    }
-}

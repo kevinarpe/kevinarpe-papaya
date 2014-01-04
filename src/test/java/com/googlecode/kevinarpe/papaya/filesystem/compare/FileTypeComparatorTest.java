@@ -1,4 +1,29 @@
-package com.googlecode.kevinarpe.papaya.filesystem.comparator;
+package com.googlecode.kevinarpe.papaya.filesystem.compare;
+
+/*
+ * #%L
+ * This file is part of Papaya.
+ * %%
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * %%
+ * Papaya is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * GPL Classpath Exception:
+ * This project is subject to the "Classpath" exception as provided in
+ * the LICENSE file that accompanied this code.
+ * 
+ * Papaya is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Papaya.  If not, see <http://www.gnu.org/licenses/>.
+ * #L%
+ */
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.testing.EqualsTester;
@@ -24,28 +49,26 @@ public class FileTypeComparatorTest {
     private static File compare_Pass_dirPath1;
     private static File compare_Pass_dirPath2;
 
-    // TODO: Last!  Figure out this group shit.
-    @AfterGroups(groups = {"compare_Pass"})
-    public void afterEachCallTo_compare_Pass() {
+    @BeforeClass
+    public void beforeClass()
+    throws IOException {
+        compare_Pass_filePath1 = new File("file." + UUID.randomUUID().toString());
+        compare_Pass_filePath1.createNewFile();
+        compare_Pass_filePath2 = new File("file." + UUID.randomUUID().toString());
+        compare_Pass_filePath2.createNewFile();
+
+        compare_Pass_dirPath1 = new File("dir." + UUID.randomUUID().toString());
+        compare_Pass_dirPath1.mkdir();
+        compare_Pass_dirPath2 = new File("dir." + UUID.randomUUID().toString());
+        compare_Pass_dirPath2.mkdir();
+    }
+
+    @AfterClass
+    public void afterClass() {
         assertTrue(compare_Pass_filePath1.delete());
         assertTrue(compare_Pass_filePath2.delete());
         assertTrue(compare_Pass_dirPath1.delete());
         assertTrue(compare_Pass_dirPath2.delete());
-    }
-
-    @BeforeTest(dependsOnMethods = "compare_Pass")
-    @BeforeMethod()
-    public void beforeEachCallTo_compare_Pass()
-    throws IOException {
-        compare_Pass_filePath1 = new File(UUID.randomUUID().toString());
-        compare_Pass_filePath1.createNewFile();
-        compare_Pass_filePath2 = new File(UUID.randomUUID().toString());
-        compare_Pass_filePath2.createNewFile();
-
-        compare_Pass_dirPath1 = new File(UUID.randomUUID().toString());
-        compare_Pass_dirPath1.mkdir();
-        compare_Pass_dirPath2 = new File(UUID.randomUUID().toString());
-        compare_Pass_dirPath2.mkdir();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,63 +131,10 @@ public class FileTypeComparatorTest {
     // FileTypeComparator.compare()
     //
 
-//    private static File compare_Pass_filePath1;
-//    private static File compare_Pass_filePath2;
-//    private static File compare_Pass_dirPath1;
-//    private static File compare_Pass_dirPath2;
-//
-//    @AfterTest( = "compare_Pass")
-//    public void afterEachCallTo_compare_Pass() {
-//        assertTrue(compare_Pass_filePath1.delete());
-//        assertTrue(compare_Pass_filePath2.delete());
-//        assertTrue(compare_Pass_dirPath1.delete());
-//        assertTrue(compare_Pass_dirPath2.delete());
-//    }
-//
-//    @BeforeTest(dependsOnMethods = "compare_Pass")
-//    @BeforeMethod()
-//    public void beforeEachCallTo_compare_Pass()
-//    throws IOException {
-//        compare_Pass_filePath1 = new File(UUID.randomUUID().toString());
-//        compare_Pass_filePath1.createNewFile();
-//        compare_Pass_filePath2 = new File(UUID.randomUUID().toString());
-//        compare_Pass_filePath2.createNewFile();
-//
-//        compare_Pass_dirPath1 = new File(UUID.randomUUID().toString());
-//        compare_Pass_dirPath1.mkdir();
-//        compare_Pass_dirPath2 = new File(UUID.randomUUID().toString());
-//        compare_Pass_dirPath2.mkdir();
-//    }
+    @DataProvider
+    private static Object[][] compare_Pass_Data() {
 
-//    @DataProvider
-//    private static Object[][] compare_Pass_Data() {
-//
-//        return new Object[][] {
-//            { compare_Pass_filePath1, compare_Pass_filePath2, Arrays.asList(FileType.REGULAR_FILE), 0 },
-//            { compare_Pass_filePath1, compare_Pass_filePath2, Arrays.asList(FileType.REGULAR_FILE, FileType.DIRECTORY), 0 },
-//            { compare_Pass_filePath1, compare_Pass_filePath2, Arrays.asList(FileType.DIRECTORY, FileType.REGULAR_FILE), 0 },
-//
-//            { compare_Pass_dirPath1, compare_Pass_dirPath2, Arrays.asList(FileType.REGULAR_FILE), 0 },
-//            { compare_Pass_dirPath1, compare_Pass_dirPath2, Arrays.asList(FileType.REGULAR_FILE, FileType.DIRECTORY), 0 },
-//            { compare_Pass_dirPath1, compare_Pass_dirPath2, Arrays.asList(FileType.DIRECTORY, FileType.REGULAR_FILE), 0 },
-//        };
-//    }
-
-//    @Test(dataProvider = "compare_Pass_Data")
-    @Test
-    public void compare_Pass()
-    throws IOException {
-        compare_Pass_filePath1 = new File(UUID.randomUUID().toString());
-        compare_Pass_filePath1.createNewFile();
-        compare_Pass_filePath2 = new File(UUID.randomUUID().toString());
-        compare_Pass_filePath2.createNewFile();
-
-        compare_Pass_dirPath1 = new File(UUID.randomUUID().toString());
-        compare_Pass_dirPath1.mkdir();
-        compare_Pass_dirPath2 = new File(UUID.randomUUID().toString());
-        compare_Pass_dirPath2.mkdir();
-
-        Object[][] argArrArr = new Object[][] {
+        return new Object[][] {
             { compare_Pass_filePath1, compare_Pass_filePath2, Arrays.asList(FileType.REGULAR_FILE), 0 },
             { compare_Pass_filePath1, compare_Pass_filePath2, Arrays.asList(FileType.REGULAR_FILE, FileType.DIRECTORY), 0 },
             { compare_Pass_filePath1, compare_Pass_filePath2, Arrays.asList(FileType.DIRECTORY, FileType.REGULAR_FILE), 0 },
@@ -172,26 +142,22 @@ public class FileTypeComparatorTest {
             { compare_Pass_dirPath1, compare_Pass_dirPath2, Arrays.asList(FileType.DIRECTORY), 0 },
             { compare_Pass_dirPath1, compare_Pass_dirPath2, Arrays.asList(FileType.REGULAR_FILE, FileType.DIRECTORY), 0 },
             { compare_Pass_dirPath1, compare_Pass_dirPath2, Arrays.asList(FileType.DIRECTORY, FileType.REGULAR_FILE), 0 },
+
+            { compare_Pass_filePath1, compare_Pass_dirPath1, Arrays.asList(FileType.REGULAR_FILE, FileType.DIRECTORY), -1 },
+            { compare_Pass_filePath1, compare_Pass_dirPath1, Arrays.asList(FileType.DIRECTORY, FileType.REGULAR_FILE), +1 },
+
+            { compare_Pass_dirPath1, compare_Pass_filePath1, Arrays.asList(FileType.REGULAR_FILE, FileType.DIRECTORY), +1 },
+            { compare_Pass_dirPath1, compare_Pass_filePath1, Arrays.asList(FileType.DIRECTORY, FileType.REGULAR_FILE), -1 },
         };
+    }
 
-        try {
-            for (Object[] argArr : argArrArr) {
-                File path1 = (File) argArr[0];
-                File path2 = (File) argArr[1];
-                List<FileType> fileTypeList = (List<FileType>) argArr[2];
-                int expectedCompareResult = (Integer) argArr[3];
-
-                assertEquals(
-                    new FileTypeComparator(fileTypeList).compare(path1, path2),
-                    expectedCompareResult);
-            }
-        }
-        finally {
-            assertTrue(compare_Pass_filePath1.delete());
-            assertTrue(compare_Pass_filePath2.delete());
-            assertTrue(compare_Pass_dirPath1.delete());
-            assertTrue(compare_Pass_dirPath2.delete());
-        }
+    @Test(dataProvider = "compare_Pass_Data")
+    public void compare_Pass(
+            File path1, File path2, List<FileType> fileTypeList, int expectedCompareResult)
+    throws IOException {
+        assertEquals(
+            new FileTypeComparator(fileTypeList).compare(path1, path2),
+            expectedCompareResult);
     }
 
     @Test

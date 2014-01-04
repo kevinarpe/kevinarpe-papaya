@@ -382,7 +382,7 @@ public class CollectionArgsTest {
     public static Object[][] checkElementsUnique_Pass_Data() {
         return new Object[][] {
             { Arrays.asList() },
-            { Arrays.asList(null) },
+            { Arrays.asList(new Object[] { null }) },
             { Arrays.asList("a") },
             { Arrays.asList("a", null) },
             { Arrays.asList("a", "b") },

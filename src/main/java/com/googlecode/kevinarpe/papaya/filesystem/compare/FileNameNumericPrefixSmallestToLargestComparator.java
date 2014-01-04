@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.filesystem.comparator;
+package com.googlecode.kevinarpe.papaya.filesystem.compare;
 
 /*
  * #%L
@@ -28,7 +28,7 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
 import com.google.common.primitives.Longs;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.comparator.ComparatorUtils;
+import com.googlecode.kevinarpe.papaya.compare.ComparatorUtils;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 import com.googlecode.kevinarpe.papaya.string.NumericPrefix;
 

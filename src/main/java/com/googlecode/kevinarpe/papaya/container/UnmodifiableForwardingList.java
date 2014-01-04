@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.container;
  */
 
 import com.google.common.collect.ForwardingList;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -44,6 +45,7 @@ import java.util.ListIterator;
  * @see UnmodifiableIterator
  * @see UnmodifiableListIterator
  */
+@FullyTested
 public abstract class UnmodifiableForwardingList<TValue>
 extends BaseFixedSizeForwardingList<TValue> {
 

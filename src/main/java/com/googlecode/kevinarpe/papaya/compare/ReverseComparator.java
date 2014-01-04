@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.comparator;
+package com.googlecode.kevinarpe.papaya.compare;
 
 /*
  * #%L
@@ -63,10 +63,10 @@ implements Comparator<TValue> {
      * @return {@link Comparator} that inverts the result of {@link #compare(Object, Object)}
      *
      * @throws NullPointerException
-     *         if {@code comparator} is {@code null}
+     *         if {@code compare} is {@code null}
      */
     public static <TValue> Comparator<TValue> of(Comparator<TValue> comparator) {
-        ObjectArgs.checkNotNull(comparator, "comparator");
+        ObjectArgs.checkNotNull(comparator, "compare");
 
         if (comparator instanceof ReverseComparator) {
             return ((ReverseComparator<TValue>) comparator).comparator;
@@ -103,7 +103,7 @@ implements Comparator<TValue> {
     }
 
     /**
-     * @return hash code for inner comparator
+     * @return hash code for inner compare
      */
     @Override
     public int hashCode() {
@@ -119,7 +119,7 @@ implements Comparator<TValue> {
     public String toString() {
         String x = String.format("%s {%n\t%s: %s (%s)%n}",
             this.getClass().getName(),
-            "comparator", comparator.getClass().getName(), comparator);
+            "compare", comparator.getClass().getName(), comparator);
         return x;
     }
 }

@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.filesystem.comparator;
+package com.googlecode.kevinarpe.papaya.filesystem.compare;
 
 /*
  * #%L
@@ -25,39 +25,45 @@ package com.googlecode.kevinarpe.papaya.filesystem.comparator;
  * #L%
  */
 
-import com.google.common.primitives.Longs;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.object.StatelessObject;
+import com.googlecode.kevinarpe.papaya.compare.AbstractLexicographicalComparator;
+import com.googlecode.kevinarpe.papaya.compare.CaseSensitive;
 
 import java.io.File;
-import java.util.Comparator;
 
 /**
- * Compares two {@link File} references using {@link File#length()}.
- * <p>
- * This {@link Comparator} is stateless.
+ * Compares two {@link File} references using {@link File#getAbsolutePath()}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see StatelessObject
+ * @see AbstractLexicographicalComparator
+ * @see #isCaseSensitive()
+ * @see #getCaseSensitive()
+ * @see #setCaseSensitive(CaseSensitive)
  * @see #compare(File, File)
  */
 @FullyTested
-public final class FileSizeSmallestToLargestComparator
-extends StatelessObject
-implements Comparator<File> {
+public final class FileAbsolutePathLexicographicalComparator
+extends AbstractLexicographicalComparator<File, FileAbsolutePathLexicographicalComparator> {
 
     /**
-     * @see StatelessObject#StatelessObject()
+     * @see AbstractLexicographicalComparator#AbstractLexicographicalComparator()
      */
-    public FileSizeSmallestToLargestComparator() {
+    public FileAbsolutePathLexicographicalComparator() {
         super();
     }
 
     /**
-     * Compares the results of {@link File#length()}  via
-     * {@link Longs#compare(long, long)}.  Directories have defined length of zero.
+     * @see AbstractLexicographicalComparator#AbstractLexicographicalComparator(CaseSensitive)
+     */
+    public FileAbsolutePathLexicographicalComparator(CaseSensitive caseSensitive) {
+        super(caseSensitive);
+    }
+
+    /**
+     * Compares the results of {@link File#getAbsolutePath()} via
+     * {@link #compareStrings(String, String)}.
      * <hr/>
      * {@inheritDoc}
      *
@@ -81,11 +87,9 @@ implements Comparator<File> {
         ObjectArgs.checkNotNull(path1, "path1");
         ObjectArgs.checkNotNull(path2, "path2");
 
-        // From Javadocs for File.isDirectory():
-        // "The return value is unspecified if this pathname denotes a directory."
-        final long pathSize1 = (path1.isDirectory() ? 0 : path1.length());
-        final long pathSize2 = (path2.isDirectory() ? 0 : path2.length());
-        final int result = Longs.compare(pathSize1, pathSize2);
+        final String absolutePath1 = path1.getAbsolutePath();
+        final String absolutePath2 = path2.getAbsolutePath();
+        final int result = compareStrings(absolutePath1, absolutePath2);
         return result;
     }
 }

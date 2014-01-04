@@ -25,9 +25,9 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.argument.PathArgs;
 import com.googlecode.kevinarpe.papaya.container.ArrayAsFixedSizeList;
 import com.googlecode.kevinarpe.papaya.container.UnmodifiableForwardingList;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
@@ -38,11 +38,13 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class PathList
+public final class PathList
 extends UnmodifiableForwardingList<File> {
 
     public static PathList from(File dirPath)
     throws PathException {
+        PathArgs.checkDirectoryExists(dirPath, "dirPath");
+
         File[] childPathArr = dirPath.listFiles();
         if (null == childPathArr) {
             if (!dirPath.exists()) {
@@ -77,14 +79,15 @@ extends UnmodifiableForwardingList<File> {
     private final File _dirPath;
     private ArrayAsFixedSizeList<File> _childPathArrAsFixedSizeList;
 
-    protected PathList(File dirPath, File[] childPathArr) {
-        _dirPath = ObjectArgs.checkNotNull(dirPath, "dirPath");
-        ArrayArgs.checkElementsNotNull(childPathArr, "childPathArr");
+    private PathList(File dirPath, File[] childPathArr) {
+        ObjectArgs.checkNotNull(dirPath, "dirPath");
+        ObjectArgs.checkNotNull(childPathArr, "childPathArr");
 
+        _dirPath = dirPath;
         _childPathArrAsFixedSizeList = ArrayAsFixedSizeList.referenceTo(childPathArr);
     }
 
-    public PathList(PathList other) {
+    private PathList(PathList other) {
         ObjectArgs.checkNotNull(other, "other");
 
         _dirPath = other._dirPath;
@@ -109,6 +112,17 @@ extends UnmodifiableForwardingList<File> {
             Arrays.sort(childPathArr, comp);
         }
         return this;
+    }
+
+    public PathList createSortedPathList(List<Comparator<File>> fileComparatorList) {
+        CollectionArgs.checkElementsNotNull(fileComparatorList, "fileComparatorList");
+
+        PathList newList = new PathList(this);
+        File[] childPathArr = newList._childPathArrAsFixedSizeList.getArrayRef();
+        for (Comparator<File> comp : fileComparatorList) {
+            Arrays.sort(childPathArr, comp);
+        }
+        return newList;
     }
 
     public PathList sortIntoNewList(List<Comparator<File>> fileComparatorList) {
