@@ -16,18 +16,20 @@ import java.util.*;
 public final class PathList2
 extends ForwardingList<File> {
 
+    public static final Class<? extends List> DEFAULT_LIST_CLASS = ArrayList.class;
+
     private final File _dirPath;
-    private final List<File> _childPathList;
+    private List<File> _childPathList;
 
     public PathList2(File dirPath)
     throws PathException {
-        this(dirPath, ArrayList.class);
+        this(dirPath, DEFAULT_LIST_CLASS);
     }
 
-    public PathList2(File dirPath, Class<? extends List<File>> clazz)
+    public PathList2(File dirPath, Class<? extends List> listClass)
     throws PathException {
         _dirPath = PathArgs.checkDirectoryExists(dirPath, "dirPath");
-        ObjectArgs.checkNotNull(clazz, "clazz");
+        ObjectArgs.checkNotNull(listClass, "listClass");
 
         File[] childPathArr = dirPath.listFiles();
         if (null == childPathArr) {
@@ -58,27 +60,46 @@ extends ForwardingList<File> {
             throw new PathException(PathException.PathExceptionReason.UNKNOWN, dirPath, null, msg);
         }
 
-        _childPathList = newFileListInstance(clazz);
+        _childPathList = newFileListInstance(listClass);
         if (0 != childPathArr.length) {
             _childPathList.addAll(Arrays.asList(childPathArr));
         }
     }
 
     public PathList2(PathList2 other) {
+        this(
+            other,
+            (null == other ? null : other._childPathList.getClass()),
+            123);
+    }
+
+    // TODO: If we allow class override, how to handle equals()?
+    // TODO: Do we need to override equals() and hashCode()?
+    public PathList2(PathList2 other, Class<? extends List> listClass) {
+        this(
+            other,
+            ObjectArgs.checkNotNull(listClass, "listClass"),
+            123);
+    }
+
+    private PathList2(PathList2 other, Class<? extends List> listClass, int dummy) {
         ObjectArgs.checkNotNull(other, "other");
 
         _dirPath = other._dirPath;
-        Class<? extends List<File>> clazz = other._childPathList.getClass();
-        _childPathList = newFileListInstance(clazz);
+        _childPathList = newFileListInstance(listClass);
         _childPathList.addAll(other._childPathList);
     }
 
-    private static List<File> newFileListInstance(Class<? extends List<File>> clazz) {
+    // TODO: Move to ContainerUtils?  Maybe create a static method to new() and copy() [via addAll()]?
+    private static List<File> newFileListInstance(Class<? extends List> listClass) {
         try {
-            return clazz.newInstance();
+            @SuppressWarnings("unchecked")
+            List<File> list = listClass.newInstance();
+            return list;
         }
         catch (Exception e) {
-            String msg = String.format("Failed to create new instance of list class %s", clazz.getName());
+            String msg = String.format(
+                "Failed to create new instance of list class %s", listClass.getName());
             throw new IllegalArgumentException(msg, e);
         }
     }
@@ -86,6 +107,11 @@ extends ForwardingList<File> {
     @Override
     protected List<File> delegate() {
         return _childPathList;
+    }
+
+    Class<? extends List> getDelegateClass() {
+        // Exists for testing.
+        return delegate().getClass();
     }
 
     public File getDirPath() {
@@ -131,21 +157,13 @@ extends ForwardingList<File> {
     }
 
     public PathList2 filter(List<FileFilter> fileFilterList) {
-        ObjectArgs.checkNotNull(fileFilterList, "fileFilterList");
+        CollectionArgs.checkElementsNotNull(fileFilterList, "fileFilterList");
 
         if (!fileFilterList.isEmpty() && !_childPathList.isEmpty()) {
-
             if (_childPathList instanceof RandomAccess) {
-                // TODO: Shifing algorithm?  Might be useless.  Use a cheaper one initially.
-//                final int size = _childPathList.size();
-//                File[] childPathArr = new File[size];
-//                childPathArr = _childPathList.toArray(childPathArr);
-//
-//                int newIter = 0;
-//                for (int oldIter = 0; oldIter < size; ++oldIter) {
-//                    File childPath = _childPathList.get(oldIter);
-//
-//                }
+                for (FileFilter fileFilter : fileFilterList) {
+                    _childPathList = coreFilter(fileFilter, _childPathList);
+                }
             }
             else {  // instanceof SequentialAccess or LinkedList
                 for (FileFilter fileFilter : fileFilterList) {
@@ -159,24 +177,19 @@ extends ForwardingList<File> {
                 }
             }
         }
-
-//        File[] newChildPathArr = new File[_childPathArrAsFixedSizeList.size()];
-//        File[] childPathArr = _childPathArrAsFixedSizeList.getArrayRef();
-//        final int size = childPathArr.length;
-//        int newChildPathArrIter = 0;
-//        for (int childPathArrIter = 0; childPathArrIter < size; ++childPathArrIter) {
-//            File file = childPathArr[childPathArrIter];
-//            if (fileFilterList.accept(file)) {
-//                newChildPathArr[newChildPathArrIter] = file;
-//                ++newChildPathArrIter;
-//            }
-//        }
-//        if (newChildPathArrIter < size) {
-//            File[] newChildPathArr2 = new File[newChildPathArrIter];
-//            System.arraycopy(newChildPathArr, 0, newChildPathArr2, 0, newChildPathArr2.length);
-//            _childPathArrAsFixedSizeList = ArrayAsFixedSizeList.referenceTo(newChildPathArr2);
-//        }
-        // else: we 'accept' 100% of paths via 'fileFilterList': array is unchanged
         return this;
+    }
+
+    private List<File> coreFilter(FileFilter fileFilter, List<File> childPathList) {
+        List<File> newChildPathList = newFileListInstance(_childPathList.getClass());
+        for (File childPath : childPathList) {
+            if (fileFilter.accept(childPath)) {
+                newChildPathList.add(childPath);
+            }
+        }
+        if (newChildPathList.size() == childPathList.size()) {
+            return childPathList;
+        }
+        return newChildPathList;
     }
 }

@@ -47,6 +47,7 @@ extends IOException {
 
     private static final long serialVersionUID = 1L;
 
+    // TODO: Move this enum to separate file?
     /**
      * Reason for the error.
      * 
@@ -69,6 +70,7 @@ extends IOException {
          */
         PARENT_PATH_DOES_NOT_EXIST(true),
 
+        // TODO: Rename to PATH_IS_NORMAL_FILE?  What about FileType.REGULAR_FILE?
         /**
          * {@link PathException#getAbsPath()} exists as a file.
          * <p>

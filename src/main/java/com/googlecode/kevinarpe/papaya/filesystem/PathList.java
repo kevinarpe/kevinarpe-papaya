@@ -87,7 +87,7 @@ extends UnmodifiableForwardingList<File> {
         _childPathArrAsFixedSizeList = ArrayAsFixedSizeList.referenceTo(childPathArr);
     }
 
-    private PathList(PathList other) {
+    public PathList(PathList other) {
         ObjectArgs.checkNotNull(other, "other");
 
         _dirPath = other._dirPath;
