@@ -11,7 +11,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
 /**
@@ -79,9 +81,9 @@ public class PathList2Test {
 
     @Test(dataProvider = "ctor_FailWithNull2_Data",
             expectedExceptions = NullPointerException.class)
-    public void ctor_FailWithNull2(File dirPath, Class<? extends List> clazz)
+    public void ctor_FailWithNull2(File dirPath, Class<? extends List> listClass)
     throws PathException {
-        new PathList2(dirPath, clazz);
+        new PathList2(dirPath, listClass);
     }
 
     @Test(expectedExceptions = PathException.class)
@@ -192,7 +194,6 @@ public class PathList2Test {
         assertEquals(pathList3.getDelegateClass(), PathList2.DEFAULT_LIST_CLASS);
 
         PathList2 pathList4 = new PathList2(pathList2, LinkedList.class);
-        // TODO: Why does this pass?  We are comparing ArrayList to LinkedList!
         assertEquals(pathList4, pathList2);
         assertEquals(pathList4, pathList);
         assertEquals(pathList4.getDelegateClass(), LinkedList.class);
@@ -201,5 +202,14 @@ public class PathList2Test {
         assertEquals(pathList5, pathList2);
         assertEquals(pathList5, pathList);
         assertEquals(pathList5.getDelegateClass(), Vector.class);
+    }
+
+    private void copyAndAssertEquals(
+            PathList2 pathListObj, List<File> pathList, Class<? extends List> listClass) {
+        PathList2 pathListObjCopy = new PathList2(pathListObj, listClass);
+        assertEquals(pathListObjCopy, pathListObj);
+        assertEquals(pathListObjCopy, pathListObj);
+        assertEquals(pathListObjCopy, pathList);
+        assertEquals(pathListObjCopy.getDelegateClass(), listClass);
     }
 }

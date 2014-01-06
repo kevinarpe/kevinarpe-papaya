@@ -1,7 +1,6 @@
 package com.googlecode.kevinarpe.papaya.filesystem;
 
 import com.google.common.base.Objects;
-import com.google.common.collect.ForwardingList;
 import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.PathArgs;
@@ -19,38 +18,19 @@ import java.util.RandomAccess;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public final class PathList2
-extends ForwardingList<File> {
+public final class DirectoryListing {
 
     public static final Class<? extends List> DEFAULT_LIST_CLASS = ArrayList.class;
 
     private final File _dirPath;
     private List<File> _childPathList;
 
-    @Override
-    public int hashCode() {
-        int result = Objects.hashCode(_dirPath, _childPathList);
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        // Ref: http://stackoverflow.com/a/5039178/257299
-        boolean result = (this == obj);
-        if (!result && obj instanceof PathList2) {
-            final PathList2 other = (PathList2) obj;
-            result = Objects.equal(this._dirPath, other._dirPath)
-                && Objects.equal(this._childPathList, other._childPathList);
-        }
-        return result;
-    }
-
-    public PathList2(File dirPath)
+    public DirectoryListing(File dirPath)
     throws PathException {
         this(dirPath, DEFAULT_LIST_CLASS);
     }
 
-    public PathList2(File dirPath, Class<? extends List> listClass)
+    public DirectoryListing(File dirPath, Class<? extends List> listClass)
     throws PathException {
         _dirPath = PathArgs.checkDirectoryExists(dirPath, "dirPath");
         ObjectArgs.checkNotNull(listClass, "listClass");
@@ -84,38 +64,36 @@ extends ForwardingList<File> {
             throw new PathException(PathException.PathExceptionReason.UNKNOWN, dirPath, null, msg);
         }
 
-        _childPathList = newFileListInstance(listClass);
+        _childPathList = newInstance(listClass);
         if (0 != childPathArr.length) {
             _childPathList.addAll(Arrays.asList(childPathArr));
         }
     }
 
-    public PathList2(PathList2 other) {
+    public DirectoryListing(DirectoryListing other) {
         this(
             other,
             (null == other ? null : other._childPathList.getClass()),
             123);
     }
 
-    // TODO: If we allow class override, how to handle equals()?
-    // TODO: Do we need to override equals() and hashCode()?
-    public PathList2(PathList2 other, Class<? extends List> listClass) {
+    public DirectoryListing(DirectoryListing other, Class<? extends List> listClass) {
         this(
             other,
             ObjectArgs.checkNotNull(listClass, "listClass"),
             123);
     }
 
-    private PathList2(PathList2 other, Class<? extends List> listClass, int dummy) {
+    private DirectoryListing(DirectoryListing other, Class<? extends List> listClass, int dummy) {
         ObjectArgs.checkNotNull(other, "other");
 
         _dirPath = other._dirPath;
-        _childPathList = newFileListInstance(listClass);
+        _childPathList = newInstance(listClass);
         _childPathList.addAll(other._childPathList);
     }
 
     // TODO: Move to ContainerUtils?  Maybe create a static method to new() and copy() [via addAll()]?
-    private static List<File> newFileListInstance(Class<? extends List> listClass) {
+    private static List<File> newInstance(Class<? extends List> listClass) {
         try {
             @SuppressWarnings("unchecked")
             List<File> list = listClass.newInstance();
@@ -128,21 +106,48 @@ extends ForwardingList<File> {
         }
     }
 
-    @Override
-    protected List<File> delegate() {
-        return _childPathList;
-    }
-
-    Class<? extends List> getDelegateClass() {
-        // Exists for testing.
-        return delegate().getClass();
-    }
-
     public File getDirPath() {
         return _dirPath;
     }
 
-    public PathList2 sort(Comparator<File> fileComparator) {
+    public List<File> getChildPathList() {
+        List<File> list = newInstance(_childPathList.getClass());
+        list.addAll(_childPathList);
+        return list;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(_dirPath, _childPathList);
+        return result;
+    }
+
+    // TODO: Test this method very carefully.
+    @Override
+    public boolean equals(Object obj) {
+        // Ref: http://stackoverflow.com/a/5039178/257299
+        boolean result = (this == obj);
+        if (!result && obj instanceof DirectoryListing) {
+            final DirectoryListing other = (DirectoryListing) obj;
+            result = Objects.equal(this._dirPath, other._dirPath)
+                && classEquals(this._childPathList, other._childPathList)
+                && Objects.equal(this._childPathList, other._childPathList);
+        }
+        return result;
+    }
+
+    private static boolean classEquals(Object a, Object b) {
+        if (a == b) {
+            return true;
+        }
+        if (null == a || null == b) {
+            return false;
+        }
+        boolean x = a.getClass().equals(b.getClass());
+        return x;
+    }
+
+    public DirectoryListing sort(Comparator<File> fileComparator) {
         ObjectArgs.checkNotNull(fileComparator, "fileComparator");
 
         @SuppressWarnings("unchecked")
@@ -150,7 +155,7 @@ extends ForwardingList<File> {
         return sort(fileComparatorList);
     }
 
-    public PathList2 sort(List<Comparator<File>> fileComparatorList) {
+    public DirectoryListing sort(List<Comparator<File>> fileComparatorList) {
         CollectionArgs.checkElementsNotNull(fileComparatorList, "fileComparatorList");
 
         if (!fileComparatorList.isEmpty() && !_childPathList.isEmpty()) {
@@ -174,38 +179,33 @@ extends ForwardingList<File> {
         return this;
     }
 
-    public PathList2 filter(FileFilter fileFilter) {
+    public DirectoryListing filter(FileFilter fileFilter) {
         ObjectArgs.checkNotNull(fileFilter, "fileFilter");
 
         return filter(Arrays.asList(fileFilter));
     }
 
-    public PathList2 filter(List<FileFilter> fileFilterList) {
+    public DirectoryListing filter(List<FileFilter> fileFilterList) {
         CollectionArgs.checkElementsNotNull(fileFilterList, "fileFilterList");
 
         if (!fileFilterList.isEmpty() && !_childPathList.isEmpty()) {
             if (_childPathList instanceof RandomAccess) {
                 for (FileFilter fileFilter : fileFilterList) {
-                    _childPathList = coreFilter(fileFilter, _childPathList);
+                    _childPathList = _filterRandomAccessList(_childPathList, fileFilter);
                 }
             }
             else {  // instanceof SequentialAccess or LinkedList
                 for (FileFilter fileFilter : fileFilterList) {
-                    ListIterator<File> iter = _childPathList.listIterator();
-                    while (iter.hasNext()) {
-                        File childPath = iter.next();
-                        if (!fileFilter.accept(childPath)) {
-                            iter.remove();
-                        }
-                    }
+                    _filterSequentialAccessList(_childPathList, fileFilter);
                 }
             }
         }
         return this;
     }
 
-    private List<File> coreFilter(FileFilter fileFilter, List<File> childPathList) {
-        List<File> newChildPathList = newFileListInstance(_childPathList.getClass());
+    private static List<File> _filterRandomAccessList(
+            List<File> childPathList, FileFilter fileFilter) {
+        List<File> newChildPathList = newInstance(childPathList.getClass());
         for (File childPath : childPathList) {
             if (fileFilter.accept(childPath)) {
                 newChildPathList.add(childPath);
@@ -215,5 +215,16 @@ extends ForwardingList<File> {
             return childPathList;
         }
         return newChildPathList;
+    }
+
+    private static void _filterSequentialAccessList(
+            List<File> childPathList, FileFilter fileFilter) {
+        ListIterator<File> iter = childPathList.listIterator();
+        while (iter.hasNext()) {
+            File childPath = iter.next();
+            if (!fileFilter.accept(childPath)) {
+                iter.remove();
+            }
+        }
     }
 }
