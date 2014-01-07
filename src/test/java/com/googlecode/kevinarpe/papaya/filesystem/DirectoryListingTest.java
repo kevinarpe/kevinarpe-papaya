@@ -1,5 +1,8 @@
 package com.googlecode.kevinarpe.papaya.filesystem;
 
+import com.google.common.collect.Maps;
+import com.google.common.testing.EqualsTester;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -9,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import static org.mockito.Mockito.mock;
@@ -21,24 +25,32 @@ import static org.testng.Assert.assertEquals;
  */
 public class DirectoryListingTest {
 
+    private final static Map<File[], File> pathArrToMockDirPathMap = Maps.newHashMap();
+
     private static File createMockDirPath(File[] pathArr) {
-        File mockDirPath = mock(File.class);
-        when(mockDirPath.exists()).thenReturn(true);
-        when(mockDirPath.isDirectory()).thenReturn(true);
-        when(mockDirPath.isFile()).thenReturn(false);
-        when(mockDirPath.listFiles()).thenReturn(pathArr);
+        File mockDirPath = pathArrToMockDirPathMap.get(pathArr);
+        if (null == mockDirPath) {
+            mockDirPath = mock(File.class);
+            when(mockDirPath.exists()).thenReturn(true);
+            when(mockDirPath.isDirectory()).thenReturn(true);
+            when(mockDirPath.isFile()).thenReturn(false);
+            when(mockDirPath.listFiles()).thenReturn(pathArr);
+            pathArrToMockDirPathMap.put(pathArr, mockDirPath);
+        }
         return mockDirPath;
     }
 
     private static DirectoryListing createDirectoryListing(File[] pathArr)
-        throws PathException {
+    throws PathException {
         File mockDirPath = createMockDirPath(pathArr);
         DirectoryListing x = new DirectoryListing(mockDirPath);
         return x;
     }
 
     private static DirectoryListing createDirectoryListing(File[] pathArr, Class<? extends List> listClass)
-        throws PathException {
+    throws PathException {
+        ObjectArgs.checkNotNull(listClass, "listClass");
+
         File mockDirPath = createMockDirPath(pathArr);
         DirectoryListing x = new DirectoryListing(mockDirPath, listClass);
         return x;
@@ -210,16 +222,6 @@ public class DirectoryListingTest {
             DirectoryListing.DEFAULT_LIST_CLASS);
     }
 
-    private void copyAndAssertEquals(
-        DirectoryListing listDir, List<File> pathList, Class<? extends List> listClass) {
-        DirectoryListing listDirCopy = new DirectoryListing(listDir, listClass);
-        assertEquals(listDirCopy, listDir);
-        List<File> pathList2 = listDir.getChildPathList();
-        assertEquals(pathList2, pathList);
-//        assertEquals(path)
-//        assertEquals(listDirCopy.getDelegateClass(), listClass);
-    }
-
     ///////////////////////////////////////////////////////////////////////////
     // DirectoryListing.ctor(DirectoryListing, Class)
     //
@@ -253,6 +255,67 @@ public class DirectoryListingTest {
         assertEquals(directoryListingCopy.getChildPathList(), pathList);
         assertEquals(
             directoryListingCopy.getChildPathList().getClass(),
-            DirectoryListing.DEFAULT_LIST_CLASS);
+            LinkedList.class);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // DirectoryListing.getDirPath()
+    //
+
+    @Test(dataProvider = "ctor_Pass_Data")
+    public void getDirPath_Pass(File[] pathArr)
+    throws PathException {
+        {
+            DirectoryListing directoryListing = createDirectoryListing(pathArr);
+            assertEquals(directoryListing.getDirPath(), pathArrToMockDirPathMap.get(pathArr));
+        }
+        {
+            DirectoryListing directoryListing = createDirectoryListing(pathArr, LinkedList.class);
+            assertEquals(directoryListing.getDirPath(), pathArrToMockDirPathMap.get(pathArr));
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // DirectoryListing.getChildPathList()
+    //
+
+    @Test(dataProvider = "ctor_Pass_Data")
+    public void getChildPathList_Pass(File[] pathArr)
+    throws PathException {
+        List<File> pathList = Arrays.asList(pathArr);
+        {
+            DirectoryListing directoryListing = createDirectoryListing(pathArr);
+            assertEquals(directoryListing.getChildPathList(), pathList);
+            assertEquals(
+                directoryListing.getChildPathList().getClass(),
+                DirectoryListing.DEFAULT_LIST_CLASS);
+        }
+        {
+            DirectoryListing directoryListing = createDirectoryListing(pathArr, LinkedList.class);
+            assertEquals(directoryListing.getChildPathList(), pathList);
+            assertEquals(
+                directoryListing.getChildPathList().getClass(),
+                LinkedList.class);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // DirectoryListing.hashCode()/equals()
+    //
+
+    @Test(dataProvider = "ctor_Pass_Data")
+    public void hashCodeAndEquals_Pass(File[] pathArr)
+    throws PathException {
+        new EqualsTester()
+            .addEqualityGroup(
+                createDirectoryListing(pathArr),
+                createDirectoryListing(pathArr))
+            .addEqualityGroup(
+                createDirectoryListing(pathArr, LinkedList.class),
+                createDirectoryListing(pathArr, LinkedList.class))
+            .addEqualityGroup(
+                createDirectoryListing(pathArr, Vector.class),
+                createDirectoryListing(pathArr, Vector.class))
+            .testEquals();
     }
 }

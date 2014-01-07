@@ -20,6 +20,7 @@ import java.util.RandomAccess;
  */
 public final class DirectoryListing {
 
+    // TODO Allow set?
     public static final Class<? extends List> DEFAULT_LIST_CLASS = ArrayList.class;
 
     private final File _dirPath;
@@ -119,10 +120,10 @@ public final class DirectoryListing {
     @Override
     public int hashCode() {
         int result = Objects.hashCode(_dirPath, _childPathList);
+        result = 31 * result + _childPathList.getClass().hashCode();
         return result;
     }
 
-    // TODO: Test this method very carefully.
     @Override
     public boolean equals(Object obj) {
         // Ref: http://stackoverflow.com/a/5039178/257299
@@ -147,7 +148,8 @@ public final class DirectoryListing {
         return x;
     }
 
-    public DirectoryListing sort(Comparator<File> fileComparator) {
+    // TODO(test)
+public DirectoryListing sort(Comparator<File> fileComparator) {
         ObjectArgs.checkNotNull(fileComparator, "fileComparator");
 
         @SuppressWarnings("unchecked")
@@ -155,6 +157,7 @@ public final class DirectoryListing {
         return sort(fileComparatorList);
     }
 
+    // TODO(test)
     public DirectoryListing sort(List<Comparator<File>> fileComparatorList) {
         CollectionArgs.checkElementsNotNull(fileComparatorList, "fileComparatorList");
 
@@ -179,12 +182,14 @@ public final class DirectoryListing {
         return this;
     }
 
+    // TODO(test)
     public DirectoryListing filter(FileFilter fileFilter) {
         ObjectArgs.checkNotNull(fileFilter, "fileFilter");
 
         return filter(Arrays.asList(fileFilter));
     }
 
+    // TODO(test)
     public DirectoryListing filter(List<FileFilter> fileFilterList) {
         CollectionArgs.checkElementsNotNull(fileFilterList, "fileFilterList");
 
