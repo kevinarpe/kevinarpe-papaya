@@ -20,7 +20,6 @@ import java.util.RandomAccess;
  */
 public final class DirectoryListing {
 
-    // TODO Allow set?
     public static final Class<? extends List> DEFAULT_LIST_CLASS = ArrayList.class;
 
     private final File _dirPath;
@@ -49,7 +48,8 @@ public final class DirectoryListing {
                 String msg = String.format(
                     "Failed to list files for path (exists as file, not directory): '%s'",
                     dirPath.getAbsolutePath());
-                throw new PathException(PathException.PathExceptionReason.PATH_IS_FILE, dirPath, null, msg);
+                throw new PathException(
+                    PathException.PathExceptionReason.PATH_IS_FILE, dirPath, null, msg);
             }
             // Exists + Directory...
             if (!dirPath.canExecute()) {
@@ -57,7 +57,8 @@ public final class DirectoryListing {
                     "Failed to list files for path (execute permission not set): '%s'",
                     dirPath.getAbsolutePath());
                 throw new PathException(
-                    PathException.PathExceptionReason.PATH_IS_NON_EXECUTABLE_DIRECTORY, dirPath, null, msg);
+                    PathException.PathExceptionReason.PATH_IS_NON_EXECUTABLE_DIRECTORY,
+                    dirPath, null, msg);
             }
             String msg = String.format(
                 "Failed to list files for path (unknown error): '%s'",
@@ -65,7 +66,7 @@ public final class DirectoryListing {
             throw new PathException(PathException.PathExceptionReason.UNKNOWN, dirPath, null, msg);
         }
 
-        _childPathList = newInstance(listClass);
+        _childPathList = _newInstance(listClass);
         if (0 != childPathArr.length) {
             _childPathList.addAll(Arrays.asList(childPathArr));
         }
@@ -89,12 +90,11 @@ public final class DirectoryListing {
         ObjectArgs.checkNotNull(other, "other");
 
         _dirPath = other._dirPath;
-        _childPathList = newInstance(listClass);
+        _childPathList = _newInstance(listClass);
         _childPathList.addAll(other._childPathList);
     }
 
-    // TODO: Move to ContainerUtils?  Maybe create a static method to new() and copy() [via addAll()]?
-    private static List<File> newInstance(Class<? extends List> listClass) {
+    private static List<File> _newInstance(Class<? extends List> listClass) {
         try {
             @SuppressWarnings("unchecked")
             List<File> list = listClass.newInstance();
@@ -112,7 +112,7 @@ public final class DirectoryListing {
     }
 
     public List<File> getChildPathList() {
-        List<File> list = newInstance(_childPathList.getClass());
+        List<File> list = _newInstance(_childPathList.getClass());
         list.addAll(_childPathList);
         return list;
     }
@@ -131,13 +131,13 @@ public final class DirectoryListing {
         if (!result && obj instanceof DirectoryListing) {
             final DirectoryListing other = (DirectoryListing) obj;
             result = Objects.equal(this._dirPath, other._dirPath)
-                && classEquals(this._childPathList, other._childPathList)
+                && _classEquals(this._childPathList, other._childPathList)
                 && Objects.equal(this._childPathList, other._childPathList);
         }
         return result;
     }
 
-    private static boolean classEquals(Object a, Object b) {
+    private static boolean _classEquals(Object a, Object b) {
         if (a == b) {
             return true;
         }
@@ -149,7 +149,7 @@ public final class DirectoryListing {
     }
 
     // TODO(test)
-public DirectoryListing sort(Comparator<File> fileComparator) {
+    public DirectoryListing sort(Comparator<File> fileComparator) {
         ObjectArgs.checkNotNull(fileComparator, "fileComparator");
 
         @SuppressWarnings("unchecked")
@@ -182,14 +182,12 @@ public DirectoryListing sort(Comparator<File> fileComparator) {
         return this;
     }
 
-    // TODO(test)
     public DirectoryListing filter(FileFilter fileFilter) {
         ObjectArgs.checkNotNull(fileFilter, "fileFilter");
 
         return filter(Arrays.asList(fileFilter));
     }
 
-    // TODO(test)
     public DirectoryListing filter(List<FileFilter> fileFilterList) {
         CollectionArgs.checkElementsNotNull(fileFilterList, "fileFilterList");
 
@@ -210,7 +208,7 @@ public DirectoryListing sort(Comparator<File> fileComparator) {
 
     private static List<File> _filterRandomAccessList(
             List<File> childPathList, FileFilter fileFilter) {
-        List<File> newChildPathList = newInstance(childPathList.getClass());
+        List<File> newChildPathList = _newInstance(childPathList.getClass());
         for (File childPath : childPathList) {
             if (fileFilter.accept(childPath)) {
                 newChildPathList.add(childPath);

@@ -1,5 +1,6 @@
 package com.googlecode.kevinarpe.papaya.filesystem;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.testing.EqualsTester;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
@@ -8,8 +9,11 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +23,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertSame;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -66,6 +71,7 @@ public class DirectoryListingTest {
             { new File[] { } },
             { new File[] { new File("abc/123") } },
             { new File[] { new File("abc/123"), new File("def/456") } },
+            { new File[] { new File("abc/123"), new File("def/456"), new File("ghi/789") } },
         };
     }
 
@@ -317,5 +323,143 @@ public class DirectoryListingTest {
                 createDirectoryListing(pathArr, Vector.class),
                 createDirectoryListing(pathArr, Vector.class))
             .testEquals();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // DirectoryListing.filter(FileFilter)/filter(List<FileFilter>)
+    //
+
+    @Test(dataProvider = "ctor_Pass_Data")
+    public void filter_Pass(File[] pathArr)
+    throws PathException {
+        _filter_Pass_Helper(pathArr, new _DirectoryListingFactory() {
+            @Override
+            public DirectoryListing create(File[] pathArr)
+            throws PathException {
+                return createDirectoryListing(pathArr);
+            }
+        });
+        _filter_Pass_Helper(pathArr, new _DirectoryListingFactory() {
+            @Override
+            public DirectoryListing create(File[] pathArr)
+            throws PathException {
+                return createDirectoryListing(pathArr, LinkedList.class);
+            }
+        });
+        _filter_Pass_Helper(pathArr, new _DirectoryListingFactory() {
+            @Override
+            public DirectoryListing create(File[] pathArr)
+            throws PathException {
+                return createDirectoryListing(pathArr, Vector.class);
+            }
+        });
+    }
+
+    private static interface _DirectoryListingFactory {
+        DirectoryListing create(File[] pathArr) throws PathException;
+    }
+
+    private void _filter_Pass_Helper(File[] pathArr, _DirectoryListingFactory factory)
+    throws PathException {
+        FileFilter all = new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return true;
+            }
+        };
+        FileFilter none = new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return false;
+            }
+        };
+
+        _filterHelper(factory.create(pathArr), all, Arrays.asList(pathArr));
+        _filterHelper(factory.create(pathArr), Arrays.asList(all), Arrays.asList(pathArr));
+        _filterHelper(factory.create(pathArr), Arrays.asList(all, all), Arrays.asList(pathArr));
+
+        _filterHelper(factory.create(pathArr), none, Collections.<File>emptyList());
+        _filterHelper(factory.create(pathArr), Arrays.asList(none), Collections.<File>emptyList());
+        _filterHelper(factory.create(pathArr), Arrays.asList(none, none), Collections.<File>emptyList());
+
+        _filterHelper(factory.create(pathArr), Arrays.asList(all, none), Collections.<File>emptyList());
+        _filterHelper(factory.create(pathArr), Arrays.asList(none, all), Collections.<File>emptyList());
+
+        ArrayList<File> expectedPathList = Lists.newArrayList(pathArr);
+        DirectoryListing directoryListing = factory.create(pathArr);
+        while (!expectedPathList.isEmpty()) {
+            FileFilter rejectFirst = new FileFilter() {
+                boolean isFirst = true;
+
+                @Override
+                public boolean accept(File pathname) {
+                    if (isFirst) {
+                        isFirst = false;
+                        return false;
+                    }
+                    return true;
+                }
+            };
+            expectedPathList.remove(0);
+            _filterHelper(directoryListing, rejectFirst, expectedPathList);
+        }
+    }
+
+    private void _filterHelper(
+            DirectoryListing directoryListing, FileFilter fileFilter, List<File> expectedPathList)
+    throws PathException {
+        assertSame(directoryListing.filter(fileFilter), directoryListing);
+        assertEquals(directoryListing.getChildPathList(), expectedPathList);
+    }
+
+    private void _filterHelper(
+            DirectoryListing directoryListing,
+            List<FileFilter> fileFilterList,
+            List<File> expectedPathList)
+    throws PathException {
+        assertSame(directoryListing.filter(fileFilterList), directoryListing);
+        assertEquals(directoryListing.getChildPathList(), expectedPathList);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void filter_FailWithNull()
+    throws PathException {
+        createDirectoryListing(new File[0]).filter((FileFilter) null);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void filter2_FailWithNull()
+    throws PathException {
+        createDirectoryListing(new File[0]).filter((List<FileFilter>) null);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void filter2_FailWithNullElement()
+    throws PathException {
+        createDirectoryListing(new File[0]).filter(Lists.newArrayList(new FileFilter[] { null }));
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // DirectoryListing.sort(Comparator<File>)/sort(List<Comparator<File>>)
+    //
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void sort_FailWithNull()
+    throws PathException {
+        createDirectoryListing(new File[0]).sort((Comparator<File>) null);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void sort2_FailWithNull()
+    throws PathException {
+        createDirectoryListing(new File[0]).sort((List<Comparator<File>>) null);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void sort2_FailWithNullElement()
+    throws PathException {
+        List<Comparator<File>> list = Lists.newArrayList();
+        list.add((Comparator<File>) null);
+        createDirectoryListing(new File[] { null }).sort(list);
     }
 }
