@@ -78,9 +78,9 @@ public class FileTypeComparatorTest {
     @DataProvider
     private static Object[][] ctor_Pass_Data() {
         return new Object[][] {
-            { Arrays.asList(FileType.REGULAR_FILE) },
+            { Arrays.asList(FileType.NORMAL_FILE) },
             { Arrays.asList(FileType.DIRECTORY) },
-            { Arrays.asList(FileType.REGULAR_FILE, FileType.DIRECTORY) },
+            { Arrays.asList(FileType.NORMAL_FILE, FileType.DIRECTORY) },
         };
     }
 
@@ -98,7 +98,7 @@ public class FileTypeComparatorTest {
     private static Object[][] ctor_FailWithNullElements_Data() {
         return new Object[][] {
             { Arrays.asList(new Object[] { null }) },
-            { Arrays.asList(FileType.REGULAR_FILE, null) },
+            { Arrays.asList(FileType.NORMAL_FILE, null) },
         };
     }
 
@@ -116,8 +116,8 @@ public class FileTypeComparatorTest {
     @DataProvider
     private static Object[][] ctor_FailWithDuplicateElements_Data() {
         return new Object[][] {
-            { Arrays.asList(FileType.REGULAR_FILE, FileType.REGULAR_FILE) },
-            { Arrays.asList(FileType.REGULAR_FILE, FileType.DIRECTORY, FileType.REGULAR_FILE) },
+            { Arrays.asList(FileType.NORMAL_FILE, FileType.NORMAL_FILE) },
+            { Arrays.asList(FileType.NORMAL_FILE, FileType.DIRECTORY, FileType.NORMAL_FILE) },
         };
     }
 
@@ -135,19 +135,19 @@ public class FileTypeComparatorTest {
     private static Object[][] compare_Pass_Data() {
 
         return new Object[][] {
-            { compare_Pass_filePath1, compare_Pass_filePath2, Arrays.asList(FileType.REGULAR_FILE), 0 },
-            { compare_Pass_filePath1, compare_Pass_filePath2, Arrays.asList(FileType.REGULAR_FILE, FileType.DIRECTORY), 0 },
-            { compare_Pass_filePath1, compare_Pass_filePath2, Arrays.asList(FileType.DIRECTORY, FileType.REGULAR_FILE), 0 },
+            { compare_Pass_filePath1, compare_Pass_filePath2, Arrays.asList(FileType.NORMAL_FILE), 0 },
+            { compare_Pass_filePath1, compare_Pass_filePath2, Arrays.asList(FileType.NORMAL_FILE, FileType.DIRECTORY), 0 },
+            { compare_Pass_filePath1, compare_Pass_filePath2, Arrays.asList(FileType.DIRECTORY, FileType.NORMAL_FILE), 0 },
 
             { compare_Pass_dirPath1, compare_Pass_dirPath2, Arrays.asList(FileType.DIRECTORY), 0 },
-            { compare_Pass_dirPath1, compare_Pass_dirPath2, Arrays.asList(FileType.REGULAR_FILE, FileType.DIRECTORY), 0 },
-            { compare_Pass_dirPath1, compare_Pass_dirPath2, Arrays.asList(FileType.DIRECTORY, FileType.REGULAR_FILE), 0 },
+            { compare_Pass_dirPath1, compare_Pass_dirPath2, Arrays.asList(FileType.NORMAL_FILE, FileType.DIRECTORY), 0 },
+            { compare_Pass_dirPath1, compare_Pass_dirPath2, Arrays.asList(FileType.DIRECTORY, FileType.NORMAL_FILE), 0 },
 
-            { compare_Pass_filePath1, compare_Pass_dirPath1, Arrays.asList(FileType.REGULAR_FILE, FileType.DIRECTORY), -1 },
-            { compare_Pass_filePath1, compare_Pass_dirPath1, Arrays.asList(FileType.DIRECTORY, FileType.REGULAR_FILE), +1 },
+            { compare_Pass_filePath1, compare_Pass_dirPath1, Arrays.asList(FileType.NORMAL_FILE, FileType.DIRECTORY), -1 },
+            { compare_Pass_filePath1, compare_Pass_dirPath1, Arrays.asList(FileType.DIRECTORY, FileType.NORMAL_FILE), +1 },
 
-            { compare_Pass_dirPath1, compare_Pass_filePath1, Arrays.asList(FileType.REGULAR_FILE, FileType.DIRECTORY), +1 },
-            { compare_Pass_dirPath1, compare_Pass_filePath1, Arrays.asList(FileType.DIRECTORY, FileType.REGULAR_FILE), -1 },
+            { compare_Pass_dirPath1, compare_Pass_filePath1, Arrays.asList(FileType.NORMAL_FILE, FileType.DIRECTORY), +1 },
+            { compare_Pass_dirPath1, compare_Pass_filePath1, Arrays.asList(FileType.DIRECTORY, FileType.NORMAL_FILE), -1 },
         };
     }
 
@@ -169,7 +169,7 @@ public class FileTypeComparatorTest {
 
         try {
             assertEquals(
-                new FileTypeComparator(Arrays.asList(FileType.REGULAR_FILE))
+                new FileTypeComparator(Arrays.asList(FileType.NORMAL_FILE))
                     .compare(filePath1, filePath2),
                 0);
         }
@@ -215,7 +215,7 @@ public class FileTypeComparatorTest {
         dirPath2.mkdir();
 
         try {
-            new FileTypeComparator(Arrays.asList(FileType.REGULAR_FILE))
+            new FileTypeComparator(Arrays.asList(FileType.NORMAL_FILE))
                 .compare(dirPath1, dirPath2);
         }
         finally {
@@ -237,7 +237,7 @@ public class FileTypeComparatorTest {
     @Test(expectedExceptions = NullPointerException.class,
             dataProvider = "compare_FailWithNull_Data")
     public void compare_FailWithNullWithNull(File path1, File path2) {
-        new FileTypeComparator(Arrays.asList(FileType.REGULAR_FILE)).compare(path1, path2);
+        new FileTypeComparator(Arrays.asList(FileType.NORMAL_FILE)).compare(path1, path2);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -248,17 +248,17 @@ public class FileTypeComparatorTest {
     public void hashCodeAndEquals_Pass() {
         new EqualsTester()
             .addEqualityGroup(
-                new FileTypeComparator(Arrays.asList(FileType.REGULAR_FILE)),
-                new FileTypeComparator(Arrays.asList(FileType.REGULAR_FILE)))
+                new FileTypeComparator(Arrays.asList(FileType.NORMAL_FILE)),
+                new FileTypeComparator(Arrays.asList(FileType.NORMAL_FILE)))
             .addEqualityGroup(
                 new FileTypeComparator(Arrays.asList(FileType.DIRECTORY)),
                 new FileTypeComparator(Arrays.asList(FileType.DIRECTORY)))
             .addEqualityGroup(
-                new FileTypeComparator(Arrays.asList(FileType.REGULAR_FILE, FileType.DIRECTORY)),
-                new FileTypeComparator(Arrays.asList(FileType.REGULAR_FILE, FileType.DIRECTORY)))
+                new FileTypeComparator(Arrays.asList(FileType.NORMAL_FILE, FileType.DIRECTORY)),
+                new FileTypeComparator(Arrays.asList(FileType.NORMAL_FILE, FileType.DIRECTORY)))
             .addEqualityGroup(
-                new FileTypeComparator(Arrays.asList(FileType.DIRECTORY, FileType.REGULAR_FILE)),
-                new FileTypeComparator(Arrays.asList(FileType.DIRECTORY, FileType.REGULAR_FILE)))
+                new FileTypeComparator(Arrays.asList(FileType.DIRECTORY, FileType.NORMAL_FILE)),
+                new FileTypeComparator(Arrays.asList(FileType.DIRECTORY, FileType.NORMAL_FILE)))
             .testEquals();
     }
 }

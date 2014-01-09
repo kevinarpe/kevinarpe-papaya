@@ -51,7 +51,7 @@ public class FileTypeTest {
 
         when(mockPath.isFile()).thenReturn(true);
         when(mockPath.isDirectory()).thenReturn(false);
-        assertEquals(FileType.from(mockPath), FileType.REGULAR_FILE);
+        assertEquals(FileType.from(mockPath), FileType.NORMAL_FILE);
 
         when(mockPath.isFile()).thenReturn(false);
         when(mockPath.isDirectory()).thenReturn(true);
@@ -84,17 +84,17 @@ public class FileTypeTest {
 
         when(mockPath.isFile()).thenReturn(true);
         when(mockPath.isDirectory()).thenReturn(false);
-        assertTrue(FileType.REGULAR_FILE.is(mockPath));
+        assertTrue(FileType.NORMAL_FILE.is(mockPath));
         assertFalse(FileType.DIRECTORY.is(mockPath));
 
         when(mockPath.isFile()).thenReturn(false);
         when(mockPath.isDirectory()).thenReturn(true);
         assertTrue(FileType.DIRECTORY.is(mockPath));
-        assertFalse(FileType.REGULAR_FILE.is(mockPath));
+        assertFalse(FileType.NORMAL_FILE.is(mockPath));
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void is_FailWithNull() {
-        FileType.REGULAR_FILE.is((File) null);
+        FileType.NORMAL_FILE.is((File) null);
     }
 }

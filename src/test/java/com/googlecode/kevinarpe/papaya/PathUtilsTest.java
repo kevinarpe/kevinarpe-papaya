@@ -25,10 +25,9 @@ package com.googlecode.kevinarpe.papaya;
  * #L%
  */
 
-import com.google.common.collect.ImmutableList;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
-import com.googlecode.kevinarpe.papaya.exception.PathException.PathExceptionReason;
+import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
 import com.googlecode.kevinarpe.papaya.exception.PathExceptionTest;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -193,7 +192,7 @@ public class PathUtilsTest {
         catch (PathException e) {
             PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException(PathExceptionReason.PATH_IS_FILE, path, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_IS_NORMAL_FILE, path, null, "dummy"));
         }
         finally {
             if (path.isFile()) {
@@ -228,7 +227,7 @@ public class PathUtilsTest {
             PathExceptionTest.assertPathExceptionEquals(
                 e,
                 new PathException(
-                    PathExceptionReason.PARENT_PATH_IS_FILE,
+                    PathExceptionReason.PARENT_PATH_IS_NORMAL_FILE,
                     path2,
                     path2.getParentFile(),
                     "dummy"));
@@ -425,7 +424,7 @@ public class PathUtilsTest {
             PathExceptionTest.assertPathExceptionEquals(
                 e,
                 new PathException(
-                    PathExceptionReason.PATH_IS_FILE,
+                    PathExceptionReason.PATH_IS_NORMAL_FILE,
                     path,
                     null,
                     "dummy"));
@@ -464,7 +463,7 @@ public class PathUtilsTest {
             PathExceptionTest.assertPathExceptionEquals(
                 e,
                 new PathException(
-                    PathExceptionReason.PARENT_PATH_IS_FILE,
+                    PathExceptionReason.PARENT_PATH_IS_NORMAL_FILE,
                     path2,
                     path,
                     "dummy"));
@@ -504,7 +503,7 @@ public class PathUtilsTest {
             PathExceptionTest.assertPathExceptionEquals(
                 e,
                 new PathException(
-                    PathExceptionReason.PARENT_PATH_IS_FILE,
+                    PathExceptionReason.PARENT_PATH_IS_NORMAL_FILE,
                     path2,
                     path,
                     "dummy"));
@@ -654,7 +653,7 @@ public class PathUtilsTest {
             PathExceptionTest.assertPathExceptionEquals(
                 e,
                 new PathException(
-                    PathExceptionReason.PATH_IS_FILE,
+                    PathExceptionReason.PATH_IS_NORMAL_FILE,
                     path,
                     null,
                     "dummy"));
@@ -916,7 +915,7 @@ public class PathUtilsTest {
             PathUtils.recursiveListFilePaths(filePath);
         }
         catch (PathException e) {
-            Assert.assertEquals(e.getReason(), PathExceptionReason.PATH_IS_FILE);
+            Assert.assertEquals(e.getReason(), PathExceptionReason.PATH_IS_NORMAL_FILE);
             throw e;
         }
         finally {

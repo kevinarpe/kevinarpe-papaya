@@ -47,114 +47,6 @@ extends IOException {
 
     private static final long serialVersionUID = 1L;
 
-    // TODO: Move this enum to separate file?
-    /**
-     * Reason for the error.
-     * 
-     * @author Kevin Connor ARPE (kevinarpe@gmail.com)
-     */
-    public enum PathExceptionReason {
-
-        /**
-         * {@link PathException#getAbsPath()} does not exist.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is always {@code null}.
-         */
-        PATH_DOES_NOT_EXIST(false),
-
-        /**
-         * {@link PathException#getAbsPath()} does not exist, because
-         * {@link PathException#getOptAbsParentPath()} does not exist.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is never {@code null}.
-         */
-        PARENT_PATH_DOES_NOT_EXIST(true),
-
-        // TODO: Rename to PATH_IS_NORMAL_FILE?  What about FileType.REGULAR_FILE?
-        /**
-         * {@link PathException#getAbsPath()} exists as a file.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is always {@code null}.
-         */
-        PATH_IS_FILE(false),
-
-        /**
-         * {@link PathException#getOptAbsParentPath()} exists as a file.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is never {@code null}.
-         */
-        PARENT_PATH_IS_FILE(true),
-
-        /**
-         * {@link PathException#getAbsPath()} exists as a directory.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is always {@code null}.
-         */
-        PATH_IS_DIRECTORY(false),
-
-        /**
-         * {@link PathException#getAbsPath()} exists as a directory, but execute permissions are not
-         * set.  (Cannot list files stored within this path.)
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is always {@code null}.
-         */
-        PATH_IS_NON_EXECUTABLE_DIRECTORY(false),
-
-        /**
-         * {@link PathException#getOptAbsParentPath()} exists as a directory, but is not writable.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is never {@code null}.
-         */
-        PARENT_PATH_IS_NON_WRITABLE_DIRECTORY(true),
-
-        /**
-         * {@link PathException#getAbsPath()} exists as a root directory.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is always {@code null}.
-         */
-        PATH_IS_ROOT_DIRECTORY(false),
-        
-        /**
-         * {@link PathException#getAbsPath()} cannot be created on a full disk partition.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is always {@code null}.
-         */
-        PATH_DISK_PARTITION_IS_FULL(false),
-        
-        /**
-         * {@link PathException#getOptAbsParentPath()} cannot be created on a full disk partition.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is never {@code null}.
-         */
-        PARENT_PATH_DISK_PARTITION_IS_FULL(true),
-
-        /**
-         * The reason for error is unknown.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is always {@code null}.
-         */
-        UNKNOWN(false);
-        
-        /**
-         * If {@code true}, then {@link PathException#getOptAbsParentPath()} is always <b>not</b>
-         * {@code null}.
-         * <br>If {@code false}, then {@link PathException#getOptAbsParentPath()} is always
-         * {@code null}.
-         */
-        public final boolean hasParentPath;
-        
-        private PathExceptionReason(boolean hasParentPath) {
-            this.hasParentPath = hasParentPath;
-        }
-        
-        @Override
-        public String toString() {
-            String x = String.format("%s [name()='%s', hasParentPath=%s]",
-                getClass().getSimpleName(), name(), hasParentPath);
-            return x;
-        }
-    }
-    
     private final PathExceptionReason _reason;
     private final File _absPath;
     private final File _optAbsParentPath;
@@ -183,7 +75,7 @@ extends IOException {
      *   <li>After failing to make the directory, the method might throw an exception where:</li>
      *   <ol>
      *     <li>Parameter {@code reason} is
-     *     {@link PathExceptionReason#PARENT_PATH_IS_FILE}</li>
+     *     {@link PathExceptionReason#PARENT_PATH_IS_NORMAL_FILE}</li>
      *     <li>Parameter {@code path} is {@code /home/user/abc/def}</li>
      *     <li>Parameter {@code optParentPath} is {@code /home/user/abc}</li>
      *     <li>Parameter {@code message} is

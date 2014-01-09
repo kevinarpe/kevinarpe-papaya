@@ -34,8 +34,6 @@ import org.testng.annotations.Test;
 
 import com.google.common.testing.EqualsTester;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.exception.PathException;
-import com.googlecode.kevinarpe.papaya.exception.PathException.PathExceptionReason;
 
 public final class PathExceptionTest {
 

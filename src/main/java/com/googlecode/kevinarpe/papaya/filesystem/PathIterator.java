@@ -27,6 +27,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
 
 import java.util.Iterator;
 
+// TODO: What to do?
 public interface PathIterator<TValue>
 extends Iterator<TValue> {
 

@@ -31,7 +31,7 @@ import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.PathArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
-import com.googlecode.kevinarpe.papaya.exception.PathException.PathExceptionReason;
+import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -134,11 +134,11 @@ public final class PathUtils {
      *         if {@code path} is {@code null}
      * @throws PathException
      * <ul>
-     *   <li>with reason {@link PathExceptionReason#PATH_IS_FILE}
+     *   <li>with reason {@link PathExceptionReason#PATH_IS_NORMAL_FILE}
      *   if {@code path} exists as a file</li>
      *   <li>with reason {@link PathExceptionReason#PARENT_PATH_DOES_NOT_EXIST}
      *   if parent directory for {@code path} does not exist</li>
-     *   <li>with reason {@link PathExceptionReason#PARENT_PATH_IS_FILE}
+     *   <li>with reason {@link PathExceptionReason#PARENT_PATH_IS_NORMAL_FILE}
      *   if parent directory for {@code path} exists as a file</li>
      *   <li>with reason {@link PathExceptionReason#PARENT_PATH_IS_NON_WRITABLE_DIRECTORY}
      *   if parent directory for {@code path} exists as a directory, but is not
@@ -200,9 +200,9 @@ public final class PathUtils {
      *         if {@code path} is {@code null}
      * @throws PathException
      * <ul>
-     *   <li>with reason {@link PathExceptionReason#PATH_IS_FILE}
+     *   <li>with reason {@link PathExceptionReason#PATH_IS_NORMAL_FILE}
      *   if {@code path} exists as a file</li>
-     *   <li>with reason {@link PathExceptionReason#PARENT_PATH_IS_FILE}
+     *   <li>with reason {@link PathExceptionReason#PARENT_PATH_IS_NORMAL_FILE}
      *   if parent directory for {@code path} exists as a file</li>
      *   <li>with reason {@link PathExceptionReason#PARENT_PATH_IS_NON_WRITABLE_DIRECTORY}
      *   if parent directory for {@code path} exists as a directory, but is not writable</li>
@@ -238,7 +238,7 @@ public final class PathUtils {
                 desc,
                 path.getAbsolutePath());
             throw new PathException(
-                PathExceptionReason.PATH_IS_FILE, path, null, msg);
+                PathExceptionReason.PATH_IS_NORMAL_FILE, path, null, msg);
         }
         if (path.getTotalSpace() > 0 && 0 == path.getFreeSpace()) {
             String msg = String.format(
@@ -272,7 +272,7 @@ public final class PathUtils {
                     path.getAbsolutePath(),
                     parentPath.getAbsolutePath());
                 throw new PathException(
-                    PathExceptionReason.PARENT_PATH_IS_FILE, path, parentPath, msg);
+                    PathExceptionReason.PARENT_PATH_IS_NORMAL_FILE, path, parentPath, msg);
             }
             if (parentPath.isDirectory() && !parentPath.canWrite()) {
                 String msg = String.format(
@@ -342,7 +342,7 @@ public final class PathUtils {
      *         if {@code path} is {@code null}
      * @throws PathException
      * <ul>
-     *   <li>with reason {@link PathExceptionReason#PATH_IS_FILE}
+     *   <li>with reason {@link PathExceptionReason#PATH_IS_NORMAL_FILE}
      *   if {@code path} exists as a file</li>
      *   <li>with reason {@link PathExceptionReason#PATH_IS_ROOT_DIRECTORY}
      *   if {@code path} exists as a root directory</li>
@@ -367,7 +367,7 @@ public final class PathUtils {
                 "Failed to remove directory: Path exists as a file: '%s'",
                 path.getAbsolutePath());
             throw new PathException(
-                PathExceptionReason.PATH_IS_FILE, path, null, msg);
+                PathExceptionReason.PATH_IS_NORMAL_FILE, path, null, msg);
         }
         else {
             File absPath = path.getAbsoluteFile();
@@ -546,7 +546,7 @@ public final class PathUtils {
                 String msg = String.format(
                     "Failed to list files for path (exists as file, not directory): '%s'",
                     dirPath.getAbsolutePath());
-                throw new PathException(PathExceptionReason.PATH_IS_FILE, dirPath, null, msg);
+                throw new PathException(PathExceptionReason.PATH_IS_NORMAL_FILE, dirPath, null, msg);
             }
             // Exists + Directory...
             if (!dirPath.canExecute()) {

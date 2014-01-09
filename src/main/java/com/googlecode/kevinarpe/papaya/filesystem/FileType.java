@@ -33,7 +33,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Classification for files: {@link #REGULAR_FILE} and {@link #DIRECTORY}.  Currently, Java 6 has
+ * Classification for files: {@link #NORMAL_FILE} and {@link #DIRECTORY}.  Currently, Java 6 has
  * no further file types, but this may increase in future versions.
  * <p>
  * For Windows users, the term "file" may be ambiguous.  UNIX terminology refers to all file system
@@ -52,13 +52,15 @@ public enum FileType {
     /**
      * Files with this type return {@code true} from method {@link File#isFile()}.
      * <p>
-     * The term "regular" was chosen to follow existing UNIX terminology.
+     * The term "normal" is particular to Java.  In UNIX terminology, usually "regualar" is used,
+     * but the Java filesystem interface is limited to two file types: directories and
+     * non-directories.  This type refers to non-directories.
      *
      * @see #DIRECTORY
      * @see #is(File)
      * @see #from(File)
      */
-    REGULAR_FILE {
+    NORMAL_FILE {
         @Override
         protected boolean _is(File path) {
             return path.isFile();
@@ -68,7 +70,7 @@ public enum FileType {
     /**
      * Files with this type return {@code true} from method {@link File#isDirectory()}.
      *
-     * @see #REGULAR_FILE
+     * @see #NORMAL_FILE
      * @see #is(File)
      * @see #from(File)
      */
@@ -93,7 +95,7 @@ public enum FileType {
      *         if {@code path} fails to match any known file types
      *
      * @see #is(File)
-     * @see #REGULAR_FILE
+     * @see #NORMAL_FILE
      * @see #DIRECTORY
      */
     public static FileType from(File path)

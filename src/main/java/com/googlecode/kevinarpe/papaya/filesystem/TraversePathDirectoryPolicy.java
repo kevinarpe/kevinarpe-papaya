@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
+// TODO: Obsolete?  Replaced by FileTypeComparator.DIRECTORIES_FIRST & Co.?
 public enum TraversePathDirectoryPolicy {
 
     DIRECTORY_FIRST,

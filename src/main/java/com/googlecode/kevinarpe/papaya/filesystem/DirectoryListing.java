@@ -31,6 +31,13 @@ import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.PathArgs;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
+import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
+import com.googlecode.kevinarpe.papaya.filesystem.compare.FileAbsolutePathLexicographicalComparator;
+import com.googlecode.kevinarpe.papaya.filesystem.compare.FileLastModifiedOldestToNewestComparator;
+import com.googlecode.kevinarpe.papaya.filesystem.compare.FileNameLexicographicalComparator;
+import com.googlecode.kevinarpe.papaya.filesystem.compare.FileNameNumericPrefixSmallestToLargestComparator;
+import com.googlecode.kevinarpe.papaya.filesystem.compare.FileSizeSmallestToLargestComparator;
+import com.googlecode.kevinarpe.papaya.filesystem.compare.FileTypeComparator;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -42,21 +49,75 @@ import java.util.ListIterator;
 import java.util.RandomAccess;
 
 /**
+ * Replaces {@link File#listFiles()}.  Provides ability to filter and sort the listing, similar
+ * to the UNIX command line tool {@code /bin/ls}.
+ * <p>
+ * Numerous {@link Comparator}s for class {@link File} are included in this library, including:
+ * <ul>
+ *     <li>{@link FileAbsolutePathLexicographicalComparator}</li>
+ *     <li>{@link FileLastModifiedOldestToNewestComparator}</li>
+ *     <li>{@link FileNameLexicographicalComparator}</li>
+ *     <li>{@link FileNameNumericPrefixSmallestToLargestComparator}</li>
+ *     <li>{@link FileSizeSmallestToLargestComparator}</li>
+ *     <li>{@link FileTypeComparator}</li>
+ * </ul>
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @FullyTested
 public final class DirectoryListing {
 
+    /**
+     * Default {@link List} class for constructor {@link #DirectoryListing(File)}:
+     * {@link ArrayList}.
+     *
+     * @see #DirectoryListing(DirectoryListing, Class)
+     */
     public static final Class<? extends List> DEFAULT_LIST_CLASS = ArrayList.class;
 
     private final File _dirPath;
     private List<File> _childPathList;
 
+    /**
+     * This is a convenience constructor for {@link #DirectoryListing(File, Class)}
+     * where {@code listClass} is {@link #DEFAULT_LIST_CLASS}.
+     */
     public DirectoryListing(File dirPath)
     throws PathException {
         this(dirPath, DEFAULT_LIST_CLASS);
     }
 
+    /**
+     * Builds a list of child paths for a directory.  Access the list of child paths via
+     * {@link #getChildPathList()}.
+     *
+     * @param dirPath
+     *        path to directory used to obtain a listing of child paths
+     * @param listClass
+     *        controls the {@link List} class used internally.  If filtering a large list of paths,
+     *        it will be more efficient to use {@code LinkedList.class}.
+     *
+     * @throws NullPointerException
+     *         if {@code path} or {@code listClass} is {@code null}
+     * @throws PathException
+     * <ul>
+     *     <li>with reason {@link PathExceptionReason#PATH_DOES_NOT_EXIST}
+     *     if {@code path} does not exist</li>
+     *     <li>with reason {@link PathExceptionReason#PATH_IS_NORMAL_FILE}
+     *     if {@code path} exists, but is not a directory</li>
+     *     <li>with reason {@link PathExceptionReason#PATH_IS_NON_EXECUTABLE_DIRECTORY}
+     *     if {@code path} exists as a directory, but is not accessible for listing</li>
+     *     <li>with reason {@link PathExceptionReason#UNKNOWN}
+     *     if reason for error is unknown</li>
+     * </ul>
+     * @throws IllegalArgumentException
+     *         if calling method {@link Class#newInstance()} fails for {@code listClass}
+     *
+     * @see #DirectoryListing(File)
+     * @see #DEFAULT_LIST_CLASS
+     * @see #getDirPath()
+     * @see #getChildPathList()
+     */
     public DirectoryListing(File dirPath, Class<? extends List> listClass)
     throws PathException {
         _dirPath = PathArgs.checkDirectoryExists(dirPath, "dirPath");
@@ -69,14 +130,14 @@ public final class DirectoryListing {
                     "Failed to list files for path (does not exist): '%s'",
                     dirPath.getAbsolutePath());
                 throw new PathException(
-                    PathException.PathExceptionReason.PATH_DOES_NOT_EXIST, dirPath, null, msg);
+                    PathExceptionReason.PATH_DOES_NOT_EXIST, dirPath, null, msg);
             }
             if (dirPath.isFile()) {
                 String msg = String.format(
                     "Failed to list files for path (exists as file, not directory): '%s'",
                     dirPath.getAbsolutePath());
                 throw new PathException(
-                    PathException.PathExceptionReason.PATH_IS_FILE, dirPath, null, msg);
+                    PathExceptionReason.PATH_IS_NORMAL_FILE, dirPath, null, msg);
             }
             // Exists + Directory...
             if (!dirPath.canExecute()) {
@@ -84,13 +145,13 @@ public final class DirectoryListing {
                     "Failed to list files for path (execute permission not set): '%s'",
                     dirPath.getAbsolutePath());
                 throw new PathException(
-                    PathException.PathExceptionReason.PATH_IS_NON_EXECUTABLE_DIRECTORY,
+                    PathExceptionReason.PATH_IS_NON_EXECUTABLE_DIRECTORY,
                     dirPath, null, msg);
             }
             String msg = String.format(
                 "Failed to list files for path (unknown error): '%s'",
                 dirPath.getAbsolutePath());
-            throw new PathException(PathException.PathExceptionReason.UNKNOWN, dirPath, null, msg);
+            throw new PathException(PathExceptionReason.UNKNOWN, dirPath, null, msg);
         }
 
         _childPathList = _newInstance(listClass);
@@ -99,6 +160,10 @@ public final class DirectoryListing {
         }
     }
 
+    /**
+     * This is a convenience constructor for {@link #DirectoryListing(DirectoryListing, Class)}
+     * where {@code listClass} is {@code getChildPathList().getClass()}.
+     */
     public DirectoryListing(DirectoryListing other) {
         this(
             other,
@@ -106,6 +171,21 @@ public final class DirectoryListing {
             123);
     }
 
+    /**
+     * Copies another instance of this class including the {@link List} class used internally to
+     * store child paths.
+     *
+     * @param other
+     *        another instance of this class
+     * @param listClass
+     *        controls the {@link List} class used internally.  If filtering a large list of paths,
+     *        it will be more efficient to use {@code LinkedList.class}.
+     *
+     * @throws NullPointerException
+     *         if {@code other} or {@code listClass} is {@code null}
+     * @throws IllegalArgumentException
+     *         if calling method {@link Class#newInstance()} fails for {@code listClass}
+     */
     public DirectoryListing(DirectoryListing other, Class<? extends List> listClass) {
         this(
             other,
@@ -113,6 +193,10 @@ public final class DirectoryListing {
             123);
     }
 
+    /**
+     * Param {@code dummy} only exists here to distinguish this constructor from
+     * {@link #DirectoryListing(DirectoryListing, Class)}.
+     */
     private DirectoryListing(DirectoryListing other, Class<? extends List> listClass, int dummy) {
         ObjectArgs.checkNotNull(other, "other");
 
@@ -134,16 +218,39 @@ public final class DirectoryListing {
         }
     }
 
+    /**
+     * @return parent directory for child paths
+     *
+     * @see #getChildPathList()
+     */
     public File getDirPath() {
         return _dirPath;
     }
 
+    /**
+     * @return reference to the internal list of child paths.  This is not a copy, so changes made
+     *         to the list will affect the internal state of this instance.
+     */
     public List<File> getChildPathList() {
-        List<File> list = _newInstance(_childPathList.getClass());
-        list.addAll(_childPathList);
-        return list;
+        // TODO: Correct to NOT copy?
+//        List<File> list = _newInstance(_childPathList.getClass());
+//        list.addAll(_childPathList);
+//        return list;
+        return _childPathList;
     }
 
+    // TODO: If NOT copy, then remove.
+//    public Class<? extends List<File>> getChildPathListClass() {
+//        return _childPathList.getClass();
+//    }
+
+    /**
+     * Returns hash code of {@link #getDirPath()}, {@link #getChildPathList()}, and the {@link List}
+     * class used.  This will differentiate between two instances of this class using a different
+     * internal storage {@code List} class.
+     * <hr/>
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         int result = Objects.hashCode(_dirPath, _childPathList);
@@ -151,6 +258,13 @@ public final class DirectoryListing {
         return result;
     }
 
+    /**
+     * Equates by {@link #getDirPath()}, {@link #getChildPathList()}, and the {@link List}
+     * class used.  This will differentiate between two instances of this class using a different
+     * internal storage {@code List} class.
+     * <hr/>
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         // Ref: http://stackoverflow.com/a/5039178/257299
@@ -158,23 +272,20 @@ public final class DirectoryListing {
         if (!result && obj instanceof DirectoryListing) {
             final DirectoryListing other = (DirectoryListing) obj;
             result = Objects.equal(this._dirPath, other._dirPath)
-                && _classEquals(this._childPathList, other._childPathList)
+                && Objects.equal(
+                        (null == this._childPathList ? null : this._childPathList.getClass()),
+                        (null == other._childPathList ? null : other._childPathList.getClass()))
                 && Objects.equal(this._childPathList, other._childPathList);
         }
         return result;
     }
 
-    private static boolean _classEquals(Object a, Object b) {
-        if (a == b) {
-            return true;
-        }
-        if (null == a || null == b) {
-            return false;
-        }
-        boolean x = a.getClass().equals(b.getClass());
-        return x;
-    }
-
+    /**
+     * This is a convenience method for {@link #sort(List)}.
+     *
+     * @throws NullPointerException
+     *         if {@code fileComparator} is {@code null}
+     */
     public DirectoryListing sort(Comparator<File> fileComparator) {
         ObjectArgs.checkNotNull(fileComparator, "fileComparator");
 
@@ -183,6 +294,27 @@ public final class DirectoryListing {
         return sort(fileComparatorList);
     }
 
+    /**
+     * Performs an in-place sort on the list of child paths using a list of {@link Comparator}s.
+     * This method operates directly on the internal list.  To preserve the current instance, use a
+     * copy constructor first, then sort.
+     *
+     * @param fileComparatorList
+     *        list of {@link Comparator} references used to sort paths.
+     *        See {@link DirectoryListing class docs} for a list of {@code Comparator}s included in
+     *        this library.
+     *
+     * @return reference to {@code this}
+     *
+     * @throws NullPointerException
+     *         if {@code fileComparatorList} (or any element) is {@code null}
+     *
+     * @see #DirectoryListing(DirectoryListing)
+     * @see #DirectoryListing(DirectoryListing, Class)
+     * @see #sort(Comparator)
+     * @see #filter(FileFilter)
+     * @see #filter(List)
+     */
     public DirectoryListing sort(List<Comparator<File>> fileComparatorList) {
         CollectionArgs.checkElementsNotNull(fileComparatorList, "fileComparatorList");
 
@@ -207,12 +339,41 @@ public final class DirectoryListing {
         return this;
     }
 
+    /**
+     * This is a convenience method for {@link #filter(List)}.
+     *
+     * @throws NullPointerException
+     *         if {@code fileFilter} is {@code null}
+     */
     public DirectoryListing filter(FileFilter fileFilter) {
         ObjectArgs.checkNotNull(fileFilter, "fileFilter");
 
         return filter(Arrays.asList(fileFilter));
     }
 
+    /**
+     * Applies a filter to remove paths from the to the internal list of child paths.  This method
+     * operates directly on the internal list.  To preserve the current instance, use a copy
+     * constructor first, then sort.
+     * <p>
+     * As an optimisation, this method uses different strategies for list element removal
+     * depending upon if the {@link List} class used for internal storage implements interface
+     * {@link RandomAccess}.
+     *
+     * @param fileFilterList
+     *        list of {@link FileFilter} references used to filter paths
+     *
+     * @return reference to {@code this}
+     *
+     * @throws NullPointerException
+     *         if {@code fileComparatorList} (or any element) is {@code null}
+     *
+     * @see #DirectoryListing(DirectoryListing)
+     * @see #DirectoryListing(DirectoryListing, Class)
+     * @see #filter(List)
+     * @see #sort(Comparator)
+     * @see #sort(List)
+     */
     public DirectoryListing filter(List<FileFilter> fileFilterList) {
         CollectionArgs.checkElementsNotNull(fileFilterList, "fileFilterList");
 

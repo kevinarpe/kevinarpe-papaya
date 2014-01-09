@@ -30,6 +30,7 @@ import com.google.common.collect.Maps;
 import com.google.common.testing.EqualsTester;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
+import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
 import com.googlecode.kevinarpe.papaya.filesystem.compare.FileLastModifiedOldestToNewestComparator;
 import com.googlecode.kevinarpe.papaya.filesystem.compare.FileNameLexicographicalComparator;
 import org.joda.time.DateTime;
@@ -174,7 +175,7 @@ public class DirectoryListingTest {
             new DirectoryListing(mockDirPath, ArrayList.class);
         }
         catch (PathException e) {
-            assertEquals(e.getReason(), PathException.PathExceptionReason.PATH_DOES_NOT_EXIST);
+            assertEquals(e.getReason(), PathExceptionReason.PATH_DOES_NOT_EXIST);
             verify(mockDirPath).listFiles();
             throw e;
         }
@@ -193,7 +194,7 @@ public class DirectoryListingTest {
             new DirectoryListing(mockDirPath, ArrayList.class);
         }
         catch (PathException e) {
-            assertEquals(e.getReason(), PathException.PathExceptionReason.PATH_IS_FILE);
+            assertEquals(e.getReason(), PathExceptionReason.PATH_IS_NORMAL_FILE);
             throw e;
         }
     }
@@ -213,7 +214,7 @@ public class DirectoryListingTest {
         }
         catch (PathException e) {
             assertEquals(
-                e.getReason(), PathException.PathExceptionReason.PATH_IS_NON_EXECUTABLE_DIRECTORY);
+                e.getReason(), PathExceptionReason.PATH_IS_NON_EXECUTABLE_DIRECTORY);
             throw e;
         }
     }
@@ -233,7 +234,7 @@ public class DirectoryListingTest {
         }
         catch (PathException e) {
             assertEquals(
-                e.getReason(), PathException.PathExceptionReason.UNKNOWN);
+                e.getReason(), PathExceptionReason.UNKNOWN);
             throw e;
         }
     }
@@ -536,9 +537,9 @@ public class DirectoryListingTest {
             createMockComparator(new FileNameLexicographicalComparator());
         Comparator<File> mockComparator2 =
             createMockComparator(new FileLastModifiedOldestToNewestComparator());
-        assertSame(
-            directoryListing.sort(Arrays.asList(mockComparator, mockComparator2)),
-            directoryListing);
+        @SuppressWarnings("unchecked")
+        List<Comparator<File>> comparatorList = Arrays.asList(mockComparator, mockComparator2);
+        assertSame(directoryListing.sort(comparatorList), directoryListing);
         List<File> childPathList = directoryListing.getChildPathList();
         assertEquals(childPathList.get(0).getName(), "abc");
         assertEquals(childPathList.get(1).getName(), "abc");

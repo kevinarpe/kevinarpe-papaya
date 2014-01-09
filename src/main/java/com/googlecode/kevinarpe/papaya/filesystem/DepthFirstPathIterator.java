@@ -42,7 +42,7 @@ import java.util.NoSuchElementException;
 
 // TODO: Builder vs Iterator.  How does this work?  Public vs package-private?
 public class DepthFirstPathIterator
-extends UnmodifiableIterator {
+extends UnmodifiableIterator<File> {
 
     // TODO: Need two policy enums
     // (1) depth-first vs depth-last
@@ -58,8 +58,9 @@ extends UnmodifiableIterator {
     private _Level _currentLevel;
 
     private _Level _addLevel(File dirPath) {
+        final int depth = 1 + _levelList.size();
         try {
-            _currentLevel = new _Level(dirPath, _levelList.size());
+            _currentLevel = new _Level(dirPath, depth);
         }
         catch (PathException e) {
             throw new RuntimeException(e);

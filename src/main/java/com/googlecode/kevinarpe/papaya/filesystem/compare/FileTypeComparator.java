@@ -51,6 +51,32 @@ import java.util.Map;
 public final class FileTypeComparator
 implements Comparator<File> {
 
+    /**
+     * Since the number of file types is very limited in Java 6, this static final members exists
+     * as a convenience to sort directories first, and non-directories last.
+     * <ul>
+     *     <li>First: {@link FileType#DIRECTORY}</li>
+     *     <li>Second: {@link FileType#NORMAL_FILE}</li>
+     * </ul>
+     *
+     * @see #NORMAL_FILES_FIRST
+     */
+    public static final FileTypeComparator DIRECTORIES_FIRST =
+        new FileTypeComparator(Arrays.asList(FileType.DIRECTORY, FileType.NORMAL_FILE));
+
+    /**
+     * Since the number of file types is very limited in Java 6, this static final members exists
+     * as a convenience to sort directories first, and non-directories last.
+     * <ul>
+     *     <li>First: {@link FileType#NORMAL_FILE}</li>
+     *     <li>Second: {@link FileType#DIRECTORY}</li>
+     * </ul>
+     *
+     * @see #DIRECTORIES_FIRST
+     */
+    public static final FileTypeComparator NORMAL_FILES_FIRST =
+        new FileTypeComparator(Arrays.asList(FileType.NORMAL_FILE, FileType.DIRECTORY));
+
     private final Map<FileType, Integer> _fileTypeToIndexMap;
 
     /**
@@ -59,7 +85,7 @@ implements Comparator<File> {
      * param list has the high priority and will sort first.  The last value has the lowest priority
      * and will sort last.
      * <p>
-     * Example: {@code Arrays.asList(FileType.REGULAR_FILE, FileType.DIRECTORY)} will sort all
+     * Example: {@code Arrays.asList(FileType.NORMAL_FILE, FileType.DIRECTORY)} will sort all
      * regular files before directories.
      *
      * @param fileTypeList

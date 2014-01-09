@@ -26,8 +26,31 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  */
 
 import java.io.File;
+import java.io.FileFilter;
 
+/**
+ * Extends {@link FileFilter} to add {@code depth} parameter to {@link #accept(File, int)}.
+ *
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see DirectoryListing
+ * @see DepthFirstPathIterator
+ */
 public interface PathFilter {
 
+    /**
+     * Tests whether or not {@code path} at {@code depth} should be included in a path list.
+     *
+     * @param path
+     *        filesystem path to test.  Not guaranteed to exist when this method is called.
+     *
+     * @param depth
+     *        number of levels below the parent directory.  Always >= 1.
+     *
+     * @return {@code true} to include in the path list or {@code false} to exclude
+     *
+     * @see DirectoryListing
+     * @see DepthFirstPathIterator
+     */
     boolean accept(File path, int depth);
 }
