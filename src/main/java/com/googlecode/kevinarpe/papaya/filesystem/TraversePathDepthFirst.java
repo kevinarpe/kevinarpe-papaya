@@ -33,6 +33,7 @@ import java.io.File;
 import java.util.Comparator;
 import java.util.List;
 
+// TODO: Keep / Replace with builder?
 public class TraversePathDepthFirst
 implements Iterable<File> {
 

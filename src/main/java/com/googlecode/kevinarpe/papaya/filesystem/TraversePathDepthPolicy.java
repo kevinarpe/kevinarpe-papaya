@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
+// TODO: What to do?
 public enum TraversePathDepthPolicy {
 
     DEPTH_FIRST,
