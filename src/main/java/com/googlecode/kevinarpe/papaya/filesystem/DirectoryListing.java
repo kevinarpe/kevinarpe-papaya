@@ -1,6 +1,7 @@
 package com.googlecode.kevinarpe.papaya.filesystem;
 
 import com.google.common.base.Objects;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.PathArgs;
@@ -18,6 +19,7 @@ import java.util.RandomAccess;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public final class DirectoryListing {
 
     public static final Class<? extends List> DEFAULT_LIST_CLASS = ArrayList.class;
@@ -148,7 +150,6 @@ public final class DirectoryListing {
         return x;
     }
 
-    // TODO(test)
     public DirectoryListing sort(Comparator<File> fileComparator) {
         ObjectArgs.checkNotNull(fileComparator, "fileComparator");
 
@@ -157,7 +158,6 @@ public final class DirectoryListing {
         return sort(fileComparatorList);
     }
 
-    // TODO(test)
     public DirectoryListing sort(List<Comparator<File>> fileComparatorList) {
         CollectionArgs.checkElementsNotNull(fileComparatorList, "fileComparatorList");
 

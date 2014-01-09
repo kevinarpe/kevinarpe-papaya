@@ -34,7 +34,11 @@ import com.googlecode.kevinarpe.papaya.exception.PathException;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.*;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 // TODO: Builder vs Iterator.  How does this work?  Public vs package-private?
 public class DepthFirstPathIterator
@@ -43,8 +47,6 @@ extends UnmodifiableIterator {
     // TODO: Need two policy enums
     // (1) depth-first vs depth-last
     // (2) file-first vs dir-first
-
-    // TODO: What about ArrayAsIterable, ArrayIterator, ArrayUnmodifiableIterator
 
     private boolean _isInitDone;
     private final File _dirPath;
@@ -75,75 +77,81 @@ extends UnmodifiableIterator {
     private class _Level {
 
         private final int _depth;
-        private final PathList _origPathList;
-        private PathList _descendDirPathList;
-        private Iterator<File> _descendDirPathListIter;
-        private PathList _ascendPathList;
-        private Iterator<File> _ascendPathListIter;
+        private final DirectoryListing _origDirectoryListing;
+        private DirectoryListing _descendDirDirectoryListing;
+        private Iterator<File> _descendDirDirectoryListingIter;
+        private DirectoryListing _ascendDirectoryListing;
+        private Iterator<File> _ascendDirectoryListingIter;
 
         // TODO: How to handle missing dirs?
-        // Many initial listFiles() shows a dir... but later, does not exist.  Handle well.
+        // Many initial listFiles() shows a dir... but later, does not exist.  Handle well.  Policy?
         private _Level(File dirPath, int depth)
         throws PathException {
-            _origPathList = PathList.from(dirPath);
+            _origDirectoryListing = new DirectoryListing(dirPath, LinkedList.class);
             _depth = depth;
         }
 
-        public PathList getDescendDirPathList() {
-            if (null == _descendDirPathList) {
-                // TODO: Maybe PathList should be immutable... or have an immutable equivalent?
-                _descendDirPathList = _origPathList.filterInfoNewList(new FileFilter() {
-                    @Override
-                    public boolean accept(File path) {
-                        if (!path.isDirectory()) {
-                            return false;
-                        }
-                        if (null == DepthFirstPathIterator.this._optDescendDirFilter) {
-                            return true;
-                        }
-                        return DepthFirstPathIterator.this._optDescendDirFilter.accept(path, _depth);
-                    }
-                });
-                _descendDirPathList.sortInPlace(DepthFirstPathIterator.this._descendFileComparatorList);
-            }
-            return _descendDirPathList;
-        }
-
-        public Iterator<File> getDescendDirPathListIter() {
-            if (null == _descendDirPathListIter) {
-                PathList descendDirPathList = getDescendDirPathList();
-                _descendDirPathListIter = descendDirPathList.iterator();
-            }
-            return _descendDirPathListIter;
-        }
-
-        public PathList getAscendPathList() {
-            if (null == _ascendPathList) {
-                if (null == DepthFirstPathIterator.this._optAscendFilter) {
-                    _ascendPathList = new PathList(_origPathList);
-                }
-                else {
-                    _ascendPathList = _origPathList.filterInfoNewList(new FileFilter() {
+        public DirectoryListing getDescendDirDirectoryListing() {
+            if (null == _descendDirDirectoryListing) {
+                _descendDirDirectoryListing = new DirectoryListing(_origDirectoryListing).filter(
+                    new FileFilter() {
                         @Override
                         public boolean accept(File path) {
-                            if (null == DepthFirstPathIterator.this._optAscendFilter) {
+                            if (!path.isDirectory()) {
+                                return false;
+                            }
+                            if (null == DepthFirstPathIterator.this._optDescendDirFilter) {
                                 return true;
                             }
-                            return DepthFirstPathIterator.this._optAscendFilter.accept(path, _depth);
+                            return DepthFirstPathIterator.this._optDescendDirFilter.accept(
+                                path, _depth);
                         }
                     });
-                }
-                _ascendPathList.sortInPlace(DepthFirstPathIterator.this._ascendFileComparatorList);
+                _descendDirDirectoryListing.sort(
+                    DepthFirstPathIterator.this._descendFileComparatorList);
             }
-            return _ascendPathList;
+            return _descendDirDirectoryListing;
         }
 
-        public Iterator<File> getAscendPathListIter() {
-            if (null == _ascendPathListIter) {
-                PathList ascendPathList = getAscendPathList();
-                _ascendPathListIter = ascendPathList.iterator();
+        public Iterator<File> getDescendDirDirectoryListingIter() {
+            if (null == _descendDirDirectoryListingIter) {
+                DirectoryListing descendDirDirectoryListing = getDescendDirDirectoryListing();
+                List<File> childPathList = descendDirDirectoryListing.getChildPathList();
+                _descendDirDirectoryListingIter = childPathList.iterator();
             }
-            return _ascendPathListIter;
+            return _descendDirDirectoryListingIter;
+        }
+
+        public DirectoryListing getAscendDirectoryListing() {
+            if (null == _ascendDirectoryListing) {
+                if (null == DepthFirstPathIterator.this._optAscendFilter) {
+                    _ascendDirectoryListing = new DirectoryListing(_origDirectoryListing);
+                }
+                else {
+                    _ascendDirectoryListing = new DirectoryListing(_origDirectoryListing).filter(
+                        new FileFilter() {
+                            @Override
+                            public boolean accept(File path) {
+                                if (null == DepthFirstPathIterator.this._optAscendFilter) {
+                                    return true;
+                                }
+                                return DepthFirstPathIterator.this._optAscendFilter.accept(
+                                    path, _depth);
+                            }
+                        });
+                }
+                _ascendDirectoryListing.sort(DepthFirstPathIterator.this._ascendFileComparatorList);
+            }
+            return _ascendDirectoryListing;
+        }
+
+        public Iterator<File> getAscendDirectoryListingIter() {
+            if (null == _ascendDirectoryListingIter) {
+                DirectoryListing ascendDirectoryListing = getAscendDirectoryListing();
+                List<File> childPathList = ascendDirectoryListing.getChildPathList();
+                _ascendDirectoryListingIter = childPathList.iterator();
+            }
+            return _ascendDirectoryListingIter;
         }
     }
 
@@ -175,8 +183,8 @@ extends UnmodifiableIterator {
 
     private void _descend() {
         if (null != _currentLevel) {
-            while (_currentLevel.getDescendDirPathListIter().hasNext()) {
-                File descendDirPath = _currentLevel.getDescendDirPathListIter().next();
+            while (_currentLevel.getDescendDirDirectoryListingIter().hasNext()) {
+                File descendDirPath = _currentLevel.getDescendDirDirectoryListingIter().next();
                 _addLevel(descendDirPath);  // This call changes '_currentLevel'
             }
         }
@@ -189,14 +197,14 @@ extends UnmodifiableIterator {
             _descend();  // This call changes '_currentLevel'
             _isInitDone = true;
         }
-        while (null != _currentLevel && !_currentLevel.getAscendPathListIter().hasNext()) {
+        while (null != _currentLevel && !_currentLevel.getAscendDirectoryListingIter().hasNext()) {
             _removeLevel();  // This call changes '_currentLevel'
             _descend();  // This call changes '_currentLevel'
         }
         if (null == _currentLevel) {
             return false;
         }
-        return _currentLevel.getAscendPathListIter().hasNext();
+        return _currentLevel.getAscendDirectoryListingIter().hasNext();
     }
 
     @Override
@@ -204,7 +212,7 @@ extends UnmodifiableIterator {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        File path = _currentLevel.getAscendPathListIter().next();
+        File path = _currentLevel.getAscendDirectoryListingIter().next();
         return path;
     }
 

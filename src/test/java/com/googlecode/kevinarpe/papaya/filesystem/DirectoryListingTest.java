@@ -5,6 +5,12 @@ import com.google.common.collect.Maps;
 import com.google.common.testing.EqualsTester;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
+import com.googlecode.kevinarpe.papaya.filesystem.compare.FileLastModifiedOldestToNewestComparator;
+import com.googlecode.kevinarpe.papaya.filesystem.compare.FileNameLexicographicalComparator;
+import org.joda.time.DateTime;
+import org.mockito.InOrder;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -19,6 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -442,6 +451,92 @@ public class DirectoryListingTest {
     ///////////////////////////////////////////////////////////////////////////
     // DirectoryListing.sort(Comparator<File>)/sort(List<Comparator<File>>)
     //
+
+    @Test
+    public void sort_Pass()
+    throws PathException {
+        DateTime now = DateTime.now();
+        DateTime beforeNow = now.plusHours(-1);
+        DateTime afterNow = now.plusHours(+1);
+
+        DirectoryListing directoryListing =
+            createDirectoryListing(new File[] {
+                createMockFilePath("def", afterNow),
+                createMockFilePath("abc", now),
+                createMockFilePath("ghi", beforeNow),
+            });
+
+        Comparator<File> mockComparator =
+            createMockComparator(new FileNameLexicographicalComparator());
+        assertSame(
+            directoryListing.sort(mockComparator),
+            directoryListing);
+        List<File> childPathList = directoryListing.getChildPathList();
+        assertEquals(childPathList.get(0).getName(), "abc");
+        assertEquals(childPathList.get(1).getName(), "def");
+        assertEquals(childPathList.get(2).getName(), "ghi");
+        verify(mockComparator, atLeast(1)).compare(any(File.class), any(File.class));
+    }
+
+    private Comparator<File> createMockComparator(final Comparator<File> comparator) {
+        // We cannot spy on a final class with Mockito (or Powermock), so we fake a spy here.
+        // Create a mock, but delgate compare(T, T) calls to a real Comparator<T> instance.
+        @SuppressWarnings("unchecked")
+        Comparator<File> mockComparator = (Comparator<File>) mock(Comparator.class);
+        when(mockComparator.compare(any(File.class), any(File.class))).thenAnswer(new Answer<Integer>() {
+            @Override
+            public Integer answer(InvocationOnMock invocation) throws Throwable {
+                File left = (File) invocation.getArguments()[0];
+                File right = (File) invocation.getArguments()[1];
+                return comparator.compare(left, right);
+            }
+        });
+        return mockComparator;
+    }
+
+    @Test
+    public void sort2_Pass()
+    throws PathException {
+        DateTime now = DateTime.now();
+        DateTime beforeNow = now.plusHours(-1);
+        DateTime afterNow = now.plusHours(+1);
+
+        DirectoryListing directoryListing =
+            createDirectoryListing(new File[] {
+                createMockFilePath("def", afterNow),
+                createMockFilePath("abc", now),
+                createMockFilePath("abc", beforeNow),
+            });
+        Comparator<File> mockComparator =
+            createMockComparator(new FileNameLexicographicalComparator());
+        Comparator<File> mockComparator2 =
+            createMockComparator(new FileLastModifiedOldestToNewestComparator());
+        assertSame(
+            directoryListing.sort(Arrays.asList(mockComparator, mockComparator2)),
+            directoryListing);
+        List<File> childPathList = directoryListing.getChildPathList();
+        assertEquals(childPathList.get(0).getName(), "abc");
+        assertEquals(childPathList.get(1).getName(), "abc");
+        assertEquals(childPathList.get(2).getName(), "def");
+
+        assertEquals(childPathList.get(0).lastModified(), beforeNow.getMillis());
+        assertEquals(childPathList.get(1).lastModified(), now.getMillis());
+        assertEquals(childPathList.get(2).lastModified(), afterNow.getMillis());
+
+        InOrder order = inOrder(mockComparator, mockComparator2);
+        order.verify(mockComparator, atLeast(1)).compare(any(File.class), any(File.class));
+        order.verify(mockComparator2, atLeast(1)).compare(any(File.class), any(File.class));
+    }
+
+    private File createMockFilePath(String name, DateTime lastModified) {
+        File mockFilePath = mock(File.class);
+        when(mockFilePath.exists()).thenReturn(true);
+        when(mockFilePath.isDirectory()).thenReturn(false);
+        when(mockFilePath.isFile()).thenReturn(true);
+        when(mockFilePath.getName()).thenReturn(name);
+        when(mockFilePath.lastModified()).thenReturn(lastModified.getMillis());
+        return mockFilePath;
+    }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void sort_FailWithNull()
