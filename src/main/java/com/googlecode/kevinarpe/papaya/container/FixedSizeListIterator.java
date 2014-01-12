@@ -47,8 +47,8 @@ import java.util.ListIterator;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see ForwardingListIterator
- * @see UnmodifiableIterator
- * @see UnmodifiableListIterator
+ * @see UnmodifiableForwardingIterator
+ * @see UnmodifiableForwardingListIterator
  * @see #of(ListIterator)
  * @see FixedSizeForwardingList
  * @see FixedSizeForwardingList#listIterator()

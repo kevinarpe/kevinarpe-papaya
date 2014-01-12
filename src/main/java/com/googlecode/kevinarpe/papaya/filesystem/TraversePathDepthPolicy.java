@@ -25,9 +25,55 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
-// TODO: What to do?
+import java.io.File;
+import java.util.Comparator;
+import java.util.List;
+
 public enum TraversePathDepthPolicy {
 
-    DEPTH_FIRST,
-    DEPTH_LAST;
+    DEPTH_FIRST {
+        @Override
+        TraversePathDepthFirstIterator createTraversePathIterator(
+                File dirPath,
+                TraversePathDepthPolicy depthPolicy,
+                PathFilter optDescendDirPathFilter,
+                List<Comparator<File>> descendDirPathComparatorList,
+                PathFilter optIteratePathFilter,
+                List<Comparator<File>> iterateFileComparatorList) {
+            return new TraversePathDepthFirstIterator(
+                dirPath,
+                depthPolicy,
+                optDescendDirPathFilter,
+                descendDirPathComparatorList,
+                optIteratePathFilter,
+                iterateFileComparatorList);
+        }
+    },
+
+    DEPTH_LAST {
+        @Override
+        TraversePathDepthLastIterator createTraversePathIterator(
+                File dirPath,
+                TraversePathDepthPolicy depthPolicy,
+                PathFilter optDescendDirPathFilter,
+                List<Comparator<File>> descendDirPathComparatorList,
+                PathFilter optIteratePathFilter,
+                List<Comparator<File>> iterateFileComparatorList) {
+            return new TraversePathDepthLastIterator(
+                dirPath,
+                depthPolicy,
+                optDescendDirPathFilter,
+                descendDirPathComparatorList,
+                optIteratePathFilter,
+                iterateFileComparatorList);
+        }
+    };
+
+    abstract TraversePathIterator createTraversePathIterator(
+            File dirPath,
+            TraversePathDepthPolicy depthPolicy,
+            PathFilter optDescendDirPathFilter,
+            List<Comparator<File>> descendDirPathComparatorList,
+            PathFilter optIteratePathFilter,
+            List<Comparator<File>> iterateFileComparatorList);
 }

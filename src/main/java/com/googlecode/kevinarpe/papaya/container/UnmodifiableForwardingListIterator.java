@@ -47,19 +47,19 @@ import java.util.ListIterator;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see ForwardingListIterator
- * @see UnmodifiableIterator
+ * @see UnmodifiableForwardingIterator
  * @see #of(ListIterator)
  * @see UnmodifiableForwardingList#listIterator()
  * @see UnmodifiableForwardingList#listIterator(int)
  */
 @FullyTested
-public final class UnmodifiableListIterator<TValue>
+public final class UnmodifiableForwardingListIterator<TValue>
 extends ForwardingListIterator<TValue> {
 
     /**
      * Returns an unmodifiable view of an underlying {@link ListIterator}.  If the input is an
-     * instance of {@link UnmodifiableListIterator}, this method avoids wrapping the iterator again
-     * -- the input value is returned untouched.
+     * instance of {@link UnmodifiableForwardingListIterator}, this method avoids wrapping the
+     * iterator again -- the input value is returned untouched.
      *
      * @param iter
      *        list iterator to create an unmodifable view
@@ -69,18 +69,19 @@ extends ForwardingListIterator<TValue> {
      * @throws NullPointerException
      *         if {@code iter} is {@code null}
      */
-    public static <TValue> UnmodifiableListIterator<TValue> of(ListIterator<TValue> iter) {
+    public static <TValue> UnmodifiableForwardingListIterator<TValue> of(
+            ListIterator<TValue> iter) {
         ObjectArgs.checkNotNull(iter, "iter");
 
-        if (iter instanceof UnmodifiableListIterator) {
-            return (UnmodifiableListIterator<TValue>) iter;
+        if (iter instanceof UnmodifiableForwardingListIterator) {
+            return (UnmodifiableForwardingListIterator<TValue>) iter;
         }
-        return new UnmodifiableListIterator<TValue>(iter);
+        return new UnmodifiableForwardingListIterator<TValue>(iter);
     }
 
     private final ListIterator<TValue> iter;
 
-    private UnmodifiableListIterator(ListIterator<TValue> iter) {
+    private UnmodifiableForwardingListIterator(ListIterator<TValue> iter) {
         this.iter = ObjectArgs.checkNotNull(iter, "iter");
     }
 

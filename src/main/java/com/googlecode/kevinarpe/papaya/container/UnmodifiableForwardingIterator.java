@@ -46,19 +46,19 @@ import java.util.Iterator;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see ForwardingIterator
- * @see UnmodifiableListIterator
+ * @see UnmodifiableForwardingListIterator
  * @see #of(Iterator)
  * @see FixedSizeForwardingList#iterator()
  * @see UnmodifiableForwardingList#iterator()
  */
 @FullyTested
-public final class UnmodifiableIterator<TValue>
+public final class UnmodifiableForwardingIterator<TValue>
 extends ForwardingIterator<TValue> {
 
     /**
      * Returns an unmodifiable view of an underlying {@link Iterator}.  If the input is an instance
-     * of {@link UnmodifiableIterator}, this method avoids wrapping the iterator again -- the input
-     * value is returned untouched.
+     * of {@link UnmodifiableForwardingIterator}, this method avoids wrapping the iterator again --
+     * the input value is returned untouched.
      *
      * @param iter
      *        iterator to create an unmodifable view
@@ -68,18 +68,18 @@ extends ForwardingIterator<TValue> {
      * @throws NullPointerException
      *         if {@code iter} is {@code null}
      */
-    public static <TValue> UnmodifiableIterator<TValue> of(Iterator<TValue> iter) {
+    public static <TValue> UnmodifiableForwardingIterator<TValue> of(Iterator<TValue> iter) {
         ObjectArgs.checkNotNull(iter, "iter");
 
-        if (iter instanceof UnmodifiableIterator) {
-            return (UnmodifiableIterator<TValue>) iter;
+        if (iter instanceof UnmodifiableForwardingIterator) {
+            return (UnmodifiableForwardingIterator<TValue>) iter;
         }
-        return new UnmodifiableIterator<TValue>(iter);
+        return new UnmodifiableForwardingIterator<TValue>(iter);
     }
 
     private final Iterator<TValue> iter;
 
-    private UnmodifiableIterator(Iterator<TValue> iter) {
+    private UnmodifiableForwardingIterator(Iterator<TValue> iter) {
         this.iter = ObjectArgs.checkNotNull(iter, "iter");
     }
 

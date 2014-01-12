@@ -89,13 +89,13 @@ extends ForwardingList<TValue> {
     }
 
     /**
-     * Return value is an instance of {@link UnmodifiableIterator}.
+     * Return value is an instance of {@link UnmodifiableForwardingIterator}.
      * <hr/>
      * {@inheritDoc}
      */
     @Override
     public final Iterator<TValue> iterator() {
-        return UnmodifiableIterator.of(super.iterator());
+        return UnmodifiableForwardingIterator.of(super.iterator());
     }
 
     /**

@@ -42,8 +42,8 @@ import java.util.ListIterator;
  * @see FixedSizeForwardingList
  * @see BaseFixedSizeForwardingList
  * @see ForwardingList
- * @see UnmodifiableIterator
- * @see UnmodifiableListIterator
+ * @see UnmodifiableForwardingIterator
+ * @see UnmodifiableForwardingListIterator
  */
 @FullyTested
 public abstract class UnmodifiableForwardingList<TValue>
@@ -54,25 +54,25 @@ extends BaseFixedSizeForwardingList<TValue> {
     }
 
     /**
-     * Return value is an instance of {@link UnmodifiableListIterator}.  Also, it is final to
+     * Return value is an instance of {@link UnmodifiableForwardingListIterator}.  Also, it is final to
      * disable modify-by-inheritance.
      * <hr/>
      * {@inheritDoc}
      */
     @Override
     public final ListIterator<TValue> listIterator() {
-        return UnmodifiableListIterator.of(super.listIterator());
+        return UnmodifiableForwardingListIterator.of(super.listIterator());
     }
 
     /**
-     * Return value is an instance of {@link UnmodifiableListIterator}.  Also, it is final to
+     * Return value is an instance of {@link UnmodifiableForwardingListIterator}.  Also, it is final to
      * disable modify-by-inheritance.
      * <hr/>
      * {@inheritDoc}
      */
     @Override
     public final ListIterator<TValue> listIterator(int index) {
-        return UnmodifiableListIterator.of(super.listIterator(index));
+        return UnmodifiableForwardingListIterator.of(super.listIterator(index));
     }
 
     /**

@@ -31,35 +31,55 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 
-public class UnmodifiableIteratorTest {
+public class UnmodifiableForwardingListIteratorTest {
 
     ///////////////////////////////////////////////////////////////////////////
-    // UnmodifiableIterator.of()
+    // UnmodifiableForwardingListIterator.of()
     //
 
     @Test
     public void of_PassWithModifiableIterator() {
-        Assert.assertNotNull(UnmodifiableIterator.of(new ArrayList<String>().iterator()));
+        Assert.assertNotNull(
+            UnmodifiableForwardingListIterator.of(new ArrayList<String>().listIterator()));
     }
 
     @Test
-    public void of_PassWithUnmodifiableIterator() {
-        UnmodifiableIterator<String> iter =
-            UnmodifiableIterator.of(Lists.newArrayList("abc", "def", "ghi").iterator());
-        Assert.assertEquals(iter, UnmodifiableIterator.of(iter));
+    public void of_PassWithUnmodifiableListIterator() {
+        UnmodifiableForwardingListIterator<String> iter =
+            UnmodifiableForwardingListIterator.of(
+                Lists.newArrayList("abc", "def", "ghi").listIterator());
+        Assert.assertEquals(iter, UnmodifiableForwardingListIterator.of(iter));
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void of_FailWithNull() {
-        UnmodifiableIterator.of(null);
+        UnmodifiableForwardingListIterator.of(null);
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    // UnmodifiableIterator.remove()
+    // UnmodifiableForwardingIterator.add()
+    //
+
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void add_Fail() {
+        UnmodifiableForwardingListIterator.of(new ArrayList<String>().listIterator()).add("abc");
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // UnmodifiableForwardingIterator.set()
+    //
+
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void set_Fail() {
+        UnmodifiableForwardingListIterator.of(new ArrayList<String>().listIterator()).set("abc");
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // UnmodifiableForwardingIterator.remove()
     //
 
     @Test(expectedExceptions = UnsupportedOperationException.class)
     public void remove_Fail() {
-        UnmodifiableIterator.of(new ArrayList<String>().iterator()).remove();
+        UnmodifiableForwardingListIterator.of(new ArrayList<String>().listIterator()).remove();
     }
 }

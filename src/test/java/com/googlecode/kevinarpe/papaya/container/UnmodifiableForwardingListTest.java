@@ -51,7 +51,7 @@ public class UnmodifiableForwardingListTest {
     @Test
     public void listIterator_Pass() {
         Assert.assertEquals(
-            UnmodifiableListIterator.class,
+            UnmodifiableForwardingListIterator.class,
             new UnmodifiableForwardingListImpl().listIterator().getClass());
     }
 
@@ -62,7 +62,7 @@ public class UnmodifiableForwardingListTest {
     @Test
     public void listIterator_Pass2() {
         Assert.assertEquals(
-            UnmodifiableListIterator.class,
+            UnmodifiableForwardingListIterator.class,
             new UnmodifiableForwardingListImpl().listIterator(1).getClass());
     }
 

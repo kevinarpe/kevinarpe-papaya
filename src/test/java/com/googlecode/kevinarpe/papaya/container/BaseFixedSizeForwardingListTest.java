@@ -82,7 +82,7 @@ public class BaseFixedSizeForwardingListTest {
     @Test
     public void iterator_Pass() {
         Assert.assertEquals(
-            UnmodifiableIterator.class,
+            UnmodifiableForwardingIterator.class,
             new BaseFixedSizeForwardingListImpl().iterator().getClass());
     }
 

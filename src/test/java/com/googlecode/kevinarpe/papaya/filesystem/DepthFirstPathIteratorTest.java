@@ -121,12 +121,13 @@ public class DepthFirstPathIteratorTest {
             int count = 0;
             List<Comparator<File>> fileComparatorList =
                 ImmutableList.<Comparator<File>>of(new FileNameNumericPrefixSmallestToLargestComparator());
-            DepthFirstPathIterator dfpi =
-                TraversePathDepthFirst
-                    .on(baseDirPath)
-                    .withDescendFileComparatorList(fileComparatorList)
-                    .withAscendFileComparatorList(fileComparatorList)
-                    .iterator();
+            // TODO: Fixme
+            TraversePathDepthFirstIterator dfpi = null;
+//            DepthFirstPathIterator dfpi = null;
+//                new TraversePathIterable(baseDirPath)
+//                    .withDescendDirPathComparatorList(fileComparatorList)
+//                    .withPathComparatorList(fileComparatorList)
+//                    .iterator();
             while (dfpi.hasNext()) {
                 ++count;
                 File path = dfpi.next();
