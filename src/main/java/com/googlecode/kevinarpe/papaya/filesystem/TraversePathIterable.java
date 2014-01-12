@@ -26,13 +26,10 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  */
 
 import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableList;
-import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 import java.io.File;
 import java.util.Comparator;
-import java.util.List;
 
 public final class TraversePathIterable
 extends BaseTraversePathIter
@@ -43,25 +40,25 @@ implements Iterable<File> {
             ObjectArgs.checkNotNull(dirPath, "dirPath"),
             ObjectArgs.checkNotNull(depthPolicy, "depthPolicy"),
             (PathFilter) null,
-            ImmutableList.<Comparator<File>>of(),
+            (Comparator<File>) null,
             (PathFilter) null,
-            ImmutableList.<Comparator<File>>of());
+            (Comparator<File>) null);
     }
 
     private TraversePathIterable(
             File dirPath,
             TraversePathDepthPolicy depthPolicy,
             PathFilter optDescendDirPathFilter,
-            List<Comparator<File>> descendDirPathComparatorList,
+            Comparator<File> optDescendDirPathComparator,
             PathFilter optPathFilter,
-            List<Comparator<File>> fileComparatorList) {
+            Comparator<File> optFileComparator) {
         super(
             dirPath,
             depthPolicy,
             optDescendDirPathFilter,
-            descendDirPathComparatorList,
+            optDescendDirPathComparator,
             optPathFilter,
-            fileComparatorList);
+            optFileComparator);
     }
 
     public TraversePathIterable withDirPath(File dirPath) {
@@ -69,9 +66,9 @@ implements Iterable<File> {
             ObjectArgs.checkNotNull(dirPath, "dirPath"),
             getDepthPolicy(),
             getOptionalDescendDirPathFilter(),
-            getDescendDirPathComparatorList(),
+            getOptionalDescendDirPathComparator(),
             getOptionalIteratePathFilter(),
-            getIteratePathComparatorList());
+            getOptionalIteratePathComparator());
     }
 
     public TraversePathIterable withDepthPolicy(TraversePathDepthPolicy depthPolicy) {
@@ -79,9 +76,9 @@ implements Iterable<File> {
             getDirPath(),
             ObjectArgs.checkNotNull(depthPolicy, "depthPolicy"),
             getOptionalDescendDirPathFilter(),
-            getDescendDirPathComparatorList(),
+            getOptionalDescendDirPathComparator(),
             getOptionalIteratePathFilter(),
-            getIteratePathComparatorList());
+            getOptionalIteratePathComparator());
     }
 
     public TraversePathIterable withOptionalDescendDirPathFilter(
@@ -90,22 +87,20 @@ implements Iterable<File> {
             getDirPath(),
             getDepthPolicy(),
             optDescendDirPathFilter,
-            getDescendDirPathComparatorList(),
+            getOptionalDescendDirPathComparator(),
             getOptionalIteratePathFilter(),
-            getIteratePathComparatorList());
+            getOptionalIteratePathComparator());
     }
 
-    public TraversePathIterable withDescendDirPathComparatorList(
-            List<Comparator<File>> descendDirPathComparatorList) {
+    public TraversePathIterable withOptionalDescendDirPathComparator(
+            Comparator<File> optDescendDirPathComparator) {
         return new TraversePathIterable(
             getDirPath(),
             getDepthPolicy(),
             getOptionalDescendDirPathFilter(),
-            ImmutableList.copyOf(
-                CollectionArgs.checkElementsNotNull(
-                    descendDirPathComparatorList, "descendDirPathComparatorList")),
+            optDescendDirPathComparator,
             getOptionalIteratePathFilter(),
-            getIteratePathComparatorList());
+            getOptionalIteratePathComparator());
     }
 
     public TraversePathIterable withOptionalPathFilter(PathFilter optPathFilter) {
@@ -113,21 +108,19 @@ implements Iterable<File> {
             getDirPath(),
             getDepthPolicy(),
             getOptionalDescendDirPathFilter(),
-            getDescendDirPathComparatorList(),
+            getOptionalDescendDirPathComparator(),
             optPathFilter,
-            getIteratePathComparatorList());
+            getOptionalIteratePathComparator());
     }
 
-    public TraversePathIterable withPathComparatorList(List<Comparator<File>> pathComparatorList) {
+    public TraversePathIterable withOptionalPathComparator(Comparator<File> optPathComparator) {
         return new TraversePathIterable(
             getDirPath(),
             getDepthPolicy(),
             getOptionalDescendDirPathFilter(),
-            getDescendDirPathComparatorList(),
+            getOptionalDescendDirPathComparator(),
             getOptionalIteratePathFilter(),
-            ImmutableList.copyOf(
-                CollectionArgs.checkElementsNotNull(
-                    pathComparatorList, "pathComparatorList")));
+            optPathComparator);
     }
 
     @Override
@@ -137,11 +130,24 @@ implements Iterable<File> {
             getDirPath(),
             getDepthPolicy(),
             getOptionalDescendDirPathFilter(),
-            getDescendDirPathComparatorList(),
+            getOptionalDescendDirPathComparator(),
             getOptionalIteratePathFilter(),
-            getIteratePathComparatorList());
+            getOptionalIteratePathComparator());
     }
 
+    /**
+     * Returns hash code of:
+     * <ul>
+     *     <li>{@link #getDirPath()}</li>
+     *     <li>{@link #getDepthPolicy()}</li>
+     *     <li>{@link #getOptionalDescendDirPathFilter()}</li>
+     *     <li>{@link #getOptionalDescendDirPathComparator()}</li>
+     *     <li>{@link #getOptionalIteratePathFilter()}</li>
+     *     <li>{@link #getOptionalIteratePathComparator()}</li>
+     * </ul>
+     * <hr/>
+     * {@inheritDoc}
+     */
     @Override
     public final int hashCode() {
         int result =
@@ -149,9 +155,9 @@ implements Iterable<File> {
                 getDirPath(),
                 getDepthPolicy(),
                 getOptionalDescendDirPathFilter(),
-                getDescendDirPathComparatorList(),
+                getOptionalDescendDirPathComparator(),
                 getOptionalIteratePathFilter(),
-                getIteratePathComparatorList());
+                getOptionalIteratePathComparator());
         return result;
     }
 
@@ -168,14 +174,14 @@ implements Iterable<File> {
                             this.getOptionalDescendDirPathFilter(),
                             other.getOptionalDescendDirPathFilter())
                     && Objects.equal(
-                            this.getDescendDirPathComparatorList(),
-                            other.getDescendDirPathComparatorList())
+                            this.getOptionalDescendDirPathComparator(),
+                            other.getOptionalDescendDirPathComparator())
                     && Objects.equal(
                             this.getOptionalIteratePathFilter(),
                             other.getOptionalIteratePathFilter())
                     && Objects.equal(
-                            this.getIteratePathComparatorList(),
-                            other.getIteratePathComparatorList());
+                            this.getOptionalIteratePathComparator(),
+                            other.getOptionalIteratePathComparator());
         }
         return result;
     }

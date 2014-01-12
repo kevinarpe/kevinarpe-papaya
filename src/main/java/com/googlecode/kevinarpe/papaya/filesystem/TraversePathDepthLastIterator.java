@@ -28,7 +28,6 @@ package com.googlecode.kevinarpe.papaya.filesystem;
 import java.io.File;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 public final class TraversePathDepthLastIterator
@@ -42,16 +41,16 @@ extends TraversePathIterator {
             File dirPath,
             TraversePathDepthPolicy depthPolicy,
             PathFilter optDescendDirFilter,
-            List<Comparator<File>> descendFileComparatorList,
-            PathFilter optAscendFilter,
-            List<Comparator<File>> ascendFileComparatorList) {
+            Comparator<File> optDescendFileComparator,
+            PathFilter optIterateFilter,
+            Comparator<File> optIterateFileComparator) {
         super(
             dirPath,
             depthPolicy,
             optDescendDirFilter,
-            descendFileComparatorList,
-            optAscendFilter,
-            ascendFileComparatorList);
+            optDescendFileComparator,
+            optIterateFilter,
+            optIterateFileComparator);
         _isInitDone = false;
         _hasIteratedDirPath = false;
     }

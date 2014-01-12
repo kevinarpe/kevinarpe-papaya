@@ -27,7 +27,6 @@ package com.googlecode.kevinarpe.papaya.filesystem;
 
 import java.io.File;
 import java.util.Comparator;
-import java.util.List;
 
 public enum TraversePathDepthPolicy {
 
@@ -37,9 +36,9 @@ public enum TraversePathDepthPolicy {
                 File dirPath,
                 TraversePathDepthPolicy depthPolicy,
                 PathFilter optDescendDirPathFilter,
-                List<Comparator<File>> descendDirPathComparatorList,
+                Comparator<File> descendDirPathComparatorList,
                 PathFilter optIteratePathFilter,
-                List<Comparator<File>> iterateFileComparatorList) {
+                Comparator<File> iterateFileComparatorList) {
             return new TraversePathDepthFirstIterator(
                 dirPath,
                 depthPolicy,
@@ -56,9 +55,9 @@ public enum TraversePathDepthPolicy {
                 File dirPath,
                 TraversePathDepthPolicy depthPolicy,
                 PathFilter optDescendDirPathFilter,
-                List<Comparator<File>> descendDirPathComparatorList,
+                Comparator<File> descendDirPathComparatorList,
                 PathFilter optIteratePathFilter,
-                List<Comparator<File>> iterateFileComparatorList) {
+                Comparator<File> iterateFileComparatorList) {
             return new TraversePathDepthLastIterator(
                 dirPath,
                 depthPolicy,
@@ -73,7 +72,7 @@ public enum TraversePathDepthPolicy {
             File dirPath,
             TraversePathDepthPolicy depthPolicy,
             PathFilter optDescendDirPathFilter,
-            List<Comparator<File>> descendDirPathComparatorList,
+            Comparator<File> descendDirPathComparatorList,
             PathFilter optIteratePathFilter,
-            List<Comparator<File>> iterateFileComparatorList);
+            Comparator<File> iterateFileComparatorList);
 }

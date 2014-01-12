@@ -26,13 +26,15 @@ package com.googlecode.kevinarpe.papaya.compare;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 
+import java.util.Collection;
 import java.util.Comparator;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@FullyTested
 public class ComparatorUtils {
 
     /**
@@ -43,10 +45,53 @@ public class ComparatorUtils {
      *
      * @return normalized compare result: -1, 0, or +1
      */
+    @FullyTested
     public static int normalizeCompareResult(int result) {
         if (0 != result) {
             result /= Math.abs(result);
         }
         return result;
+    }
+
+    /**
+     * Creates a new {@link Comparator} from a list of {@code Comparator}s which returns the first
+     * non-zero compare result.  As a special case, if the input list has exactly one element, it is
+     * returned unchanged.
+     *
+     * @param comparatorCollection
+     *        collection of comparators to chain
+     * @param <TValue>
+     *        type of object compared by each {@link Comparator}
+     *
+     * @return new {@code Comparator} chaining the input list of {@code Comparator}s
+     *
+     * @throws NullPointerException
+     *         if {@code ref} (or any element) is {@code null}
+     * @throws IllegalArgumentException
+     *         if number of elements in {@code ref} is zero
+     */
+    @NotFullyTested
+    public static <TValue> Comparator<TValue> chain(
+            final Collection<Comparator<TValue>> comparatorCollection) {
+        CollectionArgs.checkNotEmptyAndElementsNotNull(comparatorCollection, "comparatorCollection");
+
+        if (1 == comparatorCollection.size()) {
+            for (Comparator<TValue> comparator : comparatorCollection) {
+                return comparator;
+            }
+        }
+
+        return new Comparator<TValue>() {
+            @Override
+            public int compare(TValue left, TValue right) {
+                for (Comparator<TValue> comparator : comparatorCollection) {
+                    int result = comparator.compare(left, right);
+                    if (0 != result) {
+                        return result;
+                    }
+                }
+                return 0;
+            }
+        };
     }
 }

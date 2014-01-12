@@ -245,42 +245,6 @@ public final class DirectoryListing {
 //    }
 
     /**
-     * Returns hash code of {@link #getDirPath()}, {@link #getChildPathList()}, and the {@link List}
-     * class used.  This will differentiate between two instances of this class using a different
-     * internal storage {@code List} class.
-     * <hr/>
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = Objects.hashCode(_dirPath, _childPathList);
-        result = 31 * result + _childPathList.getClass().hashCode();
-        return result;
-    }
-
-    /**
-     * Equates by {@link #getDirPath()}, {@link #getChildPathList()}, and the {@link List}
-     * class used.  This will differentiate between two instances of this class using a different
-     * internal storage {@code List} class.
-     * <hr/>
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object obj) {
-        // Ref: http://stackoverflow.com/a/5039178/257299
-        boolean result = (this == obj);
-        if (!result && obj instanceof DirectoryListing) {
-            final DirectoryListing other = (DirectoryListing) obj;
-            result = Objects.equal(this._dirPath, other._dirPath)
-                && Objects.equal(
-                        (null == this._childPathList ? null : this._childPathList.getClass()),
-                        (null == other._childPathList ? null : other._childPathList.getClass()))
-                && Objects.equal(this._childPathList, other._childPathList);
-        }
-        return result;
-    }
-
-    /**
      * This is a convenience method for {@link #sort(List)}.
      *
      * @throws NullPointerException
@@ -315,6 +279,7 @@ public final class DirectoryListing {
      * @see #filter(FileFilter)
      * @see #filter(List)
      */
+    // TODO: Remove.  Replaced by ComparatorUtils.chain()
     public DirectoryListing sort(List<Comparator<File>> fileComparatorList) {
         CollectionArgs.checkElementsNotNull(fileComparatorList, "fileComparatorList");
 
@@ -415,5 +380,41 @@ public final class DirectoryListing {
                 iter.remove();
             }
         }
+    }
+
+    /**
+     * Returns hash code of {@link #getDirPath()}, {@link #getChildPathList()}, and the {@link List}
+     * class used.  This will differentiate between two instances of this class using a different
+     * internal storage {@code List} class.
+     * <hr/>
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(_dirPath, _childPathList);
+        result = 31 * result + _childPathList.getClass().hashCode();
+        return result;
+    }
+
+    /**
+     * Equates by {@link #getDirPath()}, {@link #getChildPathList()}, and the {@link List}
+     * class used.  This will differentiate between two instances of this class using a different
+     * internal storage {@code List} class.
+     * <hr/>
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        // Ref: http://stackoverflow.com/a/5039178/257299
+        boolean result = (this == obj);
+        if (!result && obj instanceof DirectoryListing) {
+            final DirectoryListing other = (DirectoryListing) obj;
+            result = Objects.equal(this._dirPath, other._dirPath)
+                && Objects.equal(
+                (null == this._childPathList ? null : this._childPathList.getClass()),
+                (null == other._childPathList ? null : other._childPathList.getClass()))
+                && Objects.equal(this._childPathList, other._childPathList);
+        }
+        return result;
     }
 }

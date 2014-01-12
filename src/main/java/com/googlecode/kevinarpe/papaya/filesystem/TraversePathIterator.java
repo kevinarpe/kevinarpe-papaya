@@ -26,6 +26,8 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  */
 
 import com.google.common.collect.Lists;
+import com.googlecode.kevinarpe.papaya.argument.IntArgs;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
 
 import java.io.File;
@@ -39,8 +41,9 @@ public abstract class TraversePathIterator
 extends BaseTraversePathIter
 implements Iterator<File> {
 
-    final class _Level {
+    static final class _Level {
 
+        private final TraversePathIterator _parent;
         private final int _depth;
         private final DirectoryListing _origDirectoryListing;
         private DirectoryListing _descendDirDirectoryListing;
@@ -51,17 +54,17 @@ implements Iterator<File> {
         // TODO: How to handle missing dirs?
         // Many initial listFiles() shows a dir... but later, does not exist.  Handle well.  Policy?
         // Add option to ignore.
-        private _Level(File dirPath, int depth)
+        protected _Level(TraversePathIterator parent, File dirPath, int depth)
         throws PathException {
+            _parent = ObjectArgs.checkNotNull(parent, "parent");
             _origDirectoryListing = new DirectoryListing(dirPath, LinkedList.class);
-            _depth = depth;
+            _depth = IntArgs.checkPositive(depth, "depth");
         }
 
         public DirectoryListing getDescendDirDirectoryListing() {
             if (null == _descendDirDirectoryListing) {
                 DirectoryListing newDirListing = new DirectoryListing(_origDirectoryListing);
-                final PathFilter descendDirPathFilter =
-                    TraversePathIterator.this.getOptionalDescendDirPathFilter();
+                final PathFilter descendDirPathFilter = _parent.getOptionalDescendDirPathFilter();
                 newDirListing.filter(
                     new FileFilter() {
                         @Override
@@ -76,11 +79,17 @@ implements Iterator<File> {
                             return result;
                         }
                     });
-                newDirListing.sort(
-                    TraversePathIterator.this.getDescendDirPathComparatorList());
+                sortDirListing(newDirListing, _parent.getOptionalDescendDirPathComparator());
                 _descendDirDirectoryListing = newDirListing;
             }
             return _descendDirDirectoryListing;
+        }
+
+        private void sortDirListing(
+                DirectoryListing dirListing, Comparator<File> optPathComparator) {
+            if (null != optPathComparator) {
+                dirListing.sort(optPathComparator);
+            }
         }
 
         public Iterator<File> getDescendDirDirectoryListingIter() {
@@ -94,8 +103,7 @@ implements Iterator<File> {
 
         public DirectoryListing getIterateDirectoryListing() {
             if (null == _iterateDirectoryListing) {
-                final PathFilter pathFilter =
-                    TraversePathIterator.this.getOptionalIteratePathFilter();
+                final PathFilter pathFilter = _parent.getOptionalIteratePathFilter();
                 DirectoryListing newDirListing = new DirectoryListing(_origDirectoryListing);
                 if (null != pathFilter) {
                     newDirListing.filter(
@@ -110,8 +118,7 @@ implements Iterator<File> {
                             }
                         });
                 }
-                newDirListing.sort(
-                    TraversePathIterator.this.getIteratePathComparatorList());
+                sortDirListing(newDirListing, _parent.getOptionalIteratePathComparator());
                 _iterateDirectoryListing = newDirListing;
             }
             return _iterateDirectoryListing;
@@ -133,16 +140,16 @@ implements Iterator<File> {
             File dirPath,
             TraversePathDepthPolicy depthPolicy,
             PathFilter optDescendDirPathFilter,
-            List<Comparator<File>> descendDirPathComparatorList,
+            Comparator<File> optDescendDirPathComparator,
             PathFilter optIteratePathFilter,
-            List<Comparator<File>> iterateFileComparatorList) {
+            Comparator<File> optIterateFileComparator) {
         super(
             dirPath,
             depthPolicy,
             optDescendDirPathFilter,
-            descendDirPathComparatorList,
+            optDescendDirPathComparator,
             optIteratePathFilter,
-            iterateFileComparatorList);
+            optIterateFileComparator);
         _levelList = Lists.newLinkedList();
     }
 
@@ -150,7 +157,7 @@ implements Iterator<File> {
         final int depth = 1 + _levelList.size();
         _Level level = null;
         try {
-            level = new _Level(dirPath, depth);
+            level = new _Level(this, dirPath, depth);
         }
         catch (PathException e) {
             // TODO: Fixme
@@ -173,6 +180,6 @@ implements Iterator<File> {
     }
 
     public final int depth() {
-        return _levelList.size() - 1;
+        return _levelList.size();
     }
 }
