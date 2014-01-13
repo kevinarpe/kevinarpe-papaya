@@ -26,15 +26,17 @@ package com.googlecode.kevinarpe.papaya.compare;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 
 import java.util.Collection;
 import java.util.Comparator;
 
 /**
+ * Utilities for interface {@link Comparator}.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public class ComparatorUtils {
 
     /**
@@ -45,7 +47,6 @@ public class ComparatorUtils {
      *
      * @return normalized compare result: -1, 0, or +1
      */
-    @FullyTested
     public static int normalizeCompareResult(int result) {
         if (0 != result) {
             result /= Math.abs(result);
@@ -54,26 +55,30 @@ public class ComparatorUtils {
     }
 
     /**
-     * Creates a new {@link Comparator} from a list of {@code Comparator}s which returns the first
-     * non-zero compare result.  As a special case, if the input list has exactly one element, it is
-     * returned unchanged.
+     * Creates a new comparator from a collection of comparators which returns the first non-zero
+     * compare result.  A short-circuit algorithm is used, thus not all comparators are guaranteed
+     * to run.  For example, if the first result is non-zero, none of the remaining comparators are
+     * run.  This is important if the comparators are stateful.
+     * <p>
+     * As a special case, if the input list has exactly one element, it is returned unchanged.
      *
      * @param comparatorCollection
-     *        collection of comparators to chain
+     *        collection of comparators to chain.  Must not be {@code null}, empty, or contain
+     *        {@code null} elements.
      * @param <TValue>
-     *        type of object compared by each {@link Comparator}
+     *        type of object compared by each comparator
      *
-     * @return new {@code Comparator} chaining the input list of {@code Comparator}s
+     * @return new comparator chaining the input list of comparators
      *
      * @throws NullPointerException
-     *         if {@code ref} (or any element) is {@code null}
+     *         if {@code comparatorCollection} (or any element) is {@code null}
      * @throws IllegalArgumentException
-     *         if number of elements in {@code ref} is zero
+     *         if number of elements in {@code comparatorCollection} is zero
      */
-    @NotFullyTested
     public static <TValue> Comparator<TValue> chain(
             final Collection<Comparator<TValue>> comparatorCollection) {
-        CollectionArgs.checkNotEmptyAndElementsNotNull(comparatorCollection, "comparatorCollection");
+        CollectionArgs.checkNotEmptyAndElementsNotNull(
+            comparatorCollection, "comparatorCollection");
 
         if (1 == comparatorCollection.size()) {
             for (Comparator<TValue> comparator : comparatorCollection) {

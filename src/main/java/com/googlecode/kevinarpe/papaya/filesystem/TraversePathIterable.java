@@ -30,11 +30,65 @@ import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 import java.io.File;
 import java.util.Comparator;
+import java.util.Iterator;
 
+/**
+ * Builder class for {@link TraversePathDepthFirstIterator} and
+ * {@link TraversePathDepthLastIterator}.
+ *
+ * This class divides directory traversal (which directories to descend) from path iteration (which
+ * paths to return from {@link Iterator#next()}).  Independent control is provided for both groups.
+ * <p>
+ * Methods for directory traversal:
+ * <ul>
+ *     <li>{@link #withOptionalDescendDirPathFilter(PathFilter)}</li>
+ *     <li>{@link #withOptionalDescendDirPathComparator(Comparator)}</li>
+ * </ul>
+ * <p>
+ * Methods for path iteration:
+ * <ul>
+ *     <li>{@link #withOptionalIteratePathFilter(PathFilter)}</li>
+ *     <li>{@link #withOptionalIteratePathComparator(Comparator)}</li>
+ * </ul>
+ * <p>
+ * Example: Iterate all normal files (non-directories) in a directory tree.  This is equivalent to
+ * the UNIX command: {@code find $dir -not -type d}
+ *
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see TraversePathDepthPolicy
+ */
 public final class TraversePathIterable
 extends BaseTraversePathIter
 implements Iterable<File> {
 
+    /**
+     * Constructs an iterable with its required attributes and none of its optional attributes:
+     * <ul>
+     *     <li>descend directory path filter</li>
+     *     <li>descend directory comparator</li>
+     *     <li>iterate path filter</li>
+     *     <li>iterate comparator</li>
+     * </ul>
+     *
+     * @param dirPath
+     *        root directory to traverse.  Must not be {@code null}, but need not exist.  Directory
+     *        trees may be highly ephemeral, so the existance of this directory at the time of
+     *        construction is not required.
+     *
+     * @param depthPolicy
+     *        when to descend directories: first or last.  Must not be {@code null}.
+     *
+     * @throws NullPointerException
+     *         if {@code dirPath} or {@code depthPolicy} is {@code null}
+     *
+     * @see #withDirPath(File)
+     * @see #withDepthPolicy(TraversePathDepthPolicy)
+     * @see #withOptionalDescendDirPathFilter(PathFilter)
+     * @see #withOptionalDescendDirPathComparator(Comparator)
+     * @see #withOptionalIteratePathFilter(PathFilter)
+     * @see #withOptionalIteratePathComparator(Comparator)
+     */
     public TraversePathIterable(File dirPath, TraversePathDepthPolicy depthPolicy) {
         super(
             ObjectArgs.checkNotNull(dirPath, "dirPath"),
@@ -50,17 +104,36 @@ implements Iterable<File> {
             TraversePathDepthPolicy depthPolicy,
             PathFilter optDescendDirPathFilter,
             Comparator<File> optDescendDirPathComparator,
-            PathFilter optPathFilter,
-            Comparator<File> optFileComparator) {
+            PathFilter optIteratePathFilter,
+            Comparator<File> optIteratePathComparator) {
         super(
             dirPath,
             depthPolicy,
             optDescendDirPathFilter,
             optDescendDirPathComparator,
-            optPathFilter,
-            optFileComparator);
+            optIteratePathFilter,
+            optIteratePathComparator);
     }
 
+    /**
+     * Constructs a <b>new</b> iterable from the current, replacing the root directory to traverse.
+     * If the depth policy is {@link TraversePathDepthPolicy#DEPTH_FIRST}, this directory will be
+     * the <i>last</i> path considered for iteration (depending upon the filter).  The vice versa
+     * also holds true for {@link TraversePathDepthPolicy#DEPTH_LAST}: this directory will be the
+     * <i>first</i> path considered for iteration (depending upon the filter).
+     *
+     * @param dirPath
+     *        root directory to traverse.  Must not be {@code null}, but need not exist.  Directory
+     *        trees may be highly ephemeral, so the existance of this directory at the time of
+     *        construction is not required.
+     *
+     * @return <b>new</b> iterable
+     *
+     * @throws NullPointerException
+     *         if {@code dirPath} is {@code null}
+     *
+     * @see #getDirPath()
+     */
     public TraversePathIterable withDirPath(File dirPath) {
         return new TraversePathIterable(
             ObjectArgs.checkNotNull(dirPath, "dirPath"),
@@ -71,6 +144,19 @@ implements Iterable<File> {
             getOptionalIteratePathComparator());
     }
 
+    /**
+     * Constructs a <b>new</b> iterable from the current, replacing the depth policy.
+     *
+     * @param depthPolicy
+     *        when to descend directories: first or last.  Must not be {@code null}.
+     *
+     * @return <b>new</b> iterable
+     *
+     * @throws NullPointerException
+     *         if {@code depthPolicy} is {@code null}
+     *
+     * @see #getDepthPolicy()
+     */
     public TraversePathIterable withDepthPolicy(TraversePathDepthPolicy depthPolicy) {
         return new TraversePathIterable(
             getDirPath(),
@@ -81,6 +167,20 @@ implements Iterable<File> {
             getOptionalIteratePathComparator());
     }
 
+    /**
+     * Constructs a <b>new</b> iterable from the current, replacing the optional descend directory
+     * path filter.  This attribute filters directories before traversal.  If {@code null},
+     * <i>all</i> directories are traversed.
+     * <p>
+     * To control which paths are iterated, see {@link #withOptionalIteratePathFilter(PathFilter)}.
+     *
+     * @param optDescendDirPathFilter
+     *        path filter for descend directories.  May be {@code null}.
+     *
+     * @return <b>new</b> iterable
+     *
+     * @see #getOptionalDescendDirPathFilter()
+     */
     public TraversePathIterable withOptionalDescendDirPathFilter(
             PathFilter optDescendDirPathFilter) {
         return new TraversePathIterable(
@@ -92,6 +192,21 @@ implements Iterable<File> {
             getOptionalIteratePathComparator());
     }
 
+    /**
+     * Constructs a <b>new</b> iterable from the current, replacing the optional descend directory
+     * comparator.  This attribute sorts directories before traversal.  If {@code null}, directories
+     * are <i>not</i> sorted before traversal.
+     * <p>
+     * To control the order paths are iterated, see
+     * {@link #withOptionalIteratePathComparator(Comparator)}.
+     *
+     * @param optDescendDirPathComparator
+     *        comparator to sort descend directories.  May be {@code null}.
+     *
+     * @return <b>new</b> iterable
+     *
+     * @see #getOptionalDescendDirPathComparator()
+     */
     public TraversePathIterable withOptionalDescendDirPathComparator(
             Comparator<File> optDescendDirPathComparator) {
         return new TraversePathIterable(
@@ -103,26 +218,67 @@ implements Iterable<File> {
             getOptionalIteratePathComparator());
     }
 
-    public TraversePathIterable withOptionalPathFilter(PathFilter optPathFilter) {
+    /**
+     * Constructs a <b>new</b> iterable from the current, replacing the optional iterated paths
+     * filter.  This attribute filters paths before iteration.  If {@code null}, <i>all</i> paths
+     * are iterated, including directories.
+     * <p>
+     * To control which directories are traversed, see
+     * {@link #withOptionalIteratePathFilter(PathFilter)}.
+     * To control how directories are paths are traversed, see
+     * {@link #withOptionalDescendDirPathFilter(PathFilter)}.
+     *
+     * @param optIteratePathFilter
+     *        path filter for iterated paths.  May be {@code null}.
+     *
+     * @return <b>new</b> iterable
+     *
+     * @see #getOptionalIteratePathFilter()
+     */
+    public TraversePathIterable withOptionalIteratePathFilter(PathFilter optIteratePathFilter) {
         return new TraversePathIterable(
             getDirPath(),
             getDepthPolicy(),
             getOptionalDescendDirPathFilter(),
             getOptionalDescendDirPathComparator(),
-            optPathFilter,
+            optIteratePathFilter,
             getOptionalIteratePathComparator());
     }
 
-    public TraversePathIterable withOptionalPathComparator(Comparator<File> optPathComparator) {
+    /**
+     * Constructs a <b>new</b> iterable from the current, replacing the optional iterated paths
+     * comparator.  This attribute sorts paths before iteration.  If {@code null}, paths are
+     * <i>not</i> sorted before iteration.
+     * <p>
+     * To control the order directories are traversed, see
+     * {@link #withOptionalDescendDirPathComparator(Comparator)}.
+     *
+     * @param optIteratePathComparator
+     *        comparator to sort iterated paths.  May be {@code null}.
+     *
+     * @return <b>new</b> iterable
+     *
+     * @see #getOptionalIteratePathComparator()
+     */
+    public TraversePathIterable withOptionalIteratePathComparator(
+            Comparator<File> optIteratePathComparator) {
         return new TraversePathIterable(
             getDirPath(),
             getDepthPolicy(),
             getOptionalDescendDirPathFilter(),
             getOptionalDescendDirPathComparator(),
             getOptionalIteratePathFilter(),
-            optPathComparator);
+            optIteratePathComparator);
     }
 
+    /**
+     * Depending on the depth policy, returns a new instance of
+     * {@link TraversePathDepthFirstIterator} or {@link TraversePathDepthLastIterator}.
+     *
+     * @see new path iterator
+     *
+     * @see #getDepthPolicy()
+     */
     @Override
     public TraversePathIterator iterator() {
         final TraversePathDepthPolicy depthPolicy = getDepthPolicy();
@@ -161,6 +317,19 @@ implements Iterable<File> {
         return result;
     }
 
+    /**
+     * Equates by:
+     * <ul>
+     *     <li>{@link #getDirPath()}</li>
+     *     <li>{@link #getDepthPolicy()}</li>
+     *     <li>{@link #getOptionalDescendDirPathFilter()}</li>
+     *     <li>{@link #getOptionalDescendDirPathComparator()}</li>
+     *     <li>{@link #getOptionalIteratePathFilter()}</li>
+     *     <li>{@link #getOptionalIteratePathComparator()}</li>
+     * </ul>
+     * <hr/>
+     * {@inheritDoc}
+     */
     @Override
     public final boolean equals(Object obj) {
         // Ref: http://stackoverflow.com/a/5039178/257299

@@ -31,16 +31,20 @@ import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import java.util.Comparator;
 
 /**
+ * Controls how strings are compared: whether or not to ignore case differences.  For most
+ * languages of origin <i>outside</i> Western European, this distinction is irrelevant.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see AbstractLexicographicalComparator
+ * @see #compare(String, String)
  */
 @FullyTested
 public enum CaseSensitive
 implements Comparator<String> {
 
     /**
-     *  Do <b>not</b> ignore case during {@link String} comparisons.
+     * Do <b>not</b> ignore case during {@link String} comparisons.
      *
      *  @see String#compareTo(String)
      */
@@ -89,6 +93,9 @@ implements Comparator<String> {
      *        must not be {@code null}
      *
      * @return strictly normalized compare result: -1, 0 or +1
+     *
+     * @throws NullPointerException
+     *         if {@code left} or {@code right} is {@code null}
      *
      * @see ComparatorUtils#normalizeCompareResult(int)
      */
