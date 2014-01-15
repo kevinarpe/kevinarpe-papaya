@@ -26,115 +26,59 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  */
 
 import com.google.common.collect.Lists;
-import com.googlecode.kevinarpe.papaya.argument.IntArgs;
-import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.NoSuchElementException;
 
+/**
+ * Traverses a directory hierarchy similar to the UNIX command line tool {@code find}.  Use the
+ * builder class {@link TraversePathIterable} to construct path iterators.
+ * <p>
+ * Terminology:
+ * <ul>
+ *     <li>For "depth last" iterators, paths in each directory are iterated <i>before</i> descending
+ *     any directories</li>
+ *     <li>For "depth first" iterators, paths in each directory are iterated <i>after</i> descending
+ *     any directories</li>
+ * </ul>
+ * <p>
+ * Example directory structure:
+ * <pre>{@code
+ *       topDir
+ *         |
+ * file1 file2 dir1
+ *              |
+ *      file3 file4 dir2
+ *                    |
+ *                  file5
+ * }</pre>
+ * <p>
+ * Directories are traversed in this order:
+ * <ul>
+ *     <li>For "depth last" iterators: topDir, dir1, dir2</li>
+ *     <li>For "depth first" iterators: dir2, dir1, topDir</li>
+ * </ul>
+ * Possible path iterations:
+ * <ul>
+ *     <li>For "depth last" iterators: topDir, file1, file2, dir1, file3, file4 dir2, file5</li>
+ *     <li>For "depth first" iterators: file5, file3, file4, dir2, file1, file2, dir1, topDir</li>
+ * </ul>
+ *
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see BaseTraversePathIter
+ */
+@NotFullyTested
 public abstract class TraversePathIterator
 extends BaseTraversePathIter
 implements Iterator<File> {
 
-    static final class _Level {
-
-        private final TraversePathIterator _parent;
-        private final int _depth;
-        private final DirectoryListing _origDirectoryListing;
-        private DirectoryListing _descendDirDirectoryListing;
-        private Iterator<File> _descendDirDirectoryListingIter;
-        private DirectoryListing _iterateDirectoryListing;
-        private Iterator<File> _iterateDirectoryListingIter;
-
-        // TODO: How to handle missing dirs?
-        // Many initial listFiles() shows a dir... but later, does not exist.  Handle well.  Policy?
-        // Add option to ignore.
-        protected _Level(TraversePathIterator parent, File dirPath, int depth)
-        throws PathException {
-            _parent = ObjectArgs.checkNotNull(parent, "parent");
-            _origDirectoryListing = new DirectoryListing(dirPath, LinkedList.class);
-            _depth = IntArgs.checkPositive(depth, "depth");
-        }
-
-        public DirectoryListing getDescendDirDirectoryListing() {
-            if (null == _descendDirDirectoryListing) {
-                DirectoryListing newDirListing = new DirectoryListing(_origDirectoryListing);
-                final PathFilter descendDirPathFilter = _parent.getOptionalDescendDirPathFilter();
-                newDirListing.filter(
-                    new FileFilter() {
-                        @Override
-                        public boolean accept(File path) {
-                            if (!path.isDirectory()) {
-                                return false;
-                            }
-                            if (null == descendDirPathFilter) {
-                                return true;
-                            }
-                            boolean result = descendDirPathFilter.accept(path, _depth);
-                            return result;
-                        }
-                    });
-                sortDirListing(newDirListing, _parent.getOptionalDescendDirPathComparator());
-                _descendDirDirectoryListing = newDirListing;
-            }
-            return _descendDirDirectoryListing;
-        }
-
-        private void sortDirListing(
-                DirectoryListing dirListing, Comparator<File> optPathComparator) {
-            if (null != optPathComparator) {
-                dirListing.sort(optPathComparator);
-            }
-        }
-
-        public Iterator<File> getDescendDirDirectoryListingIter() {
-            if (null == _descendDirDirectoryListingIter) {
-                DirectoryListing descendDirDirectoryListing = getDescendDirDirectoryListing();
-                List<File> childPathList = descendDirDirectoryListing.getChildPathList();
-                _descendDirDirectoryListingIter = childPathList.iterator();
-            }
-            return _descendDirDirectoryListingIter;
-        }
-
-        public DirectoryListing getIterateDirectoryListing() {
-            if (null == _iterateDirectoryListing) {
-                final PathFilter pathFilter = _parent.getOptionalIteratePathFilter();
-                DirectoryListing newDirListing = new DirectoryListing(_origDirectoryListing);
-                if (null != pathFilter) {
-                    newDirListing.filter(
-                        new FileFilter() {
-                            @Override
-                            public boolean accept(File path) {
-                                boolean result = true;
-                                if (null != pathFilter) {
-                                    result = pathFilter.accept(path, _depth);
-                                }
-                                return result;
-                            }
-                        });
-                }
-                sortDirListing(newDirListing, _parent.getOptionalIteratePathComparator());
-                _iterateDirectoryListing = newDirListing;
-            }
-            return _iterateDirectoryListing;
-        }
-
-        public Iterator<File> getIterateDirectoryListingIter() {
-            if (null == _iterateDirectoryListingIter) {
-                DirectoryListing iterateDirectoryListing = getIterateDirectoryListing();
-                List<File> childPathList = iterateDirectoryListing.getChildPathList();
-                _iterateDirectoryListingIter = childPathList.iterator();
-            }
-            return _iterateDirectoryListingIter;
-        }
-    }
-
-    private final LinkedList<_Level> _levelList;
+    private final LinkedList<TraversePathLevel> _levelList;
 
     TraversePathIterator(
             File dirPath,
@@ -153,11 +97,11 @@ implements Iterator<File> {
         _levelList = Lists.newLinkedList();
     }
 
-    protected final _Level addLevel(File dirPath) {
+    protected final TraversePathLevel addLevel(File dirPath) {
         final int depth = 1 + _levelList.size();
-        _Level level = null;
+        TraversePathLevel level = null;
         try {
-            level = new _Level(this, dirPath, depth);
+            level = new TraversePathLevel(this, dirPath, depth);
         }
         catch (PathException e) {
             // TODO: Fixme
@@ -167,18 +111,48 @@ implements Iterator<File> {
         return level;
     }
 
-    protected final _Level removeLevel() {
+    protected final TraversePathLevel removeLevel() {
         _levelList.removeLast();
-        _Level level = (_levelList.isEmpty() ? null :_levelList.getLast());
+        TraversePathLevel level = (_levelList.isEmpty() ? null :_levelList.getLast());
         return level;
     }
 
+    /**
+     * Tests if a next path exists for iteration.  The first call to this method is comparatively
+     * more expensive than future calls.
+     * <hr/>
+     * {@inheritDoc}
+     *
+     * @see #next()
+     */
+    @Override
+    public abstract boolean hasNext();
+
+    /**
+     * Returns the next path for iteration.
+     *
+     * @throws NoSuchElementException
+     *         if there is not next path for iteration
+     * <hr/>
+     * {@inheritDoc}
+     *
+     * @see #hasNext()
+     */
+    @Override
+    public abstract File next();
+
+    /**
+     * Always throws {@link UnsupportedOperationException}.
+     */
     @Override
     public final void remove() {
         throw new UnsupportedOperationException(String.format(
             "Class is unmodifiable: %s", this.getClass().getName()));
     }
 
+    /**
+     * @return number of levels below {@link #getDirPath()}.  Minimum value is zero.
+     */
     public final int depth() {
         return _levelList.size();
     }

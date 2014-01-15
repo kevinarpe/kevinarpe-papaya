@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  */
 
 import com.google.common.base.Objects;
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 import java.io.File;
@@ -58,6 +59,7 @@ import java.util.Iterator;
  *
  * @see TraversePathDepthPolicy
  */
+@NotFullyTested
 public final class TraversePathIterable
 extends BaseTraversePathIter
 implements Iterable<File> {

@@ -25,16 +25,19 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+
 import java.io.File;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class TraversePathDepthLastIterator
+@NotFullyTested
+final class TraversePathDepthLastIterator
 extends TraversePathIterator {
 
     private boolean _isInitDone;
-    private _Level _currentLevel;
+    private TraversePathLevel _currentLevel;  // null when depth == 0
     private boolean _hasIteratedDirPath;
 
     TraversePathDepthLastIterator(
@@ -82,7 +85,8 @@ extends TraversePathIterator {
     @Override
     public File next() {
         if (!hasNext()) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException(
+                "Method hasNext() returned false: There is no next path to iterate");
         }
         if (!_hasIteratedDirPath) {
             _hasIteratedDirPath = true;

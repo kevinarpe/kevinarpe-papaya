@@ -25,16 +25,19 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+
 import java.io.File;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class TraversePathDepthFirstIterator
+@NotFullyTested
+final class TraversePathDepthFirstIterator
 extends TraversePathIterator {
 
     private boolean _isInitDone;
-    private _Level _currentLevel;
+    private TraversePathLevel _currentLevel;  // null when depth == 0
     private boolean _hasIteratedDirPath;
     private boolean _isNextDirPath;
 
@@ -67,7 +70,7 @@ extends TraversePathIterator {
                 File descendDirPath = iter.next();
                 _currentLevel = addLevel(descendDirPath);
             }
-            // Tighter, but harder to debug.  Not sure.
+            // TODO: Tighter, but harder to debug.  Dou suru?
 //            while (_currentLevel.getDescendDirDirectoryListingIter().hasNext()) {
 //                File descendDirPath = _currentLevel.getDescendDirDirectoryListingIter().next();
 //                _currentLevel = addLevel(descendDirPath);
