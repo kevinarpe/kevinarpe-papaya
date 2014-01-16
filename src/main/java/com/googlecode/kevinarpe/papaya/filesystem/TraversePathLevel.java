@@ -41,35 +41,51 @@ import java.util.List;
  */
 final class TraversePathLevel {
 
-    static interface DirectoryListingFactory {
+    static interface Factory {
 
-        DirectoryListing newInstance(File dirPath, Class<? extends List> listClass)
+        DirectoryListing newDirectoryListingInstance(File dirPath, Class<? extends List> listClass)
         throws PathException;
 
-        DirectoryListing newInstance(DirectoryListing other);
+        DirectoryListing newDirectoryListingInstance(DirectoryListing other);
+
+        DescendDirFileFilter newDescendDirFileFilterInstance(PathFilter pathFilter, int depth);
+
+        IterateFileFilter newIterateFileFilterInstance(PathFilter pathFilter, int depth);
     }
 
-    private static final class DirectoryListingFactoryImpl
-    implements DirectoryListingFactory {
+    private static final class FactoryImpl
+    implements Factory {
 
-        public static final DirectoryListingFactoryImpl INSTANCE =
-            new DirectoryListingFactoryImpl();
+        public static final FactoryImpl INSTANCE =
+            new FactoryImpl();
 
         @Override
-        public DirectoryListing newInstance(File dirPath, Class<? extends List> listClass)
+        public DirectoryListing newDirectoryListingInstance(
+                File dirPath, Class<? extends List> listClass)
         throws PathException {
             return new DirectoryListing(dirPath, listClass);
         }
 
         @Override
-        public DirectoryListing newInstance(DirectoryListing other) {
+        public DirectoryListing newDirectoryListingInstance(DirectoryListing other) {
             return new DirectoryListing(other);
+        }
+
+        @Override
+        public DescendDirFileFilter newDescendDirFileFilterInstance(
+                PathFilter pathFilter, int depth) {
+            return new DescendDirFileFilter(pathFilter, depth);
+        }
+
+        @Override
+        public IterateFileFilter newIterateFileFilterInstance(PathFilter pathFilter, int depth) {
+            return new IterateFileFilter(pathFilter, depth);
         }
     }
 
     static final Class<? extends List> DEFAULT_DIRECTORY_LISTING_LIST_CLASS = LinkedList.class;
 
-    private final DirectoryListingFactory _directoryListingFactory;
+    private final Factory _factory;
     private final TraversePathIterator _parent;
     private final int _depth;
     private final DirectoryListing _origDirectoryListing;
@@ -80,7 +96,7 @@ final class TraversePathLevel {
 
     TraversePathLevel(TraversePathIterator parent, File dirPath, int depth)
     throws PathException {
-        this(parent, dirPath, depth, DirectoryListingFactoryImpl.INSTANCE);
+        this(parent, dirPath, depth, FactoryImpl.INSTANCE);
     }
 
     // TODO: How to handle missing dirs?
@@ -90,13 +106,13 @@ final class TraversePathLevel {
             TraversePathIterator parent,
             File dirPath,
             int depth,
-            DirectoryListingFactory directoryListingFactory)
+            Factory factory)
     throws PathException {
-        _directoryListingFactory =
-            ObjectArgs.checkNotNull(directoryListingFactory, "directoryListingFactory");
+        _factory =
+            ObjectArgs.checkNotNull(factory, "factory");
         _parent = ObjectArgs.checkNotNull(parent, "parent");
         _origDirectoryListing =
-            _directoryListingFactory.newInstance(dirPath, DEFAULT_DIRECTORY_LISTING_LIST_CLASS);
+            _factory.newDirectoryListingInstance(dirPath, DEFAULT_DIRECTORY_LISTING_LIST_CLASS);
         _depth = IntArgs.checkPositive(depth, "depth");
     }
 
@@ -126,11 +142,12 @@ final class TraversePathLevel {
 
     public DirectoryListing getDescendDirDirectoryListing() {
         if (null == _descendDirDirectoryListing) {
+
             DirectoryListing newDirListing =
-                _directoryListingFactory.newInstance(_origDirectoryListing);
+                _factory.newDirectoryListingInstance(_origDirectoryListing);
             PathFilter descendDirPathFilter = _parent.getOptionalDescendDirPathFilter();
             DescendDirFileFilter fileFilter =
-                new DescendDirFileFilter(descendDirPathFilter, _depth);
+                _factory.newDescendDirFileFilterInstance(descendDirPathFilter, _depth);
             newDirListing.filter(fileFilter);
             sortDirListing(newDirListing, _parent.getOptionalDescendDirPathComparator());
             _descendDirDirectoryListing = newDirListing;
@@ -178,9 +195,10 @@ final class TraversePathLevel {
         if (null == _iterateDirectoryListing) {
             PathFilter pathFilter = _parent.getOptionalIteratePathFilter();
             DirectoryListing newDirListing =
-                _directoryListingFactory.newInstance(_origDirectoryListing);
+                _factory.newDirectoryListingInstance(_origDirectoryListing);
             if (null != pathFilter) {
-                IterateFileFilter fileFilter = new IterateFileFilter(pathFilter, _depth);
+                IterateFileFilter fileFilter =
+                    _factory.newIterateFileFilterInstance(pathFilter, _depth);
                 newDirListing.filter(fileFilter);
             }
             sortDirListing(newDirListing, _parent.getOptionalIteratePathComparator());
