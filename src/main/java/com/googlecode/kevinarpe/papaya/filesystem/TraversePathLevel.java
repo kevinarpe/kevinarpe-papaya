@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.IntArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
@@ -39,6 +40,7 @@ import java.util.List;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 final class TraversePathLevel {
 
     static interface Factory {
@@ -53,7 +55,7 @@ final class TraversePathLevel {
         IterateFileFilter newIterateFileFilterInstance(PathFilter pathFilter, int depth);
     }
 
-    private static final class FactoryImpl
+    static final class FactoryImpl
     implements Factory {
 
         public static final FactoryImpl INSTANCE =
@@ -96,7 +98,7 @@ final class TraversePathLevel {
 
     TraversePathLevel(TraversePathIterator parent, File dirPath, int depth)
     throws PathException {
-        this(parent, dirPath, depth, FactoryImpl.INSTANCE);
+        this(parent, FactoryImpl.INSTANCE, dirPath, depth);
     }
 
     // TODO: How to handle missing dirs?
@@ -104,13 +106,12 @@ final class TraversePathLevel {
     // Add option to ignore.
     TraversePathLevel(
             TraversePathIterator parent,
+            Factory factory,
             File dirPath,
-            int depth,
-            Factory factory)
+            int depth)
     throws PathException {
-        _factory =
-            ObjectArgs.checkNotNull(factory, "factory");
         _parent = ObjectArgs.checkNotNull(parent, "parent");
+        _factory = ObjectArgs.checkNotNull(factory, "factory");
         _origDirectoryListing =
             _factory.newDirectoryListingInstance(dirPath, DEFAULT_DIRECTORY_LISTING_LIST_CLASS);
         _depth = IntArgs.checkPositive(depth, "depth");
