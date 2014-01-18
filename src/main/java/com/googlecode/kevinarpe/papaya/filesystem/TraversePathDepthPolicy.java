@@ -25,16 +25,19 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+
 import java.io.File;
 import java.util.Comparator;
 
 /**
- * Controls how a directory tree is traversed: depth-first or depth-last.
+ * Controls how a directory tree is traversed: getDepth-first or getDepth-last.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see TraversePathIterable
  */
+@NotFullyTested
 public enum TraversePathDepthPolicy {
 
     /**
@@ -42,7 +45,7 @@ public enum TraversePathDepthPolicy {
      * <p>
      * An example use case for this mode: Recursively deleting a directory tree.  In most modern
      * file systems, it is required to remove all files in a directory before removing the parent
-     * directory.  This necessitates depth-first traversal/iteration.
+     * directory.  This necessitates getDepth-first traversal/iteration.
      *
      * @see #DEPTH_LAST
      */
@@ -51,6 +54,7 @@ public enum TraversePathDepthPolicy {
         TraversePathDepthFirstIterator createTraversePathIterator(
                 File dirPath,
                 TraversePathDepthPolicy depthPolicy,
+                TraversePathExceptionPolicy exceptionPolicy,
                 PathFilter optDescendDirPathFilter,
                 Comparator<File> descendDirPathComparatorList,
                 PathFilter optIteratePathFilter,
@@ -58,6 +62,7 @@ public enum TraversePathDepthPolicy {
             return new TraversePathDepthFirstIterator(
                 dirPath,
                 depthPolicy,
+                exceptionPolicy,
                 optDescendDirPathFilter,
                 descendDirPathComparatorList,
                 optIteratePathFilter,
@@ -76,6 +81,7 @@ public enum TraversePathDepthPolicy {
         TraversePathDepthLastIterator createTraversePathIterator(
                 File dirPath,
                 TraversePathDepthPolicy depthPolicy,
+                TraversePathExceptionPolicy exceptionPolicy,
                 PathFilter optDescendDirPathFilter,
                 Comparator<File> descendDirPathComparatorList,
                 PathFilter optIteratePathFilter,
@@ -83,6 +89,7 @@ public enum TraversePathDepthPolicy {
             return new TraversePathDepthLastIterator(
                 dirPath,
                 depthPolicy,
+                exceptionPolicy,
                 optDescendDirPathFilter,
                 descendDirPathComparatorList,
                 optIteratePathFilter,
@@ -93,6 +100,7 @@ public enum TraversePathDepthPolicy {
     abstract TraversePathIterator createTraversePathIterator(
             File dirPath,
             TraversePathDepthPolicy depthPolicy,
+            TraversePathExceptionPolicy exceptionPolicy,
             PathFilter optDescendDirPathFilter,
             Comparator<File> descendDirPathComparatorList,
             PathFilter optIteratePathFilter,

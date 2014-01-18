@@ -41,6 +41,7 @@ public class BaseTraversePathIter {
 
     private final File _dirPath;
     private final TraversePathDepthPolicy _depthPolicy;
+    private final TraversePathExceptionPolicy _exceptionPolicy;
     private final PathFilter _optDescendDirPathFilter;
     private final Comparator<File> _optDescendDirPathComparator;
     private final PathFilter _optIteratePathFilter;
@@ -52,12 +53,14 @@ public class BaseTraversePathIter {
     protected BaseTraversePathIter(
             File dirPath,
             TraversePathDepthPolicy depthPolicy,
+            TraversePathExceptionPolicy exceptionPolicy,
             PathFilter optDescendDirPathFilter,
             Comparator<File> optDescendDirPathComparator,
             PathFilter optIteratePathFilter,
             Comparator<File> optIteratePathComparator) {
         _dirPath = dirPath;
         _depthPolicy = depthPolicy;
+        _exceptionPolicy = exceptionPolicy;
         _optDescendDirPathFilter = optDescendDirPathFilter;
         _optDescendDirPathComparator = optDescendDirPathComparator;
         _optIteratePathFilter = optIteratePathFilter;
@@ -81,6 +84,15 @@ public class BaseTraversePathIter {
      */
     public final TraversePathDepthPolicy getDepthPolicy() {
         return _depthPolicy;
+    }
+
+    /**
+     * @return how to handle exceptions thrown during directory listings
+     *
+     * @see TraversePathIterable#withExceptionPolicy(TraversePathExceptionPolicy)
+     */
+    public TraversePathExceptionPolicy getExceptionPolicy() {
+        return _exceptionPolicy;
     }
 
     /**

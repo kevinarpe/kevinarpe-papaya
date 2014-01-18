@@ -26,8 +26,10 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  */
 
 import com.google.common.collect.Lists;
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
+import com.googlecode.kevinarpe.papaya.exception.PathRuntimeException;
 
 import java.io.File;
 import java.util.Comparator;
@@ -73,45 +75,121 @@ import java.util.NoSuchElementException;
  *
  * @see BaseTraversePathIter
  */
-@NotFullyTested
+@FullyTested
 public abstract class TraversePathIterator
 extends BaseTraversePathIter
 implements Iterator<File> {
 
+    static interface Factory {
+
+        TraversePathLevel newInstance(TraversePathIterator parent, File dirPath, int depth)
+        throws PathException;
+    }
+
+    static final class FactoryImpl
+    implements Factory {
+
+        static final FactoryImpl INSTANCE = new FactoryImpl();
+
+        @Override
+        public TraversePathLevel newInstance(TraversePathIterator parent, File dirPath, int depth)
+        throws PathException {
+            return new TraversePathLevel(parent, dirPath, depth);
+        }
+    }
+
+    private final Factory _factory;
     private final LinkedList<TraversePathLevel> _levelList;
 
     TraversePathIterator(
             File dirPath,
             TraversePathDepthPolicy depthPolicy,
+            TraversePathExceptionPolicy exceptionPolicy,
             PathFilter optDescendDirPathFilter,
             Comparator<File> optDescendDirPathComparator,
             PathFilter optIteratePathFilter,
             Comparator<File> optIterateFileComparator) {
+        this(
+            dirPath,
+            depthPolicy,
+            exceptionPolicy,
+            optDescendDirPathFilter,
+            optDescendDirPathComparator,
+            optIteratePathFilter,
+            optIterateFileComparator,
+            FactoryImpl.INSTANCE);
+    }
+
+    TraversePathIterator(
+            File dirPath,
+            TraversePathDepthPolicy depthPolicy,
+            TraversePathExceptionPolicy exceptionPolicy,
+            PathFilter optDescendDirPathFilter,
+            Comparator<File> optDescendDirPathComparator,
+            PathFilter optIteratePathFilter,
+            Comparator<File> optIterateFileComparator,
+            Factory factory) {
         super(
             dirPath,
             depthPolicy,
+            exceptionPolicy,
             optDescendDirPathFilter,
             optDescendDirPathComparator,
             optIteratePathFilter,
             optIterateFileComparator);
+        _factory = ObjectArgs.checkNotNull(factory, "factory");
         _levelList = Lists.newLinkedList();
     }
 
-    protected final TraversePathLevel addLevel(File dirPath) {
+    /**
+     * Descend a directory by creating a directory listing.  If result is not {@code null}, the
+     * depth increases by one.
+     *
+     * @param dirPath
+     *        directory path to descend
+     *
+     * @return new deepest level or {@code null} if directory listing throws exception and exception
+     *         policy dictates to ignore it
+     *
+     * @throws PathRuntimeException
+     *         if directory listing throws exception and exception policy dictates to
+     *         rethrow as a runtime (unchecked) exception
+     *
+     * @see #tryRemoveAndGetNextLevel()
+     * @see #getDepth()
+     */
+    protected final TraversePathLevel tryAddLevel(File dirPath)
+    throws PathRuntimeException {
         final int depth = 1 + _levelList.size();
         TraversePathLevel level = null;
         try {
-            level = new TraversePathLevel(this, dirPath, depth);
+            level =  _factory.newInstance(this, dirPath, depth);
         }
         catch (PathException e) {
-            // TODO: Fixme
-            throw new RuntimeException(e);
+            if (TraversePathExceptionPolicy.THROW == getExceptionPolicy()) {
+                throw new PathRuntimeException(e);
+            }
         }
-        _levelList.add(level);
-        return level;
+        if (null != level) {
+            _levelList.add(level);
+            return level;
+        }
+        return null;
     }
 
-    protected final TraversePathLevel removeLevel() {
+    /**
+     * Remove the deepest level and return the next deepest level.  If result is not {@code null},
+     * the depth decreases by one.
+     *
+     * @return new deepest level or {@code null} if no remaining levels after removal
+     *
+     * @see #tryAddLevel(File)
+     * @see #getDepth()
+     */
+    protected final TraversePathLevel tryRemoveAndGetNextLevel() {
+        if (_levelList.isEmpty()) {
+            return null;
+        }
         _levelList.removeLast();
         TraversePathLevel level = (_levelList.isEmpty() ? null :_levelList.getLast());
         return level;
@@ -123,23 +201,35 @@ implements Iterator<File> {
      * <hr/>
      * {@inheritDoc}
      *
+     * @throws PathRuntimeException
+     *         if an exception is thrown during a directory listing, and if exception policy
+     *         dictates to throw the exception ({@link TraversePathExceptionPolicy#THROW}).
+     *
      * @see #next()
+     * @see #getExceptionPolicy()
      */
     @Override
-    public abstract boolean hasNext();
+    public abstract boolean hasNext()
+    throws PathRuntimeException;
 
     /**
-     * Returns the next path for iteration.
-     *
-     * @throws NoSuchElementException
-     *         if there is not next path for iteration
+     * Returns the next path in the iteration.
      * <hr/>
      * {@inheritDoc}
      *
+     * @throws NoSuchElementException
+     *         if the iteration is complete.  This is only thrown if {@link #hasNext()} returns
+     *         {@code false}.
+     * @throws PathRuntimeException
+     *         if an exception is thrown during a directory listing, and if exception policy
+     *         dictates to throw the exception ({@link TraversePathExceptionPolicy#THROW}).
+     *
      * @see #hasNext()
+     * @see #getExceptionPolicy()
      */
     @Override
-    public abstract File next();
+    public abstract File next()
+    throws PathRuntimeException;
 
     /**
      * Always throws {@link UnsupportedOperationException}.
@@ -153,7 +243,14 @@ implements Iterator<File> {
     /**
      * @return number of levels below {@link #getDirPath()}.  Minimum value is zero.
      */
-    public final int depth() {
+    public final int getDepth() {
         return _levelList.size();
+    }
+
+    protected final void assertHasNext() {
+        if (!hasNext()) {
+            throw new NoSuchElementException(
+                "Method hasNext() returns false: There is no next path to iterate");
+        }
     }
 }

@@ -47,9 +47,9 @@ public class PathFilterUtils {
      * <p>
      * As a special case, if the input list has exactly one element, it is returned unchanged.
      * <p>
-     * {@code anyOf(Arrays.asList(filter1, filter2, filter3)).accept(path, depth)}
+     * {@code anyOf(Arrays.asList(filter1, filter2, filter3)).accept(path, getDepth)}
      * <br/>is equivalent to...
-     * <br/>{@code filter1.accept(path, depth) || filter2.accept(path, depth) || filter3.accept(path, depth)}
+     * <br/>{@code filter1.accept(path, getDepth) || filter2.accept(path, getDepth) || filter3.accept(path, getDepth)}
      *
      * @param pathFilterCollection
      *        collection of path filters to combine.  Must not be {@code null}, empty, or contain
@@ -97,9 +97,9 @@ public class PathFilterUtils {
      * <p>
      * As a special case, if the input list has exactly one element, it is returned unchanged.
      * <p>
-     * {@code allOf(Arrays.asList(filter1, filter2, filter3)).accept(path, depth)}
+     * {@code allOf(Arrays.asList(filter1, filter2, filter3)).accept(path, getDepth)}
      * <br/>is equivalent to...
-     * <br/>{@code filter1.accept(path, depth) && filter2.accept(path, depth) && filter3.accept(path, depth)}
+     * <br/>{@code filter1.accept(path, getDepth) && filter2.accept(path, getDepth) && filter3.accept(path, getDepth)}
      *
      * @param pathFilterCollection
      *        collection of path filters to combine.  Must not be {@code null}, empty, or contain

@@ -65,6 +65,17 @@ extends BaseTraversePathIter
 implements Iterable<File> {
 
     /**
+     * Used by the constructor to set the default exception policy for path iterators.  The value
+     * is {@link TraversePathExceptionPolicy#THROW}.
+     *
+     * @see #TraversePathIterable(File, TraversePathDepthPolicy)
+     * @see #getExceptionPolicy()
+     * @see #withExceptionPolicy(TraversePathExceptionPolicy)
+     */
+    public static final TraversePathExceptionPolicy DEFAULT_EXCEPTION_POLICY =
+        TraversePathExceptionPolicy.THROW;
+
+    /**
      * Constructs an iterable with its required attributes and none of its optional attributes:
      * <ul>
      *     <li>descend directory path filter</li>
@@ -72,6 +83,9 @@ implements Iterable<File> {
      *     <li>iterate path filter</li>
      *     <li>iterate comparator</li>
      * </ul>
+     * <p>
+     * The exception policy is set to the default: {@link #DEFAULT_EXCEPTION_POLICY}.  It can be
+     * changed via {@link #withExceptionPolicy(TraversePathExceptionPolicy)}.
      *
      * @param dirPath
      *        root directory to traverse.  Must not be {@code null}, but need not exist.  Directory
@@ -86,6 +100,8 @@ implements Iterable<File> {
      *
      * @see #withDirPath(File)
      * @see #withDepthPolicy(TraversePathDepthPolicy)
+     * @see #withExceptionPolicy(TraversePathExceptionPolicy)
+     * @see #DEFAULT_EXCEPTION_POLICY
      * @see #withOptionalDescendDirPathFilter(PathFilter)
      * @see #withOptionalDescendDirPathComparator(Comparator)
      * @see #withOptionalIteratePathFilter(PathFilter)
@@ -95,6 +111,7 @@ implements Iterable<File> {
         super(
             ObjectArgs.checkNotNull(dirPath, "dirPath"),
             ObjectArgs.checkNotNull(depthPolicy, "depthPolicy"),
+            DEFAULT_EXCEPTION_POLICY,
             (PathFilter) null,
             (Comparator<File>) null,
             (PathFilter) null,
@@ -104,6 +121,7 @@ implements Iterable<File> {
     private TraversePathIterable(
             File dirPath,
             TraversePathDepthPolicy depthPolicy,
+            TraversePathExceptionPolicy exceptionPolicy,
             PathFilter optDescendDirPathFilter,
             Comparator<File> optDescendDirPathComparator,
             PathFilter optIteratePathFilter,
@@ -111,6 +129,7 @@ implements Iterable<File> {
         super(
             dirPath,
             depthPolicy,
+            exceptionPolicy,
             optDescendDirPathFilter,
             optDescendDirPathComparator,
             optIteratePathFilter,
@@ -140,6 +159,7 @@ implements Iterable<File> {
         return new TraversePathIterable(
             ObjectArgs.checkNotNull(dirPath, "dirPath"),
             getDepthPolicy(),
+            getExceptionPolicy(),
             getOptionalDescendDirPathFilter(),
             getOptionalDescendDirPathComparator(),
             getOptionalIteratePathFilter(),
@@ -163,6 +183,33 @@ implements Iterable<File> {
         return new TraversePathIterable(
             getDirPath(),
             ObjectArgs.checkNotNull(depthPolicy, "depthPolicy"),
+            getExceptionPolicy(),
+            getOptionalDescendDirPathFilter(),
+            getOptionalDescendDirPathComparator(),
+            getOptionalIteratePathFilter(),
+            getOptionalIteratePathComparator());
+    }
+
+    /**
+     * Constructs a <b>new</b> iterable from the current, replacing the exception policy.  The
+     * default value is {@link #DEFAULT_EXCEPTION_POLICY}.
+     *
+     * @param exceptionPolicy
+     *        how to handle exceptions thrown during directory listings.  Must not be {@code null}.
+     *
+     * @return <b>new</b> iterable
+     *
+     * @throws NullPointerException
+     *         if {@code exceptionPolicy} is {@code null}
+     *
+     * @see #DEFAULT_EXCEPTION_POLICY
+     * @see #getExceptionPolicy()
+     */
+    public TraversePathIterable withExceptionPolicy(TraversePathExceptionPolicy exceptionPolicy) {
+        return new TraversePathIterable(
+            getDirPath(),
+            getDepthPolicy(),
+            ObjectArgs.checkNotNull(exceptionPolicy, "exceptionPolicy"),
             getOptionalDescendDirPathFilter(),
             getOptionalDescendDirPathComparator(),
             getOptionalIteratePathFilter(),
@@ -188,6 +235,7 @@ implements Iterable<File> {
         return new TraversePathIterable(
             getDirPath(),
             getDepthPolicy(),
+            getExceptionPolicy(),
             optDescendDirPathFilter,
             getOptionalDescendDirPathComparator(),
             getOptionalIteratePathFilter(),
@@ -214,6 +262,7 @@ implements Iterable<File> {
         return new TraversePathIterable(
             getDirPath(),
             getDepthPolicy(),
+            getExceptionPolicy(),
             getOptionalDescendDirPathFilter(),
             optDescendDirPathComparator,
             getOptionalIteratePathFilter(),
@@ -241,6 +290,7 @@ implements Iterable<File> {
         return new TraversePathIterable(
             getDirPath(),
             getDepthPolicy(),
+            getExceptionPolicy(),
             getOptionalDescendDirPathFilter(),
             getOptionalDescendDirPathComparator(),
             optIteratePathFilter,
@@ -267,6 +317,7 @@ implements Iterable<File> {
         return new TraversePathIterable(
             getDirPath(),
             getDepthPolicy(),
+            getExceptionPolicy(),
             getOptionalDescendDirPathFilter(),
             getOptionalDescendDirPathComparator(),
             getOptionalIteratePathFilter(),
@@ -287,6 +338,7 @@ implements Iterable<File> {
         return depthPolicy.createTraversePathIterator(
             getDirPath(),
             getDepthPolicy(),
+            getExceptionPolicy(),
             getOptionalDescendDirPathFilter(),
             getOptionalDescendDirPathComparator(),
             getOptionalIteratePathFilter(),
@@ -298,6 +350,7 @@ implements Iterable<File> {
      * <ul>
      *     <li>{@link #getDirPath()}</li>
      *     <li>{@link #getDepthPolicy()}</li>
+     *     <li>{@link #getExceptionPolicy()}</li>
      *     <li>{@link #getOptionalDescendDirPathFilter()}</li>
      *     <li>{@link #getOptionalDescendDirPathComparator()}</li>
      *     <li>{@link #getOptionalIteratePathFilter()}</li>
@@ -312,6 +365,7 @@ implements Iterable<File> {
             Objects.hashCode(
                 getDirPath(),
                 getDepthPolicy(),
+                getExceptionPolicy(),
                 getOptionalDescendDirPathFilter(),
                 getOptionalDescendDirPathComparator(),
                 getOptionalIteratePathFilter(),
@@ -324,6 +378,7 @@ implements Iterable<File> {
      * <ul>
      *     <li>{@link #getDirPath()}</li>
      *     <li>{@link #getDepthPolicy()}</li>
+     *     <li>{@link #getExceptionPolicy()}</li>
      *     <li>{@link #getOptionalDescendDirPathFilter()}</li>
      *     <li>{@link #getOptionalDescendDirPathComparator()}</li>
      *     <li>{@link #getOptionalIteratePathFilter()}</li>
@@ -341,6 +396,7 @@ implements Iterable<File> {
             result =
                 Objects.equal(this.getDirPath(), other.getDirPath())
                     && Objects.equal(this.getDepthPolicy(), other.getDepthPolicy())
+                    && Objects.equal(this.getExceptionPolicy(), other.getExceptionPolicy())
                     && Objects.equal(
                             this.getOptionalDescendDirPathFilter(),
                             other.getOptionalDescendDirPathFilter())

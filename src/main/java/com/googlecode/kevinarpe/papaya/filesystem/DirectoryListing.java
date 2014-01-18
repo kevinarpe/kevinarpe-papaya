@@ -232,17 +232,8 @@ public final class DirectoryListing {
      *         to the list will affect the internal state of this instance.
      */
     public List<File> getChildPathList() {
-        // TODO: Correct to NOT copy?
-//        List<File> list = _newInstance(_childPathList.getClass());
-//        list.addAll(_childPathList);
-//        return list;
         return _childPathList;
     }
-
-    // TODO: If NOT copy, then remove.
-//    public Class<? extends List<File>> getChildPathListClass() {
-//        return _childPathList.getClass();
-//    }
 
     /**
      * This is a convenience method for {@link #sort(List)}.
@@ -339,6 +330,7 @@ public final class DirectoryListing {
      * @see #sort(Comparator)
      * @see #sort(List)
      */
+    // TODO: Remove me.  Need to replace with FileFilterUtils.anyOf() and allOf()
     public DirectoryListing filter(List<FileFilter> fileFilterList) {
         CollectionArgs.checkElementsNotNull(fileFilterList, "fileFilterList");
 
@@ -411,8 +403,8 @@ public final class DirectoryListing {
             final DirectoryListing other = (DirectoryListing) obj;
             result = Objects.equal(this._dirPath, other._dirPath)
                 && Objects.equal(
-                (null == this._childPathList ? null : this._childPathList.getClass()),
-                (null == other._childPathList ? null : other._childPathList.getClass()))
+                    (null == this._childPathList ? null : this._childPathList.getClass()),
+                    (null == other._childPathList ? null : other._childPathList.getClass()))
                 && Objects.equal(this._childPathList, other._childPathList);
         }
         return result;

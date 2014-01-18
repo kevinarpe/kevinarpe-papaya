@@ -25,32 +25,33 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
-import java.io.File;
-import java.io.FileFilter;
-
 /**
- * Extends {@link FileFilter} to add {@code getDepth} parameter to {@link #accept(File, int)}.
+ * How to handle exceptions thrown when retrieving directory listings.  When traversing a directory
+ * hierarchy, descending a directory requires two directory listings.  The first discovers
+ * the directory, and the second attempts to descend it.  During the second listing, there is no
+ * guarantee the directory will still exist or be executable (able to traverse).
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see DirectoryListing
+ * @see #IGNORE
+ * @see #THROW
  * @see TraversePathIterable
  */
-public interface PathFilter {
+public enum TraversePathExceptionPolicy {
 
     /**
-     * Tests whether or not {@code path} at {@code getDepth} should be included in a path list.
+     * Suppress exceptions thrown during directory listings.  Use this option with care.  It is
+     * possible to have the root directory not exist.  This will result in only a single path for
+     * iteration: the root directory.
      *
-     * @param path
-     *        filesystem path to test.  Not guaranteed to exist when this method is called.
-     *
-     * @param depth
-     *        number of levels below the parent directory.  Always >= 1.
-     *
-     * @return {@code true} to include in the path list or {@code false} to exclude
-     *
-     * @see DirectoryListing
-     * @see TraversePathIterable
+     * @see #THROW
      */
-    boolean accept(File path, int depth);
+    IGNORE,
+
+    /**
+     * Do <b>not</b> suppress exceptions thrown during directory listings.
+     *
+     * @see #IGNORE
+     */
+    THROW
 }

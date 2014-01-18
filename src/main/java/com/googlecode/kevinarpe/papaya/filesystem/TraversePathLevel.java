@@ -58,8 +58,7 @@ final class TraversePathLevel {
     static final class FactoryImpl
     implements Factory {
 
-        public static final FactoryImpl INSTANCE =
-            new FactoryImpl();
+        static final FactoryImpl INSTANCE = new FactoryImpl();
 
         @Override
         public DirectoryListing newDirectoryListingInstance(
@@ -101,9 +100,6 @@ final class TraversePathLevel {
         this(parent, FactoryImpl.INSTANCE, dirPath, depth);
     }
 
-    // TODO: How to handle missing dirs?
-    // Many initial listFiles() shows a dir... but later, does not exist.  Handle well.  Policy?
-    // Add option to ignore.
     TraversePathLevel(
             TraversePathIterator parent,
             Factory factory,
@@ -114,7 +110,7 @@ final class TraversePathLevel {
         _factory = ObjectArgs.checkNotNull(factory, "factory");
         _origDirectoryListing =
             _factory.newDirectoryListingInstance(dirPath, DEFAULT_DIRECTORY_LISTING_LIST_CLASS);
-        _depth = IntArgs.checkPositive(depth, "depth");
+        _depth = IntArgs.checkPositive(depth, "getDepth");
     }
 
     static final class DescendDirFileFilter

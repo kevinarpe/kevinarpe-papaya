@@ -30,8 +30,10 @@ import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 import java.io.File;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 @NotFullyTested
 final class TraversePathDepthFirstIterator
 extends TraversePathIterator {
@@ -39,11 +41,12 @@ extends TraversePathIterator {
     private boolean _isInitDone;
     private TraversePathLevel _currentLevel;  // null when depth == 0
     private boolean _hasIteratedDirPath;
-    private boolean _isNextDirPath;
+    private boolean _isNextElementDirPath;
 
     TraversePathDepthFirstIterator(
             File dirPath,
             TraversePathDepthPolicy depthPolicy,
+            TraversePathExceptionPolicy exceptionPolicy,
             PathFilter optDescendDirFilter,
             Comparator<File> optDescendFileComparator,
             PathFilter optIterateFilter,
@@ -51,47 +54,51 @@ extends TraversePathIterator {
         super(
             dirPath,
             depthPolicy,
+            exceptionPolicy,
             optDescendDirFilter,
             optDescendFileComparator,
             optIterateFilter,
             optIterateFileComparator);
         _isInitDone = false;
+        _currentLevel = null;  // Pedantic.
         _hasIteratedDirPath = false;
-        _isNextDirPath = false;
+        _isNextElementDirPath = false;
     }
 
     private void _descendAndUpdateCurrentLevel() {
         if (null != _currentLevel) {
             while (true) {
-                Iterator<File> iter = _currentLevel.getDescendDirDirectoryListingIter();
-                if (!iter.hasNext()) {
+                Iterator<File> descendDirPathIter =
+                    _currentLevel.getDescendDirDirectoryListingIter();
+                if (!descendDirPathIter.hasNext()) {
                     break;
                 }
-                File descendDirPath = iter.next();
-                _currentLevel = addLevel(descendDirPath);
+                File descendDirPath = descendDirPathIter.next();
+                TraversePathLevel newCurrentLevel = tryAddLevel(descendDirPath);
+                if (null != newCurrentLevel) {
+                    _currentLevel = newCurrentLevel;
+                }
             }
-            // TODO: Tighter, but harder to debug.  Dou suru?
-//            while (_currentLevel.getDescendDirDirectoryListingIter().hasNext()) {
-//                File descendDirPath = _currentLevel.getDescendDirDirectoryListingIter().next();
-//                _currentLevel = addLevel(descendDirPath);
-//            }
         }
     }
 
     @Override
     public boolean hasNext() {
         if (!_isInitDone) {
-            _currentLevel = addLevel(getDirPath());
+            // If initial directory listing fails, but exceptions are ignored, '_currentLevel' will
+            // remain null.
+            File dirPath = getDirPath();
+            _currentLevel = tryAddLevel(dirPath);
             _descendAndUpdateCurrentLevel();
             _isInitDone = true;
         }
         while (null != _currentLevel && !_currentLevel.getIterateDirectoryListingIter().hasNext()) {
-            _currentLevel = removeLevel();
+            _currentLevel = tryRemoveAndGetNextLevel();
             _descendAndUpdateCurrentLevel();
         }
         if (null == _currentLevel) {
             if (!_hasIteratedDirPath) {
-                _isNextDirPath = true;
+                _isNextElementDirPath = true;
                 return true;
             }
             return false;
@@ -101,15 +108,14 @@ extends TraversePathIterator {
 
     @Override
     public File next() {
-        if (!hasNext()) {
-            throw new NoSuchElementException();
-        }
-        if (_isNextDirPath) {
+        assertHasNext();
+        if (_isNextElementDirPath) {
             _hasIteratedDirPath = true;
-            _isNextDirPath = false;
+            _isNextElementDirPath = false;
             return getDirPath();
         }
-        File path = _currentLevel.getIterateDirectoryListingIter().next();
+        Iterator<File> iterateDirPathIter =_currentLevel.getIterateDirectoryListingIter();
+        File path = iterateDirPathIter.next();
         return path;
     }
 }

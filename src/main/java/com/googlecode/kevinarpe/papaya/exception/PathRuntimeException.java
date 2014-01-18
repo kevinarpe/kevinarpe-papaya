@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.filesystem;
+package com.googlecode.kevinarpe.papaya.exception;
 
 /*
  * #%L
@@ -25,32 +25,30 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
-import java.io.File;
-import java.io.FileFilter;
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterator;
 
 /**
- * Extends {@link FileFilter} to add {@code getDepth} parameter to {@link #accept(File, int)}.
+ * Tiny runtime exception wrapper for {@link PathException}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see DirectoryListing
- * @see TraversePathIterable
+ * @see PathException
+ * @see TraversePathIterator#hasNext()
+ * @see TraversePathIterator#next()
  */
-public interface PathFilter {
+@NotFullyTested
+public class PathRuntimeException
+extends RuntimeException {
 
     /**
-     * Tests whether or not {@code path} at {@code getDepth} should be included in a path list.
+     * @param exception
+     *        must not be {@code null}
      *
-     * @param path
-     *        filesystem path to test.  Not guaranteed to exist when this method is called.
-     *
-     * @param depth
-     *        number of levels below the parent directory.  Always >= 1.
-     *
-     * @return {@code true} to include in the path list or {@code false} to exclude
-     *
-     * @see DirectoryListing
-     * @see TraversePathIterable
+     * @throws NullPointerException
+     *         if {@code exception} is {@code null}
      */
-    boolean accept(File path, int depth);
+    public PathRuntimeException(PathException exception) {
+        super(exception);
+    }
 }

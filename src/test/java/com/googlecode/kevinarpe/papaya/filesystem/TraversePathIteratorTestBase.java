@@ -27,30 +27,52 @@ package com.googlecode.kevinarpe.papaya.filesystem;
 
 import com.beust.jcommander.internal.Sets;
 import com.google.common.base.Splitter;
-import com.google.common.collect.ImmutableList;
 import com.googlecode.kevinarpe.papaya.filesystem.compare.FileNameNumericPrefixSmallestToLargestComparator;
 import com.googlecode.kevinarpe.papaya.string.NumericPrefix;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.Stack;
+import java.util.UUID;
 
-public class DepthFirstPathIteratorTest {
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
+
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
+public class TraversePathIteratorTestBase {
 
     private static final File baseDirPath = new File("rootdir." + UUID.randomUUID().toString());
 
-//    @BeforeTest
-//    public void beforeTest() {
-//        Assert.assertTrue(baseDirPath.mkdir());
-//    }
-//
-//    @AfterTest
-//    public void afterTest() {
-//        _recursiveDeleteDir(baseDirPath);
-//    }
+    public void core_hasNextAndNext_Pass(TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
+    throws IOException {
+        _recursiveDeleteDir(baseDirPath);
+        assertTrue(baseDirPath.mkdir());
+
+        try {
+            TraversePathIterator pathIter = _newInstance(depthPolicy);
+            int max = _createFiles(pathSpecArr);
+            int count = 0;
+            while (pathIter.hasNext() && count < max) {
+                ++count;
+                File path = pathIter.next();
+                long numericFileName = new NumericPrefix(path.getName()).getNumericValue();
+                assertEquals(count, numericFileName);
+            }
+            assertEquals(count, max);
+            assertTrue(pathIter.hasNext());
+            File lastPath = pathIter.next();
+            assertEquals(lastPath, baseDirPath);
+            assertFalse(pathIter.hasNext());
+        }
+        finally {
+            _recursiveDeleteDir(baseDirPath);
+        }
+    }
 
     private void _recursiveDeleteDir(File dirPath) {
         Stack<File> stack = new Stack<File>();
@@ -64,85 +86,29 @@ public class DepthFirstPathIteratorTest {
                     }
                 }
                 else {
-                    stack.pop().delete();
+                    File path = stack.pop();
+                    path.delete();
                 }
             }
             else {
-                stack.pop().delete();
+                File path = stack.pop();
+                path.delete();
             }
         }
     }
 
-    @DataProvider
-    private Object[][] _x_Data() {
-        return new Object[][] {
-            // TODO: More tests!
-            new Object[] {
-                new String[] {
-                    "9/8/7/6/5/4/3/2/{1}",
-                },
-            },
-            new Object[] {
-                new String[] {
-                    "{15,16,17}",
-                    "14/{1,2,3}",
-                    "18/{4,5,6}",
-                    "19/13/{7,8,9}",
-                    "19/{10,11,12}",
-                },
-            },
-            new Object[] {
-                new String[] {
-                    "{10,11,12}",
-                    "13/{1,2,3}",
-                    "14/{4,5,6}",
-                    "15/{7,8,9}",
-                },
-            },
-            new Object[] {
-                new String[] {
-                    "10/{1,2,3}",
-                    "11/{4,5,6}",
-                    "12/{7,8,9}",
-                    "{13,14,15}",
-                },
-            },
-        };
-    }
-
-    @Test(dataProvider = "_x_Data")
-    public void x(String[] pathSpecArr)
-    throws IOException {
-        _recursiveDeleteDir(baseDirPath);
-        Assert.assertTrue(baseDirPath.mkdir());
-
-        try {
-            int max = _createFiles(pathSpecArr);
-            int count = 0;
-            List<Comparator<File>> fileComparatorList =
-                ImmutableList.<Comparator<File>>of(new FileNameNumericPrefixSmallestToLargestComparator());
-            // TODO: Fixme
-            TraversePathDepthFirstIterator dfpi = null;
-//            DepthFirstPathIterator dfpi = null;
-//                new TraversePathIterable(baseDirPath)
-//                    .withDescendDirPathComparatorList(fileComparatorList)
-//                    .withPathComparatorList(fileComparatorList)
-//                    .iterator();
-            while (dfpi.hasNext()) {
-                ++count;
-                File path = dfpi.next();
-                long numericFileName = new NumericPrefix(path.getName()).getNumericValue();
-                Assert.assertEquals(count, numericFileName);
-            }
-            Assert.assertEquals(count, max);
-        }
-        finally {
-            _recursiveDeleteDir(baseDirPath);
-        }
+    private TraversePathIterator _newInstance(TraversePathDepthPolicy depthPolicy) {
+        Comparator<File> fileComparator = new FileNameNumericPrefixSmallestToLargestComparator();
+        TraversePathIterator pathIter =
+            new TraversePathIterable(baseDirPath, depthPolicy)
+                .withOptionalDescendDirPathComparator(fileComparator)
+                .withOptionalIteratePathComparator(fileComparator)
+                .iterator();
+        return pathIter;
     }
 
     private int _createFiles(String[] pathSpecArr)
-    throws IOException {
+        throws IOException {
         Set<Integer> maxSet = Sets.newHashSet();
         int max = 0;
         for (String pathSpec : pathSpecArr) {
@@ -179,7 +145,6 @@ public class DepthFirstPathIteratorTest {
             }
             return newMax;
         }
-//        throw new AssertionError(String.format("newMax (%d) <= oldMax (%d)", newMax, oldMax));
         return oldMax;
     }
 }

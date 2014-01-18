@@ -25,32 +25,21 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
-import java.io.File;
-import java.io.FileFilter;
+import org.testng.annotations.Test;
 
 /**
- * Extends {@link FileFilter} to add {@code getDepth} parameter to {@link #accept(File, int)}.
- *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
- *
- * @see DirectoryListing
- * @see TraversePathIterable
  */
-public interface PathFilter {
+public class TraversePathDepthLastIteratorTest {
 
-    /**
-     * Tests whether or not {@code path} at {@code getDepth} should be included in a path list.
-     *
-     * @param path
-     *        filesystem path to test.  Not guaranteed to exist when this method is called.
-     *
-     * @param depth
-     *        number of levels below the parent directory.  Always >= 1.
-     *
-     * @return {@code true} to include in the path list or {@code false} to exclude
-     *
-     * @see DirectoryListing
-     * @see TraversePathIterable
-     */
-    boolean accept(File path, int depth);
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // TraversePathDepthLastIterator.ctor()
+    //
+
+    @Test
+    public void ctor_Pass() {
+
+    }
+
+
 }

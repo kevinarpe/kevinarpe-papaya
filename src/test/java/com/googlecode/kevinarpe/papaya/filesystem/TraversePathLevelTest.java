@@ -107,7 +107,7 @@ extends PowerMockTestCase {
                 dirPath, TraversePathLevel.DEFAULT_DIRECTORY_LISTING_LIST_CLASS);
     }
 
-    @Test//TODO:(expectedExceptions = PathException.class)
+    @Test
     public void ctor_FailWithNewDirectoryListingThrowsPathException()
     throws PathException {
         PathException expected = new PathException(
@@ -120,7 +120,6 @@ extends PowerMockTestCase {
         }
         catch (PathException actual) {
             assertSame(actual, expected);
-            //TODO:throw actual;
         }
     }
 
