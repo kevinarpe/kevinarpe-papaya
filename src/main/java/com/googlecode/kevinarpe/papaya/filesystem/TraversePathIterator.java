@@ -51,8 +51,8 @@ import java.util.NoSuchElementException;
  * <p>
  * Example directory structure:
  * <pre>{@code
- *       topDir
- *         |
+ * topDir
+ *   |
  * file1 file2 dir1
  *              |
  *      file3 file4 dir2
@@ -65,6 +65,7 @@ import java.util.NoSuchElementException;
  *     <li>For "depth last" iterators: topDir, dir1, dir2</li>
  *     <li>For "depth first" iterators: dir2, dir1, topDir</li>
  * </ul>
+ * <p>
  * Possible path iterations:
  * <ul>
  *     <li>For "depth last" iterators: topDir, file1, file2, dir1, file3, file4 dir2, file5</li>

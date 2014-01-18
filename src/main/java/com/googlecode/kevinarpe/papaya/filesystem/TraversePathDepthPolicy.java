@@ -31,7 +31,7 @@ import java.io.File;
 import java.util.Comparator;
 
 /**
- * Controls how a directory tree is traversed: getDepth-first or getDepth-last.
+ * Controls how a directory tree is traversed: depth-first or depth-last.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
@@ -41,11 +41,11 @@ import java.util.Comparator;
 public enum TraversePathDepthPolicy {
 
     /**
-     * When traversing a directory tree, descend to the deepest level before iterating.
+     * When traversing a directory hierarchy, descend to the deepest level before iterating.
      * <p>
      * An example use case for this mode: Recursively deleting a directory tree.  In most modern
      * file systems, it is required to remove all files in a directory before removing the parent
-     * directory.  This necessitates getDepth-first traversal/iteration.
+     * directory.  This necessitates depth-first traversal/iteration.
      *
      * @see #DEPTH_LAST
      */
@@ -71,8 +71,8 @@ public enum TraversePathDepthPolicy {
     },
 
     /**
-     * When traversing a directory tree, do <i>not</i> descend before iterating.  This is the normal
-     * behavior of the UNIX command line tool {@code find}.
+     * When traversing a directory hierarchy, do <i>not</i> descend before iterating.  This is the
+     * normal behavior of the UNIX command line tool {@code find}.
      *
      * @see #DEPTH_FIRST
      */

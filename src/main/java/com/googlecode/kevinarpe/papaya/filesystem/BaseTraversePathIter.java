@@ -31,8 +31,8 @@ import java.io.File;
 import java.util.Comparator;
 
 /**
- * Based class for {@link TraversePathIterable}, {@link TraversePathDepthFirstIterator}, and
- * {@link TraversePathDepthLastIterator} to provide read-only access to its attributes.
+ * Based class for {@link TraversePathIterable} and {@link TraversePathIterator} to provide
+ * read-only access to its attributes.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
