@@ -118,7 +118,7 @@ implements Iterable<File> {
             (Comparator<File>) null);
     }
 
-    private TraversePathIterable(
+    TraversePathIterable(
             File dirPath,
             TraversePathDepthPolicy depthPolicy,
             TraversePathExceptionPolicy exceptionPolicy,
@@ -337,7 +337,6 @@ implements Iterable<File> {
         final TraversePathDepthPolicy depthPolicy = getDepthPolicy();
         return depthPolicy.createTraversePathIterator(
             getDirPath(),
-            getDepthPolicy(),
             getExceptionPolicy(),
             getOptionalDescendDirPathFilter(),
             getOptionalDescendDirPathComparator(),

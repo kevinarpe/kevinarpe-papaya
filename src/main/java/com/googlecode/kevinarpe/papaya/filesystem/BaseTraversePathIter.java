@@ -25,7 +25,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 import java.io.File;
 import java.util.Comparator;
@@ -36,7 +36,7 @@ import java.util.Comparator;
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@NotFullyTested
+@FullyTested
 public class BaseTraversePathIter {
 
     private final File _dirPath;

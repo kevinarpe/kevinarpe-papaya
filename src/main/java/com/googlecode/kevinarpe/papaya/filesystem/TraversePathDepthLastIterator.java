@@ -80,7 +80,7 @@ extends TraversePathIterator {
             if (iterateDirPathIter.hasNext()) {
                 break;
             }
-            tryUpdateCurrentLevel();
+            _tryUpdateCurrentLevel();
         }
         // Old
 //        while (null != _currentLevel && !_currentLevel.getIterateDirectoryListingIter().hasNext()) {
@@ -102,7 +102,7 @@ extends TraversePathIterator {
         return result;
     }
 
-    private void tryUpdateCurrentLevel() {
+    private void _tryUpdateCurrentLevel() {
         final Iterator<File> descendDirPathIter =
             _currentLevel.getDescendDirDirectoryListingIter();
         if (descendDirPathIter.hasNext()) {

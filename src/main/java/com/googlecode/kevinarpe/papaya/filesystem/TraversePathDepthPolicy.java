@@ -25,7 +25,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 import java.io.File;
 import java.util.Comparator;
@@ -37,7 +37,7 @@ import java.util.Comparator;
  *
  * @see TraversePathIterable
  */
-@NotFullyTested
+@FullyTested
 public enum TraversePathDepthPolicy {
 
     /**
@@ -53,7 +53,6 @@ public enum TraversePathDepthPolicy {
         @Override
         TraversePathDepthFirstIterator createTraversePathIterator(
                 File dirPath,
-                TraversePathDepthPolicy depthPolicy,
                 TraversePathExceptionPolicy exceptionPolicy,
                 PathFilter optDescendDirPathFilter,
                 Comparator<File> descendDirPathComparatorList,
@@ -61,7 +60,7 @@ public enum TraversePathDepthPolicy {
                 Comparator<File> iterateFileComparatorList) {
             return new TraversePathDepthFirstIterator(
                 dirPath,
-                depthPolicy,
+                this,
                 exceptionPolicy,
                 optDescendDirPathFilter,
                 descendDirPathComparatorList,
@@ -80,7 +79,6 @@ public enum TraversePathDepthPolicy {
         @Override
         TraversePathDepthLastIterator createTraversePathIterator(
                 File dirPath,
-                TraversePathDepthPolicy depthPolicy,
                 TraversePathExceptionPolicy exceptionPolicy,
                 PathFilter optDescendDirPathFilter,
                 Comparator<File> descendDirPathComparatorList,
@@ -88,7 +86,7 @@ public enum TraversePathDepthPolicy {
                 Comparator<File> iterateFileComparatorList) {
             return new TraversePathDepthLastIterator(
                 dirPath,
-                depthPolicy,
+                this,
                 exceptionPolicy,
                 optDescendDirPathFilter,
                 descendDirPathComparatorList,
@@ -99,7 +97,6 @@ public enum TraversePathDepthPolicy {
 
     abstract TraversePathIterator createTraversePathIterator(
             File dirPath,
-            TraversePathDepthPolicy depthPolicy,
             TraversePathExceptionPolicy exceptionPolicy,
             PathFilter optDescendDirPathFilter,
             Comparator<File> descendDirPathComparatorList,

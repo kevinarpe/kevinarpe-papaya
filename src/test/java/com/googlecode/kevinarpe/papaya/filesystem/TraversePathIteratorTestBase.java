@@ -48,7 +48,26 @@ public class TraversePathIteratorTestBase {
 
     private static final File baseDirPath = new File("rootdir." + UUID.randomUUID().toString());
 
-    public void core_hasNextAndNext_Pass(TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
+    protected void core_ctor_Pass(TraversePathDepthPolicy depthPolicy) {
+        new BaseTraversePathIterTest.ctor_Pass_Helper() {
+
+            @Override
+            protected BaseTraversePathIter newInstance(
+                    File dirPath,
+                    TraversePathDepthPolicy depthPolicy,
+                    TraversePathExceptionPolicy exceptionPolicy,
+                    PathFilter optDescendDirPathFilter,
+                    Comparator<File> optDescendDirPathComparator,
+                    PathFilter optIteratePathFilter,
+                    Comparator<File> optIteratePathComparator) {
+                return depthPolicy.createTraversePathIterator(
+                    dirPath, exceptionPolicy, optDescendDirPathFilter, optDescendDirPathComparator,
+                    optIteratePathFilter, optIteratePathComparator);
+            }
+        };
+    }
+
+    protected void core_hasNextAndNext_Pass(TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
     throws IOException {
         _recursiveDeleteDir(baseDirPath);
         assertTrue(baseDirPath.mkdir());
@@ -56,6 +75,11 @@ public class TraversePathIteratorTestBase {
         try {
             TraversePathIterator pathIter = _newInstance(depthPolicy);
             int max = _createFiles(pathSpecArr);
+            if (TraversePathDepthPolicy.DEPTH_LAST == depthPolicy) {
+                assertTrue(pathIter.hasNext());
+                File firstPath = pathIter.next();
+                assertEquals(firstPath, baseDirPath);
+            }
             int count = 0;
             while (pathIter.hasNext() && count < max) {
                 ++count;
@@ -64,9 +88,11 @@ public class TraversePathIteratorTestBase {
                 assertEquals(count, numericFileName);
             }
             assertEquals(count, max);
-            assertTrue(pathIter.hasNext());
-            File lastPath = pathIter.next();
-            assertEquals(lastPath, baseDirPath);
+            if (TraversePathDepthPolicy.DEPTH_FIRST == depthPolicy) {
+                assertTrue(pathIter.hasNext());
+                File lastPath = pathIter.next();
+                assertEquals(lastPath, baseDirPath);
+            }
             assertFalse(pathIter.hasNext());
         }
         finally {

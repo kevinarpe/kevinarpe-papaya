@@ -36,10 +36,27 @@ import java.io.IOException;
 public class TraversePathDepthFirstIteratorTest
 extends TraversePathIteratorTestBase {
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // TraversePathDepthFirstIterator.ctor()
+    //
+
+    @Test
+    public void ctor_Pass() {
+        core_ctor_Pass(TraversePathDepthPolicy.DEPTH_FIRST);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // TraversePathDepthFirstIterator.hasNext()/next()
+    //
+
     @DataProvider
     private Object[][] _hasNextAndNext_Pass_Data() {
         return new Object[][] {
             // TODO: More tests!
+            new Object[] {
+                new String[] {
+                },
+            },
             new Object[] {
                 new String[] {
                     "9/8/7/6/5/4/3/2/{1}",

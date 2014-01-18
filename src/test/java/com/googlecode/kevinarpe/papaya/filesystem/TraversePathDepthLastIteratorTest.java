@@ -25,12 +25,16 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.io.IOException;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class TraversePathDepthLastIteratorTest {
+public class TraversePathDepthLastIteratorTest
+extends TraversePathIteratorTestBase {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // TraversePathDepthLastIterator.ctor()
@@ -38,8 +42,57 @@ public class TraversePathDepthLastIteratorTest {
 
     @Test
     public void ctor_Pass() {
-
+        core_ctor_Pass(TraversePathDepthPolicy.DEPTH_LAST);
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // TraversePathDepthFirstIterator.hasNext()/next()
+    //
 
+    @DataProvider
+    private Object[][] _hasNextAndNext_Pass_Data() {
+        return new Object[][] {
+            // TODO: More tests!
+            new Object[] {
+                new String[] {
+                },
+            },
+            new Object[] {
+                new String[] {
+                    "1/2/3/4/5/6/7/8/{9}",
+                },
+            },
+            new Object[] {
+                new String[] {
+                    "{1,2,3}",
+                    "4/{7,8,9}",
+                    "5/{10,11,12}",
+                    "6/13/{17,18,19}",
+                    "6/{14,15,16}",
+                },
+            },
+            new Object[] {
+                new String[] {
+                    "{1,2,3}",
+                    "4/{7,8,9}",
+                    "5/{10,11,12}",
+                    "6/{13,14,15}",
+                },
+            },
+            new Object[] {
+                new String[] {
+                    "1/{7,8,9}",
+                    "2/{10,11,12}",
+                    "3/{13,14,15}",
+                    "{4,5,6}",
+                },
+            },
+        };
+    }
+
+    @Test(dataProvider = "_hasNextAndNext_Pass_Data")
+    public void hasNextAndNext_Pass(String[] pathSpecArr)
+    throws IOException {
+        core_hasNextAndNext_Pass(TraversePathDepthPolicy.DEPTH_LAST, pathSpecArr);
+    }
 }

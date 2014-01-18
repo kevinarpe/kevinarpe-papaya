@@ -25,6 +25,8 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+
 /**
  * How to handle exceptions thrown when retrieving directory listings.  When traversing a directory
  * hierarchy, descending a directory requires two directory listings.  The first discovers
@@ -37,6 +39,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * @see #THROW
  * @see TraversePathIterable
  */
+@FullyTested
 public enum TraversePathExceptionPolicy {
 
     /**
