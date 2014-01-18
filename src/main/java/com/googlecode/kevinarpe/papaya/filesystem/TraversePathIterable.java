@@ -34,8 +34,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 /**
- * Builder class for {@link TraversePathDepthFirstIterator} and
- * {@link TraversePathDepthLastIterator}.
+ * Builder class for {@link TraversePathIterator}.
  *
  * This class divides directory traversal (which directories to descend) from path iteration (which
  * paths to return from {@link Iterator#next()}).  Independent control is provided for both groups.
@@ -58,6 +57,7 @@ import java.util.Iterator;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see TraversePathDepthPolicy
+ * @see BaseTraversePathIter
  */
 @NotFullyTested
 public final class TraversePathIterable
@@ -328,7 +328,7 @@ implements Iterable<File> {
      * Depending on the depth policy, returns a new instance of
      * {@link TraversePathDepthFirstIterator} or {@link TraversePathDepthLastIterator}.
      *
-     * @see new path iterator
+     * @return new path iterator
      *
      * @see #getDepthPolicy()
      */
