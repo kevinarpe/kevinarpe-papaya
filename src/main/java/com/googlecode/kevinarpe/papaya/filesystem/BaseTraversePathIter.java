@@ -133,4 +133,20 @@ public class BaseTraversePathIter {
 
     // Do not override hashCode() and equals() here.  It doesn't make sense to support this
     // operation for iterators.
+
+    @Override
+    public String toString() {
+        // TODO: Add object ID, e.g., @123456
+        String x = String.format(
+            "%s {%n\t%s = '%s' -> '%s'%n\t%s = '%s'%n\t%s = '%s'%n\t%s = '%s'%n\t%s = '%s'%n\t%s = '%s'%n\t%s = '%s'%n}",
+            BaseTraversePathIter.class.getName(),
+            "dirPath", _dirPath, _dirPath.getAbsolutePath(),
+            "depthPolicy", _depthPolicy,
+            "exceptionPolicy", _exceptionPolicy,
+            "optDescendDirPathFilter", _optDescendDirPathFilter,
+            "optDescendDirPathComparator", _optDescendDirPathComparator,
+            "optIteratePathFilter", _optIteratePathFilter,
+            "optIteratePathComparator", _optIteratePathComparator);
+        return x;
+    }
 }

@@ -26,7 +26,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  */
 
 import com.google.common.base.Objects;
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 import java.io.File;
@@ -59,7 +59,7 @@ import java.util.Iterator;
  * @see TraversePathDepthPolicy
  * @see BaseTraversePathIter
  */
-@NotFullyTested
+@FullyTested
 public final class TraversePathIterable
 extends BaseTraversePathIter
 implements Iterable<File> {
@@ -344,6 +344,8 @@ implements Iterable<File> {
             getOptionalIteratePathComparator());
     }
 
+    // TODO: Improve this Javadoc so it reads better in HTML.  Currently, first sentence appears
+    // as one long mess.  Same for equals().
     /**
      * Returns hash code of:
      * <ul>
