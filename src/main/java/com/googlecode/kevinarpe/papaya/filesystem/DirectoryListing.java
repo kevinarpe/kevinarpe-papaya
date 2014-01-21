@@ -27,9 +27,9 @@ package com.googlecode.kevinarpe.papaya.filesystem;
 
 import com.google.common.base.Objects;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.PathArgs;
+import com.googlecode.kevinarpe.papaya.compare.ComparatorUtils;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
 import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
 import com.googlecode.kevinarpe.papaya.filesystem.compare.FileAbsolutePathLexicographicalComparator;
@@ -43,7 +43,10 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
@@ -241,70 +244,32 @@ public final class DirectoryListing {
      * @throws NullPointerException
      *         if {@code fileComparator} is {@code null}
      */
-    public DirectoryListing sort(Comparator<File> fileComparator) {
-        ObjectArgs.checkNotNull(fileComparator, "fileComparator");
-
-        @SuppressWarnings("unchecked")
-        List<Comparator<File>> fileComparatorList = Arrays.asList(fileComparator);
-        return sort(fileComparatorList);
-    }
-
     /**
-     * Performs an in-place sort on the list of child paths using a list of {@link Comparator}s.
-     * This method operates directly on the internal list.  To preserve the current instance, use a
-     * copy constructor first, then sort.
+     * Performs an in-place sort on the list of child paths using a {@link Comparator}.  This method
+     * operates directly on the internal list.  To preserve the current instance, use the copy
+     * constructor first, then sort.
+     * <p>
+     * To combine more than one comparator, consider using
+     * {@link ComparatorUtils#chain(Collection)}.
      *
-     * @param fileComparatorList
-     *        list of {@link Comparator} references used to sort paths.
-     *        See {@link DirectoryListing class docs} for a list of {@code Comparator}s included in
-     *        this library.
+     * @param fileComparator
+     *        how to sort paths.  Must not be {@code null}.  See {@link DirectoryListing class docs}
+     *        for a information about file comparators included in this library.
      *
      * @return reference to {@code this}
      *
      * @throws NullPointerException
-     *         if {@code fileComparatorList} (or any element) is {@code null}
+     *         if {@code fileComparator} is {@code null}
      *
      * @see #DirectoryListing(DirectoryListing)
      * @see #DirectoryListing(DirectoryListing, Class)
-     * @see #sort(Comparator)
      * @see #filter(FileFilter)
-     * @see #filter(List)
      */
-    // TODO: Remove.  Replaced by ComparatorUtils.chain()
-    public DirectoryListing sort(List<Comparator<File>> fileComparatorList) {
-        CollectionArgs.checkElementsNotNull(fileComparatorList, "fileComparatorList");
+    public DirectoryListing sort(Comparator<File> fileComparator) {
+        ObjectArgs.checkNotNull(fileComparator, "fileComparator");
 
-        if (!fileComparatorList.isEmpty() && !_childPathList.isEmpty()) {
-            // Ugly.  Move to helper?
-            final int size = _childPathList.size();
-            File[] childPathArr = new File[size];
-            childPathArr = _childPathList.toArray(childPathArr);
-
-            for (Comparator<File> fileComparator : fileComparatorList) {
-                Arrays.sort(childPathArr, fileComparator);
-            }
-
-            // Ugly.  Move to helper?
-            ListIterator<File> iter = _childPathList.listIterator();
-            for (int i = 0; i < childPathArr.length; ++i) {
-                iter.next();
-                File childPath = childPathArr[i];
-                iter.set(childPath);
-            }
-        }
+        Collections.sort(_childPathList, fileComparator);
         return this;
-    }
-
-    /**
-     * This is a convenience method for {@link #filter(List)}.
-     *
-     * @throws NullPointerException
-     *         if {@code fileFilter} is {@code null}
-     */
-    public DirectoryListing filter(FileFilter fileFilter) {
-        ObjectArgs.checkNotNull(fileFilter, "fileFilter");
-
-        return filter(Arrays.asList(fileFilter));
     }
 
     /**
@@ -312,40 +277,36 @@ public final class DirectoryListing {
      * operates directly on the internal list.  To preserve the current instance, use a copy
      * constructor first, then sort.
      * <p>
+     * To combine more than one file filter, consider using
+     * {@link FileFilterUtils#anyOf(Collection)} or {@link FileFilterUtils#allOf(Collection)}.
+     * <p>
      * As an optimisation, this method uses different strategies for list element removal
      * depending upon if the {@link List} class used for internal storage implements interface
-     * {@link RandomAccess}.
+     * {@link RandomAccess}.  For example, list class {@link ArrayList} implements interface
+     * {@code RandomAccess}, but list class {@link LinkedList} does not.
      *
-     * @param fileFilterList
-     *        list of {@link FileFilter} references used to filter paths
+     * @param fileFilter
+     *        how to filter paths.  Must not be {@code null}.
      *
      * @return reference to {@code this}
      *
      * @throws NullPointerException
-     *         if {@code fileComparatorList} (or any element) is {@code null}
+     *         if {@code fileFilter} is {@code null}
      *
      * @see #DirectoryListing(DirectoryListing)
      * @see #DirectoryListing(DirectoryListing, Class)
-     * @see #filter(List)
      * @see #sort(Comparator)
-     * @see #sort(List)
      */
-    // TODO: Remove me.  Need to replace with FileFilterUtils.anyOf() and allOf()
-    public DirectoryListing filter(List<FileFilter> fileFilterList) {
-        CollectionArgs.checkElementsNotNull(fileFilterList, "fileFilterList");
+    public DirectoryListing filter(FileFilter fileFilter) {
+        ObjectArgs.checkNotNull(fileFilter, "fileFilter");
 
-        if (!fileFilterList.isEmpty() && !_childPathList.isEmpty()) {
-            if (_childPathList instanceof RandomAccess) {
-                for (FileFilter fileFilter : fileFilterList) {
-                    _childPathList = _filterRandomAccessList(_childPathList, fileFilter);
-                }
-            }
-            else {  // instanceof SequentialAccess or LinkedList
-                for (FileFilter fileFilter : fileFilterList) {
-                    _filterSequentialAccessList(_childPathList, fileFilter);
-                }
-            }
+        if (_childPathList instanceof RandomAccess) {
+            _childPathList = _filterRandomAccessList(_childPathList, fileFilter);
         }
+        else {  // instanceof SequentialAccess or LinkedList
+            _filterSequentialAccessList(_childPathList, fileFilter);
+        }
+
         return this;
     }
 
@@ -408,5 +369,10 @@ public final class DirectoryListing {
                 && Objects.equal(this._childPathList, other._childPathList);
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return null;
     }
 }

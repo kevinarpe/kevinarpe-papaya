@@ -27,6 +27,7 @@ package com.googlecode.kevinarpe.papaya.compare;
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
+import com.googlecode.kevinarpe.papaya.filesystem.DirectoryListing;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -74,6 +75,8 @@ public class ComparatorUtils {
      *         if {@code comparatorCollection} (or any element) is {@code null}
      * @throws IllegalArgumentException
      *         if number of elements in {@code comparatorCollection} is zero
+     *
+     * @see DirectoryListing#sort(Comparator)
      */
     public static <TValue> Comparator<TValue> chain(
             final Collection<Comparator<TValue>> comparatorCollection) {

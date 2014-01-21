@@ -25,16 +25,6 @@ package com.googlecode.kevinarpe.papaya.process;
  * #L%
  */
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Ints;
@@ -45,6 +35,16 @@ import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 import com.googlecode.kevinarpe.papaya.exception.InvalidExitValueException;
 import com.googlecode.kevinarpe.papaya.exception.TimeoutException;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Instances of this class must be created via {@link ProcessBuilder2#start()}.  An instance of
@@ -890,7 +890,7 @@ extends AbstractProcessSettings {
     /**
      * Forwards to {@link Process#destroy()}.  Use this method with care.  It is not guaranteed to
      * kill the child process immediately.  On UNIX-like platforms, e.g., Linux, Solaris, HP-UX,
-     * the following C code is execute: kill(pid, SIGTERM), where SIGTERM represents signal 15.
+     * the following C code is executed: kill(pid, SIGTERM), where SIGTERM represents signal 15.
      * The process can catch this signal and gracefully shutdown.  This is less than instant.
      * Normally, SIGKILL (9) is used for an immediate, ungraceful shutdown, but is unavailable in
      * the JDK.
