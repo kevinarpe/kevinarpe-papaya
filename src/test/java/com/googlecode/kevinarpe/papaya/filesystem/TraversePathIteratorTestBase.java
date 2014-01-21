@@ -48,6 +48,10 @@ public class TraversePathIteratorTestBase {
 
     private static final File baseDirPath = new File("rootdir." + UUID.randomUUID().toString());
 
+    public static File getBaseDirPath() {
+        return baseDirPath;
+    }
+
     protected void core_ctor_Pass(TraversePathDepthPolicy depthPolicy) {
         new BaseTraversePathIterTest.ctor_Pass_Helper() {
 
@@ -67,40 +71,56 @@ public class TraversePathIteratorTestBase {
         };
     }
 
-    protected void core_hasNextAndNext_Pass(TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
+    protected TraversePathIterable newInstance(TraversePathDepthPolicy depthPolicy) {
+        Comparator<File> fileComparator = new FileNameNumericPrefixSmallestToLargestComparator();
+        TraversePathIterable pathIter =
+            new TraversePathIterable(baseDirPath, depthPolicy)
+                .withOptionalDescendDirPathComparator(fileComparator)
+                .withOptionalIteratePathComparator(fileComparator);
+        return pathIter;
+    }
+
+    protected void core_hasNextAndNext_Pass(
+            TraversePathIterator pathIter, String[] pathSpecArr)
     throws IOException {
-        _recursiveDeleteDir(baseDirPath);
+        recursiveDeleteDir(baseDirPath);
         assertTrue(baseDirPath.mkdir());
 
         try {
-            TraversePathIterator pathIter = _newInstance(depthPolicy);
-            int max = _createFiles(pathSpecArr);
-            if (TraversePathDepthPolicy.DEPTH_LAST == depthPolicy) {
+            int max = createFiles(pathSpecArr);
+            if (TraversePathDepthPolicy.DEPTH_LAST == pathIter.getDepthPolicy()) {
                 assertTrue(pathIter.hasNext());
+                assertTrue(pathIter.hasNext());  // check for no further side effects
+                assertTrue(pathIter.hasNext());  // check for no further side effects
                 File firstPath = pathIter.next();
                 assertEquals(firstPath, baseDirPath);
             }
             int count = 0;
-            while (pathIter.hasNext() && count < max) {
+            // check for no further side effects
+            while (pathIter.hasNext() && pathIter.hasNext() && pathIter.hasNext() && count < max) {
                 ++count;
                 File path = pathIter.next();
                 long numericFileName = new NumericPrefix(path.getName()).getNumericValue();
                 assertEquals(count, numericFileName);
             }
             assertEquals(count, max);
-            if (TraversePathDepthPolicy.DEPTH_FIRST == depthPolicy) {
+            if (TraversePathDepthPolicy.DEPTH_FIRST == pathIter.getDepthPolicy()) {
                 assertTrue(pathIter.hasNext());
+                assertTrue(pathIter.hasNext());  // check for no further side effects
+                assertTrue(pathIter.hasNext());  // check for no further side effects
                 File lastPath = pathIter.next();
                 assertEquals(lastPath, baseDirPath);
             }
             assertFalse(pathIter.hasNext());
+            assertFalse(pathIter.hasNext());  // check for no further side effects
+            assertFalse(pathIter.hasNext());  // check for no further side effects
         }
         finally {
-            _recursiveDeleteDir(baseDirPath);
+            recursiveDeleteDir(baseDirPath);
         }
     }
 
-    private void _recursiveDeleteDir(File dirPath) {
+    protected void recursiveDeleteDir(File dirPath) {
         Stack<File> stack = new Stack<File>();
         stack.push(dirPath);
         while (!stack.isEmpty()) {
@@ -123,17 +143,7 @@ public class TraversePathIteratorTestBase {
         }
     }
 
-    private TraversePathIterator _newInstance(TraversePathDepthPolicy depthPolicy) {
-        Comparator<File> fileComparator = new FileNameNumericPrefixSmallestToLargestComparator();
-        TraversePathIterator pathIter =
-            new TraversePathIterable(baseDirPath, depthPolicy)
-                .withOptionalDescendDirPathComparator(fileComparator)
-                .withOptionalIteratePathComparator(fileComparator)
-                .iterator();
-        return pathIter;
-    }
-
-    private int _createFiles(String[] pathSpecArr)
+    protected int createFiles(String[] pathSpecArr)
         throws IOException {
         Set<Integer> maxSet = Sets.newHashSet();
         int max = 0;
@@ -147,13 +157,13 @@ public class TraversePathIteratorTestBase {
                     }
                     String partWithoutCurlyBraces = part.substring(1, part.length() - 1);
                     for (String fileName : Splitter.on(",").split(partWithoutCurlyBraces)) {
-                        max = _chooseMax(max, fileName, maxSet);
+                        max = _tryChooseMax(max, fileName, maxSet);
                         File filePath = new File(dirPath, fileName + ".regularFile");
                         filePath.createNewFile();
                     }
                 }
                 else {
-                    max = _chooseMax(max, part, maxSet);
+                    max = _tryChooseMax(max, part, maxSet);
                     dirPath = new File(dirPath, part + ".directory");
                     dirPath.mkdir();
                 }
@@ -162,8 +172,14 @@ public class TraversePathIteratorTestBase {
         return max;
     }
 
-    private int _chooseMax(int oldMax, String newMaxStr, Set<Integer> maxSet) {
-        int newMax = Integer.parseInt(newMaxStr);
+    private int _tryChooseMax(int oldMax, String newMaxStr, Set<Integer> maxSet) {
+        int newMax = Integer.MAX_VALUE;
+        try {
+            newMax = Integer.parseInt(newMaxStr);
+        }
+        catch (Exception e) {
+            // Ignore.
+        }
         if (newMax > oldMax) {
             if (!maxSet.add(newMax)) {
                 throw new IllegalArgumentException(String.format(

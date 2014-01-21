@@ -25,10 +25,15 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.exception.PathRuntimeException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.io.IOException;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -87,12 +92,51 @@ extends TraversePathIteratorTestBase {
                     "{4,5,6}",
                 },
             },
+            new Object[] {
+                new String[] {
+                    "1/4/5/6",
+                    "2/7/8/9",
+                    "3/10/11/12",
+                },
+            },
         };
     }
 
     @Test(dataProvider = "_hasNextAndNext_Pass_Data")
     public void hasNextAndNext_Pass(String[] pathSpecArr)
     throws IOException {
-        core_hasNextAndNext_Pass(TraversePathDepthPolicy.DEPTH_LAST, pathSpecArr);
+        TraversePathIterator pathIter = newInstance(TraversePathDepthPolicy.DEPTH_LAST).iterator();
+        core_hasNextAndNext_Pass(pathIter, pathSpecArr);
     }
+
+    // TODO: Can we do the same for DepthFirst?
+    @Test(expectedExceptions = PathRuntimeException.class)
+    public void hasNextAndNext_FailWithPathRuntimeException()
+    throws IOException {
+        TraversePathIterable pathIterable = newInstance(TraversePathDepthPolicy.DEPTH_LAST);
+        pathIterable = pathIterable.withExceptionPolicy(TraversePathExceptionPolicy.THROW);
+        TraversePathIterator pathIter = pathIterable.iterator();
+
+        recursiveDeleteDir(getBaseDirPath());
+        assertTrue(getBaseDirPath().mkdir());
+        try {
+            int max = createFiles(new String[] { "1/{3}", "2" });
+            assertTrue(pathIter.hasNext());
+            File firstPath = pathIter.next();
+            assertEquals(firstPath, getBaseDirPath());
+            pathIter.hasNext();
+            while (pathIter.hasNext()) {
+                File path = pathIter.next();
+                if (path.getName().equals("2.directory")) {
+                    pathIter.hasNext();  // prime the pump!
+                    assertTrue(path.delete());
+                }
+            }
+        }
+        finally {
+            recursiveDeleteDir(getBaseDirPath());
+        }
+    }
+
+    // TODO: Demonstrate filters work.  Remove even items.  Confirm iteration has not even items.
 }

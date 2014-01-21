@@ -67,6 +67,7 @@ import java.util.RandomAccess;
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+// TODO: implements Iteratable<File>
 @FullyTested
 public final class DirectoryListing {
 

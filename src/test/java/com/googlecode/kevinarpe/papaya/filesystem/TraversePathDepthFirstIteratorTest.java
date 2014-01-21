@@ -87,12 +87,20 @@ extends TraversePathIteratorTestBase {
                     "{13,14,15}",
                 },
             },
+            new Object[] {
+                new String[] {
+                    "10/3/2/1",
+                    "11/6/5/4",
+                    "12/9/8/7",
+                },
+            },
         };
     }
 
     @Test(dataProvider = "_hasNextAndNext_Pass_Data")
     public void hasNextAndNext_Pass(String[] pathSpecArr)
     throws IOException {
-        core_hasNextAndNext_Pass(TraversePathDepthPolicy.DEPTH_FIRST, pathSpecArr);
+        TraversePathIterator pathIter = newInstance(TraversePathDepthPolicy.DEPTH_FIRST).iterator();
+        core_hasNextAndNext_Pass(pathIter, pathSpecArr);
     }
 }

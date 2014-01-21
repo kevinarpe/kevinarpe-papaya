@@ -139,7 +139,6 @@ final class TraversePathLevel {
 
     public DirectoryListing getDescendDirDirectoryListing() {
         if (null == _descendDirDirectoryListing) {
-
             DirectoryListing newDirListing =
                 _factory.newDirectoryListingInstance(_origDirectoryListing);
             PathFilter descendDirPathFilter = _parent.getOptionalDescendDirPathFilter();
