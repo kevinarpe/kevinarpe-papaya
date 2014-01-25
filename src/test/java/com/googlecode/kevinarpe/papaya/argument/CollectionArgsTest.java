@@ -156,7 +156,7 @@ public class CollectionArgsTest {
     
     @Test(expectedExceptions = NullPointerException.class)
     public <T> void checkNotEmpty_FailWithNullCollection() {
-        CollectionArgs.checkNotEmpty(null, "ref");
+        CollectionArgs.checkNotEmpty((Collection<Object>) null, "ref");
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -381,7 +381,7 @@ public class CollectionArgsTest {
     @DataProvider
     public static Object[][] checkElementsUnique_Pass_Data() {
         return new Object[][] {
-            { Arrays.asList() },
+            { Arrays.<Object>asList() },
             { Arrays.asList(new Object[] { null }) },
             { Arrays.asList("a") },
             { Arrays.asList("a", null) },
@@ -403,7 +403,7 @@ public class CollectionArgsTest {
     @DataProvider
     public static Object[][] checkElementsUnique_FailWithDuplicateElements_Data() {
         return new Object[][] {
-            { Arrays.asList(null, null) },
+            { Arrays.<Object>asList(null, null) },
             { Arrays.asList(null, null, "a") },
             { Arrays.asList("a", "a") },
             { Arrays.asList("a", "a", null) },
@@ -868,7 +868,7 @@ public class CollectionArgsTest {
     @DataProvider
     public static Object[][] checkContains_Fail_Data() {
         return new Object[][] {
-                { Arrays.asList(), "x" },
+                { Arrays.<Object>asList(), "x" },
                 { Arrays.asList("a"), "x" },
                 { Arrays.asList("a"), null },
                 { Arrays.asList("a", "b"), "x" },
@@ -889,7 +889,7 @@ public class CollectionArgsTest {
     
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void checkContains_FailWithEmptyCollection() {
-        CollectionArgs.checkContains(Arrays.asList(), "abc", "ref");
+        CollectionArgs.checkContains(Arrays.<Object>asList(), "abc", "ref");
     }
     
     @Test(expectedExceptions = NullPointerException.class)
