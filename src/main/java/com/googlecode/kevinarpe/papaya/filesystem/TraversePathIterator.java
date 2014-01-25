@@ -109,7 +109,7 @@ implements Iterator<File> {
             PathFilter optDescendDirPathFilter,
             Comparator<File> optDescendDirPathComparator,
             PathFilter optIteratePathFilter,
-            Comparator<File> optIterateFileComparator) {
+            Comparator<File> optIteratePathComparator) {
         this(
             dirPath,
             depthPolicy,
@@ -117,7 +117,7 @@ implements Iterator<File> {
             optDescendDirPathFilter,
             optDescendDirPathComparator,
             optIteratePathFilter,
-            optIterateFileComparator,
+            optIteratePathComparator,
             FactoryImpl.INSTANCE);
     }
 
@@ -128,7 +128,7 @@ implements Iterator<File> {
             PathFilter optDescendDirPathFilter,
             Comparator<File> optDescendDirPathComparator,
             PathFilter optIteratePathFilter,
-            Comparator<File> optIterateFileComparator,
+            Comparator<File> optIteratePathComparator,
             Factory factory) {
         super(
             dirPath,
@@ -137,9 +137,28 @@ implements Iterator<File> {
             optDescendDirPathFilter,
             optDescendDirPathComparator,
             optIteratePathFilter,
-            optIterateFileComparator);
+            optIteratePathComparator);
         _factory = ObjectArgs.checkNotNull(factory, "factory");
         _levelList = Lists.newLinkedList();
+    }
+
+    protected final TraversePathLevel tryDescendDirPath() {
+        TraversePathLevel currentLevel = null;
+        File dirPath = getDirPath();
+        PathFilter optDescendDirFilter = getOptionalDescendDirPathFilter();
+        if (null == optDescendDirFilter || optDescendDirFilter.accept(dirPath, 0)) {
+            // If initial directory listing fails, but exceptions are ignored, '_currentLevel'
+            // will remain null.
+            currentLevel = tryAddLevel(dirPath);
+        }
+        return currentLevel;
+    }
+
+    protected final boolean canIterateDirPath() {
+        File dirPath = getDirPath();
+        PathFilter optIteratePathFilter = getOptionalIteratePathFilter();
+        boolean result = (null == optIteratePathFilter || optIteratePathFilter.accept(dirPath, 0));
+        return result;
     }
 
     /**

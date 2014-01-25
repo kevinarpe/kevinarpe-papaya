@@ -354,9 +354,11 @@ public class TraversePathIterableTest {
     // TraversePathIterable.hashCode()/equals()
     //
 
+    // TODO: Need more tests to cover all branches
     @Test
     public void hashCodeAndEquals_Pass() {
         new EqualsTester()
+            .addEqualityGroup(1, 1)  // Something that is not this class (TraversePathIterable)
             .addEqualityGroup(
                 classUnderTestWithoutDefaults,
                 classUnderTestWithoutDefaults.withDirPath(classUnderTestWithoutDefaults.getDirPath()))

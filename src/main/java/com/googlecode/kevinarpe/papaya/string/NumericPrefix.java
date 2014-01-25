@@ -58,7 +58,8 @@ public final class NumericPrefix {
      * @throws NullPointerException
      *         if {@code str} is {@code null}
      * @throws NumberFormatException
-     *         if numeric prefix cannot be parsed as a {@code long} value
+     *         if numeric prefix cannot be parsed as a {@code long} value.  This can happen if the
+     *         numeric prefix cannot be safely encoded as a {@link Long}.
      *
      * @see #hasNumericValue()
      * @see #getNumericValue()

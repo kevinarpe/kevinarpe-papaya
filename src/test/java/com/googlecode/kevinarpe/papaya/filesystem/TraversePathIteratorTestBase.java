@@ -46,11 +46,35 @@ import static org.testng.Assert.assertTrue;
  */
 public class TraversePathIteratorTestBase {
 
-    private static final File baseDirPath = new File("rootdir." + UUID.randomUUID().toString());
+    protected static final PathFilter ONLY_ACCEPT_ROOT_DIR_PATH_FILTER =
+        new PathFilter() {
+            @Override
+            public boolean accept(File path, int depth) {
+                boolean result = (0 == depth);
+                return result;
+            }
+        };
 
-    public static File getBaseDirPath() {
-        return baseDirPath;
-    }
+    protected static final PathFilter ACCEPT_NONE_PATH_FILTER =
+        new PathFilter() {
+            @Override
+            public boolean accept(File path, int depth) {
+                return false;
+            }
+        };
+
+    protected static final PathFilter ONLY_ACCEPT_EVEN_NUMERIC_PREFIX_PATH_FILTER =
+        new PathFilter() {
+            @Override
+            public boolean accept(File path, int depth) {
+                NumericPrefix numericPrefix = new NumericPrefix(path.getName());
+                // Only accept if has even numeric prefix.
+                return numericPrefix.hasNumericValue()
+                    && (0 == numericPrefix.getNumericValue() % 2);
+            }
+        };
+
+    protected static final File BASE_DIR_PATH = new File("rootdir." + UUID.randomUUID().toString());
 
     protected void core_ctor_Pass(TraversePathDepthPolicy depthPolicy) {
         new BaseTraversePathIterTest.ctor_Pass_Helper() {
@@ -74,7 +98,7 @@ public class TraversePathIteratorTestBase {
     protected TraversePathIterable newInstance(TraversePathDepthPolicy depthPolicy) {
         Comparator<File> fileComparator = new FileNameNumericPrefixSmallestToLargestComparator();
         TraversePathIterable pathIter =
-            new TraversePathIterable(baseDirPath, depthPolicy)
+            new TraversePathIterable(BASE_DIR_PATH, depthPolicy)
                 .withOptionalDescendDirPathComparator(fileComparator)
                 .withOptionalIteratePathComparator(fileComparator);
         return pathIter;
@@ -83,8 +107,8 @@ public class TraversePathIteratorTestBase {
     protected void core_hasNextAndNext_Pass(
             TraversePathIterator pathIter, String[] pathSpecArr)
     throws IOException {
-        recursiveDeleteDir(baseDirPath);
-        assertTrue(baseDirPath.mkdir());
+        recursiveDeleteDir(BASE_DIR_PATH);
+        assertTrue(BASE_DIR_PATH.mkdir());
 
         try {
             int max = createFiles(pathSpecArr);
@@ -93,7 +117,7 @@ public class TraversePathIteratorTestBase {
                 assertTrue(pathIter.hasNext());  // check for no further side effects
                 assertTrue(pathIter.hasNext());  // check for no further side effects
                 File firstPath = pathIter.next();
-                assertEquals(firstPath, baseDirPath);
+                assertEquals(firstPath, BASE_DIR_PATH);
             }
             int count = 0;
             // check for no further side effects
@@ -109,14 +133,104 @@ public class TraversePathIteratorTestBase {
                 assertTrue(pathIter.hasNext());  // check for no further side effects
                 assertTrue(pathIter.hasNext());  // check for no further side effects
                 File lastPath = pathIter.next();
-                assertEquals(lastPath, baseDirPath);
+                assertEquals(lastPath, BASE_DIR_PATH);
             }
             assertFalse(pathIter.hasNext());
             assertFalse(pathIter.hasNext());  // check for no further side effects
             assertFalse(pathIter.hasNext());  // check for no further side effects
         }
         finally {
-            recursiveDeleteDir(baseDirPath);
+            recursiveDeleteDir(BASE_DIR_PATH);
+        }
+    }
+
+    protected void core_hasNextAndNext_FailWithNoSuchElementException(
+            TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
+    throws IOException {
+        TraversePathIterator pathIter = newInstance(depthPolicy).iterator();
+        recursiveDeleteDir(BASE_DIR_PATH);
+        assertTrue(BASE_DIR_PATH.mkdir());
+        try {
+            createFiles(pathSpecArr);
+            while (true) {
+                // Do not call hasNext() intentionally.
+                pathIter.next();
+            }
+        }
+        finally {
+            recursiveDeleteDir(BASE_DIR_PATH);
+        }
+    }
+
+    protected void core_hasNextAndNext_PassWithEvenNumericPrefixFilter(
+        TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
+    throws IOException {
+        TraversePathIterable pathIterable = newInstance(depthPolicy);
+        pathIterable =
+            pathIterable.withOptionalIteratePathFilter(ONLY_ACCEPT_EVEN_NUMERIC_PREFIX_PATH_FILTER);
+        TraversePathIterator pathIter = pathIterable.iterator();
+
+        recursiveDeleteDir(BASE_DIR_PATH);
+        assertTrue(BASE_DIR_PATH.mkdir());
+        try {
+            int max = createFiles(pathSpecArr);
+            long lastNumericPrefix = 0;
+            while (pathIter.hasNext()) {
+                File path = pathIter.next();
+                NumericPrefix numericPrefix = new NumericPrefix(path.getName());
+                assertTrue(numericPrefix.hasNumericValue());
+                assertTrue(0 == numericPrefix.getNumericValue() % 2);
+                assertEquals(numericPrefix.getNumericValue(), lastNumericPrefix + 2);
+                lastNumericPrefix += 2;
+            }
+            if (0 == max % 2) {
+                assertEquals(lastNumericPrefix, max);
+            }
+            else {
+                assertEquals(lastNumericPrefix, max - 1);
+            }
+        }
+        finally {
+            recursiveDeleteDir(BASE_DIR_PATH);
+        }
+    }
+
+    protected void core_hasNextAndNext_PassWithOnlyRootDirFilter(
+            TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
+    throws IOException {
+        TraversePathIterable pathIterable = newInstance(depthPolicy);
+        pathIterable = pathIterable.withOptionalIteratePathFilter(ONLY_ACCEPT_ROOT_DIR_PATH_FILTER);
+        TraversePathIterator pathIter = pathIterable.iterator();
+
+        recursiveDeleteDir(BASE_DIR_PATH);
+        assertTrue(BASE_DIR_PATH.mkdir());
+        try {
+            int max = createFiles(pathSpecArr);
+            assertTrue(pathIter.hasNext());
+            File path = pathIter.next();
+            assertEquals(path, BASE_DIR_PATH);
+            assertFalse(pathIter.hasNext());
+        }
+        finally {
+            recursiveDeleteDir(BASE_DIR_PATH);
+        }
+    }
+
+    protected void core_hasNextAndNext_PassWithAcceptNoneFilter(
+            TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
+    throws IOException {
+        TraversePathIterable pathIterable = newInstance(depthPolicy);
+        pathIterable = pathIterable.withOptionalIteratePathFilter(ACCEPT_NONE_PATH_FILTER);
+        TraversePathIterator pathIter = pathIterable.iterator();
+
+        recursiveDeleteDir(BASE_DIR_PATH);
+        assertTrue(BASE_DIR_PATH.mkdir());
+        try {
+            int max = createFiles(pathSpecArr);
+            assertFalse(pathIter.hasNext());
+        }
+        finally {
+            recursiveDeleteDir(BASE_DIR_PATH);
         }
     }
 
@@ -148,7 +262,7 @@ public class TraversePathIteratorTestBase {
         Set<Integer> maxSet = Sets.newHashSet();
         int max = 0;
         for (String pathSpec : pathSpecArr) {
-            File dirPath = baseDirPath;
+            File dirPath = BASE_DIR_PATH;
             for (String part : Splitter.on("/").split(pathSpec)) {
                 if ('{' == part.charAt(0) && '}' == part.charAt(part.length() - 1)) {
                     if (2 == part.length()) {

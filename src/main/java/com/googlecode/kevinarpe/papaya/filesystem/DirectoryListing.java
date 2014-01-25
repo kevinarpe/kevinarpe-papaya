@@ -240,12 +240,6 @@ public final class DirectoryListing {
     }
 
     /**
-     * This is a convenience method for {@link #sort(List)}.
-     *
-     * @throws NullPointerException
-     *         if {@code fileComparator} is {@code null}
-     */
-    /**
      * Performs an in-place sort on the list of child paths using a {@link Comparator}.  This method
      * operates directly on the internal list.  To preserve the current instance, use the copy
      * constructor first, then sort.

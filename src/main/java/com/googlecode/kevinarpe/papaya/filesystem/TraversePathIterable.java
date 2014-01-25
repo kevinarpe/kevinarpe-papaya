@@ -28,8 +28,10 @@ package com.googlecode.kevinarpe.papaya.filesystem;
 import com.google.common.base.Objects;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.compare.ComparatorUtils;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 
@@ -155,6 +157,7 @@ implements Iterable<File> {
      *
      * @see #getDirPath()
      */
+    // TODO: Rename to rootDirPath?  Might be more readable.
     public TraversePathIterable withDirPath(File dirPath) {
         return new TraversePathIterable(
             ObjectArgs.checkNotNull(dirPath, "dirPath"),
@@ -218,10 +221,27 @@ implements Iterable<File> {
 
     /**
      * Constructs a <b>new</b> iterable from the current, replacing the optional descend directory
-     * path filter.  This attribute filters directories before traversal.  If {@code null},
-     * <i>all</i> directories are traversed.
+     * path filter.  This attribute filters directories before traversal, <i>including</i> the root
+     * directory: {@link #getDirPath()}.  Use the second parameter, {@code depth}, in method
+     * {@link PathFilter#accept(File, int)} to easily control this case.
      * <p>
-     * To control which paths are iterated, see {@link #withOptionalIteratePathFilter(PathFilter)}.
+     * Example:
+     * <pre>{@code
+     * new PathFilter() {
+     *     @Override
+     *     public boolean accept(File path, int depth) {
+     *         if (0 == depth) {
+     *             return true;  // always accept the root directory
+     *         }
+     *         // else, apply different logic
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * If the path filter is {@code null}, then <i>all</i> directories are traversed.  To combine
+     * more than one path filter, consider using {@link PathFilterUtils#anyOf(Collection)} or
+     * {@link PathFilterUtils#allOf(Collection)}.  To control which paths are iterated, see
+     * {@link #withOptionalIteratePathFilter(PathFilter)}.
      *
      * @param optDescendDirPathFilter
      *        path filter for descend directories.  May be {@code null}.
@@ -245,7 +265,8 @@ implements Iterable<File> {
     /**
      * Constructs a <b>new</b> iterable from the current, replacing the optional descend directory
      * comparator.  This attribute sorts directories before traversal.  If {@code null}, directories
-     * are <i>not</i> sorted before traversal.
+     * are <i>not</i> sorted before traversal.  To combine more than one comparator, consider using
+     * {@link ComparatorUtils#chain(Collection)}.
      * <p>
      * To control the order paths are iterated, see
      * {@link #withOptionalIteratePathComparator(Comparator)}.
@@ -271,8 +292,26 @@ implements Iterable<File> {
 
     /**
      * Constructs a <b>new</b> iterable from the current, replacing the optional iterated paths
-     * filter.  This attribute filters paths before iteration.  If {@code null}, <i>all</i> paths
-     * are iterated, including directories.
+     * filter.  This attribute filters paths before iteration, <i>including</i> the root directory:
+     * {@link #getDirPath()}.  Use the second parameter, {@code depth}, in method
+     * {@link PathFilter#accept(File, int)} to easily control this case.
+     * <p>
+     * Example:
+     * <pre>{@code
+     * new PathFilter() {
+     *     @Override
+     *     public boolean accept(File path, int depth) {
+     *         if (0 == depth) {
+     *             return true;  // always accept the root directory
+     *         }
+     *         // else, apply different logic
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * If the path filter is {@code null}, then <i>all</i> paths are iterated, including
+     * directories.  To combine more than one path filter, consider using
+     * {@link PathFilterUtils#anyOf(Collection)} or {@link PathFilterUtils#allOf(Collection)}.
      * <p>
      * To control which directories are traversed, see
      * {@link #withOptionalIteratePathFilter(PathFilter)}.
@@ -300,7 +339,8 @@ implements Iterable<File> {
     /**
      * Constructs a <b>new</b> iterable from the current, replacing the optional iterated paths
      * comparator.  This attribute sorts paths before iteration.  If {@code null}, paths are
-     * <i>not</i> sorted before iteration.
+     * <i>not</i> sorted before iteration.  To combine more than one comparator, consider using
+     * {@link ComparatorUtils#chain(Collection)}.
      * <p>
      * To control the order directories are traversed, see
      * {@link #withOptionalDescendDirPathComparator(Comparator)}.

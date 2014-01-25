@@ -47,18 +47,18 @@ extends TraversePathIterator {
             File dirPath,
             TraversePathDepthPolicy depthPolicy,
             TraversePathExceptionPolicy exceptionPolicy,
-            PathFilter optDescendDirFilter,
-            Comparator<File> optDescendFileComparator,
-            PathFilter optIterateFilter,
-            Comparator<File> optIterateFileComparator) {
+            PathFilter optDescendDirPathFilter,
+            Comparator<File> optDescendDirPathComparator,
+            PathFilter optIteratePathFilter,
+            Comparator<File> optIteratePathComparator) {
         super(
             dirPath,
             depthPolicy,
             exceptionPolicy,
-            optDescendDirFilter,
-            optDescendFileComparator,
-            optIterateFilter,
-            optIterateFileComparator);
+            optDescendDirPathFilter,
+            optDescendDirPathComparator,
+            optIteratePathFilter,
+            optIteratePathComparator);
         _isInitDone = false;
         _currentLevel = null;  // Pedantic.
         _hasIteratedDirPath = false;
@@ -82,24 +82,31 @@ extends TraversePathIterator {
         }
     }
 
-    @Override
-    public boolean hasNext() {
+    private void doInit() {
         if (!_isInitDone) {
-            // If initial directory listing fails, but exceptions are ignored, '_currentLevel' will
-            // remain null.
-            File dirPath = getDirPath();
-            _currentLevel = tryAddLevel(dirPath);
+            _currentLevel = tryDescendDirPath();
             _descendAndUpdateCurrentLevel();
             _isInitDone = true;
         }
+    }
+
+    @Override
+    public boolean hasNext() {
+        doInit();
         while (null != _currentLevel && !_currentLevel.getIterateDirectoryListingIter().hasNext()) {
             _currentLevel = tryRemoveAndGetNextLevel();
             _descendAndUpdateCurrentLevel();
         }
         if (null == _currentLevel) {
             if (!_hasIteratedDirPath) {
-                _isNextElementDirPath = true;
-                return true;
+                if (canIterateDirPath()) {
+                    _isNextElementDirPath = true;
+                    return true;
+                }
+                else {
+                    _hasIteratedDirPath = true;
+                    return false;
+                }
             }
             return false;
         }

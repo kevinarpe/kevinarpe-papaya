@@ -25,10 +25,15 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.exception.PathRuntimeException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.NoSuchElementException;
+
+import static org.testng.Assert.assertTrue;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -52,7 +57,6 @@ extends TraversePathIteratorTestBase {
     @DataProvider
     private Object[][] _hasNextAndNext_Pass_Data() {
         return new Object[][] {
-            // TODO: More tests!
             new Object[] {
                 new String[] {
                 },
@@ -102,5 +106,59 @@ extends TraversePathIteratorTestBase {
     throws IOException {
         TraversePathIterator pathIter = newInstance(TraversePathDepthPolicy.DEPTH_FIRST).iterator();
         core_hasNextAndNext_Pass(pathIter, pathSpecArr);
+    }
+
+    @Test(dataProvider = "_hasNextAndNext_Pass_Data",
+            expectedExceptions = NoSuchElementException.class)
+    public void hasNextAndNext_FailWithNoSuchElementException(String[] pathSpecArr)
+    throws IOException {
+        core_hasNextAndNext_FailWithNoSuchElementException(
+            TraversePathDepthPolicy.DEPTH_FIRST, pathSpecArr);
+    }
+
+    @Test(dataProvider = "_hasNextAndNext_Pass_Data")
+    public void hasNextAndNext_PassWithFilter(String[] pathSpecArr)
+    throws IOException {
+        core_hasNextAndNext_PassWithEvenNumericPrefixFilter(
+            TraversePathDepthPolicy.DEPTH_FIRST, pathSpecArr);
+    }
+
+    @Test(dataProvider = "_hasNextAndNext_Pass_Data")
+    public void hasNextAndNext_PassWithOnlyRootDirFilter(String[] pathSpecArr)
+    throws IOException {
+        core_hasNextAndNext_PassWithOnlyRootDirFilter(
+            TraversePathDepthPolicy.DEPTH_LAST, pathSpecArr);
+    }
+
+    @Test(dataProvider = "_hasNextAndNext_Pass_Data")
+    public void hasNextAndNext_PassWithAcceptNoneFilter(String[] pathSpecArr)
+    throws IOException {
+        core_hasNextAndNext_PassWithAcceptNoneFilter(
+            TraversePathDepthPolicy.DEPTH_LAST, pathSpecArr);
+    }
+
+    @Test(expectedExceptions = PathRuntimeException.class)
+    public void hasNextAndNext_FailWithPathRuntimeException()
+    throws IOException {
+        TraversePathIterable pathIterable = newInstance(TraversePathDepthPolicy.DEPTH_FIRST);
+        pathIterable = pathIterable.withExceptionPolicy(TraversePathExceptionPolicy.THROW);
+        TraversePathIterator pathIter = pathIterable.iterator();
+
+        recursiveDeleteDir(BASE_DIR_PATH);
+        assertTrue(BASE_DIR_PATH.mkdir());
+        try {
+            int max = createFiles(new String[] { "2/{1}", "3" });
+            assertTrue(pathIter.hasNext());
+            while (pathIter.hasNext()) {
+                File path = pathIter.next();
+                if (path.getName().equals("1.regularFile")) {
+                    File dirPathToDelete = new File(BASE_DIR_PATH, "3.directory");
+                    assertTrue(dirPathToDelete.delete());
+                }
+            }
+        }
+        finally {
+            recursiveDeleteDir(BASE_DIR_PATH);
+        }
     }
 }

@@ -31,6 +31,7 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -57,7 +58,6 @@ extends TraversePathIteratorTestBase {
     @DataProvider
     private Object[][] _hasNextAndNext_Pass_Data() {
         return new Object[][] {
-            // TODO: More tests!
             new Object[] {
                 new String[] {
                 },
@@ -109,7 +109,32 @@ extends TraversePathIteratorTestBase {
         core_hasNextAndNext_Pass(pathIter, pathSpecArr);
     }
 
-    // TODO: Can we do the same for DepthFirst?
+    @Test(dataProvider = "_hasNextAndNext_Pass_Data",
+            expectedExceptions = NoSuchElementException.class)
+    public void hasNextAndNext_FailWithNoSuchElementException(String[] pathSpecArr)
+    throws IOException {
+        core_hasNextAndNext_FailWithNoSuchElementException(
+            TraversePathDepthPolicy.DEPTH_LAST, pathSpecArr);
+    }
+
+    @Test(dataProvider = "_hasNextAndNext_Pass_Data")
+    public void hasNextAndNext_PassWithFilter(String[] pathSpecArr)
+    throws IOException {
+        core_hasNextAndNext_PassWithEvenNumericPrefixFilter(TraversePathDepthPolicy.DEPTH_LAST, pathSpecArr);
+    }
+
+    @Test(dataProvider = "_hasNextAndNext_Pass_Data")
+    public void hasNextAndNext_PassWithOnlyRootDirFilter(String[] pathSpecArr)
+    throws IOException {
+        core_hasNextAndNext_PassWithOnlyRootDirFilter(TraversePathDepthPolicy.DEPTH_LAST, pathSpecArr);
+    }
+
+    @Test(dataProvider = "_hasNextAndNext_Pass_Data")
+    public void hasNextAndNext_PassWithAcceptNoneFilter(String[] pathSpecArr)
+    throws IOException {
+        core_hasNextAndNext_PassWithAcceptNoneFilter(TraversePathDepthPolicy.DEPTH_LAST, pathSpecArr);
+    }
+
     @Test(expectedExceptions = PathRuntimeException.class)
     public void hasNextAndNext_FailWithPathRuntimeException()
     throws IOException {
@@ -117,14 +142,13 @@ extends TraversePathIteratorTestBase {
         pathIterable = pathIterable.withExceptionPolicy(TraversePathExceptionPolicy.THROW);
         TraversePathIterator pathIter = pathIterable.iterator();
 
-        recursiveDeleteDir(getBaseDirPath());
-        assertTrue(getBaseDirPath().mkdir());
+        recursiveDeleteDir(BASE_DIR_PATH);
+        assertTrue(BASE_DIR_PATH.mkdir());
         try {
             int max = createFiles(new String[] { "1/{3}", "2" });
             assertTrue(pathIter.hasNext());
             File firstPath = pathIter.next();
-            assertEquals(firstPath, getBaseDirPath());
-            pathIter.hasNext();
+            assertEquals(firstPath, BASE_DIR_PATH);
             while (pathIter.hasNext()) {
                 File path = pathIter.next();
                 if (path.getName().equals("2.directory")) {
@@ -134,9 +158,7 @@ extends TraversePathIteratorTestBase {
             }
         }
         finally {
-            recursiveDeleteDir(getBaseDirPath());
+            recursiveDeleteDir(BASE_DIR_PATH);
         }
     }
-
-    // TODO: Demonstrate filters work.  Remove even items.  Confirm iteration has not even items.
 }

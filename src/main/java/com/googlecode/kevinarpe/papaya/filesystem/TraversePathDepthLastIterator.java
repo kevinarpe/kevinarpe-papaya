@@ -46,31 +46,35 @@ extends TraversePathIterator {
             File dirPath,
             TraversePathDepthPolicy depthPolicy,
             TraversePathExceptionPolicy exceptionPolicy,
-            PathFilter optDescendDirFilter,
-            Comparator<File> optDescendFileComparator,
-            PathFilter optIterateFilter,
-            Comparator<File> optIterateFileComparator) {
+            PathFilter optDescendDirPathFilter,
+            Comparator<File> optDescendDirPathComparator,
+            PathFilter optIteratePathFilter,
+            Comparator<File> optIteratePathComparator) {
         super(
             dirPath,
             depthPolicy,
             exceptionPolicy,
-            optDescendDirFilter,
-            optDescendFileComparator,
-            optIterateFilter,
-            optIterateFileComparator);
+            optDescendDirPathFilter,
+            optDescendDirPathComparator,
+            optIteratePathFilter,
+            optIteratePathComparator);
         _isInitDone = false;
         _hasIteratedDirPath = false;
     }
 
-    @Override
-    public boolean hasNext() {
+    private void doInit() {
         if (!_isInitDone) {
-            // If initial directory listing fails, but exceptions are ignored, '_currentLevel' will
-            // remain null.
-            File dirPath = getDirPath();
-            _currentLevel = tryAddLevel(dirPath);
+            _currentLevel = tryDescendDirPath();
+            if (!canIterateDirPath()) {
+                _hasIteratedDirPath = true;  // We will never iterate 'dirPath'.
+            }
             _isInitDone = true;
         }
+    }
+
+    @Override
+    public boolean hasNext() {
+        doInit();
         if (!_hasIteratedDirPath) {
             return true;
         }
