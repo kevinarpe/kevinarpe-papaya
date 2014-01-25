@@ -77,7 +77,9 @@ public final class DirectoryListing {
      *
      * @see #DirectoryListing(DirectoryListing, Class)
      */
-    public static final Class<? extends List> DEFAULT_LIST_CLASS = ArrayList.class;
+	// TODO: This 'SuppressWarnings' is from Eclipse.  Check in 
+    @SuppressWarnings("rawtypes")
+	public static final Class<? extends List> DEFAULT_LIST_CLASS = ArrayList.class;
 
     private final File _dirPath;
     private List<File> _childPathList;

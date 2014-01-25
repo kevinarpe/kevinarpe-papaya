@@ -929,7 +929,7 @@ public class PathUtilsTest {
         File dirPath = new File(UUID.randomUUID().toString());
         Assert.assertTrue(dirPath.mkdir());
         try {
-            Assert.assertEquals(new ArrayList(), PathUtils.recursiveListFilePaths(dirPath));
+            Assert.assertEquals(new ArrayList<File>(), PathUtils.recursiveListFilePaths(dirPath));
         }
         finally {
             Assert.assertTrue(dirPath.delete());

@@ -38,7 +38,7 @@ import static org.testng.Assert.assertTrue;
 public class AbstractLexicographicalComparatorTest {
 
     private static class AbstractLexicographicalComparatorImpl
-    extends AbstractLexicographicalComparator {
+    extends AbstractLexicographicalComparator<Object, AbstractLexicographicalComparatorImpl> {
 
         public AbstractLexicographicalComparatorImpl() {
             super();

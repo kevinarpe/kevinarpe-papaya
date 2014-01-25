@@ -40,6 +40,7 @@ import java.util.List;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -198,7 +199,9 @@ extends PowerMockTestCase {
             .thenReturn(mockOrigDirectoryListing);
         when(mockFactory.newDirectoryListingInstance(mockOrigDirectoryListing))
             .thenReturn(mockDescendDirDirectoryListing);
-        when(mockTraversePathIterator.getOptionalDescendDirPathFilter()).thenReturn(mockPathFilter);
+        // TODO: Why does this fail in Eclipse but not IntelliJ or Maven CLI?
+//        when(mockTraversePathIterator.getOptionalDescendDirPathFilter()).thenReturn(mockPathFilter);
+        doReturn(mockPathFilter).when(mockTraversePathIterator).getOptionalDescendDirPathFilter();
         when(mockFactory.newDescendDirFileFilterInstance(mockPathFilter, depth))
             .thenReturn(mockDescendDirFileFilter);
         when(mockTraversePathIterator.getOptionalDescendDirPathComparator())
@@ -283,7 +286,9 @@ extends PowerMockTestCase {
         when(mockFactory.newDirectoryListingInstance(
             dirPath, TraversePathLevel.DEFAULT_DIRECTORY_LISTING_LIST_CLASS))
             .thenReturn(mockOrigDirectoryListing);
-        when(mockTraversePathIterator.getOptionalIteratePathFilter()).thenReturn(mockPathFilter);
+        // TODO: Why does this fail in Eclipse but not IntelliJ or Maven CLI?
+//        when(mockTraversePathIterator.getOptionalIteratePathFilter()).thenReturn(mockPathFilter);
+        doReturn(mockPathFilter).when(mockTraversePathIterator).getOptionalIteratePathFilter();
         when(mockFactory.newDirectoryListingInstance(mockOrigDirectoryListing))
             .thenReturn(mockIterateDirectoryListing);
         when(mockFactory.newIterateFileFilterInstance(mockPathFilter, depth))
