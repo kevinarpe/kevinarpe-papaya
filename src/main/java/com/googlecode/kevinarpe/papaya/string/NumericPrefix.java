@@ -71,6 +71,10 @@ public final class NumericPrefix {
         long value = NOT_FOUND;
         if (matcher.find()) {
             String valueStr = matcher.group();
+            // Java 7 allows a leading '+', but Java 6 does not.
+            if ('+' == valueStr.charAt(0)) {
+                valueStr = valueStr.substring(1);
+            }
             value = Long.parseLong(valueStr);
         }
         _value = value;
