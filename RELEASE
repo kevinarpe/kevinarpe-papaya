@@ -49,6 +49,8 @@ Release Process
 * git push --tags origin master
 * mvn release:perform -P gpg
 * After, git status will be "clean".
+** That may not longer be true.  During the 0.0.11 release, it was not clean.  I had to manually com
+mit.  Unsure of the reason why.  If it persists, I will change these instructions.
 * https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide#SonatypeOSSMavenRepositoryUsageGuide-8a.ReleaseIt
 ** Do the Nexus dance to push the staged release.
 * cd ../kevinarpe-papaya.docs
