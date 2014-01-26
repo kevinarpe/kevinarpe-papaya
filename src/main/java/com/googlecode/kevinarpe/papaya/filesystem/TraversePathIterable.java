@@ -225,9 +225,9 @@ implements Iterable<File> {
      * {@link PathFilter#accept(File, int)} to easily control this case.
      * <p>
      * Example:
-     * <pre>{@code
+     * <pre><code>
      * new PathFilter() {
-     *     @Override
+     *     &#64;Override
      *     public boolean accept(File path, int depth) {
      *         if (0 == depth) {
      *             return true;  // always accept the root directory
@@ -235,7 +235,7 @@ implements Iterable<File> {
      *         // else, apply different logic
      *     }
      * }
-     * }</pre>
+     * </code></pre>
      * <p>
      * If the path filter is {@code null}, then <i>all</i> directories are traversed.  To combine
      * more than one path filter, consider using {@link PathFilterUtils#anyOf(Collection)} or
@@ -296,9 +296,9 @@ implements Iterable<File> {
      * {@link PathFilter#accept(File, int)} to easily control this case.
      * <p>
      * Example:
-     * <pre>{@code
+     * <pre><code>
      * new PathFilter() {
-     *     @Override
+     *     &#64;Override
      *     public boolean accept(File path, int depth) {
      *         if (0 == depth) {
      *             return true;  // always accept the root directory
@@ -306,7 +306,7 @@ implements Iterable<File> {
      *         // else, apply different logic
      *     }
      * }
-     * }</pre>
+     * </code></pre>
      * <p>
      * If the path filter is {@code null}, then <i>all</i> paths are iterated, including
      * directories.  To combine more than one path filter, consider using
