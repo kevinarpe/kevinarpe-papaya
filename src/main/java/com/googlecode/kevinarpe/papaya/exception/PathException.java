@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.exception;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +25,13 @@ package com.googlecode.kevinarpe.papaya.exception;
  * #L%
  */
 
-import java.io.File;
-import java.io.IOException;
-
 import com.google.common.base.Objects;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * This is a more specific version of {@link IOException} that focuses on path-related errors.
@@ -47,104 +47,6 @@ extends IOException {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Reason for the error.
-     * 
-     * @author Kevin Connor ARPE (kevinarpe@gmail.com)
-     */
-    public enum PathExceptionReason {
-
-        /**
-         * {@link PathException#getAbsPath()} does not exist.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is always {@code null}.
-         */
-        PATH_DOES_NOT_EXIST(false),
-
-        /**
-         * {@link PathException#getAbsPath()} does not exist, because
-         * {@link PathException#getOptAbsParentPath()} does not exist.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is never {@code null}.
-         */
-        PARENT_PATH_DOES_NOT_EXIST(true),
-
-        /**
-         * {@link PathException#getAbsPath()} exists as a file.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is always {@code null}.
-         */
-        PATH_IS_FILE(false),
-
-        /**
-         * {@link PathException#getOptAbsParentPath()} exists as a file.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is never {@code null}.
-         */
-        PARENT_PATH_IS_FILE(true),
-
-        /**
-         * {@link PathException#getAbsPath()} exists as a directory.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is always {@code null}.
-         */
-        PATH_IS_DIRECTORY(false),
-
-        /**
-         * {@link PathException#getOptAbsParentPath()} exists as a directory, but is not writable.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is never {@code null}.
-         */
-        PARENT_PATH_IS_NON_WRITABLE_DIRECTORY(true),
-
-        /**
-         * {@link PathException#getAbsPath()} exists as a root directory.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is always {@code null}.
-         */
-        PATH_IS_ROOT_DIRECTORY(false),
-        
-        /**
-         * {@link PathException#getAbsPath()} cannot be created on a full disk partition.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is always {@code null}.
-         */
-        PATH_DISK_PARTITION_IS_FULL(false),
-        
-        /**
-         * {@link PathException#getOptAbsParentPath()} cannot be created on a full disk partition.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is never {@code null}.
-         */
-        PARENT_PATH_DISK_PARTITION_IS_FULL(true),
-
-        /**
-         * The reason for error is unknown.
-         * <p>
-         * {@link PathException#getOptAbsParentPath()} is always {@code null}.
-         */
-        UNKNOWN(false);
-        
-        /**
-         * If {@code true}, then {@link PathException#getOptAbsParentPath()} is always <b>not</b>
-         * {@code null}.
-         * <br>If {@code false}, then {@link PathException#getOptAbsParentPath()} is always
-         * {@code null}.
-         */
-        public final boolean hasParentPath;
-        
-        private PathExceptionReason(boolean hasParentPath) {
-            this.hasParentPath = hasParentPath;
-        }
-        
-        @Override
-        public String toString() {
-            String x = String.format("%s [name()='%s', hasParentPath=%s]",
-                getClass().getSimpleName(), name(), hasParentPath);
-            return x;
-        }
-    }
-    
     private final PathExceptionReason _reason;
     private final File _absPath;
     private final File _optAbsParentPath;
@@ -173,7 +75,7 @@ extends IOException {
      *   <li>After failing to make the directory, the method might throw an exception where:</li>
      *   <ol>
      *     <li>Parameter {@code reason} is
-     *     {@link PathExceptionReason#PARENT_PATH_IS_FILE}</li>
+     *     {@link PathExceptionReason#PARENT_PATH_IS_NORMAL_FILE}</li>
      *     <li>Parameter {@code path} is {@code /home/user/abc/def}</li>
      *     <li>Parameter {@code optParentPath} is {@code /home/user/abc}</li>
      *     <li>Parameter {@code message} is

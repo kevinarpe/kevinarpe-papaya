@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +25,13 @@ package com.googlecode.kevinarpe.papaya;
  * #L%
  */
 
-import java.io.File;
-
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
-import com.googlecode.kevinarpe.papaya.exception.PathException.PathExceptionReason;
+import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
+
+import java.io.File;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -129,11 +129,11 @@ public final class PathUtils {
      *         if {@code path} is {@code null}
      * @throws PathException
      * <ul>
-     *   <li>with reason {@link PathExceptionReason#PATH_IS_FILE}
+     *   <li>with reason {@link PathExceptionReason#PATH_IS_NORMAL_FILE}
      *   if {@code path} exists as a file</li>
      *   <li>with reason {@link PathExceptionReason#PARENT_PATH_DOES_NOT_EXIST}
      *   if parent directory for {@code path} does not exist</li>
-     *   <li>with reason {@link PathExceptionReason#PARENT_PATH_IS_FILE}
+     *   <li>with reason {@link PathExceptionReason#PARENT_PATH_IS_NORMAL_FILE}
      *   if parent directory for {@code path} exists as a file</li>
      *   <li>with reason {@link PathExceptionReason#PARENT_PATH_IS_NON_WRITABLE_DIRECTORY}
      *   if parent directory for {@code path} exists as a directory, but is not
@@ -195,9 +195,9 @@ public final class PathUtils {
      *         if {@code path} is {@code null}
      * @throws PathException
      * <ul>
-     *   <li>with reason {@link PathExceptionReason#PATH_IS_FILE}
+     *   <li>with reason {@link PathExceptionReason#PATH_IS_NORMAL_FILE}
      *   if {@code path} exists as a file</li>
-     *   <li>with reason {@link PathExceptionReason#PARENT_PATH_IS_FILE}
+     *   <li>with reason {@link PathExceptionReason#PARENT_PATH_IS_NORMAL_FILE}
      *   if parent directory for {@code path} exists as a file</li>
      *   <li>with reason {@link PathExceptionReason#PARENT_PATH_IS_NON_WRITABLE_DIRECTORY}
      *   if parent directory for {@code path} exists as a directory, but is not writable</li>
@@ -233,7 +233,7 @@ public final class PathUtils {
                 desc,
                 path.getAbsolutePath());
             throw new PathException(
-                PathExceptionReason.PATH_IS_FILE, path, null, msg);
+                PathExceptionReason.PATH_IS_NORMAL_FILE, path, null, msg);
         }
         if (path.getTotalSpace() > 0 && 0 == path.getFreeSpace()) {
             String msg = String.format(
@@ -267,7 +267,7 @@ public final class PathUtils {
                     path.getAbsolutePath(),
                     parentPath.getAbsolutePath());
                 throw new PathException(
-                    PathExceptionReason.PARENT_PATH_IS_FILE, path, parentPath, msg);
+                    PathExceptionReason.PARENT_PATH_IS_NORMAL_FILE, path, parentPath, msg);
             }
             if (parentPath.isDirectory() && !parentPath.canWrite()) {
                 String msg = String.format(
@@ -337,7 +337,7 @@ public final class PathUtils {
      *         if {@code path} is {@code null}
      * @throws PathException
      * <ul>
-     *   <li>with reason {@link PathExceptionReason#PATH_IS_FILE}
+     *   <li>with reason {@link PathExceptionReason#PATH_IS_NORMAL_FILE}
      *   if {@code path} exists as a file</li>
      *   <li>with reason {@link PathExceptionReason#PATH_IS_ROOT_DIRECTORY}
      *   if {@code path} exists as a root directory</li>
@@ -362,7 +362,7 @@ public final class PathUtils {
                 "Failed to remove directory: Path exists as a file: '%s'",
                 path.getAbsolutePath());
             throw new PathException(
-                PathExceptionReason.PATH_IS_FILE, path, null, msg);
+                PathExceptionReason.PATH_IS_NORMAL_FILE, path, null, msg);
         }
         else {
             File absPath = path.getAbsoluteFile();
@@ -471,4 +471,100 @@ public final class PathUtils {
             path.getAbsolutePath());
         throw new PathException(PathExceptionReason.UNKNOWN, path, null, msg);
     }
+
+    // TODO: Reserve for next release
+
+    // Ideas: list, remove, other random actions... like chmod, touch, etc.
+    // Ref: http://stackoverflow.com/a/10337535/257299
+
+//    /**
+//     *
+//     * @param path
+//     * @return list of file and directory paths.
+//     * <ol>
+//     *     <li>File paths appear before their parent directory paths.</li>
+//     *     <li>Order is most deep to most shallow.</li>
+//     * </ol>
+//     *
+//     * @throws PathException
+//     */
+//    public static List<File> recursiveListFilePaths(File path)
+//    throws PathException {
+//        PathArgs.checkDirectoryExists(path, "path");
+//
+//        LinkedList<File> pathList = new LinkedList<File>();
+//        FileFilter optFileFilter = null;
+//        _coreRecursiveListFilePaths(path, pathList, optFileFilter);
+//        pathList.removeLast();
+//        List<File> pathListCopy = ImmutableList.copyOf(pathList);
+//        return pathListCopy;
+//    }
+//
+//    private static void _coreRecursiveListFilePaths(
+//            File dirPath, LinkedList<File> pathList, FileFilter optFileFilter)
+//    throws PathException {
+//        File[] childPathArr = _listFiles(dirPath);
+//        pathList.addFirst(dirPath);
+//        LinkedList<File> childDirPathList = new LinkedList<File>();
+//        for (File childPath: childPathArr) {
+//            if (childPath.isDirectory()) {
+//                if (null != optFileFilter && !optFileFilter.accept(childPath)) {
+//                    continue;
+//                }
+//                pathList.addFirst(childPath);
+//                childDirPathList.add(childPath);
+//            }
+//        }
+//        for (File childPath: childPathArr) {
+//            if (childPath.isFile()) {
+//                if (null != optFileFilter && !optFileFilter.accept(childPath)) {
+//                    continue;
+//                }
+//                pathList.addFirst(childPath);
+//            }
+//        }
+//        for (File childDirPath: childDirPathList) {
+//            _coreRecursiveListFilePaths(childDirPath, pathList, optFileFilter);
+//        }
+//    }
+//
+//    private static File[] _listFiles(File dirPath)
+//    throws PathException {
+//        File[] childPathArr = dirPath.listFiles();
+//        if (null == childPathArr) {
+//            if (!dirPath.exists()) {
+//                String msg = String.format(
+//                    "Failed to list files for path (does not exist): '%s'",
+//                    dirPath.getAbsolutePath());
+//                throw new PathException(
+//                    PathExceptionReason.PATH_DOES_NOT_EXIST, dirPath, null, msg);
+//            }
+//            if (dirPath.isFile()) {
+//                String msg = String.format(
+//                    "Failed to list files for path (exists as file, not directory): '%s'",
+//                    dirPath.getAbsolutePath());
+//                throw new PathException(PathExceptionReason.PATH_IS_NORMAL_FILE, dirPath, null, msg);
+//            }
+//            // Exists + Directory...
+//            if (!dirPath.canExecute()) {
+//                String msg = String.format(
+//                    "Failed to list files for path (execute permission not set): '%s'",
+//                    dirPath.getAbsolutePath());
+//                throw new PathException(
+//                    PathExceptionReason.PATH_IS_NON_EXECUTABLE_DIRECTORY, dirPath, null, msg);
+//            }
+//            String msg = String.format(
+//                "Failed to list files for path (unknown error): '%s'",
+//                dirPath.getAbsolutePath());
+//            throw new PathException(PathExceptionReason.UNKNOWN, dirPath, null, msg);
+//        }
+//        return childPathArr;
+//    }
+//
+//    public static void main(String[] argArr) {
+//        System.out.println(new File("a/b/c").getAbsolutePath());
+//        System.out.println(System.getProperty("user.dir"));
+//        File[] arr = new File("nono").listFiles();
+//
+//    }
 }

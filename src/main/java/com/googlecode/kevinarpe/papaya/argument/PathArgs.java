@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +25,13 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
-import java.io.File;
-import java.io.InputStream;
-
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.exception.ClassResourceNotFoundException;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
-import com.googlecode.kevinarpe.papaya.exception.PathException.PathExceptionReason;
+import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
+
+import java.io.File;
+import java.io.InputStream;
 
 /**
  * Static methods to check {@link File} (path) arguments.
@@ -214,7 +214,7 @@ public final class PathArgs {
      * @throws NullPointerException
      *         if {@code path} is {@code null}
      * @throws PathException
-     *         with reason {@link PathExceptionReason#PATH_IS_FILE}
+     *         with reason {@link PathExceptionReason#PATH_IS_NORMAL_FILE}
      *         if {@code path} exists and is a file
      *
      * @see #checkNotFile(String, String)
@@ -231,7 +231,7 @@ public final class PathArgs {
                 "Argument '%s': Path exists as a file: '%s'%s",
                 argName, path.getAbsolutePath(), w);
             throw new PathException(
-                PathExceptionReason.PATH_IS_FILE, path, null, msg);
+                PathExceptionReason.PATH_IS_NORMAL_FILE, path, null, msg);
         }
         return path;
     }
@@ -271,7 +271,7 @@ public final class PathArgs {
      * <ul>
      *   <li>with reason {@link PathExceptionReason#PATH_DOES_NOT_EXIST}
      *   if {@code path} does not exist</li>
-     *   <li>with reason {@link PathExceptionReason#PATH_IS_FILE}
+     *   <li>with reason {@link PathExceptionReason#PATH_IS_NORMAL_FILE}
      *   if {@code path} exists, but is not a directory</li>
      *   <li></li>
      * </ul>
@@ -300,7 +300,7 @@ public final class PathArgs {
                 "Argument '%s': Path exists as a file: '%s'%s",
                 argName, path.getAbsolutePath(), w);
             throw new PathException(
-                PathExceptionReason.PATH_IS_FILE, path, null, msg);
+                PathExceptionReason.PATH_IS_NORMAL_FILE, path, null, msg);
         }
         return path;
     }

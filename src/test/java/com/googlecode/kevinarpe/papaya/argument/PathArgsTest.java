@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,11 +35,10 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.argument.PathArgs;
 import com.googlecode.kevinarpe.papaya.exception.ClassResourceNotFoundException;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
 import com.googlecode.kevinarpe.papaya.exception.PathExceptionTest;
-import com.googlecode.kevinarpe.papaya.exception.PathException.PathExceptionReason;
+import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -569,7 +568,7 @@ public class PathArgsTest {
         catch (PathException e) {
             PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException(PathExceptionReason.PATH_IS_FILE, path, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_IS_NORMAL_FILE, path, null, "dummy"));
         }
         finally {
             safeRm(path);
@@ -588,7 +587,7 @@ public class PathArgsTest {
         catch (PathException e) {
             PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException(PathExceptionReason.PATH_IS_FILE, path, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_IS_NORMAL_FILE, path, null, "dummy"));
         }
         finally {
             safeRm(path);
@@ -607,7 +606,7 @@ public class PathArgsTest {
         catch (PathException e) {
             PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException(PathExceptionReason.PATH_IS_FILE, absPath, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_IS_NORMAL_FILE, absPath, null, "dummy"));
         }
         finally {
             safeRm(path);
@@ -627,7 +626,7 @@ public class PathArgsTest {
         catch (PathException e) {
             PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException(PathExceptionReason.PATH_IS_FILE, absPath, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_IS_NORMAL_FILE, absPath, null, "dummy"));
         }
         finally {
             safeRm(path);

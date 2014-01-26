@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -751,30 +751,6 @@ final class ValueAsTypeIterator {
         }
     }
 
-    // TODO: Safe to remove?  Discovered on 2013-11-03
-//    static void _checkValueRange(
-//            _IValueAsDoubleIterator iter, double minValue, double maxValue, String argName) {
-//        while (iter.hasNext()) {
-//            final double value = iter.nextAsDouble();
-//            if (value < minValue) {
-//                final String desc = iter.getUnderlyingDescription();
-//                final int index = iter.nextIndex() - 1;
-//                final String w = StringArgs._getArgNameWarning(argName, "argName");
-//                throw new IllegalArgumentException(String.format(
-//                    "%s argument '%s': Value at index %d < 'minValue': %f < %f%s",
-//                    desc, argName, index, value, minValue, w));
-//            }
-//            if (value > maxValue) {
-//                final String desc = iter.getUnderlyingDescription();
-//                final int index = iter.nextIndex() - 1;
-//                final String w = StringArgs._getArgNameWarning(argName, "argName");
-//                throw new IllegalArgumentException(String.format(
-//                    "%s argument '%s': Value at index %d > 'maxValue': %f > %f%s",
-//                    desc, argName, index, value, maxValue, w));
-//            }
-//        }
-//    }
-    
     private static void _checkMinAndMaxRangeValues(
             _IValueAsDoubleIterator iter,
             double minRangeValue,

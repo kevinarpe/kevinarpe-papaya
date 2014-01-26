@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.exception;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,8 +34,6 @@ import org.testng.annotations.Test;
 
 import com.google.common.testing.EqualsTester;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.exception.PathException;
-import com.googlecode.kevinarpe.papaya.exception.PathException.PathExceptionReason;
 
 public final class PathExceptionTest {
 

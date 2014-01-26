@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.exception;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,17 +25,15 @@ package com.googlecode.kevinarpe.papaya.exception;
  * #L%
  */
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.UUID;
-
+import com.google.common.primitives.Ints;
+import com.google.common.testing.EqualsTester;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.google.common.primitives.Ints;
-import com.google.common.testing.EqualsTester;
-import com.googlecode.kevinarpe.papaya.exception.InvalidExitValueException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.UUID;
 
 public final class InvalidExitValueExceptionTest {
 
@@ -102,7 +100,7 @@ public final class InvalidExitValueExceptionTest {
                 {
                     IllegalArgumentException.class,  // exceptionClass
                     0,  // exitValue
-                    Arrays.asList(),  // validExitValueCollection (bad)
+                    Arrays.<Integer>asList(),  // validExitValueCollection (bad)
                     new Exception(  // optCause
                         UUID.randomUUID().toString(),
                         new Exception(UUID.randomUUID().toString())),
@@ -169,7 +167,7 @@ public final class InvalidExitValueExceptionTest {
                 {
                     IllegalArgumentException.class,  // exceptionClass
                     0,  // exitValue
-                    Arrays.asList(),  // validExitValueCollection (bad)
+                    Arrays.<Integer>asList(),  // validExitValueCollection (bad)
                     null,  // optCause
                     UUID.randomUUID().toString(),  // format
                     new Object[] { },  // optArgArr

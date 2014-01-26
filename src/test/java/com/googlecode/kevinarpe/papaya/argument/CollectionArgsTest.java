@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -156,7 +156,7 @@ public class CollectionArgsTest {
     
     @Test(expectedExceptions = NullPointerException.class)
     public <T> void checkNotEmpty_FailWithNullCollection() {
-        CollectionArgs.checkNotEmpty(null, "ref");
+        CollectionArgs.checkNotEmpty((Collection<Object>) null, "ref");
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -373,7 +373,55 @@ public class CollectionArgsTest {
     public void checkElementsNotNull_FailWithNullCollection() {
         CollectionArgs.checkElementsNotNull((Collection<Object>) null, "ref");
     }
-    
+
+    ///////////////////////////////////////////////////////////////////////////
+    // CollectionArgs.checkElementsUnique
+    //
+
+    @DataProvider
+    public static Object[][] checkElementsUnique_Pass_Data() {
+        return new Object[][] {
+            { Arrays.<Object>asList() },
+            { Arrays.asList(new Object[] { null }) },
+            { Arrays.asList("a") },
+            { Arrays.asList("a", null) },
+            { Arrays.asList("a", "b") },
+            { Arrays.asList("a", null, "b") },
+        };
+    }
+
+    @Test(dataProvider = "checkElementsUnique_Pass_Data")
+    public <T> void checkElementsUnique_Pass(Collection<T> ref) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == CollectionArgs.checkElementsUnique(ref, "ref"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(ref == CollectionArgs.checkElementsUnique(ref, null));
+        Assert.assertTrue(ref == CollectionArgs.checkElementsUnique(ref, ""));
+        Assert.assertTrue(ref == CollectionArgs.checkElementsUnique(ref, "   "));
+    }
+
+    @DataProvider
+    public static Object[][] checkElementsUnique_FailWithDuplicateElements_Data() {
+        return new Object[][] {
+            { Arrays.<Object>asList(null, null) },
+            { Arrays.asList(null, null, "a") },
+            { Arrays.asList("a", "a") },
+            { Arrays.asList("a", "a", null) },
+            { Arrays.asList("a", "b", "a") },
+        };
+    }
+
+    @Test(dataProvider = "checkElementsUnique_FailWithDuplicateElements_Data",
+            expectedExceptions = IllegalArgumentException.class)
+    public <T> void checkElementsUnique_FailWithNullElements(Collection<T> ref) {
+        CollectionArgs.checkElementsUnique(ref, "ref");
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void checkElementsUnique_FailWithNullCollection() {
+        CollectionArgs.checkElementsUnique((Collection<Object>) null, "ref");
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // CollectionArgs.checkNotEmptyAndElementsNotNull
     //
@@ -820,7 +868,7 @@ public class CollectionArgsTest {
     @DataProvider
     public static Object[][] checkContains_Fail_Data() {
         return new Object[][] {
-                { Arrays.asList(), "x" },
+                { Arrays.<Object>asList(), "x" },
                 { Arrays.asList("a"), "x" },
                 { Arrays.asList("a"), null },
                 { Arrays.asList("a", "b"), "x" },
@@ -841,7 +889,7 @@ public class CollectionArgsTest {
     
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void checkContains_FailWithEmptyCollection() {
-        CollectionArgs.checkContains(Arrays.asList(), "abc", "ref");
+        CollectionArgs.checkContains(Arrays.<Object>asList(), "abc", "ref");
     }
     
     @Test(expectedExceptions = NullPointerException.class)

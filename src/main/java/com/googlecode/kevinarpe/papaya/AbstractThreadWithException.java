@@ -6,7 +6,7 @@ import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
  * @see #clearException()
  */
 @NotFullyTested
+// TODO: Re-write with delegates.  Use IntelliJ to generate the delegates!
 public abstract class AbstractThreadWithException
 extends Thread {
     

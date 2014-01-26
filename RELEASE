@@ -40,7 +40,7 @@ Release Process
 * git commit -a
 * mvn release:clean
 * mvn release:prepare -P gpg
-* After, git status will be "dirty".  Do not add -- procede to next step.
+* After, git status will be "dirty".  Do not run 'git add'.  Ignore and procede to next step.
 * git push --tags origin master
 * mvn release:perform -P gpg
 * After, git status will be "clean".

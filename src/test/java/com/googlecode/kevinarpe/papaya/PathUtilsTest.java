@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,18 +25,18 @@ package com.googlecode.kevinarpe.papaya;
  * #L%
  */
 
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
+import com.googlecode.kevinarpe.papaya.exception.PathException;
+import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
+import com.googlecode.kevinarpe.papaya.exception.PathExceptionTest;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.exception.PathException;
-import com.googlecode.kevinarpe.papaya.exception.PathExceptionTest;
-import com.googlecode.kevinarpe.papaya.exception.PathException.PathExceptionReason;
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -190,7 +190,7 @@ public class PathUtilsTest {
         catch (PathException e) {
             PathExceptionTest.assertPathExceptionEquals(
                 e,
-                new PathException(PathExceptionReason.PATH_IS_FILE, path, null, "dummy"));
+                new PathException(PathExceptionReason.PATH_IS_NORMAL_FILE, path, null, "dummy"));
         }
         finally {
             if (path.isFile()) {
@@ -225,7 +225,7 @@ public class PathUtilsTest {
             PathExceptionTest.assertPathExceptionEquals(
                 e,
                 new PathException(
-                    PathExceptionReason.PARENT_PATH_IS_FILE,
+                    PathExceptionReason.PARENT_PATH_IS_NORMAL_FILE,
                     path2,
                     path2.getParentFile(),
                     "dummy"));
@@ -422,7 +422,7 @@ public class PathUtilsTest {
             PathExceptionTest.assertPathExceptionEquals(
                 e,
                 new PathException(
-                    PathExceptionReason.PATH_IS_FILE,
+                    PathExceptionReason.PATH_IS_NORMAL_FILE,
                     path,
                     null,
                     "dummy"));
@@ -461,7 +461,7 @@ public class PathUtilsTest {
             PathExceptionTest.assertPathExceptionEquals(
                 e,
                 new PathException(
-                    PathExceptionReason.PARENT_PATH_IS_FILE,
+                    PathExceptionReason.PARENT_PATH_IS_NORMAL_FILE,
                     path2,
                     path,
                     "dummy"));
@@ -501,7 +501,7 @@ public class PathUtilsTest {
             PathExceptionTest.assertPathExceptionEquals(
                 e,
                 new PathException(
-                    PathExceptionReason.PARENT_PATH_IS_FILE,
+                    PathExceptionReason.PARENT_PATH_IS_NORMAL_FILE,
                     path2,
                     path,
                     "dummy"));
@@ -651,7 +651,7 @@ public class PathUtilsTest {
             PathExceptionTest.assertPathExceptionEquals(
                 e,
                 new PathException(
-                    PathExceptionReason.PATH_IS_FILE,
+                    PathExceptionReason.PATH_IS_NORMAL_FILE,
                     path,
                     null,
                     "dummy"));
@@ -881,4 +881,89 @@ public class PathUtilsTest {
             }
         }
     }
+
+    // TODO: Reserve for next release
+//    ///////////////////////////////////////////////////////////////////////////
+//    // PathUtils.recursiveListFilePaths
+//    //
+//
+//    @Test(expectedExceptions = NullPointerException.class)
+//    public void recursiveListFilePaths_FailWithNull()
+//    throws PathException {
+//        PathUtils.recursiveListFilePaths(null);
+//    }
+//
+//    @Test(expectedExceptions = PathException.class)
+//    public void recursiveListFilePaths_FailWithPathNotExist()
+//    throws PathException {
+//        try {
+//            PathUtils.recursiveListFilePaths(new File(UUID.randomUUID().toString()));
+//        }
+//        catch (PathException e) {
+//            Assert.assertEquals(e.getReason(), PathExceptionReason.PATH_DOES_NOT_EXIST);
+//            throw e;
+//        }
+//    }
+//
+//    @Test(expectedExceptions = PathException.class)
+//    public void recursiveListFilePaths_FailWithPathIsFile()
+//    throws IOException {
+//        File filePath = new File(UUID.randomUUID().toString());
+//        Assert.assertTrue(filePath.createNewFile());
+//        try {
+//            PathUtils.recursiveListFilePaths(filePath);
+//        }
+//        catch (PathException e) {
+//            Assert.assertEquals(e.getReason(), PathExceptionReason.PATH_IS_NORMAL_FILE);
+//            throw e;
+//        }
+//        finally {
+//            Assert.assertTrue(filePath.delete());
+//        }
+//    }
+//
+//    @Test
+//    public void recursiveListFilePaths_PassWithEmptyDir()
+//    throws IOException {
+//        File dirPath = new File(UUID.randomUUID().toString());
+//        Assert.assertTrue(dirPath.mkdir());
+//        try {
+//            Assert.assertEquals(new ArrayList<File>(), PathUtils.recursiveListFilePaths(dirPath));
+//        }
+//        finally {
+//            Assert.assertTrue(dirPath.delete());
+//        }
+//    }
+//
+//    @Test
+//    public void recursiveListFilePaths_Pass()
+//    throws IOException {
+//        File dirPath = new File("dir." + UUID.randomUUID().toString());
+//        Assert.assertTrue(dirPath.mkdir());
+//        File filePath = new File("file." + UUID.randomUUID().toString());
+//        Assert.assertTrue(filePath.createNewFile());
+//        File dirPath2 = new File(dirPath, "dir." + UUID.randomUUID().toString());
+//        Assert.assertTrue(dirPath2.mkdir());
+//        File filePath2 = new File(dirPath2, "file." + UUID.randomUUID().toString());
+//        Assert.assertTrue(filePath2.createNewFile());
+//        try {
+//            // TODO: fixme
+////            Assert.assertEquals(
+////                PathUtils.recursiveListFilePaths(dirPath),
+////                ImmutableList.of(filePath2, dirPath2, filePath));
+//        }
+//        finally {
+//            Assert.assertTrue(filePath2.delete());
+//            Assert.assertTrue(dirPath2.delete());
+//            Assert.assertTrue(filePath.delete());
+//            Assert.assertTrue(dirPath.delete());
+//        }
+//    }
+//
+//    private static void assertExceptionCauseClass(Exception actualException, Class<?> expectedCauseClass) {
+//        ObjectArgs.checkNotNull(expectedCauseClass, "expectedCauseClass");
+//        ObjectArgs.checkNotNull(actualException, "actualException");
+//        ObjectArgs.checkNotNull(actualException.getCause(), "actualException.getCause()");
+//        Assert.assertEquals(actualException.getCause().getClass(), expectedCauseClass);
+//    }
 }

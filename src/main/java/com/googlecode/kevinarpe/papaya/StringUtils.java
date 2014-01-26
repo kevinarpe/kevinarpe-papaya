@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,11 +25,6 @@ package com.googlecode.kevinarpe.papaya;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
-
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
@@ -39,6 +34,11 @@ import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.argument.IntArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Collection of static methods to manipulate {@link String} references.
@@ -126,7 +126,7 @@ public final class StringUtils {
         throw new IllegalArgumentException(String.format(
             "Failed to convert string to boolean: '%s'", str));
     }
-    
+
     /**
      * Removes all leading whitespace chars.  To be precise, "leading" is always defined as
      * starting from index zero.  This terminology may be backwards for right-to-left languages

@@ -64,21 +64,23 @@
     <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
     <maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
     <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
-    <maven-release-plugin.version>2.4.1</maven-release-plugin.version>
+    <maven-release-plugin.version>2.4.2</maven-release-plugin.version>
     <maven-deploy-plugin.version>2.8.1</maven-deploy-plugin.version>
     <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
     <maven-surefire-plugin.version>2.16</maven-surefire-plugin.version>
     <animal-sniffer-maven-plugin.version>1.9</animal-sniffer-maven-plugin.version>
     <license-maven-plugin.version>1.5</license-maven-plugin.version>
     <maven-gpg-plugin.version>1.4</maven-gpg-plugin.version>
-    <maven-jxr-plugin.version>2.3</maven-jxr-plugin.version>
+    <maven-jxr-plugin.version>2.4</maven-jxr-plugin.version>
     <maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
     <maven-surefire-report-plugin.version>2.16</maven-surefire-report-plugin.version>
     
     <testng.version>6.8.7</testng.version>
+    <mockito-all.version>1.9.5</mockito-all.version>
+    <powermock.version>1.5.2</powermock.version>
     <guava.version>15.0</guava.version>
     <guava-testlib.version>15.0</guava-testlib.version>
-    <joda-time.version>2.2</joda-time.version>
+    <joda-time.version>2.3</joda-time.version>
   </properties>
 
   <build>
@@ -90,7 +92,8 @@
         <configuration>
           <source>${java.version}</source>
           <target>${java.version}</target>
-          <encoding>UTF-8</encoding>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <compilerArgument>-Xlint:unchecked</compilerArgument>
         </configuration>
       </plugin>
       <plugin>
@@ -98,9 +101,9 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>${maven-javadoc-plugin.version}</version>
         <configuration>
-          <encoding>UTF-8</encoding>
-          <docencoding>UTF-8</docencoding>
-          <charset>UTF-8</charset>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <docencoding>${project.build.sourceEncoding}</docencoding>
+          <charset>${project.build.sourceEncoding}</charset>
           <stylesheetfile>${project.basedir}/src/javadoc/stylesheet.css</stylesheetfile>
 <!--
           <linksource>true</linksource>
@@ -207,6 +210,11 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.sonar</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>4.1</version>
+      </plugin>
     </plugins>
   </build>
 
@@ -238,6 +246,24 @@
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>${testng.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>${mockito-all.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-module-testng</artifactId>
+      <version>${powermock.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-api-mockito</artifactId>
+      <version>${powermock.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
