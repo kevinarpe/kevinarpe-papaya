@@ -12,7 +12,7 @@
   </parent>
   <groupId>com.googlecode.kevinarpe-papaya</groupId>
   <artifactId>kevinarpe-papaya</artifactId>
-  <version>0.0.11-SNAPSHOT</version>
+  <version>0.0.12-SNAPSHOT</version>
   <name>${project.artifactId}</name>
   <packaging>jar</packaging>
   <description>Papaya: Utilities for Java 1.6+ written by Kevin Connor ARPE</description>
