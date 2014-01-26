@@ -25,12 +25,16 @@ package com.googlecode.kevinarpe.papaya.filesystem.compare;
  * #L%
  */
 
+import org.mockito.Mockito;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.File;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.testng.Assert.assertEquals;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -39,7 +43,7 @@ public class FileSizeSmallestToLargestComparatorTest
 extends AbstractFileComparatorTestBase<FileSizeSmallestToLargestComparator, Long> {
 
     @DataProvider
-    private static Object[][] compare_Pass_Data() {
+    private static Object[][] _compare_Pass_Data() {
         return new Object[][] {
             { 99, 17 },
             { 17, 99 },
@@ -47,7 +51,7 @@ extends AbstractFileComparatorTestBase<FileSizeSmallestToLargestComparator, Long
         };
     }
 
-    @Test(dataProvider = "compare_Pass_Data")
+    @Test(dataProvider = "_compare_Pass_Data")
     public void compare_Pass(long fileSizeByteCount1, long fileSizeByteCount2) {
         compare_Pass_core(fileSizeByteCount1, fileSizeByteCount2);
     }
@@ -66,5 +70,30 @@ extends AbstractFileComparatorTestBase<FileSizeSmallestToLargestComparator, Long
     protected int compareValues(
             FileSizeSmallestToLargestComparator comparator, Long value1, Long value2) {
         return compareLongs(comparator, value1, value2);
+    }
+    
+    @DataProvider
+    private static Object[][] _compare_PassWhenAtLeastOnePathIsDir_Data() {
+        File mockFilePath = mock(File.class);
+        File mockDirPath1 = mock(File.class);
+        File mockDirPath2 = mock(File.class);
+        when(mockFilePath.isDirectory()).thenReturn(false);
+        when(mockFilePath.length()).thenReturn(1234L);
+        when(mockDirPath1.isDirectory()).thenReturn(true);
+        when(mockDirPath2.isDirectory()).thenReturn(true);
+        return new Object[][] {
+            { mockFilePath, mockDirPath1, +1 },
+            { mockDirPath1, mockFilePath, -1 },
+            { mockDirPath1, mockDirPath2, 0 },
+            { mockDirPath2, mockDirPath1, 0 },
+            { mockDirPath1, mockDirPath1, 0 },
+            { mockDirPath2, mockDirPath2, 0 },
+        };
+    }
+    
+    @Test(dataProvider = "_compare_PassWhenAtLeastOnePathIsDir_Data")
+    public void compare_PassWhenAtLeastOnePathIsDir(File path1, File path2, int expectedResult) {
+        int actualResult = new FileSizeSmallestToLargestComparator().compare(path1, path2);
+        assertEquals(actualResult, expectedResult);
     }
 }

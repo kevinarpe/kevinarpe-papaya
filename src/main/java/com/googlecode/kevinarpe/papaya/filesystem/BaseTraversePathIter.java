@@ -71,9 +71,9 @@ public class BaseTraversePathIter {
      * @return root directory to traverse.  There is no guarantee this directory exists, but this
      *         value is never {@code null}.
      *
-     * @see TraversePathIterable#withDirPath(File)
+     * @see TraversePathIterable#withRootDirPath(File)
      */
-    public final File getDirPath() {
+    public final File getRootDirPath() {
         return _dirPath;
     }
 

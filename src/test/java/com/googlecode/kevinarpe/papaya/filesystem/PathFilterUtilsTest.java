@@ -76,7 +76,7 @@ public class PathFilterUtilsTest {
         int count2 = 0;
 
         when(mockPathFilter.accept(eq(path), anyInt())).thenReturn(true);  ++count;
-        when(mockPathFilter2.accept(eq(path), anyInt())).thenThrow(RuntimeException.class);
+        when(mockPathFilter2.accept(eq(path), anyInt())).thenThrow(new RuntimeException());
 
         assertTrue(newPathFilter.accept(path, 7));
         verify(mockPathFilter, times(count)).accept(eq(path), anyInt());

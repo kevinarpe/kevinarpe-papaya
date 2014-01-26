@@ -100,7 +100,7 @@ implements Iterable<File> {
      * @throws NullPointerException
      *         if {@code dirPath} or {@code depthPolicy} is {@code null}
      *
-     * @see #withDirPath(File)
+     * @see #withRootDirPath(File)
      * @see #withDepthPolicy(TraversePathDepthPolicy)
      * @see #withExceptionPolicy(TraversePathExceptionPolicy)
      * @see #DEFAULT_EXCEPTION_POLICY
@@ -145,7 +145,7 @@ implements Iterable<File> {
      * also holds true for {@link TraversePathDepthPolicy#DEPTH_LAST}: this directory will be the
      * <i>first</i> path considered for iteration (depending upon the filter).
      *
-     * @param dirPath
+     * @param rootDirPath
      *        root directory to traverse.  Must not be {@code null}, but need not exist.  Directory
      *        trees may be highly ephemeral, so the existance of this directory at the time of
      *        construction is not required.
@@ -153,14 +153,13 @@ implements Iterable<File> {
      * @return <b>new</b> iterable
      *
      * @throws NullPointerException
-     *         if {@code dirPath} is {@code null}
+     *         if {@code rootDirPath} is {@code null}
      *
-     * @see #getDirPath()
+     * @see #getRootDirPath()
      */
-    // TODO: Rename to rootDirPath?  Might be more readable.
-    public TraversePathIterable withDirPath(File dirPath) {
+    public TraversePathIterable withRootDirPath(File rootDirPath) {
         return new TraversePathIterable(
-            ObjectArgs.checkNotNull(dirPath, "dirPath"),
+            ObjectArgs.checkNotNull(rootDirPath, "rootDirPath"),
             getDepthPolicy(),
             getExceptionPolicy(),
             getOptionalDescendDirPathFilter(),
@@ -184,7 +183,7 @@ implements Iterable<File> {
      */
     public TraversePathIterable withDepthPolicy(TraversePathDepthPolicy depthPolicy) {
         return new TraversePathIterable(
-            getDirPath(),
+            getRootDirPath(),
             ObjectArgs.checkNotNull(depthPolicy, "depthPolicy"),
             getExceptionPolicy(),
             getOptionalDescendDirPathFilter(),
@@ -210,7 +209,7 @@ implements Iterable<File> {
      */
     public TraversePathIterable withExceptionPolicy(TraversePathExceptionPolicy exceptionPolicy) {
         return new TraversePathIterable(
-            getDirPath(),
+            getRootDirPath(),
             getDepthPolicy(),
             ObjectArgs.checkNotNull(exceptionPolicy, "exceptionPolicy"),
             getOptionalDescendDirPathFilter(),
@@ -222,7 +221,7 @@ implements Iterable<File> {
     /**
      * Constructs a <b>new</b> iterable from the current, replacing the optional descend directory
      * path filter.  This attribute filters directories before traversal, <i>including</i> the root
-     * directory: {@link #getDirPath()}.  Use the second parameter, {@code depth}, in method
+     * directory: {@link #getRootDirPath()}.  Use the second parameter, {@code depth}, in method
      * {@link PathFilter#accept(File, int)} to easily control this case.
      * <p>
      * Example:
@@ -253,7 +252,7 @@ implements Iterable<File> {
     public TraversePathIterable withOptionalDescendDirPathFilter(
             PathFilter optDescendDirPathFilter) {
         return new TraversePathIterable(
-            getDirPath(),
+            getRootDirPath(),
             getDepthPolicy(),
             getExceptionPolicy(),
             optDescendDirPathFilter,
@@ -281,7 +280,7 @@ implements Iterable<File> {
     public TraversePathIterable withOptionalDescendDirPathComparator(
             Comparator<File> optDescendDirPathComparator) {
         return new TraversePathIterable(
-            getDirPath(),
+            getRootDirPath(),
             getDepthPolicy(),
             getExceptionPolicy(),
             getOptionalDescendDirPathFilter(),
@@ -293,7 +292,7 @@ implements Iterable<File> {
     /**
      * Constructs a <b>new</b> iterable from the current, replacing the optional iterated paths
      * filter.  This attribute filters paths before iteration, <i>including</i> the root directory:
-     * {@link #getDirPath()}.  Use the second parameter, {@code depth}, in method
+     * {@link #getRootDirPath()}.  Use the second parameter, {@code depth}, in method
      * {@link PathFilter#accept(File, int)} to easily control this case.
      * <p>
      * Example:
@@ -327,7 +326,7 @@ implements Iterable<File> {
      */
     public TraversePathIterable withOptionalIteratePathFilter(PathFilter optIteratePathFilter) {
         return new TraversePathIterable(
-            getDirPath(),
+            getRootDirPath(),
             getDepthPolicy(),
             getExceptionPolicy(),
             getOptionalDescendDirPathFilter(),
@@ -355,7 +354,7 @@ implements Iterable<File> {
     public TraversePathIterable withOptionalIteratePathComparator(
             Comparator<File> optIteratePathComparator) {
         return new TraversePathIterable(
-            getDirPath(),
+            getRootDirPath(),
             getDepthPolicy(),
             getExceptionPolicy(),
             getOptionalDescendDirPathFilter(),
@@ -376,7 +375,7 @@ implements Iterable<File> {
     public TraversePathIterator iterator() {
         final TraversePathDepthPolicy depthPolicy = getDepthPolicy();
         return depthPolicy.createTraversePathIterator(
-            getDirPath(),
+            getRootDirPath(),
             getExceptionPolicy(),
             getOptionalDescendDirPathFilter(),
             getOptionalDescendDirPathComparator(),
@@ -384,12 +383,10 @@ implements Iterable<File> {
             getOptionalIteratePathComparator());
     }
 
-    // TODO: Improve this Javadoc so it reads better in HTML.  Currently, first sentence appears
-    // as one long mess.  Same for equals().
     /**
-     * Returns hash code of:
+     * Returns hash code of all attributes.  These are:
      * <ul>
-     *     <li>{@link #getDirPath()}</li>
+     *     <li>{@link #getRootDirPath()}</li>
      *     <li>{@link #getDepthPolicy()}</li>
      *     <li>{@link #getExceptionPolicy()}</li>
      *     <li>{@link #getOptionalDescendDirPathFilter()}</li>
@@ -404,7 +401,7 @@ implements Iterable<File> {
     public final int hashCode() {
         int result =
             Objects.hashCode(
-                getDirPath(),
+                getRootDirPath(),
                 getDepthPolicy(),
                 getExceptionPolicy(),
                 getOptionalDescendDirPathFilter(),
@@ -415,9 +412,9 @@ implements Iterable<File> {
     }
 
     /**
-     * Equates by:
+     * Equates by all attributes.  These are:
      * <ul>
-     *     <li>{@link #getDirPath()}</li>
+     *     <li>{@link #getRootDirPath()}</li>
      *     <li>{@link #getDepthPolicy()}</li>
      *     <li>{@link #getExceptionPolicy()}</li>
      *     <li>{@link #getOptionalDescendDirPathFilter()}</li>
@@ -435,7 +432,7 @@ implements Iterable<File> {
         if (!result && obj instanceof TraversePathIterable) {
             final TraversePathIterable other = (TraversePathIterable) obj;
             result =
-                Objects.equal(this.getDirPath(), other.getDirPath())
+                Objects.equal(this.getRootDirPath(), other.getRootDirPath())
                     && Objects.equal(this.getDepthPolicy(), other.getDepthPolicy())
                     && Objects.equal(this.getExceptionPolicy(), other.getExceptionPolicy())
                     && Objects.equal(

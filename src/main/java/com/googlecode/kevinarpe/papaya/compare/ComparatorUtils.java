@@ -40,6 +40,10 @@ import java.util.Comparator;
 @FullyTested
 public class ComparatorUtils {
 
+    // Disable default constructor
+    private ComparatorUtils() {
+    }
+
     /**
      * Converts a result from {@link Comparator#compare(Object, Object)} to -1, 0, or +1.
      *

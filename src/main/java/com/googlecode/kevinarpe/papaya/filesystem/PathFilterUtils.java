@@ -41,6 +41,10 @@ import java.util.Collection;
 @FullyTested
 public class PathFilterUtils {
 
+    // Disable default constructor
+    private PathFilterUtils() {
+    }
+
     /**
      * Creates a new path filter which returns the logical OR of a collection of path filters.
      * A short-circuit algorithm is used, thus not all filters are guaranteed to run.  For example,

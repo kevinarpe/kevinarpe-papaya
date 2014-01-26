@@ -80,7 +80,7 @@ public class BaseTraversePathIterTest {
     }
 
     public static void assertAttrSame(BaseTraversePathIter actual, BaseTraversePathIter expected) {
-        assertSame(actual.getDirPath(), expected.getDirPath());
+        assertSame(actual.getRootDirPath(), expected.getRootDirPath());
         assertSame(actual.getDepthPolicy(), expected.getDepthPolicy());
         assertSame(actual.getExceptionPolicy(), expected.getExceptionPolicy());
         assertSame(
@@ -102,7 +102,7 @@ public class BaseTraversePathIterTest {
             Comparator<File> optDescendDirPathComparator,
             PathFilter optIteratePathFilter,
             Comparator<File> optIteratePathComparator) {
-        assertSame(actual.getDirPath(), dirPath);
+        assertSame(actual.getRootDirPath(), dirPath);
         assertSame(actual.getDepthPolicy(), depthPolicy);
         assertSame(actual.getExceptionPolicy(), exceptionPolicy);
         assertSame(actual.getOptionalDescendDirPathFilter(), optDescendDirPathFilter);
@@ -111,20 +111,6 @@ public class BaseTraversePathIterTest {
         assertSame(actual.getOptionalIteratePathComparator(), optIteratePathComparator);
     }
 
-//    public static <TTraversePathIter extends BaseTraversePathIter>
-//    void ctor_Pass_Helper(Factory<TTraversePathIter> factory, BaseTraversePathIter expected) {
-//        TTraversePathIter actual =
-//            factory.newInstance(
-//                expected.getDirPath(),
-//                expected.getDepthPolicy(),
-//                expected.getExceptionPolicy(),
-//                expected.getOptionalDescendDirPathFilter(),
-//                expected.getOptionalDescendDirPathComparator(),
-//                expected.getOptionalIteratePathFilter(),
-//                expected.getOptionalIteratePathComparator());
-//        assertAttrSame(actual, expected);
-//    }
-
     public static abstract class ctor_Pass_Helper {
 
         public ctor_Pass_Helper() {
@@ -132,7 +118,7 @@ public class BaseTraversePathIterTest {
 
             BaseTraversePathIter actual =
                 newInstance(
-                    expected.getDirPath(),
+                    expected.getRootDirPath(),
                     expected.getDepthPolicy(),
                     expected.getExceptionPolicy(),
                     expected.getOptionalDescendDirPathFilter(),
@@ -140,7 +126,7 @@ public class BaseTraversePathIterTest {
                     expected.getOptionalIteratePathFilter(),
                     expected.getOptionalIteratePathComparator());
 
-            assertSame(actual.getDirPath(), expected.getDirPath());
+            assertSame(actual.getRootDirPath(), expected.getRootDirPath());
             assertSame(actual.getDepthPolicy(), expected.getDepthPolicy());
             assertSame(actual.getExceptionPolicy(), expected.getExceptionPolicy());
             assertSame(
@@ -199,7 +185,7 @@ public class BaseTraversePathIterTest {
 
     @Test
     public void ctor_Pass() {
-        assertSame(classUnderTest.getDirPath(), dirPath);
+        assertSame(classUnderTest.getRootDirPath(), dirPath);
         assertSame(classUnderTest.getDepthPolicy(), depthPolicy);
         assertSame(classUnderTest.getExceptionPolicy(), exceptionPolicy);
         assertSame(classUnderTest.getOptionalDescendDirPathFilter(), optDescendDirPathFilter);

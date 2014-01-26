@@ -76,7 +76,7 @@ public class FileFilterUtilsTest {
         int count2 = 0;
 
         when(mockFileFilter.accept(path)).thenReturn(true);  ++count;
-        when(mockFileFilter2.accept(path)).thenThrow(RuntimeException.class);
+        when(mockFileFilter2.accept(path)).thenThrow(new RuntimeException());
 
         assertTrue(newFileFilter.accept(path));
         verify(mockFileFilter, times(count)).accept(path);

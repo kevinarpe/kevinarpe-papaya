@@ -26,9 +26,9 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  */
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.testing.EqualsTester;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.container.ContainerFactory;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
 import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
 import com.googlecode.kevinarpe.papaya.filesystem.compare.FileNameLexicographicalComparator;
@@ -46,7 +46,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 import static org.mockito.Matchers.any;
@@ -55,6 +54,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertSame;
 
 /**
@@ -62,18 +62,12 @@ import static org.testng.Assert.assertSame;
  */
 public class DirectoryListingTest {
 
-    private final static Map<File[], File> pathArrToMockDirPathMap = Maps.newHashMap();
-
     private static File _createMockDirPath(File[] pathArr) {
-        File mockDirPath = pathArrToMockDirPathMap.get(pathArr);
-        if (null == mockDirPath) {
-            mockDirPath = mock(File.class);
-            when(mockDirPath.exists()).thenReturn(true);
-            when(mockDirPath.isDirectory()).thenReturn(true);
-            when(mockDirPath.isFile()).thenReturn(false);
-            when(mockDirPath.listFiles()).thenReturn(pathArr);
-            pathArrToMockDirPathMap.put(pathArr, mockDirPath);
-        }
+        File mockDirPath = mock(File.class);
+        when(mockDirPath.exists()).thenReturn(true);
+        when(mockDirPath.isDirectory()).thenReturn(true);
+        when(mockDirPath.isFile()).thenReturn(false);
+        when(mockDirPath.listFiles()).thenReturn(pathArr);
         return mockDirPath;
     }
 
@@ -186,7 +180,9 @@ public class DirectoryListingTest {
         when(mockDirPath.listFiles()).thenReturn(null);
         when(mockDirPath.exists()).thenReturn(true);
         when(mockDirPath.isDirectory()).thenReturn(false);
-        when(mockDirPath.isFile()).thenReturn(true);
+        // A wee bit tricky!  The first 'false' is to pass the PathArgs.checkDirectoryExists(),
+        // and the second 'true' is to trigger a specific exception after File.listFiles() fails.
+        when(mockDirPath.isFile()).thenReturn(false).thenReturn(true);
 
         try {
             new DirectoryListing(mockDirPath, ArrayList.class);
@@ -287,30 +283,67 @@ public class DirectoryListingTest {
     throws PathException {
         List<File> pathList = Arrays.asList(pathArr);
         DirectoryListing directoryListing = _createDirectoryListing(pathArr, LinkedList.class);
-        DirectoryListing directoryListingCopy = new DirectoryListing(directoryListing);
+        DirectoryListing directoryListingCopy =
+            new DirectoryListing(directoryListing, Vector.class);
 
-        assertEquals(directoryListingCopy, directoryListing);
+        assertNotEquals(directoryListingCopy, directoryListing);
         assertEquals(directoryListing.getChildPathList(), pathList);
         assertEquals(directoryListingCopy.getChildPathList(), pathList);
         assertEquals(
             directoryListingCopy.getChildPathList().getClass(),
-            LinkedList.class);
+            Vector.class);
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    // DirectoryListing.getDirPath()
+    // DirectoryListing.getRootDirPath()
+    //
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void _newInstance_FailWithInstantiationException()
+    throws IllegalAccessException, InstantiationException {
+        _core_newInstance_FailWithException(new InstantiationException("blah"));
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void _newInstance_FailWithIllegalAccessException()
+    throws IllegalAccessException, InstantiationException {
+        _core_newInstance_FailWithException(new IllegalAccessException("blah"));
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void _newInstance_FailWithClassCastException()
+    throws IllegalAccessException, InstantiationException {
+        _core_newInstance_FailWithException(new ClassCastException("blah"));
+    }
+
+    private void _core_newInstance_FailWithException(Throwable throwable)
+    throws IllegalAccessException, InstantiationException {
+        ContainerFactory mockContainerFactory = mock(ContainerFactory.class);
+        when(mockContainerFactory.newInstance(any(Class.class))).thenThrow(throwable);
+        try {
+            DirectoryListing._newInstance(mockContainerFactory, LinkedList.class);
+        }
+        catch (IllegalArgumentException e) {
+            assertSame(e.getCause(), throwable);
+            throw e;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // DirectoryListing.getRootDirPath()
     //
 
     @Test(dataProvider = "_ctor_Pass_Data")
     public void getDirPath_Pass(File[] pathArr)
     throws PathException {
+        File mockDirPath = _createMockDirPath(pathArr);
         {
-            DirectoryListing directoryListing = _createDirectoryListing(pathArr);
-            assertEquals(directoryListing.getDirPath(), pathArrToMockDirPathMap.get(pathArr));
+            DirectoryListing directoryListing = new DirectoryListing(mockDirPath);
+            assertSame(directoryListing.getDirPath(), mockDirPath);
         }
         {
-            DirectoryListing directoryListing = _createDirectoryListing(pathArr, LinkedList.class);
-            assertEquals(directoryListing.getDirPath(), pathArrToMockDirPathMap.get(pathArr));
+            DirectoryListing directoryListing = new DirectoryListing(mockDirPath, LinkedList.class);
+            assertSame(directoryListing.getDirPath(), mockDirPath);
         }
     }
 
@@ -345,16 +378,32 @@ public class DirectoryListingTest {
     @Test(dataProvider = "_ctor_Pass_Data")
     public void hashCodeAndEquals_Pass(File[] pathArr)
     throws PathException {
+        File[] pathArr2 = new File[pathArr.length + 1];
+        System.arraycopy(pathArr, 0, pathArr2, 0, pathArr.length);
+        pathArr2[pathArr2.length - 1] = new File("dummy");
+
+        File mockDirPath = _createMockDirPath(pathArr);
+        File mockDirPath2 = _createMockDirPath(pathArr2);
+
         new EqualsTester()
             .addEqualityGroup(
-                _createDirectoryListing(pathArr),
-                _createDirectoryListing(pathArr))
+                new DirectoryListing(mockDirPath),
+                new DirectoryListing(mockDirPath))
             .addEqualityGroup(
-                _createDirectoryListing(pathArr, LinkedList.class),
-                _createDirectoryListing(pathArr, LinkedList.class))
+                new DirectoryListing(mockDirPath2),
+                new DirectoryListing(mockDirPath2))
             .addEqualityGroup(
-                _createDirectoryListing(pathArr, Vector.class),
-                _createDirectoryListing(pathArr, Vector.class))
+                new DirectoryListing(mockDirPath, LinkedList.class),
+                new DirectoryListing(mockDirPath, LinkedList.class))
+            .addEqualityGroup(
+                new DirectoryListing(mockDirPath2, LinkedList.class),
+                new DirectoryListing(mockDirPath2, LinkedList.class))
+            .addEqualityGroup(
+                new DirectoryListing(mockDirPath, Vector.class),
+                new DirectoryListing(mockDirPath, Vector.class))
+            .addEqualityGroup(
+                new DirectoryListing(mockDirPath2, Vector.class),
+                new DirectoryListing(mockDirPath2, Vector.class))
             .testEquals();
     }
 

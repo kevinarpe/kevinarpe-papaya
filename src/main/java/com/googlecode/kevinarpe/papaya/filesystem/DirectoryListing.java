@@ -30,6 +30,8 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.PathArgs;
 import com.googlecode.kevinarpe.papaya.compare.ComparatorUtils;
+import com.googlecode.kevinarpe.papaya.container.ContainerFactory;
+import com.googlecode.kevinarpe.papaya.container.ContainerFactoryImpl;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
 import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
 import com.googlecode.kevinarpe.papaya.filesystem.compare.FileAbsolutePathLexicographicalComparator;
@@ -67,7 +69,7 @@ import java.util.RandomAccess;
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-// TODO: implements Iteratable<File>
+// TODO: implements Iteratable<File>?  Not sure yet.  Think about counterarguments first.
 @FullyTested
 public final class DirectoryListing {
 
@@ -77,7 +79,6 @@ public final class DirectoryListing {
      *
      * @see #DirectoryListing(DirectoryListing, Class)
      */
-	// TODO: This 'SuppressWarnings' is from Eclipse.  Check in 
     @SuppressWarnings("rawtypes")
 	public static final Class<? extends List> DEFAULT_LIST_CLASS = ArrayList.class;
 
@@ -160,7 +161,7 @@ public final class DirectoryListing {
             throw new PathException(PathExceptionReason.UNKNOWN, dirPath, null, msg);
         }
 
-        _childPathList = _newInstance(listClass);
+        _childPathList = _newInstance(ContainerFactoryImpl.INSTANCE, listClass);
         if (0 != childPathArr.length) {
             _childPathList.addAll(Arrays.asList(childPathArr));
         }
@@ -207,14 +208,15 @@ public final class DirectoryListing {
         ObjectArgs.checkNotNull(other, "other");
 
         _dirPath = other._dirPath;
-        _childPathList = _newInstance(listClass);
+        _childPathList = _newInstance(ContainerFactoryImpl.INSTANCE, listClass);
         _childPathList.addAll(other._childPathList);
     }
 
-    private static List<File> _newInstance(Class<? extends List> listClass) {
+    // Package private for testing purposes.
+    static List<File> _newInstance(
+            ContainerFactory containerFactory, Class<? extends List> listClass) {
         try {
-            @SuppressWarnings("unchecked")
-            List<File> list = listClass.newInstance();
+            List<File> list = containerFactory.newInstance(listClass);
             return list;
         }
         catch (Exception e) {
@@ -309,7 +311,8 @@ public final class DirectoryListing {
 
     private static List<File> _filterRandomAccessList(
             List<File> childPathList, FileFilter fileFilter) {
-        List<File> newChildPathList = _newInstance(childPathList.getClass());
+        List<File> newChildPathList =
+            _newInstance(ContainerFactoryImpl.INSTANCE, childPathList.getClass());
         for (File childPath : childPathList) {
             if (fileFilter.accept(childPath)) {
                 newChildPathList.add(childPath);
@@ -360,16 +363,11 @@ public final class DirectoryListing {
         if (!result && obj instanceof DirectoryListing) {
             final DirectoryListing other = (DirectoryListing) obj;
             result = Objects.equal(this._dirPath, other._dirPath)
-                && Objects.equal(
-                    (null == this._childPathList ? null : this._childPathList.getClass()),
-                    (null == other._childPathList ? null : other._childPathList.getClass()))
+                && Objects.equal(this._childPathList.getClass(), other._childPathList.getClass())
                 && Objects.equal(this._childPathList, other._childPathList);
         }
         return result;
     }
 
-    @Override
-    public String toString() {
-        return null;
-    }
+    // TODO: Add toString for this class and all of filesystem package
 }

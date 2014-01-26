@@ -28,7 +28,10 @@ package com.googlecode.kevinarpe.papaya.filesystem.compare;
 import com.google.common.collect.ImmutableList;
 import com.google.common.testing.EqualsTester;
 import com.googlecode.kevinarpe.papaya.filesystem.FileType;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;

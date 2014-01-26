@@ -42,6 +42,10 @@ import java.util.Collection;
 @FullyTested
 public class FileFilterUtils {
 
+    // Disable default constructor
+    private FileFilterUtils() {
+    }
+
     /**
      * Creates a new file filter which returns the logical OR of a collection of file filters.
      * A short-circuit algorithm is used, thus not all filters are guaranteed to run.  For example,

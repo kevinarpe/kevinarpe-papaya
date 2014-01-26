@@ -86,25 +86,7 @@ extends TraversePathIterator {
             }
             _tryUpdateCurrentLevel();
         }
-        // Old
-//        while (null != _currentLevel && !_currentLevel.getIterateDirectoryListingIter().hasNext()) {
-//            final Iterator<File> descendDirPathIter =
-//                _currentLevel.getDescendDirDirectoryListingIter();
-//            if (descendDirPathIter.hasNext()) {
-//                File descendDirPath = descendDirPathIter.next();
-//                _currentLevel = tryAddLevel(descendDirPath);
-//            }
-//            else {
-//                _currentLevel = tryRemoveAndGetNextLevel();
-//            }
-//        }
-        if (null == _currentLevel) {
-            return false;
-        }
-        // TODO: Dead code?
-        final Iterator<File> iterateDirPathIter =_currentLevel.getIterateDirectoryListingIter();
-        boolean result = iterateDirPathIter.hasNext();
-        return result;
+        return false;
     }
 
     private void _tryUpdateCurrentLevel() {
@@ -127,7 +109,7 @@ extends TraversePathIterator {
         assertHasNext();
         if (!_hasIteratedDirPath) {
             _hasIteratedDirPath = true;
-            return getDirPath();
+            return getRootDirPath();
         }
         Iterator<File> iterateDirPathIter =_currentLevel.getIterateDirectoryListingIter();
         File path = iterateDirPathIter.next();

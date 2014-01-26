@@ -144,7 +144,7 @@ implements Iterator<File> {
 
     protected final TraversePathLevel tryDescendDirPath() {
         TraversePathLevel currentLevel = null;
-        File dirPath = getDirPath();
+        File dirPath = getRootDirPath();
         PathFilter optDescendDirFilter = getOptionalDescendDirPathFilter();
         if (null == optDescendDirFilter || optDescendDirFilter.accept(dirPath, 0)) {
             // If initial directory listing fails, but exceptions are ignored, '_currentLevel'
@@ -155,7 +155,7 @@ implements Iterator<File> {
     }
 
     protected final boolean canIterateDirPath() {
-        File dirPath = getDirPath();
+        File dirPath = getRootDirPath();
         PathFilter optIteratePathFilter = getOptionalIteratePathFilter();
         boolean result = (null == optIteratePathFilter || optIteratePathFilter.accept(dirPath, 0));
         return result;
@@ -261,7 +261,7 @@ implements Iterator<File> {
     }
 
     /**
-     * @return number of levels below {@link #getDirPath()}.  Minimum value is zero.
+     * @return number of levels below {@link #getRootDirPath()}.  Minimum value is zero.
      */
     public final int getDepth() {
         return _levelList.size();

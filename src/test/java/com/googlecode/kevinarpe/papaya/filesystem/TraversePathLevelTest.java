@@ -77,6 +77,7 @@ extends PowerMockTestCase {
     private final File dirPath = new File("topDir");
     private final int depth = 4;
 
+    @SuppressWarnings("unchecked")
     @BeforeMethod(alwaysRun = true)
     public void beforeEachTest() {
         mockTraversePathIterator = mock(TraversePathIterator.class);
@@ -199,7 +200,7 @@ extends PowerMockTestCase {
             .thenReturn(mockOrigDirectoryListing);
         when(mockFactory.newDirectoryListingInstance(mockOrigDirectoryListing))
             .thenReturn(mockDescendDirDirectoryListing);
-        // TODO: Why does this fail in Eclipse but not IntelliJ or Maven CLI?
+        // This is related to craziness with JaCoCo (code coverage) + Mockito in Eclipse.
 //        when(mockTraversePathIterator.getOptionalDescendDirPathFilter()).thenReturn(mockPathFilter);
         doReturn(mockPathFilter).when(mockTraversePathIterator).getOptionalDescendDirPathFilter();
         when(mockFactory.newDescendDirFileFilterInstance(mockPathFilter, depth))
@@ -286,7 +287,7 @@ extends PowerMockTestCase {
         when(mockFactory.newDirectoryListingInstance(
             dirPath, TraversePathLevel.DEFAULT_DIRECTORY_LISTING_LIST_CLASS))
             .thenReturn(mockOrigDirectoryListing);
-        // TODO: Why does this fail in Eclipse but not IntelliJ or Maven CLI?
+        // This is related to craziness with JaCoCo (code coverage) + Mockito in Eclipse.
 //        when(mockTraversePathIterator.getOptionalIteratePathFilter()).thenReturn(mockPathFilter);
         doReturn(mockPathFilter).when(mockTraversePathIterator).getOptionalIteratePathFilter();
         when(mockFactory.newDirectoryListingInstance(mockOrigDirectoryListing))

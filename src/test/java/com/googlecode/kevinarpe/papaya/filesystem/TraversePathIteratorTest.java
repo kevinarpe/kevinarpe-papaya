@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  */
 
 import com.googlecode.kevinarpe.papaya.exception.PathException;
+import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
 import com.googlecode.kevinarpe.papaya.exception.PathRuntimeException;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.testng.PowerMockTestCase;
@@ -48,6 +49,10 @@ import static org.testng.Assert.assertSame;
 @PrepareForTest(TraversePathLevel.class)
 public class TraversePathIteratorTest
 extends PowerMockTestCase {
+
+    private static final PathException DUMMY_PATH_EXCEPTION =
+        new PathException(
+            PathExceptionReason.PATH_IS_DIRECTORY, new File("dummy"), (File) null, "message");
 
     private TraversePathIterator.Factory mockFactory;
 
@@ -175,7 +180,7 @@ extends PowerMockTestCase {
                 null, null, TraversePathExceptionPolicy.THROW, null, null, null, null, mockFactory);
 
         final File dirPath = new File("dummy");
-        when(mockFactory.newInstance(classUnderTest, dirPath, 1)).thenThrow(PathException.class);
+        when(mockFactory.newInstance(classUnderTest, dirPath, 1)).thenThrow(DUMMY_PATH_EXCEPTION);
 
         try {
             classUnderTest.tryAddLevel(dirPath);
@@ -195,7 +200,7 @@ extends PowerMockTestCase {
         assertEquals(classUnderTest.getDepth(), 0);
 
         final File dirPath = new File("dummy");
-        when(mockFactory.newInstance(classUnderTest, dirPath, 1)).thenThrow(PathException.class);
+        when(mockFactory.newInstance(classUnderTest, dirPath, 1)).thenThrow(DUMMY_PATH_EXCEPTION);
 
         assertNull(classUnderTest.tryAddLevel(dirPath));
         assertEquals(classUnderTest.getDepth(), 0);
