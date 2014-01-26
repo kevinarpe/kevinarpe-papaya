@@ -38,6 +38,11 @@ Release Process
 ** Any compiler errors or failed/skipped tests must be cleaned-up.
 ** Fix any Javadoc warnings.  Re-run as many times as necessary: mvn javadoc:javadoc
 * git commit -a
+* If necessary, merge branch back to master before release.
+** Example:
+*** git checkout master
+*** git merge --no-ff other-branch-name
+**** You will need to enter a commit/merge comment.
 * mvn release:clean
 * mvn release:prepare -P gpg
 * After, git status will be "dirty".  Do not run 'git add'.  Ignore and procede to next step.
