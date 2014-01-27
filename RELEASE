@@ -53,11 +53,14 @@ Release Process
 mit.  Unsure of the reason why.  If it persists, I will change these instructions.
 * https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide#SonatypeOSSMavenRepositoryUsageGuide-8a.ReleaseIt
 ** Do the Nexus dance to push the staged release.
+* TODO: Script the next few steps below, including tagging 
 * cd ../kevinarpe-papaya.docs
 * rm -Rf ./javadoc/*
 * cp -R ../kevinarpe-papaya/target/apidocs/* ./javadoc/
-* git add .
+* git add . --all
 * git commit -a
-* git push origin master
+* git tag -a kevinarpe-papaya.docs-0.0.x
+** Can we figure out the latest tag from kevinarpe-papaya?
+* git push --tags origin master
 * Update project homepage with new Maven Central Repo dependency details:
     http://code.google.com/p/kevinarpe-papaya/ 
