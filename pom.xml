@@ -11,11 +11,10 @@
     <version>7</version>
   </parent>
   <groupId>com.googlecode.kevinarpe-papaya</groupId>
-  <artifactId>kevinarpe-papaya</artifactId>
+  <artifactId>kevinarpe-papaya-parent</artifactId>
   <version>0.0.12-SNAPSHOT</version>
   <name>${project.artifactId}</name>
-  <packaging>jar</packaging>
-  <description>Papaya: Utilities for Java 1.6+ written by Kevin Connor ARPE</description>
+  <packaging>pom</packaging>
   <url>http://code.google.com/p/kevinarpe-papaya</url>
   <issueManagement>
     <system>code.google.com</system>
@@ -56,6 +55,10 @@
       <timezone>+8</timezone>
     </developer>
   </developers>
+  <modules>
+    <module>kevinarpe-papaya</module>
+    <module>kevinarpe-papaya-joda-time</module>
+  </modules>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -64,7 +67,7 @@
     <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
     <maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
     <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
-    <maven-release-plugin.version>2.4.1</maven-release-plugin.version>
+    <maven-release-plugin.version>2.4.2</maven-release-plugin.version>
     <maven-deploy-plugin.version>2.8.1</maven-deploy-plugin.version>
     <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
     <maven-surefire-plugin.version>2.16</maven-surefire-plugin.version>
@@ -74,12 +77,13 @@
     <maven-jxr-plugin.version>2.4</maven-jxr-plugin.version>
     <maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
     <maven-surefire-report-plugin.version>2.16</maven-surefire-report-plugin.version>
+    <sonar-maven-plugin.version>4.1</sonar-maven-plugin.version>
     
     <testng.version>6.8.7</testng.version>
     <mockito-all.version>1.9.5</mockito-all.version>
     <powermock.version>1.5.2</powermock.version>
-    <guava.version>15.0</guava.version>
-    <guava-testlib.version>15.0</guava-testlib.version>
+    <guava.version>16.0</guava.version>
+    <guava-testlib.version>16.0</guava-testlib.version>
     <joda-time.version>2.3</joda-time.version>
   </properties>
 
@@ -119,18 +123,18 @@
         </executions>
       </plugin>
       <plugin>
-      	<groupId>org.apache.maven.plugins</groupId>
-      	<artifactId>maven-jar-plugin</artifactId>
-      	<version>${maven-jar-plugin.version}</version>
-      	<executions>
-      	  <execution>
-      	    <phase>package</phase>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven-jar-plugin.version}</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
             <goals>
               <goal>jar</goal>
-      	      <goal>test-jar</goal>
-      	    </goals>
-      	  </execution>
-      	</executions>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -195,7 +199,7 @@
           <organizationName>Kevin Connor ARPE (kevinarpe@gmail.com)</organizationName>
           <canUpdateCopyright>true</canUpdateCopyright>
           <canUpdateDescription>true</canUpdateDescription>
-          <descriptionTemplate>${basedir}/src/license/header-template.ftl</descriptionTemplate>
+          <descriptionTemplate>${project.basedir}/src/license/header-template.ftl</descriptionTemplate>
           <includes>
             <include>**/*.java</include>
           </includes>
@@ -213,7 +217,7 @@
       <plugin>
         <groupId>org.codehaus.sonar</groupId>
         <artifactId>sonar-maven-plugin</artifactId>
-        <version>4.1</version>
+        <version>${sonar-maven-plugin.version}</version>
       </plugin>
     </plugins>
   </build>
@@ -276,11 +280,6 @@
       <artifactId>guava-testlib</artifactId>
       <version>${guava-testlib.version}</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time</artifactId>
-      <version>${joda-time.version}</version>
     </dependency>
   </dependencies>
 
