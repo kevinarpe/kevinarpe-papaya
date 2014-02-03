@@ -137,6 +137,10 @@
             <docencoding>${project.build.sourceEncoding}</docencoding>
             <charset>${project.build.sourceEncoding}</charset>
             <stylesheetfile>${project.basedir}/src/javadoc/stylesheet.css</stylesheetfile>
+            <links>
+              <link>http://www.joda.org/joda-time/apidocs/</link>
+              <link>http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/index.html</link>
+            </links>
 <!--
             <linksource>true</linksource>
 -->

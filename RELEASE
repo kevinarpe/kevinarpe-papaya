@@ -53,8 +53,6 @@ https://dev.c-ware.de/confluence/display/PUBLIC/Releasing+modules+of+a+multi-mod
 * git push --tags origin master
 * mvn release:perform -P gpg
 * After, git status will be "clean".
-** That may not longer be true.  During the 0.0.11 release, it was not clean.  I had to manually com
-mit.  Unsure of the reason why.  If it persists, I will change these instructions.
 * https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide#SonatypeOSSMavenRepositoryUsageGuide-8a.ReleaseIt
 ** Do the Nexus dance to push the staged release.
 * TODO: Script the next few steps below, including tagging 
@@ -63,7 +61,7 @@ mit.  Unsure of the reason why.  If it persists, I will change these instruction
 * cp -R ../kevinarpe-papaya/target/apidocs/* ./javadoc/
 * git add . --all
 * git commit -a
-* git tag -a kevinarpe-papaya.docs-0.0.x
+* git tag -a kevinarpe-papaya.docs-0.0.x -m 'Release x'
 ** Can we figure out the latest tag from kevinarpe-papaya?
 * git push --tags origin master
 * Update project homepage with new Maven Central Repo dependency details:
