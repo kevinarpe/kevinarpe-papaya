@@ -10,9 +10,6 @@
     <artifactId>kevinarpe-papaya-parent</artifactId>
     <version>0.0.12-SNAPSHOT</version>
   </parent>
-<!--
-  <groupId>com.googlecode.kevinarpe-papaya</groupId>
--->
   <artifactId>kevinarpe-papaya</artifactId>
   <name>${project.artifactId}</name>
   <packaging>jar</packaging>
