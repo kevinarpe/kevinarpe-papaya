@@ -29,6 +29,7 @@ import com.google.common.base.Objects;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.compare.ComparatorUtils;
+import com.googlecode.kevinarpe.papaya.filesystem.factory.TraversePathIterableFactory;
 
 import java.io.File;
 import java.util.Collection;
