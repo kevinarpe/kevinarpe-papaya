@@ -25,11 +25,12 @@ package com.googlecode.kevinarpe.papaya;
  * #L%
  */
 
-import java.util.Arrays;
-
 import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.argument.IntArgs;
+import com.googlecode.kevinarpe.papaya.exception.ClassCastException2;
+
+import java.util.Arrays;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -60,6 +61,7 @@ public final class ObjectUtils {
      * @see #appendHashCodes(int, int...)
      * @see Arrays#hashCode(Object[])
      */
+    // TODO: Test me
     @NotFullyTested
     public static int subclassHashCode(int superclassHashCode, Object... objectArr) {
         IntArgs.checkMinValue(superclassHashCode, 1, "superclassHashCode");
@@ -89,6 +91,7 @@ public final class ObjectUtils {
      * @see #subclassHashCode(int, Object...)
      * @see Arrays#hashCode(Object[])
      */
+    // TODO: Test me
     @NotFullyTested
     public static int appendHashCodes(int hashCode, int... moreHashCodeArr) {
         IntArgs.checkNotNegative(hashCode, "hashCode");
@@ -104,5 +107,57 @@ public final class ObjectUtils {
             newHashCode = 31 * newHashCode + moreHashCode;
         }
         return newHashCode;
+    }
+
+    /**
+     * Convenience method to call {@link #cast(String, Object, Class)} where {@code what} is
+     * {@code "value"}.
+     */
+    // TODO: Test me
+    @NotFullyTested
+    public static <TInputValue, TOutputValue> TOutputValue cast(
+            TInputValue value, Class<TOutputValue> outputValueClass) {
+        TOutputValue x = cast("value", value, outputValueClass);
+        return x;
+    }
+
+    /**
+     * Casts value to new type.  Provides detailed exception upon failure.
+     *
+     * @param what
+     *        description of value, e.g., {@code "key"} or {@code "value"}
+     * @param value
+     *        input value
+     * @param outputValueClass
+     *        output class
+     * @param <TInputValue>
+     *        input type
+     * @param <TOutputValue>
+     *        output type
+     *
+     * @return value after cast; {@code null} is unchanged
+     *
+     * @throws ClassCastException2
+     *         if cast fails
+     *
+     * @see Class#cast(Object)
+     * @see #cast(Object, Class)
+     */
+    // TODO: Test me
+    @NotFullyTested
+    public static <TInputValue, TOutputValue> TOutputValue cast(
+            String what, TInputValue value, Class<TOutputValue> outputValueClass) {
+        try {
+            TOutputValue castValue = outputValueClass.cast(value);
+            return castValue;
+        }
+        catch (ClassCastException e) {
+            String msg = String.format("Failed to cast %s from class %s to class %s: '%s'",
+                what,
+                (null == value ? null : value.getClass().getName()),
+                outputValueClass.getName(),
+                value);
+            throw new ClassCastException2(msg, e);
+        }
     }
 }

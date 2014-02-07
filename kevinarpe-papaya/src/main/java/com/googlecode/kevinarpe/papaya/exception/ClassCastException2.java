@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.junit;
+package com.googlecode.kevinarpe.papaya.exception;
 
 /*
  * #%L
@@ -25,29 +25,25 @@ package com.googlecode.kevinarpe.papaya.junit;
  * #L%
  */
 
-import com.google.common.collect.ImmutableList;
-import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
-
-import java.util.List;
-
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class ClassFinderResult {
+public class ClassCastException2
+extends RuntimeException {
 
-    private final List<Class<?>> _classList;
-
-    public ClassFinderResult(List<Class<?>> classList) {
-        _classList = CollectionArgs.checkElementsNotNull(classList, "classList");
+    public ClassCastException2() {
+        super();
     }
 
-    public List<Class<?>> asList() {
-        return ImmutableList.copyOf(_classList);
+    public ClassCastException2(String message) {
+        super(message);
     }
 
-    public Class<?>[] asArray() {
-        Class<?>[] classArr = new Class<?>[_classList.size()];
-        classArr = _classList.toArray(classArr);
-        return classArr;
+    public ClassCastException2(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public ClassCastException2(Throwable cause) {
+        super(cause);
     }
 }
