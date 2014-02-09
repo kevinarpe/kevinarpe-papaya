@@ -138,15 +138,24 @@ public class BaseTraversePathIter {
     public String toString() {
         // TODO: Add object ID, e.g., @123456
         String x = String.format(
-            "%s {%n\t%s = '%s' -> '%s'%n\t%s = '%s'%n\t%s = '%s'%n\t%s = '%s'%n\t%s = '%s'%n\t%s = '%s'%n\t%s = '%s'%n}",
+            "%s {%n\t%s = %s%n\t%s = '%s'%n\t%s = '%s'%n\t%s = '%s'%n\t%s = '%s'%n\t%s = '%s'%n\t%s = '%s'%n}",
             BaseTraversePathIter.class.getName(),
-            "dirPath", _dirPath, _dirPath.getAbsolutePath(),
+            "dirPath", _formatPath(_dirPath),
             "depthPolicy", _depthPolicy,
             "exceptionPolicy", _exceptionPolicy,
             "optDescendDirPathFilter", _optDescendDirPathFilter,
             "optDescendDirPathComparator", _optDescendDirPathComparator,
             "optIteratePathFilter", _optIteratePathFilter,
             "optIteratePathComparator", _optIteratePathComparator);
+        return x;
+    }
+
+    private String _formatPath(File path) {
+        if (path.isAbsolute()) {
+            String x = String.format("'%s'", path);
+            return x;
+        }
+        String x = String.format("'%s' -> '%s'", path, path.getAbsolutePath());
         return x;
     }
 }

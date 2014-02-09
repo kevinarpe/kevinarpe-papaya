@@ -42,18 +42,6 @@ import static org.testng.Assert.assertTrue;
  */
 public class BaseTraversePathIterTest {
 
-//    public static interface Factory<TTraversePathIter extends BaseTraversePathIter> {
-//
-//        TTraversePathIter newInstance(
-//            File dirPath,
-//            TraversePathDepthPolicy depthPolicy,
-//            TraversePathExceptionPolicy exceptionPolicy,
-//            PathFilter optDescendDirPathFilter,
-//            Comparator<File> optDescendDirPathComparator,
-//            PathFilter optIteratePathFilter,
-//            Comparator<File> optIteratePathComparator);
-//    }
-
     public static BaseTraversePathIter newInstance() {
         File dirPath = new File("dummy");
         TraversePathDepthPolicy depthPolicy = TraversePathDepthPolicy.DEPTH_FIRST;

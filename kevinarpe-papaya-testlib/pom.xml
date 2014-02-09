@@ -10,13 +10,14 @@
     <artifactId>kevinarpe-papaya-parent</artifactId>
     <version>0.0.13-SNAPSHOT</version>
   </parent>
-  <artifactId>kevinarpe-papaya-junit-testlib</artifactId>
+  <artifactId>kevinarpe-papaya-testlib</artifactId>
   <name>${project.artifactId}</name>
   <packaging>jar</packaging>
   <description>Papaya for JUnit: Utilities for Java 1.6+ written by Kevin Connor ARPE</description>
 
   <properties>
     <junit.version>4.11</junit.version>
+    <slf4j-api.version>1.7.5</slf4j-api.version>
   </properties>
 
   <build>
@@ -63,6 +64,14 @@
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
     </dependency>
@@ -71,5 +80,15 @@
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j-api.version}</version>
+    </dependency>
+      <!--<dependency>-->
+          <!--<groupId>ch.qos.logback</groupId>-->
+          <!--<artifactId>logback-classic</artifactId>-->
+          <!--<version>1.0.13</version>-->
+      <!--</dependency>-->
   </dependencies>
 </project>

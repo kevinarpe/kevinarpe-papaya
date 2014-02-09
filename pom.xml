@@ -89,6 +89,7 @@
     <guava.version>16.0</guava.version>
     <guava-testlib.version>16.0</guava-testlib.version>
     <joda-time.version>2.3</joda-time.version>
+    <jsr305.version>2.0.3</jsr305.version>
 
     <maven-gpg-plugin.version>1.4</maven-gpg-plugin.version>
   </properties>
@@ -302,6 +303,11 @@
         <artifactId>guava-testlib</artifactId>
         <version>${guava-testlib.version}</version>
         <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.google.code.findbugs</groupId>
+        <artifactId>jsr305</artifactId>
+        <version>${jsr305.version}</version>
       </dependency>
       <dependency>
         <groupId>joda-time</groupId>
