@@ -1,64 +1,83 @@
 package com.googlecode.kevinarpe.papaya.string;
 
+/*
+ * #%L
+ * This file is part of Papaya.
+ * %%
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * %%
+ * Papaya is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * GPL Classpath Exception:
+ * This project is subject to the "Classpath" exception as provided in
+ * the LICENSE file that accompanied this code.
+ * 
+ * Papaya is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Papaya.  If not, see <http://www.gnu.org/licenses/>.
+ * #L%
+ */
+
 import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.container.Lists2;
 
-import javax.annotation.CheckReturnValue;
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-// TODO: LAST
 @NotFullyTested
 public final class QuotingJoiner {
 
     // TODO: Also add transform function?  Or create class: TransformingQuotingJoiner?
 
-    public static final boolean DEFAULT_SKIP_NULLS = false;
+    public static final String DEFAULT_LEFT_QUOTE = "";
+    public static final String DEFAULT_RIGHT_QUOTE = "";
     public static final String DEFAULT_NULL_TEXT = null;
-    public static final String DEFAULT_PREFIX_TEXT = "";
-    public static final String DEFAULT_SUFFIX_TEXT = "";
     public static final String DEFAULT_EMPTY_TEXT = "";
-    public static final String DEFAULT_PAIR_PREFIX_TEXT = "";
-    public static final String DEFAULT_PAIR_SUFFIX_TEXT = "";
+    public static final boolean DEFAULT_SKIP_NULLS = false;
 
     private final String _separator;
-    private final boolean _skipNulls;
+    private final String _leftQuote;
+    private final String _rightQuote;
     private final String _nullText;
-    private final String _prefix;
-    private final String _suffix;
     private final String _emptyText;
+    private final boolean _skipNulls;
 
     private QuotingJoiner(String separator) {
         this(
             separator,
-            DEFAULT_SKIP_NULLS,
             DEFAULT_NULL_TEXT,
-            DEFAULT_PREFIX_TEXT,
-            DEFAULT_SUFFIX_TEXT,
-            DEFAULT_EMPTY_TEXT);
+            DEFAULT_LEFT_QUOTE,
+            DEFAULT_RIGHT_QUOTE,
+            DEFAULT_EMPTY_TEXT,
+            DEFAULT_SKIP_NULLS);
     }
 
     private QuotingJoiner(
             String separator,
-            boolean skipNulls,
             String nullText,
-            String prefix,
-            String suffix,
-            String emptyText) {
+            String leftQuote,
+            String rightQuote,
+            String emptyText,
+            boolean skipNulls) {
         this._separator = separator;
-        this._skipNulls = skipNulls;
         this._nullText = nullText;
-        this._prefix = prefix;
-        this._suffix = suffix;
+        this._leftQuote = leftQuote;
+        this._rightQuote = rightQuote;
         this._emptyText = emptyText;
+        this._skipNulls = skipNulls;
     }
 
     public static QuotingJoiner on(String separator) {
@@ -75,14 +94,21 @@ public final class QuotingJoiner {
         return x;
     }
 
-    // on vs use vs with
-    // TOOD: Fix name!
     public QuotingJoiner withSeparator(String separator) {
         ObjectArgs.checkNotNull(separator, "separator");
 
         QuotingJoiner x =
             new QuotingJoiner(
-                separator, _skipNulls, _nullText, _prefix, _suffix, _emptyText);
+                separator, _nullText, _leftQuote, _rightQuote, _emptyText, _skipNulls);
+        return x;
+    }
+
+    public QuotingJoiner withSeparator(char separator) {
+        String separatorString = String.valueOf(separator);
+
+        QuotingJoiner x =
+            new QuotingJoiner(
+                separatorString, _nullText, _leftQuote, _rightQuote, _emptyText, _skipNulls);
         return x;
     }
 
@@ -90,37 +116,54 @@ public final class QuotingJoiner {
         return _separator;
     }
 
-    public QuotingJoiner withPrefix(String prefix) {
-        ObjectArgs.checkNotNull(prefix, "prefix");
+    public QuotingJoiner withQuotes(String leftQuote, String rightQuote) {
+        ObjectArgs.checkNotNull(leftQuote, "leftQuote");
+        ObjectArgs.checkNotNull(rightQuote, "rightQuote");
 
         QuotingJoiner x =
-            new QuotingJoiner(_separator, _skipNulls, _nullText, prefix, _suffix, _emptyText);
+            new QuotingJoiner(_separator, _nullText, leftQuote, rightQuote, _emptyText, _skipNulls);
         return x;
     }
 
-    public String withPrefix() {
-        return _suffix;
-    }
-
-    public QuotingJoiner withSuffix(String suffix) {
-        ObjectArgs.checkNotNull(suffix, "suffix");
-
-        QuotingJoiner x =
-            new QuotingJoiner(_separator, _skipNulls, _nullText, _prefix, suffix, _emptyText);
+    public QuotingJoiner withQuotes(String leftQuote, char rightQuote) {
+        String rightQuoteString = String.valueOf(rightQuote);
+        QuotingJoiner x = withQuotes(leftQuote, rightQuoteString);
         return x;
     }
 
-    public String withSuffix() {
-        return _suffix;
+    public QuotingJoiner withQuotes(char leftQuote, String rightQuote) {
+        String leftQuoteString = String.valueOf(leftQuote);
+        QuotingJoiner x = withQuotes(leftQuoteString, rightQuote);
+        return x;
     }
 
-    @CheckReturnValue
+    public QuotingJoiner withQuotes(char leftQuote, char rightQuote) {
+        String leftQuoteString = String.valueOf(leftQuote);
+        String rightQuoteString = String.valueOf(rightQuote);
+        QuotingJoiner x = withQuotes(leftQuoteString, rightQuoteString);
+        return x;
+    }
+
+    public String withLeftQuote() {
+        return _leftQuote;
+    }
+
+    public String withRightQuote() {
+        return _rightQuote;
+    }
+
     public QuotingJoiner useForEmpty(String emptyText) {
         ObjectArgs.checkNotNull(emptyText, "emptyText");
 
         QuotingJoiner x =
             new QuotingJoiner(
-                _separator, _skipNulls, _nullText, _prefix, _suffix, emptyText);
+                _separator, _nullText, _leftQuote, _rightQuote, emptyText, _skipNulls);
+        return x;
+    }
+
+    public QuotingJoiner useForEmpty(char emptyText) {
+        String emptyTextString = String.valueOf(emptyText);
+        QuotingJoiner x = useForEmpty(emptyTextString);
         return x;
     }
 
@@ -128,13 +171,18 @@ public final class QuotingJoiner {
         return _emptyText;
     }
 
-    @CheckReturnValue
     public QuotingJoiner useForNull(String nullText) {
         ObjectArgs.checkNotNull(nullText, "nullText");
 
         QuotingJoiner x =
             new QuotingJoiner(
-                _separator, _skipNulls, _nullText, _prefix, _suffix, _emptyText);
+                _separator, nullText, _leftQuote, _rightQuote, _emptyText, _skipNulls);
+        return x;
+    }
+
+    public QuotingJoiner useForNull(char nullText) {
+        String nullTextString = String.valueOf(nullText);
+        QuotingJoiner x = useForNull(nullTextString);
         return x;
     }
 
@@ -142,11 +190,10 @@ public final class QuotingJoiner {
         return _nullText;
     }
 
-    @CheckReturnValue
     public QuotingJoiner skipNulls(boolean flag) {
         QuotingJoiner x =
             new QuotingJoiner(
-                _separator, _skipNulls, _nullText, _prefix, _suffix, _emptyText);
+                _separator, _nullText, _leftQuote, _rightQuote, _emptyText, flag);
         return x;
     }
 
@@ -157,13 +204,13 @@ public final class QuotingJoiner {
     public <TAppendable extends Appendable>
     TAppendable appendTo(
             TAppendable appendable,
-            @Nullable Object value1,
-            @Nullable Object value2,
+            Object value1,
+            Object value2,
             Object... valueArr)
     throws IOException {
-        ObjectArgs.checkNotNull(valueArr, "valueArr");  // TODO: Possible?
+        ObjectArgs.checkNotNull(valueArr, "valueArr");
 
-        List<Object> list = Lists2.newUnmodifiableListFromTwoOrMore(value1, value2, valueArr);
+        List<Object> list = Lists2.newUnmodifiableListFromTwoOrMoreValues(value1, value2, valueArr);
         appendTo(appendable, list);
         return appendable;
     }
@@ -212,14 +259,41 @@ public final class QuotingJoiner {
         return appendable;
     }
 
+    private <TAppendable extends Appendable>
+    void _appendNext(TAppendable appendable, Iterator<?> partIter)
+        throws IOException {
+        Object value = partIter.next();
+        String valueString = _toString(value, this, _leftQuote, _rightQuote);
+        appendable.append(valueString);
+    }
+
+    static String _toString(
+        Object value, QuotingJoiner quotingJoiner, String leftQuote, String rightQuote) {
+        String x = null;
+        if (null == value) {
+            String nullText = quotingJoiner.useForNull();
+            if (null == nullText) {
+                throw new NullPointerException(
+                    String.format("Failed to convert null value to text.  See %s.useForNull()",
+                        QuotingJoiner.class.getSimpleName()));
+            }
+            x = nullText;
+        }
+        else {
+            x = value.toString();
+        }
+        x = leftQuote + x + rightQuote;
+        return x;
+    }
+
     public StringBuilder appendTo(
             StringBuilder builder,
-            @Nullable Object value1,
-            @Nullable Object value2,
+            Object value1,
+            Object value2,
             Object... valueArr) {
-        ObjectArgs.checkNotNull(valueArr, "valueArr");  // TODO: Possible?
+        ObjectArgs.checkNotNull(valueArr, "valueArr");
 
-        List<Object> list = Lists2.newUnmodifiableListFromTwoOrMore(value1, value2, valueArr);
+        List<Object> list = Lists2.newUnmodifiableListFromTwoOrMoreValues(value1, value2, valueArr);
         appendTo(builder, list);
         return builder;
     }
@@ -253,10 +327,10 @@ public final class QuotingJoiner {
         return builder;
     }
 
-    public String join(@Nullable Object value1, @Nullable Object value2, Object... valueArr) {
-        ObjectArgs.checkNotNull(valueArr, "valueArr");  // TODO: Possible?
+    public String join(Object value1, Object value2, Object... valueArr) {
+        ObjectArgs.checkNotNull(valueArr, "valueArr");
 
-        List<Object> list = Lists2.newUnmodifiableListFromTwoOrMore(value1, value2, valueArr);
+        List<Object> list = Lists2.newUnmodifiableListFromTwoOrMoreValues(value1, value2, valueArr);
         String x = join(list);
         return x;
     }
@@ -289,168 +363,16 @@ public final class QuotingJoiner {
         return sbs;
     }
 
-    @CheckReturnValue
-    public MapJoiner withKeyValueSeparator(String keyValueSeparator) {
+    public QuotingMapJoiner withKeyValueSeparator(String keyValueSeparator) {
         ObjectArgs.checkNotNull(keyValueSeparator, "keyValueSeparator");
 
-        MapJoiner x = new MapJoiner(this, keyValueSeparator);
+        QuotingMapJoiner x = new QuotingMapJoiner(this, keyValueSeparator);
         return x;
     }
 
-    public static class MapJoiner {
-
-        private final QuotingJoiner _quotingJoiner;
-        private final String _keyValueSeparator;
-        // TODO: Maybe change to keyPrefix, keySuffix, valuePrefix, valueSuffix?
-        private final String _pairPrefix;
-        private final String _pairSuffix;
-
-        private MapJoiner(QuotingJoiner quotingJoiner, String keyValueSeparator) {
-            this(
-                quotingJoiner,
-                keyValueSeparator,
-                DEFAULT_PAIR_PREFIX_TEXT,
-                DEFAULT_PAIR_SUFFIX_TEXT);
-        }
-
-        private MapJoiner(
-                QuotingJoiner quotingJoiner,
-                String keyValueSeparator,
-                String pairprefix,
-                String pairsuffix) {
-            _quotingJoiner = quotingJoiner;
-            _keyValueSeparator = keyValueSeparator;
-            _pairPrefix = pairprefix;
-            _pairSuffix = pairsuffix;
-        }
-
-        public MapJoiner withPairPrefix(String pairPrefix) {
-            ObjectArgs.checkNotNull(pairPrefix, "pairPrefix");
-
-            MapJoiner x =
-                new MapJoiner(_quotingJoiner, _keyValueSeparator, pairPrefix, _pairSuffix);
-            return x;
-        }
-
-        public String withPairPrefix() {
-            return _pairPrefix;
-        }
-
-        public MapJoiner withPairSuffix(String pairSuffix) {
-            ObjectArgs.checkNotNull(pairSuffix, "pairSuffix");
-
-            MapJoiner x =
-                new MapJoiner(_quotingJoiner, _keyValueSeparator, pairSuffix, _pairSuffix);
-            return x;
-        }
-
-        public String withPairSuffix() {
-            return _pairSuffix;
-        }
-
-        public <TAppendable extends Appendable>
-        TAppendable appendTo(TAppendable appendable, Iterator<? extends Map.Entry<?, ?>> partIter)
-        throws IOException {
-            ObjectArgs.checkNotNull(appendable, "appendable");
-            ObjectArgs.checkNotNull(partIter, "partIter");
-
-            if (partIter.hasNext()) {
-                _appendNext(appendable, partIter);
-                while (partIter.hasNext()) {
-                    appendable.append(_quotingJoiner.withSeparator());
-                    _appendNext(appendable, partIter);
-                }
-            }
-            return appendable;
-        }
-
-        private <TAppendable extends Appendable>
-        void _appendNext(TAppendable appendable, Iterator<? extends Map.Entry<?, ?>> partIter)
-        throws IOException {
-            Map.Entry<?, ?> entry = partIter.next();
-            Object key = entry.getKey();
-            String keyString = _quotingJoiner._toString(key);
-            Object value = entry.getValue();
-            String valueString = _quotingJoiner._toString(value);
-            appendable.append(_pairPrefix);
-            appendable.append(keyString);
-            appendable.append(_keyValueSeparator);
-            appendable.append(valueString);
-            appendable.append(_pairSuffix);
-        }
-
-        // TODO: Finish append/join/etc
-
-
-        public QuotingJoiner withSeparator(String separator) {
-            return _quotingJoiner.withSeparator(separator);
-        }
-
-        public String withSeparator() {
-            return _quotingJoiner.withSeparator();
-        }
-
-        public QuotingJoiner withPrefix(String prefix) {
-            return _quotingJoiner.withPrefix(prefix);
-        }
-
-        public String withPrefix() {
-            return _quotingJoiner.withPrefix();
-        }
-
-        public QuotingJoiner withSuffix(String suffix) {
-            return _quotingJoiner.withSuffix(suffix);
-        }
-
-        public String withSuffix() {
-            return _quotingJoiner.withSuffix();
-        }
-
-        @CheckReturnValue
-        public QuotingJoiner useForEmpty(String emptyText) {
-            return _quotingJoiner.useForEmpty(emptyText);
-        }
-
-        public String useForEmpty() {
-            return _quotingJoiner.useForEmpty();
-        }
-
-        @CheckReturnValue
-        public QuotingJoiner useForNull(String nullText) {
-            return _quotingJoiner.useForNull(nullText);
-        }
-
-        public String useForNull() {
-            return _quotingJoiner.useForNull();
-        }
-
-        @CheckReturnValue
-        public QuotingJoiner skipNulls(boolean flag) {
-            return _quotingJoiner.skipNulls(flag);
-        }
-
-        public boolean skipNulls() {
-            return _quotingJoiner.skipNulls();
-        }
-    }
-
-    private <TAppendable extends Appendable>
-    void _appendNext(TAppendable appendable, Iterator<?> partIter)
-    throws IOException {
-        Object value = partIter.next();
-        String valueString = _toString(value);
-        appendable.append(valueString);
-    }
-
-    private String _toString(Object value) {
-        if (null == value) {
-            if (null == _nullText) {
-                throw new NullPointerException("Failed to convert null value to text");
-            }
-            return _nullText;
-        }
-        String x = value.toString();
-        x = _prefix + x + _suffix;
+    public QuotingMapJoiner withKeyValueSeparator(char keyValueSeparator) {
+        String keyValueSeparatorString = String.valueOf(keyValueSeparator);
+        QuotingMapJoiner x = withKeyValueSeparator(keyValueSeparatorString);
         return x;
     }
 }
