@@ -26,14 +26,14 @@ package com.googlecode.kevinarpe.papaya;
  */
 
 import com.google.common.base.Joiner;
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@NotFullyTested
+@FullyTested
 public class EnumUtils {
 
     public static <TEnum extends Enum<TEnum>>
