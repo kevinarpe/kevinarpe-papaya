@@ -25,7 +25,7 @@ package com.googlecode.kevinarpe.papaya.string;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.container.Lists2;
 
@@ -37,10 +37,8 @@ import java.util.List;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@NotFullyTested
+@FullyTested
 public final class QuotingJoiner {
-
-    // TODO: Also add transform function?  Or create class: TransformingQuotingJoiner?
 
     public static final String DEFAULT_LEFT_QUOTE = "";
     public static final String DEFAULT_RIGHT_QUOTE = "";
@@ -220,13 +218,8 @@ public final class QuotingJoiner {
     throws IOException {
         ObjectArgs.checkNotNull(partArr, "partArr");
 
-        if (0 == partArr.length) {
-            appendable.append(_emptyText);
-        }
-        else {
-            Iterable<Object> partIterable = Arrays.asList(partArr);
-            appendTo(appendable, partIterable);
-        }
+        Iterable<Object> partIterable = Arrays.asList(partArr);
+        appendTo(appendable, partIterable);
         return appendable;
     }
 
@@ -261,29 +254,28 @@ public final class QuotingJoiner {
 
     private <TAppendable extends Appendable>
     void _appendNext(TAppendable appendable, Iterator<?> partIter)
-        throws IOException {
+    throws IOException {
         Object value = partIter.next();
         String valueString = _toString(value, this, _leftQuote, _rightQuote);
         appendable.append(valueString);
     }
 
+    // package private: also used by QuotingMapJoiner
     static String _toString(
-        Object value, QuotingJoiner quotingJoiner, String leftQuote, String rightQuote) {
-        String x = null;
-        if (null == value) {
-            String nullText = quotingJoiner.useForNull();
-            if (null == nullText) {
-                throw new NullPointerException(
-                    String.format("Failed to convert null value to text.  See %s.useForNull()",
-                        QuotingJoiner.class.getSimpleName()));
-            }
-            x = nullText;
-        }
-        else {
-            x = value.toString();
-        }
+            Object value, QuotingJoiner quotingJoiner, String leftQuote, String rightQuote) {
+        String x = (null == value) ? _checkUseForNull(quotingJoiner) : value.toString();
         x = leftQuote + x + rightQuote;
         return x;
+    }
+
+    private static String _checkUseForNull(QuotingJoiner quotingJoiner) {
+        String nullText = quotingJoiner.useForNull();
+        if (null == nullText) {
+            throw new NullPointerException(String.format(
+                "Failed to convert null value to text.  See %s.useForNull(String)",
+                QuotingJoiner.class.getSimpleName()));
+        }
+        return nullText;
     }
 
     public StringBuilder appendTo(
@@ -301,9 +293,6 @@ public final class QuotingJoiner {
     public StringBuilder appendTo(StringBuilder builder, Object[] partArr) {
         ObjectArgs.checkNotNull(partArr, "partArr");
 
-        if (0 == partArr.length) {
-            return builder;
-        }
         Iterable<Object> partIterable = Arrays.asList(partArr);
         appendTo(builder, partIterable);
         return builder;

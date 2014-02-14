@@ -25,9 +25,15 @@ package com.googlecode.kevinarpe.papaya.string;
  * #L%
  */
 
+import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -196,8 +202,6 @@ public class QuotingJoinerTest {
     // QuotingJoiner.useForNull(String)
     //
 
-    // TODO: Wrtie test when joining null value but useForNull() is unset
-
     @Test
     public void useForNullString_Pass() {
         QuotingJoiner x = QuotingJoiner.on(",");
@@ -232,6 +236,452 @@ public class QuotingJoinerTest {
         Assert.assertEquals(x.skipNulls(), true);
         x = x.skipNulls(false);
         Assert.assertEquals(x.skipNulls(), false);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // QuotingJoiner.appendTo(Appendable, *)
+    // QuotingJoiner.appendTo(StringBuilder, *)/join(*) [pass only]
+    //
+
+    @DataProvider
+    private static Object[][] _appendToAppendable_Pass_Data() {
+        return new Object[][] {
+            { ",", "[", "]", "(empty)", null, Arrays.asList(), "(empty)" },
+
+            { ",", null, null, null, null, Arrays.asList(), "" },
+            { ",", null, null, null, null, Arrays.asList("a"), "a" },
+            { ",", null, null, null, null, Arrays.asList("a", "b"), "a,b" },
+            { ",", null, null, null, null, Arrays.asList("a", "b", "c"), "a,b,c" },
+
+            { ",", "[", "]", null, null, Arrays.asList(), "" },
+            { ",", "[", "]", null, null, Arrays.asList("a"), "[a]" },
+            { ",", "[", "]", null, null, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", "[", "]", null, null, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+
+            { ",", "[", "]", "(empty)", null, Arrays.asList(), "(empty)" },
+            { ",", "[", "]", "(empty)", null, Arrays.asList("a"), "[a]" },
+            { ",", "[", "]", "(empty)", null, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", "[", "]", "(empty)", null, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+
+            { ",", "[", "]", "(empty)", "null", Arrays.asList(), "(empty)" },
+            { ",", "[", "]", "(empty)", "null", Arrays.asList("a"), "[a]" },
+            { ",", "[", "]", "(empty)", "null", Arrays.asList("a", null), "[a],[null]" },
+            { ",", "[", "]", "(empty)", "null", Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", "[", "]", "(empty)", "null", Arrays.asList("a", null, "b", null), "[a],[null],[b],[null]" },
+            { ",", "[", "]", "(empty)", "null", Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", "[", "]", "(empty)", "null", Arrays.asList("a", null, "b", null, "c", null), "[a],[null],[b],[null],[c],[null]" },
+        };
+    }
+
+    @Test(dataProvider = "_appendToAppendable_Pass_Data")
+    public void appendToAppendable_Pass(
+            String separator,
+            String optLeftQuote,
+            String optRightQuote,
+            String optEmptyText,
+            String optNullText,
+            List<String> partList,
+            String expectedResult)
+    throws IOException {
+        Assert.assertTrue(
+            (null == optLeftQuote && null == optRightQuote)
+            || (null != optLeftQuote && null != optRightQuote));
+        QuotingJoiner joiner = QuotingJoiner.on(separator);
+        if (null != optLeftQuote && null != optRightQuote) {
+            joiner = joiner.withQuotes(optLeftQuote, optRightQuote);
+        }
+        if (null != optEmptyText) {
+            joiner = joiner.useForEmpty(optEmptyText);
+        }
+        if (null != optNullText) {
+            joiner = joiner.useForNull(optNullText);
+        }
+        _core_appendToAppendable1_Pass(joiner, partList, expectedResult);
+        _core_appendToAppendable2_Pass(joiner, partList, expectedResult);
+        _core_appendToAppendable3_Pass(joiner, partList, expectedResult);
+        _core_appendToAppendable4_Pass(joiner, partList, expectedResult);
+    }
+
+    private void _core_appendToAppendable1_Pass(
+            QuotingJoiner joiner, List<String> partList, String expectedResult)
+    throws IOException {
+        if (partList.size() < 2) {
+            return;
+        }
+        Object value1 = partList.get(0);
+        Object value2 = partList.get(1);
+        Object[] otherValueArr =
+            (partList.size() == 2
+                ? new Object[0]
+                : partList.subList(2, partList.size()).toArray());
+
+        StringBuilder sb = joiner.appendTo(new StringBuilder(), value1, value2, otherValueArr);
+        Assert.assertEquals(sb.toString(), expectedResult);
+
+        Appendable appendable =
+            joiner.appendTo((Appendable) new StringBuilder(), value1, value2, otherValueArr);
+        Assert.assertEquals(appendable.toString(), expectedResult);
+
+        String actualResult = joiner.join(value1, value2, otherValueArr);
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    private void _core_appendToAppendable2_Pass(
+            QuotingJoiner joiner, List<String> partList, String expectedResult)
+    throws IOException {
+        StringBuilder sb = joiner.appendTo(new StringBuilder(), partList.toArray());
+        Assert.assertEquals(sb.toString(), expectedResult);
+
+        Appendable appendable =
+            joiner.appendTo((Appendable) new StringBuilder(), partList.toArray());
+        Assert.assertEquals(appendable.toString(), expectedResult);
+
+        String actualResult = joiner.join(partList.toArray());
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    private void _core_appendToAppendable3_Pass(
+            QuotingJoiner joiner, List<String> partList, String expectedResult)
+    throws IOException {
+        StringBuilder sb = joiner.appendTo(new StringBuilder(), partList);
+        Assert.assertEquals(sb.toString(), expectedResult);
+
+        Appendable appendable =
+            joiner.appendTo((Appendable) new StringBuilder(), partList);
+        Assert.assertEquals(appendable.toString(), expectedResult);
+
+        String actualResult = joiner.join(partList);
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    private void _core_appendToAppendable4_Pass(
+            QuotingJoiner joiner, List<String> partList, String expectedResult)
+    throws IOException {
+        StringBuilder sb = joiner.appendTo(new StringBuilder(), partList.iterator());
+        Assert.assertEquals(sb.toString(), expectedResult);
+
+        Appendable appendable =
+            joiner.appendTo((Appendable) new StringBuilder(), partList.iterator());
+        Assert.assertEquals(appendable.toString(), expectedResult);
+
+        String actualResult = joiner.join(partList.iterator());
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test(expectedExceptions = IOException.class)
+    public void appendToAppendable1_FailWhenAppendableThrowsIOException()
+    throws IOException {
+        Appendable mockAppendable = Mockito.mock(Appendable.class);
+        Mockito.when(mockAppendable.append(Mockito.anyString())).thenThrow(IOException.class);
+        QuotingJoiner.on(",").appendTo(mockAppendable, "abc", "def");
+    }
+
+    @Test(expectedExceptions = IOException.class)
+    public void appendToAppendable2_FailWhenAppendableThrowsIOException()
+    throws IOException {
+        Appendable mockAppendable = Mockito.mock(Appendable.class);
+        Mockito.when(mockAppendable.append(Mockito.anyString())).thenThrow(IOException.class);
+        QuotingJoiner.on(",").appendTo(mockAppendable, Arrays.asList("abc").toArray());
+    }
+
+    @Test(expectedExceptions = IOException.class)
+    public void appendToAppendable3_FailWhenAppendableThrowsIOException()
+    throws IOException {
+        Appendable mockAppendable = Mockito.mock(Appendable.class);
+        Mockito.when(mockAppendable.append(Mockito.anyString())).thenThrow(IOException.class);
+        QuotingJoiner.on(",").appendTo(mockAppendable, Arrays.asList("abc"));
+    }
+
+    @Test(expectedExceptions = IOException.class)
+    public void appendToAppendable4_FailWhenAppendableThrowsIOException()
+    throws IOException {
+        Appendable mockAppendable = Mockito.mock(Appendable.class);
+        Mockito.when(mockAppendable.append(Mockito.anyString())).thenThrow(IOException.class);
+        QuotingJoiner.on(",").appendTo(mockAppendable, Arrays.asList("abc").iterator());
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void appendToAppendable4_FailWhenNullTextIsUnset()
+    throws IOException {
+        Appendable mockAppendable = Mockito.mock(Appendable.class);
+        QuotingJoiner.on(",").appendTo(mockAppendable, Arrays.asList("abc", null));
+    }
+
+    @DataProvider
+    private static Object[][] _appendToAppendable12_FailWithNull_Data() {
+        Appendable mockAppendable = Mockito.mock(Appendable.class);
+        return new Object[][] {
+            { mockAppendable, (Object[]) null },
+            { (Appendable) null, new Object[0] },
+            { (Appendable) null, (Object[]) null },
+        };
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+            dataProvider = "_appendToAppendable12_FailWithNull_Data")
+    public <TAppendable extends Appendable>
+    void appendToAppendable1_FailWithNull(TAppendable appendable, Object[] partArr)
+    throws IOException {
+        QuotingJoiner.on(",").appendTo(appendable, "abc", "def", partArr);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+            dataProvider = "_appendToAppendable12_FailWithNull_Data")
+    public <TAppendable extends Appendable>
+    void appendToAppendable2_FailWithNull(TAppendable appendable, Object[] partArr)
+    throws IOException {
+        QuotingJoiner.on(",").appendTo(appendable, partArr);
+    }
+
+    @DataProvider
+    private static Object[][] _appendToAppendable3_FailWithNull_Data() {
+        Appendable mockAppendable = Mockito.mock(Appendable.class);
+        Iterable mockIterable = Mockito.mock(Iterable.class);
+        return new Object[][] {
+            { mockAppendable, (Iterable) null },
+            { (Appendable) null, mockIterable },
+            { (Appendable) null, (Iterable) null },
+        };
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+            dataProvider = "_appendToAppendable3_FailWithNull_Data")
+    public <TAppendable extends Appendable>
+    void appendToAppendable3_FailWithNull(TAppendable appendable, Iterable<?> partIter)
+    throws IOException {
+        QuotingJoiner.on(",").appendTo(appendable, partIter);
+    }
+
+    @DataProvider
+    private static Object[][] _appendToAppendable4_FailWithNull_Data() {
+        Appendable mockAppendable = Mockito.mock(Appendable.class);
+        Iterator mockIterator = Mockito.mock(Iterator.class);
+        return new Object[][] {
+            { mockAppendable, (Iterator) null },
+            { (Appendable) null, mockIterator },
+            { (Appendable) null, (Iterator) null },
+        };
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+            dataProvider = "_appendToAppendable4_FailWithNull_Data")
+    public <TAppendable extends Appendable>
+    void appendToAppendable4_FailWithNull(TAppendable appendable, Iterator<?> partIter)
+    throws IOException {
+        QuotingJoiner.on(",").appendTo(appendable, partIter);
+    }
+
+    @DataProvider
+    private static Object[][] _appendToAppendable1_FailWhenNullTextUnset_Data() {
+        return new Object[][] {
+            { null, "abc", new Object[] { "def" } },
+            { "abc", null, new Object[] { "def" } },
+            { "abc", "def", new Object[] { null } },
+            { "abc", "def", new Object[] { "ghi", null } },
+        };
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+            dataProvider = "_appendToAppendable1_FailWhenNullTextUnset_Data")
+    public void appendToAppendable1_FailWhenNullTextUnset(
+            Object value1, Object value2, Object[] valueArr)
+    throws IOException {
+        Appendable mockAppendable = Mockito.mock(Appendable.class);
+        QuotingJoiner.on(",").appendTo(mockAppendable, value1, value2, valueArr);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void appendToAppendable2_FailWhenNullTextUnset()
+    throws IOException {
+        Appendable mockAppendable = Mockito.mock(Appendable.class);
+        QuotingJoiner.on(",").appendTo(mockAppendable, Arrays.asList("abc", null).toArray());
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void appendToAppendable3_FailWhenNullTextUnset()
+    throws IOException {
+        Appendable mockAppendable = Mockito.mock(Appendable.class);
+        QuotingJoiner.on(",").appendTo(mockAppendable, Arrays.asList("abc", null).iterator());
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void appendToAppendable4_FailWhenNullTextUnset()
+    throws IOException {
+        Appendable mockAppendable = Mockito.mock(Appendable.class);
+        QuotingJoiner.on(",").appendTo(mockAppendable, Arrays.asList("abc", null));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // QuotingJoiner.appendTo(StringBuilder, *) [fail only]
+    //
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void appendToStringBuilder4_FailWhenNullTextIsUnset()
+    throws IOException {
+        QuotingJoiner.on(",").appendTo(new StringBuilder(), Arrays.asList("abc", null));
+    }
+
+    @DataProvider
+    private static Object[][] _appendToStringBuilder12_FailWithNull_Data() {
+        return new Object[][] {
+            { new StringBuilder(), (Object[]) null },
+            { (Appendable) null, new Object[0] },
+            { (Appendable) null, (Object[]) null },
+        };
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+        dataProvider = "_appendToStringBuilder12_FailWithNull_Data")
+    public void appendToStringBuilder1_FailWithNull(StringBuilder sb, Object[] partArr)
+    throws IOException {
+        QuotingJoiner.on(",").appendTo(sb, "abc", "def", partArr);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+        dataProvider = "_appendToStringBuilder12_FailWithNull_Data")
+    public void appendToStringBuilder2_FailWithNull(StringBuilder sb, Object[] partArr)
+    throws IOException {
+        QuotingJoiner.on(",").appendTo(sb, partArr);
+    }
+
+    @DataProvider
+    private static Object[][] _appendToStringBuilder3_FailWithNull_Data() {
+        Iterable mockIterable = Mockito.mock(Iterable.class);
+        return new Object[][] {
+            { new StringBuilder(), (Iterable) null },
+            { (Appendable) null, mockIterable },
+            { (Appendable) null, (Iterable) null },
+        };
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+        dataProvider = "_appendToStringBuilder3_FailWithNull_Data")
+    public void appendToStringBuilder3_FailWithNull(StringBuilder sb, Iterable<?> partIter)
+    throws IOException {
+        QuotingJoiner.on(",").appendTo(sb, partIter);
+    }
+
+    @DataProvider
+    private static Object[][] _appendToStringBuilder4_FailWithNull_Data() {
+        Iterator mockIterator = Mockito.mock(Iterator.class);
+        return new Object[][] {
+            { new StringBuilder(), (Iterator) null },
+            { (Appendable) null, mockIterator },
+            { (Appendable) null, (Iterator) null },
+        };
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+        dataProvider = "_appendToStringBuilder4_FailWithNull_Data")
+    public void appendToStringBuilder4_FailWithNull(StringBuilder sb, Iterator<?> partIter)
+    throws IOException {
+        QuotingJoiner.on(",").appendTo(sb, partIter);
+    }
+
+    @DataProvider
+    private static Object[][] _appendToStringBuilder1_FailWhenNullTextUnset_Data() {
+        return new Object[][] {
+            { null, "abc", new Object[] { "def" } },
+            { "abc", null, new Object[] { "def" } },
+            { "abc", "def", new Object[] { null } },
+            { "abc", "def", new Object[] { "ghi", null } },
+        };
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+          dataProvider = "_appendToStringBuilder1_FailWhenNullTextUnset_Data")
+    public void appendToStringBuilder1_FailWhenNullTextUnset(
+        Object value1, Object value2, Object[] valueArr)
+        throws IOException {
+        QuotingJoiner.on(",").appendTo(new StringBuilder(), value1, value2, valueArr);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void appendToStringBuilder2_FailWhenNullTextUnset()
+    throws IOException {
+        QuotingJoiner.on(",").appendTo(new StringBuilder(), Arrays.asList("abc", null).toArray());
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void appendToStringBuilder3_FailWhenNullTextUnset()
+    throws IOException {
+        QuotingJoiner.on(",").appendTo(new StringBuilder(), Arrays.asList("abc", null).iterator());
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void appendToStringBuilder4_FailWhenNullTextUnset()
+    throws IOException {
+        QuotingJoiner.on(",").appendTo(new StringBuilder(), Arrays.asList("abc", null));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // QuotingJoiner.join(*) [fail only]
+    //
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void join4_FailWhenNullTextIsUnset()
+    throws IOException {
+        QuotingJoiner.on(",").join(Arrays.asList("abc", null));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void join1_FailWithNull()
+    throws IOException {
+        QuotingJoiner.on(",").join("abc", "def", (Object[]) null);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void join2_FailWithNull()
+    throws IOException {
+        QuotingJoiner.on(",").join((Object[]) null);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void join3_FailWithNull()
+    throws IOException {
+        QuotingJoiner.on(",").join((Iterable<?>) null);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void join4_FailWithNull()
+    throws IOException {
+        QuotingJoiner.on(",").join((Iterator<?>) null);
+    }
+
+    @DataProvider
+    private static Object[][] _join1_FailWhenNullTextUnset_Data() {
+        return new Object[][] {
+            { null, "abc", new Object[] { "def" } },
+            { "abc", null, new Object[] { "def" } },
+            { "abc", "def", new Object[] { null } },
+            { "abc", "def", new Object[] { "ghi", null } },
+        };
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+        dataProvider = "_join1_FailWhenNullTextUnset_Data")
+    public void join1_FailWhenNullTextUnset(
+            Object value1, Object value2, Object[] valueArr)
+    throws IOException {
+        QuotingJoiner.on(",").join(value1, value2, valueArr);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void join2_FailWhenNullTextUnset()
+    throws IOException {
+        QuotingJoiner.on(",").join(Arrays.asList("abc", null).toArray());
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void join3_FailWhenNullTextUnset()
+    throws IOException {
+        QuotingJoiner.on(",").join(Arrays.asList("abc", null).iterator());
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void join4_FailWhenNullTextUnset()
+    throws IOException {
+        QuotingJoiner.on(",").join(Arrays.asList("abc", null));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
