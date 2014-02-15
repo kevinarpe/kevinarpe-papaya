@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.string;
+package com.googlecode.kevinarpe.papaya.string.joiner;
 
 /*
  * #%L
@@ -56,8 +56,8 @@ public class QuotingJoinerTest {
         Assert.assertEquals(x.withLeftQuote(), QuotingJoiner.DEFAULT_LEFT_QUOTE);
         Assert.assertEquals(x.withRightQuote(), QuotingJoiner.DEFAULT_RIGHT_QUOTE);
         Assert.assertEquals(x.useForNull(), QuotingJoiner.DEFAULT_NULL_TEXT);
-        Assert.assertEquals(x.useForEmpty(), QuotingJoiner.DEFAULT_EMPTY_TEXT);
-        Assert.assertEquals(x.skipNulls(), QuotingJoiner.DEFAULT_SKIP_NULLS);
+        Assert.assertEquals(x.useForNoElements(), QuotingJoiner.DEFAULT_NO_ELEMENTS_TEXT);
+        Assert.assertEquals(x.skipNulls(), QuotingJoiner.DEFAULT_SKIP_NULLS_FLAG);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
@@ -172,30 +172,30 @@ public class QuotingJoinerTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoiner.useForEmpty(String)
+    // QuotingJoiner.useForNoElements(String)
     //
 
     @Test
-    public void useForEmptyString_Pass() {
+    public void useForNoElementsString_Pass() {
         QuotingJoiner x = QuotingJoiner.on(",");
-        x = x.useForEmpty("x");
-        Assert.assertEquals(x.useForEmpty(), "x");
+        x = x.useForNoElements("x");
+        Assert.assertEquals(x.useForNoElements(), "x");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
-    public void useForEmpty_FailWithNull() {
-        QuotingJoiner.on("x").useForEmpty((String) null);
+    public void useForNoElements_FailWithNull() {
+        QuotingJoiner.on("x").useForNoElements((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoiner.useForEmpty(char)
+    // QuotingJoiner.useForNoElements(char)
     //
 
     @Test
-    public void useForEmptyChar_Pass() {
+    public void useForNoElementsChar_Pass() {
         QuotingJoiner x = QuotingJoiner.on(',');
-        x = x.useForEmpty('x');
-        Assert.assertEquals(x.useForEmpty(), "x");
+        x = x.useForNoElements('x');
+        Assert.assertEquals(x.useForNoElements(), "x");
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -243,43 +243,74 @@ public class QuotingJoinerTest {
     // QuotingJoiner.appendTo(StringBuilder, *)/join(*) [pass only]
     //
 
+    @SuppressWarnings("unchecked")
     @DataProvider
-    private static Object[][] _appendToAppendable_Pass_Data() {
+    private static Object[][] _appendTo_Pass_Data() {
         return new Object[][] {
-            { ",", "[", "]", "(empty)", null, Arrays.asList(), "(empty)" },
+            { ",", null, null, null, null, false, Arrays.asList(), "" },
+            { ",", null, null, null, null, false, Arrays.asList("a"), "a" },
+            { ",", null, null, null, null, false, Arrays.asList("a", "b"), "a,b" },
+            { ",", null, null, null, null, false, Arrays.asList("a", "b", "c"), "a,b,c" },
 
-            { ",", null, null, null, null, Arrays.asList(), "" },
-            { ",", null, null, null, null, Arrays.asList("a"), "a" },
-            { ",", null, null, null, null, Arrays.asList("a", "b"), "a,b" },
-            { ",", null, null, null, null, Arrays.asList("a", "b", "c"), "a,b,c" },
+            { ",", null, null, null, null, true, Arrays.asList(), "" },
+            { ",", null, null, null, null, true, Arrays.asList("a"), "a" },
+            { ",", null, null, null, null, true, Arrays.asList("a", "b"), "a,b" },
+            { ",", null, null, null, null, true, Arrays.asList("a", "b", "c"), "a,b,c" },
 
-            { ",", "[", "]", null, null, Arrays.asList(), "" },
-            { ",", "[", "]", null, null, Arrays.asList("a"), "[a]" },
-            { ",", "[", "]", null, null, Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", "[", "]", null, null, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", "[", "]", null, null, false, Arrays.asList(), "" },
+            { ",", "[", "]", null, null, false, Arrays.asList("a"), "[a]" },
+            { ",", "[", "]", null, null, false, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", "[", "]", null, null, false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
 
-            { ",", "[", "]", "(empty)", null, Arrays.asList(), "(empty)" },
-            { ",", "[", "]", "(empty)", null, Arrays.asList("a"), "[a]" },
-            { ",", "[", "]", "(empty)", null, Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", "[", "]", "(empty)", null, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", "[", "]", null, null, true, Arrays.asList(), "" },
+            { ",", "[", "]", null, null, true, Arrays.asList("a"), "[a]" },
+            { ",", "[", "]", null, null, true, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", "[", "]", null, null, true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
 
-            { ",", "[", "]", "(empty)", "null", Arrays.asList(), "(empty)" },
-            { ",", "[", "]", "(empty)", "null", Arrays.asList("a"), "[a]" },
-            { ",", "[", "]", "(empty)", "null", Arrays.asList("a", null), "[a],[null]" },
-            { ",", "[", "]", "(empty)", "null", Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", "[", "]", "(empty)", "null", Arrays.asList("a", null, "b", null), "[a],[null],[b],[null]" },
-            { ",", "[", "]", "(empty)", "null", Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
-            { ",", "[", "]", "(empty)", "null", Arrays.asList("a", null, "b", null, "c", null), "[a],[null],[b],[null],[c],[null]" },
+            { ",", "[", "]", "(empty)", null, false, Arrays.asList(), "(empty)" },
+            { ",", "[", "]", "(empty)", null, false, Arrays.asList("a"), "[a]" },
+            { ",", "[", "]", "(empty)", null, false, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", "[", "]", "(empty)", null, false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+
+            { ",", "[", "]", "(empty)", null, true, Arrays.asList(), "(empty)" },
+            { ",", "[", "]", "(empty)", null, true, Arrays.asList("a"), "[a]" },
+            { ",", "[", "]", "(empty)", null, true, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", "[", "]", "(empty)", null, true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+
+            { ",", "[", "]", "(empty)", "null", false, Arrays.asList(), "(empty)" },
+            { ",", "[", "]", "(empty)", "null", false, Arrays.asList("a"), "[a]" },
+            { ",", "[", "]", "(empty)", "null", false, Arrays.asList("a", null), "[a],[null]" },
+            { ",", "[", "]", "(empty)", "null", false, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", "[", "]", "(empty)", "null", false, Arrays.asList("a", null, "b", null), "[a],[null],[b],[null]" },
+            { ",", "[", "]", "(empty)", "null", false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", "[", "]", "(empty)", "null", false, Arrays.asList("a", null, "b", null, "c", null), "[a],[null],[b],[null],[c],[null]" },
+
+            { ",", "[", "]", "(empty)", "null", true, Arrays.asList(), "(empty)" },
+            { ",", "[", "]", "(empty)", "null", true, Arrays.asList("a"), "[a]" },
+            { ",", "[", "]", "(empty)", "null", true, Arrays.asList("a", null), "[a]" },
+            { ",", "[", "]", "(empty)", "null", true, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", "[", "]", "(empty)", "null", true, Arrays.asList("a", null, "b", null), "[a],[b]" },
+            { ",", "[", "]", "(empty)", "null", true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", "[", "]", "(empty)", "null", true, Arrays.asList("a", null, "b", null, "c", null), "[a],[b],[c]" },
+
+            { ",", "[", "]", "(empty)", null, true, Arrays.asList(), "(empty)" },
+            { ",", "[", "]", "(empty)", null, true, Arrays.asList("a"), "[a]" },
+            { ",", "[", "]", "(empty)", null, true, Arrays.asList("a", null), "[a]" },
+            { ",", "[", "]", "(empty)", null, true, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", "[", "]", "(empty)", null, true, Arrays.asList("a", null, "b", null), "[a],[b]" },
+            { ",", "[", "]", "(empty)", null, true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", "[", "]", "(empty)", null, true, Arrays.asList("a", null, "b", null, "c", null), "[a],[b],[c]" },
         };
     }
 
-    @Test(dataProvider = "_appendToAppendable_Pass_Data")
-    public void appendToAppendable_Pass(
+    @Test(dataProvider = "_appendTo_Pass_Data")
+    public void appendTo_Pass(
             String separator,
             String optLeftQuote,
             String optRightQuote,
-            String optEmptyText,
+            String optNoElementsText,
             String optNullText,
+            boolean skipNullsFlag,
             List<String> partList,
             String expectedResult)
     throws IOException {
@@ -290,19 +321,20 @@ public class QuotingJoinerTest {
         if (null != optLeftQuote && null != optRightQuote) {
             joiner = joiner.withQuotes(optLeftQuote, optRightQuote);
         }
-        if (null != optEmptyText) {
-            joiner = joiner.useForEmpty(optEmptyText);
+        if (null != optNoElementsText) {
+            joiner = joiner.useForNoElements(optNoElementsText);
         }
         if (null != optNullText) {
             joiner = joiner.useForNull(optNullText);
         }
-        _core_appendToAppendable1_Pass(joiner, partList, expectedResult);
-        _core_appendToAppendable2_Pass(joiner, partList, expectedResult);
-        _core_appendToAppendable3_Pass(joiner, partList, expectedResult);
-        _core_appendToAppendable4_Pass(joiner, partList, expectedResult);
+        joiner = joiner.skipNulls(skipNullsFlag);
+        _core_appendTo1_Pass(joiner, partList, expectedResult);
+        _core_appendTo2_Pass(joiner, partList, expectedResult);
+        _core_appendTo3_Pass(joiner, partList, expectedResult);
+        _core_appendTo4_Pass(joiner, partList, expectedResult);
     }
 
-    private void _core_appendToAppendable1_Pass(
+    private void _core_appendTo1_Pass(
             QuotingJoiner joiner, List<String> partList, String expectedResult)
     throws IOException {
         if (partList.size() < 2) {
@@ -326,7 +358,7 @@ public class QuotingJoinerTest {
         Assert.assertEquals(actualResult, expectedResult);
     }
 
-    private void _core_appendToAppendable2_Pass(
+    private void _core_appendTo2_Pass(
             QuotingJoiner joiner, List<String> partList, String expectedResult)
     throws IOException {
         StringBuilder sb = joiner.appendTo(new StringBuilder(), partList.toArray());
@@ -340,7 +372,7 @@ public class QuotingJoinerTest {
         Assert.assertEquals(actualResult, expectedResult);
     }
 
-    private void _core_appendToAppendable3_Pass(
+    private void _core_appendTo3_Pass(
             QuotingJoiner joiner, List<String> partList, String expectedResult)
     throws IOException {
         StringBuilder sb = joiner.appendTo(new StringBuilder(), partList);
@@ -354,7 +386,7 @@ public class QuotingJoinerTest {
         Assert.assertEquals(actualResult, expectedResult);
     }
 
-    private void _core_appendToAppendable4_Pass(
+    private void _core_appendTo4_Pass(
             QuotingJoiner joiner, List<String> partList, String expectedResult)
     throws IOException {
         StringBuilder sb = joiner.appendTo(new StringBuilder(), partList.iterator());
@@ -372,7 +404,7 @@ public class QuotingJoinerTest {
     public void appendToAppendable1_FailWhenAppendableThrowsIOException()
     throws IOException {
         Appendable mockAppendable = Mockito.mock(Appendable.class);
-        Mockito.when(mockAppendable.append(Mockito.anyString())).thenThrow(IOException.class);
+        Mockito.when(mockAppendable.append(Mockito.anyString())).thenThrow(new IOException());
         QuotingJoiner.on(",").appendTo(mockAppendable, "abc", "def");
     }
 
@@ -380,7 +412,7 @@ public class QuotingJoinerTest {
     public void appendToAppendable2_FailWhenAppendableThrowsIOException()
     throws IOException {
         Appendable mockAppendable = Mockito.mock(Appendable.class);
-        Mockito.when(mockAppendable.append(Mockito.anyString())).thenThrow(IOException.class);
+        Mockito.when(mockAppendable.append(Mockito.anyString())).thenThrow(new IOException());
         QuotingJoiner.on(",").appendTo(mockAppendable, Arrays.asList("abc").toArray());
     }
 
@@ -388,7 +420,7 @@ public class QuotingJoinerTest {
     public void appendToAppendable3_FailWhenAppendableThrowsIOException()
     throws IOException {
         Appendable mockAppendable = Mockito.mock(Appendable.class);
-        Mockito.when(mockAppendable.append(Mockito.anyString())).thenThrow(IOException.class);
+        Mockito.when(mockAppendable.append(Mockito.anyString())).thenThrow(new IOException());
         QuotingJoiner.on(",").appendTo(mockAppendable, Arrays.asList("abc"));
     }
 
@@ -396,7 +428,7 @@ public class QuotingJoinerTest {
     public void appendToAppendable4_FailWhenAppendableThrowsIOException()
     throws IOException {
         Appendable mockAppendable = Mockito.mock(Appendable.class);
-        Mockito.when(mockAppendable.append(Mockito.anyString())).thenThrow(IOException.class);
+        Mockito.when(mockAppendable.append(Mockito.anyString())).thenThrow(new IOException());
         QuotingJoiner.on(",").appendTo(mockAppendable, Arrays.asList("abc").iterator());
     }
 
@@ -713,5 +745,7 @@ public class QuotingJoinerTest {
         Assert.assertEquals(y.withKeyRightQuote(), QuotingMapJoiner.DEFAULT_RIGHT_KEY_QUOTE);
         Assert.assertEquals(y.withValueLeftQuote(), QuotingMapJoiner.DEFAULT_LEFT_VALUE_QUOTE);
         Assert.assertEquals(y.withValueRightQuote(), QuotingMapJoiner.DEFAULT_RIGHT_VALUE_QUOTE);
+        Assert.assertEquals(y.useForNullKey(), QuotingMapJoiner.DEFAULT_KEY_NULL_TEXT);
+        Assert.assertEquals(y.useForNullValue(), QuotingMapJoiner.DEFAULT_VALUE_NULL_TEXT);
     }
 }

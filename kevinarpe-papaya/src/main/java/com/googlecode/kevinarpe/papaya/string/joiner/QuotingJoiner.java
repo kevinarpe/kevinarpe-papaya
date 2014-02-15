@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.string;
+package com.googlecode.kevinarpe.papaya.string.joiner;
 
 /*
  * #%L
@@ -37,21 +37,23 @@ import java.util.List;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+// TODO: Think about factory interfaces.  Do we need this?
 @FullyTested
-public final class QuotingJoiner {
+public final class QuotingJoiner
+implements IQuotingJoiner<QuotingJoiner, QuotingMapJoiner> {
 
     public static final String DEFAULT_LEFT_QUOTE = "";
     public static final String DEFAULT_RIGHT_QUOTE = "";
     public static final String DEFAULT_NULL_TEXT = null;
-    public static final String DEFAULT_EMPTY_TEXT = "";
-    public static final boolean DEFAULT_SKIP_NULLS = false;
+    public static final String DEFAULT_NO_ELEMENTS_TEXT = "";
+    public static final boolean DEFAULT_SKIP_NULLS_FLAG = false;
 
     private final String _separator;
     private final String _leftQuote;
     private final String _rightQuote;
     private final String _nullText;
-    private final String _emptyText;
-    private final boolean _skipNulls;
+    private final String _noElementsText;
+    private final boolean _skipNullsFlag;
 
     private QuotingJoiner(String separator) {
         this(
@@ -59,8 +61,8 @@ public final class QuotingJoiner {
             DEFAULT_NULL_TEXT,
             DEFAULT_LEFT_QUOTE,
             DEFAULT_RIGHT_QUOTE,
-            DEFAULT_EMPTY_TEXT,
-            DEFAULT_SKIP_NULLS);
+            DEFAULT_NO_ELEMENTS_TEXT,
+            DEFAULT_SKIP_NULLS_FLAG);
     }
 
     private QuotingJoiner(
@@ -68,14 +70,14 @@ public final class QuotingJoiner {
             String nullText,
             String leftQuote,
             String rightQuote,
-            String emptyText,
-            boolean skipNulls) {
+            String noElementsText,
+            boolean skipNullsFlag) {
         this._separator = separator;
         this._nullText = nullText;
         this._leftQuote = leftQuote;
         this._rightQuote = rightQuote;
-        this._emptyText = emptyText;
-        this._skipNulls = skipNulls;
+        this._noElementsText = noElementsText;
+        this._skipNullsFlag = skipNullsFlag;
     }
 
     public static QuotingJoiner on(String separator) {
@@ -92,49 +94,55 @@ public final class QuotingJoiner {
         return x;
     }
 
+    @Override
     public QuotingJoiner withSeparator(String separator) {
         ObjectArgs.checkNotNull(separator, "separator");
 
         QuotingJoiner x =
             new QuotingJoiner(
-                separator, _nullText, _leftQuote, _rightQuote, _emptyText, _skipNulls);
+                separator, _nullText, _leftQuote, _rightQuote, _noElementsText, _skipNullsFlag);
         return x;
     }
 
+    @Override
     public QuotingJoiner withSeparator(char separator) {
         String separatorString = String.valueOf(separator);
 
-        QuotingJoiner x =
-            new QuotingJoiner(
-                separatorString, _nullText, _leftQuote, _rightQuote, _emptyText, _skipNulls);
+        QuotingJoiner x = new QuotingJoiner(
+            separatorString, _nullText, _leftQuote, _rightQuote, _noElementsText, _skipNullsFlag);
         return x;
     }
 
+    @Override
     public String withSeparator() {
         return _separator;
     }
 
+    @Override
     public QuotingJoiner withQuotes(String leftQuote, String rightQuote) {
         ObjectArgs.checkNotNull(leftQuote, "leftQuote");
         ObjectArgs.checkNotNull(rightQuote, "rightQuote");
 
-        QuotingJoiner x =
-            new QuotingJoiner(_separator, _nullText, leftQuote, rightQuote, _emptyText, _skipNulls);
+        QuotingJoiner x = new QuotingJoiner(
+            _separator, _nullText, leftQuote, rightQuote, _noElementsText, _skipNullsFlag);
         return x;
     }
 
+    @Override
     public QuotingJoiner withQuotes(String leftQuote, char rightQuote) {
         String rightQuoteString = String.valueOf(rightQuote);
         QuotingJoiner x = withQuotes(leftQuote, rightQuoteString);
         return x;
     }
 
+    @Override
     public QuotingJoiner withQuotes(char leftQuote, String rightQuote) {
         String leftQuoteString = String.valueOf(leftQuote);
         QuotingJoiner x = withQuotes(leftQuoteString, rightQuote);
         return x;
     }
 
+    @Override
     public QuotingJoiner withQuotes(char leftQuote, char rightQuote) {
         String leftQuoteString = String.valueOf(leftQuote);
         String rightQuoteString = String.valueOf(rightQuote);
@@ -142,69 +150,79 @@ public final class QuotingJoiner {
         return x;
     }
 
+    @Override
     public String withLeftQuote() {
         return _leftQuote;
     }
 
+    @Override
     public String withRightQuote() {
         return _rightQuote;
     }
 
-    public QuotingJoiner useForEmpty(String emptyText) {
-        ObjectArgs.checkNotNull(emptyText, "emptyText");
+    @Override
+    public QuotingJoiner useForNoElements(String noElementsText) {
+        ObjectArgs.checkNotNull(noElementsText, "noElementsText");
 
         QuotingJoiner x =
             new QuotingJoiner(
-                _separator, _nullText, _leftQuote, _rightQuote, emptyText, _skipNulls);
+                _separator, _nullText, _leftQuote, _rightQuote, noElementsText, _skipNullsFlag);
         return x;
     }
 
-    public QuotingJoiner useForEmpty(char emptyText) {
-        String emptyTextString = String.valueOf(emptyText);
-        QuotingJoiner x = useForEmpty(emptyTextString);
+    @Override
+    public QuotingJoiner useForNoElements(char noElementsText) {
+        String noElementsTextString = String.valueOf(noElementsText);
+        QuotingJoiner x = useForNoElements(noElementsTextString);
         return x;
     }
 
-    public String useForEmpty() {
-        return _emptyText;
+    @Override
+    public String useForNoElements() {
+        return _noElementsText;
     }
 
+    @Override
     public QuotingJoiner useForNull(String nullText) {
         ObjectArgs.checkNotNull(nullText, "nullText");
 
         QuotingJoiner x =
             new QuotingJoiner(
-                _separator, nullText, _leftQuote, _rightQuote, _emptyText, _skipNulls);
+                _separator, nullText, _leftQuote, _rightQuote, _noElementsText, _skipNullsFlag);
         return x;
     }
 
+    @Override
     public QuotingJoiner useForNull(char nullText) {
         String nullTextString = String.valueOf(nullText);
         QuotingJoiner x = useForNull(nullTextString);
         return x;
     }
 
+    @Override
     public String useForNull() {
         return _nullText;
     }
 
+    @Override
     public QuotingJoiner skipNulls(boolean flag) {
         QuotingJoiner x =
             new QuotingJoiner(
-                _separator, _nullText, _leftQuote, _rightQuote, _emptyText, flag);
+                _separator, _nullText, _leftQuote, _rightQuote, _noElementsText, flag);
         return x;
     }
 
+    @Override
     public boolean skipNulls() {
-        return _skipNulls;
+        return _skipNullsFlag;
     }
 
     public <TAppendable extends Appendable>
     TAppendable appendTo(
-            TAppendable appendable,
-            Object value1,
-            Object value2,
-            Object... valueArr)
+        TAppendable appendable,
+        Object value1,
+        Object value2,
+        Object... valueArr)
     throws IOException {
         ObjectArgs.checkNotNull(valueArr, "valueArr");
 
@@ -240,44 +258,45 @@ public final class QuotingJoiner {
         ObjectArgs.checkNotNull(partIter, "partIter");
 
         if (partIter.hasNext()) {
-            _appendNext(appendable, partIter);
+            _appendNext(appendable, "", partIter);
             while (partIter.hasNext()) {
-                appendable.append(_separator);
-                _appendNext(appendable, partIter);
+                _appendNext(appendable, _separator, partIter);
             }
         }
         else {
-            appendable.append(_emptyText);
+            appendable.append(_noElementsText);
         }
         return appendable;
     }
 
     private <TAppendable extends Appendable>
-    void _appendNext(TAppendable appendable, Iterator<?> partIter)
+    void _appendNext(TAppendable appendable, String separator, Iterator<?> partIter)
     throws IOException {
         Object value = partIter.next();
-        String valueString = _toString(value, this, _leftQuote, _rightQuote);
+        if (null == value && _skipNullsFlag) {
+            return;
+        }
+        String valueString = _toString(value, _leftQuote, _rightQuote);
+        appendable.append(separator);
         appendable.append(valueString);
     }
 
-    // package private: also used by QuotingMapJoiner
-    static String _toString(
-            Object value, QuotingJoiner quotingJoiner, String leftQuote, String rightQuote) {
-        String x = (null == value) ? _checkUseForNull(quotingJoiner) : value.toString();
+    private String _toString(Object value, String leftQuote, String rightQuote) {
+        String x = (null == value) ? _checkNullText() : value.toString();
         x = leftQuote + x + rightQuote;
         return x;
     }
 
-    private static String _checkUseForNull(QuotingJoiner quotingJoiner) {
-        String nullText = quotingJoiner.useForNull();
-        if (null == nullText) {
+    private String _checkNullText() {
+        if (null == _nullText) {
             throw new NullPointerException(String.format(
                 "Failed to convert null value to text.  See %s.useForNull(String)",
                 QuotingJoiner.class.getSimpleName()));
         }
-        return nullText;
+        return _nullText;
     }
 
+    @Override
     public StringBuilder appendTo(
             StringBuilder builder,
             Object value1,
@@ -285,19 +304,21 @@ public final class QuotingJoiner {
             Object... valueArr) {
         ObjectArgs.checkNotNull(valueArr, "valueArr");
 
-        List<Object> list = Lists2.newUnmodifiableListFromTwoOrMoreValues(value1, value2, valueArr);
+        List<?> list = Lists2.newUnmodifiableListFromTwoOrMoreValues(value1, value2, valueArr);
         appendTo(builder, list);
         return builder;
     }
 
+    @Override
     public StringBuilder appendTo(StringBuilder builder, Object[] partArr) {
         ObjectArgs.checkNotNull(partArr, "partArr");
 
-        Iterable<Object> partIterable = Arrays.asList(partArr);
+        Iterable<?> partIterable = Arrays.asList(partArr);
         appendTo(builder, partIterable);
         return builder;
     }
 
+    @Override
     public StringBuilder appendTo(StringBuilder builder, Iterable<?> partIterable) {
         ObjectArgs.checkNotNull(partIterable, "partIterable");
 
@@ -306,6 +327,7 @@ public final class QuotingJoiner {
         return builder;
     }
 
+    @Override
     public StringBuilder appendTo(StringBuilder builder, Iterator<?> partIter) {
         try {
             appendTo((Appendable) builder, partIter);
@@ -316,6 +338,7 @@ public final class QuotingJoiner {
         return builder;
     }
 
+    @Override
     public String join(Object value1, Object value2, Object... valueArr) {
         ObjectArgs.checkNotNull(valueArr, "valueArr");
 
@@ -324,17 +347,19 @@ public final class QuotingJoiner {
         return x;
     }
 
+    @Override
     public String join(Object[] partArr) {
         ObjectArgs.checkNotNull(partArr, "partArr");
 
         if (0 == partArr.length) {
-            return _emptyText;
+            return _noElementsText;
         }
         Iterable<Object> partIterable = Arrays.asList(partArr);
         String x = join(partIterable);
         return x;
     }
 
+    @Override
     public String join(Iterable<?> partIterable) {
         ObjectArgs.checkNotNull(partIterable, "partIterable");
 
@@ -343,15 +368,15 @@ public final class QuotingJoiner {
         return x;
     }
 
+    @Override
     public String join(Iterator<?> partIter) {
-        ObjectArgs.checkNotNull(partIter, "partIter");
-
         StringBuilder sb = new StringBuilder();
         appendTo(sb, partIter);
         String sbs = sb.toString();
         return sbs;
     }
 
+    @Override
     public QuotingMapJoiner withKeyValueSeparator(String keyValueSeparator) {
         ObjectArgs.checkNotNull(keyValueSeparator, "keyValueSeparator");
 
@@ -359,6 +384,7 @@ public final class QuotingJoiner {
         return x;
     }
 
+    @Override
     public QuotingMapJoiner withKeyValueSeparator(char keyValueSeparator) {
         String keyValueSeparatorString = String.valueOf(keyValueSeparator);
         QuotingMapJoiner x = withKeyValueSeparator(keyValueSeparatorString);

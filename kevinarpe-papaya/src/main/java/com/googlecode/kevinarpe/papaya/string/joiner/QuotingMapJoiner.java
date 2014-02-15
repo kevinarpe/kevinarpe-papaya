@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.string;
+package com.googlecode.kevinarpe.papaya.string.joiner;
 
 /*
  * #%L
@@ -34,12 +34,17 @@ import java.util.Map;
 /**
 * @author Kevin Connor ARPE (kevinarpe@gmail.com)
 */
-public final class QuotingMapJoiner {
+public final class QuotingMapJoiner
+implements IQuotingMapJoiner<QuotingMapJoiner> {
+
+    // TODO: What if 'null' Map.Entry found when appending/joining?  Throw intelligent NullPointerException
 
     public static final String DEFAULT_LEFT_KEY_QUOTE = "";
     public static final String DEFAULT_RIGHT_KEY_QUOTE = "";
     public static final String DEFAULT_LEFT_VALUE_QUOTE = "";
     public static final String DEFAULT_RIGHT_VALUE_QUOTE = "";
+    public static final String DEFAULT_KEY_NULL_TEXT = "";
+    public static final String DEFAULT_VALUE_NULL_TEXT = "";
 
     private final QuotingJoiner _quotingJoiner;
     private final String _keyValueSeparator;
@@ -47,6 +52,8 @@ public final class QuotingMapJoiner {
     private final String _keyRightQuote;
     private final String _valueLeftQuote;
     private final String _valueRightQuote;
+    private final String _keyNullText;
+    private final String _valueNullText;
 
     QuotingMapJoiner(QuotingJoiner quotingJoiner, String keyValueSeparator) {
         this(
@@ -55,7 +62,9 @@ public final class QuotingMapJoiner {
             DEFAULT_LEFT_KEY_QUOTE,
             DEFAULT_RIGHT_KEY_QUOTE,
             DEFAULT_LEFT_VALUE_QUOTE,
-            DEFAULT_RIGHT_VALUE_QUOTE);
+            DEFAULT_RIGHT_VALUE_QUOTE,
+            DEFAULT_KEY_NULL_TEXT,
+            DEFAULT_VALUE_NULL_TEXT);
     }
 
     private QuotingMapJoiner(
@@ -64,15 +73,20 @@ public final class QuotingMapJoiner {
             String keyLeftQuote,
             String keyRightQuote,
             String valueLeftQuote,
-            String valueRightQuote) {
+            String valueRightQuote,
+            String keyNullText,
+            String valueNullText) {
         _quotingJoiner = quotingJoiner;
         _keyValueSeparator = keyValueSeparator;
         _keyLeftQuote = keyLeftQuote;
         _keyRightQuote = keyRightQuote;
         _valueLeftQuote = valueLeftQuote;
         _valueRightQuote = valueRightQuote;
+        _keyNullText = keyNullText;
+        _valueNullText = valueNullText;
     }
 
+    @Override
     public QuotingMapJoiner withKeyValueSeparator(String keyValueSeparator) {
         ObjectArgs.checkNotNull(keyValueSeparator, "keyValueSeparator");
 
@@ -83,20 +97,25 @@ public final class QuotingMapJoiner {
                 _keyLeftQuote,
                 _keyRightQuote,
                 _valueLeftQuote,
-                _valueRightQuote);
+                _valueRightQuote,
+                _keyNullText,
+                _valueNullText);
         return x;
     }
 
+    @Override
     public QuotingMapJoiner withKeyValueSeparator(char keyValueSeparator) {
         String keyValueSeparatorString = String.valueOf(keyValueSeparator);
         QuotingMapJoiner x = withKeyValueSeparator(keyValueSeparatorString);
         return x;
     }
 
+    @Override
     public String withKeyValueSeparator() {
         return _keyValueSeparator;
     }
 
+    @Override
     public QuotingMapJoiner withKeyQuotes(String leftQuote, String rightQuote) {
         ObjectArgs.checkNotNull(leftQuote, "leftQuote");
         ObjectArgs.checkNotNull(rightQuote, "rightQuote");
@@ -108,22 +127,27 @@ public final class QuotingMapJoiner {
                 leftQuote,
                 rightQuote,
                 _valueLeftQuote,
-                _valueRightQuote);
+                _valueRightQuote,
+                _keyNullText,
+                _valueNullText);
         return x;
     }
 
+    @Override
     public QuotingMapJoiner withKeyQuotes(String leftQuote, char rightQuote) {
         String rightQuoteString = String.valueOf(rightQuote);
         QuotingMapJoiner x = withKeyQuotes(leftQuote, rightQuoteString);
         return x;
     }
 
+    @Override
     public QuotingMapJoiner withKeyQuotes(char leftQuote, String rightQuote) {
         String leftQuoteString = String.valueOf(leftQuote);
         QuotingMapJoiner x = withKeyQuotes(leftQuoteString, rightQuote);
         return x;
     }
 
+    @Override
     public QuotingMapJoiner withKeyQuotes(char leftQuote, char rightQuote) {
         String leftQuoteString = String.valueOf(leftQuote);
         String rightQuoteString = String.valueOf(rightQuote);
@@ -131,14 +155,17 @@ public final class QuotingMapJoiner {
         return x;
     }
 
+    @Override
     public String withKeyLeftQuote() {
         return _keyLeftQuote;
     }
 
+    @Override
     public String withKeyRightQuote() {
         return _keyRightQuote;
     }
 
+    @Override
     public QuotingMapJoiner withValueQuotes(String leftQuote, String rightQuote) {
         ObjectArgs.checkNotNull(leftQuote, "leftQuote");
         ObjectArgs.checkNotNull(rightQuote, "rightQuote");
@@ -150,22 +177,27 @@ public final class QuotingMapJoiner {
                 _keyLeftQuote,
                 _keyRightQuote,
                 leftQuote,
-                rightQuote);
+                rightQuote,
+                _keyNullText,
+                _valueNullText);
         return x;
     }
 
+    @Override
     public QuotingMapJoiner withValueQuotes(String leftQuote, char rightQuote) {
         String rightQuoteString = String.valueOf(rightQuote);
         QuotingMapJoiner x = withValueQuotes(leftQuote, rightQuoteString);
         return x;
     }
 
+    @Override
     public QuotingMapJoiner withValueQuotes(char leftQuote, String rightQuote) {
         String leftQuoteString = String.valueOf(leftQuote);
         QuotingMapJoiner x = withValueQuotes(leftQuoteString, rightQuote);
         return x;
     }
 
+    @Override
     public QuotingMapJoiner withValueQuotes(char leftQuote, char rightQuote) {
         String leftQuoteString = String.valueOf(leftQuote);
         String rightQuoteString = String.valueOf(rightQuote);
@@ -173,12 +205,74 @@ public final class QuotingMapJoiner {
         return x;
     }
 
+    @Override
     public String withValueLeftQuote() {
         return _valueLeftQuote;
     }
 
+    @Override
     public String withValueRightQuote() {
         return _valueRightQuote;
+    }
+
+    @Override
+    public QuotingMapJoiner useForNullKey(String keyNullText) {
+        ObjectArgs.checkNotNull(keyNullText, "keyNullText");
+
+        QuotingMapJoiner x =
+            new QuotingMapJoiner(
+                _quotingJoiner,
+                _keyValueSeparator,
+                _keyLeftQuote,
+                _keyRightQuote,
+                _valueLeftQuote,
+                _valueRightQuote,
+                keyNullText,
+                _valueNullText);
+        return x;
+    }
+
+    @Override
+    public QuotingMapJoiner useForNullKey(char keyNullText) {
+        String keyNullTextString = String.valueOf(keyNullText);
+
+        QuotingMapJoiner x = useForNullKey(keyNullTextString);
+        return x;
+    }
+
+    @Override
+    public String useForNullKey() {
+        return _keyNullText;
+    }
+
+    @Override
+    public QuotingMapJoiner useForNullValue(String valueNullText) {
+        ObjectArgs.checkNotNull(valueNullText, "valueNullText");
+
+        QuotingMapJoiner x =
+            new QuotingMapJoiner(
+                _quotingJoiner,
+                _keyValueSeparator,
+                _keyLeftQuote,
+                _keyRightQuote,
+                _valueLeftQuote,
+                _valueRightQuote,
+                _keyNullText,
+                valueNullText);
+        return x;
+    }
+
+    @Override
+    public QuotingMapJoiner useForNullValue(char valueNullText) {
+        String valueNullTextString = String.valueOf(valueNullText);
+
+        QuotingMapJoiner x = useForNullValue(valueNullTextString);
+        return x;
+    }
+
+    @Override
+    public String useForNullValue() {
+        return _valueNullText;
     }
 
     public <TAppendable extends Appendable>
@@ -192,9 +286,7 @@ public final class QuotingMapJoiner {
     }
 
     public <TAppendable extends Appendable>
-    TAppendable appendTo(
-            TAppendable appendable,
-            Iterable<? extends Map.Entry<?, ?>> partIterable)
+    TAppendable appendTo(TAppendable appendable, Iterable<? extends Map.Entry<?, ?>> partIterable)
     throws IOException {
         ObjectArgs.checkNotNull(partIterable, "partIterable");
 
@@ -217,7 +309,7 @@ public final class QuotingMapJoiner {
             }
         }
         else {
-            appendable.append(_quotingJoiner.useForEmpty());
+            appendable.append(_quotingJoiner.useForNoElements());
         }
         return appendable;
     }
@@ -227,21 +319,46 @@ public final class QuotingMapJoiner {
     throws IOException {
         Map.Entry<?, ?> entry = partIter.next();
         Object key = entry.getKey();
-        String quotedKeyString =
-            QuotingJoiner._toString(key, _quotingJoiner, _keyLeftQuote, _keyRightQuote);
+        String quotedKeyString = _keyToString(key);
         Object value = entry.getValue();
-        String quotedValueString =
-            QuotingJoiner._toString(value, _quotingJoiner, _valueLeftQuote, _valueRightQuote);
+        String quotedValueString = _valueToString(value);
         String keyValuePair = quotedKeyString + _keyValueSeparator + quotedValueString;
         String quotedKeyValuePair =
-            QuotingJoiner._toString(
-                keyValuePair,
-                _quotingJoiner,
-                _quotingJoiner.withLeftQuote(),
-                _quotingJoiner.withRightQuote());
+            _quotingJoiner.withLeftQuote() + keyValuePair + _quotingJoiner.withRightQuote();
         appendable.append(quotedKeyValuePair);
     }
 
+    private String _keyToString(Object key) {
+        String x = (null == key) ? _checkKeyNullText() : key.toString();
+        x = _keyLeftQuote + x + _keyRightQuote;
+        return x;
+    }
+
+    private String _valueToString(Object value) {
+        String x = (null == value) ? _checkValueNullText() : value.toString();
+        x = _valueLeftQuote + x + _valueRightQuote;
+        return x;
+    }
+
+    private String _checkKeyNullText() {
+        _checkNullText("key", _keyNullText, "useForNullKey");
+        return _keyNullText;
+    }
+
+    private String _checkValueNullText() {
+        _checkNullText("value", _valueNullText, "useForNullValue");
+        return _valueNullText;
+    }
+
+    private void _checkNullText(String target, String nullText, String methodName) {
+        if (null == nullText) {
+            throw new NullPointerException(String.format(
+                "Failed to convert null %s to text.  See %s.%s(String)",
+                target, QuotingMapJoiner.class.getSimpleName(), methodName));
+        }
+    }
+
+    @Override
     public StringBuilder appendTo(StringBuilder builder, Map<?, ?> map) {
         ObjectArgs.checkNotNull(map, "map");
 
@@ -250,8 +367,9 @@ public final class QuotingMapJoiner {
         return builder;
     }
 
+    @Override
     public StringBuilder appendTo(
-            StringBuilder builder, Iterable<? extends Map.Entry<?, ?>> partIterable) {
+        StringBuilder builder, Iterable<? extends Map.Entry<?, ?>> partIterable) {
         ObjectArgs.checkNotNull(partIterable, "partIterable");
 
         Iterator<? extends Map.Entry<?, ?>> partIter = partIterable.iterator();
@@ -259,8 +377,9 @@ public final class QuotingMapJoiner {
         return builder;
     }
 
+    @Override
     public StringBuilder appendTo(
-            StringBuilder builder, Iterator<? extends Map.Entry<?, ?>> partIter) {
+        StringBuilder builder, Iterator<? extends Map.Entry<?, ?>> partIter) {
         try {
             appendTo((Appendable) builder, partIter);
         }
@@ -270,6 +389,33 @@ public final class QuotingMapJoiner {
         return builder;
     }
 
+    @Override
+    public String join(Map<?, ?> map) {
+        ObjectArgs.checkNotNull(map, "map");
+
+        Iterable<? extends Map.Entry<?, ?>> partIterable = map.entrySet();
+        String x = join(partIterable);
+        return x;
+    }
+
+    @Override
+    public String join(Iterable<? extends Map.Entry<?, ?>> partIterable) {
+        ObjectArgs.checkNotNull(partIterable, "partIterable");
+
+        Iterator<? extends Map.Entry<?, ?>> partIter = partIterable.iterator();
+        String x = join(partIter);
+        return x;
+    }
+
+    @Override
+    public String join(Iterator<? extends Map.Entry<?, ?>> partIter) {
+        StringBuilder sb = new StringBuilder();
+        appendTo(sb, partIter);
+        String sbs = sb.toString();
+        return sbs;
+    }
+
+    @Override
     public QuotingMapJoiner withSeparator(String separator) {
         QuotingJoiner quotingJoiner = _quotingJoiner.withSeparator(separator);
         QuotingMapJoiner x =
@@ -279,10 +425,13 @@ public final class QuotingMapJoiner {
                 _keyLeftQuote,
                 _keyRightQuote,
                 _valueLeftQuote,
-                _valueRightQuote);
+                _valueRightQuote,
+                _keyNullText,
+                _valueNullText);
         return x;
     }
 
+    @Override
     public QuotingMapJoiner withSeparator(char separator) {
         QuotingJoiner quotingJoiner = _quotingJoiner.withSeparator(separator);
         QuotingMapJoiner x =
@@ -292,14 +441,18 @@ public final class QuotingMapJoiner {
                 _keyLeftQuote,
                 _keyRightQuote,
                 _valueLeftQuote,
-                _valueRightQuote);
+                _valueRightQuote,
+                _keyNullText,
+                _valueNullText);
         return x;
     }
 
+    @Override
     public String withSeparator() {
         return _quotingJoiner.withSeparator();
     }
 
+    @Override
     public QuotingMapJoiner withQuotes(String leftQuote, String rightQuote) {
         QuotingJoiner quotingJoiner = _quotingJoiner.withQuotes(leftQuote, rightQuote);
         QuotingMapJoiner x =
@@ -309,10 +462,13 @@ public final class QuotingMapJoiner {
                 _keyLeftQuote,
                 _keyRightQuote,
                 _valueLeftQuote,
-                _valueRightQuote);
+                _valueRightQuote,
+                _keyNullText,
+                _valueNullText);
         return x;
     }
 
+    @Override
     public QuotingMapJoiner withQuotes(String leftQuote, char rightQuote) {
         QuotingJoiner quotingJoiner = _quotingJoiner.withQuotes(leftQuote, rightQuote);
         QuotingMapJoiner x =
@@ -322,10 +478,13 @@ public final class QuotingMapJoiner {
                 _keyLeftQuote,
                 _keyRightQuote,
                 _valueLeftQuote,
-                _valueRightQuote);
+                _valueRightQuote,
+                _keyNullText,
+                _valueNullText);
         return x;
     }
 
+    @Override
     public QuotingMapJoiner withQuotes(char leftQuote, String rightQuote) {
         QuotingJoiner quotingJoiner = _quotingJoiner.withQuotes(leftQuote, rightQuote);
         QuotingMapJoiner x =
@@ -335,10 +494,13 @@ public final class QuotingMapJoiner {
                 _keyLeftQuote,
                 _keyRightQuote,
                 _valueLeftQuote,
-                _valueRightQuote);
+                _valueRightQuote,
+                _keyNullText,
+                _valueNullText);
         return x;
     }
 
+    @Override
     public QuotingMapJoiner withQuotes(char leftQuote, char rightQuote) {
         QuotingJoiner quotingJoiner = _quotingJoiner.withQuotes(leftQuote, rightQuote);
         QuotingMapJoiner x =
@@ -348,20 +510,25 @@ public final class QuotingMapJoiner {
                 _keyLeftQuote,
                 _keyRightQuote,
                 _valueLeftQuote,
-                _valueRightQuote);
+                _valueRightQuote,
+                _keyNullText,
+                _valueNullText);
         return x;
     }
 
+    @Override
     public String withLeftQuote() {
         return _quotingJoiner.withLeftQuote();
     }
 
+    @Override
     public String withRightQuote() {
         return _quotingJoiner.withRightQuote();
     }
 
-    public QuotingMapJoiner useForEmpty(String emptyText) {
-        QuotingJoiner quotingJoiner = _quotingJoiner.useForEmpty(emptyText);
+    @Override
+    public QuotingMapJoiner useForNoElements(String emptyText) {
+        QuotingJoiner quotingJoiner = _quotingJoiner.useForNoElements(emptyText);
         QuotingMapJoiner x =
             new QuotingMapJoiner(
                 quotingJoiner,
@@ -369,12 +536,15 @@ public final class QuotingMapJoiner {
                 _keyLeftQuote,
                 _keyRightQuote,
                 _valueLeftQuote,
-                _valueRightQuote);
+                _valueRightQuote,
+                _keyNullText,
+                _valueNullText);
         return x;
     }
 
-    public QuotingMapJoiner useForEmpty(char emptyText) {
-        QuotingJoiner quotingJoiner = _quotingJoiner.useForEmpty(emptyText);
+    @Override
+    public QuotingMapJoiner useForNoElements(char emptyText) {
+        QuotingJoiner quotingJoiner = _quotingJoiner.useForNoElements(emptyText);
         QuotingMapJoiner x =
             new QuotingMapJoiner(
                 quotingJoiner,
@@ -382,58 +552,14 @@ public final class QuotingMapJoiner {
                 _keyLeftQuote,
                 _keyRightQuote,
                 _valueLeftQuote,
-                _valueRightQuote);
+                _valueRightQuote,
+                _keyNullText,
+                _valueNullText);
         return x;
     }
 
-    public String useForEmpty() {
-        return _quotingJoiner.useForEmpty();
-    }
-
-    public QuotingMapJoiner useForNull(String nullText) {
-        QuotingJoiner quotingJoiner = _quotingJoiner.useForNull(nullText);
-        QuotingMapJoiner x =
-            new QuotingMapJoiner(
-                quotingJoiner,
-                _keyValueSeparator,
-                _keyLeftQuote,
-                _keyRightQuote,
-                _valueLeftQuote,
-                _valueRightQuote);
-        return x;
-    }
-
-    public QuotingMapJoiner useForNull(char nullText) {
-        QuotingJoiner quotingJoiner = _quotingJoiner.useForNull(nullText);
-        QuotingMapJoiner x =
-            new QuotingMapJoiner(
-                quotingJoiner,
-                _keyValueSeparator,
-                _keyLeftQuote,
-                _keyRightQuote,
-                _valueLeftQuote,
-                _valueRightQuote);
-        return x;
-    }
-
-    public String useForNull() {
-        return _quotingJoiner.useForNull();
-    }
-
-    public QuotingMapJoiner skipNulls(boolean flag) {
-        QuotingJoiner quotingJoiner = _quotingJoiner.skipNulls(flag);
-        QuotingMapJoiner x =
-            new QuotingMapJoiner(
-                quotingJoiner,
-                _keyValueSeparator,
-                _keyLeftQuote,
-                _keyRightQuote,
-                _valueLeftQuote,
-                _valueRightQuote);
-        return x;
-    }
-
-    public boolean skipNulls() {
-        return _quotingJoiner.skipNulls();
+    @Override
+    public String useForNoElements() {
+        return _quotingJoiner.useForNoElements();
     }
 }
