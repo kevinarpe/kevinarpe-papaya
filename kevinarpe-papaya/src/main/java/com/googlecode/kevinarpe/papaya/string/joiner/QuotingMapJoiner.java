@@ -32,19 +32,20 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
-* @author Kevin Connor ARPE (kevinarpe@gmail.com)
-*/
+ * <p>
+ * See {@link SharedQuotingJoinerSettings} for an inheritance diagram.
+ *
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public final class QuotingMapJoiner
 implements IQuotingMapJoiner<QuotingMapJoiner> {
-
-    // TODO: What if 'null' Map.Entry found when appending/joining?  Throw intelligent NullPointerException
 
     public static final String DEFAULT_LEFT_KEY_QUOTE = "";
     public static final String DEFAULT_RIGHT_KEY_QUOTE = "";
     public static final String DEFAULT_LEFT_VALUE_QUOTE = "";
     public static final String DEFAULT_RIGHT_VALUE_QUOTE = "";
-    public static final String DEFAULT_KEY_NULL_TEXT = "";
-    public static final String DEFAULT_VALUE_NULL_TEXT = "";
+    public static final String DEFAULT_KEY_NULL_TEXT = "null";
+    public static final String DEFAULT_VALUE_NULL_TEXT = "null";
 
     private final QuotingJoiner _quotingJoiner;
     private final String _keyValueSeparator;
@@ -55,6 +56,7 @@ implements IQuotingMapJoiner<QuotingMapJoiner> {
     private final String _keyNullText;
     private final String _valueNullText;
 
+    // package-private for QuotingJoiner to call
     QuotingMapJoiner(QuotingJoiner quotingJoiner, String keyValueSeparator) {
         this(
             ObjectArgs.checkNotNull(quotingJoiner, "quotingJoiner"),
@@ -318,6 +320,9 @@ implements IQuotingMapJoiner<QuotingMapJoiner> {
     void _appendNext(TAppendable appendable, Iterator<? extends Map.Entry<?, ?>> partIter)
     throws IOException {
         Map.Entry<?, ?> entry = partIter.next();
+        if (null == entry) {
+            throw new NullPointerException("Map entry is null");
+        }
         Object key = entry.getKey();
         String quotedKeyString = _keyToString(key);
         Object value = entry.getValue();
@@ -527,8 +532,8 @@ implements IQuotingMapJoiner<QuotingMapJoiner> {
     }
 
     @Override
-    public QuotingMapJoiner useForNoElements(String emptyText) {
-        QuotingJoiner quotingJoiner = _quotingJoiner.useForNoElements(emptyText);
+    public QuotingMapJoiner useForNoElements(String noElementsText) {
+        QuotingJoiner quotingJoiner = _quotingJoiner.useForNoElements(noElementsText);
         QuotingMapJoiner x =
             new QuotingMapJoiner(
                 quotingJoiner,
@@ -543,8 +548,8 @@ implements IQuotingMapJoiner<QuotingMapJoiner> {
     }
 
     @Override
-    public QuotingMapJoiner useForNoElements(char emptyText) {
-        QuotingJoiner quotingJoiner = _quotingJoiner.useForNoElements(emptyText);
+    public QuotingMapJoiner useForNoElements(char noElementsText) {
+        QuotingJoiner quotingJoiner = _quotingJoiner.useForNoElements(noElementsText);
         QuotingMapJoiner x =
             new QuotingMapJoiner(
                 quotingJoiner,

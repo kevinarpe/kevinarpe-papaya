@@ -28,6 +28,13 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+
+/**
+ * <p>
+ * See {@link SharedQuotingJoinerSettings} for an inheritance diagram.
+ *
+ * @param <TSelf>
+ */
 public interface QuotingMapJoinerSettings<TSelf extends QuotingMapJoinerSettings<TSelf>>
 extends SharedQuotingJoinerSettings<TSelf, TSelf> {
 

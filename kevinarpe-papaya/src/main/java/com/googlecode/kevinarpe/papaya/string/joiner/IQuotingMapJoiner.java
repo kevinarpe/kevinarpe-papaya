@@ -31,12 +31,18 @@ import java.util.Map;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+
+/**
+ * <p>
+ * See {@link SharedQuotingJoinerSettings} for an inheritance diagram.
+ *
+ * @param <TSelf>
+ */
 public interface IQuotingMapJoiner<TSelf extends IQuotingMapJoiner<TSelf>>
 extends QuotingMapJoinerSettings<TSelf> {
 
     StringBuilder appendTo(StringBuilder builder, Map<?, ?> map);
 
-    // TODO: Add (1) two or more, (2) array
     StringBuilder appendTo(
         StringBuilder builder, Iterable<? extends Map.Entry<?, ?>> partIterable);
 

@@ -26,12 +26,16 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  */
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterators;
+import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -309,20 +313,29 @@ public class QuotingMapJoinerTest {
             { ",", "=", "[", "]", "(empty)", "(", ")", null, null, null, null, ImmutableMap.of("a", "1", "b", "2"), "[(a)=1],[(b)=2]" },
             { ",", "=", "[", "]", "(empty)", "(", ")", null, null, null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)=1],[(b)=2],[(c)=3]" },
 
+            // TODO: Create builders like ImmutableMap.of(*), but do not restrict null key/value
+
             { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, ImmutableMap.of(), "(empty)" },
             { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, ImmutableMap.of("a", "1"), "[(a)={1}]" },
+            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, _mapOf("a", "1", null, "2"), "[(a)={1}],[(null)={2}]" },
+            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, _mapOf("a", "1", null, "2", "b", null), "[(a)={1}],[(null)={2}],[(b)={null}]" },
             { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, ImmutableMap.of("a", "1", "b", "2"), "[(a)={1}],[(b)={2}]" },
+            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, _mapOf("a", "1", "b", "2", null, "3"), "[(a)={1}],[(b)={2}],[(null)={3}]" },
+            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, _mapOf("a", "1", "b", "2", null, "3", "c", null), "[(a)={1}],[(b)={2}],[(null)={3}],[(c)={null}]" },
             { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)={1}],[(b)={2}],[(c)={3}]" },
-
-            // TODO: Create builders like ImmutableMap.of(*), but do not restrict null key/value
+            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, _mapOf("a", "1", "b", "2", "c", "3", null, "4"), "[(a)={1}],[(b)={2}],[(c)={3}],[(null)={4}]" },
+            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, _mapOf("a", "1", "b", "2", "c", "3", null, "4", "d", null), "[(a)={1}],[(b)={2}],[(c)={3}],[(null)={4}],[(d)={null}]" },
 
             { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, ImmutableMap.of(), "(empty)" },
             { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, ImmutableMap.of("a", "1"), "[(a)={1}]" },
             { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, _mapOf("a", "1", null, "2"), "[(a)={1}],[(nullKey)={2}]" },
+            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, _mapOf("a", "1", null, "2", "b", null), "[(a)={1}],[(nullKey)={2}],[(b)={null}]" },
             { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, ImmutableMap.of("a", "1", "b", "2"), "[(a)={1}],[(b)={2}]" },
             { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, _mapOf("a", "1", "b", "2", null, "3"), "[(a)={1}],[(b)={2}],[(nullKey)={3}]" },
+            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, _mapOf("a", "1", "b", "2", null, "3", "c", null), "[(a)={1}],[(b)={2}],[(nullKey)={3}],[(c)={null}]" },
             { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)={1}],[(b)={2}],[(c)={3}]" },
             { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, _mapOf("a", "1", "b", "2", "c", "3", null, "4"), "[(a)={1}],[(b)={2}],[(c)={3}],[(nullKey)={4}]" },
+            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, _mapOf("a", "1", "b", "2", "c", "3", null, "4", "d", null), "[(a)={1}],[(b)={2}],[(c)={3}],[(nullKey)={4}],[(d)={null}]" },
 
             { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", "nullValue", ImmutableMap.of(), "(empty)" },
             { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", "nullValue", ImmutableMap.of("a", "1"), "[(a)={1}]" },
@@ -349,7 +362,6 @@ public class QuotingMapJoinerTest {
         return map;
     }
 
-    // TODO: LAST
     @Test(dataProvider = "_appendTo_Pass_Data")
     public void appendTo_Pass(
             String separator,
@@ -395,12 +407,12 @@ public class QuotingMapJoinerTest {
         if (null != optValueNullText) {
             mapJoiner = mapJoiner.useForNullValue(optValueNullText);
         }
-        _core_appendTo1_Pass(mapJoiner, map, expectedResult);
-        _core_appendTo2_Pass(mapJoiner, map, expectedResult);
-        _core_appendTo3_Pass(mapJoiner, map, expectedResult);
+        _core_appendMapTo_Pass(mapJoiner, map, expectedResult);
+        _core_appendIteratorTo_Pass(mapJoiner, map, expectedResult);
+        _core_appendIterableTo_Pass(mapJoiner, map, expectedResult);
     }
 
-    private void _core_appendTo1_Pass(
+    private void _core_appendMapTo_Pass(
             QuotingMapJoiner mapJoiner, Map<String, String> map, String expectedResult)
     throws IOException {
         StringBuilder sb = mapJoiner.appendTo(new StringBuilder(), map);
@@ -413,7 +425,7 @@ public class QuotingMapJoinerTest {
         Assert.assertEquals(actualResult, expectedResult);
     }
 
-    private void _core_appendTo2_Pass(
+    private void _core_appendIteratorTo_Pass(
             QuotingMapJoiner mapJoiner, Map<String, String> map, String expectedResult)
     throws IOException {
         StringBuilder sb = mapJoiner.appendTo(new StringBuilder(), map.entrySet());
@@ -426,7 +438,7 @@ public class QuotingMapJoinerTest {
         Assert.assertEquals(actualResult, expectedResult);
     }
 
-    private void _core_appendTo3_Pass(
+    private void _core_appendIterableTo_Pass(
             QuotingMapJoiner mapJoiner, Map<String, String> map, String expectedResult)
     throws IOException {
         StringBuilder sb = mapJoiner.appendTo(new StringBuilder(), map.entrySet().iterator());
@@ -438,5 +450,299 @@ public class QuotingMapJoinerTest {
 
         String actualResult = mapJoiner.join(map.entrySet().iterator());
         Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    private static Appendable _newMockAppendableThrowsIOException()
+    throws IOException {
+        Appendable mockAppendable = Mockito.mock(Appendable.class);
+        Mockito.when(mockAppendable.append(Mockito.anyString())).thenThrow(new IOException());
+        return mockAppendable;
+    }
+
+    @Test(expectedExceptions = IOException.class)
+    public void appendMapToAppendable_FailWhenAppendableThrowsIOException()
+    throws IOException {
+        Appendable mockAppendable = _newMockAppendableThrowsIOException();
+        QuotingJoiner.on(",").withKeyValueSeparator("=")
+            .appendTo(mockAppendable, ImmutableMap.of("a", "1"));
+    }
+
+    @Test(expectedExceptions = IOException.class)
+    public void appendIterableToAppendable_FailWhenAppendableThrowsIOException()
+    throws IOException {
+        Appendable mockAppendable = _newMockAppendableThrowsIOException();
+        QuotingJoiner.on(",").withKeyValueSeparator("=")
+            .appendTo(mockAppendable, ImmutableMap.of("a", "1").entrySet());
+    }
+
+    @Test(expectedExceptions = IOException.class)
+    public void appendIteratorToAppendable_FailWhenAppendableThrowsIOException()
+    throws IOException {
+        Appendable mockAppendable = _newMockAppendableThrowsIOException();
+        QuotingJoiner.on(",").withKeyValueSeparator("=")
+            .appendTo(mockAppendable, ImmutableMap.of("a", "1").entrySet().iterator());
+    }
+
+    @DataProvider
+    private static Object[][] _appendMapToAppendable_FailWithNull_Data() {
+        Appendable mockAppendable = Mockito.mock(Appendable.class);
+        return new Object[][] {
+            { mockAppendable, (Map) null },
+            { (Appendable) null, new HashMap<String, String>()},
+            { (Appendable) null, (Map) null },
+        };
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+            dataProvider = "_appendMapToAppendable_FailWithNull_Data")
+    public <TAppendable extends Appendable>
+    void appendMapToAppendable_FailWithNull(TAppendable appendable, Map<?, ?> map)
+    throws IOException {
+        QuotingJoiner.on(",").withKeyValueSeparator("=").appendTo(appendable, map);
+    }
+
+    @DataProvider
+    private static Object[][] _appendIterableToAppendable_FailWithNull_Data() {
+        Appendable mockAppendable = Mockito.mock(Appendable.class);
+        Iterable mockIterable = Mockito.mock(Iterable.class);
+        return new Object[][] {
+            { mockAppendable, (Iterable) null },
+            { (Appendable) null, mockIterable },
+            { (Appendable) null, (Iterable) null },
+        };
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+            dataProvider = "_appendIterableToAppendable_FailWithNull_Data")
+    public <TAppendable extends Appendable>
+    void appendIterableToAppendable_FailWithNull(
+            TAppendable appendable, Iterable<? extends Map.Entry<?, ?>> partIter)
+    throws IOException {
+        QuotingJoiner.on(",").withKeyValueSeparator("=").appendTo(appendable, partIter);
+    }
+
+    @DataProvider
+    private static Object[][] _appendIteratorToAppendable_FailWithNull_Data() {
+        Appendable mockAppendable = Mockito.mock(Appendable.class);
+        Iterator mockIterator = Mockito.mock(Iterator.class);
+        return new Object[][] {
+            { mockAppendable, (Iterator) null },
+            { (Appendable) null, mockIterator },
+            { (Appendable) null, (Iterator) null },
+        };
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+            dataProvider = "_appendIteratorToAppendable_FailWithNull_Data")
+    public <TAppendable extends Appendable>
+    void appendIteratorToAppendable_FailWithNull(
+            TAppendable appendable, Iterator<? extends Map.Entry<?, ?>> partIter)
+    throws IOException {
+        QuotingJoiner.on(",").withKeyValueSeparator("=").appendTo(appendable, partIter);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void appendIteratorToAppendable_FailWithNullMapEntry()
+    throws IOException {
+        Appendable mockAppendable = Mockito.mock(Appendable.class);
+        Iterator<? extends Map.Entry<?, ?>> partIter =
+            Iterators.forArray(new Map.Entry<?, ?>[] { null });
+        QuotingJoiner.on(",").withKeyValueSeparator("=").appendTo(mockAppendable, partIter);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // QuotingMapJoiner.appendTo(StringBuilder, *) [fail only]
+    //
+
+    @DataProvider
+    private static Object[][] _appendMapToStringBuilder_FailWithNull_Data() {
+        return new Object[][] {
+            { new StringBuilder(), (Map) null },
+            { (StringBuilder) null, new HashMap<String, String>() },
+            { (StringBuilder) null, (Map) null },
+        };
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+            dataProvider = "_appendMapToStringBuilder_FailWithNull_Data")
+    public void appendMapToStringBuilder_FailWithNull(StringBuilder sb, Map<?, ?> map) {
+        QuotingJoiner.on(",").withKeyValueSeparator("=").appendTo(sb, map);
+    }
+
+    @DataProvider
+    private static Object[][] _appendIterableToStringBuilder_FailWithNull_Data() {
+        Iterable mockIterable = Mockito.mock(Iterable.class);
+        return new Object[][] {
+            { new StringBuilder(), (Iterable) null },
+            { (StringBuilder) null, mockIterable },
+            { (StringBuilder) null, (Iterable) null },
+        };
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+        dataProvider = "_appendIterableToStringBuilder_FailWithNull_Data")
+    public void appendIterableToStringBuilder_FailWithNull(
+            StringBuilder sb, Iterable<? extends Map.Entry<?, ?>> partIter) {
+        QuotingJoiner.on(",").withKeyValueSeparator("=").appendTo(sb, partIter);
+    }
+
+    @DataProvider
+    private static Object[][] _appendIteratorToStringBuilder_FailWithNull_Data() {
+        Iterator mockIterator = Mockito.mock(Iterator.class);
+        return new Object[][] {
+            { new StringBuilder(), (Iterator) null },
+            { (StringBuilder) null, mockIterator },
+            { (StringBuilder) null, (Iterator) null },
+        };
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+        dataProvider = "_appendIteratorToStringBuilder_FailWithNull_Data")
+    public void appendIteratorToStringBuilder_FailWithNull(
+            StringBuilder sb, Iterator<? extends Map.Entry<?, ?>> partIter) {
+        QuotingJoiner.on(",").withKeyValueSeparator("=").appendTo(sb, partIter);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // QuotingMapJoiner.join(*) [fail only]
+    //
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void joinMap_FailWithNull() {
+        QuotingJoiner.on(",").withKeyValueSeparator("=").join((Map<?, ?>) null);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void joinIterable_FailWithNull() {
+        QuotingJoiner.on(",").withKeyValueSeparator("=")
+            .join((Iterable<? extends Map.Entry<?, ?>>) null);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void joinIterator_FailWithNull() {
+        QuotingJoiner.on(",").withKeyValueSeparator("=")
+            .join((Iterator<? extends Map.Entry<?, ?>>) null);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // QuotingMapJoiner.withSeparator(String)
+    //
+
+    @Test
+    public void withSeparatorString_Pass() {
+        QuotingMapJoiner x = QuotingJoiner.on(",").withKeyValueSeparator("=");
+        x = x.withSeparator("x");
+        Assert.assertEquals(x.withSeparator(), "x");
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void withSeparator_FailWithNull() {
+        QuotingJoiner.on("x").withKeyValueSeparator("=").withSeparator((String) null);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // QuotingMapJoiner.withSeparator(char)
+    //
+
+    @Test
+    public void withSeparatorChar_Pass() {
+        QuotingMapJoiner x = QuotingJoiner.on(",").withKeyValueSeparator("=");
+        x = x.withSeparator('x');
+        Assert.assertEquals(x.withSeparator(), "x");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // QuotingMapJoiner.withQuotes(String, String)/withQuotes(String, char)/withQuotes(char, String)/withQuotes(char, char)
+    //
+
+    @DataProvider
+    private static Object[][] _withQuotes_Pass_Data() {
+        return new Object[][] {
+            { "xyz", "abc" },
+            { "", "abc" },
+            { "xyz", "" },
+            { "", "" },
+            { "   ", "   " },
+        };
+    }
+
+    @Test(dataProvider = "_withQuotes_Pass_Data")
+    public void withQuotes_Pass(String leftQuote, String rightQuote) {
+        // String, String
+        QuotingMapJoiner x =
+            QuotingJoiner.on(",").withKeyValueSeparator("=").withQuotes(leftQuote, rightQuote);
+        Assert.assertEquals(x.withLeftQuote(), leftQuote);
+        Assert.assertEquals(x.withRightQuote(), rightQuote);
+
+        // String, char
+        if (!rightQuote.isEmpty()) {
+            char rightQuoteChar = rightQuote.charAt(0);
+            String rightQuoteCharString = String.valueOf(rightQuoteChar);
+            x = QuotingJoiner.on(",").withKeyValueSeparator("=").withQuotes(leftQuote, rightQuoteChar);
+            Assert.assertEquals(x.withLeftQuote(), leftQuote);
+            Assert.assertEquals(x.withRightQuote(), rightQuoteCharString);
+        }
+
+        // char, String
+        if (!leftQuote.isEmpty()) {
+            char leftQuoteChar = leftQuote.charAt(0);
+            String leftQuoteCharString = String.valueOf(leftQuoteChar);
+            x = QuotingJoiner.on(",").withKeyValueSeparator("=").withQuotes(leftQuoteChar, rightQuote);
+            Assert.assertEquals(x.withLeftQuote(), leftQuoteCharString);
+            Assert.assertEquals(x.withRightQuote(), rightQuote);
+        }
+
+        // char, char
+        if (!leftQuote.isEmpty() && !rightQuote.isEmpty()) {
+            char leftQuoteChar = leftQuote.charAt(0);
+            String leftQuoteCharString = String.valueOf(leftQuoteChar);
+            char rightQuoteChar = rightQuote.charAt(0);
+            String rightQuoteCharString = String.valueOf(rightQuoteChar);
+            x = QuotingJoiner.on(",").withKeyValueSeparator("=").withQuotes(leftQuoteChar, rightQuoteChar);
+            Assert.assertEquals(x.withLeftQuote(), leftQuoteCharString);
+            Assert.assertEquals(x.withRightQuote(), rightQuoteCharString);
+        }
+    }
+
+    @DataProvider
+    private static Object[][] _withQuotes_FailWithNull_Data() {
+        return new Object[][] {
+            { (String) null, "xyz" },
+            { "xyz", (String) null },
+            { (String) null, (String) null },
+        };
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+        dataProvider = "_withQuotes_FailWithNull_Data")
+    public void withQuotes_FailWithNull(String leftQuote, String rightQuote) {
+        QuotingJoiner.on(",").withKeyValueSeparator("=").withQuotes(leftQuote, rightQuote);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // QuotingMapJoiner.useForNoElements(String)
+    //
+
+    @Test
+    public void useForNoElementsString_Pass() {
+        QuotingMapJoiner x = QuotingJoiner.on(",").withKeyValueSeparator("=");
+        x = x.useForNoElements("x");
+        Assert.assertEquals(x.useForNoElements(), "x");
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void useForNoElements_FailWithNull() {
+        QuotingJoiner.on("x").withKeyValueSeparator("=").useForNoElements((String) null);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // QuotingMapJoiner.useForNoElements(char)
+    //
+
+    @Test
+    public void useForNoElementsChar_Pass() {
+        QuotingMapJoiner x = QuotingJoiner.on(",").withKeyValueSeparator("=");
+        x = x.useForNoElements('x');
+        Assert.assertEquals(x.useForNoElements(), "x");
     }
 }
