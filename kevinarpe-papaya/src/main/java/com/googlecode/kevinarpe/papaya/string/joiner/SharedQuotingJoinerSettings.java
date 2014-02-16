@@ -37,10 +37,10 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  * QuotingJoinerSettings     QuotingMapJoinerSettings
  *    |                         |
  * interface                 interface
- * IQuotingJoiner            IQuotingMapJoiner
+ * QuotingJoiner             QuotingMapJoiner
  *    |                         |
  * class                     class
- * QuotingJoiner             QuotingMapJoiner
+ * QuotingJoinerImpl         QuotingMapJoinerImpl
  * }</pre>
  *
  * @param <TSelf>
@@ -59,29 +59,6 @@ public interface SharedQuotingJoinerSettings
         TQuotingMapJoinerSettings extends QuotingMapJoinerSettings<TQuotingMapJoinerSettings>
     >
 {
-
-    /**
-     * Default value for {@link #withLeftQuote()}: {@code ""} (empty string).
-     *
-     * @see #DEFAULT_RIGHT_QUOTE
-     * @see #withQuotes(String, String)
-     */
-    public static final String DEFAULT_LEFT_QUOTE = "";
-
-    /**
-     * Default value for {@link #withRightQuote()}: {@code ""} (empty string).
-     *
-     * @see #DEFAULT_LEFT_QUOTE
-     * @see #withQuotes(String, String)
-     */
-    public static final String DEFAULT_RIGHT_QUOTE = "";
-
-    /**
-     * Default value for {@link #useForNoElements()}: {@code ""} (empty string).
-     *
-     * @see #useForNoElements(String)
-     */
-    public static final String DEFAULT_NO_ELEMENTS_TEXT = "";
 
     /**
      * Constructs a new instance with new element separator.
@@ -139,8 +116,8 @@ public interface SharedQuotingJoinerSettings
      * @see #withQuotes(char, char)
      * @see #withLeftQuote()
      * @see #withRightQuote()
-     * @see #DEFAULT_LEFT_QUOTE
-     * @see #DEFAULT_RIGHT_QUOTE
+     * @see QuotingJoiners#DEFAULT_LEFT_QUOTE
+     * @see QuotingJoiners#DEFAULT_RIGHT_QUOTE
      */
     TSelf withQuotes(String leftQuote, String rightQuote);
 
@@ -166,7 +143,7 @@ public interface SharedQuotingJoinerSettings
      *
      * @see #withQuotes(String, String)
      * @see #withRightQuote()
-     * @see #DEFAULT_LEFT_QUOTE
+     * @see QuotingJoiners#DEFAULT_LEFT_QUOTE
      */
     String withLeftQuote();
 
@@ -177,7 +154,7 @@ public interface SharedQuotingJoinerSettings
      *
      * @see #withQuotes(String, String)
      * @see #withLeftQuote()
-     * @see #DEFAULT_RIGHT_QUOTE
+     * @see QuotingJoiners#DEFAULT_RIGHT_QUOTE
      */
     String withRightQuote();
 
@@ -196,7 +173,7 @@ public interface SharedQuotingJoinerSettings
      *
      * @see #useForNoElements(char)
      * @see #useForNoElements()
-     * @see #DEFAULT_NO_ELEMENTS_TEXT
+     * @see QuotingJoiners#DEFAULT_NO_ELEMENTS_TEXT
      */
     TSelf useForNoElements(String noElementsText);
 
@@ -211,20 +188,19 @@ public interface SharedQuotingJoinerSettings
      * @return no elements text
      *
      * @see #useForNoElements(String)
-     * @see #DEFAULT_NO_ELEMENTS_TEXT
+     * @see QuotingJoiners#DEFAULT_NO_ELEMENTS_TEXT
      */
     String useForNoElements();
 
     /**
-     * Constructs a new instace of {@link QuotingMapJoiner} to join map entries.  There is no public
-     * constructor for class {@code QuotingMapJoiner}, so use this method instead.
+     * Constructs a new instance of {@link QuotingMapJoiner} to join map entries.
      *
      * @param keyValueSeparator
      *        String to insert between keys and values during join.
      *        Must not be {@code null}, but can be {@code ""} (empty string).
      *        Example: {@code "="} (equals)
      *
-     * @return new instance of {@link QuotingMapJoiner}
+     * @return new instance of {@link QuotingMapJoinerImpl}
      *
      * @throws NullPointerException
      *         if {@code keyValueSeparator} is {@code null}

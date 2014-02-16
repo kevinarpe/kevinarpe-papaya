@@ -25,546 +25,157 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.google.common.base.Joiner;
 
 import java.io.IOException;
+import java.util.Formatter;
 import java.util.Iterator;
 import java.util.Map;
 
 /**
+ * Extension of Google Guava's {@link Joiner.MapJoiner}.  To construct a new instance, see
+ * {@link QuotingJoiners#withSeparator(String)} and {@link QuotingJoiners#withSeparator(char)}.
+ * <p>
+ * Differences to {@link Joiner.MapJoiner}:
+ * <ul>
+ *     <li>{@link #withKeyQuotes(String, String)}: Prefix and suffix for each joined key</li>
+ *     <li>{@link #withValueQuotes(String, String)}: Prefix and suffix for each joined value</li>
+ *     <li>Default text for {@code null} keys and values is {@code "null"}.  This matches the
+ *     behavior of {@link Formatter}. By default, class {@link Joiner} will throw a
+ *     {@link NullPointerException} when joining a {@code null} key or value, unless
+ *     {@link Joiner#useForNull(String)} is called before joining.  This is a source of many
+ *     surprising/annoying/accidental runtime exceptions.</li>
+ *     <li>{@link #useForNoElements(String)}: During a join, if no map entries are found, this text
+ *     is used.  When joining map entries for an exception or log message, {@code "(empty)"} is a
+ *     good value to indicate to (exception and log) readers that no map entries were found.</li>
+ *     <li>Uses interface {@link QuotingMapJoiner}, instead of a concrete class.  This follows
+ *     JavaEE design principles, and is helpful for mocking and testing.  Due to Java interface
+ *     limitations with generic methods, the methods {@code appendTo(Appendable, *)} are slightly
+ *     different from {@link Joiner.MapJoiner}.  The {@code Appendable} reference is not a generic
+ *     type (for input and output).</li>
+ *     <li>All settings may always be changed, e.g., key-value separator, null key text, etc.  Class
+ *     {@link Joiner.MapJoiner} does now allow these attributes to be set more than once.</li>
+ *     <li>Settings accessors, e.g., {@link #withKeyValueSeparator(String)}.</li>
+ *     <li>Default settings are available as {@code public static final} members, e.g.,
+ *     {@link QuotingJoiners#DEFAULT_KEY_NULL_TEXT}.</li>
+ * </ul>
+ * <p>
+ * See {@link SharedQuotingJoinerSettings} for an inheritance diagram.
+ * <p>
+ * Examples:
+ * <pre>{@code
+ * QuotingJoiners.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=")
+ *     .join(map) -> "[a=1], [b=2], [c=3], ..."
+ * QuotingJoiners.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=")
+ *     .join(mapWithNulls) -> "[a=1], [b=2], [null=3], [c=4], ..."
+ * QuotingJoiners.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=").skipNulls(true)
+ *     .join(mapWithNulls) -> "[a=1], [b=2], [c=3], ..."
+ * QuotingJoiners.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=").useForNoElements("(empty)")
+ *     .join(emptyMap) -> "(empty)"
+ * }</pre>
  * <p>
  * See {@link SharedQuotingJoinerSettings} for an inheritance diagram.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see QuotingJoiners
+ * @see QuotingMapJoinerSettings
+ * @see QuotingJoiner
  */
-public final class QuotingMapJoiner
-implements IQuotingMapJoiner<QuotingMapJoiner> {
-
-    public static final String DEFAULT_LEFT_KEY_QUOTE = "";
-    public static final String DEFAULT_RIGHT_KEY_QUOTE = "";
-    public static final String DEFAULT_LEFT_VALUE_QUOTE = "";
-    public static final String DEFAULT_RIGHT_VALUE_QUOTE = "";
-    public static final String DEFAULT_KEY_NULL_TEXT = "null";
-    public static final String DEFAULT_VALUE_NULL_TEXT = "null";
-
-    private final QuotingJoiner _quotingJoiner;
-    private final String _keyValueSeparator;
-    private final String _keyLeftQuote;
-    private final String _keyRightQuote;
-    private final String _valueLeftQuote;
-    private final String _valueRightQuote;
-    private final String _keyNullText;
-    private final String _valueNullText;
-
-    // package-private for QuotingJoiner to call
-    QuotingMapJoiner(QuotingJoiner quotingJoiner, String keyValueSeparator) {
-        this(
-            ObjectArgs.checkNotNull(quotingJoiner, "quotingJoiner"),
-            ObjectArgs.checkNotNull(keyValueSeparator, "keyValueSeparator"),
-            DEFAULT_LEFT_KEY_QUOTE,
-            DEFAULT_RIGHT_KEY_QUOTE,
-            DEFAULT_LEFT_VALUE_QUOTE,
-            DEFAULT_RIGHT_VALUE_QUOTE,
-            DEFAULT_KEY_NULL_TEXT,
-            DEFAULT_VALUE_NULL_TEXT);
-    }
-
-    private QuotingMapJoiner(
-            QuotingJoiner quotingJoiner,
-            String keyValueSeparator,
-            String keyLeftQuote,
-            String keyRightQuote,
-            String valueLeftQuote,
-            String valueRightQuote,
-            String keyNullText,
-            String valueNullText) {
-        _quotingJoiner = quotingJoiner;
-        _keyValueSeparator = keyValueSeparator;
-        _keyLeftQuote = keyLeftQuote;
-        _keyRightQuote = keyRightQuote;
-        _valueLeftQuote = valueLeftQuote;
-        _valueRightQuote = valueRightQuote;
-        _keyNullText = keyNullText;
-        _valueNullText = valueNullText;
-    }
-
-    @Override
-    public QuotingMapJoiner withKeyValueSeparator(String keyValueSeparator) {
-        ObjectArgs.checkNotNull(keyValueSeparator, "keyValueSeparator");
-
-        QuotingMapJoiner x =
-            new QuotingMapJoiner(
-                _quotingJoiner,
-                keyValueSeparator,
-                _keyLeftQuote,
-                _keyRightQuote,
-                _valueLeftQuote,
-                _valueRightQuote,
-                _keyNullText,
-                _valueNullText);
-        return x;
-    }
-
-    @Override
-    public QuotingMapJoiner withKeyValueSeparator(char keyValueSeparator) {
-        String keyValueSeparatorString = String.valueOf(keyValueSeparator);
-        QuotingMapJoiner x = withKeyValueSeparator(keyValueSeparatorString);
-        return x;
-    }
-
-    @Override
-    public String withKeyValueSeparator() {
-        return _keyValueSeparator;
-    }
-
-    @Override
-    public QuotingMapJoiner withKeyQuotes(String leftQuote, String rightQuote) {
-        ObjectArgs.checkNotNull(leftQuote, "leftQuote");
-        ObjectArgs.checkNotNull(rightQuote, "rightQuote");
-
-        QuotingMapJoiner x =
-            new QuotingMapJoiner(
-                _quotingJoiner,
-                _keyValueSeparator,
-                leftQuote,
-                rightQuote,
-                _valueLeftQuote,
-                _valueRightQuote,
-                _keyNullText,
-                _valueNullText);
-        return x;
-    }
-
-    @Override
-    public QuotingMapJoiner withKeyQuotes(String leftQuote, char rightQuote) {
-        String rightQuoteString = String.valueOf(rightQuote);
-        QuotingMapJoiner x = withKeyQuotes(leftQuote, rightQuoteString);
-        return x;
-    }
-
-    @Override
-    public QuotingMapJoiner withKeyQuotes(char leftQuote, String rightQuote) {
-        String leftQuoteString = String.valueOf(leftQuote);
-        QuotingMapJoiner x = withKeyQuotes(leftQuoteString, rightQuote);
-        return x;
-    }
-
-    @Override
-    public QuotingMapJoiner withKeyQuotes(char leftQuote, char rightQuote) {
-        String leftQuoteString = String.valueOf(leftQuote);
-        String rightQuoteString = String.valueOf(rightQuote);
-        QuotingMapJoiner x = withKeyQuotes(leftQuoteString, rightQuoteString);
-        return x;
-    }
-
-    @Override
-    public String withKeyLeftQuote() {
-        return _keyLeftQuote;
-    }
-
-    @Override
-    public String withKeyRightQuote() {
-        return _keyRightQuote;
-    }
-
-    @Override
-    public QuotingMapJoiner withValueQuotes(String leftQuote, String rightQuote) {
-        ObjectArgs.checkNotNull(leftQuote, "leftQuote");
-        ObjectArgs.checkNotNull(rightQuote, "rightQuote");
-
-        QuotingMapJoiner x =
-            new QuotingMapJoiner(
-                _quotingJoiner,
-                _keyValueSeparator,
-                _keyLeftQuote,
-                _keyRightQuote,
-                leftQuote,
-                rightQuote,
-                _keyNullText,
-                _valueNullText);
-        return x;
-    }
-
-    @Override
-    public QuotingMapJoiner withValueQuotes(String leftQuote, char rightQuote) {
-        String rightQuoteString = String.valueOf(rightQuote);
-        QuotingMapJoiner x = withValueQuotes(leftQuote, rightQuoteString);
-        return x;
-    }
-
-    @Override
-    public QuotingMapJoiner withValueQuotes(char leftQuote, String rightQuote) {
-        String leftQuoteString = String.valueOf(leftQuote);
-        QuotingMapJoiner x = withValueQuotes(leftQuoteString, rightQuote);
-        return x;
-    }
-
-    @Override
-    public QuotingMapJoiner withValueQuotes(char leftQuote, char rightQuote) {
-        String leftQuoteString = String.valueOf(leftQuote);
-        String rightQuoteString = String.valueOf(rightQuote);
-        QuotingMapJoiner x = withValueQuotes(leftQuoteString, rightQuoteString);
-        return x;
-    }
-
-    @Override
-    public String withValueLeftQuote() {
-        return _valueLeftQuote;
-    }
-
-    @Override
-    public String withValueRightQuote() {
-        return _valueRightQuote;
-    }
-
-    @Override
-    public QuotingMapJoiner useForNullKey(String keyNullText) {
-        ObjectArgs.checkNotNull(keyNullText, "keyNullText");
-
-        QuotingMapJoiner x =
-            new QuotingMapJoiner(
-                _quotingJoiner,
-                _keyValueSeparator,
-                _keyLeftQuote,
-                _keyRightQuote,
-                _valueLeftQuote,
-                _valueRightQuote,
-                keyNullText,
-                _valueNullText);
-        return x;
-    }
-
-    @Override
-    public QuotingMapJoiner useForNullKey(char keyNullText) {
-        String keyNullTextString = String.valueOf(keyNullText);
-
-        QuotingMapJoiner x = useForNullKey(keyNullTextString);
-        return x;
-    }
-
-    @Override
-    public String useForNullKey() {
-        return _keyNullText;
-    }
-
-    @Override
-    public QuotingMapJoiner useForNullValue(String valueNullText) {
-        ObjectArgs.checkNotNull(valueNullText, "valueNullText");
-
-        QuotingMapJoiner x =
-            new QuotingMapJoiner(
-                _quotingJoiner,
-                _keyValueSeparator,
-                _keyLeftQuote,
-                _keyRightQuote,
-                _valueLeftQuote,
-                _valueRightQuote,
-                _keyNullText,
-                valueNullText);
-        return x;
-    }
-
-    @Override
-    public QuotingMapJoiner useForNullValue(char valueNullText) {
-        String valueNullTextString = String.valueOf(valueNullText);
-
-        QuotingMapJoiner x = useForNullValue(valueNullTextString);
-        return x;
-    }
-
-    @Override
-    public String useForNullValue() {
-        return _valueNullText;
-    }
-
-    public <TAppendable extends Appendable>
-    TAppendable appendTo(TAppendable appendable, Map<?, ?> map)
-    throws IOException {
-        ObjectArgs.checkNotNull(map, "map");
-
-        Iterable<? extends Map.Entry<?, ?>> partIterable = map.entrySet();
-        appendTo(appendable, partIterable);
-        return appendable;
-    }
-
-    public <TAppendable extends Appendable>
-    TAppendable appendTo(TAppendable appendable, Iterable<? extends Map.Entry<?, ?>> partIterable)
-    throws IOException {
-        ObjectArgs.checkNotNull(partIterable, "partIterable");
-
-        Iterator<? extends Map.Entry<?, ?>> partIter = partIterable.iterator();
-        appendTo(appendable, partIter);
-        return appendable;
-    }
-
-    public <TAppendable extends Appendable>
-    TAppendable appendTo(TAppendable appendable, Iterator<? extends Map.Entry<?, ?>> partIter)
-    throws IOException {
-        ObjectArgs.checkNotNull(appendable, "appendable");
-        ObjectArgs.checkNotNull(partIter, "partIter");
-
-        if (partIter.hasNext()) {
-            _appendNext(appendable, partIter);
-            while (partIter.hasNext()) {
-                appendable.append(_quotingJoiner.withSeparator());
-                _appendNext(appendable, partIter);
-            }
-        }
-        else {
-            appendable.append(_quotingJoiner.useForNoElements());
-        }
-        return appendable;
-    }
-
-    private <TAppendable extends Appendable>
-    void _appendNext(TAppendable appendable, Iterator<? extends Map.Entry<?, ?>> partIter)
-    throws IOException {
-        Map.Entry<?, ?> entry = partIter.next();
-        if (null == entry) {
-            throw new NullPointerException("Map entry is null");
-        }
-        Object key = entry.getKey();
-        String quotedKeyString = _keyToString(key);
-        Object value = entry.getValue();
-        String quotedValueString = _valueToString(value);
-        String keyValuePair = quotedKeyString + _keyValueSeparator + quotedValueString;
-        String quotedKeyValuePair =
-            _quotingJoiner.withLeftQuote() + keyValuePair + _quotingJoiner.withRightQuote();
-        appendable.append(quotedKeyValuePair);
-    }
-
-    private String _keyToString(Object key) {
-        String x = (null == key) ? _checkKeyNullText() : key.toString();
-        x = _keyLeftQuote + x + _keyRightQuote;
-        return x;
-    }
-
-    private String _valueToString(Object value) {
-        String x = (null == value) ? _checkValueNullText() : value.toString();
-        x = _valueLeftQuote + x + _valueRightQuote;
-        return x;
-    }
-
-    private String _checkKeyNullText() {
-        _checkNullText("key", _keyNullText, "useForNullKey");
-        return _keyNullText;
-    }
-
-    private String _checkValueNullText() {
-        _checkNullText("value", _valueNullText, "useForNullValue");
-        return _valueNullText;
-    }
-
-    private void _checkNullText(String target, String nullText, String methodName) {
-        if (null == nullText) {
-            throw new NullPointerException(String.format(
-                "Failed to convert null %s to text.  See %s.%s(String)",
-                target, QuotingMapJoiner.class.getSimpleName(), methodName));
-        }
-    }
-
-    @Override
-    public StringBuilder appendTo(StringBuilder builder, Map<?, ?> map) {
-        ObjectArgs.checkNotNull(map, "map");
-
-        Iterable<? extends Map.Entry<?, ?>> partIterable = map.entrySet();
-        appendTo(builder, partIterable);
-        return builder;
-    }
-
-    @Override
-    public StringBuilder appendTo(
-        StringBuilder builder, Iterable<? extends Map.Entry<?, ?>> partIterable) {
-        ObjectArgs.checkNotNull(partIterable, "partIterable");
-
-        Iterator<? extends Map.Entry<?, ?>> partIter = partIterable.iterator();
-        appendTo(builder, partIter);
-        return builder;
-    }
-
-    @Override
-    public StringBuilder appendTo(
-        StringBuilder builder, Iterator<? extends Map.Entry<?, ?>> partIter) {
-        try {
-            appendTo((Appendable) builder, partIter);
-        }
-        catch (IOException e) {
-            throw new Error("Unexpected exception", e);
-        }
-        return builder;
-    }
-
-    @Override
-    public String join(Map<?, ?> map) {
-        ObjectArgs.checkNotNull(map, "map");
-
-        Iterable<? extends Map.Entry<?, ?>> partIterable = map.entrySet();
-        String x = join(partIterable);
-        return x;
-    }
-
-    @Override
-    public String join(Iterable<? extends Map.Entry<?, ?>> partIterable) {
-        ObjectArgs.checkNotNull(partIterable, "partIterable");
-
-        Iterator<? extends Map.Entry<?, ?>> partIter = partIterable.iterator();
-        String x = join(partIter);
-        return x;
-    }
-
-    @Override
-    public String join(Iterator<? extends Map.Entry<?, ?>> partIter) {
-        StringBuilder sb = new StringBuilder();
-        appendTo(sb, partIter);
-        String sbs = sb.toString();
-        return sbs;
-    }
-
-    @Override
-    public QuotingMapJoiner withSeparator(String separator) {
-        QuotingJoiner quotingJoiner = _quotingJoiner.withSeparator(separator);
-        QuotingMapJoiner x =
-            new QuotingMapJoiner(
-                quotingJoiner,
-                _keyValueSeparator,
-                _keyLeftQuote,
-                _keyRightQuote,
-                _valueLeftQuote,
-                _valueRightQuote,
-                _keyNullText,
-                _valueNullText);
-        return x;
-    }
-
-    @Override
-    public QuotingMapJoiner withSeparator(char separator) {
-        QuotingJoiner quotingJoiner = _quotingJoiner.withSeparator(separator);
-        QuotingMapJoiner x =
-            new QuotingMapJoiner(
-                quotingJoiner,
-                _keyValueSeparator,
-                _keyLeftQuote,
-                _keyRightQuote,
-                _valueLeftQuote,
-                _valueRightQuote,
-                _keyNullText,
-                _valueNullText);
-        return x;
-    }
-
-    @Override
-    public String withSeparator() {
-        return _quotingJoiner.withSeparator();
-    }
-
-    @Override
-    public QuotingMapJoiner withQuotes(String leftQuote, String rightQuote) {
-        QuotingJoiner quotingJoiner = _quotingJoiner.withQuotes(leftQuote, rightQuote);
-        QuotingMapJoiner x =
-            new QuotingMapJoiner(
-                quotingJoiner,
-                _keyValueSeparator,
-                _keyLeftQuote,
-                _keyRightQuote,
-                _valueLeftQuote,
-                _valueRightQuote,
-                _keyNullText,
-                _valueNullText);
-        return x;
-    }
-
-    @Override
-    public QuotingMapJoiner withQuotes(String leftQuote, char rightQuote) {
-        QuotingJoiner quotingJoiner = _quotingJoiner.withQuotes(leftQuote, rightQuote);
-        QuotingMapJoiner x =
-            new QuotingMapJoiner(
-                quotingJoiner,
-                _keyValueSeparator,
-                _keyLeftQuote,
-                _keyRightQuote,
-                _valueLeftQuote,
-                _valueRightQuote,
-                _keyNullText,
-                _valueNullText);
-        return x;
-    }
-
-    @Override
-    public QuotingMapJoiner withQuotes(char leftQuote, String rightQuote) {
-        QuotingJoiner quotingJoiner = _quotingJoiner.withQuotes(leftQuote, rightQuote);
-        QuotingMapJoiner x =
-            new QuotingMapJoiner(
-                quotingJoiner,
-                _keyValueSeparator,
-                _keyLeftQuote,
-                _keyRightQuote,
-                _valueLeftQuote,
-                _valueRightQuote,
-                _keyNullText,
-                _valueNullText);
-        return x;
-    }
-
-    @Override
-    public QuotingMapJoiner withQuotes(char leftQuote, char rightQuote) {
-        QuotingJoiner quotingJoiner = _quotingJoiner.withQuotes(leftQuote, rightQuote);
-        QuotingMapJoiner x =
-            new QuotingMapJoiner(
-                quotingJoiner,
-                _keyValueSeparator,
-                _keyLeftQuote,
-                _keyRightQuote,
-                _valueLeftQuote,
-                _valueRightQuote,
-                _keyNullText,
-                _valueNullText);
-        return x;
-    }
-
-    @Override
-    public String withLeftQuote() {
-        return _quotingJoiner.withLeftQuote();
-    }
-
-    @Override
-    public String withRightQuote() {
-        return _quotingJoiner.withRightQuote();
-    }
-
-    @Override
-    public QuotingMapJoiner useForNoElements(String noElementsText) {
-        QuotingJoiner quotingJoiner = _quotingJoiner.useForNoElements(noElementsText);
-        QuotingMapJoiner x =
-            new QuotingMapJoiner(
-                quotingJoiner,
-                _keyValueSeparator,
-                _keyLeftQuote,
-                _keyRightQuote,
-                _valueLeftQuote,
-                _valueRightQuote,
-                _keyNullText,
-                _valueNullText);
-        return x;
-    }
-
-    @Override
-    public QuotingMapJoiner useForNoElements(char noElementsText) {
-        QuotingJoiner quotingJoiner = _quotingJoiner.useForNoElements(noElementsText);
-        QuotingMapJoiner x =
-            new QuotingMapJoiner(
-                quotingJoiner,
-                _keyValueSeparator,
-                _keyLeftQuote,
-                _keyRightQuote,
-                _valueLeftQuote,
-                _valueRightQuote,
-                _keyNullText,
-                _valueNullText);
-        return x;
-    }
-
-    @Override
-    public String useForNoElements() {
-        return _quotingJoiner.useForNoElements();
-    }
+public interface QuotingMapJoiner
+extends QuotingMapJoinerSettings<QuotingMapJoiner> {
+
+    /**
+     * This is a convenience method to call {@link #appendTo(Appendable, Iterable)}.
+     *
+     * @throws NullPointerException
+     *         if {@code appendable} or {@code map} is {@code null}
+     */
+    Appendable appendTo(Appendable appendable, Map<?, ?> map)
+    throws IOException;
+
+    /**
+     * This is a convenience method to call {@link #appendTo(Appendable, Iterator)}.
+     *
+     * @throws NullPointerException
+     *         if {@code appendable} or {@code partIterable} is {@code null}
+     */
+    Appendable appendTo(Appendable appendable, Iterable<? extends Map.Entry<?, ?>> partIterable)
+    throws IOException;
+
+    /**
+     * Appends all remaining map entries from an {@link Iterator} to an instance of
+     * {@link Appendable}.
+     * <p>
+     * Due to Java interface limitations with generic methods, this method signature is slightly
+     * different to {@link Joiner#appendTo(Appendable, Iterator)}.  The {@code Appendable} reference
+     * is not a generic type (for input and output).
+     *
+     * @param appendable
+     *        where to append text.  Must not be {@code null}.
+     *
+     * @param partIter
+     *        stream of map entries to join.  Must not be {@code null}.
+     *        Must not contain {@code null} map entries
+     *
+     * @return argument {@code appendable} (for method chaining)
+     *
+     * @throws NullPointerException
+     *         if {@code appendable} or {@code partIter} (or its elements) are {@code null}
+     * @throws IOException
+     *         if {@code appendable} throws an {@link IOException}
+     *
+     * @see #appendTo(Appendable, Iterable)
+     * @see #appendTo(Appendable, Map)
+     * @see #appendTo(StringBuilder, Iterator)
+     * @see #join(Iterator)
+     */
+    Appendable appendTo(Appendable appendable, Iterator<? extends Map.Entry<?, ?>> partIter)
+    throws IOException;
+
+    /**
+     * This is a convenience method to call {@link #appendTo(StringBuilder, Iterable)}.
+     *
+     * @throws NullPointerException
+     *         if {@code builder} or {@code map} is {@code null}
+     */
+    StringBuilder appendTo(StringBuilder builder, Map<?, ?> map);
+
+    /**
+     * This is a convenience method to call {@link #appendTo(StringBuilder, Iterator)}.
+     *
+     * @throws NullPointerException
+     *         if {@code builder} or {@code partIterable} is {@code null}
+     */
+    StringBuilder appendTo(StringBuilder builder, Iterable<? extends Map.Entry<?, ?>> partIterable);
+
+    /**
+     * This is a convenience method to call {@link #appendTo(Appendable, Iterator)}.
+     *
+     * @see #appendTo(StringBuilder, Iterable)
+     * @see #appendTo(StringBuilder, Map)
+     */
+    StringBuilder appendTo(StringBuilder builder, Iterator<? extends Map.Entry<?, ?>> partIter);
+
+    /**
+     * This is a convenience method to call {@link #join(Iterable)}.
+     *
+     * @throws NullPointerException
+     *         if {@code map} is {@code null}
+     */
+    String join(Map<?, ?> map);
+
+    /**
+     * This is a convenience method to call {@link #join(Iterator)}.
+     *
+     * @throws NullPointerException
+     *         if {@code partIterable} is {@code null}
+     */
+    String join(Iterable<? extends Map.Entry<?, ?>> partIterable);
+
+    /**
+     * This is a convenience method to call {@link #appendTo(StringBuilder, Iterator)} with a new
+     * instance of {@link StringBuilder}.
+     */
+    String join(Iterator<? extends Map.Entry<?, ?>> partIter);
 }

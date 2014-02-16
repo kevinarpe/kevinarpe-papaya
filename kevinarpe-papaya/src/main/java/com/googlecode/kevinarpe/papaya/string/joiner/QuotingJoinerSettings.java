@@ -25,8 +25,6 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  * #L%
  */
 
-import com.google.common.base.Joiner;
-
 /**
  * Extends interface {@link SharedQuotingJoinerSettings} to add settings specific to
  * {@link QuotingJoiner}.
@@ -41,7 +39,7 @@ import com.google.common.base.Joiner;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see SharedQuotingJoinerSettings
- * @see IQuotingJoiner
+ * @see QuotingJoiner
  */
 public interface QuotingJoinerSettings
     <
@@ -49,24 +47,6 @@ public interface QuotingJoinerSettings
         TQuotingMapJoinerSettings extends QuotingMapJoinerSettings<TQuotingMapJoinerSettings>
     >
 extends SharedQuotingJoinerSettings<TSelf, TQuotingMapJoinerSettings> {
-
-    /**
-     * Default value for {@link #useForNull()}: {@code "null"}.
-     * <p>
-     * This default differs from class {@link Joiner}, which uses {@code null}, and throws a
-     * {@link NullPointerException} when joining a {@code null} value, unless
-     * {@link Joiner#useForNull(String)} is called before joining.
-     *
-     * @see #useForNull(String)
-     */
-    public static final String DEFAULT_NULL_TEXT = "null";
-
-    /**
-     * Default value for {@link #skipNulls()}: {@code false}.
-     *
-     * @see #skipNulls(boolean)
-     */
-    public static final boolean DEFAULT_SKIP_NULLS_FLAG = false;
 
     /**
      * Constructs a new instance with new text to use when joining {@code null} elements.
@@ -83,7 +63,7 @@ extends SharedQuotingJoinerSettings<TSelf, TQuotingMapJoinerSettings> {
      *
      * @see #useForNull(char)
      * @see #useForNull()
-     * @see #DEFAULT_NULL_TEXT
+     * @see QuotingJoiners#DEFAULT_NULL_TEXT
      */
     TSelf useForNull(String nullText);
 
@@ -97,11 +77,11 @@ extends SharedQuotingJoinerSettings<TSelf, TQuotingMapJoinerSettings> {
      * <p>
      * If {@link #skipNulls()} is {@code true}, this setting is irrelevant.
      *
-     * @return no elements text
+     * @return null element text
      *
      * @see #useForNull(String)
      * @see #skipNulls()
-     * @see #DEFAULT_NULL_TEXT
+     * @see QuotingJoiners#DEFAULT_NULL_TEXT
      */
     String useForNull();
 
@@ -109,14 +89,16 @@ extends SharedQuotingJoinerSettings<TSelf, TQuotingMapJoinerSettings> {
      * Constructs a new instance with new flag to skip {@code null} elements when joining.
      *
      * @param flag
-     *        if {@code true}, {@code null} elements are skipped when joining.
-     *        if {@code false}, {@code null} elements use text from {@link #useForNull()}.
+     * <ul>
+     *     <li>if {@code true}, {@code null} elements are skipped when joining</li>
+     *     <li>if {@code false}, {@code null} elements use text from {@link #useForNull()}</li>
+     * </ul>
      *
      * @return new instance with new skip nulls flag
      *
      * @see #useForNull()
      * @see #skipNulls()
-     * @see #DEFAULT_SKIP_NULLS_FLAG
+     * @see QuotingJoiners#DEFAULT_SKIP_NULLS_FLAG
      */
     TSelf skipNulls(boolean flag);
 
@@ -124,11 +106,13 @@ extends SharedQuotingJoinerSettings<TSelf, TQuotingMapJoinerSettings> {
      * Tests if {@code null} elements are skipped when joining.
      *
      * @return
-     *        if {@code true}, {@code null} elements are skipped when joining.
-     *        if {@code false}, {@code null} elements use text from {@link #useForNull()}.
+     * <ul>
+     *     <li>if {@code true}, {@code null} elements are skipped when joining</li>
+     *     <li>if {@code false}, {@code null} elements use text from {@link #useForNull()}</li>
+     * </ul>
      *
      * @see #skipNulls(boolean)
-     * @see #DEFAULT_SKIP_NULLS_FLAG
+     * @see QuotingJoiners#DEFAULT_SKIP_NULLS_FLAG
      */
     boolean skipNulls();
 }

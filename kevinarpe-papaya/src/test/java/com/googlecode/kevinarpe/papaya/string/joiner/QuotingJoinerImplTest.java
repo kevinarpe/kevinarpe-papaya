@@ -38,74 +38,37 @@ import java.util.List;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class QuotingJoinerTest {
+public class QuotingJoinerImplTest {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoiner.on(String)
-    //
-
-    @Test
-    public void onString_Pass() {
-        QuotingJoiner x = QuotingJoiner.on(",");
-        Assert.assertNotNull(x);
-        Assert.assertEquals(x.withSeparator(), ",");
-        _assertDefaults(x);
-    }
-
-    private void _assertDefaults(QuotingJoiner x) {
-        Assert.assertEquals(x.withLeftQuote(), QuotingJoiner.DEFAULT_LEFT_QUOTE);
-        Assert.assertEquals(x.withRightQuote(), QuotingJoiner.DEFAULT_RIGHT_QUOTE);
-        Assert.assertEquals(x.useForNull(), QuotingJoiner.DEFAULT_NULL_TEXT);
-        Assert.assertEquals(x.useForNoElements(), QuotingJoiner.DEFAULT_NO_ELEMENTS_TEXT);
-        Assert.assertEquals(x.skipNulls(), QuotingJoiner.DEFAULT_SKIP_NULLS_FLAG);
-    }
-
-    @Test(expectedExceptions = NullPointerException.class)
-    public void onString_FaillWithNull() {
-        QuotingJoiner.on((String) null);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoiner.on(char)
-    //
-
-    @Test
-    public void onChar_Pass() {
-        QuotingJoiner x = QuotingJoiner.on(',');
-        Assert.assertNotNull(x);
-        Assert.assertEquals(x.withSeparator(), ",");
-        _assertDefaults(x);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoiner.withSeparator(String)
+    // QuotingJoinerImpl.withSeparator(String)
     //
 
     @Test
     public void withSeparatorString_Pass() {
-        QuotingJoiner x = QuotingJoiner.on(",");
+        QuotingJoiner x = QuotingJoiners.withSeparator(",");
         x = x.withSeparator("x");
         Assert.assertEquals(x.withSeparator(), "x");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void withSeparator_FailWithNull() {
-        QuotingJoiner.on("x").withSeparator((String) null);
+        QuotingJoiners.withSeparator("x").withSeparator((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoiner.withSeparator(char)
+    // QuotingJoinerImpl.withSeparator(char)
     //
 
     @Test
     public void withSeparatorChar_Pass() {
-        QuotingJoiner x = QuotingJoiner.on(',');
+        QuotingJoiner x = QuotingJoiners.withSeparator(',');
         x = x.withSeparator('x');
         Assert.assertEquals(x.withSeparator(), "x");
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoiner.withQuotes(String, String)/withQuotes(String, char)/withQuotes(char, String)/withQuotes(char, char)
+    // QuotingJoinerImpl.withQuotes(String, String)/withQuotes(String, char)/withQuotes(char, String)/withQuotes(char, char)
     //
 
     @DataProvider
@@ -122,7 +85,7 @@ public class QuotingJoinerTest {
     @Test(dataProvider = "_withQuotes_Pass_Data")
     public void withQuotes_Pass(String leftQuote, String rightQuote) {
         // String, String
-        QuotingJoiner x = QuotingJoiner.on(",").withQuotes(leftQuote, rightQuote);
+        QuotingJoiner x = QuotingJoiners.withSeparator(",").withQuotes(leftQuote, rightQuote);
         Assert.assertEquals(x.withLeftQuote(), leftQuote);
         Assert.assertEquals(x.withRightQuote(), rightQuote);
 
@@ -130,7 +93,7 @@ public class QuotingJoinerTest {
         if (!rightQuote.isEmpty()) {
             char rightQuoteChar = rightQuote.charAt(0);
             String rightQuoteCharString = String.valueOf(rightQuoteChar);
-            x = QuotingJoiner.on(",").withQuotes(leftQuote, rightQuoteChar);
+            x = QuotingJoiners.withSeparator(",").withQuotes(leftQuote, rightQuoteChar);
             Assert.assertEquals(x.withLeftQuote(), leftQuote);
             Assert.assertEquals(x.withRightQuote(), rightQuoteCharString);
         }
@@ -139,7 +102,7 @@ public class QuotingJoinerTest {
         if (!leftQuote.isEmpty()) {
             char leftQuoteChar = leftQuote.charAt(0);
             String leftQuoteCharString = String.valueOf(leftQuoteChar);
-            x = QuotingJoiner.on(",").withQuotes(leftQuoteChar, rightQuote);
+            x = QuotingJoiners.withSeparator(",").withQuotes(leftQuoteChar, rightQuote);
             Assert.assertEquals(x.withLeftQuote(), leftQuoteCharString);
             Assert.assertEquals(x.withRightQuote(), rightQuote);
         }
@@ -150,7 +113,7 @@ public class QuotingJoinerTest {
             String leftQuoteCharString = String.valueOf(leftQuoteChar);
             char rightQuoteChar = rightQuote.charAt(0);
             String rightQuoteCharString = String.valueOf(rightQuoteChar);
-            x = QuotingJoiner.on(",").withQuotes(leftQuoteChar, rightQuoteChar);
+            x = QuotingJoiners.withSeparator(",").withQuotes(leftQuoteChar, rightQuoteChar);
             Assert.assertEquals(x.withLeftQuote(), leftQuoteCharString);
             Assert.assertEquals(x.withRightQuote(), rightQuoteCharString);
         }
@@ -168,70 +131,70 @@ public class QuotingJoinerTest {
     @Test(expectedExceptions = NullPointerException.class,
             dataProvider = "_withQuotes_FailWithNull_Data")
     public void withQuotes_FailWithNull(String leftQuote, String rightQuote) {
-        QuotingJoiner.on(",").withQuotes(leftQuote, rightQuote);
+        QuotingJoiners.withSeparator(",").withQuotes(leftQuote, rightQuote);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoiner.useForNoElements(String)
+    // QuotingJoinerImpl.useForNoElements(String)
     //
 
     @Test
     public void useForNoElementsString_Pass() {
-        QuotingJoiner x = QuotingJoiner.on(",");
+        QuotingJoiner x = QuotingJoiners.withSeparator(",");
         x = x.useForNoElements("x");
         Assert.assertEquals(x.useForNoElements(), "x");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void useForNoElements_FailWithNull() {
-        QuotingJoiner.on("x").useForNoElements((String) null);
+        QuotingJoiners.withSeparator("x").useForNoElements((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoiner.useForNoElements(char)
+    // QuotingJoinerImpl.useForNoElements(char)
     //
 
     @Test
     public void useForNoElementsChar_Pass() {
-        QuotingJoiner x = QuotingJoiner.on(',');
+        QuotingJoiner x = QuotingJoiners.withSeparator(',');
         x = x.useForNoElements('x');
         Assert.assertEquals(x.useForNoElements(), "x");
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoiner.useForNull(String)
+    // QuotingJoinerImpl.useForNull(String)
     //
 
     @Test
     public void useForNullString_Pass() {
-        QuotingJoiner x = QuotingJoiner.on(",");
+        QuotingJoiner x = QuotingJoiners.withSeparator(",");
         x = x.useForNull("x");
         Assert.assertEquals(x.useForNull(), "x");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void useForNull_FailWithNull() {
-        QuotingJoiner.on("x").useForNull((String) null);
+        QuotingJoiners.withSeparator("x").useForNull((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoiner.useForNull(char)
+    // QuotingJoinerImpl.useForNull(char)
     //
 
     @Test
     public void useForNullChar_Pass() {
-        QuotingJoiner x = QuotingJoiner.on(',');
+        QuotingJoiner x = QuotingJoiners.withSeparator(',');
         x = x.useForNull('x');
         Assert.assertEquals(x.useForNull(), "x");
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoiner.skipNulls(boolean)
+    // QuotingJoinerImpl.skipNulls(boolean)
     //
 
     @Test
     public void skipNulls_Pass() {
-        QuotingJoiner x = QuotingJoiner.on(',');
+        QuotingJoiner x = QuotingJoiners.withSeparator(',');
         x = x.skipNulls(true);
         Assert.assertEquals(x.skipNulls(), true);
         x = x.skipNulls(false);
@@ -239,8 +202,8 @@ public class QuotingJoinerTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoiner.appendTo(Appendable, *)
-    // QuotingJoiner.appendTo(StringBuilder, *)/join(*) [pass only]
+    // QuotingJoinerImpl.appendTo(Appendable, *)
+    // QuotingJoinerImpl.appendTo(StringBuilder, *)/join(*) [pass only]
     //
 
     @SuppressWarnings("unchecked")
@@ -325,7 +288,7 @@ public class QuotingJoinerTest {
         Assert.assertTrue(
             (null == optLeftQuote && null == optRightQuote)
             || (null != optLeftQuote && null != optRightQuote));
-        QuotingJoiner joiner = QuotingJoiner.on(separator);
+        QuotingJoiner joiner = QuotingJoiners.withSeparator(separator);
         if (null != optLeftQuote && null != optRightQuote) {
             joiner = joiner.withQuotes(optLeftQuote, optRightQuote);
         }
@@ -367,7 +330,7 @@ public class QuotingJoinerTest {
     }
 
     private void _core_appendTo2_Pass(
-            QuotingJoiner joiner, List<String> partList, String expectedResult)
+        QuotingJoiner joiner, List<String> partList, String expectedResult)
     throws IOException {
         StringBuilder sb = joiner.appendTo(new StringBuilder(), partList.toArray());
         Assert.assertEquals(sb.toString(), expectedResult);
@@ -419,28 +382,28 @@ public class QuotingJoinerTest {
     public void appendToAppendable1_FailWhenAppendableThrowsIOException()
     throws IOException {
         Appendable mockAppendable = _newMockAppendableThrowsIOException();
-        QuotingJoiner.on(",").appendTo(mockAppendable, "abc", "def");
+        QuotingJoiners.withSeparator(",").appendTo(mockAppendable, "abc", "def");
     }
 
     @Test(expectedExceptions = IOException.class)
     public void appendToAppendable2_FailWhenAppendableThrowsIOException()
     throws IOException {
         Appendable mockAppendable = _newMockAppendableThrowsIOException();
-        QuotingJoiner.on(",").appendTo(mockAppendable, Arrays.asList("abc").toArray());
+        QuotingJoiners.withSeparator(",").appendTo(mockAppendable, Arrays.asList("abc").toArray());
     }
 
     @Test(expectedExceptions = IOException.class)
     public void appendToAppendable3_FailWhenAppendableThrowsIOException()
     throws IOException {
         Appendable mockAppendable = _newMockAppendableThrowsIOException();
-        QuotingJoiner.on(",").appendTo(mockAppendable, Arrays.asList("abc"));
+        QuotingJoiners.withSeparator(",").appendTo(mockAppendable, Arrays.asList("abc"));
     }
 
     @Test(expectedExceptions = IOException.class)
     public void appendToAppendable4_FailWhenAppendableThrowsIOException()
     throws IOException {
         Appendable mockAppendable = _newMockAppendableThrowsIOException();
-        QuotingJoiner.on(",").appendTo(mockAppendable, Arrays.asList("abc").iterator());
+        QuotingJoiners.withSeparator(",").appendTo(mockAppendable, Arrays.asList("abc").iterator());
     }
 
     @DataProvider
@@ -458,7 +421,7 @@ public class QuotingJoinerTest {
     public <TAppendable extends Appendable>
     void appendToAppendable1_FailWithNull(TAppendable appendable, Object[] partArr)
     throws IOException {
-        QuotingJoiner.on(",").appendTo(appendable, "abc", "def", partArr);
+        QuotingJoiners.withSeparator(",").appendTo(appendable, "abc", "def", partArr);
     }
 
     @Test(expectedExceptions = NullPointerException.class,
@@ -466,7 +429,7 @@ public class QuotingJoinerTest {
     public <TAppendable extends Appendable>
     void appendToAppendable2_FailWithNull(TAppendable appendable, Object[] partArr)
     throws IOException {
-        QuotingJoiner.on(",").appendTo(appendable, partArr);
+        QuotingJoiners.withSeparator(",").appendTo(appendable, partArr);
     }
 
     @DataProvider
@@ -485,7 +448,7 @@ public class QuotingJoinerTest {
     public <TAppendable extends Appendable>
     void appendToAppendable3_FailWithNull(TAppendable appendable, Iterable<?> partIter)
     throws IOException {
-        QuotingJoiner.on(",").appendTo(appendable, partIter);
+        QuotingJoiners.withSeparator(",").appendTo(appendable, partIter);
     }
 
     @DataProvider
@@ -504,11 +467,11 @@ public class QuotingJoinerTest {
     public <TAppendable extends Appendable>
     void appendToAppendable4_FailWithNull(TAppendable appendable, Iterator<?> partIter)
     throws IOException {
-        QuotingJoiner.on(",").appendTo(appendable, partIter);
+        QuotingJoiners.withSeparator(",").appendTo(appendable, partIter);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoiner.appendTo(StringBuilder, *) [fail only]
+    // QuotingJoinerImpl.appendTo(StringBuilder, *) [fail only]
     //
 
     @DataProvider
@@ -524,14 +487,14 @@ public class QuotingJoinerTest {
             dataProvider = "_appendArray12ToStringBuilder_FailWithNull_Data")
     public void appendArray1ToStringBuilder_FailWithNull(StringBuilder sb, Object[] partArr)
     throws IOException {
-        QuotingJoiner.on(",").appendTo(sb, "abc", "def", partArr);
+        QuotingJoiners.withSeparator(",").appendTo(sb, "abc", "def", partArr);
     }
 
     @Test(expectedExceptions = NullPointerException.class,
             dataProvider = "_appendArray12ToStringBuilder_FailWithNull_Data")
     public void appendArray2ToStringBuilder_FailWithNull(StringBuilder sb, Object[] partArr)
     throws IOException {
-        QuotingJoiner.on(",").appendTo(sb, partArr);
+        QuotingJoiners.withSeparator(",").appendTo(sb, partArr);
     }
 
     @DataProvider
@@ -548,7 +511,7 @@ public class QuotingJoinerTest {
         dataProvider = "_appendIterableToStringBuilder_FailWithNull_Data")
     public void appendIterableToStringBuilder_FailWithNull(StringBuilder sb, Iterable<?> partIter)
     throws IOException {
-        QuotingJoiner.on(",").appendTo(sb, partIter);
+        QuotingJoiners.withSeparator(",").appendTo(sb, partIter);
     }
 
     @DataProvider
@@ -565,67 +528,67 @@ public class QuotingJoinerTest {
         dataProvider = "_appendIteratorToStringBuilder_FailWithNull_Data")
     public void appendIteratorToStringBuilder_FailWithNull(StringBuilder sb, Iterator<?> partIter)
     throws IOException {
-        QuotingJoiner.on(",").appendTo(sb, partIter);
+        QuotingJoiners.withSeparator(",").appendTo(sb, partIter);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoiner.join(*) [fail only]
+    // QuotingJoinerImpl.join(*) [fail only]
     //
 
     @Test(expectedExceptions = NullPointerException.class)
     public void join1_FailWithNull()
     throws IOException {
-        QuotingJoiner.on(",").join("abc", "def", (Object[]) null);
+        QuotingJoiners.withSeparator(",").join("abc", "def", (Object[]) null);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void join2_FailWithNull()
     throws IOException {
-        QuotingJoiner.on(",").join((Object[]) null);
+        QuotingJoiners.withSeparator(",").join((Object[]) null);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void join3_FailWithNull()
     throws IOException {
-        QuotingJoiner.on(",").join((Iterable<?>) null);
+        QuotingJoiners.withSeparator(",").join((Iterable<?>) null);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void join4_FailWithNull()
     throws IOException {
-        QuotingJoiner.on(",").join((Iterator<?>) null);
+        QuotingJoiners.withSeparator(",").join((Iterator<?>) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoiner.withKeyValueSeparator(String)
+    // QuotingJoinerImpl.withKeyValueSeparator(String)
     //
 
     @Test
     public void withKeyValueSeparatorString_Pass() {
-        QuotingJoiner x = QuotingJoiner.on(",");
+        QuotingJoiner x = QuotingJoiners.withSeparator(",");
         QuotingMapJoiner y = x.withKeyValueSeparator("x");
         Assert.assertEquals(y.withKeyValueSeparator(), "x");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void withKeyValueSeparator_FailWithNull() {
-        QuotingJoiner.on("x").withKeyValueSeparator((String) null);
+        QuotingJoiners.withSeparator("x").withKeyValueSeparator((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoiner.withKeyValueSeparator(char)
+    // QuotingJoinerImpl.withKeyValueSeparator(char)
     //
 
     @Test
     public void withKeyValueSeparatorChar_Pass() {
-        QuotingJoiner x = QuotingJoiner.on(",");
+        QuotingJoiner x = QuotingJoiners.withSeparator(",");
         QuotingMapJoiner y = x.withKeyValueSeparator('x');
         Assert.assertEquals(y.withKeyValueSeparator(), "x");
-        Assert.assertEquals(y.withKeyLeftQuote(), QuotingMapJoiner.DEFAULT_LEFT_KEY_QUOTE);
-        Assert.assertEquals(y.withKeyRightQuote(), QuotingMapJoiner.DEFAULT_RIGHT_KEY_QUOTE);
-        Assert.assertEquals(y.withValueLeftQuote(), QuotingMapJoiner.DEFAULT_LEFT_VALUE_QUOTE);
-        Assert.assertEquals(y.withValueRightQuote(), QuotingMapJoiner.DEFAULT_RIGHT_VALUE_QUOTE);
-        Assert.assertEquals(y.useForNullKey(), QuotingMapJoiner.DEFAULT_KEY_NULL_TEXT);
-        Assert.assertEquals(y.useForNullValue(), QuotingMapJoiner.DEFAULT_VALUE_NULL_TEXT);
+        Assert.assertEquals(y.withKeyLeftQuote(), QuotingJoiners.DEFAULT_KEY_LEFT_QUOTE);
+        Assert.assertEquals(y.withKeyRightQuote(), QuotingJoiners.DEFAULT_KEY_RIGHT_QUOTE);
+        Assert.assertEquals(y.withValueLeftQuote(), QuotingJoiners.DEFAULT_VALUE_LEFT_QUOTE);
+        Assert.assertEquals(y.withValueRightQuote(), QuotingJoiners.DEFAULT_VALUE_RIGHT_QUOTE);
+        Assert.assertEquals(y.useForNullKey(), QuotingJoiners.DEFAULT_KEY_NULL_TEXT);
+        Assert.assertEquals(y.useForNullValue(), QuotingJoiners.DEFAULT_VALUE_NULL_TEXT);
     }
 }

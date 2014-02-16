@@ -64,7 +64,7 @@ extends FixedSizeForwardingList<TValue> {
 
     /**
      * Constructs a new instance with a <i>copy</i> of the input array.  This will create an
-     * immutable collection based on the input array.
+     * immutable collection based upon the input array.
      *
      * @param arr
      *        array of values to be copied.  Must not be {@code null}, but can by empty or contain

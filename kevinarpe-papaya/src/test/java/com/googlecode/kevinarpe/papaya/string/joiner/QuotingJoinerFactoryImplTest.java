@@ -25,33 +25,17 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  * #L%
  */
 
-import java.util.Iterator;
-import java.util.Map;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+public class QuotingJoinerFactoryImplTest {
 
-/**
- * <p>
- * See {@link SharedQuotingJoinerSettings} for an inheritance diagram.
- *
- * @param <TSelf>
- */
-public interface IQuotingMapJoiner<TSelf extends IQuotingMapJoiner<TSelf>>
-extends QuotingMapJoinerSettings<TSelf> {
-
-    StringBuilder appendTo(StringBuilder builder, Map<?, ?> map);
-
-    StringBuilder appendTo(
-        StringBuilder builder, Iterable<? extends Map.Entry<?, ?>> partIterable);
-
-    StringBuilder appendTo(
-        StringBuilder builder, Iterator<? extends Map.Entry<?, ?>> partIter);
-
-    String join(Map<?, ?> map);
-
-    String join(Iterable<? extends Map.Entry<?, ?>> partIterable);
-
-    String join(Iterator<? extends Map.Entry<?, ?>> partIter);
+    @Test
+    public void newInstance_Pass() {
+        QuotingJoiner x = new QuotingJoinerFactoryImpl(",").newInstance();
+        Assert.assertEquals(x.withSeparator(), ",");
+    }
 }
