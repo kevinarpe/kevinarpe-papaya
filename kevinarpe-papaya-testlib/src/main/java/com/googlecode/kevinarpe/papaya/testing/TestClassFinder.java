@@ -37,10 +37,8 @@ import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
 import com.googlecode.kevinarpe.papaya.filesystem.factory.TraversePathIterableFactory;
 import com.googlecode.kevinarpe.papaya.filesystem.factory.TraversePathIterableFactoryImpl;
 import com.googlecode.kevinarpe.papaya.logging.SLF4JLevelLogger;
-import com.googlecode.kevinarpe.papaya.logging.SLF4JLevelLoggerImpl;
+import com.googlecode.kevinarpe.papaya.logging.SLF4JLevelLoggers;
 import com.googlecode.kevinarpe.papaya.logging.SLF4JLogLevel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.lang.reflect.Modifier;
@@ -66,11 +64,12 @@ public final class TestClassFinder {
     private final File _rootDirPath;
     private final List<Pattern> _includeByAbsolutePathPatternList;
     private final List<Pattern> _excludeByAbsolutePathPatternList;
+    // TODO: Necessary?
     private final boolean _excludeAbstractClassesFlag;
-    private final SLF4JLogLevel _logLevel;
+    private final SLF4JLevelLogger _levelLogger;
+
     private final TraversePathIterableFactory _traversePathIterableFactory;
     private final SourceFileToClassHelper _sourceFileToClassHelper;
-    private final SLF4JLevelLogger _levelLogger;
 
     public TestClassFinder() {
         this(
@@ -87,28 +86,14 @@ public final class TestClassFinder {
             DEFAULT_INCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
             DEFAULT_EXCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
             DEFAULT_EXCLUDE_ABSTRACT_CLASSES_FLAG,
-            DEFAULT_LOG_LEVEL,
+            _newSLF4JLevelLogger(DEFAULT_LOG_LEVEL),
             ObjectArgs.checkNotNull(traversePathIterableFactory, "traversePathIterableFactory"),
-            ObjectArgs.checkNotNull(sourceFileToClassHelper, "sourceFileToClassHelper"),
-            _newSLF4JLevelLogger(DEFAULT_LOG_LEVEL));
+            ObjectArgs.checkNotNull(sourceFileToClassHelper, "sourceFileToClassHelper"));
     }
 
     private static SLF4JLevelLogger _newSLF4JLevelLogger(SLF4JLogLevel logLevel) {
-        Logger logger = _getLogger(logLevel);
-        // TODO: Tough to test.  Use a hidden factory?
-        SLF4JLevelLogger levelLogger = new SLF4JLevelLoggerImpl(logger, logLevel);
-        return levelLogger;
-    }
-
-    private static Logger _getLogger(SLF4JLogLevel logLevel) {
-        ObjectArgs.checkNotNull(logLevel, "logLevel");
-
-        if (logLevel == SLF4JLogLevel.OFF) {
-            return null;
-        }
-        // TODO: Tough to test.  Use a hidden factory?
-        Logger logger = LoggerFactory.getLogger(TestClassFinder.class);
-        return logger;
+        SLF4JLevelLogger x= SLF4JLevelLoggers.newInstance(logLevel, TestClassFinder.class);
+        return x;
     }
 
     private TestClassFinder(
@@ -116,18 +101,16 @@ public final class TestClassFinder {
             List<Pattern> includeByFilePathPatternList,
             List<Pattern> excludeByFilePathPatternList,
             boolean excludeAbstractClassesFlag,
-            SLF4JLogLevel logLevel,
+            SLF4JLevelLogger levelLogger,
             TraversePathIterableFactory traversePathIterableFactory,
-            SourceFileToClassHelper sourceFileToClassHelper,
-            SLF4JLevelLogger levelLogger) {
+            SourceFileToClassHelper sourceFileToClassHelper) {
         _rootDirPath = rootDirPath;
         _includeByAbsolutePathPatternList = includeByFilePathPatternList;
         _excludeByAbsolutePathPatternList = excludeByFilePathPatternList;
         _excludeAbstractClassesFlag = excludeAbstractClassesFlag;
-        _logLevel = logLevel;
+        _levelLogger = levelLogger;
         _traversePathIterableFactory = traversePathIterableFactory;
         _sourceFileToClassHelper = sourceFileToClassHelper;
-        this._levelLogger = levelLogger;
     }
 
     public File withRootDirPath() {
@@ -142,10 +125,9 @@ public final class TestClassFinder {
             _includeByAbsolutePathPatternList,
             _excludeByAbsolutePathPatternList,
             _excludeAbstractClassesFlag,
-            _logLevel,
+            _levelLogger,
             _traversePathIterableFactory,
-            _sourceFileToClassHelper,
-            _levelLogger);
+            _sourceFileToClassHelper);
         return x;
     }
 
@@ -167,10 +149,9 @@ public final class TestClassFinder {
             ImmutableList.copyOf(filePathPatternList),
             _excludeByAbsolutePathPatternList,
             _excludeAbstractClassesFlag,
-            _logLevel,
+            _levelLogger,
             _traversePathIterableFactory,
-            _sourceFileToClassHelper,
-            _levelLogger);
+            _sourceFileToClassHelper);
         return x;
     }
 
@@ -192,10 +173,9 @@ public final class TestClassFinder {
             _includeByAbsolutePathPatternList,
             ImmutableList.copyOf(filePathPatternList),
             _excludeAbstractClassesFlag,
-            _logLevel,
+            _levelLogger,
             _traversePathIterableFactory,
-            _sourceFileToClassHelper,
-            _levelLogger);
+            _sourceFileToClassHelper);
         return x;
     }
 
@@ -209,10 +189,9 @@ public final class TestClassFinder {
             _includeByAbsolutePathPatternList,
             _excludeByAbsolutePathPatternList,
             flag,
-            _logLevel,
+            _levelLogger,
             _traversePathIterableFactory,
-            _sourceFileToClassHelper,
-            _levelLogger);
+            _sourceFileToClassHelper);
         return x;
     }
 
@@ -229,20 +208,23 @@ public final class TestClassFinder {
     }
 
     public TestClassFinder withLogLevel(SLF4JLogLevel logLevel) {
+        ObjectArgs.checkNotNull(logLevel, "logLevel");
+
+        SLF4JLevelLogger levelLogger = _newSLF4JLevelLogger(logLevel);
         TestClassFinder x = new TestClassFinder(
             _rootDirPath,
             _includeByAbsolutePathPatternList,
             _excludeByAbsolutePathPatternList,
             _excludeAbstractClassesFlag,
-            ObjectArgs.checkNotNull(logLevel, "logLevel"),
+            levelLogger,
             _traversePathIterableFactory,
-            _sourceFileToClassHelper,
-            _newSLF4JLevelLogger(logLevel));
+            _sourceFileToClassHelper);
         return x;
     }
 
     public SLF4JLogLevel withLogLevel() {
-        return _logLevel;
+        SLF4JLogLevel x = _levelLogger.getLogLevel();
+        return x;
     }
 
     /**
@@ -282,21 +264,7 @@ public final class TestClassFinder {
     private TraversePathIterable _newTraversePathIterable() {
         TraversePathIterable pathIter = _traversePathIterableFactory.newInstance(
             _rootDirPath, TraversePathDepthPolicy.DEPTH_LAST);
-        // TODO: Replace with hidden factory
-        pathIter = pathIter.withOptionalIteratePathFilter(new PathFilter() {
-            @Override
-            public boolean accept(File path, int depth) {
-                if (!path.isFile()) {
-                    return false;
-                }
-                String absPathname = path.getAbsolutePath();
-                boolean include = _isMatch(absPathname, _includeByAbsolutePathPatternList);
-                boolean exclude = _isMatch(absPathname, _excludeByAbsolutePathPatternList);
-                _logIsMatch(_levelLogger, absPathname, include, exclude);
-                boolean result = include && !exclude;
-                return result;
-            }
-        });
+        pathIter = pathIter.withOptionalIteratePathFilter(new TestClassFinderPathFilter());
         return pathIter;
     }
 
@@ -307,6 +275,23 @@ public final class TestClassFinder {
         else {
             _levelLogger.log("Root dir path: '{}' -> '{}'",
                 _rootDirPath.getPath(), _rootDirPath.getAbsolutePath());
+        }
+    }
+
+    final class TestClassFinderPathFilter
+    implements PathFilter {
+
+        @Override
+        public boolean accept(File path, int depth) {
+            if (!path.isFile()) {
+                return false;
+            }
+            String absPathname = path.getAbsolutePath();
+            boolean include = _isMatch(absPathname, /*_parent.*/_includeByAbsolutePathPatternList);
+            boolean exclude = _isMatch(absPathname, /*_parent.*/_excludeByAbsolutePathPatternList);
+            _logIsMatch(/*_parent.*/_levelLogger, absPathname, include, exclude);
+            boolean result = include && !exclude;
+            return result;
         }
     }
 
@@ -326,7 +311,7 @@ public final class TestClassFinder {
         }
     }
 
-    private boolean _isMatch(String pathname, List<Pattern> patternList) {
+    private static boolean _isMatch(String pathname, List<Pattern> patternList) {
         for (Pattern pattern : patternList) {
             if (pattern.matcher(pathname).find()) {
                 return true;

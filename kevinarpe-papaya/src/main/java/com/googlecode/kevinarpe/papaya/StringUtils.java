@@ -194,6 +194,7 @@ public final class StringUtils {
      *
      * @see #trimWhitespacePrefix(String)
      */
+    // TODO: This is replaced by Guava's CharMatchers.
     @FullyTested
     public static String trimWhitespaceSuffix(String str) {
         ObjectArgs.checkNotNull(str, "str");

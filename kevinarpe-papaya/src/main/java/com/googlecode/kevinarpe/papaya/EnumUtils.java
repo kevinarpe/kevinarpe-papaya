@@ -25,10 +25,10 @@ package com.googlecode.kevinarpe.papaya;
  * #L%
  */
 
-import com.google.common.base.Joiner;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
+import com.googlecode.kevinarpe.papaya.string.joiner.QuotingJoiners;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -38,7 +38,6 @@ public class EnumUtils {
 
     public static <TEnum extends Enum<TEnum>>
     TEnum valueOf(Class<TEnum> enumType, String name) {
-        // TODO: Create test for isValidJavaToken -- already exists in Apache libs?
         try {
             TEnum value = _fastValueOf(enumType, name);
             return value;
@@ -63,16 +62,14 @@ public class EnumUtils {
             String name = anEnum.name();
             enumNameArr[i] = name;
         }
-        // TODO: Make Quoter/QuotingJoiner with prefix -- ', `, ( -- and suffix -- ', ', ) -- ?
-        // Allow valueToString override to convert value toString(), e.g., Enum.name()
-        String x = Joiner.on("', '").join(enumNameArr);
-        x = "'" + x + "'";
+        String x =
+            QuotingJoiners.withSeparator(", ").withQuotes("'", "'").useForNoElements("(empty)")
+                .join(enumNameArr);
         return x;
     }
 
     private static <TEnum extends Enum<TEnum>>
     TEnum _fastValueOf(Class<TEnum> enumType, String name) {
-        // TODO: Create test for isValidJavaToken -- already exists in Apache libs?
         ObjectArgs.checkNotNull(enumType, "enumType");
         StringArgs.checkNotEmptyOrWhitespace(name, "name");
 

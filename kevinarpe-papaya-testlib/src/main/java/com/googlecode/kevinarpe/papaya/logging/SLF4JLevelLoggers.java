@@ -25,27 +25,24 @@ package com.googlecode.kevinarpe.papaya.logging;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.EnumUtils;
-import com.googlecode.kevinarpe.papaya.argument.StringArgs;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
-* @author Kevin Connor ARPE (kevinarpe@gmail.com)
-*/
-public abstract class AbstractSLF4JLogLevel
-implements SLF4JLogLevel {
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
+public class SLF4JLevelLoggers {
 
-    private final String _theEnumName;
-    private SLF4JLogLevelEnum _theEnum;
+    public static SLF4JLevelLogger newInstance(SLF4JLogLevel logLevel, Class<?> clazz) {
+        ObjectArgs.checkNotNull(logLevel, "logLevel");
+        ObjectArgs.checkNotNull(clazz, "clazz");
 
-    public AbstractSLF4JLogLevel(String theEnumName) {
-        _theEnumName = StringArgs.checkNotEmptyOrWhitespace(theEnumName, "theEnumName");
-    }
-
-    @Override
-    public final SLF4JLogLevelEnum getEnum() {
-        if (null == _theEnum) {
-            _theEnum = EnumUtils.valueOf(SLF4JLogLevelEnum.class, _theEnumName);
+        if (SLF4JLogLevel.OFF == logLevel) {
+            return SLF4JLevelLoggerOff.INSTANCE;
         }
-        return _theEnum;
+        Logger logger = LoggerFactory.getLogger(clazz);
+        SLF4JLevelLogger levelLogger = logLevel.newLevelLogger(logger);
+        return levelLogger;
     }
 }

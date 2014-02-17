@@ -32,6 +32,8 @@ import org.slf4j.Marker;
  */
 public interface SLF4JLevelLogger {
 
+    SLF4JLogLevel getLogLevel();
+
     boolean isEnabled();
     void log(String msg);
     void log(String format, Object arg);
