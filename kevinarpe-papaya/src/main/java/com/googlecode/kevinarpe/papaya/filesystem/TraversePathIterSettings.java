@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.filesystem.factory;
+package com.googlecode.kevinarpe.papaya.filesystem;
 
 /*
  * #%L
@@ -25,23 +25,25 @@ package com.googlecode.kevinarpe.papaya.filesystem.factory;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.filesystem.ITraversePathIterable;
-import com.googlecode.kevinarpe.papaya.filesystem.TraversePathDepthPolicy;
-import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
-
 import java.io.File;
+import java.util.Comparator;
 
 /**
- * Factory for {@link TraversePathIterable}.
- *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
- *
- * @see TraversePathIterable
  */
-public interface TraversePathIterableFactory {
+public interface TraversePathIterSettings {
+    
+    File getRootDirPath();
 
-    /**
-     * @see TraversePathIterable#TraversePathIterable(File, TraversePathDepthPolicy)
-     */
-    ITraversePathIterable newInstance(File dirPath, TraversePathDepthPolicy depthPolicy);
+    TraversePathDepthPolicy getDepthPolicy();
+
+    TraversePathExceptionPolicy getExceptionPolicy();
+
+    PathFilter getOptionalDescendDirPathFilter();
+
+    Comparator<File> getOptionalDescendDirPathComparator();
+
+    PathFilter getOptionalIteratePathFilter();
+
+    Comparator<File> getOptionalIteratePathComparator();
 }

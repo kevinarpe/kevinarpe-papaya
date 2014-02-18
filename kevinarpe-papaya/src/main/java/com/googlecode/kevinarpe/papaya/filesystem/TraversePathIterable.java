@@ -29,7 +29,6 @@ import com.google.common.base.Objects;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.compare.ComparatorUtils;
-import com.googlecode.kevinarpe.papaya.filesystem.factory.TraversePathIterableFactory;
 
 import java.io.File;
 import java.util.Collection;
@@ -60,12 +59,12 @@ import java.util.Iterator;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see TraversePathDepthPolicy
- * @see BaseTraversePathIter
+ * @see TraversePathIterSettingsImpl
  */
 @FullyTested
 public final class TraversePathIterable
-extends BaseTraversePathIter
-implements Iterable<File> {
+extends TraversePathIterSettingsImpl
+implements ITraversePathIterable {
 
     /**
      * Used by the constructor to set the default exception policy for path iterators.  The value
@@ -158,7 +157,8 @@ implements Iterable<File> {
      *
      * @see #getRootDirPath()
      */
-    public TraversePathIterable withRootDirPath(File rootDirPath) {
+    @Override
+    public ITraversePathIterable withRootDirPath(File rootDirPath) {
         return new TraversePathIterable(
             ObjectArgs.checkNotNull(rootDirPath, "rootDirPath"),
             getDepthPolicy(),
@@ -182,6 +182,7 @@ implements Iterable<File> {
      *
      * @see #getDepthPolicy()
      */
+    @Override
     public TraversePathIterable withDepthPolicy(TraversePathDepthPolicy depthPolicy) {
         return new TraversePathIterable(
             getRootDirPath(),
@@ -208,7 +209,8 @@ implements Iterable<File> {
      * @see #DEFAULT_EXCEPTION_POLICY
      * @see #getExceptionPolicy()
      */
-    public TraversePathIterable withExceptionPolicy(TraversePathExceptionPolicy exceptionPolicy) {
+    @Override
+    public ITraversePathIterable withExceptionPolicy(TraversePathExceptionPolicy exceptionPolicy) {
         return new TraversePathIterable(
             getRootDirPath(),
             getDepthPolicy(),
@@ -250,8 +252,9 @@ implements Iterable<File> {
      *
      * @see #getOptionalDescendDirPathFilter()
      */
+    @Override
     public TraversePathIterable withOptionalDescendDirPathFilter(
-            PathFilter optDescendDirPathFilter) {
+        PathFilter optDescendDirPathFilter) {
         return new TraversePathIterable(
             getRootDirPath(),
             getDepthPolicy(),
@@ -278,8 +281,9 @@ implements Iterable<File> {
      *
      * @see #getOptionalDescendDirPathComparator()
      */
-    public TraversePathIterable withOptionalDescendDirPathComparator(
-            Comparator<File> optDescendDirPathComparator) {
+    @Override
+    public ITraversePathIterable withOptionalDescendDirPathComparator(
+        Comparator<File> optDescendDirPathComparator) {
         return new TraversePathIterable(
             getRootDirPath(),
             getDepthPolicy(),
@@ -325,7 +329,8 @@ implements Iterable<File> {
      *
      * @see #getOptionalIteratePathFilter()
      */
-    public TraversePathIterable withOptionalIteratePathFilter(PathFilter optIteratePathFilter) {
+    @Override
+    public ITraversePathIterable withOptionalIteratePathFilter(PathFilter optIteratePathFilter) {
         return new TraversePathIterable(
             getRootDirPath(),
             getDepthPolicy(),
@@ -352,8 +357,9 @@ implements Iterable<File> {
      *
      * @see #getOptionalIteratePathComparator()
      */
-    public TraversePathIterable withOptionalIteratePathComparator(
-            Comparator<File> optIteratePathComparator) {
+    @Override
+    public ITraversePathIterable withOptionalIteratePathComparator(
+        Comparator<File> optIteratePathComparator) {
         return new TraversePathIterable(
             getRootDirPath(),
             getDepthPolicy(),
@@ -373,7 +379,7 @@ implements Iterable<File> {
      * @see #getDepthPolicy()
      */
     @Override
-    public TraversePathIterator iterator() {
+    public ITraversePathIterator iterator() {
         final TraversePathDepthPolicy depthPolicy = getDepthPolicy();
         return depthPolicy.createTraversePathIterator(
             getRootDirPath(),

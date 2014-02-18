@@ -42,7 +42,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class BaseTraversePathIterTest {
 
-    public static BaseTraversePathIter newInstance() {
+    public static TraversePathIterSettings newInstance() {
         File dirPath = new File("dummy");
         TraversePathDepthPolicy depthPolicy = TraversePathDepthPolicy.DEPTH_FIRST;
         TraversePathExceptionPolicy exceptionPolicy = TraversePathExceptionPolicy.IGNORE;
@@ -61,13 +61,13 @@ public class BaseTraversePathIterTest {
         };
         Comparator<File> optIterateFileComparator = new FileNameLexicographicalComparator();
 
-        BaseTraversePathIter x = new BaseTraversePathIter(
+        TraversePathIterSettingsImpl x = new TraversePathIterSettingsImpl(
             dirPath, depthPolicy, exceptionPolicy, optDescendDirPathFilter,
             optDescendDirPathComparator, optIteratePathFilter, optIterateFileComparator);
         return x;
     }
 
-    public static void assertAttrSame(BaseTraversePathIter actual, BaseTraversePathIter expected) {
+    public static void assertAttrSame(TraversePathIterSettings actual, TraversePathIterSettings expected) {
         assertSame(actual.getRootDirPath(), expected.getRootDirPath());
         assertSame(actual.getDepthPolicy(), expected.getDepthPolicy());
         assertSame(actual.getExceptionPolicy(), expected.getExceptionPolicy());
@@ -82,7 +82,7 @@ public class BaseTraversePathIterTest {
     }
 
     public static void assertAttrSame(
-            BaseTraversePathIter actual,
+            TraversePathIterSettings actual,
             File dirPath,
             TraversePathDepthPolicy depthPolicy,
             TraversePathExceptionPolicy exceptionPolicy,
@@ -102,9 +102,9 @@ public class BaseTraversePathIterTest {
     public static abstract class ctor_Pass_Helper {
 
         public ctor_Pass_Helper() {
-            BaseTraversePathIter expected = BaseTraversePathIterTest.newInstance();
+            TraversePathIterSettings expected = BaseTraversePathIterTest.newInstance();
 
-            BaseTraversePathIter actual =
+            TraversePathIterSettings actual =
                 newInstance(
                     expected.getRootDirPath(),
                     expected.getDepthPolicy(),
@@ -131,7 +131,7 @@ public class BaseTraversePathIterTest {
                 expected.getOptionalIteratePathComparator());
         }
 
-        protected abstract BaseTraversePathIter newInstance(
+        protected abstract TraversePathIterSettings newInstance(
                 File dirPath,
                 TraversePathDepthPolicy depthPolicy,
                 TraversePathExceptionPolicy exceptionPolicy,
@@ -141,7 +141,7 @@ public class BaseTraversePathIterTest {
                 Comparator<File> optIteratePathComparator);
     }
 
-    private BaseTraversePathIter classUnderTest;
+    private TraversePathIterSettingsImpl classUnderTest;
     private final File dirPath = new File("dummy");
     private final TraversePathDepthPolicy depthPolicy = TraversePathDepthPolicy.DEPTH_FIRST;
     private final TraversePathExceptionPolicy exceptionPolicy = TraversePathExceptionPolicy.IGNORE;
@@ -162,13 +162,13 @@ public class BaseTraversePathIterTest {
 
     @BeforeMethod
     public void beforeEachTestMethod() {
-        classUnderTest = new BaseTraversePathIter(
+        classUnderTest = new TraversePathIterSettingsImpl(
             dirPath, depthPolicy, exceptionPolicy, optDescendDirPathFilter,
             optDescendDirPathComparator, optIteratePathFilter, optIterateFileComparator);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // BaseTraversePathIter.ctor()
+    // TraversePathIterSettingsImpl.ctor()
     //
 
     @Test
@@ -184,7 +184,7 @@ public class BaseTraversePathIterTest {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // BaseTraversePathIter.toString()
+    // TraversePathIterSettingsImpl.toString()
     //
 
     @Test

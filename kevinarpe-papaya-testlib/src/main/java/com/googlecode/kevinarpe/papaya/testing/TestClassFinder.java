@@ -31,9 +31,9 @@ import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.exception.ClassNotFoundRuntimeException;
 import com.googlecode.kevinarpe.papaya.exception.PathRuntimeException;
+import com.googlecode.kevinarpe.papaya.filesystem.ITraversePathIterable;
 import com.googlecode.kevinarpe.papaya.filesystem.PathFilter;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathDepthPolicy;
-import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
 import com.googlecode.kevinarpe.papaya.filesystem.factory.TraversePathIterableFactory;
 import com.googlecode.kevinarpe.papaya.filesystem.factory.TraversePathIterableFactoryImpl;
 import com.googlecode.kevinarpe.papaya.logging.SLF4JLevelLogger;
@@ -69,17 +69,21 @@ public final class TestClassFinder {
     private final SLF4JLevelLogger _levelLogger;
 
     private final TraversePathIterableFactory _traversePathIterableFactory;
+    private final IteratePathFilterFactory _iteratePathFilterFactory;
     private final SourceFileToClassHelper _sourceFileToClassHelper;
 
+    // Replace with static method, e.g, withRootDirPath(File)
     public TestClassFinder() {
         this(
             TraversePathIterableFactoryImpl.INSTANCE,
+            IteratePathFilterFactoryImpl.INSTANCE,
             SourceFileToClassHelperImpl.INSTANCE);
     }
 
     // Package-private for testing
     TestClassFinder(
             TraversePathIterableFactory traversePathIterableFactory,
+            IteratePathFilterFactory iteratePathFilterFactory,
             SourceFileToClassHelper sourceFileToClassHelper) {
         this(
             DEFAULT_ROOT_DIR_PATH,
@@ -88,6 +92,7 @@ public final class TestClassFinder {
             DEFAULT_EXCLUDE_ABSTRACT_CLASSES_FLAG,
             _newSLF4JLevelLogger(DEFAULT_LOG_LEVEL),
             ObjectArgs.checkNotNull(traversePathIterableFactory, "traversePathIterableFactory"),
+            ObjectArgs.checkNotNull(iteratePathFilterFactory, "iteratePathFilterFactory"),
             ObjectArgs.checkNotNull(sourceFileToClassHelper, "sourceFileToClassHelper"));
     }
 
@@ -103,6 +108,7 @@ public final class TestClassFinder {
             boolean excludeAbstractClassesFlag,
             SLF4JLevelLogger levelLogger,
             TraversePathIterableFactory traversePathIterableFactory,
+            IteratePathFilterFactory iteratePathFilterFactory,
             SourceFileToClassHelper sourceFileToClassHelper) {
         _rootDirPath = rootDirPath;
         _includeByAbsolutePathPatternList = includeByFilePathPatternList;
@@ -110,6 +116,7 @@ public final class TestClassFinder {
         _excludeAbstractClassesFlag = excludeAbstractClassesFlag;
         _levelLogger = levelLogger;
         _traversePathIterableFactory = traversePathIterableFactory;
+        _iteratePathFilterFactory = iteratePathFilterFactory;
         _sourceFileToClassHelper = sourceFileToClassHelper;
     }
 
@@ -127,6 +134,7 @@ public final class TestClassFinder {
             _excludeAbstractClassesFlag,
             _levelLogger,
             _traversePathIterableFactory,
+            _iteratePathFilterFactory,
             _sourceFileToClassHelper);
         return x;
     }
@@ -151,6 +159,7 @@ public final class TestClassFinder {
             _excludeAbstractClassesFlag,
             _levelLogger,
             _traversePathIterableFactory,
+            _iteratePathFilterFactory,
             _sourceFileToClassHelper);
         return x;
     }
@@ -175,6 +184,7 @@ public final class TestClassFinder {
             _excludeAbstractClassesFlag,
             _levelLogger,
             _traversePathIterableFactory,
+            _iteratePathFilterFactory,
             _sourceFileToClassHelper);
         return x;
     }
@@ -191,6 +201,7 @@ public final class TestClassFinder {
             flag,
             _levelLogger,
             _traversePathIterableFactory,
+            _iteratePathFilterFactory,
             _sourceFileToClassHelper);
         return x;
     }
@@ -218,6 +229,7 @@ public final class TestClassFinder {
             _excludeAbstractClassesFlag,
             levelLogger,
             _traversePathIterableFactory,
+            _iteratePathFilterFactory,
             _sourceFileToClassHelper);
         return x;
     }
@@ -236,7 +248,7 @@ public final class TestClassFinder {
      */
     public List<Class<?>> findAsList() {
         _assertCanFind();
-        TraversePathIterable pathIter = _newTraversePathIterable();
+        ITraversePathIterable pathIter = _newTraversePathIterable();
         List<Class<?>> classList = new ArrayList<Class<?>>();
         _logRootDirPath();
         for (File path : pathIter) {
@@ -261,11 +273,12 @@ public final class TestClassFinder {
         }
     }
 
-    private TraversePathIterable _newTraversePathIterable() {
-        TraversePathIterable pathIter = _traversePathIterableFactory.newInstance(
+    private ITraversePathIterable _newTraversePathIterable() {
+        PathFilter iteratePathFilter = _iteratePathFilterFactory.newInstance(this);
+        ITraversePathIterable pathIterable = _traversePathIterableFactory.newInstance(
             _rootDirPath, TraversePathDepthPolicy.DEPTH_LAST);
-        pathIter = pathIter.withOptionalIteratePathFilter(new TestClassFinderPathFilter());
-        return pathIter;
+        pathIterable = pathIterable.withOptionalIteratePathFilter(iteratePathFilter);
+        return pathIterable;
     }
 
     private void _logRootDirPath() {
@@ -278,7 +291,25 @@ public final class TestClassFinder {
         }
     }
 
-    final class TestClassFinderPathFilter
+    interface IteratePathFilterFactory {
+
+        PathFilter newInstance(TestClassFinder parent);
+    }
+
+    final static class IteratePathFilterFactoryImpl
+    implements IteratePathFilterFactory {
+
+        public static final IteratePathFilterFactoryImpl INSTANCE =
+            new IteratePathFilterFactoryImpl();
+
+        @Override
+        public PathFilter newInstance(TestClassFinder parent) {
+            IteratePathFilter x = parent.new IteratePathFilter();
+            return x;
+        }
+    }
+
+    final class IteratePathFilter
     implements PathFilter {
 
         @Override
@@ -287,9 +318,9 @@ public final class TestClassFinder {
                 return false;
             }
             String absPathname = path.getAbsolutePath();
-            boolean include = _isMatch(absPathname, /*_parent.*/_includeByAbsolutePathPatternList);
-            boolean exclude = _isMatch(absPathname, /*_parent.*/_excludeByAbsolutePathPatternList);
-            _logIsMatch(/*_parent.*/_levelLogger, absPathname, include, exclude);
+            boolean include = _isMatch(absPathname, _includeByAbsolutePathPatternList);
+            boolean exclude = _isMatch(absPathname, _excludeByAbsolutePathPatternList);
+            _logIsMatch(_levelLogger, absPathname, include, exclude);
             boolean result = include && !exclude;
             return result;
         }

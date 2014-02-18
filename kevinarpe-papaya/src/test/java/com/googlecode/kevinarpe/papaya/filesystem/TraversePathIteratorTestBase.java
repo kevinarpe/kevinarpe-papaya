@@ -80,7 +80,7 @@ public class TraversePathIteratorTestBase {
         new BaseTraversePathIterTest.ctor_Pass_Helper() {
 
             @Override
-            protected BaseTraversePathIter newInstance(
+            protected TraversePathIterSettingsImpl newInstance(
                     File dirPath,
                     TraversePathDepthPolicy depthPolicy,
                     TraversePathExceptionPolicy exceptionPolicy,
@@ -95,9 +95,9 @@ public class TraversePathIteratorTestBase {
         };
     }
 
-    protected TraversePathIterable newInstance(TraversePathDepthPolicy depthPolicy) {
+    protected ITraversePathIterable newInstance(TraversePathDepthPolicy depthPolicy) {
         Comparator<File> fileComparator = new FileNameNumericPrefixSmallestToLargestComparator();
-        TraversePathIterable pathIter =
+        ITraversePathIterable pathIter =
             new TraversePathIterable(BASE_DIR_PATH, depthPolicy)
                 .withOptionalDescendDirPathComparator(fileComparator)
                 .withOptionalIteratePathComparator(fileComparator);
@@ -105,7 +105,7 @@ public class TraversePathIteratorTestBase {
     }
 
     protected void core_hasNextAndNext_Pass(
-            TraversePathIterator pathIter, String[] pathSpecArr)
+            ITraversePathIterator pathIter, String[] pathSpecArr)
     throws IOException {
         recursiveDeleteDir(BASE_DIR_PATH);
         assertTrue(BASE_DIR_PATH.mkdir());
@@ -147,7 +147,7 @@ public class TraversePathIteratorTestBase {
     protected void core_hasNextAndNext_FailWithNoSuchElementException(
             TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
     throws IOException {
-        TraversePathIterator pathIter = newInstance(depthPolicy).iterator();
+        ITraversePathIterator pathIter = newInstance(depthPolicy).iterator();
         recursiveDeleteDir(BASE_DIR_PATH);
         assertTrue(BASE_DIR_PATH.mkdir());
         try {
@@ -163,12 +163,12 @@ public class TraversePathIteratorTestBase {
     }
 
     protected void core_hasNextAndNext_PassWithEvenNumericPrefixFilter(
-        TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
+            TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
     throws IOException {
-        TraversePathIterable pathIterable = newInstance(depthPolicy);
+        ITraversePathIterable pathIterable = newInstance(depthPolicy);
         pathIterable =
             pathIterable.withOptionalIteratePathFilter(ONLY_ACCEPT_EVEN_NUMERIC_PREFIX_PATH_FILTER);
-        TraversePathIterator pathIter = pathIterable.iterator();
+        ITraversePathIterator pathIter = pathIterable.iterator();
 
         recursiveDeleteDir(BASE_DIR_PATH);
         assertTrue(BASE_DIR_PATH.mkdir());
@@ -198,9 +198,9 @@ public class TraversePathIteratorTestBase {
     protected void core_hasNextAndNext_PassWithOnlyRootDirFilter(
             TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
     throws IOException {
-        TraversePathIterable pathIterable = newInstance(depthPolicy);
+        ITraversePathIterable pathIterable = newInstance(depthPolicy);
         pathIterable = pathIterable.withOptionalIteratePathFilter(ONLY_ACCEPT_ROOT_DIR_PATH_FILTER);
-        TraversePathIterator pathIter = pathIterable.iterator();
+        ITraversePathIterator pathIter = pathIterable.iterator();
 
         recursiveDeleteDir(BASE_DIR_PATH);
         assertTrue(BASE_DIR_PATH.mkdir());
@@ -219,9 +219,9 @@ public class TraversePathIteratorTestBase {
     protected void core_hasNextAndNext_PassWithAcceptNoneFilter(
             TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
     throws IOException {
-        TraversePathIterable pathIterable = newInstance(depthPolicy);
+        ITraversePathIterable pathIterable = newInstance(depthPolicy);
         pathIterable = pathIterable.withOptionalIteratePathFilter(ACCEPT_NONE_PATH_FILTER);
-        TraversePathIterator pathIter = pathIterable.iterator();
+        ITraversePathIterator pathIter = pathIterable.iterator();
 
         recursiveDeleteDir(BASE_DIR_PATH);
         assertTrue(BASE_DIR_PATH.mkdir());

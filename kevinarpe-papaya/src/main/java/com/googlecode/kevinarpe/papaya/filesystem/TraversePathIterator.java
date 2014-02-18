@@ -33,7 +33,6 @@ import com.googlecode.kevinarpe.papaya.exception.PathRuntimeException;
 
 import java.io.File;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
@@ -74,12 +73,12 @@ import java.util.NoSuchElementException;
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see BaseTraversePathIter
+ * @see TraversePathIterSettingsImpl
  */
 @FullyTested
 public abstract class TraversePathIterator
-extends BaseTraversePathIter
-implements Iterator<File> {
+extends TraversePathIterSettingsImpl
+implements ITraversePathIterator {
 
     static interface Factory {
 
@@ -263,6 +262,7 @@ implements Iterator<File> {
     /**
      * @return number of levels below {@link #getRootDirPath()}.  Minimum value is zero.
      */
+    @Override
     public final int getDepth() {
         return _levelList.size();
     }

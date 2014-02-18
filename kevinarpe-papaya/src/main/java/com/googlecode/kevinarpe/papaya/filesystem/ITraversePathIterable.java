@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.filesystem.factory;
+package com.googlecode.kevinarpe.papaya.filesystem;
 
 /*
  * #%L
@@ -25,23 +25,31 @@ package com.googlecode.kevinarpe.papaya.filesystem.factory;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.filesystem.ITraversePathIterable;
-import com.googlecode.kevinarpe.papaya.filesystem.TraversePathDepthPolicy;
-import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
-
 import java.io.File;
+import java.util.Comparator;
 
 /**
- * Factory for {@link TraversePathIterable}.
- *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
- *
- * @see TraversePathIterable
  */
-public interface TraversePathIterableFactory {
+// TODO: Fix names and hide concrete classes.
+public interface ITraversePathIterable
+extends TraversePathIterSettings, Iterable<File> {
 
-    /**
-     * @see TraversePathIterable#TraversePathIterable(File, TraversePathDepthPolicy)
-     */
-    ITraversePathIterable newInstance(File dirPath, TraversePathDepthPolicy depthPolicy);
+    ITraversePathIterable withRootDirPath(File rootDirPath);
+
+    ITraversePathIterable withDepthPolicy(TraversePathDepthPolicy depthPolicy);
+
+    ITraversePathIterable withExceptionPolicy(TraversePathExceptionPolicy exceptionPolicy);
+
+    ITraversePathIterable withOptionalDescendDirPathFilter(PathFilter optDescendDirPathFilter);
+
+    ITraversePathIterable withOptionalDescendDirPathComparator(
+        Comparator<File> optDescendDirPathComparator);
+
+    ITraversePathIterable withOptionalIteratePathFilter(PathFilter optIteratePathFilter);
+
+    ITraversePathIterable withOptionalIteratePathComparator(
+        Comparator<File> optIteratePathComparator);
+
+    ITraversePathIterator iterator();
 }

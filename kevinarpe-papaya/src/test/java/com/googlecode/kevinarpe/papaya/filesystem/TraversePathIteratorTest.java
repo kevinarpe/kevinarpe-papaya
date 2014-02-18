@@ -124,7 +124,7 @@ extends PowerMockTestCase {
         new BaseTraversePathIterTest.ctor_Pass_Helper() {
 
             @Override
-            protected BaseTraversePathIter newInstance(
+            protected TraversePathIterSettingsImpl newInstance(
                 File dirPath,
                 TraversePathDepthPolicy depthPolicy,
                 TraversePathExceptionPolicy exceptionPolicy,
@@ -145,7 +145,7 @@ extends PowerMockTestCase {
         new BaseTraversePathIterTest.ctor_Pass_Helper() {
 
             @Override
-            protected BaseTraversePathIter newInstance(
+            protected TraversePathIterSettingsImpl newInstance(
                 File dirPath,
                 TraversePathDepthPolicy depthPolicy,
                 TraversePathExceptionPolicy exceptionPolicy,

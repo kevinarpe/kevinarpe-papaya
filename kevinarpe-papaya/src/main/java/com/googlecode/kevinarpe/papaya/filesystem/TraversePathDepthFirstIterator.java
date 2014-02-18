@@ -82,7 +82,7 @@ extends TraversePathIterator {
         }
     }
 
-    private void doInit() {
+    private void _doInit() {
         if (!_isInitDone) {
             _currentLevel = tryDescendDirPath();
             _descendAndUpdateCurrentLevel();
@@ -92,7 +92,7 @@ extends TraversePathIterator {
 
     @Override
     public boolean hasNext() {
-        doInit();
+        _doInit();
         while (null != _currentLevel && !_currentLevel.getIterateDirectoryListingIter().hasNext()) {
             _currentLevel = tryRemoveAndGetNextLevel();
             _descendAndUpdateCurrentLevel();

@@ -37,7 +37,8 @@ import java.util.Comparator;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @FullyTested
-public class BaseTraversePathIter {
+public class TraversePathIterSettingsImpl
+implements TraversePathIterSettings {
 
     private final File _dirPath;
     private final TraversePathDepthPolicy _depthPolicy;
@@ -50,14 +51,14 @@ public class BaseTraversePathIter {
     /**
      * Parameters to this method are completely unchecked.  Subclasses must implement checks.
      */
-    protected BaseTraversePathIter(
-            File dirPath,
-            TraversePathDepthPolicy depthPolicy,
-            TraversePathExceptionPolicy exceptionPolicy,
-            PathFilter optDescendDirPathFilter,
-            Comparator<File> optDescendDirPathComparator,
-            PathFilter optIteratePathFilter,
-            Comparator<File> optIteratePathComparator) {
+    protected TraversePathIterSettingsImpl(
+        File dirPath,
+        TraversePathDepthPolicy depthPolicy,
+        TraversePathExceptionPolicy exceptionPolicy,
+        PathFilter optDescendDirPathFilter,
+        Comparator<File> optDescendDirPathComparator,
+        PathFilter optIteratePathFilter,
+        Comparator<File> optIteratePathComparator) {
         _dirPath = dirPath;
         _depthPolicy = depthPolicy;
         _exceptionPolicy = exceptionPolicy;
@@ -73,6 +74,7 @@ public class BaseTraversePathIter {
      *
      * @see TraversePathIterable#withRootDirPath(File)
      */
+    @Override
     public final File getRootDirPath() {
         return _dirPath;
     }
@@ -82,6 +84,7 @@ public class BaseTraversePathIter {
      *
      * @see TraversePathIterable#withDepthPolicy(TraversePathDepthPolicy)
      */
+    @Override
     public final TraversePathDepthPolicy getDepthPolicy() {
         return _depthPolicy;
     }
@@ -91,6 +94,7 @@ public class BaseTraversePathIter {
      *
      * @see TraversePathIterable#withExceptionPolicy(TraversePathExceptionPolicy)
      */
+    @Override
     public TraversePathExceptionPolicy getExceptionPolicy() {
         return _exceptionPolicy;
     }
@@ -100,6 +104,7 @@ public class BaseTraversePathIter {
      *
      * @see TraversePathIterable#withOptionalDescendDirPathFilter(PathFilter)
      */
+    @Override
     public final PathFilter getOptionalDescendDirPathFilter() {
         return _optDescendDirPathFilter;
     }
@@ -109,6 +114,7 @@ public class BaseTraversePathIter {
      *
      * @see TraversePathIterable#withOptionalDescendDirPathComparator(Comparator)
      */
+    @Override
     public final Comparator<File> getOptionalDescendDirPathComparator() {
         return _optDescendDirPathComparator;
     }
@@ -118,6 +124,7 @@ public class BaseTraversePathIter {
      *
      * @see TraversePathIterable#withOptionalIteratePathFilter(PathFilter)
      */
+    @Override
     public final PathFilter getOptionalIteratePathFilter() {
         return _optIteratePathFilter;
     }
@@ -127,6 +134,7 @@ public class BaseTraversePathIter {
      *
      * @see TraversePathIterable#withOptionalIteratePathComparator(Comparator)
      */
+    @Override
     public final Comparator<File> getOptionalIteratePathComparator() {
         return _optIteratePathComparator;
     }
@@ -139,7 +147,7 @@ public class BaseTraversePathIter {
         // TODO: Add object ID, e.g., @123456
         String x = String.format(
             "%s {%n\t%s = %s%n\t%s = '%s'%n\t%s = '%s'%n\t%s = '%s'%n\t%s = '%s'%n\t%s = '%s'%n\t%s = '%s'%n}",
-            BaseTraversePathIter.class.getName(),
+            TraversePathIterSettingsImpl.class.getName(),
             "dirPath", _formatPath(_dirPath),
             "depthPolicy", _depthPolicy,
             "exceptionPolicy", _exceptionPolicy,

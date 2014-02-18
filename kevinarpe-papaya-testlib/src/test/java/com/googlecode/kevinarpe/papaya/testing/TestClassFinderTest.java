@@ -26,8 +26,9 @@ package com.googlecode.kevinarpe.papaya.testing;
  */
 
 import com.googlecode.kevinarpe.papaya.exception.PathRuntimeException;
+import com.googlecode.kevinarpe.papaya.filesystem.ITraversePathIterable;
+import com.googlecode.kevinarpe.papaya.filesystem.PathFilter;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathDepthPolicy;
-import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterator;
 import com.googlecode.kevinarpe.papaya.filesystem.factory.TraversePathIterableFactory;
 import com.googlecode.kevinarpe.papaya.logging.SLF4JLogLevel;
@@ -46,6 +47,7 @@ import java.util.regex.Pattern;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.testng.Assert.assertEquals;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -53,8 +55,10 @@ import static org.mockito.Mockito.when;
 public class TestClassFinderTest {
 
     private TraversePathIterableFactory mockTraversePathIterableFactory;
-    private TraversePathIterable mockTraversePathIterable;
+    private ITraversePathIterable mockTraversePathIterable;
     private TraversePathIterator mockTraversePathIterator;
+    private TestClassFinder.IteratePathFilterFactory mockIteratePathFilterFactory;
+    private PathFilter mockPathFilter;
     private SourceFileToClassHelper mockSourceFileToClassHelper;
     private TestClassFinder classUnderTestWithoutMocks;
     private TestClassFinder classUnderTestWithMocks;
@@ -62,12 +66,17 @@ public class TestClassFinderTest {
     @BeforeMethod
     public void beforeEachTest() {
         mockTraversePathIterableFactory = mock(TraversePathIterableFactory.class);
-        mockTraversePathIterable = mock(TraversePathIterable.class);
+        mockTraversePathIterable = mock(ITraversePathIterable.class);
         mockTraversePathIterator = mock(TraversePathIterator.class);
+        mockIteratePathFilterFactory = mock(TestClassFinder.IteratePathFilterFactory.class);
+        mockPathFilter = mock(PathFilter.class);
         mockSourceFileToClassHelper = mock(SourceFileToClassHelper.class);
         classUnderTestWithoutMocks = new TestClassFinder();
         classUnderTestWithMocks =
-            new TestClassFinder(mockTraversePathIterableFactory, mockSourceFileToClassHelper);
+            new TestClassFinder(
+                mockTraversePathIterableFactory,
+                mockIteratePathFilterFactory,
+                mockSourceFileToClassHelper);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,19 +97,19 @@ public class TestClassFinderTest {
             List<Pattern> excludeByFilePathPatternList,
             boolean excludeAbstractClassesFlag,
             SLF4JLogLevel logLevel) {
-        Assert.assertEquals(
+        assertEquals(
             testClassFinder.withRootDirPath(),
             rootDirPath);
-        Assert.assertEquals(
+        assertEquals(
             testClassFinder.includeByAbsolutePathPattern(),
             includeByFilePathPatternList);
-        Assert.assertEquals(
+        assertEquals(
             testClassFinder.excludeByAbsolutePathPattern(),
             excludeByFilePathPatternList);
-        Assert.assertEquals(
+        assertEquals(
             testClassFinder.excludeAbstractClasses(),
             excludeAbstractClassesFlag);
-        Assert.assertEquals(
+        assertEquals(
             testClassFinder.withLogLevel(),
             logLevel);
     }
@@ -240,13 +249,13 @@ public class TestClassFinderTest {
 
         classUnderTestWithoutMocks =
             classUnderTestWithoutMocks.excludeByAbsolutePathPattern(newPattern);
-        Assert.assertEquals(
+        assertEquals(
             classUnderTestWithoutMocks.excludeByAbsolutePathPattern(),
             Arrays.asList(newPattern));
 
         classUnderTestWithoutMocks =
             classUnderTestWithoutMocks.excludeByAbsolutePathPattern(newPattern, newPattern2);
-        Assert.assertEquals(
+        assertEquals(
             classUnderTestWithoutMocks.excludeByAbsolutePathPattern(),
             Arrays.asList(newPattern, newPattern2));
     }
@@ -325,7 +334,40 @@ public class TestClassFinderTest {
             TestClassFinder.DEFAULT_LOG_LEVEL);
     }
 
-    // TODO: Test the logging methods (withLogLevel)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // TestClassFinder.withLogLevel(SLF4JLogLevel)
+    //
+
+    @Test
+    public void withLogLevel_Pass() {
+        SLF4JLogLevel oldLogLevel = classUnderTestWithoutMocks.withLogLevel();
+        SLF4JLogLevel newLogLevel =
+            (SLF4JLogLevel.OFF == oldLogLevel) ? SLF4JLogLevel.WARN : SLF4JLogLevel.OFF;
+
+        classUnderTestWithoutMocks = classUnderTestWithoutMocks.withLogLevel(newLogLevel);
+        _assertEquals(
+            classUnderTestWithoutMocks,
+            classUnderTestWithoutMocks.withRootDirPath(),
+            TestClassFinder.DEFAULT_INCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
+            TestClassFinder.DEFAULT_EXCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
+            TestClassFinder.DEFAULT_EXCLUDE_ABSTRACT_CLASSES_FLAG,
+            newLogLevel);
+
+        classUnderTestWithoutMocks = classUnderTestWithoutMocks.withLogLevel(oldLogLevel);
+        _assertEquals(
+            classUnderTestWithoutMocks,
+            classUnderTestWithoutMocks.withRootDirPath(),
+            TestClassFinder.DEFAULT_INCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
+            TestClassFinder.DEFAULT_EXCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
+            TestClassFinder.DEFAULT_EXCLUDE_ABSTRACT_CLASSES_FLAG,
+            oldLogLevel);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void withLogLevel_FailWithNull() {
+        classUnderTestWithoutMocks.withLogLevel((SLF4JLogLevel) null);
+    }
+
     // TODO: Write a class to capture SLF4J Logger events for assertion -- similar to Log4JTestBase
     // TODO: Ref: http://slackhacker.com/2009/12/08/testing-logging-behaviour-in-four-code-lines-flat/
 
@@ -349,15 +391,19 @@ public class TestClassFinderTest {
             mockTraversePathIterableFactory.newInstance(
                 any(File.class), any(TraversePathDepthPolicy.class)))
             .thenReturn(mockTraversePathIterable);
+        when(mockIteratePathFilterFactory.newInstance(any(TestClassFinder.class)))
+            .thenReturn(mockPathFilter);
+        when(mockTraversePathIterable.withOptionalIteratePathFilter(mockPathFilter))
+            .thenReturn(mockTraversePathIterable);
         when(mockTraversePathIterable.iterator()).thenReturn(mockTraversePathIterator);
         when(mockTraversePathIterator.hasNext()).thenReturn(true, true, true, false);
         when(mockTraversePathIterator.next()).thenReturn(new File("dummy"));
         when(mockSourceFileToClassHelper.getClass(any(File.class)))
             .thenReturn((Class) Class1.class, (Class) AbstractClass2.class, (Class) Class3.class);
-        // TODO: LAST
-        // Need to replace 'new TestClassFinderPathFilter()' with injectable PathFilter
-        // ... otherwise, we are re-testing TestClassFinderPathFilter here.  Hard to mock!
-        List<Class<?>> classList = classUnderTestWithMocks.includeByAbsolutePathPattern(Pattern) .findAsList();
+        List<Class<?>> classList =
+            classUnderTestWithMocks.includeByAbsolutePathPattern(Pattern.compile("abc"))
+                .findAsList();
+        assertEquals(classList, Arrays.asList(Class1.class, Class3.class));
     }
 
     @Test
@@ -367,7 +413,7 @@ public class TestClassFinderTest {
         Assert.assertTrue(!classList.isEmpty());
 
         Class<?>[] classArray = classUnderTestWithoutMocks.findAsArray();
-        Assert.assertEquals(Arrays.asList(classArray), classList);
+        assertEquals(Arrays.asList(classArray), classList);
     }
 
     @Test(expectedExceptions = PathRuntimeException.class)
@@ -389,17 +435,17 @@ public class TestClassFinderTest {
         Assert.assertTrue(0 != classArray.length);
 
         List<Class<?>> classList = classUnderTestWithoutMocks.findAsList();
-        Assert.assertEquals(Arrays.asList(classArray), classList);
+        assertEquals(Arrays.asList(classArray), classList);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // TestClassFinder.TestClassFinderPathFilter.accept(File, int)
+    // TestClassFinder.IteratePathFilter.accept(File, int)
     //
 
     @Test
     public void TestClassFinderPathFilter_accept_FailWithDirPath() {
-        TestClassFinder.TestClassFinderPathFilter pathFilter =
-            classUnderTestWithoutMocks.new TestClassFinderPathFilter();
+        TestClassFinder.IteratePathFilter pathFilter =
+            classUnderTestWithoutMocks.new IteratePathFilter();
         File mockFile = Mockito.mock(File.class);
         when(mockFile.isFile()).thenReturn(false);
         Assert.assertFalse(pathFilter.accept(mockFile, 1));
@@ -477,8 +523,8 @@ public class TestClassFinderTest {
         File mockFile = Mockito.mock(File.class);
         when(mockFile.isFile()).thenReturn(true);
         when(mockFile.getAbsolutePath()).thenReturn(absPathname);
-        TestClassFinder.TestClassFinderPathFilter pathFilter =
-            classUnderTestWithoutMocks.new TestClassFinderPathFilter();
+        TestClassFinder.IteratePathFilter pathFilter =
+            classUnderTestWithoutMocks.new IteratePathFilter();
         boolean actualResult = pathFilter.accept(mockFile, 1);
     }
 }
