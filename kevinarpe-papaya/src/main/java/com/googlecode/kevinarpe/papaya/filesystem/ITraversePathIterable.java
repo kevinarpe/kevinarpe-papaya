@@ -31,7 +31,7 @@ import java.util.Comparator;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-// TODO: Fix names and hide concrete classes.
+// TODO: LAST: Fix names and hide concrete classes.
 public interface ITraversePathIterable
 extends TraversePathIterSettings, Iterable<File> {
 
