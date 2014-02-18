@@ -59,7 +59,8 @@
   <modules>
     <module>kevinarpe-papaya</module>
     <module>kevinarpe-papaya-joda-time</module>
-    <module>kevinarpe-papaya-testlib</module>
+    <module>kevinarpe-papaya-testing</module>
+    <module>kevinarpe-papaya-logging-slf4j</module>
   </modules>
 
   <properties>
