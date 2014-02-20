@@ -32,7 +32,7 @@ import java.io.File;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public final class SourceFileToClassHelperImpl
+final class SourceFileToClassHelperImpl
 implements SourceFileToClassHelper {
 
     public static final SourceFileToClassHelperImpl INSTANCE = new SourceFileToClassHelperImpl();

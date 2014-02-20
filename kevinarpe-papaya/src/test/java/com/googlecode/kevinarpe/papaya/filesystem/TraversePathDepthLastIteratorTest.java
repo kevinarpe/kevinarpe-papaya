@@ -105,7 +105,7 @@ extends TraversePathIteratorTestBase {
     @Test(dataProvider = "_hasNextAndNext_Pass_Data")
     public void hasNextAndNext_Pass(String[] pathSpecArr)
     throws IOException {
-        ITraversePathIterator pathIter = newInstance(TraversePathDepthPolicy.DEPTH_LAST).iterator();
+        TraversePathIterator pathIter = newInstance(TraversePathDepthPolicy.DEPTH_LAST).iterator();
         core_hasNextAndNext_Pass(pathIter, pathSpecArr);
     }
 
@@ -138,9 +138,9 @@ extends TraversePathIteratorTestBase {
     @Test(expectedExceptions = PathRuntimeException.class)
     public void hasNextAndNext_FailWithPathRuntimeException()
     throws IOException {
-        ITraversePathIterable pathIterable = newInstance(TraversePathDepthPolicy.DEPTH_LAST);
+        TraversePathIterable pathIterable = newInstance(TraversePathDepthPolicy.DEPTH_LAST);
         pathIterable = pathIterable.withExceptionPolicy(TraversePathExceptionPolicy.THROW);
-        ITraversePathIterator pathIter = pathIterable.iterator();
+        TraversePathIterator pathIter = pathIterable.iterator();
 
         recursiveDeleteDir(BASE_DIR_PATH);
         assertTrue(BASE_DIR_PATH.mkdir());

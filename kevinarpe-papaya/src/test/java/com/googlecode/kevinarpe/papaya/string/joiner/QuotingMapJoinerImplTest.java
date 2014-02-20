@@ -273,8 +273,6 @@ public class QuotingMapJoinerImplTest {
         QuotingJoiners.withSeparator("x").withKeyValueSeparator("y").useForNullValue((String) null);
     }
 
-    // TODO: Test all the items from QJSettings interface
-
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // QuotingMapJoinerImpl.useForNullValue(char)
     //

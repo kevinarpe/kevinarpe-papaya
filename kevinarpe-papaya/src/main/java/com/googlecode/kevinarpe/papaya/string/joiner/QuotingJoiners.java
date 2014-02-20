@@ -26,7 +26,7 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  */
 
 import com.google.common.base.Joiner;
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 /**
  * Constants and static utilities for {@link QuotingJoiner} and {@link QuotingMapJoiner}.
@@ -38,7 +38,7 @@ import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
  * @see #newQuotingJoinerFactory(String)
  * @see #newQuotingJoinerFactory(char)
  */
-@NotFullyTested
+@FullyTested
 public final class QuotingJoiners {
     
     private QuotingJoiners() {

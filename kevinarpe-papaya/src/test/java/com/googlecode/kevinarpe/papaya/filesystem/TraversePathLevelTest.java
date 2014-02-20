@@ -52,14 +52,14 @@ import static org.testng.Assert.assertTrue;
  */
 @PrepareForTest({
     DirectoryListing.class,
-    TraversePathIterator.class,
+    AbstractTraversePathIteratorImpl.class,
     TraversePathLevel.DescendDirFileFilter.class,
     TraversePathLevel.IterateFileFilter.class
 })
 public class TraversePathLevelTest
 extends PowerMockTestCase {
 
-    private TraversePathIterator mockTraversePathIterator;
+    private AbstractTraversePathIteratorImpl mockAbstractTraversePathIteratorImpl;
     private TraversePathLevel.Factory mockFactory;
     private DirectoryListing mockOrigDirectoryListing;
     private DirectoryListing mockDescendDirDirectoryListing;
@@ -80,7 +80,7 @@ extends PowerMockTestCase {
     @SuppressWarnings("unchecked")
     @BeforeMethod(alwaysRun = true)
     public void beforeEachTest() {
-        mockTraversePathIterator = mock(TraversePathIterator.class);
+        mockAbstractTraversePathIteratorImpl = mock(AbstractTraversePathIteratorImpl.class);
         mockFactory = mock(TraversePathLevel.Factory.class);
         mockOrigDirectoryListing = mock(DirectoryListing.class);
         mockDescendDirDirectoryListing = mock(DirectoryListing.class);
@@ -103,7 +103,7 @@ extends PowerMockTestCase {
     @Test
     public void ctor_Pass()
     throws PathException {
-        new TraversePathLevel(mockTraversePathIterator, mockFactory, dirPath, depth);
+        new TraversePathLevel(mockAbstractTraversePathIteratorImpl, mockFactory, dirPath, depth);
         verify(mockFactory)
             .newDirectoryListingInstance(
                 dirPath, TraversePathLevel.DEFAULT_DIRECTORY_LISTING_LIST_CLASS);
@@ -118,7 +118,7 @@ extends PowerMockTestCase {
             dirPath, TraversePathLevel.DEFAULT_DIRECTORY_LISTING_LIST_CLASS))
             .thenThrow(expected);
         try {
-            new TraversePathLevel(mockTraversePathIterator, mockFactory, dirPath, depth);
+            new TraversePathLevel(mockAbstractTraversePathIteratorImpl, mockFactory, dirPath, depth);
         }
         catch (PathException actual) {
             assertSame(actual, expected);
@@ -128,27 +128,27 @@ extends PowerMockTestCase {
     @Test(expectedExceptions = NullPointerException.class)
     public void ctor_FailWithNull()
     throws PathException {
-        new TraversePathLevel((TraversePathIterator) null, mockFactory, dirPath, depth);
+        new TraversePathLevel((AbstractTraversePathIteratorImpl) null, mockFactory, dirPath, depth);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void ctor_FailWithNull2()
     throws PathException {
         new TraversePathLevel(
-            mockTraversePathIterator, (TraversePathLevel.Factory) null, dirPath, depth);
+            mockAbstractTraversePathIteratorImpl, (TraversePathLevel.Factory) null, dirPath, depth);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void ctor_FailWithNull3()
     throws PathException {
         new TraversePathLevel(
-            mockTraversePathIterator, TraversePathLevel.FactoryImpl.INSTANCE, (File) null, depth);
+            mockAbstractTraversePathIteratorImpl, TraversePathLevel.FactoryImpl.INSTANCE, (File) null, depth);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void ctor_FailWithInvalidDepth()
     throws PathException {
-        new TraversePathLevel(mockTraversePathIterator, mockFactory, dirPath, 0);
+        new TraversePathLevel(mockAbstractTraversePathIteratorImpl, mockFactory, dirPath, 0);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -201,15 +201,15 @@ extends PowerMockTestCase {
         when(mockFactory.newDirectoryListingInstance(mockOrigDirectoryListing))
             .thenReturn(mockDescendDirDirectoryListing);
         // This is related to craziness with JaCoCo (code coverage) + Mockito in Eclipse.
-//        when(mockTraversePathIterator.getOptionalDescendDirPathFilter()).thenReturn(mockPathFilter);
-        doReturn(mockPathFilter).when(mockTraversePathIterator).getOptionalDescendDirPathFilter();
+//        when(mockAbstractTraversePathIteratorImpl.getOptionalDescendDirPathFilter()).thenReturn(mockPathFilter);
+        doReturn(mockPathFilter).when(mockAbstractTraversePathIteratorImpl).getOptionalDescendDirPathFilter();
         when(mockFactory.newDescendDirFileFilterInstance(mockPathFilter, depth))
             .thenReturn(mockDescendDirFileFilter);
-        when(mockTraversePathIterator.getOptionalDescendDirPathComparator())
+        when(mockAbstractTraversePathIteratorImpl.getOptionalDescendDirPathComparator())
             .thenReturn(mockDescendDirPathComparator);
 
         TraversePathLevel tpl =
-            new TraversePathLevel(mockTraversePathIterator, mockFactory, dirPath, depth);
+            new TraversePathLevel(mockAbstractTraversePathIteratorImpl, mockFactory, dirPath, depth);
 
         assertSame(mockDescendDirDirectoryListing, tpl.getDescendDirDirectoryListing());
 
@@ -288,17 +288,17 @@ extends PowerMockTestCase {
             dirPath, TraversePathLevel.DEFAULT_DIRECTORY_LISTING_LIST_CLASS))
             .thenReturn(mockOrigDirectoryListing);
         // This is related to craziness with JaCoCo (code coverage) + Mockito in Eclipse.
-//        when(mockTraversePathIterator.getOptionalIteratePathFilter()).thenReturn(mockPathFilter);
-        doReturn(mockPathFilter).when(mockTraversePathIterator).getOptionalIteratePathFilter();
+//        when(mockAbstractTraversePathIteratorImpl.getOptionalIteratePathFilter()).thenReturn(mockPathFilter);
+        doReturn(mockPathFilter).when(mockAbstractTraversePathIteratorImpl).getOptionalIteratePathFilter();
         when(mockFactory.newDirectoryListingInstance(mockOrigDirectoryListing))
             .thenReturn(mockIterateDirectoryListing);
         when(mockFactory.newIterateFileFilterInstance(mockPathFilter, depth))
             .thenReturn(mockIterateFileFilter);
-        when(mockTraversePathIterator.getOptionalIteratePathComparator())
+        when(mockAbstractTraversePathIteratorImpl.getOptionalIteratePathComparator())
             .thenReturn(mockIteratePathComparator);
 
         TraversePathLevel tpl =
-            new TraversePathLevel(mockTraversePathIterator, mockFactory, dirPath, depth);
+            new TraversePathLevel(mockAbstractTraversePathIteratorImpl, mockFactory, dirPath, depth);
 
         assertSame(mockIterateDirectoryListing, tpl.getIterateDirectoryListing());
 

@@ -30,7 +30,7 @@ import java.io.File;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public interface SourceFileToClassHelper {
+interface SourceFileToClassHelper {
 
     Class<?> getClass(File sourceFilePath)
     throws ClassNotFoundException;

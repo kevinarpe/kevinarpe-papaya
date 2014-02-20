@@ -31,13 +31,13 @@ import java.io.File;
 import java.util.Comparator;
 
 /**
- * Based class for {@link TraversePathIterable} and {@link TraversePathIterator} to provide
+ * Based class for {@link TraversePathIterableImpl} and {@link AbstractTraversePathIteratorImpl} to provide
  * read-only access to its attributes.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @FullyTested
-public class TraversePathIterSettingsImpl
+class TraversePathIterSettingsImpl
 implements TraversePathIterSettings {
 
     private final File _dirPath;
@@ -72,7 +72,7 @@ implements TraversePathIterSettings {
      * @return root directory to traverse.  There is no guarantee this directory exists, but this
      *         value is never {@code null}.
      *
-     * @see TraversePathIterable#withRootDirPath(File)
+     * @see TraversePathIterableImpl#withRootDirPath(File)
      */
     @Override
     public final File getRootDirPath() {
@@ -82,7 +82,7 @@ implements TraversePathIterSettings {
     /**
      * @return when to descend directories: first or last.  Never {@code null}.
      *
-     * @see TraversePathIterable#withDepthPolicy(TraversePathDepthPolicy)
+     * @see TraversePathIterableImpl#withDepthPolicy(TraversePathDepthPolicy)
      */
     @Override
     public final TraversePathDepthPolicy getDepthPolicy() {
@@ -92,7 +92,7 @@ implements TraversePathIterSettings {
     /**
      * @return how to handle exceptions thrown during directory listings
      *
-     * @see TraversePathIterable#withExceptionPolicy(TraversePathExceptionPolicy)
+     * @see TraversePathIterableImpl#withExceptionPolicy(TraversePathExceptionPolicy)
      */
     @Override
     public TraversePathExceptionPolicy getExceptionPolicy() {
@@ -102,7 +102,7 @@ implements TraversePathIterSettings {
     /**
      * @return filter used before traversing directories.  May be {@code null}.
      *
-     * @see TraversePathIterable#withOptionalDescendDirPathFilter(PathFilter)
+     * @see TraversePathIterableImpl#withOptionalDescendDirPathFilter(PathFilter)
      */
     @Override
     public final PathFilter getOptionalDescendDirPathFilter() {
@@ -112,7 +112,7 @@ implements TraversePathIterSettings {
     /**
      * @return comparator to sort directories before traversal.  May be {@code null}.
      *
-     * @see TraversePathIterable#withOptionalDescendDirPathComparator(Comparator)
+     * @see TraversePathIterableImpl#withOptionalDescendDirPathComparator(Comparator)
      */
     @Override
     public final Comparator<File> getOptionalDescendDirPathComparator() {
@@ -122,7 +122,7 @@ implements TraversePathIterSettings {
     /**
      * @return filter used before iterating paths.  May be {@code null}.
      *
-     * @see TraversePathIterable#withOptionalIteratePathFilter(PathFilter)
+     * @see TraversePathIterableImpl#withOptionalIteratePathFilter(PathFilter)
      */
     @Override
     public final PathFilter getOptionalIteratePathFilter() {
@@ -132,7 +132,7 @@ implements TraversePathIterSettings {
     /**
      * @return comparator to sort paths before iteration.  May be {@code null}.
      *
-     * @see TraversePathIterable#withOptionalIteratePathComparator(Comparator)
+     * @see TraversePathIterableImpl#withOptionalIteratePathComparator(Comparator)
      */
     @Override
     public final Comparator<File> getOptionalIteratePathComparator() {

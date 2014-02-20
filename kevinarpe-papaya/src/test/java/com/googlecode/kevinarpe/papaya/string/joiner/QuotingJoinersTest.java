@@ -38,7 +38,7 @@ public class QuotingJoinersTest {
     //
 
     @Test
-    public void onString_Pass() {
+    public void withSeparatorString_Pass() {
         QuotingJoiner x = QuotingJoiners.withSeparator(",");
         Assert.assertNotNull(x);
         Assert.assertEquals(x.withSeparator(), ",");
@@ -54,7 +54,7 @@ public class QuotingJoinersTest {
     }
 
     @Test(expectedExceptions = NullPointerException.class)
-    public void onString_FaillWithNull() {
+    public void withSeparatorString_FaillWithNull() {
         QuotingJoiners.withSeparator((String) null);
     }
 
@@ -63,7 +63,7 @@ public class QuotingJoinersTest {
     //
 
     @Test
-    public void onChar_Pass() {
+    public void withSeparatorChar_Pass() {
         QuotingJoiner x = QuotingJoiners.withSeparator(',');
         Assert.assertNotNull(x);
         Assert.assertEquals(x.withSeparator(), ",");
@@ -81,6 +81,11 @@ public class QuotingJoinersTest {
         QuotingJoiner y = x.newInstance();
         Assert.assertEquals(y.withSeparator(), ",");
         _assertDefaults(y);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void newQuotingJoinerFactoryString_FailWithNull() {
+        QuotingJoiners.newQuotingJoinerFactory((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

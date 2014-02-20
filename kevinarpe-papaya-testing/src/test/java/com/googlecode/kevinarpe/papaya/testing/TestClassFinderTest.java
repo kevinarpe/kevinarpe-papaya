@@ -26,11 +26,11 @@ package com.googlecode.kevinarpe.papaya.testing;
  */
 
 import com.googlecode.kevinarpe.papaya.exception.PathRuntimeException;
-import com.googlecode.kevinarpe.papaya.filesystem.ITraversePathIterable;
+import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
 import com.googlecode.kevinarpe.papaya.filesystem.PathFilter;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathDepthPolicy;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterator;
-import com.googlecode.kevinarpe.papaya.filesystem.factory.TraversePathIterableFactory;
+import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterableFactory;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
 import org.mockito.Mockito;
 import org.testng.Assert;
@@ -55,7 +55,7 @@ import static org.testng.Assert.assertEquals;
 public class TestClassFinderTest {
 
     private TraversePathIterableFactory mockTraversePathIterableFactory;
-    private ITraversePathIterable mockTraversePathIterable;
+    private TraversePathIterable mockTraversePathIterable;
     private TraversePathIterator mockTraversePathIterator;
     private TestClassFinder.IteratePathFilterFactory mockIteratePathFilterFactory;
     private PathFilter mockPathFilter;
@@ -66,7 +66,7 @@ public class TestClassFinderTest {
     @BeforeMethod
     public void beforeEachTest() {
         mockTraversePathIterableFactory = mock(TraversePathIterableFactory.class);
-        mockTraversePathIterable = mock(ITraversePathIterable.class);
+        mockTraversePathIterable = mock(TraversePathIterable.class);
         mockTraversePathIterator = mock(TraversePathIterator.class);
         mockIteratePathFilterFactory = mock(TestClassFinder.IteratePathFilterFactory.class);
         mockPathFilter = mock(PathFilter.class);
@@ -516,6 +516,7 @@ public class TestClassFinderTest {
         };
     }
 
+    // TODO: Last
     @Test(dataProvider = "_TestClassFinderPathFilter_accept_Pass_Data")
     public void TestClassFinderPathFilter_accept_Pass(
             String absPathname,
@@ -525,8 +526,20 @@ public class TestClassFinderTest {
         File mockFile = Mockito.mock(File.class);
         when(mockFile.isFile()).thenReturn(true);
         when(mockFile.getAbsolutePath()).thenReturn(absPathname);
+        classUnderTestWithoutMocks =
+            classUnderTestWithoutMocks.includeByAbsolutePathPattern(includePatternList);
+        if (!excludePatternList.isEmpty()) {
+            classUnderTestWithoutMocks =
+                classUnderTestWithoutMocks.excludeByAbsolutePathPattern(excludePatternList);
+        }
         TestClassFinder.IteratePathFilter pathFilter =
             classUnderTestWithoutMocks.new IteratePathFilter();
         boolean actualResult = pathFilter.accept(mockFile, 1);
+        assertEquals(actualResult, expectedResult);
     }
+
+    // TODO: Handle null in accept?
+    // TODO: Write test when _excludeAbstractClassesFlag is true
+    // TODO: Cover all cases of include/exclude true/false
+
 }

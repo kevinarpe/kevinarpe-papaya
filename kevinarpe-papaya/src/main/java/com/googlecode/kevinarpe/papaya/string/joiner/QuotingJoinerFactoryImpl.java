@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -37,11 +38,11 @@ implements QuotingJoinerFactory {
     private final String _separator;
 
     public QuotingJoinerFactoryImpl(String separator) {
-        _separator = separator;
+        _separator = ObjectArgs.checkNotNull(separator, "separator");
     }
 
     @Override
-    public QuotingJoiner newInstance() {
+    public QuotingJoinerImpl newInstance() {
         QuotingJoinerImpl x = new QuotingJoinerImpl(_separator);
         return x;
     }

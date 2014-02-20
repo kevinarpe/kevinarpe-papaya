@@ -95,17 +95,17 @@ public class TraversePathIteratorTestBase {
         };
     }
 
-    protected ITraversePathIterable newInstance(TraversePathDepthPolicy depthPolicy) {
+    protected TraversePathIterable newInstance(TraversePathDepthPolicy depthPolicy) {
         Comparator<File> fileComparator = new FileNameNumericPrefixSmallestToLargestComparator();
-        ITraversePathIterable pathIter =
-            new TraversePathIterable(BASE_DIR_PATH, depthPolicy)
+        TraversePathIterable pathIter =
+            new TraversePathIterableImpl(BASE_DIR_PATH, depthPolicy)
                 .withOptionalDescendDirPathComparator(fileComparator)
                 .withOptionalIteratePathComparator(fileComparator);
         return pathIter;
     }
 
     protected void core_hasNextAndNext_Pass(
-            ITraversePathIterator pathIter, String[] pathSpecArr)
+            TraversePathIterator pathIter, String[] pathSpecArr)
     throws IOException {
         recursiveDeleteDir(BASE_DIR_PATH);
         assertTrue(BASE_DIR_PATH.mkdir());
@@ -147,7 +147,7 @@ public class TraversePathIteratorTestBase {
     protected void core_hasNextAndNext_FailWithNoSuchElementException(
             TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
     throws IOException {
-        ITraversePathIterator pathIter = newInstance(depthPolicy).iterator();
+        TraversePathIterator pathIter = newInstance(depthPolicy).iterator();
         recursiveDeleteDir(BASE_DIR_PATH);
         assertTrue(BASE_DIR_PATH.mkdir());
         try {
@@ -165,10 +165,10 @@ public class TraversePathIteratorTestBase {
     protected void core_hasNextAndNext_PassWithEvenNumericPrefixFilter(
             TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
     throws IOException {
-        ITraversePathIterable pathIterable = newInstance(depthPolicy);
+        TraversePathIterable pathIterable = newInstance(depthPolicy);
         pathIterable =
             pathIterable.withOptionalIteratePathFilter(ONLY_ACCEPT_EVEN_NUMERIC_PREFIX_PATH_FILTER);
-        ITraversePathIterator pathIter = pathIterable.iterator();
+        TraversePathIterator pathIter = pathIterable.iterator();
 
         recursiveDeleteDir(BASE_DIR_PATH);
         assertTrue(BASE_DIR_PATH.mkdir());
@@ -198,9 +198,9 @@ public class TraversePathIteratorTestBase {
     protected void core_hasNextAndNext_PassWithOnlyRootDirFilter(
             TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
     throws IOException {
-        ITraversePathIterable pathIterable = newInstance(depthPolicy);
+        TraversePathIterable pathIterable = newInstance(depthPolicy);
         pathIterable = pathIterable.withOptionalIteratePathFilter(ONLY_ACCEPT_ROOT_DIR_PATH_FILTER);
-        ITraversePathIterator pathIter = pathIterable.iterator();
+        TraversePathIterator pathIter = pathIterable.iterator();
 
         recursiveDeleteDir(BASE_DIR_PATH);
         assertTrue(BASE_DIR_PATH.mkdir());
@@ -219,9 +219,9 @@ public class TraversePathIteratorTestBase {
     protected void core_hasNextAndNext_PassWithAcceptNoneFilter(
             TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
     throws IOException {
-        ITraversePathIterable pathIterable = newInstance(depthPolicy);
+        TraversePathIterable pathIterable = newInstance(depthPolicy);
         pathIterable = pathIterable.withOptionalIteratePathFilter(ACCEPT_NONE_PATH_FILTER);
-        ITraversePathIterator pathIter = pathIterable.iterator();
+        TraversePathIterator pathIter = pathIterable.iterator();
 
         recursiveDeleteDir(BASE_DIR_PATH);
         assertTrue(BASE_DIR_PATH.mkdir());

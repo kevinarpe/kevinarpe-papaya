@@ -35,7 +35,7 @@ import java.util.Comparator;
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see TraversePathIterable
+ * @see TraversePathIterableImpl
  */
 @FullyTested
 public enum TraversePathDepthPolicy {
@@ -95,7 +95,7 @@ public enum TraversePathDepthPolicy {
         }
     };
 
-    abstract TraversePathIterator createTraversePathIterator(
+    abstract AbstractTraversePathIteratorImpl createTraversePathIterator(
             File dirPath,
             TraversePathExceptionPolicy exceptionPolicy,
             PathFilter optDescendDirPathFilter,

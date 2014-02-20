@@ -36,7 +36,7 @@ import java.util.Iterator;
  */
 @FullyTested
 final class TraversePathDepthFirstIterator
-extends TraversePathIterator {
+extends AbstractTraversePathIteratorImpl {
 
     private boolean _isInitDone;
     private TraversePathLevel _currentLevel;  // null when depth == 0

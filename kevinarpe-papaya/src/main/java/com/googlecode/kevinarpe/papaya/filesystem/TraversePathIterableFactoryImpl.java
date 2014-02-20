@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.filesystem.factory;
+package com.googlecode.kevinarpe.papaya.filesystem;
 
 /*
  * #%L
@@ -25,18 +25,15 @@ package com.googlecode.kevinarpe.papaya.filesystem.factory;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.filesystem.TraversePathDepthPolicy;
-import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
-
 import java.io.File;
 
 /**
- * Stateless factory for {@link TraversePathIterable}.
+ * Stateless factory for {@link TraversePathIterableImpl}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see TraversePathIterableFactory
- * @see TraversePathIterable
+ * @see TraversePathIterableImpl
  */
 public class TraversePathIterableFactoryImpl
 implements TraversePathIterableFactory {
@@ -51,8 +48,8 @@ implements TraversePathIterableFactory {
      * {@inheritDoc}
      */
     @Override
-    public TraversePathIterable newInstance(File dirPath, TraversePathDepthPolicy depthPolicy) {
-        TraversePathIterable x = new TraversePathIterable(dirPath, depthPolicy);
+    public TraversePathIterableImpl newInstance(File dirPath, TraversePathDepthPolicy depthPolicy) {
+        TraversePathIterableImpl x = new TraversePathIterableImpl(dirPath, depthPolicy);
         return x;
     }
 }

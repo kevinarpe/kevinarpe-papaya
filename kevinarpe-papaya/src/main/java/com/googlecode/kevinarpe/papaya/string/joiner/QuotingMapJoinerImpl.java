@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 import java.io.IOException;
@@ -34,6 +35,7 @@ import java.util.Map;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 final class QuotingMapJoinerImpl
 implements QuotingMapJoiner {
 

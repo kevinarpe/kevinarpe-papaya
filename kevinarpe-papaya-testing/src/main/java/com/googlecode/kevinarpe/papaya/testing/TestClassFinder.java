@@ -31,11 +31,11 @@ import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.exception.ClassNotFoundRuntimeException;
 import com.googlecode.kevinarpe.papaya.exception.PathRuntimeException;
-import com.googlecode.kevinarpe.papaya.filesystem.ITraversePathIterable;
+import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
 import com.googlecode.kevinarpe.papaya.filesystem.PathFilter;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathDepthPolicy;
-import com.googlecode.kevinarpe.papaya.filesystem.factory.TraversePathIterableFactory;
-import com.googlecode.kevinarpe.papaya.filesystem.factory.TraversePathIterableFactoryImpl;
+import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterableFactory;
+import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterableFactoryImpl;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLevelLogger;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLevelLoggers;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
@@ -248,7 +248,7 @@ public final class TestClassFinder {
      */
     public List<Class<?>> findAsList() {
         _assertCanFind();
-        ITraversePathIterable pathIter = _newTraversePathIterable();
+        TraversePathIterable pathIter = _newTraversePathIterable();
         List<Class<?>> classList = new ArrayList<Class<?>>();
         _logRootDirPath();
         for (File path : pathIter) {
@@ -273,9 +273,9 @@ public final class TestClassFinder {
         }
     }
 
-    private ITraversePathIterable _newTraversePathIterable() {
+    private TraversePathIterable _newTraversePathIterable() {
         PathFilter iteratePathFilter = _iteratePathFilterFactory.newInstance(this);
-        ITraversePathIterable pathIterable = _traversePathIterableFactory.newInstance(
+        TraversePathIterable pathIterable = _traversePathIterableFactory.newInstance(
             _rootDirPath, TraversePathDepthPolicy.DEPTH_LAST);
         pathIterable = pathIterable.withOptionalIteratePathFilter(iteratePathFilter);
         return pathIterable;
