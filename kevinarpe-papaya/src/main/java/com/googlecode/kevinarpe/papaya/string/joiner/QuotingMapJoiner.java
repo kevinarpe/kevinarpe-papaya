@@ -33,10 +33,11 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Extension of Google Guava's {@link Joiner.MapJoiner}.  To construct a new instance, see
- * {@link QuotingJoiners#withSeparator(String)} and {@link QuotingJoiners#withSeparator(char)}.
+ * Extension of Google Guava's {@link com.google.common.base.Joiner.MapJoiner}.  To construct a new
+ * instance, see {@link QuotingJoiners#withSeparator(String)} and
+ * {@link QuotingJoiners#withSeparator(char)}.
  * <p>
- * Differences to {@link Joiner.MapJoiner}:
+ * Differences to {@code Joiner.MapJoiner}:
  * <ul>
  *     <li>{@link #withKeyQuotes(String, String)}: Prefix and suffix for each joined key</li>
  *     <li>{@link #withValueQuotes(String, String)}: Prefix and suffix for each joined value</li>
@@ -51,10 +52,10 @@ import java.util.Map;
  *     <li>Uses interface {@link QuotingMapJoiner}, instead of a concrete class.  This follows
  *     JavaEE design principles, and is helpful for mocking and testing.  Due to Java interface
  *     limitations with generic methods, the methods {@code appendTo(Appendable, *)} are slightly
- *     different from {@link Joiner.MapJoiner}.  The {@code Appendable} reference is not a generic
+ *     different from {@code Joiner.MapJoiner}.  The {@code Appendable} reference is not a generic
  *     type (for input and output).</li>
  *     <li>All settings may always be changed, e.g., key-value separator, null key text, etc.  Class
- *     {@link Joiner.MapJoiner} does now allow these attributes to be set more than once.</li>
+ *     {@code Joiner.MapJoiner} does now allow these attributes to be set more than once.</li>
  *     <li>Settings accessors, e.g., {@link #withKeyValueSeparator(String)}.</li>
  *     <li>Default settings are available as {@code public static final} members, e.g.,
  *     {@link QuotingJoiners#DEFAULT_KEY_NULL_TEXT}.</li>
@@ -73,8 +74,6 @@ import java.util.Map;
  * QuotingJoiners.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=").useForNoElements("(empty)")
  *     .join(emptyMap) -> "(empty)"
  * }</pre>
- * <p>
- * See {@link SharedQuotingJoinerSettings} for an inheritance diagram.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *

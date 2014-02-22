@@ -25,30 +25,22 @@ package com.googlecode.kevinarpe.papaya.testing;
  * #L%
  */
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.model.InitializationError;
-
-import java.io.File;
-import java.util.regex.Pattern;
-
 /**
+ * Factory to construct instances of {@link TestClassFinder}.  Unless an additional layer of
+ * indirection is required for mocking or testing, it is usually sufficient to call
+ * {@link TestClassFinders#newInstance()}.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see TestClassFinders#newFactory()
+ * @see TestClassFinders#newInstance()
  */
-@RunWith(SampleJUnitTestSuite.class)
-public class SampleJUnitTestSuite
-extends Suite {
+public interface TestClassFinderFactory {
 
-    // TODO: What to do with this?
-
-    private static final Class[] TEST_CLASS_ARR =
-        TestClassFinders.newInstance()
-            .withRootDirPath(new File("kevinarpe-papaya-testing"))
-            .withIncludePatterns(Pattern.compile("Test\\.java$"))
-            .findAsArray();
-
-    public SampleJUnitTestSuite(Class<?> clazz)
-    throws InitializationError {
-        super(clazz, TEST_CLASS_ARR);
-    }
+    /**
+     * Constructs a new instance of {@link TestClassFinder}.
+     *
+     * @return new instance
+     */
+    TestClassFinder newInstance();
 }

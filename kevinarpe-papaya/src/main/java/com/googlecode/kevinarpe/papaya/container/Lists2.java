@@ -102,7 +102,7 @@ public final class Lists2 {
      *
      * @param value1
      *        first value.  Can be {@code null}.
-     * @param value1
+     * @param value2
      *        second value.  Can be {@code null}.
      * @param valueArr
      *        other values.  Can be empty, but not {@code null}.

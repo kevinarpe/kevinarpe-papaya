@@ -25,339 +25,209 @@ package com.googlecode.kevinarpe.papaya.testing;
  * #L%
  */
 
-import com.google.common.collect.ImmutableList;
-import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
-import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
-import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.exception.ClassNotFoundRuntimeException;
-import com.googlecode.kevinarpe.papaya.exception.PathRuntimeException;
-import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
-import com.googlecode.kevinarpe.papaya.filesystem.PathFilter;
-import com.googlecode.kevinarpe.papaya.filesystem.TraversePathDepthPolicy;
-import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterableFactory;
-import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterableFactoryImpl;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLevelLogger;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLevelLoggers;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
 
 import java.io.File;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Finds {@link Class} references by recursively scanning a directory for source files.  This class
+ * can be used to build dynamic test suites.  To construct a new instance, see
+ * {@link TestClassFinders#newInstance()}.
+ * <p>
+ * An interface is used instead of a concrete class to make mocking and testing easier.
+ * <p>
+ * Example:
+ * <pre>{@code
+ * List<Class<?>> classList =
+ *     TestClassFinders.newInstance()
+ *         .withRootDir(new File("src/test"))
+ *         .withIncludePatterns(Pattern.compile("Test\\.java"))
+ *         .findAsList();
+ * }</pre>
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-// TODO: Implement interface only for easy of mocking by users later?  A bit like JavaEE?  What about other classes, like the PathIter family?
-public final class TestClassFinder {
-
-    public static final File DEFAULT_ROOT_DIR_PATH = new File(System.getProperty("user.dir"));
-    public static final List<Pattern> DEFAULT_INCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST =
-        ImmutableList.of();
-    public static final List<Pattern> DEFAULT_EXCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST =
-        ImmutableList.of();
-    public static final boolean DEFAULT_EXCLUDE_ABSTRACT_CLASSES_FLAG = true;
-    public static final SLF4JLogLevel DEFAULT_LOG_LEVEL = SLF4JLogLevel.OFF;
-
-    private final File _rootDirPath;
-    private final List<Pattern> _includeByAbsolutePathPatternList;
-    private final List<Pattern> _excludeByAbsolutePathPatternList;
-    // TODO: Necessary?
-    private final boolean _excludeAbstractClassesFlag;
-    private final SLF4JLevelLogger _levelLogger;
-
-    private final TraversePathIterableFactory _traversePathIterableFactory;
-    private final IteratePathFilterFactory _iteratePathFilterFactory;
-    private final SourceFileToClassHelper _sourceFileToClassHelper;
-
-    // Replace with static method, e.g, withRootDirPath(File)
-    public TestClassFinder() {
-        this(
-            TraversePathIterableFactoryImpl.INSTANCE,
-            IteratePathFilterFactoryImpl.INSTANCE,
-            SourceFileToClassHelperImpl.INSTANCE);
-    }
-
-    // Package-private for testing
-    TestClassFinder(
-            TraversePathIterableFactory traversePathIterableFactory,
-            IteratePathFilterFactory iteratePathFilterFactory,
-            SourceFileToClassHelper sourceFileToClassHelper) {
-        this(
-            DEFAULT_ROOT_DIR_PATH,
-            DEFAULT_INCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            DEFAULT_EXCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            DEFAULT_EXCLUDE_ABSTRACT_CLASSES_FLAG,
-            _newSLF4JLevelLogger(DEFAULT_LOG_LEVEL),
-            ObjectArgs.checkNotNull(traversePathIterableFactory, "traversePathIterableFactory"),
-            ObjectArgs.checkNotNull(iteratePathFilterFactory, "iteratePathFilterFactory"),
-            ObjectArgs.checkNotNull(sourceFileToClassHelper, "sourceFileToClassHelper"));
-    }
-
-    private static SLF4JLevelLogger _newSLF4JLevelLogger(SLF4JLogLevel logLevel) {
-        SLF4JLevelLogger x = SLF4JLevelLoggers.newInstance(logLevel, TestClassFinder.class);
-        return x;
-    }
-
-    private TestClassFinder(
-            File rootDirPath,
-            List<Pattern> includeByFilePathPatternList,
-            List<Pattern> excludeByFilePathPatternList,
-            boolean excludeAbstractClassesFlag,
-            SLF4JLevelLogger levelLogger,
-            TraversePathIterableFactory traversePathIterableFactory,
-            IteratePathFilterFactory iteratePathFilterFactory,
-            SourceFileToClassHelper sourceFileToClassHelper) {
-        _rootDirPath = rootDirPath;
-        _includeByAbsolutePathPatternList = includeByFilePathPatternList;
-        _excludeByAbsolutePathPatternList = excludeByFilePathPatternList;
-        _excludeAbstractClassesFlag = excludeAbstractClassesFlag;
-        _levelLogger = levelLogger;
-        _traversePathIterableFactory = traversePathIterableFactory;
-        _iteratePathFilterFactory = iteratePathFilterFactory;
-        _sourceFileToClassHelper = sourceFileToClassHelper;
-    }
-
-    public File withRootDirPath() {
-        return _rootDirPath;
-    }
-
-    public TestClassFinder withRootDirPath(File rootDirPath) {
-        ObjectArgs.checkNotNull(rootDirPath, "rootDirPath");
-
-        TestClassFinder x = new TestClassFinder(
-            rootDirPath,
-            _includeByAbsolutePathPatternList,
-            _excludeByAbsolutePathPatternList,
-            _excludeAbstractClassesFlag,
-            _levelLogger,
-            _traversePathIterableFactory,
-            _iteratePathFilterFactory,
-            _sourceFileToClassHelper);
-        return x;
-    }
-
-    public List<Pattern> includeByAbsolutePathPattern() {
-        return _includeByAbsolutePathPatternList;
-    }
-
-    public TestClassFinder includeByAbsolutePathPattern(
-            Pattern filePathPattern, Pattern... moreFilePathPatternsArr) {
-        List<Pattern> list = _toArrayList(filePathPattern, moreFilePathPatternsArr);
-        TestClassFinder x = includeByAbsolutePathPattern(list);
-        return x;
-    }
-
-    public TestClassFinder includeByAbsolutePathPattern(List<Pattern> filePathPatternList) {
-        CollectionArgs.checkNotEmptyAndElementsNotNull(filePathPatternList, "filePathPatternList");
-        TestClassFinder x = new TestClassFinder(
-            _rootDirPath,
-            ImmutableList.copyOf(filePathPatternList),
-            _excludeByAbsolutePathPatternList,
-            _excludeAbstractClassesFlag,
-            _levelLogger,
-            _traversePathIterableFactory,
-            _iteratePathFilterFactory,
-            _sourceFileToClassHelper);
-        return x;
-    }
-
-    public List<Pattern> excludeByAbsolutePathPattern() {
-        return _excludeByAbsolutePathPatternList;
-    }
-
-    public TestClassFinder excludeByAbsolutePathPattern(
-            Pattern filePathPattern, Pattern... moreFilePathPatternsArr) {
-        List<Pattern> list = _toArrayList(filePathPattern, moreFilePathPatternsArr);
-        TestClassFinder x = excludeByAbsolutePathPattern(list);
-        return x;
-    }
-
-    public TestClassFinder excludeByAbsolutePathPattern(List<Pattern> filePathPatternList) {
-        CollectionArgs.checkNotEmptyAndElementsNotNull(filePathPatternList, "filePathPatternList");
-        TestClassFinder x = new TestClassFinder(
-            _rootDirPath,
-            _includeByAbsolutePathPatternList,
-            ImmutableList.copyOf(filePathPatternList),
-            _excludeAbstractClassesFlag,
-            _levelLogger,
-            _traversePathIterableFactory,
-            _iteratePathFilterFactory,
-            _sourceFileToClassHelper);
-        return x;
-    }
-
-    public boolean excludeAbstractClasses() {
-        return _excludeAbstractClassesFlag;
-    }
-
-    public TestClassFinder excludeAbstractClasses(boolean flag) {
-        TestClassFinder x = new TestClassFinder(
-            _rootDirPath,
-            _includeByAbsolutePathPatternList,
-            _excludeByAbsolutePathPatternList,
-            flag,
-            _levelLogger,
-            _traversePathIterableFactory,
-            _iteratePathFilterFactory,
-            _sourceFileToClassHelper);
-        return x;
-    }
-
-    private List<Pattern> _toArrayList(Pattern filePathPattern, Pattern[] moreFilePathPatternsArr) {
-        ObjectArgs.checkNotNull(filePathPattern, "filePathPattern");
-        ArrayArgs.checkElementsNotNull(moreFilePathPatternsArr, "moreFilePathPatternsArr");
-
-        List<Pattern> list = new ArrayList<Pattern>(1 + moreFilePathPatternsArr.length);
-        list.add(filePathPattern);
-        if (moreFilePathPatternsArr.length > 0) {
-            list.addAll(Arrays.asList(moreFilePathPatternsArr));
-        }
-        return list;
-    }
-
-    public TestClassFinder withLogLevel(SLF4JLogLevel logLevel) {
-        ObjectArgs.checkNotNull(logLevel, "logLevel");
-
-        SLF4JLevelLogger levelLogger = _newSLF4JLevelLogger(logLevel);
-        TestClassFinder x = new TestClassFinder(
-            _rootDirPath,
-            _includeByAbsolutePathPatternList,
-            _excludeByAbsolutePathPatternList,
-            _excludeAbstractClassesFlag,
-            levelLogger,
-            _traversePathIterableFactory,
-            _iteratePathFilterFactory,
-            _sourceFileToClassHelper);
-        return x;
-    }
-
-    public SLF4JLogLevel withLogLevel() {
-        SLF4JLogLevel x = _levelLogger.getLogLevel();
-        return x;
-    }
+public interface TestClassFinder {
 
     /**
+     * Constructs a new instance with new root directory to use when finding test classes.  For
+     * projects that use Maven, path {@code new File("./src/test")} is a good choice.
      *
-     * @return
+     * @param rootDirPath
+     *        Path to root directory to search for test classes.  Must not be {@code null}.
      *
-     * @throws PathRuntimeException
-     * @throws ClassNotFoundRuntimeException
+     * @return new instance with new root directory
+     *
+     * @throws NullPointerException
+     *         if {@code rootDirPath} is {@code null}
+     *
+     * @see TestClassFinders#DEFAULT_ROOT_DIR_PATH
+     * @see #withRootDirPath()
      */
-    public List<Class<?>> findAsList() {
-        _assertCanFind();
-        TraversePathIterable pathIter = _newTraversePathIterable();
-        List<Class<?>> classList = new ArrayList<Class<?>>();
-        _logRootDirPath();
-        for (File path : pathIter) {
-            Class<?> clazz = _getClass(path);
-            if (!_excludeAbstractClassesFlag || !Modifier.isAbstract(clazz.getModifiers())) {
-                classList.add(clazz);
-            }
-        }
-        return classList;
-    }
+    TestClassFinder withRootDirPath(File rootDirPath);
 
-    public Class<?>[] findAsArray() {
-        List<Class<?>> classList = findAsList();
-        Class<?>[] classArr = new Class<?>[classList.size()];
-        classArr = classList.toArray(classArr);
-        return classArr;
-    }
+    /**
+     * Retrieves root directory to use when finding test classes.  Default is the user working
+     * directory from system property {@code "user.dir"}.
+     *
+     * @return root directory
+     *
+     * @see TestClassFinders#DEFAULT_ROOT_DIR_PATH
+     * @see #withRootDirPath(File)
+     */
+    File withRootDirPath();
 
-    private void _assertCanFind() {
-        if (_includeByAbsolutePathPatternList.isEmpty()) {
-            throw new IllegalStateException("Must call method includeByFilePathPatterns() first");
-        }
-    }
+    /**
+     * This is a convenience method to call {@link #withIncludePatterns(List)}.
+     *
+     * @throws NullPointerException
+     *         if {@code filePathPattern} or {@code moreFilePathPatternsArr} (or any element) is
+     *         {@code null}
+     */
+    TestClassFinder withIncludePatterns(
+            Pattern filePathPattern, Pattern... moreFilePathPatternsArr);
 
-    private TraversePathIterable _newTraversePathIterable() {
-        PathFilter iteratePathFilter = _iteratePathFilterFactory.newInstance(this);
-        TraversePathIterable pathIterable = _traversePathIterableFactory.newInstance(
-            _rootDirPath, TraversePathDepthPolicy.DEPTH_LAST);
-        pathIterable = pathIterable.withOptionalIteratePathFilter(iteratePathFilter);
-        return pathIterable;
-    }
+    /**
+     * Constructs a new instance with a new list of patterns used to include source files.
+     * To exclude files by pattern, see {@link #withExcludePatterns(List)}.
+     * <p>
+     * Matching is performed with {@link Matcher#find()}, which does not require the entire input
+     * string to match, like {@link Matcher#matches()}.  If anchoring is required, the patterns must
+     * explicitly include {@code "^"} (start anchor) or {@code "$"} (end anchor).
+     *
+     * @param filePathPatternList
+     * <ul>
+     *     <li>List of patterns to match absolute file paths</li>
+     *     <li>Example: {@code "ExternalTest\\.java$"}</li>
+     *     <li>To match all files use: {@code "."}</li>
+     *     <li>Must not be {@code null}, but may be empty</li>
+     * </ul>
+     *
+     * @return new instance with new list of include patterns
+     *
+     * @throws NullPointerException
+     *         if {@code filePathPatternList} (or any element) is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code filePathPatternList} is empty
+     *
+     * @see TestClassFinders#DEFAULT_INCLUDE_PATTERN_LIST
+     * @see #withIncludePatterns(Pattern, Pattern...)
+     * @see #withIncludePatterns()
+     * @see #withExcludePatterns(List)
+     */
+    TestClassFinder withIncludePatterns(List<Pattern> filePathPatternList);
 
-    private void _logRootDirPath() {
-        if (_rootDirPath.isAbsolute()) {
-            _levelLogger.log("Root dir path: '{}'", _rootDirPath.getPath());
-        }
-        else {
-            _levelLogger.log("Root dir path: '{}' -> '{}'",
-                _rootDirPath.getPath(), _rootDirPath.getAbsolutePath());
-        }
-    }
+    /**
+     * Retrieves the list of patterns used to include source files.  Default is a single pattern to
+     * match all files: {@code "."}
+     *
+     * @return list of include patterns.  Never {@code null} or empty.
+     *
+     * @see TestClassFinders#DEFAULT_INCLUDE_PATTERN_LIST
+     * @see #withIncludePatterns(List)
+     * @see #withExcludePatterns()
+     */
+    List<Pattern> withIncludePatterns();
 
-    interface IteratePathFilterFactory {
+    /**
+     * This is a convenience method to call {@link #withExcludePatterns(List)}.
+     *
+     * @throws NullPointerException
+     *         if {@code filePathPattern} or {@code moreFilePathPatternsArr} (or any element) is
+     *         {@code null}
+     */
+    TestClassFinder withExcludePatterns(
+            Pattern filePathPattern, Pattern... moreFilePathPatternsArr);
 
-        PathFilter newInstance(TestClassFinder parent);
-    }
+    /**
+     * Constructs a new instance with a new list of patterns used to exclude source files.
+     * To include files by pattern, see {@link #withIncludePatterns(List)}.
+     * <p>
+     * Matching is performed with {@link Matcher#find()}, which does not require the entire input
+     * string to match, like {@link Matcher#matches()}.  If anchoring is required, the patterns must
+     * explicitly include {@code "^"} (start anchor) or {@code "$"} (end anchor).
+     *
+     * @param filePathPatternList
+     * <ul>
+     *     <li>List of patterns to match absolute file paths</li>
+     *     <li>Example: {@code "ExternalTest\\.java$"}</li>
+     *     <li>Must not be {@code null}, but may be empty</li>
+     * </ul>
+     *
+     * @return new instance with new list of exclude patterns
+     *
+     * @throws NullPointerException
+     *         if {@code filePathPatternList} (or any element) is {@code null}
+     *
+     * @see TestClassFinders#DEFAULT_EXCLUDE_PATTERN_LIST
+     * @see #withIncludePatterns(Pattern, Pattern...)
+     * @see #withIncludePatterns()
+     * @see #withIncludePatterns(List)
+     */
+    TestClassFinder withExcludePatterns(List<Pattern> filePathPatternList);
 
-    final static class IteratePathFilterFactoryImpl
-    implements IteratePathFilterFactory {
+    /**
+     * Retrieves the list of patterns used to include source files.  Default is empty list (no
+     * patterns to exclude source files).
+     *
+     * @return list of include patterns.  Never {@code null} or empty.
+     *
+     * @see TestClassFinders#DEFAULT_EXCLUDE_PATTERN_LIST
+     * @see #withExcludePatterns(List)
+     * @see #withIncludePatterns()
+     */
+    List<Pattern> withExcludePatterns();
 
-        public static final IteratePathFilterFactoryImpl INSTANCE =
-            new IteratePathFilterFactoryImpl();
+    /**
+     * Constructs a new instance with a new logger at a specific level.
+     *
+     * @param logLevel
+     *        level to log.  Use {@link SLF4JLogLevel#OFF} to disable logging.
+     *
+     * @return new instance with new logger
+     *
+     * @see TestClassFinders#DEFAULT_LOG_LEVEL
+     * @see #withLogLevel()
+     */
+    TestClassFinder withLogLevel(SLF4JLogLevel logLevel);
 
-        @Override
-        public PathFilter newInstance(TestClassFinder parent) {
-            IteratePathFilter x = parent.new IteratePathFilter();
-            return x;
-        }
-    }
+    /**
+     * Retrieves the current logger level.  All logging during a search is done to this level.
+     * Default is no logging (off).
+     *
+     * @return current logger level
+     *
+     * @see TestClassFinders#DEFAULT_LOG_LEVEL
+     * @see #withLogLevel(SLF4JLogLevel)
+     */
+    SLF4JLogLevel withLogLevel();
 
-    final class IteratePathFilter
-    implements PathFilter {
+    /**
+     * Searches recursively from the root directory to find Java sources files and returns the
+     * corresponding {@link Class} for each matching file.  Three class types are automatically
+     * excluded: nested, inner, and abstract classes.
+     * <p>
+     * If a source file matches at least one include pattern and matches zero exclude patterns, it
+     * will be included in the result.
+     * <p>
+     * If logging is enabled, exactly one line is logged for each normal file.
+     *
+     * @return list of top-level classes.  May be empty, but never {@code null}.
+     *
+     * @throws ClassNotFoundRuntimeException
+     *         if a {@link Class} cannot be found for a source file
+     *
+     * @see #findAsArray()
+     * @see #withLogLevel(SLF4JLogLevel)
+     */
+    List<Class<?>> findAsList();
 
-        @Override
-        public boolean accept(File path, int depth) {
-            if (!path.isFile()) {
-                return false;
-            }
-            String absPathname = path.getAbsolutePath();
-            boolean include = _isMatch(absPathname, _includeByAbsolutePathPatternList);
-            boolean exclude = _isMatch(absPathname, _excludeByAbsolutePathPatternList);
-            _logIsMatch(_levelLogger, absPathname, include, exclude);
-            boolean result = include && !exclude;
-            return result;
-        }
-    }
-
-    private static void _logIsMatch(
-            SLF4JLevelLogger levelLogger, String absPathname, boolean include, boolean exclude) {
-        if (include && exclude) {
-            levelLogger.log("'{}': include && exclude", absPathname);
-        }
-        if (!include && exclude) {
-            levelLogger.log("'{}': !include && exclude", absPathname);
-        }
-        if (include && !exclude) {
-            levelLogger.log("'{}': include && !exclude", absPathname);
-        }
-        if (!include && !exclude) {
-            levelLogger.log("'{}': !include && !exclude", absPathname);
-        }
-    }
-
-    private static boolean _isMatch(String pathname, List<Pattern> patternList) {
-        for (Pattern pattern : patternList) {
-            if (pattern.matcher(pathname).find()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private Class<?> _getClass(File path) {
-        try {
-            Class<?> clazz = _sourceFileToClassHelper.getClass(path);
-            return clazz;
-        }
-        catch (ClassNotFoundException e) {
-            throw new ClassNotFoundRuntimeException(e);
-        }
-    }
+    /**
+     * This is a convenience method to call {@link #findAsList()}.
+     */
+    Class<?>[] findAsArray();
 }

@@ -164,8 +164,8 @@ public final class QuotingJoiners {
     }
 
     /**
-     * Constructs a new instance of QuotingJoinerFactory.  Unless an additional layer of indirection
-     * is required for mocking or testing, it is usually sufficient to call
+     * Constructs a new instance of {@link QuotingJoinerFactory}.  Unless an additional layer of
+     * indirection is required for mocking or testing, it is usually sufficient to call
      * {@link #withSeparator(String)}.
      *
      * @param separator

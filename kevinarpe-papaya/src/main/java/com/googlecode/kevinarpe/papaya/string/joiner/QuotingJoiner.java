@@ -57,8 +57,6 @@ import java.util.Iterator;
  *     {@link QuotingJoiners#DEFAULT_NULL_TEXT}.</li>
  * </ul>
  * <p>
- * See {@link SharedQuotingJoinerSettings} for an inheritance diagram.
- * <p>
  * Examples:
  * <pre>{@code
  * QuotingJoiners.withSeparator(", ").withQuotes("[", "]").join(list) -> "[a], [b], [c], ..."

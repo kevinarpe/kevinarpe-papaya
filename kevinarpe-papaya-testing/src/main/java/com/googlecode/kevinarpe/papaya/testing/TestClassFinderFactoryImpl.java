@@ -25,30 +25,20 @@ package com.googlecode.kevinarpe.papaya.testing;
  * #L%
  */
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.model.InitializationError;
-
-import java.io.File;
-import java.util.regex.Pattern;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@RunWith(SampleJUnitTestSuite.class)
-public class SampleJUnitTestSuite
-extends Suite {
+@FullyTested
+class TestClassFinderFactoryImpl
+implements TestClassFinderFactory {
 
-    // TODO: What to do with this?
+    public static final TestClassFinderFactoryImpl INSTANCE = new TestClassFinderFactoryImpl();
 
-    private static final Class[] TEST_CLASS_ARR =
-        TestClassFinders.newInstance()
-            .withRootDirPath(new File("kevinarpe-papaya-testing"))
-            .withIncludePatterns(Pattern.compile("Test\\.java$"))
-            .findAsArray();
-
-    public SampleJUnitTestSuite(Class<?> clazz)
-    throws InitializationError {
-        super(clazz, TEST_CLASS_ARR);
+    @Override
+    public TestClassFinder newInstance() {
+        TestClassFinderImpl x = new TestClassFinderImpl();
+        return x;
     }
 }

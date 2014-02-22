@@ -25,30 +25,36 @@ package com.googlecode.kevinarpe.papaya.testing;
  * #L%
  */
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.model.InitializationError;
+import org.testng.annotations.Test;
 
-import java.io.File;
-import java.util.regex.Pattern;
+import static org.testng.Assert.assertSame;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@RunWith(SampleJUnitTestSuite.class)
-public class SampleJUnitTestSuite
-extends Suite {
+public class TestClassFindersTest {
 
-    // TODO: What to do with this?
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // TestClassFinders.newInstance()
+    //
 
-    private static final Class[] TEST_CLASS_ARR =
-        TestClassFinders.newInstance()
-            .withRootDirPath(new File("kevinarpe-papaya-testing"))
-            .withIncludePatterns(Pattern.compile("Test\\.java$"))
-            .findAsArray();
+    @Test
+    public void newInstance_Pass() {
+        TestClassFinder classUnderTest = TestClassFinders.newInstance();
+        TestClassFinderImplTest.assertAttrEquals(
+            classUnderTest,
+            TestClassFinders.DEFAULT_ROOT_DIR_PATH,
+            TestClassFinders.DEFAULT_INCLUDE_PATTERN_LIST,
+            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
+            TestClassFinders.DEFAULT_LOG_LEVEL);
+    }
 
-    public SampleJUnitTestSuite(Class<?> clazz)
-    throws InitializationError {
-        super(clazz, TEST_CLASS_ARR);
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // TestClassFinders.newFactory()
+    //
+
+    @Test
+    public void newFactory_Pass() {
+        assertSame(TestClassFinders.newFactory(), TestClassFinderFactoryImpl.INSTANCE);
     }
 }

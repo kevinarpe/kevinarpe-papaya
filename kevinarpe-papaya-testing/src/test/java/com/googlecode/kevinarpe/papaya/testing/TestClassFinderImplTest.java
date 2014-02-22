@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.testing;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.exception.ClassNotFoundRuntimeException;
 import com.googlecode.kevinarpe.papaya.exception.PathRuntimeException;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
 import com.googlecode.kevinarpe.papaya.filesystem.PathFilter;
@@ -48,32 +49,33 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertSame;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class TestClassFinderTest {
+public class TestClassFinderImplTest {
 
     private TraversePathIterableFactory mockTraversePathIterableFactory;
     private TraversePathIterable mockTraversePathIterable;
     private TraversePathIterator mockTraversePathIterator;
-    private TestClassFinder.IteratePathFilterFactory mockIteratePathFilterFactory;
+    private TestClassFinderImpl.IteratePathFilterFactory mockIteratePathFilterFactory;
     private PathFilter mockPathFilter;
     private SourceFileToClassHelper mockSourceFileToClassHelper;
-    private TestClassFinder classUnderTestWithoutMocks;
-    private TestClassFinder classUnderTestWithMocks;
+    private TestClassFinderImpl classUnderTestWithoutMocks;
+    private TestClassFinderImpl classUnderTestWithMocks;
 
     @BeforeMethod
     public void beforeEachTest() {
         mockTraversePathIterableFactory = mock(TraversePathIterableFactory.class);
         mockTraversePathIterable = mock(TraversePathIterable.class);
         mockTraversePathIterator = mock(TraversePathIterator.class);
-        mockIteratePathFilterFactory = mock(TestClassFinder.IteratePathFilterFactory.class);
+        mockIteratePathFilterFactory = mock(TestClassFinderImpl.IteratePathFilterFactory.class);
         mockPathFilter = mock(PathFilter.class);
         mockSourceFileToClassHelper = mock(SourceFileToClassHelper.class);
-        classUnderTestWithoutMocks = new TestClassFinder();
+        classUnderTestWithoutMocks = new TestClassFinderImpl();
         classUnderTestWithMocks =
-            new TestClassFinder(
+            new TestClassFinderImpl(
                 mockTraversePathIterableFactory,
                 mockIteratePathFilterFactory,
                 mockSourceFileToClassHelper);
@@ -83,54 +85,42 @@ public class TestClassFinderTest {
     // Helpers
     //
 
-    private TestClassFinder _withKnownIncludePattern(TestClassFinder testClassFinder) {
-        testClassFinder =
-            testClassFinder.includeByAbsolutePathPattern(
-                Pattern.compile("^.*/kevinarpe-papaya-testing/src/test/.*Test\\.java$"));
-        return testClassFinder;
-    }
-
-    private void _assertEquals(
+    public static void assertAttrEquals(
             TestClassFinder testClassFinder,
             File rootDirPath,
             List<Pattern> includeByFilePathPatternList,
             List<Pattern> excludeByFilePathPatternList,
-            boolean excludeAbstractClassesFlag,
             SLF4JLogLevel logLevel) {
         assertEquals(
             testClassFinder.withRootDirPath(),
             rootDirPath);
         assertEquals(
-            testClassFinder.includeByAbsolutePathPattern(),
+            testClassFinder.withIncludePatterns(),
             includeByFilePathPatternList);
         assertEquals(
-            testClassFinder.excludeByAbsolutePathPattern(),
+            testClassFinder.withExcludePatterns(),
             excludeByFilePathPatternList);
-        assertEquals(
-            testClassFinder.excludeAbstractClasses(),
-            excludeAbstractClassesFlag);
         assertEquals(
             testClassFinder.withLogLevel(),
             logLevel);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // TestClassFinder.ctor()
+    // TestClassFinderImpl.ctor()
     //
 
     @Test
     public void ctor_Pass() {
-        _assertEquals(
+        assertAttrEquals(
             classUnderTestWithoutMocks,
-            TestClassFinder.DEFAULT_ROOT_DIR_PATH,
-            TestClassFinder.DEFAULT_INCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            TestClassFinder.DEFAULT_EXCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            TestClassFinder.DEFAULT_EXCLUDE_ABSTRACT_CLASSES_FLAG,
-            TestClassFinder.DEFAULT_LOG_LEVEL);
+            TestClassFinders.DEFAULT_ROOT_DIR_PATH,
+            TestClassFinders.DEFAULT_INCLUDE_PATTERN_LIST,
+            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
+            TestClassFinders.DEFAULT_LOG_LEVEL);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // TestClassFinder.withRootDirPath()
+    // TestClassFinderImpl.withRootDirPath()
     //
 
     @Test
@@ -139,22 +129,20 @@ public class TestClassFinderTest {
         File newPath = new File(UUID.randomUUID().toString());
 
         classUnderTestWithoutMocks = classUnderTestWithoutMocks.withRootDirPath(newPath);
-        _assertEquals(
+        assertAttrEquals(
             classUnderTestWithoutMocks,
             newPath,
-            TestClassFinder.DEFAULT_INCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            TestClassFinder.DEFAULT_EXCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            TestClassFinder.DEFAULT_EXCLUDE_ABSTRACT_CLASSES_FLAG,
-            TestClassFinder.DEFAULT_LOG_LEVEL);
+            TestClassFinders.DEFAULT_INCLUDE_PATTERN_LIST,
+            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
+            TestClassFinders.DEFAULT_LOG_LEVEL);
 
         classUnderTestWithoutMocks = classUnderTestWithoutMocks.withRootDirPath(oldPath);
-        _assertEquals(
+        assertAttrEquals(
             classUnderTestWithoutMocks,
             oldPath,
-            TestClassFinder.DEFAULT_INCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            TestClassFinder.DEFAULT_EXCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            TestClassFinder.DEFAULT_EXCLUDE_ABSTRACT_CLASSES_FLAG,
-            TestClassFinder.DEFAULT_LOG_LEVEL);
+            TestClassFinders.DEFAULT_INCLUDE_PATTERN_LIST,
+            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
+            TestClassFinders.DEFAULT_LOG_LEVEL);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
@@ -163,179 +151,170 @@ public class TestClassFinderTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // TestClassFinder.includeByAbsolutePathPattern(Pattern, Pattern...)
+    // TestClassFinderImpl.withIncludePatterns(Pattern, Pattern...)
     //
 
     @Test
-    public void includeByAbsolutePathPattern_Pass() {
+    public void includePatterns_Pass() {
         Pattern newPattern = Pattern.compile(UUID.randomUUID().toString());
         Pattern newPattern2 = Pattern.compile(UUID.randomUUID().toString());
 
         classUnderTestWithoutMocks =
-            classUnderTestWithoutMocks.includeByAbsolutePathPattern(newPattern);
-        _assertEquals(
+            classUnderTestWithoutMocks.withIncludePatterns(newPattern);
+        assertAttrEquals(
             classUnderTestWithoutMocks,
-            TestClassFinder.DEFAULT_ROOT_DIR_PATH,
+            TestClassFinders.DEFAULT_ROOT_DIR_PATH,
             Arrays.asList(newPattern),
-            TestClassFinder.DEFAULT_EXCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            TestClassFinder.DEFAULT_EXCLUDE_ABSTRACT_CLASSES_FLAG,
-            TestClassFinder.DEFAULT_LOG_LEVEL);
+            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
+            TestClassFinders.DEFAULT_LOG_LEVEL);
 
         classUnderTestWithoutMocks =
-            classUnderTestWithoutMocks.includeByAbsolutePathPattern(newPattern, newPattern2);
-        _assertEquals(
+            classUnderTestWithoutMocks.withIncludePatterns(newPattern, newPattern2);
+        assertAttrEquals(
             classUnderTestWithoutMocks,
-            TestClassFinder.DEFAULT_ROOT_DIR_PATH,
+            TestClassFinders.DEFAULT_ROOT_DIR_PATH,
             Arrays.asList(newPattern, newPattern2),
-            TestClassFinder.DEFAULT_EXCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            TestClassFinder.DEFAULT_EXCLUDE_ABSTRACT_CLASSES_FLAG,
-            TestClassFinder.DEFAULT_LOG_LEVEL);
+            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
+            TestClassFinders.DEFAULT_LOG_LEVEL);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
-    public void includeByAbsolutePathPattern_FailWithNull() {
-        classUnderTestWithoutMocks.includeByAbsolutePathPattern((Pattern) null);
+    public void includePatterns_FailWithNull() {
+        classUnderTestWithoutMocks.withIncludePatterns((Pattern) null);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
-    public void includeByAbsolutePathPattern_FailWithNull2() {
+    public void includePatterns_FailWithNull2() {
         Pattern newPattern = Pattern.compile(UUID.randomUUID().toString());
-        classUnderTestWithoutMocks.includeByAbsolutePathPattern(newPattern, (Pattern) null);
+        classUnderTestWithoutMocks.withIncludePatterns(
+            newPattern, (Pattern) null, newPattern);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void includePatterns_FailWithNull3() {
+        Pattern newPattern = Pattern.compile(UUID.randomUUID().toString());
+        classUnderTestWithoutMocks.withIncludePatterns(newPattern, (Pattern[]) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // TestClassFinder.includeByAbsolutePathPattern(List<Pattern>)
+    // TestClassFinderImpl.withIncludePatterns(List<Pattern>)
     //
 
     @Test
-    public void includeByAbsolutePathPattern2_Pass() {
+    public void includePatterns2_Pass() {
         Pattern newPattern = Pattern.compile(UUID.randomUUID().toString());
         Pattern newPattern2 = Pattern.compile(UUID.randomUUID().toString());
 
         classUnderTestWithoutMocks =
-            classUnderTestWithoutMocks.includeByAbsolutePathPattern(newPattern);
-        _assertEquals(
+            classUnderTestWithoutMocks.withIncludePatterns(Arrays.asList(newPattern));
+        assertAttrEquals(
             classUnderTestWithoutMocks,
-            TestClassFinder.DEFAULT_ROOT_DIR_PATH,
+            TestClassFinders.DEFAULT_ROOT_DIR_PATH,
             Arrays.asList(newPattern),
-            TestClassFinder.DEFAULT_EXCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            TestClassFinder.DEFAULT_EXCLUDE_ABSTRACT_CLASSES_FLAG,
-            TestClassFinder.DEFAULT_LOG_LEVEL);
+            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
+            TestClassFinders.DEFAULT_LOG_LEVEL);
 
         classUnderTestWithoutMocks =
-            classUnderTestWithoutMocks.includeByAbsolutePathPattern(newPattern, newPattern2);
-        _assertEquals(
+            classUnderTestWithoutMocks.withIncludePatterns(
+                Arrays.asList(newPattern, newPattern2));
+        assertAttrEquals(
             classUnderTestWithoutMocks,
-            TestClassFinder.DEFAULT_ROOT_DIR_PATH,
+            TestClassFinders.DEFAULT_ROOT_DIR_PATH,
             Arrays.asList(newPattern, newPattern2),
-            TestClassFinder.DEFAULT_EXCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            TestClassFinder.DEFAULT_EXCLUDE_ABSTRACT_CLASSES_FLAG,
-            TestClassFinder.DEFAULT_LOG_LEVEL);
+            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
+            TestClassFinders.DEFAULT_LOG_LEVEL);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
-    public void includeByAbsolutePathPattern2_FailWithNull() {
-        classUnderTestWithoutMocks.includeByAbsolutePathPattern((List<Pattern>) null);
+    public void includePatterns2_FailWithNull() {
+        classUnderTestWithoutMocks.withIncludePatterns((List<Pattern>) null);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void includePatterns2_FailWithNull2() {
+        Pattern newPattern = Pattern.compile(UUID.randomUUID().toString());
+        classUnderTestWithoutMocks.withIncludePatterns(Arrays.asList(newPattern, null));
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void includePatterns2_FailWithEmptyList() {
+        classUnderTestWithoutMocks.withIncludePatterns(Arrays.<Pattern>asList());
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // TestClassFinder.excludeByAbsolutePathPattern(Pattern, Pattern...)
+    // TestClassFinderImpl.withExcludePatterns(Pattern, Pattern...)
     //
 
     @Test
-    public void excludeByAbsolutePathPattern_Pass() {
+    public void excludePatterns_Pass() {
         Pattern newPattern = Pattern.compile(UUID.randomUUID().toString());
         Pattern newPattern2 = Pattern.compile(UUID.randomUUID().toString());
 
         classUnderTestWithoutMocks =
-            classUnderTestWithoutMocks.excludeByAbsolutePathPattern(newPattern);
+            classUnderTestWithoutMocks.withExcludePatterns(newPattern);
         assertEquals(
-            classUnderTestWithoutMocks.excludeByAbsolutePathPattern(),
+            classUnderTestWithoutMocks.withExcludePatterns(),
             Arrays.asList(newPattern));
 
         classUnderTestWithoutMocks =
-            classUnderTestWithoutMocks.excludeByAbsolutePathPattern(newPattern, newPattern2);
+            classUnderTestWithoutMocks.withExcludePatterns(newPattern, newPattern2);
         assertEquals(
-            classUnderTestWithoutMocks.excludeByAbsolutePathPattern(),
+            classUnderTestWithoutMocks.withExcludePatterns(),
             Arrays.asList(newPattern, newPattern2));
     }
 
     @Test(expectedExceptions = NullPointerException.class)
-    public void excludeByAbsolutePathPattern_FailWithNull() {
-        classUnderTestWithoutMocks.excludeByAbsolutePathPattern((Pattern) null);
+    public void excludePatterns_FailWithNull() {
+        classUnderTestWithoutMocks.withExcludePatterns((Pattern) null);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
-    public void excludeByAbsolutePathPattern_FailWithNull2() {
+    public void excludePatterns_FailWithNull2() {
         Pattern newPattern = Pattern.compile(UUID.randomUUID().toString());
-        classUnderTestWithoutMocks.excludeByAbsolutePathPattern(newPattern, (Pattern) null);
+        classUnderTestWithoutMocks.withExcludePatterns(newPattern, (Pattern) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // TestClassFinder.excludeByAbsolutePathPattern(List<Pattern>)
+    // TestClassFinderImpl.withExcludePatterns(List<Pattern>)
     //
 
     @Test
-    public void excludeByAbsolutePathPattern2_Pass() {
+    public void excludePatterns2_Pass() {
         Pattern newPattern = Pattern.compile(UUID.randomUUID().toString());
         Pattern newPattern2 = Pattern.compile(UUID.randomUUID().toString());
 
         classUnderTestWithoutMocks =
-            classUnderTestWithoutMocks.excludeByAbsolutePathPattern(newPattern);
-        _assertEquals(
+            classUnderTestWithoutMocks.withExcludePatterns(Arrays.asList(newPattern));
+        assertAttrEquals(
             classUnderTestWithoutMocks,
-            TestClassFinder.DEFAULT_ROOT_DIR_PATH,
-            TestClassFinder.DEFAULT_INCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
+            TestClassFinders.DEFAULT_ROOT_DIR_PATH,
+            TestClassFinders.DEFAULT_INCLUDE_PATTERN_LIST,
             Arrays.asList(newPattern),
-            TestClassFinder.DEFAULT_EXCLUDE_ABSTRACT_CLASSES_FLAG,
-            TestClassFinder.DEFAULT_LOG_LEVEL);
+            TestClassFinders.DEFAULT_LOG_LEVEL);
 
         classUnderTestWithoutMocks =
-            classUnderTestWithoutMocks.excludeByAbsolutePathPattern(newPattern, newPattern2);
-        _assertEquals(
+            classUnderTestWithoutMocks.withExcludePatterns(
+                Arrays.asList(newPattern, newPattern2));
+        assertAttrEquals(
             classUnderTestWithoutMocks,
-            TestClassFinder.DEFAULT_ROOT_DIR_PATH,
-            TestClassFinder.DEFAULT_INCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
+            TestClassFinders.DEFAULT_ROOT_DIR_PATH,
+            TestClassFinders.DEFAULT_INCLUDE_PATTERN_LIST,
             Arrays.asList(newPattern, newPattern2),
-            TestClassFinder.DEFAULT_EXCLUDE_ABSTRACT_CLASSES_FLAG,
-            TestClassFinder.DEFAULT_LOG_LEVEL);
+            TestClassFinders.DEFAULT_LOG_LEVEL);
+    }
+
+    @Test
+    public void excludePatterns2_PassWithEmptyList() {
+        classUnderTestWithoutMocks.withExcludePatterns(Arrays.<Pattern>asList());
     }
 
     @Test(expectedExceptions = NullPointerException.class)
-    public void excludeByAbsolutePathPattern2_FailWithNull() {
-        classUnderTestWithoutMocks.excludeByAbsolutePathPattern((List<Pattern>) null);
+    public void excludePatterns2_FailWithNull() {
+        classUnderTestWithoutMocks.withExcludePatterns((List<Pattern>) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // TestClassFinder.excludeAbstractClasses(boolean)
-    //
-
-    @Test
-    public void excludeAbstractClasses_Pass() {
-        boolean b = classUnderTestWithoutMocks.excludeAbstractClasses();
-        boolean b2 = !b;
-
-        classUnderTestWithoutMocks = classUnderTestWithoutMocks.excludeAbstractClasses(b2);
-        _assertEquals(
-            classUnderTestWithoutMocks,
-            TestClassFinder.DEFAULT_ROOT_DIR_PATH,
-            TestClassFinder.DEFAULT_INCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            TestClassFinder.DEFAULT_EXCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            b2,
-            TestClassFinder.DEFAULT_LOG_LEVEL);
-
-        classUnderTestWithoutMocks = classUnderTestWithoutMocks.excludeAbstractClasses(b);
-        _assertEquals(
-            classUnderTestWithoutMocks,
-            TestClassFinder.DEFAULT_ROOT_DIR_PATH,
-            TestClassFinder.DEFAULT_INCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            TestClassFinder.DEFAULT_EXCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            b,
-            TestClassFinder.DEFAULT_LOG_LEVEL);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // TestClassFinder.withLogLevel(SLF4JLogLevel)
+    // TestClassFinderImpl.withLogLevel(SLF4JLogLevel)
     //
 
     @Test
@@ -345,21 +324,19 @@ public class TestClassFinderTest {
             (SLF4JLogLevel.OFF == oldLogLevel) ? SLF4JLogLevel.WARN : SLF4JLogLevel.OFF;
 
         classUnderTestWithoutMocks = classUnderTestWithoutMocks.withLogLevel(newLogLevel);
-        _assertEquals(
+        assertAttrEquals(
             classUnderTestWithoutMocks,
             classUnderTestWithoutMocks.withRootDirPath(),
-            TestClassFinder.DEFAULT_INCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            TestClassFinder.DEFAULT_EXCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            TestClassFinder.DEFAULT_EXCLUDE_ABSTRACT_CLASSES_FLAG,
+            TestClassFinders.DEFAULT_INCLUDE_PATTERN_LIST,
+            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
             newLogLevel);
 
         classUnderTestWithoutMocks = classUnderTestWithoutMocks.withLogLevel(oldLogLevel);
-        _assertEquals(
+        assertAttrEquals(
             classUnderTestWithoutMocks,
             classUnderTestWithoutMocks.withRootDirPath(),
-            TestClassFinder.DEFAULT_INCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            TestClassFinder.DEFAULT_EXCLUDE_BY_ABSOLUTE_PATH_PATTERN_LIST,
-            TestClassFinder.DEFAULT_EXCLUDE_ABSTRACT_CLASSES_FLAG,
+            TestClassFinders.DEFAULT_INCLUDE_PATTERN_LIST,
+            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
             oldLogLevel);
     }
 
@@ -372,27 +349,21 @@ public class TestClassFinderTest {
     // TODO: Ref: http://slackhacker.com/2009/12/08/testing-logging-behaviour-in-four-code-lines-flat/
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // TestClassFinder.findAsList()
+    // TestClassFinderImpl.findAsList()
     //
-
-    @Test(expectedExceptions = IllegalStateException.class)
-    public void findAsList_FailWithNoIncludePatterns() {
-        classUnderTestWithoutMocks.findAsList();
-    }
 
     private static class Class1 { }
     private static abstract class AbstractClass2 { }
     private static class Class3 { }
 
     @SuppressWarnings("unchecked")
-    @Test
-    public void findAsList_Pass2()
+    public void _setFindAsMocks()
     throws ClassNotFoundException {
         when(
             mockTraversePathIterableFactory.newInstance(
                 any(File.class), any(TraversePathDepthPolicy.class)))
             .thenReturn(mockTraversePathIterable);
-        when(mockIteratePathFilterFactory.newInstance(any(TestClassFinder.class)))
+        when(mockIteratePathFilterFactory.newInstance(any(TestClassFinderImpl.class)))
             .thenReturn(mockPathFilter);
         when(mockTraversePathIterable.withOptionalIteratePathFilter(mockPathFilter))
             .thenReturn(mockTraversePathIterable);
@@ -401,51 +372,66 @@ public class TestClassFinderTest {
         when(mockTraversePathIterator.next()).thenReturn(new File("dummy"));
         when(mockSourceFileToClassHelper.getClass(any(File.class)))
             .thenReturn((Class) Class1.class, (Class) AbstractClass2.class, (Class) Class3.class);
-        List<Class<?>> classList =
-            classUnderTestWithMocks.includeByAbsolutePathPattern(Pattern.compile("abc"))
-                .findAsList();
-        assertEquals(classList, Arrays.asList(Class1.class, Class3.class));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
-    public void findAsList_Pass() {
-        classUnderTestWithoutMocks = _withKnownIncludePattern(classUnderTestWithoutMocks);
-        List<Class<?>> classList = classUnderTestWithoutMocks.findAsList();
-        Assert.assertTrue(!classList.isEmpty());
-
-        Class<?>[] classArray = classUnderTestWithoutMocks.findAsArray();
-        assertEquals(Arrays.asList(classArray), classList);
+    public void findAsList_Pass()
+    throws ClassNotFoundException {
+        _setFindAsMocks();
+        classUnderTestWithMocks =
+            classUnderTestWithMocks.withIncludePatterns(Pattern.compile("abc"));
+        List<Class<?>> classList = classUnderTestWithMocks.findAsList();
+        assertEquals(classList, Arrays.asList(Class1.class, Class3.class));
     }
 
     @Test(expectedExceptions = PathRuntimeException.class)
     public void findAsList_FailWithPathRuntimeException() {
-        classUnderTestWithoutMocks = _withKnownIncludePattern(classUnderTestWithoutMocks);
-        classUnderTestWithoutMocks =
-            classUnderTestWithoutMocks.withRootDirPath(new File(UUID.randomUUID().toString()));
-        classUnderTestWithoutMocks.findAsList();
+        classUnderTestWithoutMocks
+            .withRootDirPath(new File(UUID.randomUUID().toString()))
+            .withIncludePatterns(Pattern.compile("a"))
+            .findAsList();
+    }
+
+    @Test(expectedExceptions = ClassNotFoundRuntimeException.class)
+    public void findAsList_FailWithClassNotFoundRuntimeException()
+    throws ClassNotFoundException {
+        _setFindAsMocks();
+        classUnderTestWithMocks =
+            classUnderTestWithMocks.withIncludePatterns(Pattern.compile("abc"));
+        ClassNotFoundException cause = new ClassNotFoundException();
+        when(mockSourceFileToClassHelper.getClass(any(File.class))).thenThrow(cause);
+        try {
+            classUnderTestWithMocks.findAsList();
+        }
+        catch (ClassNotFoundRuntimeException e) {
+            assertSame(e.getCause(), cause);
+            throw e;
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // TestClassFinder.findAsArray()
+    // TestClassFinderImpl.findAsArray()
     //
 
+    @SuppressWarnings("unchecked")
     @Test
-    public void findAsArray_Pass() {
-        classUnderTestWithoutMocks = _withKnownIncludePattern(classUnderTestWithoutMocks);
-        Class<?>[] classArray = classUnderTestWithoutMocks.findAsArray();
-        Assert.assertTrue(0 != classArray.length);
-
-        List<Class<?>> classList = classUnderTestWithoutMocks.findAsList();
-        assertEquals(Arrays.asList(classArray), classList);
+    public void findAsArray_Pass()
+    throws ClassNotFoundException {
+        _setFindAsMocks();
+        classUnderTestWithMocks =
+            classUnderTestWithMocks.withIncludePatterns(Pattern.compile("abc"));
+        Class<?>[] classArr = classUnderTestWithMocks.findAsArray();
+        assertEquals(Arrays.asList(classArr), Arrays.asList(Class1.class, Class3.class));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // TestClassFinder.IteratePathFilter.accept(File, int)
+    // TestClassFinderImpl.IteratePathFilter.accept(File, int)
     //
 
     @Test
     public void TestClassFinderPathFilter_accept_FailWithDirPath() {
-        TestClassFinder.IteratePathFilter pathFilter =
+        TestClassFinderImpl.IteratePathFilter pathFilter =
             classUnderTestWithoutMocks.new IteratePathFilter();
         File mockFile = Mockito.mock(File.class);
         when(mockFile.isFile()).thenReturn(false);
@@ -513,10 +499,21 @@ public class TestClassFinderTest {
                 Arrays.asList(matchingPattern),
                 false,
             },
+            {
+                "a",
+                Arrays.asList(notMatchingPattern),
+                Arrays.asList(matchingPattern),
+                false,
+            },
+            {
+                "a",
+                Arrays.asList(notMatchingPattern),
+                Arrays.asList(notMatchingPattern),
+                false,
+            },
         };
     }
 
-    // TODO: Last
     @Test(dataProvider = "_TestClassFinderPathFilter_accept_Pass_Data")
     public void TestClassFinderPathFilter_accept_Pass(
             String absPathname,
@@ -527,19 +524,19 @@ public class TestClassFinderTest {
         when(mockFile.isFile()).thenReturn(true);
         when(mockFile.getAbsolutePath()).thenReturn(absPathname);
         classUnderTestWithoutMocks =
-            classUnderTestWithoutMocks.includeByAbsolutePathPattern(includePatternList);
+            classUnderTestWithoutMocks.withIncludePatterns(includePatternList);
         if (!excludePatternList.isEmpty()) {
             classUnderTestWithoutMocks =
-                classUnderTestWithoutMocks.excludeByAbsolutePathPattern(excludePatternList);
+                classUnderTestWithoutMocks.withExcludePatterns(excludePatternList);
         }
-        TestClassFinder.IteratePathFilter pathFilter =
+        TestClassFinderImpl.IteratePathFilter pathFilter =
             classUnderTestWithoutMocks.new IteratePathFilter();
         boolean actualResult = pathFilter.accept(mockFile, 1);
         assertEquals(actualResult, expectedResult);
     }
 
-    // TODO: Handle null in accept?
-    // TODO: Write test when _excludeAbstractClassesFlag is true
-    // TODO: Cover all cases of include/exclude true/false
-
+    @Test(expectedExceptions = NullPointerException.class)
+    public void TestClassFinderPathFilter_accept_FailWithNull() {
+        classUnderTestWithoutMocks.new IteratePathFilter().accept((File) null, 1);
+    }
 }

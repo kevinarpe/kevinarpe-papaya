@@ -141,8 +141,9 @@
             <charset>${project.build.sourceEncoding}</charset>
             <stylesheetfile>${project.basedir}/src/javadoc/stylesheet.css</stylesheetfile>
             <links>
+                <!-- TODO: Make links between modules work correctly -->
               <link>http://www.joda.org/joda-time/apidocs/</link>
-              <link>http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/index.html</link>
+              <link>http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/</link>
             </links>
 <!--
             <linksource>true</linksource>

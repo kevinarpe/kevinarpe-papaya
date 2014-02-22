@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+// TODO: LAST: Write tests for this module.
 public enum SLF4JLogLevel {
 
     OFF {

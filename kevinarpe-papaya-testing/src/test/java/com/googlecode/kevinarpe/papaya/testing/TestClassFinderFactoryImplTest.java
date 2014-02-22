@@ -25,30 +25,26 @@ package com.googlecode.kevinarpe.papaya.testing;
  * #L%
  */
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.model.InitializationError;
+import org.testng.annotations.Test;
 
-import java.io.File;
-import java.util.regex.Pattern;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNotSame;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@RunWith(SampleJUnitTestSuite.class)
-public class SampleJUnitTestSuite
-extends Suite {
+public class TestClassFinderFactoryImplTest {
 
-    // TODO: What to do with this?
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // TestClassFinderFactoryImpl.newInstance()
+    //
 
-    private static final Class[] TEST_CLASS_ARR =
-        TestClassFinders.newInstance()
-            .withRootDirPath(new File("kevinarpe-papaya-testing"))
-            .withIncludePatterns(Pattern.compile("Test\\.java$"))
-            .findAsArray();
-
-    public SampleJUnitTestSuite(Class<?> clazz)
-    throws InitializationError {
-        super(clazz, TEST_CLASS_ARR);
+    @Test
+    public void newInstance_Pass() {
+        TestClassFinder x = TestClassFinderFactoryImpl.INSTANCE.newInstance();
+        assertNotNull(x);
+        TestClassFinder y = TestClassFinderFactoryImpl.INSTANCE.newInstance();
+        assertNotNull(y);
+        assertNotSame(x, y);
     }
 }

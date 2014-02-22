@@ -40,8 +40,9 @@ public class SourceFileToClassHelperImplTest {
 
     private static final File THIS_SOURCE_FILE_PATH = new File(
         String.format(
-            "kevinarpe-papaya-testing/src/test/java/com/googlecode/kevinarpe/papaya/testing/%s.java",
-            SourceFileToClassHelperImplTest.class.getSimpleName()));
+            "%s/%s.java",
+            UUID.randomUUID().toString(),
+            SourceFileToClassHelperImplTest.class.getName().replace('.', '/')));
 
     private SourceFileToClassHelperImpl classUnderTest;
 
@@ -77,12 +78,12 @@ public class SourceFileToClassHelperImplTest {
     private static Object[][] _getClass_FailWithClassNotFoundException_Data() {
         return new Object[][] {
             {
-                new File(UUID.randomUUID().toString() + SourceFileToClassHelperImpl.JAVA_SUFFIX)
+                new File(UUID.randomUUID().toString() + ".java")
             },
             {
                 new File(
-                    new File(UUID.randomUUID().toString()),
-                    UUID.randomUUID().toString() + SourceFileToClassHelperImpl.JAVA_SUFFIX)
+                    UUID.randomUUID().toString(),
+                    UUID.randomUUID().toString() + ".java")
             },
         };
     }
