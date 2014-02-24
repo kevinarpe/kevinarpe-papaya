@@ -10,10 +10,10 @@
     <artifactId>kevinarpe-papaya-parent</artifactId>
     <version>0.0.13-SNAPSHOT</version>
   </parent>
-  <artifactId>kevinarpe-papaya-testing</artifactId>
+  <artifactId>kevinarpe-papaya-slf4j</artifactId>
   <name>${project.artifactId}</name>
   <packaging>jar</packaging>
-  <description>Papaya for Testing: Utilities for Java 1.6+ written by Kevin Connor ARPE</description>
+  <description>Papaya for SLF4J: Utilities for Java 1.6+ written by Kevin Connor ARPE</description>
 
   <build>
     <plugins>
@@ -56,11 +56,6 @@
     <dependency>
       <groupId>com.googlecode.kevinarpe-papaya</groupId>
       <artifactId>kevinarpe-papaya</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.googlecode.kevinarpe-papaya</groupId>
-      <artifactId>kevinarpe-papaya-slf4j</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>

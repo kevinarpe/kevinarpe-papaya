@@ -60,7 +60,11 @@
     <module>kevinarpe-papaya</module>
     <module>kevinarpe-papaya-joda-time</module>
     <module>kevinarpe-papaya-testing</module>
-    <module>kevinarpe-papaya-logging-slf4j</module>
+    <module>kevinarpe-papaya-testing-junit</module>
+    <module>kevinarpe-papaya-testing-log4j</module>
+    <module>kevinarpe-papaya-testing-log4j-junit</module>
+<!--    <module>kevinarpe-papaya-testing-logback</module>-->
+    <module>kevinarpe-papaya-slf4j</module>
   </modules>
 
   <properties>
@@ -85,12 +89,17 @@
     <maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
 
     <testng.version>6.8.7</testng.version>
+    <junit.version>4.11</junit.version>
     <mockito-all.version>1.9.5</mockito-all.version>
     <powermock.version>1.5.4</powermock.version>
     <guava.version>16.0</guava.version>
-    <guava-testlib.version>16.0</guava-testlib.version>
+    <guava-testlib.version>16.0.1</guava-testlib.version>
     <joda-time.version>2.3</joda-time.version>
     <jsr305.version>2.0.3</jsr305.version>
+
+    <log4j.version>1.2.17</log4j.version>
+    <slf4j-api.version>1.7.5</slf4j-api.version>
+    <logback-classic.version>1.1.1</logback-classic.version>
 
     <maven-gpg-plugin.version>1.4</maven-gpg-plugin.version>
   </properties>
@@ -278,6 +287,12 @@
         <scope>test</scope>
       </dependency>
       <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-all</artifactId>
         <version>${mockito-all.version}</version>
@@ -315,6 +330,22 @@
         <groupId>joda-time</groupId>
         <artifactId>joda-time</artifactId>
         <version>${joda-time.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>${log4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback-classic.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

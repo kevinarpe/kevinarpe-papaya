@@ -10,10 +10,10 @@
     <artifactId>kevinarpe-papaya-parent</artifactId>
     <version>0.0.13-SNAPSHOT</version>
   </parent>
-  <artifactId>kevinarpe-papaya-testing</artifactId>
+  <artifactId>kevinarpe-papaya-testing-log4j</artifactId>
   <name>${project.artifactId}</name>
   <packaging>jar</packaging>
-  <description>Papaya for Testing: Utilities for Java 1.6+ written by Kevin Connor ARPE</description>
+  <description>Papaya for Testing Log4J: Utilities for Java 1.6+ written by Kevin Connor ARPE</description>
 
   <build>
     <plugins>
@@ -59,25 +59,22 @@
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.googlecode.kevinarpe-papaya</groupId>
-      <artifactId>kevinarpe-papaya-slf4j</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-all</artifactId>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
     </dependency>
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-    </dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>compile</scope>
+   </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 </project>
