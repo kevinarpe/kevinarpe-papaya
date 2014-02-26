@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.testing.log4j;
  */
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
@@ -95,7 +96,23 @@ implements LoggingEventAnalysis {
         return x;
     }
 
-    private static final class AnyOfLogLevel
+    @Override
+    public List<LoggingEvent> getLoggingEventListExcluding(Level level, Level... moreLevelArr) {
+        AnyOfLogLevel predicate = new AnyOfLogLevel(level, moreLevelArr);
+        Predicate<LoggingEvent> notPredicate = Predicates.not(predicate);
+        List<LoggingEvent> x = getLoggingEventListByPredicate(notPredicate);
+        return x;
+    }
+
+    @Override
+    public List<LoggingEvent> getLoggingEventListExcluding(Set<Level> levelSet) {
+        AnyOfLogLevel predicate = new AnyOfLogLevel(levelSet);
+        Predicate<LoggingEvent> notPredicate = Predicates.not(predicate);
+        List<LoggingEvent> x = getLoggingEventListByPredicate(notPredicate);
+        return x;
+    }
+
+    static final class AnyOfLogLevel
     implements Predicate<LoggingEvent> {
 
         private final Set<Level> _levelSet;

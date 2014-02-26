@@ -38,6 +38,8 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
  * @see #newQuotingJoinerFactory(String)
  * @see #newQuotingJoinerFactory(char)
  */
+// TODO: Rename to QuotingJoinerUtils?
+// TODO: Add feature for counting?
 @FullyTested
 public final class QuotingJoiners {
     

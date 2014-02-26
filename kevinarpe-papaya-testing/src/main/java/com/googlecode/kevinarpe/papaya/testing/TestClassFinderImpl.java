@@ -41,6 +41,8 @@ import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterableFactoryImp
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLevelLogger;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLevelLoggers;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
+import org.slf4j.ILoggerFactory;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.lang.reflect.Modifier;
@@ -63,31 +65,39 @@ implements TestClassFinder {
     private final TraversePathIterableFactory _traversePathIterableFactory;
     private final IteratePathFilterFactory _iteratePathFilterFactory;
     private final SourceFileToClassHelper _sourceFileToClassHelper;
+    private final ILoggerFactory _loggerFactory;
 
     // Replace with static method, e.g, withRootDirPath(File)
     public TestClassFinderImpl() {
         this(
             TraversePathIterableFactoryImpl.INSTANCE,
             IteratePathFilterFactoryImpl.INSTANCE,
-            SourceFileToClassHelperImpl.INSTANCE);
+            SourceFileToClassHelperImpl.INSTANCE,
+            LoggerFactory.getILoggerFactory());
     }
 
     public TestClassFinderImpl(
             TraversePathIterableFactory traversePathIterableFactory,
             IteratePathFilterFactory iteratePathFilterFactory,
-            SourceFileToClassHelper sourceFileToClassHelper) {
+            SourceFileToClassHelper sourceFileToClassHelper,
+            ILoggerFactory loggerFactory) {
         this(
             TestClassFinders.DEFAULT_ROOT_DIR_PATH,
             TestClassFinders.DEFAULT_INCLUDE_PATTERN_LIST,
             TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
-            _newSLF4JLevelLogger(TestClassFinders.DEFAULT_LOG_LEVEL),
+            _newSLF4JLevelLogger(
+                ObjectArgs.checkNotNull(loggerFactory, "loggerFactory"),
+                TestClassFinders.DEFAULT_LOG_LEVEL),
             ObjectArgs.checkNotNull(traversePathIterableFactory, "traversePathIterableFactory"),
             ObjectArgs.checkNotNull(iteratePathFilterFactory, "iteratePathFilterFactory"),
-            ObjectArgs.checkNotNull(sourceFileToClassHelper, "sourceFileToClassHelper"));
+            ObjectArgs.checkNotNull(sourceFileToClassHelper, "sourceFileToClassHelper"),
+            loggerFactory);
     }
 
-    private static SLF4JLevelLogger _newSLF4JLevelLogger(SLF4JLogLevel logLevel) {
-        SLF4JLevelLogger x = SLF4JLevelLoggers.newInstance(logLevel, TestClassFinderImpl.class);
+    private static SLF4JLevelLogger _newSLF4JLevelLogger(
+            ILoggerFactory loggerFactory, SLF4JLogLevel logLevel) {
+        SLF4JLevelLogger x =
+            SLF4JLevelLoggers.newInstance(loggerFactory, logLevel, TestClassFinderImpl.class);
         return x;
     }
 
@@ -98,7 +108,8 @@ implements TestClassFinder {
             SLF4JLevelLogger levelLogger,
             TraversePathIterableFactory traversePathIterableFactory,
             IteratePathFilterFactory iteratePathFilterFactory,
-            SourceFileToClassHelper sourceFileToClassHelper) {
+            SourceFileToClassHelper sourceFileToClassHelper,
+            ILoggerFactory loggerFactory) {
         _rootDirPath = rootDirPath;
         _includeByAbsolutePathPatternList = includeByFilePathPatternList;
         _excludeByAbsolutePathPatternList = excludeByFilePathPatternList;
@@ -106,6 +117,7 @@ implements TestClassFinder {
         _traversePathIterableFactory = traversePathIterableFactory;
         _iteratePathFilterFactory = iteratePathFilterFactory;
         _sourceFileToClassHelper = sourceFileToClassHelper;
+        _loggerFactory = loggerFactory;
     }
 
     @Override
@@ -119,7 +131,8 @@ implements TestClassFinder {
             _levelLogger,
             _traversePathIterableFactory,
             _iteratePathFilterFactory,
-            _sourceFileToClassHelper);
+            _sourceFileToClassHelper,
+            _loggerFactory);
         return x;
     }
 
@@ -146,7 +159,8 @@ implements TestClassFinder {
             _levelLogger,
             _traversePathIterableFactory,
             _iteratePathFilterFactory,
-            _sourceFileToClassHelper);
+            _sourceFileToClassHelper,
+            _loggerFactory);
         return x;
     }
 
@@ -174,7 +188,8 @@ implements TestClassFinder {
             _levelLogger,
             _traversePathIterableFactory,
             _iteratePathFilterFactory,
-            _sourceFileToClassHelper);
+            _sourceFileToClassHelper,
+            _loggerFactory);
         return x;
     }
 
@@ -196,7 +211,7 @@ implements TestClassFinder {
     public TestClassFinderImpl withLogLevel(SLF4JLogLevel logLevel) {
         ObjectArgs.checkNotNull(logLevel, "logLevel");
 
-        SLF4JLevelLogger levelLogger = _newSLF4JLevelLogger(logLevel);
+        SLF4JLevelLogger levelLogger = _newSLF4JLevelLogger(_loggerFactory, logLevel);
         TestClassFinderImpl x = new TestClassFinderImpl(
             _rootDirPath,
             _includeByAbsolutePathPatternList,
@@ -204,7 +219,8 @@ implements TestClassFinder {
             levelLogger,
             _traversePathIterableFactory,
             _iteratePathFilterFactory,
-            _sourceFileToClassHelper);
+            _sourceFileToClassHelper,
+            _loggerFactory);
         return x;
     }
 

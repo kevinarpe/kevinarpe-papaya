@@ -25,12 +25,32 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  * #L%
  */
 
+import org.slf4j.Logger;
 import org.slf4j.Marker;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public interface SLF4JLevelLogger {
+
+    // TODO: Move me somewhere else (up).
+    // TODO: Use this interface and some heavy mocking to allow full mocking on SLF4J.
+    public static interface SLF4JLoggingEvent {
+        Logger getLogger();
+        SLF4JLogLevel getLevel();
+        Marker getMarker();
+        String getMessage();
+        Object[] getMessageFormatArgArr();
+        // TODO: LAST: Maybe replace with ThrowbleProxy?
+        // TODO: If we use ThrowbleProxy, can we throw a synthetic Throwable(Impl)?
+        // Maybe no need, as we will have the original?
+        // Can we safely mock Throwable?  If so, whatev this proxy stuff.  R&D, please.
+        Throwable getThrowable();
+        String getThreadName();
+        long getTimeStamp();
+        // TODO: How to format the message?
+        String getFormattedMessage();
+    }
 
     SLF4JLogLevel getLogLevel();
 

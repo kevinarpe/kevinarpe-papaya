@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.testing.log4j.junit;
+package com.googlecode.kevinarpe.papaya.testing.log4j.testng;
 
 /*
  * #%L
@@ -29,8 +29,8 @@ import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.testing.log4j.Log4JTestUtils;
 import com.googlecode.kevinarpe.papaya.testing.log4j.LoggingEventAnalysis;
 import org.apache.log4j.spi.LoggingEvent;
-import org.junit.After;
-import org.junit.Before;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 
 import java.util.List;
 
@@ -38,14 +38,14 @@ import java.util.List;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @NotFullyTested
-public class Log4JTestBase {
+public class TestNGLog4JTestBase {
 
-    @Before
+    @BeforeMethod
     public final void Log4JTestBase_BeforeEachTest() {
         Log4JTestUtils.addMockAppender();
     }
 
-    @After
+    @AfterMethod
     public final void Log4JTestBase_AfterEachTest() {
         Log4JTestUtils.removeMockAppender();
     }

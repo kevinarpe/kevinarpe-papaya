@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.testing.log4j;
+package com.googlecode.kevinarpe.papaya.testing.log4j.junit;
 
 /*
  * #%L
@@ -25,27 +25,38 @@ package com.googlecode.kevinarpe.papaya.testing.log4j;
  * #L%
  */
 
-import com.google.common.base.Predicate;
-import org.apache.log4j.Level;
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.testing.log4j.Log4JTestUtils;
+import com.googlecode.kevinarpe.papaya.testing.log4j.LoggingEventAnalysis;
 import org.apache.log4j.spi.LoggingEvent;
+import org.junit.After;
+import org.junit.Before;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public interface LoggingEventAnalysis {
-    List<LoggingEvent> getLoggingEventList();
+@NotFullyTested
+public class JUnitLog4JTestBase {
 
-    List<LoggingEvent> getLoggingEventListByPredicate(
-        Predicate<LoggingEvent> predicate);
+    @Before
+    public final void Log4JTestBase_BeforeEachTest() {
+        Log4JTestUtils.addMockAppender();
+    }
 
-    List<LoggingEvent> getLoggingEventListIncluding(Level level, Level... moreLevelArr);
+    @After
+    public final void Log4JTestBase_AfterEachTest() {
+        Log4JTestUtils.removeMockAppender();
+    }
 
-    List<LoggingEvent> getLoggingEventListIncluding(Set<Level> levelSet);
+    public final List<LoggingEvent> getLoggingEventList() {
+        List<LoggingEvent> x = Log4JTestUtils.getLoggingEventList();
+        return x;
+    }
 
-    List<LoggingEvent> getLoggingEventListExcluding(Level level, Level... moreLevelArr);
-
-    List<LoggingEvent> getLoggingEventListExcluding(Set<Level> levelSet);
+    public final LoggingEventAnalysis getLoggingEventAnalysis() {
+        LoggingEventAnalysis x = Log4JTestUtils.getLoggingEventAnalysis();
+        return x;
+    }
 }

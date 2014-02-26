@@ -41,6 +41,7 @@ import java.util.regex.Pattern;
  * @see #newInstance()
  * @see #newFactory()
  */
+// TODO: Rename to TestClassFinderUtils?
 @FullyTested
 public final class TestClassFinders {
 
