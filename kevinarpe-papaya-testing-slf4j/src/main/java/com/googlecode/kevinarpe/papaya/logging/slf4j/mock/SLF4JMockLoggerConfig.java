@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.testing.log4j;
+package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
 
 /*
  * #%L
@@ -25,28 +25,19 @@ package com.googlecode.kevinarpe.papaya.testing.log4j;
  * #L%
  */
 
-import com.google.common.base.Predicate;
-import org.apache.log4j.Level;
-import org.apache.log4j.spi.LoggingEvent;
-
-import java.util.List;
-import java.util.Set;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
+import org.slf4j.Marker;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public interface LoggingEventAnalysis {
+public interface SLF4JMockLoggerConfig {
 
-    List<LoggingEvent> getLoggingEventList();
+    boolean isEnabled(SLF4JLogLevel logLevel);
 
-    List<LoggingEvent> getLoggingEventListIncluding(
-        Predicate<LoggingEvent> predicate);
+    boolean isEnabled(Marker marker, SLF4JLogLevel logLevel);
 
-    List<LoggingEvent> getLoggingEventListIncluding(Level level, Level... moreLevelArr);
+    boolean setEnabled(SLF4JLogLevel logLevel, boolean isEnabled);
 
-    List<LoggingEvent> getLoggingEventListIncluding(Set<Level> levelSet);
-
-    List<LoggingEvent> getLoggingEventListExcluding(Level level, Level... moreLevelArr);
-
-    List<LoggingEvent> getLoggingEventListExcluding(Set<Level> levelSet);
+    boolean setEnabled(Marker marker, SLF4JLogLevel logLevel, boolean isEnabled);
 }

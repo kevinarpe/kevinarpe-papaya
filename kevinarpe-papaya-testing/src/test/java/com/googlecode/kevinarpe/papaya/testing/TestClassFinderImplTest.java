@@ -25,19 +25,18 @@ package com.googlecode.kevinarpe.papaya.testing;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 import com.googlecode.kevinarpe.papaya.exception.ClassNotFoundRuntimeException;
 import com.googlecode.kevinarpe.papaya.exception.PathRuntimeException;
-import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
 import com.googlecode.kevinarpe.papaya.filesystem.PathFilter;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathDepthPolicy;
-import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterator;
+import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterableFactory;
+import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterator;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEvent;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.mock.SLF4JMockLoggerFactoryImpl;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.mock.SLF4JMockLoggerImpl;
 import org.mockito.Mockito;
-import org.slf4j.ILoggerFactory;
-import org.slf4j.Logger;
-import org.slf4j.Marker;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -60,338 +59,13 @@ import static org.testng.Assert.assertSame;
  */
 public class TestClassFinderImplTest {
 
-    private static class MockILoggingFactory
-    implements ILoggerFactory {
-
-        @Override
-        public Logger getLogger(String name) {
-            return null;
-        }
-    }
-
-    private static class MockLogger
-    implements Logger {
-
-        // TODO: All configuration of isEnabled
-
-        private final String _name;
-
-        public MockLogger(String name) {
-            _name = StringArgs.checkNotEmptyOrWhitespace(name, "name");
-        }
-
-        @Override
-        public String getName() {
-            return _name;
-        }
-
-        @Override
-        public boolean isTraceEnabled() {
-            return false;
-        }
-
-        @Override
-        public void trace(String msg) {
-
-        }
-
-        @Override
-        public void trace(String format, Object arg) {
-
-        }
-
-        @Override
-        public void trace(String format, Object arg1, Object arg2) {
-
-        }
-
-        @Override
-        public void trace(String format, Object... arguments) {
-
-        }
-
-        @Override
-        public void trace(String msg, Throwable t) {
-
-        }
-
-        @Override
-        public boolean isTraceEnabled(Marker marker) {
-            return false;
-        }
-
-        @Override
-        public void trace(Marker marker, String msg) {
-
-        }
-
-        @Override
-        public void trace(Marker marker, String format, Object arg) {
-
-        }
-
-        @Override
-        public void trace(Marker marker, String format, Object arg1, Object arg2) {
-
-        }
-
-        @Override
-        public void trace(Marker marker, String format, Object... argArray) {
-
-        }
-
-        @Override
-        public void trace(Marker marker, String msg, Throwable t) {
-
-        }
-
-        @Override
-        public boolean isDebugEnabled() {
-            return false;
-        }
-
-        @Override
-        public void debug(String msg) {
-
-        }
-
-        @Override
-        public void debug(String format, Object arg) {
-
-        }
-
-        @Override
-        public void debug(String format, Object arg1, Object arg2) {
-
-        }
-
-        @Override
-        public void debug(String format, Object... arguments) {
-
-        }
-
-        @Override
-        public void debug(String msg, Throwable t) {
-
-        }
-
-        @Override
-        public boolean isDebugEnabled(Marker marker) {
-            return false;
-        }
-
-        @Override
-        public void debug(Marker marker, String msg) {
-
-        }
-
-        @Override
-        public void debug(Marker marker, String format, Object arg) {
-
-        }
-
-        @Override
-        public void debug(Marker marker, String format, Object arg1, Object arg2) {
-
-        }
-
-        @Override
-        public void debug(Marker marker, String format, Object... arguments) {
-
-        }
-
-        @Override
-        public void debug(Marker marker, String msg, Throwable t) {
-
-        }
-
-        @Override
-        public boolean isInfoEnabled() {
-            return false;
-        }
-
-        @Override
-        public void info(String msg) {
-
-        }
-
-        @Override
-        public void info(String format, Object arg) {
-
-        }
-
-        @Override
-        public void info(String format, Object arg1, Object arg2) {
-
-        }
-
-        @Override
-        public void info(String format, Object... arguments) {
-
-        }
-
-        @Override
-        public void info(String msg, Throwable t) {
-
-        }
-
-        @Override
-        public boolean isInfoEnabled(Marker marker) {
-            return false;
-        }
-
-        @Override
-        public void info(Marker marker, String msg) {
-
-        }
-
-        @Override
-        public void info(Marker marker, String format, Object arg) {
-
-        }
-
-        @Override
-        public void info(Marker marker, String format, Object arg1, Object arg2) {
-
-        }
-
-        @Override
-        public void info(Marker marker, String format, Object... arguments) {
-
-        }
-
-        @Override
-        public void info(Marker marker, String msg, Throwable t) {
-
-        }
-
-        @Override
-        public boolean isWarnEnabled() {
-            return false;
-        }
-
-        @Override
-        public void warn(String msg) {
-
-        }
-
-        @Override
-        public void warn(String format, Object arg) {
-
-        }
-
-        @Override
-        public void warn(String format, Object... arguments) {
-
-        }
-
-        @Override
-        public void warn(String format, Object arg1, Object arg2) {
-
-        }
-
-        @Override
-        public void warn(String msg, Throwable t) {
-
-        }
-
-        @Override
-        public boolean isWarnEnabled(Marker marker) {
-            return false;
-        }
-
-        @Override
-        public void warn(Marker marker, String msg) {
-
-        }
-
-        @Override
-        public void warn(Marker marker, String format, Object arg) {
-
-        }
-
-        @Override
-        public void warn(Marker marker, String format, Object arg1, Object arg2) {
-
-        }
-
-        @Override
-        public void warn(Marker marker, String format, Object... arguments) {
-
-        }
-
-        @Override
-        public void warn(Marker marker, String msg, Throwable t) {
-
-        }
-
-        @Override
-        public boolean isErrorEnabled() {
-            return false;
-        }
-
-        @Override
-        public void error(String msg) {
-
-        }
-
-        @Override
-        public void error(String format, Object arg) {
-
-        }
-
-        @Override
-        public void error(String format, Object arg1, Object arg2) {
-
-        }
-
-        @Override
-        public void error(String format, Object... arguments) {
-
-        }
-
-        @Override
-        public void error(String msg, Throwable t) {
-
-        }
-
-        @Override
-        public boolean isErrorEnabled(Marker marker) {
-            return false;
-        }
-
-        @Override
-        public void error(Marker marker, String msg) {
-
-        }
-
-        @Override
-        public void error(Marker marker, String format, Object arg) {
-
-        }
-
-        @Override
-        public void error(Marker marker, String format, Object arg1, Object arg2) {
-
-        }
-
-        @Override
-        public void error(Marker marker, String format, Object... arguments) {
-
-        }
-
-        @Override
-        public void error(Marker marker, String msg, Throwable t) {
-
-        }
-    }
-
     private TraversePathIterableFactory mockTraversePathIterableFactory;
     private TraversePathIterable mockTraversePathIterable;
     private TraversePathIterator mockTraversePathIterator;
     private TestClassFinderImpl.IteratePathFilterFactory mockIteratePathFilterFactory;
     private PathFilter mockPathFilter;
     private SourceFileToClassHelper mockSourceFileToClassHelper;
+    private SLF4JMockLoggerFactoryImpl mockLoggerFactory;
     private TestClassFinderImpl classUnderTestWithoutMocks;
     private TestClassFinderImpl classUnderTestWithMocks;
 
@@ -403,12 +77,14 @@ public class TestClassFinderImplTest {
         mockIteratePathFilterFactory = mock(TestClassFinderImpl.IteratePathFilterFactory.class);
         mockPathFilter = mock(PathFilter.class);
         mockSourceFileToClassHelper = mock(SourceFileToClassHelper.class);
+        mockLoggerFactory = new SLF4JMockLoggerFactoryImpl();
         classUnderTestWithoutMocks = new TestClassFinderImpl();
         classUnderTestWithMocks =
             new TestClassFinderImpl(
                 mockTraversePathIterableFactory,
                 mockIteratePathFilterFactory,
-                mockSourceFileToClassHelper);
+                mockSourceFileToClassHelper,
+                mockLoggerFactory);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -853,16 +529,23 @@ public class TestClassFinderImplTest {
         File mockFile = Mockito.mock(File.class);
         when(mockFile.isFile()).thenReturn(true);
         when(mockFile.getAbsolutePath()).thenReturn(absPathname);
-        classUnderTestWithoutMocks =
-            classUnderTestWithoutMocks.withIncludePatterns(includePatternList);
+        classUnderTestWithMocks =
+            classUnderTestWithMocks.withIncludePatterns(includePatternList);
         if (!excludePatternList.isEmpty()) {
-            classUnderTestWithoutMocks =
-                classUnderTestWithoutMocks.withExcludePatterns(excludePatternList);
+            classUnderTestWithMocks =
+                classUnderTestWithMocks.withExcludePatterns(excludePatternList);
         }
+        classUnderTestWithMocks = classUnderTestWithMocks.withLogLevel(SLF4JLogLevel.TRACE);
         TestClassFinderImpl.IteratePathFilter pathFilter =
-            classUnderTestWithoutMocks.new IteratePathFilter();
+            classUnderTestWithMocks.new IteratePathFilter();
         boolean actualResult = pathFilter.accept(mockFile, 1);
         assertEquals(actualResult, expectedResult);
+
+        SLF4JMockLoggerImpl logger =
+            mockLoggerFactory.getLogger(TestClassFinderImpl.class.getName());
+        List<SLF4JLoggingEvent> loggingEventList = logger.getLoggingEventList();
+        assertEquals(loggingEventList.size(), 1);
+        assertEquals(loggingEventList.get(0).getLevel(), SLF4JLogLevel.TRACE);
     }
 
     @Test(expectedExceptions = NullPointerException.class)

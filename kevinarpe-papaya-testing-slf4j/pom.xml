@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-    <!-- Project homepage: http://code.google.com/p/kevinarpe-papaya -->
-    <!-- This POM is largely based upon that of Google Guava. -->
-
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.googlecode.kevinarpe-papaya</groupId>
         <artifactId>kevinarpe-papaya-parent</artifactId>
+        <groupId>com.googlecode.kevinarpe-papaya</groupId>
         <version>0.0.13-SNAPSHOT</version>
     </parent>
-    <artifactId>kevinarpe-papaya-testing</artifactId>
+
+    <artifactId>kevinarpe-papaya-testing-slf4j</artifactId>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
-    <description>Papaya for Testing: Utilities for Java 1.6+ written by Kevin Connor ARPE</description>
+    <description>Papaya for Testing SLF4J: Utilities for Java 1.6+ written by Kevin Connor ARPE</description>
 
     <build>
         <plugins>
@@ -63,11 +60,6 @@
         <dependency>
             <groupId>com.googlecode.kevinarpe-papaya</groupId>
             <artifactId>kevinarpe-papaya-slf4j</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.kevinarpe-papaya</groupId>
-            <artifactId>kevinarpe-papaya-testing-slf4j</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

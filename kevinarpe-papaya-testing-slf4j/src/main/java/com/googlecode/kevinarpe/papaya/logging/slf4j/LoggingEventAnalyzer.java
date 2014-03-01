@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.testing.log4j;
+package com.googlecode.kevinarpe.papaya.logging.slf4j;
 
 /*
  * #%L
@@ -26,8 +26,6 @@ package com.googlecode.kevinarpe.papaya.testing.log4j;
  */
 
 import com.google.common.base.Predicate;
-import org.apache.log4j.Level;
-import org.apache.log4j.spi.LoggingEvent;
 
 import java.util.List;
 import java.util.Set;
@@ -35,18 +33,20 @@ import java.util.Set;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public interface LoggingEventAnalysis {
+public interface LoggingEventAnalyzer {
 
-    List<LoggingEvent> getLoggingEventList();
+    List<SLF4JLoggingEvent> getLoggingEventList();
 
-    List<LoggingEvent> getLoggingEventListIncluding(
-        Predicate<LoggingEvent> predicate);
+    List<SLF4JLoggingEvent> getLoggingEventListIncluding(
+        Predicate<SLF4JLoggingEvent> predicate);
 
-    List<LoggingEvent> getLoggingEventListIncluding(Level level, Level... moreLevelArr);
+    List<SLF4JLoggingEvent> getLoggingEventListIncluding(
+        SLF4JLogLevel level, SLF4JLogLevel... moreSLF4JLogLevelArr);
 
-    List<LoggingEvent> getLoggingEventListIncluding(Set<Level> levelSet);
+    List<SLF4JLoggingEvent> getLoggingEventListIncluding(Set<SLF4JLogLevel> levelSet);
 
-    List<LoggingEvent> getLoggingEventListExcluding(Level level, Level... moreLevelArr);
+    List<SLF4JLoggingEvent> getLoggingEventListExcluding(
+        SLF4JLogLevel level, SLF4JLogLevel... moreLevelArr);
 
-    List<LoggingEvent> getLoggingEventListExcluding(Set<Level> levelSet);
+    List<SLF4JLoggingEvent> getLoggingEventListExcluding(Set<SLF4JLogLevel> levelSet);
 }

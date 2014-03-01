@@ -96,6 +96,7 @@ implements TestClassFinder {
 
     private static SLF4JLevelLogger _newSLF4JLevelLogger(
             ILoggerFactory loggerFactory, SLF4JLogLevel logLevel) {
+        // TODO: Is SLF4JLevelLogger dumb?  Maybe just log as we like.
         SLF4JLevelLogger x =
             SLF4JLevelLoggers.newInstance(loggerFactory, logLevel, TestClassFinderImpl.class);
         return x;
@@ -143,7 +144,7 @@ implements TestClassFinder {
 
     @Override
     public TestClassFinderImpl withIncludePatterns(
-        Pattern filePathPattern, Pattern... moreFilePathPatternsArr) {
+            Pattern filePathPattern, Pattern... moreFilePathPatternsArr) {
         List<Pattern> list = _toArrayList(filePathPattern, moreFilePathPatternsArr);
         TestClassFinderImpl x = withIncludePatterns(list);
         return x;
@@ -171,7 +172,7 @@ implements TestClassFinder {
 
     @Override
     public TestClassFinderImpl withExcludePatterns(
-        Pattern filePathPattern, Pattern... moreFilePathPatternsArr) {
+            Pattern filePathPattern, Pattern... moreFilePathPatternsArr) {
         List<Pattern> list = _toArrayList(filePathPattern, moreFilePathPatternsArr);
         TestClassFinderImpl x = withExcludePatterns(list);
         return x;
@@ -306,25 +307,24 @@ implements TestClassFinder {
             String absPathname = path.getAbsolutePath();
             boolean include = _isMatch(absPathname, _includeByAbsolutePathPatternList);
             boolean exclude = _isMatch(absPathname, _excludeByAbsolutePathPatternList);
-            _logIsMatch(_levelLogger, absPathname, include, exclude);
+            _logIsMatch(absPathname, include, exclude);
             boolean result = include && !exclude;
             return result;
         }
-    }
 
-    private static void _logIsMatch(
-            SLF4JLevelLogger levelLogger, String absPathname, boolean include, boolean exclude) {
-        if (include && exclude) {
-            levelLogger.log(" include &&  exclude: '{}'", absPathname);
-        }
-        if (!include && exclude) {
-            levelLogger.log("!include &&  exclude: '{}'", absPathname);
-        }
-        if (include && !exclude) {
-            levelLogger.log(" include && !exclude: '{}'", absPathname);
-        }
-        if (!include && !exclude) {
-            levelLogger.log("!include && !exclude: '{}'", absPathname);
+        private void _logIsMatch(String absPathname, boolean include, boolean exclude) {
+            if (include && exclude) {
+                _levelLogger.log(" include &&  exclude: '{}'", absPathname);
+            }
+            if (!include && exclude) {
+                _levelLogger.log("!include &&  exclude: '{}'", absPathname);
+            }
+            if (include && !exclude) {
+                _levelLogger.log(" include && !exclude: '{}'", absPathname);
+            }
+            if (!include && !exclude) {
+                _levelLogger.log("!include && !exclude: '{}'", absPathname);
+            }
         }
     }
 

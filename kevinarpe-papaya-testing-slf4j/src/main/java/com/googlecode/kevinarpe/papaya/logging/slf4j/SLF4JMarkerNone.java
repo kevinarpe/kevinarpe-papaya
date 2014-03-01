@@ -25,26 +25,61 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  * #L%
  */
 
+import com.google.common.collect.Iterators;
 import org.slf4j.Marker;
+
+import java.util.Iterator;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public interface SLF4JLevelLogger {
+public class SLF4JMarkerNone
+implements Marker {
 
-    SLF4JLogLevel getLogLevel();
+    public static final SLF4JMarkerNone INSTANCE = new SLF4JMarkerNone();
 
-    boolean isEnabled();
-    void log(String msg);
-    void log(String format, Object arg);
-    void log(String format, Object arg1, Object arg2);
-    void log(String format, Object... argArr);
-    void log(String msg, Throwable t);
+    private SLF4JMarkerNone() {
+        // Empty
+    }
 
-    boolean isEnabled(Marker marker);
-    void log(Marker marker, String msg);
-    void log(Marker marker, String format, Object arg);
-    void log(Marker marker, String format, Object arg1, Object arg2);
-    void log(Marker marker, String format, Object... argArr);
-    void log(Marker marker, String msg, Throwable t);
+    @Override
+    public String getName() {
+        return "";
+    }
+
+    @Override
+    public void add(Marker reference) {
+        // Do nothing
+    }
+
+    @Override
+    public boolean remove(Marker reference) {
+        return false;  // reference could not be found and removed
+    }
+
+    @Override
+    public boolean hasChildren() {
+        return false;
+    }
+
+    @Override
+    public boolean hasReferences() {
+        return false;
+    }
+
+    @Override
+    public Iterator iterator() {
+        Iterator x = Iterators.emptyIterator();
+        return x;
+    }
+
+    @Override
+    public boolean contains(Marker other) {
+        return false;
+    }
+
+    @Override
+    public boolean contains(String name) {
+        return false;
+    }
 }

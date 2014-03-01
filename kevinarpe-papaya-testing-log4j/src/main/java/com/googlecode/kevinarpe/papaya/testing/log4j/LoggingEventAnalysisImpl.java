@@ -67,7 +67,7 @@ implements LoggingEventAnalysis {
     // ^^^ String, Object[]
 
     @Override
-    public List<LoggingEvent> getLoggingEventListByPredicate(
+    public List<LoggingEvent> getLoggingEventListIncluding(
         Predicate<LoggingEvent> predicate) {
         ObjectArgs.checkNotNull(predicate, "predicate");
 
@@ -85,14 +85,14 @@ implements LoggingEventAnalysis {
     @Override
     public List<LoggingEvent> getLoggingEventListIncluding(Level level, Level... moreLevelArr) {
         AnyOfLogLevel predicate = new AnyOfLogLevel(level, moreLevelArr);
-        List<LoggingEvent> x = getLoggingEventListByPredicate(predicate);
+        List<LoggingEvent> x = getLoggingEventListIncluding(predicate);
         return x;
     }
 
     @Override
     public List<LoggingEvent> getLoggingEventListIncluding(Set<Level> levelSet) {
         AnyOfLogLevel predicate = new AnyOfLogLevel(levelSet);
-        List<LoggingEvent> x = getLoggingEventListByPredicate(predicate);
+        List<LoggingEvent> x = getLoggingEventListIncluding(predicate);
         return x;
     }
 
@@ -100,7 +100,7 @@ implements LoggingEventAnalysis {
     public List<LoggingEvent> getLoggingEventListExcluding(Level level, Level... moreLevelArr) {
         AnyOfLogLevel predicate = new AnyOfLogLevel(level, moreLevelArr);
         Predicate<LoggingEvent> notPredicate = Predicates.not(predicate);
-        List<LoggingEvent> x = getLoggingEventListByPredicate(notPredicate);
+        List<LoggingEvent> x = getLoggingEventListIncluding(notPredicate);
         return x;
     }
 
@@ -108,7 +108,7 @@ implements LoggingEventAnalysis {
     public List<LoggingEvent> getLoggingEventListExcluding(Set<Level> levelSet) {
         AnyOfLogLevel predicate = new AnyOfLogLevel(levelSet);
         Predicate<LoggingEvent> notPredicate = Predicates.not(predicate);
-        List<LoggingEvent> x = getLoggingEventListByPredicate(notPredicate);
+        List<LoggingEvent> x = getLoggingEventListIncluding(notPredicate);
         return x;
     }
 
