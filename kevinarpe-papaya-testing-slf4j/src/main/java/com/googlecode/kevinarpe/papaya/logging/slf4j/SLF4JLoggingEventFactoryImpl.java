@@ -25,61 +25,33 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  * #L%
  */
 
-import com.google.common.collect.Iterators;
+import org.slf4j.Logger;
 import org.slf4j.Marker;
-
-import java.util.Iterator;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public final class SLF4JMarkerNone
-implements Marker {
+// TODO: Check final carefully everywhere.
+public final class SLF4JLoggingEventFactoryImpl
+implements SLF4JLoggingEventFactory {
 
-    public static final SLF4JMarkerNone INSTANCE = new SLF4JMarkerNone();
+    public static final SLF4JLoggingEventFactoryImpl INSTANCE = new SLF4JLoggingEventFactoryImpl();
 
-    private SLF4JMarkerNone() {
-        // Empty
+    private SLF4JLoggingEventFactoryImpl() {
+        // Empty.
     }
 
     @Override
-    public String getName() {
-        return "";
-    }
-
-    @Override
-    public void add(Marker reference) {
-        // Do nothing
-    }
-
-    @Override
-    public boolean remove(Marker reference) {
-        return false;  // reference could not be found and removed
-    }
-
-    @Override
-    public boolean hasChildren() {
-        return false;
-    }
-
-    @Override
-    public boolean hasReferences() {
-        return false;
-    }
-
-    @Override
-    public Iterator iterator() {
-        Iterator x = Iterators.emptyIterator();
+    public SLF4JLoggingEventImpl newInstance(
+            Logger logger,
+            SLF4JLogLevel logLevel,
+            Marker marker,
+            String message,
+            Object[] optionalFormatArgArr,
+            Throwable optionalThrowable) {
+        SLF4JLoggingEventImpl x =
+            new SLF4JLoggingEventImpl(
+                logger, logLevel, marker, message, optionalFormatArgArr, optionalThrowable);
         return x;
-    }
-
-    @Override
-    public boolean contains(Marker other) {
-        return false;
-    }
-
-    @Override
-    public boolean contains(String name) {
-        return false;
     }
 }

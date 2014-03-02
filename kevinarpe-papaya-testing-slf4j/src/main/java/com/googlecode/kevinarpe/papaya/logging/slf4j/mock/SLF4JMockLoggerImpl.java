@@ -30,8 +30,11 @@ import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEvent;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventAnalyzer;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventImpl;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventAnalyzerImpl;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventFactory;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventFactoryImpl;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventFactoryUtils;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventFactoryUtilsInterface;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JMarkerNone;
 import org.slf4j.Marker;
 
@@ -41,17 +44,33 @@ import java.util.List;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class SLF4JMockLoggerImpl
+public final class SLF4JMockLoggerImpl
 implements SLF4JMockLogger {
 
     private final String _name;
     private final SLF4JMockLoggerConfig _config;
+    private final SLF4JLoggingEventFactory _factory;
+    private final SLF4JLoggingEventFactoryUtilsInterface _factoryUtils;
     private final List<SLF4JLoggingEvent> _loggingEventList;
 
     public SLF4JMockLoggerImpl(String name, SLF4JMockLoggerConfigImpl config) {
+        this(
+            name,
+            config,
+            SLF4JLoggingEventFactoryImpl.INSTANCE,
+            new SLF4JLoggingEventFactoryUtils());
+    }
+
+    SLF4JMockLoggerImpl(
+            String name,
+            SLF4JMockLoggerConfigImpl config,
+            SLF4JLoggingEventFactory factory,
+            SLF4JLoggingEventFactoryUtilsInterface factoryUtils) {
         _name = StringArgs.checkNotEmptyOrWhitespace(name, "name");
         ObjectArgs.checkNotNull(config, "config");
         _config = new SLF4JMockLoggerConfigImpl(config);
+        _factory = ObjectArgs.checkNotNull(factory, "factory");
+        _factoryUtils = ObjectArgs.checkNotNull(factoryUtils, "factoryUtils");
         _loggingEventList = Lists.newArrayList();
     }
 
@@ -64,16 +83,11 @@ implements SLF4JMockLogger {
      *
      * @return
      *
-     * @see SLF4JLoggingEventAnalyzer
+     * @see SLF4JLoggingEventAnalyzerImpl
      */
     public List<SLF4JLoggingEvent> getLoggingEventList() {
         List<SLF4JLoggingEvent> x = Collections.unmodifiableList(_loggingEventList);
         return x;
-    }
-
-    public SLF4JLoggingEventAnalyzer newLoggingEventAnalyzer() {
-        // TODO: LAST: Really need this method (+factory)?
-        return null;
     }
 
     @Override
@@ -92,8 +106,7 @@ implements SLF4JMockLogger {
 
     private void _log(SLF4JLogLevel logLevel, Marker marker, String msg) {
         if (_isEnabled(logLevel, marker)) {
-            // TODO: Create factory?
-            SLF4JLoggingEventImpl x = new SLF4JLoggingEventImpl(this, logLevel, marker, msg);
+            SLF4JLoggingEvent x = _factoryUtils.newInstance(_factory, this, logLevel, marker, msg);
             _loggingEventList.add(x);
         }
     }
@@ -104,8 +117,8 @@ implements SLF4JMockLogger {
 
     private void _log(SLF4JLogLevel logLevel, Marker marker, String format, Object arg) {
         if (_isEnabled(logLevel, marker)) {
-            SLF4JLoggingEventImpl x =
-                new SLF4JLoggingEventImpl(this, logLevel, marker, format, arg);
+            SLF4JLoggingEvent x =
+                _factoryUtils.newInstance(_factory, this, logLevel, marker, format, arg);
             _loggingEventList.add(x);
         }
     }
@@ -117,8 +130,8 @@ implements SLF4JMockLogger {
     private void _log(
             SLF4JLogLevel logLevel, Marker marker, String format, Object arg1, Object arg2) {
         if (_isEnabled(logLevel, marker)) {
-            SLF4JLoggingEventImpl x =
-                new SLF4JLoggingEventImpl(this, logLevel, marker, format, arg1, arg2);
+            SLF4JLoggingEvent x =
+                _factoryUtils.newInstance(_factory, this, logLevel, marker, format, arg1, arg2);
             _loggingEventList.add(x);
         }
     }
@@ -129,8 +142,8 @@ implements SLF4JMockLogger {
 
     private void _log(SLF4JLogLevel logLevel, Marker marker, String format, Object... arguments) {
         if (_isEnabled(logLevel, marker)) {
-            SLF4JLoggingEventImpl x =
-                new SLF4JLoggingEventImpl(this, logLevel, marker, format, arguments);
+            SLF4JLoggingEvent x =
+                _factoryUtils.newInstance(_factory, this, logLevel, marker, format, arguments);
             _loggingEventList.add(x);
         }
     }
@@ -141,7 +154,8 @@ implements SLF4JMockLogger {
 
     private void _log(SLF4JLogLevel logLevel, Marker marker, String msg, Throwable t) {
         if (_isEnabled(logLevel, marker)) {
-            SLF4JLoggingEventImpl x = new SLF4JLoggingEventImpl(this, logLevel, marker, msg, t);
+            SLF4JLoggingEvent x =
+                _factoryUtils.newInstance(_factory, this, logLevel, marker, msg, t);
             _loggingEventList.add(x);
         }
     }

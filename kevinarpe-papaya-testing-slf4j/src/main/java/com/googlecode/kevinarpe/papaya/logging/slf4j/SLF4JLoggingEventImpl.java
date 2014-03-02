@@ -34,7 +34,7 @@ import org.slf4j.helpers.MessageFormatter;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class SLF4JLoggingEventImpl
+public final class SLF4JLoggingEventImpl
 implements SLF4JLoggingEvent {
 
     private static final Object[] EMPTY_FORMAT_ARG_ARR = new Object[0];
@@ -49,45 +49,6 @@ implements SLF4JLoggingEvent {
     private final long _timeStamp;
 
     public SLF4JLoggingEventImpl(
-            Logger logger, SLF4JLogLevel logLevel, Marker marker, String message) {
-        this(logger, logLevel, marker, message, EMPTY_FORMAT_ARG_ARR, (Throwable) null);
-    }
-
-    public SLF4JLoggingEventImpl(
-            Logger logger,
-            SLF4JLogLevel logLevel,
-            Marker marker,
-            String message,
-            Object formatArg) {
-        this(logger, logLevel, marker, message, new Object[] { formatArg }, (Throwable) null);
-    }
-
-    public SLF4JLoggingEventImpl(
-            Logger logger,
-            SLF4JLogLevel logLevel,
-            Marker marker,
-            String message,
-            Object formatArg,
-            Object formatArg2) {
-        this(
-            logger,
-            logLevel,
-            marker,
-            message,
-            new Object[] { formatArg, formatArg2 },
-            (Throwable) null);
-    }
-
-    public SLF4JLoggingEventImpl(
-            Logger logger,
-            SLF4JLogLevel logLevel,
-            Marker marker,
-            String message,
-            Object[] optionalFormatArgArr) {
-        this(logger, logLevel, marker, message, optionalFormatArgArr, (Throwable) null);
-    }
-
-    public SLF4JLoggingEventImpl(
             Logger logger,
             SLF4JLogLevel logLevel,
             Marker marker,
@@ -98,8 +59,18 @@ implements SLF4JLoggingEvent {
         _logLevel = ObjectArgs.checkNotNull(logLevel, "logLevel");
         _marker = ObjectArgs.checkNotNull(marker, "marker");
         _message = ObjectArgs.checkNotNull(message, "message");
+        // The last element in 'optionalFormatArgArr' might be our Throwable.
+        if (null == optionalThrowable
+                && null != optionalFormatArgArr
+                && optionalFormatArgArr.length > 0
+                && optionalFormatArgArr[optionalFormatArgArr.length - 1] instanceof Throwable) {
+            optionalThrowable = (Throwable) optionalFormatArgArr[optionalFormatArgArr.length - 1];
+            Object[] arr = new Object[optionalFormatArgArr.length - 1];
+            System.arraycopy(optionalFormatArgArr, 0, arr, 0, arr.length);
+            optionalFormatArgArr = arr;
+        }
         _formatArgArr =
-            (null == optionalFormatArgArr ? EMPTY_FORMAT_ARG_ARR : optionalFormatArgArr);
+            (null == optionalFormatArgArr ? EMPTY_FORMAT_ARG_ARR : optionalFormatArgArr.clone());
         _optionalThrowable = optionalThrowable;
         _threadName = Thread.currentThread().getName();
         _timeStamp = System.currentTimeMillis();

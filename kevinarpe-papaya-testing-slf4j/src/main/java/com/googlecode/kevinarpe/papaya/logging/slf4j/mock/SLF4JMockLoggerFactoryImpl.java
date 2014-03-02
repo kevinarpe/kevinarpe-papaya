@@ -34,7 +34,7 @@ import java.util.Map;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class SLF4JMockLoggerFactoryImpl
+public final class SLF4JMockLoggerFactoryImpl
 implements SLF4JMockLoggerFactory {
 
 //    public static final void main(String[] argArr) {

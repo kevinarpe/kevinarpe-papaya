@@ -44,7 +44,7 @@ import java.util.Set;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @NotFullyTested
-public class SLF4JLoggingEventAnalyzerImpl
+public final class SLF4JLoggingEventAnalyzerImpl
 implements SLF4JLoggingEventAnalyzer {
 
     private final List<SLF4JLoggingEvent> _loggingEventList;
