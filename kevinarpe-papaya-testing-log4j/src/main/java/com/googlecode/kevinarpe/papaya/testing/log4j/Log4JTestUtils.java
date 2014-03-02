@@ -38,6 +38,9 @@ import static org.mockito.Mockito.verify;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see <a href="http://slackhacker.com/2009/12/08/testing-logging-behaviour-in-four-code-lines-flat/"
+ *      >http://slackhacker.com/2009/12/08/testing-logging-behaviour-in-four-code-lines-flat/</a>
  */
 @NotFullyTested
 public final class Log4JTestUtils {

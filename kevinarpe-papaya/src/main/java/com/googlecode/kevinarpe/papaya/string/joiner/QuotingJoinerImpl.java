@@ -51,11 +51,11 @@ implements QuotingJoiner {
     QuotingJoinerImpl(String separator) {
         this(
             ObjectArgs.checkNotNull(separator, "separator"),
-            QuotingJoiners.DEFAULT_NULL_TEXT,
-            QuotingJoiners.DEFAULT_LEFT_QUOTE,
-            QuotingJoiners.DEFAULT_RIGHT_QUOTE,
-            QuotingJoiners.DEFAULT_NO_ELEMENTS_TEXT,
-            QuotingJoiners.DEFAULT_SKIP_NULLS_FLAG);
+            QuotingJoinerUtils.DEFAULT_NULL_TEXT,
+            QuotingJoinerUtils.DEFAULT_LEFT_QUOTE,
+            QuotingJoinerUtils.DEFAULT_RIGHT_QUOTE,
+            QuotingJoinerUtils.DEFAULT_NO_ELEMENTS_TEXT,
+            QuotingJoinerUtils.DEFAULT_SKIP_NULLS_FLAG);
     }
 
     QuotingJoinerImpl(

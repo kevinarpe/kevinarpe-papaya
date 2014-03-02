@@ -28,12 +28,12 @@ package com.googlecode.kevinarpe.papaya.testing;
 /**
  * Factory to construct instances of {@link TestClassFinder}.  Unless an additional layer of
  * indirection is required for mocking or testing, it is usually sufficient to call
- * {@link TestClassFinders#newInstance()}.
+ * {@link TestClassFinderUtils#newInstance()}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see TestClassFinders#newFactory()
- * @see TestClassFinders#newInstance()
+ * @see TestClassFinderUtils#newFactory()
+ * @see TestClassFinderUtils#newInstance()
  */
 public interface TestClassFinderFactory {
 

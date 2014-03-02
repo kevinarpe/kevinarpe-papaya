@@ -33,7 +33,7 @@ import java.util.Iterator;
 
 /**
  * Extension of Google Guava's {@link Joiner}.  To construct a new instance, see
- * {@link QuotingJoiners#withSeparator(String)} and {@link QuotingJoiners#withSeparator(char)}.
+ * {@link QuotingJoinerUtils#withSeparator(String)} and {@link QuotingJoinerUtils#withSeparator(char)}.
  * <p>
  * Differences to {@link Joiner}:
  * <ul>
@@ -54,22 +54,22 @@ import java.util.Iterator;
  *     {@link Joiner} does now allow these attributes to be set more than once.</li>
  *     <li>Settings accessors, e.g., {@link #withSeparator()}.</li>
  *     <li>Default settings are available as {@code public static final} members, e.g.,
- *     {@link QuotingJoiners#DEFAULT_NULL_TEXT}.</li>
+ *     {@link QuotingJoinerUtils#DEFAULT_NULL_TEXT}.</li>
  * </ul>
  * <p>
  * Examples:
  * <pre>{@code
- * QuotingJoiners.withSeparator(", ").withQuotes("[", "]").join(list) -> "[a], [b], [c], ..."
- * QuotingJoiners.withSeparator(", ").withQuotes("[", "]").join(listWithNulls) -> "[a], [b], [null], [c], ..."
- * QuotingJoiners.withSeparator(", ").withQuotes("[", "]").skipNulls(true).join(listWithNulls) -> "[a], [b], [c], ..."
- * QuotingJoiners.withSeparator(", ").withQuotes("[", "]").useForNoElements("(empty)").join(emptyList) -> "(empty)"
+ * QuotingJoinerUtils.withSeparator(", ").withQuotes("[", "]").join(list) -> "[a], [b], [c], ..."
+ * QuotingJoinerUtils.withSeparator(", ").withQuotes("[", "]").join(listWithNulls) -> "[a], [b], [null], [c], ..."
+ * QuotingJoinerUtils.withSeparator(", ").withQuotes("[", "]").skipNulls(true).join(listWithNulls) -> "[a], [b], [c], ..."
+ * QuotingJoinerUtils.withSeparator(", ").withQuotes("[", "]").useForNoElements("(empty)").join(emptyList) -> "(empty)"
  * }</pre>
  * <p>
  * See {@link SharedQuotingJoinerSettings} for an inheritance diagram.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see QuotingJoiners
+ * @see QuotingJoinerUtils
  * @see QuotingJoinerSettings
  * @see QuotingMapJoiner
  */

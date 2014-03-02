@@ -33,20 +33,22 @@ import java.util.Set;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public interface LoggingEventAnalyzer {
+public interface SLF4JLoggingEventAnalyzer {
 
     List<SLF4JLoggingEvent> getLoggingEventList();
 
     List<SLF4JLoggingEvent> getLoggingEventListIncluding(
-        Predicate<SLF4JLoggingEvent> predicate);
+            Predicate<SLF4JLoggingEvent> predicate);
+
+    <T> List<SLF4JLoggingEvent> getLoggingEventListIncluding(
+            SLF4JLoggingEventAttribute attribute, T value, T... moreValueArr);
 
     List<SLF4JLoggingEvent> getLoggingEventListIncluding(
-        SLF4JLogLevel level, SLF4JLogLevel... moreSLF4JLogLevelArr);
+           SLF4JLoggingEventAttribute attribute, Set<?> valueSet);
 
-    List<SLF4JLoggingEvent> getLoggingEventListIncluding(Set<SLF4JLogLevel> levelSet);
+    <T> List<SLF4JLoggingEvent> getLoggingEventListExcluding(
+            SLF4JLoggingEventAttribute attribute, T value, T... moreValueArr);
 
     List<SLF4JLoggingEvent> getLoggingEventListExcluding(
-        SLF4JLogLevel level, SLF4JLogLevel... moreLevelArr);
-
-    List<SLF4JLoggingEvent> getLoggingEventListExcluding(Set<SLF4JLogLevel> levelSet);
+            SLF4JLoggingEventAttribute attribute, Set<?> valueSet);
 }

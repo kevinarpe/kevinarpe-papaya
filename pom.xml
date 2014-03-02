@@ -66,7 +66,6 @@
         <module>kevinarpe-papaya-testing-junit</module>
         <module>kevinarpe-papaya-testing-log4j</module>
         <module>kevinarpe-papaya-testing-log4j-junit</module>
-        <!--    <module>kevinarpe-papaya-testing-logback</module>-->
         <module>kevinarpe-papaya-slf4j</module>
         <module>kevinarpe-papaya-testing-slf4j</module>
     </modules>
@@ -157,9 +156,7 @@
                         <links>
                             <!-- TODO: Make links between modules work correctly -->
                             <link>http://www.joda.org/joda-time/apidocs/</link>
-                            <link>
-                                http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/
-                            </link>
+                            <link>http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/</link>
                         </links>
                         <!--
                                     <linksource>true</linksource>

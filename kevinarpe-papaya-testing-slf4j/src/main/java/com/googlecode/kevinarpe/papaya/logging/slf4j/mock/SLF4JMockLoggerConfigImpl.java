@@ -38,12 +38,11 @@ import java.util.Map;
 /**
 * @author Kevin Connor ARPE (kevinarpe@gmail.com)
 */
-// TODO: Need interface?
 public final class SLF4JMockLoggerConfigImpl
 implements SLF4JMockLoggerConfig {
 
-    private static final Marker DEFAULT_MARKER = SLF4JMarkerNone.INSTANCE;
-    private static final boolean DEFAULT_IS_ENABLED = true;
+    static final Marker DEFAULT_MARKER = SLF4JMarkerNone.INSTANCE;
+    static final boolean DEFAULT_IS_ENABLED = true;
     private static final ImmutableMap<SLF4JLogLevel, Boolean> DEFAULT_LOG_LEVEL_TO_IS_ENABLED_MAP;
 
     static {

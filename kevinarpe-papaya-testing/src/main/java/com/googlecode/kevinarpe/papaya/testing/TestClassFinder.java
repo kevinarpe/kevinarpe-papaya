@@ -26,7 +26,6 @@ package com.googlecode.kevinarpe.papaya.testing;
  */
 
 import com.googlecode.kevinarpe.papaya.exception.ClassNotFoundRuntimeException;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
 
 import java.io.File;
 import java.util.List;
@@ -36,14 +35,14 @@ import java.util.regex.Pattern;
 /**
  * Finds {@link Class} references by recursively scanning a directory for source files.  This class
  * can be used to build dynamic test suites.  To construct a new instance, see
- * {@link TestClassFinders#newInstance()}.
+ * {@link TestClassFinderUtils#newInstance()}.
  * <p>
  * An interface is used instead of a concrete class to make mocking and testing easier.
  * <p>
  * Example:
  * <pre>{@code
  * List<Class<?>> classList =
- *     TestClassFinders.newInstance()
+ *     TestClassFinderUtils.newInstance()
  *         .withRootDir(new File("src/test"))
  *         .withIncludePatterns(Pattern.compile("Test\\.java"))
  *         .findAsList();
@@ -65,7 +64,7 @@ public interface TestClassFinder {
      * @throws NullPointerException
      *         if {@code rootDirPath} is {@code null}
      *
-     * @see TestClassFinders#DEFAULT_ROOT_DIR_PATH
+     * @see TestClassFinderUtils#DEFAULT_ROOT_DIR_PATH
      * @see #withRootDirPath()
      */
     TestClassFinder withRootDirPath(File rootDirPath);
@@ -76,7 +75,7 @@ public interface TestClassFinder {
      *
      * @return root directory
      *
-     * @see TestClassFinders#DEFAULT_ROOT_DIR_PATH
+     * @see TestClassFinderUtils#DEFAULT_ROOT_DIR_PATH
      * @see #withRootDirPath(File)
      */
     File withRootDirPath();
@@ -114,7 +113,7 @@ public interface TestClassFinder {
      * @throws IllegalArgumentException
      *         if {@code filePathPatternList} is empty
      *
-     * @see TestClassFinders#DEFAULT_INCLUDE_PATTERN_LIST
+     * @see TestClassFinderUtils#DEFAULT_INCLUDE_PATTERN_LIST
      * @see #withIncludePatterns(Pattern, Pattern...)
      * @see #withIncludePatterns()
      * @see #withExcludePatterns(List)
@@ -127,7 +126,7 @@ public interface TestClassFinder {
      *
      * @return list of include patterns.  Never {@code null} or empty.
      *
-     * @see TestClassFinders#DEFAULT_INCLUDE_PATTERN_LIST
+     * @see TestClassFinderUtils#DEFAULT_INCLUDE_PATTERN_LIST
      * @see #withIncludePatterns(List)
      * @see #withExcludePatterns()
      */
@@ -163,7 +162,7 @@ public interface TestClassFinder {
      * @throws NullPointerException
      *         if {@code filePathPatternList} (or any element) is {@code null}
      *
-     * @see TestClassFinders#DEFAULT_EXCLUDE_PATTERN_LIST
+     * @see TestClassFinderUtils#DEFAULT_EXCLUDE_PATTERN_LIST
      * @see #withIncludePatterns(Pattern, Pattern...)
      * @see #withIncludePatterns()
      * @see #withIncludePatterns(List)
@@ -176,35 +175,11 @@ public interface TestClassFinder {
      *
      * @return list of include patterns.  Never {@code null} or empty.
      *
-     * @see TestClassFinders#DEFAULT_EXCLUDE_PATTERN_LIST
+     * @see TestClassFinderUtils#DEFAULT_EXCLUDE_PATTERN_LIST
      * @see #withExcludePatterns(List)
      * @see #withIncludePatterns()
      */
     List<Pattern> withExcludePatterns();
-
-    /**
-     * Constructs a new instance with a new logger at a specific level.
-     *
-     * @param logLevel
-     *        level to log.  Use {@link SLF4JLogLevel#OFF} to disable logging.
-     *
-     * @return new instance with new logger
-     *
-     * @see TestClassFinders#DEFAULT_LOG_LEVEL
-     * @see #withLogLevel()
-     */
-    TestClassFinder withLogLevel(SLF4JLogLevel logLevel);
-
-    /**
-     * Retrieves the current logger level.  All logging during a search is done to this level.
-     * Default is no logging (off).
-     *
-     * @return current logger level
-     *
-     * @see TestClassFinders#DEFAULT_LOG_LEVEL
-     * @see #withLogLevel(SLF4JLogLevel)
-     */
-    SLF4JLogLevel withLogLevel();
 
     /**
      * Searches recursively from the root directory to find Java sources files and returns the
@@ -214,7 +189,11 @@ public interface TestClassFinder {
      * If a source file matches at least one include pattern and matches zero exclude patterns, it
      * will be included in the result.
      * <p>
-     * If logging is enabled, exactly one line is logged for each normal file.
+     * If SLF4J logging is enabled:
+     * <ul>
+     *     <li>One line is logged at {@code debug} level for the root directory</li>
+     *     <li>One line is logged at {@code debug} level for each normal (regular) file</li>
+     * </ul>
      *
      * @return list of top-level classes.  May be empty, but never {@code null}.
      *
@@ -222,7 +201,6 @@ public interface TestClassFinder {
      *         if a {@link Class} cannot be found for a source file
      *
      * @see #findAsArray()
-     * @see #withLogLevel(SLF4JLogLevel)
      */
     List<Class<?>> findAsList();
 

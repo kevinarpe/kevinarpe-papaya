@@ -53,12 +53,12 @@ implements QuotingMapJoiner {
         this(
             ObjectArgs.checkNotNull(quotingJoiner, "quotingJoiner"),
             ObjectArgs.checkNotNull(keyValueSeparator, "keyValueSeparator"),
-            QuotingJoiners.DEFAULT_KEY_LEFT_QUOTE,
-            QuotingJoiners.DEFAULT_KEY_RIGHT_QUOTE,
-            QuotingJoiners.DEFAULT_VALUE_LEFT_QUOTE,
-            QuotingJoiners.DEFAULT_VALUE_RIGHT_QUOTE,
-            QuotingJoiners.DEFAULT_KEY_NULL_TEXT,
-            QuotingJoiners.DEFAULT_VALUE_NULL_TEXT);
+            QuotingJoinerUtils.DEFAULT_KEY_LEFT_QUOTE,
+            QuotingJoinerUtils.DEFAULT_KEY_RIGHT_QUOTE,
+            QuotingJoinerUtils.DEFAULT_VALUE_LEFT_QUOTE,
+            QuotingJoinerUtils.DEFAULT_VALUE_RIGHT_QUOTE,
+            QuotingJoinerUtils.DEFAULT_KEY_NULL_TEXT,
+            QuotingJoinerUtils.DEFAULT_VALUE_NULL_TEXT);
     }
 
     private QuotingMapJoinerImpl(

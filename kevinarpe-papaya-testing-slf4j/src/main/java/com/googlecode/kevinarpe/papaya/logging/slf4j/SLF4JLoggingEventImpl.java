@@ -127,7 +127,10 @@ implements SLF4JLoggingEvent {
 
     @Override
     public Object[] getMessageFormatArgArr() {
-        return _formatArgArr;
+        if (EMPTY_FORMAT_ARG_ARR == _formatArgArr) {
+            return _formatArgArr;
+        }
+        return _formatArgArr.clone();
     }
 
     @Override
@@ -150,5 +153,13 @@ implements SLF4JLoggingEvent {
         FormattingTuple ft = MessageFormatter.arrayFormat(_message, _formatArgArr);
         String x = ft.getMessage();
         return x;
+    }
+
+    @Override
+    public <T> T getAttributeValue(SLF4JLoggingEventAttribute attribute) {
+        Object value = attribute.getValue(this);
+        @SuppressWarnings("unchecked")
+        T castValue = (T) value;
+        return castValue;
     }
 }

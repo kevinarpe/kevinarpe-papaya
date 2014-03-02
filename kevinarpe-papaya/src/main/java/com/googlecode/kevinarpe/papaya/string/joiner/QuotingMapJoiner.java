@@ -34,8 +34,8 @@ import java.util.Map;
 
 /**
  * Extension of Google Guava's {@link com.google.common.base.Joiner.MapJoiner}.  To construct a new
- * instance, see {@link QuotingJoiners#withSeparator(String)} and
- * {@link QuotingJoiners#withSeparator(char)}.
+ * instance, see {@link QuotingJoinerUtils#withSeparator(String)} and
+ * {@link QuotingJoinerUtils#withSeparator(char)}.
  * <p>
  * Differences to {@code Joiner.MapJoiner}:
  * <ul>
@@ -58,26 +58,26 @@ import java.util.Map;
  *     {@code Joiner.MapJoiner} does now allow these attributes to be set more than once.</li>
  *     <li>Settings accessors, e.g., {@link #withKeyValueSeparator(String)}.</li>
  *     <li>Default settings are available as {@code public static final} members, e.g.,
- *     {@link QuotingJoiners#DEFAULT_KEY_NULL_TEXT}.</li>
+ *     {@link QuotingJoinerUtils#DEFAULT_KEY_NULL_TEXT}.</li>
  * </ul>
  * <p>
  * See {@link SharedQuotingJoinerSettings} for an inheritance diagram.
  * <p>
  * Examples:
  * <pre>{@code
- * QuotingJoiners.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=")
+ * QuotingJoinerUtils.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=")
  *     .join(map) -> "[a=1], [b=2], [c=3], ..."
- * QuotingJoiners.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=")
+ * QuotingJoinerUtils.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=")
  *     .join(mapWithNulls) -> "[a=1], [b=2], [null=3], [c=4], ..."
- * QuotingJoiners.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=").skipNulls(true)
+ * QuotingJoinerUtils.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=").skipNulls(true)
  *     .join(mapWithNulls) -> "[a=1], [b=2], [c=3], ..."
- * QuotingJoiners.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=").useForNoElements("(empty)")
+ * QuotingJoinerUtils.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=").useForNoElements("(empty)")
  *     .join(emptyMap) -> "(empty)"
  * }</pre>
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see QuotingJoiners
+ * @see QuotingJoinerUtils
  * @see QuotingMapJoinerSettings
  * @see QuotingJoiner
  */

@@ -25,7 +25,7 @@ package com.googlecode.kevinarpe.papaya.testing.junit;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.testing.TestClassFinders;
+import com.googlecode.kevinarpe.papaya.testing.TestClassFinderUtils;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.model.InitializationError;
@@ -43,7 +43,7 @@ extends Suite {
     // TODO: Does not run... How to make work at least a little?
 
     private static final Class[] TEST_CLASS_ARR =
-        TestClassFinders.newInstance()
+        TestClassFinderUtils.newInstance()
             .withRootDirPath(new File("kevinarpe-papaya-testing"))
             .withIncludePatterns(Pattern.compile("Test\\.java$"))
             .findAsArray();

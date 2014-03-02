@@ -63,7 +63,7 @@ extends SharedQuotingJoinerSettings<TSelf, TQuotingMapJoinerSettings> {
      *
      * @see #useForNull(char)
      * @see #useForNull()
-     * @see QuotingJoiners#DEFAULT_NULL_TEXT
+     * @see QuotingJoinerUtils#DEFAULT_NULL_TEXT
      */
     TSelf useForNull(String nullText);
 
@@ -81,7 +81,7 @@ extends SharedQuotingJoinerSettings<TSelf, TQuotingMapJoinerSettings> {
      *
      * @see #useForNull(String)
      * @see #skipNulls()
-     * @see QuotingJoiners#DEFAULT_NULL_TEXT
+     * @see QuotingJoinerUtils#DEFAULT_NULL_TEXT
      */
     String useForNull();
 
@@ -98,7 +98,7 @@ extends SharedQuotingJoinerSettings<TSelf, TQuotingMapJoinerSettings> {
      *
      * @see #useForNull()
      * @see #skipNulls()
-     * @see QuotingJoiners#DEFAULT_SKIP_NULLS_FLAG
+     * @see QuotingJoinerUtils#DEFAULT_SKIP_NULLS_FLAG
      */
     TSelf skipNulls(boolean flag);
 
@@ -112,7 +112,7 @@ extends SharedQuotingJoinerSettings<TSelf, TQuotingMapJoinerSettings> {
      * </ul>
      *
      * @see #skipNulls(boolean)
-     * @see QuotingJoiners#DEFAULT_SKIP_NULLS_FLAG
+     * @see QuotingJoinerUtils#DEFAULT_SKIP_NULLS_FLAG
      */
     boolean skipNulls();
 }

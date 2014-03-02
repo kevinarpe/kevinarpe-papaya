@@ -33,10 +33,10 @@ import static org.testng.Assert.assertSame;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class SLF4JLevelLoggersTest {
+public class SLF4JLevelLoggerUtilsTest {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // SLF4JLevelLoggers.newInstance(SLF4JLogLevel logLevel, Class<?> clazz)
+    // SLF4JLevelLoggerUtils.newInstance(SLF4JLogLevel logLevel, Class<?> clazz)
     //
 
     @Test
@@ -51,7 +51,7 @@ public class SLF4JLevelLoggersTest {
 
     private void _newInstance_Pass(
             SLF4JLogLevel logLevel, Class<? extends SLF4JLevelLogger> clazz) {
-        SLF4JLevelLogger x = SLF4JLevelLoggers.newInstance(logLevel, SLF4JLevelLoggersTest.class);
+        SLF4JLevelLogger x = SLF4JLevelLoggerUtils.newInstance(logLevel, SLF4JLevelLoggerUtilsTest.class);
         assertSame(x.getClass(), clazz);
     }
 
@@ -67,6 +67,6 @@ public class SLF4JLevelLoggersTest {
     @Test(dataProvider = "_newInstance_Fail_Data",
             expectedExceptions = NullPointerException.class)
     public void newInstance_Fail(SLF4JLogLevel logLevel, Class<?> clazz) {
-        SLF4JLevelLoggers.newInstance(logLevel, clazz);
+        SLF4JLevelLoggerUtils.newInstance(logLevel, clazz);
     }
 }

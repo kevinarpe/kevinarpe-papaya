@@ -28,14 +28,14 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
 /**
  * Factory to construct instances of {@link QuotingJoiner}.  Unless an additional layer of
  * indirection is required for mocking or testing, it is usually sufficient to call
- * {@link QuotingJoiners#withSeparator(String)}.
+ * {@link QuotingJoinerUtils#withSeparator(String)}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see QuotingJoiners#newQuotingJoinerFactory(String)
- * @see QuotingJoiners#newQuotingJoinerFactory(char)
- * @see QuotingJoiners#withSeparator(String)
- * @see QuotingJoiners#withSeparator(char)
+ * @see QuotingJoinerUtils#newQuotingJoinerFactory(String)
+ * @see QuotingJoinerUtils#newQuotingJoinerFactory(char)
+ * @see QuotingJoinerUtils#withSeparator(String)
+ * @see QuotingJoinerUtils#withSeparator(char)
  */
 public interface QuotingJoinerFactory {
 

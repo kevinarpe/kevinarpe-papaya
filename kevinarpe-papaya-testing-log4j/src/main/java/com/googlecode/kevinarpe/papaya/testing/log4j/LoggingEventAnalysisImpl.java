@@ -67,8 +67,7 @@ implements LoggingEventAnalysis {
     // ^^^ String, Object[]
 
     @Override
-    public List<LoggingEvent> getLoggingEventListIncluding(
-        Predicate<LoggingEvent> predicate) {
+    public List<LoggingEvent> getLoggingEventListIncluding(Predicate<LoggingEvent> predicate) {
         ObjectArgs.checkNotNull(predicate, "predicate");
 
         List<LoggingEvent> resultList = Lists.newArrayList();

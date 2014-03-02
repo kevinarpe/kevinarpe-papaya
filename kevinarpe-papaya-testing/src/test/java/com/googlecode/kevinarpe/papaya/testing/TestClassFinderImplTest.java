@@ -32,8 +32,9 @@ import com.googlecode.kevinarpe.papaya.filesystem.TraversePathDepthPolicy;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterableFactory;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterator;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventAnalyzerImpl;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEvent;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventAttribute;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.mock.SLF4JMockLoggerFactoryImpl;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.mock.SLF4JMockLoggerImpl;
 import org.mockito.Mockito;
@@ -95,8 +96,7 @@ public class TestClassFinderImplTest {
             TestClassFinder testClassFinder,
             File rootDirPath,
             List<Pattern> includeByFilePathPatternList,
-            List<Pattern> excludeByFilePathPatternList,
-            SLF4JLogLevel logLevel) {
+            List<Pattern> excludeByFilePathPatternList) {
         assertEquals(
             testClassFinder.withRootDirPath(),
             rootDirPath);
@@ -106,9 +106,6 @@ public class TestClassFinderImplTest {
         assertEquals(
             testClassFinder.withExcludePatterns(),
             excludeByFilePathPatternList);
-        assertEquals(
-            testClassFinder.withLogLevel(),
-            logLevel);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -119,10 +116,9 @@ public class TestClassFinderImplTest {
     public void ctor_Pass() {
         assertAttrEquals(
             classUnderTestWithoutMocks,
-            TestClassFinders.DEFAULT_ROOT_DIR_PATH,
-            TestClassFinders.DEFAULT_INCLUDE_PATTERN_LIST,
-            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
-            TestClassFinders.DEFAULT_LOG_LEVEL);
+            TestClassFinderUtils.DEFAULT_ROOT_DIR_PATH,
+            TestClassFinderUtils.DEFAULT_INCLUDE_PATTERN_LIST,
+            TestClassFinderUtils.DEFAULT_EXCLUDE_PATTERN_LIST);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -138,17 +134,15 @@ public class TestClassFinderImplTest {
         assertAttrEquals(
             classUnderTestWithoutMocks,
             newPath,
-            TestClassFinders.DEFAULT_INCLUDE_PATTERN_LIST,
-            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
-            TestClassFinders.DEFAULT_LOG_LEVEL);
+            TestClassFinderUtils.DEFAULT_INCLUDE_PATTERN_LIST,
+            TestClassFinderUtils.DEFAULT_EXCLUDE_PATTERN_LIST);
 
         classUnderTestWithoutMocks = classUnderTestWithoutMocks.withRootDirPath(oldPath);
         assertAttrEquals(
             classUnderTestWithoutMocks,
             oldPath,
-            TestClassFinders.DEFAULT_INCLUDE_PATTERN_LIST,
-            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
-            TestClassFinders.DEFAULT_LOG_LEVEL);
+            TestClassFinderUtils.DEFAULT_INCLUDE_PATTERN_LIST,
+            TestClassFinderUtils.DEFAULT_EXCLUDE_PATTERN_LIST);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
@@ -169,19 +163,17 @@ public class TestClassFinderImplTest {
             classUnderTestWithoutMocks.withIncludePatterns(newPattern);
         assertAttrEquals(
             classUnderTestWithoutMocks,
-            TestClassFinders.DEFAULT_ROOT_DIR_PATH,
+            TestClassFinderUtils.DEFAULT_ROOT_DIR_PATH,
             Arrays.asList(newPattern),
-            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
-            TestClassFinders.DEFAULT_LOG_LEVEL);
+            TestClassFinderUtils.DEFAULT_EXCLUDE_PATTERN_LIST);
 
         classUnderTestWithoutMocks =
             classUnderTestWithoutMocks.withIncludePatterns(newPattern, newPattern2);
         assertAttrEquals(
             classUnderTestWithoutMocks,
-            TestClassFinders.DEFAULT_ROOT_DIR_PATH,
+            TestClassFinderUtils.DEFAULT_ROOT_DIR_PATH,
             Arrays.asList(newPattern, newPattern2),
-            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
-            TestClassFinders.DEFAULT_LOG_LEVEL);
+            TestClassFinderUtils.DEFAULT_EXCLUDE_PATTERN_LIST);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
@@ -215,20 +207,18 @@ public class TestClassFinderImplTest {
             classUnderTestWithoutMocks.withIncludePatterns(Arrays.asList(newPattern));
         assertAttrEquals(
             classUnderTestWithoutMocks,
-            TestClassFinders.DEFAULT_ROOT_DIR_PATH,
+            TestClassFinderUtils.DEFAULT_ROOT_DIR_PATH,
             Arrays.asList(newPattern),
-            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
-            TestClassFinders.DEFAULT_LOG_LEVEL);
+            TestClassFinderUtils.DEFAULT_EXCLUDE_PATTERN_LIST);
 
         classUnderTestWithoutMocks =
             classUnderTestWithoutMocks.withIncludePatterns(
                 Arrays.asList(newPattern, newPattern2));
         assertAttrEquals(
             classUnderTestWithoutMocks,
-            TestClassFinders.DEFAULT_ROOT_DIR_PATH,
+            TestClassFinderUtils.DEFAULT_ROOT_DIR_PATH,
             Arrays.asList(newPattern, newPattern2),
-            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
-            TestClassFinders.DEFAULT_LOG_LEVEL);
+            TestClassFinderUtils.DEFAULT_EXCLUDE_PATTERN_LIST);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
@@ -293,20 +283,18 @@ public class TestClassFinderImplTest {
             classUnderTestWithoutMocks.withExcludePatterns(Arrays.asList(newPattern));
         assertAttrEquals(
             classUnderTestWithoutMocks,
-            TestClassFinders.DEFAULT_ROOT_DIR_PATH,
-            TestClassFinders.DEFAULT_INCLUDE_PATTERN_LIST,
-            Arrays.asList(newPattern),
-            TestClassFinders.DEFAULT_LOG_LEVEL);
+            TestClassFinderUtils.DEFAULT_ROOT_DIR_PATH,
+            TestClassFinderUtils.DEFAULT_INCLUDE_PATTERN_LIST,
+            Arrays.asList(newPattern));
 
         classUnderTestWithoutMocks =
             classUnderTestWithoutMocks.withExcludePatterns(
                 Arrays.asList(newPattern, newPattern2));
         assertAttrEquals(
             classUnderTestWithoutMocks,
-            TestClassFinders.DEFAULT_ROOT_DIR_PATH,
-            TestClassFinders.DEFAULT_INCLUDE_PATTERN_LIST,
-            Arrays.asList(newPattern, newPattern2),
-            TestClassFinders.DEFAULT_LOG_LEVEL);
+            TestClassFinderUtils.DEFAULT_ROOT_DIR_PATH,
+            TestClassFinderUtils.DEFAULT_INCLUDE_PATTERN_LIST,
+            Arrays.asList(newPattern, newPattern2));
     }
 
     @Test
@@ -318,41 +306,6 @@ public class TestClassFinderImplTest {
     public void excludePatterns2_FailWithNull() {
         classUnderTestWithoutMocks.withExcludePatterns((List<Pattern>) null);
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // TestClassFinderImpl.withLogLevel(SLF4JLogLevel)
-    //
-
-    @Test
-    public void withLogLevel_Pass() {
-        SLF4JLogLevel oldLogLevel = classUnderTestWithoutMocks.withLogLevel();
-        SLF4JLogLevel newLogLevel =
-            (SLF4JLogLevel.OFF == oldLogLevel) ? SLF4JLogLevel.WARN : SLF4JLogLevel.OFF;
-
-        classUnderTestWithoutMocks = classUnderTestWithoutMocks.withLogLevel(newLogLevel);
-        assertAttrEquals(
-            classUnderTestWithoutMocks,
-            classUnderTestWithoutMocks.withRootDirPath(),
-            TestClassFinders.DEFAULT_INCLUDE_PATTERN_LIST,
-            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
-            newLogLevel);
-
-        classUnderTestWithoutMocks = classUnderTestWithoutMocks.withLogLevel(oldLogLevel);
-        assertAttrEquals(
-            classUnderTestWithoutMocks,
-            classUnderTestWithoutMocks.withRootDirPath(),
-            TestClassFinders.DEFAULT_INCLUDE_PATTERN_LIST,
-            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
-            oldLogLevel);
-    }
-
-    @Test(expectedExceptions = NullPointerException.class)
-    public void withLogLevel_FailWithNull() {
-        classUnderTestWithoutMocks.withLogLevel((SLF4JLogLevel) null);
-    }
-
-    // TODO: Write a class to capture SLF4J Logger events for assertion -- similar to Log4JTestBase
-    // TODO: Ref: http://slackhacker.com/2009/12/08/testing-logging-behaviour-in-four-code-lines-flat/
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // TestClassFinderImpl.findAsList()
@@ -389,6 +342,18 @@ public class TestClassFinderImplTest {
             classUnderTestWithMocks.withIncludePatterns(Pattern.compile("abc"));
         List<Class<?>> classList = classUnderTestWithMocks.findAsList();
         assertEquals(classList, Arrays.asList(Class1.class, Class3.class));
+        _assertLogger(SLF4JLogLevel.DEBUG, 1);
+    }
+
+    private void _assertLogger(SLF4JLogLevel logLevel, int count) {
+        SLF4JMockLoggerImpl logger =
+            mockLoggerFactory.getLogger(TestClassFinderImpl.class.getName());
+        SLF4JLoggingEventAnalyzerImpl analyzer =
+            new SLF4JLoggingEventAnalyzerImpl(logger.getLoggingEventList());
+        assertEquals(
+            analyzer.getLoggingEventListIncluding(
+                SLF4JLoggingEventAttribute.LEVEL, logLevel).size(),
+            count);
     }
 
     @Test(expectedExceptions = PathRuntimeException.class)
@@ -429,6 +394,7 @@ public class TestClassFinderImplTest {
             classUnderTestWithMocks.withIncludePatterns(Pattern.compile("abc"));
         Class<?>[] classArr = classUnderTestWithMocks.findAsArray();
         assertEquals(Arrays.asList(classArr), Arrays.asList(Class1.class, Class3.class));
+        _assertLogger(SLF4JLogLevel.DEBUG, 1);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -535,17 +501,11 @@ public class TestClassFinderImplTest {
             classUnderTestWithMocks =
                 classUnderTestWithMocks.withExcludePatterns(excludePatternList);
         }
-        classUnderTestWithMocks = classUnderTestWithMocks.withLogLevel(SLF4JLogLevel.TRACE);
         TestClassFinderImpl.IteratePathFilter pathFilter =
             classUnderTestWithMocks.new IteratePathFilter();
         boolean actualResult = pathFilter.accept(mockFile, 1);
         assertEquals(actualResult, expectedResult);
-
-        SLF4JMockLoggerImpl logger =
-            mockLoggerFactory.getLogger(TestClassFinderImpl.class.getName());
-        List<SLF4JLoggingEvent> loggingEventList = logger.getLoggingEventList();
-        assertEquals(loggingEventList.size(), 1);
-        assertEquals(loggingEventList.get(0).getLevel(), SLF4JLogLevel.TRACE);
+        _assertLogger(SLF4JLogLevel.DEBUG, 1);
     }
 
     @Test(expectedExceptions = NullPointerException.class)

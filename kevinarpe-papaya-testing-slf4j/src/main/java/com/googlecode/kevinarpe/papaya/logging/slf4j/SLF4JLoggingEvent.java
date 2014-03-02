@@ -31,8 +31,6 @@ import org.slf4j.Marker;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-// TODO: Move me somewhere else (up).
-// TODO: Use this interface and some heavy mocking to allow full mocking on SLF4J.
 public interface SLF4JLoggingEvent {
 
     Logger getLogger();
@@ -40,14 +38,10 @@ public interface SLF4JLoggingEvent {
     Marker getMarker();
     String getMessage();
     Object[] getMessageFormatArgArr();
-    // TODO: LAST: Maybe replace with ThrowbleProxy?
-    // TODO: If we use ThrowbleProxy, can we throw a synthetic Throwable(Impl)?
-    // Maybe no need, as we will have the original?
-    // Can we safely mock Throwable?  If so, whatev this proxy stuff.  R&D, please.
     Throwable getThrowable();
     String getThreadName();
     long getTimeStamp();
-    // TODO: How to format the message?
     String getFormattedMessage();
-//        ch.qos.logback.classic.Logger
+
+    <T> T getAttributeValue(SLF4JLoggingEventAttribute attribute);
 }

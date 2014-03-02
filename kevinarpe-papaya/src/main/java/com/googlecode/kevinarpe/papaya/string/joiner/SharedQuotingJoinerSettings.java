@@ -116,8 +116,8 @@ public interface SharedQuotingJoinerSettings
      * @see #withQuotes(char, char)
      * @see #withLeftQuote()
      * @see #withRightQuote()
-     * @see QuotingJoiners#DEFAULT_LEFT_QUOTE
-     * @see QuotingJoiners#DEFAULT_RIGHT_QUOTE
+     * @see QuotingJoinerUtils#DEFAULT_LEFT_QUOTE
+     * @see QuotingJoinerUtils#DEFAULT_RIGHT_QUOTE
      */
     TSelf withQuotes(String leftQuote, String rightQuote);
 
@@ -143,7 +143,7 @@ public interface SharedQuotingJoinerSettings
      *
      * @see #withQuotes(String, String)
      * @see #withRightQuote()
-     * @see QuotingJoiners#DEFAULT_LEFT_QUOTE
+     * @see QuotingJoinerUtils#DEFAULT_LEFT_QUOTE
      */
     String withLeftQuote();
 
@@ -154,7 +154,7 @@ public interface SharedQuotingJoinerSettings
      *
      * @see #withQuotes(String, String)
      * @see #withLeftQuote()
-     * @see QuotingJoiners#DEFAULT_RIGHT_QUOTE
+     * @see QuotingJoinerUtils#DEFAULT_RIGHT_QUOTE
      */
     String withRightQuote();
 
@@ -173,7 +173,7 @@ public interface SharedQuotingJoinerSettings
      *
      * @see #useForNoElements(char)
      * @see #useForNoElements()
-     * @see QuotingJoiners#DEFAULT_NO_ELEMENTS_TEXT
+     * @see QuotingJoinerUtils#DEFAULT_NO_ELEMENTS_TEXT
      */
     TSelf useForNoElements(String noElementsText);
 
@@ -188,7 +188,7 @@ public interface SharedQuotingJoinerSettings
      * @return no elements text
      *
      * @see #useForNoElements(String)
-     * @see QuotingJoiners#DEFAULT_NO_ELEMENTS_TEXT
+     * @see QuotingJoinerUtils#DEFAULT_NO_ELEMENTS_TEXT
      */
     String useForNoElements();
 

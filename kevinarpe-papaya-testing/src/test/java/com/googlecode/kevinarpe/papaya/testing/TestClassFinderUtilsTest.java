@@ -32,29 +32,28 @@ import static org.testng.Assert.assertSame;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class TestClassFindersTest {
+public class TestClassFinderUtilsTest {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // TestClassFinders.newInstance()
+    // TestClassFinderUtils.newInstance()
     //
 
     @Test
     public void newInstance_Pass() {
-        TestClassFinder classUnderTest = TestClassFinders.newInstance();
+        TestClassFinder classUnderTest = TestClassFinderUtils.newInstance();
         TestClassFinderImplTest.assertAttrEquals(
             classUnderTest,
-            TestClassFinders.DEFAULT_ROOT_DIR_PATH,
-            TestClassFinders.DEFAULT_INCLUDE_PATTERN_LIST,
-            TestClassFinders.DEFAULT_EXCLUDE_PATTERN_LIST,
-            TestClassFinders.DEFAULT_LOG_LEVEL);
+            TestClassFinderUtils.DEFAULT_ROOT_DIR_PATH,
+            TestClassFinderUtils.DEFAULT_INCLUDE_PATTERN_LIST,
+            TestClassFinderUtils.DEFAULT_EXCLUDE_PATTERN_LIST);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // TestClassFinders.newFactory()
+    // TestClassFinderUtils.newFactory()
     //
 
     @Test
     public void newFactory_Pass() {
-        assertSame(TestClassFinders.newFactory(), TestClassFinderFactoryImpl.INSTANCE);
+        assertSame(TestClassFinderUtils.newFactory(), TestClassFinderFactoryImpl.INSTANCE);
     }
 }

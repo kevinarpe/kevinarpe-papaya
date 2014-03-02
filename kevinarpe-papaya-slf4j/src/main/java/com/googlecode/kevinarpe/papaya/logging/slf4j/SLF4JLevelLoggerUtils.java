@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @FullyTested
-public class SLF4JLevelLoggers {
+public class SLF4JLevelLoggerUtils {
 
     public static SLF4JLevelLogger newInstance(SLF4JLogLevel logLevel, Class<?> clazz) {
         ILoggerFactory loggerFactory = LoggerFactory.getILoggerFactory();

@@ -34,7 +34,6 @@ import java.util.Map;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-// TODO: Create interface?
 public class SLF4JMockLoggerFactoryImpl
 implements SLF4JMockLoggerFactory {
 

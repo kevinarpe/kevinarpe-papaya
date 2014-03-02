@@ -75,8 +75,8 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      * @see #withKeyQuotes(char, char)
      * @see #withKeyLeftQuote()
      * @see #withKeyRightQuote()
-     * @see QuotingJoiners#DEFAULT_KEY_LEFT_QUOTE
-     * @see QuotingJoiners#DEFAULT_KEY_RIGHT_QUOTE
+     * @see QuotingJoinerUtils#DEFAULT_KEY_LEFT_QUOTE
+     * @see QuotingJoinerUtils#DEFAULT_KEY_RIGHT_QUOTE
      */
     TSelf withKeyQuotes(String leftQuote, String rightQuote);
 
@@ -102,7 +102,7 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      *
      * @see #withKeyQuotes(String, String)
      * @see #withKeyRightQuote()
-     * @see QuotingJoiners#DEFAULT_KEY_LEFT_QUOTE
+     * @see QuotingJoinerUtils#DEFAULT_KEY_LEFT_QUOTE
      */
     String withKeyLeftQuote();
 
@@ -113,7 +113,7 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      *
      * @see #withKeyQuotes(String, String)
      * @see #withKeyLeftQuote()
-     * @see QuotingJoiners#DEFAULT_KEY_RIGHT_QUOTE
+     * @see QuotingJoinerUtils#DEFAULT_KEY_RIGHT_QUOTE
      */
     String withKeyRightQuote();
 
@@ -140,8 +140,8 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      * @see #withValueQuotes(char, char)
      * @see #withValueLeftQuote()
      * @see #withValueRightQuote()
-     * @see QuotingJoiners#DEFAULT_VALUE_LEFT_QUOTE
-     * @see QuotingJoiners#DEFAULT_VALUE_RIGHT_QUOTE
+     * @see QuotingJoinerUtils#DEFAULT_VALUE_LEFT_QUOTE
+     * @see QuotingJoinerUtils#DEFAULT_VALUE_RIGHT_QUOTE
      */
     TSelf withValueQuotes(String leftQuote, String rightQuote);
 
@@ -167,7 +167,7 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      *
      * @see #withValueQuotes(String, String)
      * @see #withValueRightQuote()
-     * @see QuotingJoiners#DEFAULT_VALUE_LEFT_QUOTE
+     * @see QuotingJoinerUtils#DEFAULT_VALUE_LEFT_QUOTE
      */
     String withValueLeftQuote();
 
@@ -178,7 +178,7 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      *
      * @see #withValueQuotes(String, String)
      * @see #withValueLeftQuote()
-     * @see QuotingJoiners#DEFAULT_VALUE_RIGHT_QUOTE
+     * @see QuotingJoinerUtils#DEFAULT_VALUE_RIGHT_QUOTE
      */
     String withValueRightQuote();
 
@@ -197,7 +197,7 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      *
      * @see #useForNullKey(char)
      * @see #useForNullKey()
-     * @see QuotingJoiners#DEFAULT_KEY_NULL_TEXT
+     * @see QuotingJoinerUtils#DEFAULT_KEY_NULL_TEXT
      */
     TSelf useForNullKey(String keyNullText);
 
@@ -212,7 +212,7 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      * @return null key text
      *
      * @see #useForNullKey(String)
-     * @see QuotingJoiners#DEFAULT_KEY_NULL_TEXT
+     * @see QuotingJoinerUtils#DEFAULT_KEY_NULL_TEXT
      */
     String useForNullKey();
 
@@ -231,7 +231,7 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      *
      * @see #useForNullValue(char)
      * @see #useForNullValue()
-     * @see QuotingJoiners#DEFAULT_VALUE_NULL_TEXT
+     * @see QuotingJoinerUtils#DEFAULT_VALUE_NULL_TEXT
      */
     TSelf useForNullValue(String valueNullText);
 
@@ -246,7 +246,7 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      * @return null value text
      *
      * @see #useForNullValue(String)
-     * @see QuotingJoiners#DEFAULT_VALUE_NULL_TEXT
+     * @see QuotingJoinerUtils#DEFAULT_VALUE_NULL_TEXT
      */
     String useForNullValue();
 }

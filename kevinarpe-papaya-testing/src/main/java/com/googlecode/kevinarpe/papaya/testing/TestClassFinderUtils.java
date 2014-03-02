@@ -27,7 +27,6 @@ package com.googlecode.kevinarpe.papaya.testing;
 
 import com.google.common.collect.ImmutableList;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
 
 import java.io.File;
 import java.util.List;
@@ -41,9 +40,8 @@ import java.util.regex.Pattern;
  * @see #newInstance()
  * @see #newFactory()
  */
-// TODO: Rename to TestClassFinderUtils?
 @FullyTested
-public final class TestClassFinders {
+public final class TestClassFinderUtils {
 
     /**
      * Default value for {@link TestClassFinder#withRootDirPath()}: System property
@@ -63,12 +61,7 @@ public final class TestClassFinders {
      */
     public static final List<Pattern> DEFAULT_EXCLUDE_PATTERN_LIST = ImmutableList.of();
 
-    /**
-     * Default value for {@link TestClassFinder#withLogLevel()}: {@link SLF4JLogLevel#OFF}.
-     */
-    public static final SLF4JLogLevel DEFAULT_LOG_LEVEL = SLF4JLogLevel.OFF;
-
-    private TestClassFinders() {
+    private TestClassFinderUtils() {
         // disable
     }
 
