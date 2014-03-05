@@ -25,24 +25,25 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  * #L%
  */
 
-/**
- * Factory to construct instances of {@link QuotingJoiner}.  Unless an additional layer of
- * indirection is required for mocking or testing, it is usually sufficient to call
- * {@link QuotingJoinerUtils#withSeparator(String)}.
- *
- * @author Kevin Connor ARPE (kevinarpe@gmail.com)
- *
- * @see QuotingJoinerUtils#newQuotingJoinerFactory(String)
- * @see QuotingJoinerUtils#newQuotingJoinerFactory(char)
- * @see QuotingJoinerUtils#withSeparator(String)
- * @see QuotingJoinerUtils#withSeparator(char)
- */
-public interface QuotingJoinerFactory {
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
-    /**
-     * Constructs a new instance of {@link QuotingJoiner}.
-     *
-     * @return new instance
-     */
-    QuotingJoiner newInstance();
+/**
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
+@FullyTested
+class Joiner2FactoryImpl
+implements Joiner2Factory {
+
+    private final String _separator;
+
+    public Joiner2FactoryImpl(String separator) {
+        _separator = ObjectArgs.checkNotNull(separator, "separator");
+    }
+
+    @Override
+    public Joiner2Impl newInstance() {
+        Joiner2Impl x = new Joiner2Impl(_separator);
+        return x;
+    }
 }

@@ -26,21 +26,21 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  */
 
 /**
- * Extends interface {@link SharedQuotingJoinerSettings} to add settings specific to
- * {@link QuotingMapJoiner}.
+ * Extends interface {@link SharedJoiner2Settings} to add settings specific to
+ * {@link MapJoiner2}.
  * <p>
- * See {@link SharedQuotingJoinerSettings} for an inheritance diagram.
+ * See {@link SharedJoiner2Settings} for an inheritance diagram.
  *
  * @param <TSelf>
  *        type that extends this interface (for method chaining)
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see SharedQuotingJoinerSettings
- * @see QuotingMapJoiner
+ * @see SharedJoiner2Settings
+ * @see MapJoiner2
  */
-public interface QuotingMapJoinerSettings<TSelf extends QuotingMapJoinerSettings<TSelf>>
-extends SharedQuotingJoinerSettings<TSelf, TSelf> {
+public interface MapJoiner2Settings<TSelf extends MapJoiner2Settings<TSelf>>
+extends SharedJoiner2Settings<TSelf, TSelf> {
 
     /**
      * Retrieves the current key-value separator.
@@ -75,8 +75,8 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      * @see #withKeyQuotes(char, char)
      * @see #withKeyLeftQuote()
      * @see #withKeyRightQuote()
-     * @see QuotingJoinerUtils#DEFAULT_KEY_LEFT_QUOTE
-     * @see QuotingJoinerUtils#DEFAULT_KEY_RIGHT_QUOTE
+     * @see Joiner2Utils#DEFAULT_KEY_LEFT_QUOTE
+     * @see Joiner2Utils#DEFAULT_KEY_RIGHT_QUOTE
      */
     TSelf withKeyQuotes(String leftQuote, String rightQuote);
 
@@ -102,7 +102,7 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      *
      * @see #withKeyQuotes(String, String)
      * @see #withKeyRightQuote()
-     * @see QuotingJoinerUtils#DEFAULT_KEY_LEFT_QUOTE
+     * @see Joiner2Utils#DEFAULT_KEY_LEFT_QUOTE
      */
     String withKeyLeftQuote();
 
@@ -113,7 +113,7 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      *
      * @see #withKeyQuotes(String, String)
      * @see #withKeyLeftQuote()
-     * @see QuotingJoinerUtils#DEFAULT_KEY_RIGHT_QUOTE
+     * @see Joiner2Utils#DEFAULT_KEY_RIGHT_QUOTE
      */
     String withKeyRightQuote();
 
@@ -140,8 +140,8 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      * @see #withValueQuotes(char, char)
      * @see #withValueLeftQuote()
      * @see #withValueRightQuote()
-     * @see QuotingJoinerUtils#DEFAULT_VALUE_LEFT_QUOTE
-     * @see QuotingJoinerUtils#DEFAULT_VALUE_RIGHT_QUOTE
+     * @see Joiner2Utils#DEFAULT_VALUE_LEFT_QUOTE
+     * @see Joiner2Utils#DEFAULT_VALUE_RIGHT_QUOTE
      */
     TSelf withValueQuotes(String leftQuote, String rightQuote);
 
@@ -167,7 +167,7 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      *
      * @see #withValueQuotes(String, String)
      * @see #withValueRightQuote()
-     * @see QuotingJoinerUtils#DEFAULT_VALUE_LEFT_QUOTE
+     * @see Joiner2Utils#DEFAULT_VALUE_LEFT_QUOTE
      */
     String withValueLeftQuote();
 
@@ -178,7 +178,7 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      *
      * @see #withValueQuotes(String, String)
      * @see #withValueLeftQuote()
-     * @see QuotingJoinerUtils#DEFAULT_VALUE_RIGHT_QUOTE
+     * @see Joiner2Utils#DEFAULT_VALUE_RIGHT_QUOTE
      */
     String withValueRightQuote();
 
@@ -197,7 +197,7 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      *
      * @see #useForNullKey(char)
      * @see #useForNullKey()
-     * @see QuotingJoinerUtils#DEFAULT_KEY_NULL_TEXT
+     * @see Joiner2Utils#DEFAULT_KEY_NULL_TEXT
      */
     TSelf useForNullKey(String keyNullText);
 
@@ -212,7 +212,7 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      * @return null key text
      *
      * @see #useForNullKey(String)
-     * @see QuotingJoinerUtils#DEFAULT_KEY_NULL_TEXT
+     * @see Joiner2Utils#DEFAULT_KEY_NULL_TEXT
      */
     String useForNullKey();
 
@@ -231,7 +231,7 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      *
      * @see #useForNullValue(char)
      * @see #useForNullValue()
-     * @see QuotingJoinerUtils#DEFAULT_VALUE_NULL_TEXT
+     * @see Joiner2Utils#DEFAULT_VALUE_NULL_TEXT
      */
     TSelf useForNullValue(String valueNullText);
 
@@ -246,7 +246,7 @@ extends SharedQuotingJoinerSettings<TSelf, TSelf> {
      * @return null value text
      *
      * @see #useForNullValue(String)
-     * @see QuotingJoinerUtils#DEFAULT_VALUE_NULL_TEXT
+     * @see Joiner2Utils#DEFAULT_VALUE_NULL_TEXT
      */
     String useForNullValue();
 }

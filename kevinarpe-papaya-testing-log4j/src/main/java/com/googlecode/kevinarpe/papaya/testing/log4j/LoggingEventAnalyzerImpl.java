@@ -46,12 +46,12 @@ import java.util.Set;
 * @author Kevin Connor ARPE (kevinarpe@gmail.com)
 */
 @NotFullyTested
-final class LoggingEventAnalysisImpl
-implements LoggingEventAnalysis {
+final class LoggingEventAnalyzerImpl
+implements LoggingEventAnalyzer {
 
     private final List<LoggingEvent> _loggingEventList;
 
-    public LoggingEventAnalysisImpl(List<LoggingEvent> loggingEventList) {
+    public LoggingEventAnalyzerImpl(List<LoggingEvent> loggingEventList) {
         CollectionArgs.checkElementsNotNull(loggingEventList, "loggingEventList");
         _loggingEventList = ImmutableList.copyOf(loggingEventList);
     }

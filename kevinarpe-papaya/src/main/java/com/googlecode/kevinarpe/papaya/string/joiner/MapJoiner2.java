@@ -34,8 +34,8 @@ import java.util.Map;
 
 /**
  * Extension of Google Guava's {@link com.google.common.base.Joiner.MapJoiner}.  To construct a new
- * instance, see {@link QuotingJoinerUtils#withSeparator(String)} and
- * {@link QuotingJoinerUtils#withSeparator(char)}.
+ * instance, see {@link Joiner2Utils#withSeparator(String)} and
+ * {@link Joiner2Utils#withSeparator(char)}.
  * <p>
  * Differences to {@code Joiner.MapJoiner}:
  * <ul>
@@ -49,7 +49,7 @@ import java.util.Map;
  *     <li>{@link #useForNoElements(String)}: During a join, if no map entries are found, this text
  *     is used.  When joining map entries for an exception or log message, {@code "(empty)"} is a
  *     good value to indicate to (exception and log) readers that no map entries were found.</li>
- *     <li>Uses interface {@link QuotingMapJoiner}, instead of a concrete class.  This follows
+ *     <li>Uses interface {@link MapJoiner2}, instead of a concrete class.  This follows
  *     JavaEE design principles, and is helpful for mocking and testing.  Due to Java interface
  *     limitations with generic methods, the methods {@code appendTo(Appendable, *)} are slightly
  *     different from {@code Joiner.MapJoiner}.  The {@code Appendable} reference is not a generic
@@ -58,31 +58,31 @@ import java.util.Map;
  *     {@code Joiner.MapJoiner} does now allow these attributes to be set more than once.</li>
  *     <li>Settings accessors, e.g., {@link #withKeyValueSeparator(String)}.</li>
  *     <li>Default settings are available as {@code public static final} members, e.g.,
- *     {@link QuotingJoinerUtils#DEFAULT_KEY_NULL_TEXT}.</li>
+ *     {@link Joiner2Utils#DEFAULT_KEY_NULL_TEXT}.</li>
  * </ul>
  * <p>
- * See {@link SharedQuotingJoinerSettings} for an inheritance diagram.
+ * See {@link SharedJoiner2Settings} for an inheritance diagram.
  * <p>
  * Examples:
  * <pre>{@code
- * QuotingJoinerUtils.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=")
+ * Joiner2Utils.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=")
  *     .join(map) -> "[a=1], [b=2], [c=3], ..."
- * QuotingJoinerUtils.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=")
+ * Joiner2Utils.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=")
  *     .join(mapWithNulls) -> "[a=1], [b=2], [null=3], [c=4], ..."
- * QuotingJoinerUtils.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=").skipNulls(true)
+ * Joiner2Utils.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=").skipNulls(true)
  *     .join(mapWithNulls) -> "[a=1], [b=2], [c=3], ..."
- * QuotingJoinerUtils.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=").useForNoElements("(empty)")
+ * Joiner2Utils.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=").useForNoElements("(empty)")
  *     .join(emptyMap) -> "(empty)"
  * }</pre>
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see QuotingJoinerUtils
- * @see QuotingMapJoinerSettings
- * @see QuotingJoiner
+ * @see Joiner2Utils
+ * @see MapJoiner2Settings
+ * @see Joiner2
  */
-public interface QuotingMapJoiner
-extends QuotingMapJoinerSettings<QuotingMapJoiner> {
+public interface MapJoiner2
+extends MapJoiner2Settings<MapJoiner2> {
 
     /**
      * This is a convenience method to call {@link #appendTo(Appendable, Iterable)}.

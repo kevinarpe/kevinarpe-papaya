@@ -29,7 +29,7 @@ import com.google.common.base.Joiner;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 /**
- * Constants and static utilities for {@link QuotingJoiner} and {@link QuotingMapJoiner}.
+ * Constants and static utilities for {@link Joiner2} and {@link MapJoiner2}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
@@ -40,100 +40,100 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
  */
 // TODO: Add feature for counting?
 @FullyTested
-public final class QuotingJoinerUtils {
+public final class Joiner2Utils {
     
-    private QuotingJoinerUtils() {
+    private Joiner2Utils() {
         // disabled
     }
 
     /**
-     * Default value for {@link SharedQuotingJoinerSettings#withLeftQuote()}: {@code ""}
+     * Default value for {@link SharedJoiner2Settings#withLeftQuote()}: {@code ""}
      * (empty string).
      *
      * @see #DEFAULT_RIGHT_QUOTE
-     * @see SharedQuotingJoinerSettings#withQuotes(String, String)
+     * @see SharedJoiner2Settings#withQuotes(String, String)
      */
     public static final String DEFAULT_LEFT_QUOTE = "";
     /**
-     * Default value for {@link SharedQuotingJoinerSettings#withRightQuote()}: {@code ""}
+     * Default value for {@link SharedJoiner2Settings#withRightQuote()}: {@code ""}
      * (empty string).
      *
      * @see #DEFAULT_LEFT_QUOTE
-     * @see SharedQuotingJoinerSettings#withQuotes(String, String)
+     * @see SharedJoiner2Settings#withQuotes(String, String)
      */
     public static final String DEFAULT_RIGHT_QUOTE = "";
     /**
-     * Default value for {@link SharedQuotingJoinerSettings#useForNoElements()}: {@code ""}
+     * Default value for {@link SharedJoiner2Settings#useForNoElements()}: {@code ""}
      * (empty string).
      *
-     * @see SharedQuotingJoinerSettings#useForNoElements(String)
+     * @see SharedJoiner2Settings#useForNoElements(String)
      */
     public static final String DEFAULT_NO_ELEMENTS_TEXT = "";
     /**
-     * Default value for {@link QuotingJoinerSettings#useForNull()}: {@code "null"}.
+     * Default value for {@link Joiner2Settings#useForNull()}: {@code "null"}.
      * <p>
      * This default differs from class {@link Joiner}, which uses {@code null}, and throws a
      * {@link NullPointerException} when joining a {@code null} value, unless
      * {@link Joiner#useForNull(String)} is called before joining.
      *
-     * @see QuotingJoinerSettings#useForNull(String)
+     * @see Joiner2Settings#useForNull(String)
      */
     public static final String DEFAULT_NULL_TEXT = "null";
     /**
-     * Default value for {@link QuotingJoinerSettings#skipNulls()}: {@code false}.
+     * Default value for {@link Joiner2Settings#skipNulls()}: {@code false}.
      *
-     * @see QuotingJoinerSettings#skipNulls(boolean)
+     * @see Joiner2Settings#skipNulls(boolean)
      */
     public static final boolean DEFAULT_SKIP_NULLS_FLAG = false;
 
     /**
-     * Default value for {@link QuotingMapJoinerSettings#withKeyLeftQuote()}: {@code ""}
+     * Default value for {@link MapJoiner2Settings#withKeyLeftQuote()}: {@code ""}
      * (empty string).
      *
-     * @see QuotingMapJoinerSettings#withKeyQuotes(String, String)
+     * @see MapJoiner2Settings#withKeyQuotes(String, String)
      */
     public static final String DEFAULT_KEY_LEFT_QUOTE = "";
 
     /**
-     * Default value for {@link QuotingMapJoinerSettings#withKeyRightQuote()}: {@code ""}
+     * Default value for {@link MapJoiner2Settings#withKeyRightQuote()}: {@code ""}
      * (empty string).
      *
-     * @see QuotingMapJoinerSettings#withKeyQuotes(String, String)
+     * @see MapJoiner2Settings#withKeyQuotes(String, String)
      */
     public static final String DEFAULT_KEY_RIGHT_QUOTE = "";
 
     /**
-     * Default value for {@link QuotingMapJoinerSettings#withValueLeftQuote()}: {@code ""}
+     * Default value for {@link MapJoiner2Settings#withValueLeftQuote()}: {@code ""}
      * (empty string).
      *
-     * @see QuotingMapJoinerSettings#withValueQuotes(String, String)
+     * @see MapJoiner2Settings#withValueQuotes(String, String)
      */
     public static final String DEFAULT_VALUE_LEFT_QUOTE = "";
 
     /**
-     * Default value for {@link QuotingMapJoinerSettings#withValueRightQuote()}: {@code ""}
+     * Default value for {@link MapJoiner2Settings#withValueRightQuote()}: {@code ""}
      * (empty string).
      *
-     * @see QuotingMapJoinerSettings#withValueQuotes(String, String)
+     * @see MapJoiner2Settings#withValueQuotes(String, String)
      */
     public static final String DEFAULT_VALUE_RIGHT_QUOTE = "";
 
     /**
-     * Default value for {@link QuotingMapJoinerSettings#useForNullKey()}: {@code "null"}.
+     * Default value for {@link MapJoiner2Settings#useForNullKey()}: {@code "null"}.
      *
-     * @see QuotingMapJoinerSettings#useForNullKey(String)
+     * @see MapJoiner2Settings#useForNullKey(String)
      */
     public static final String DEFAULT_KEY_NULL_TEXT = "null";
 
     /**
-     * Default value for {@link QuotingMapJoinerSettings#useForNullValue()}: {@code "null"}.
+     * Default value for {@link MapJoiner2Settings#useForNullValue()}: {@code "null"}.
      *
-     * @see QuotingMapJoinerSettings#useForNullValue(String)
+     * @see MapJoiner2Settings#useForNullValue(String)
      */
     public static final String DEFAULT_VALUE_NULL_TEXT = "null";
 
     /**
-     * Constructs a new instance of {@link QuotingJoiner}.
+     * Constructs a new instance of {@link Joiner2}.
      *
      * @param separator
      *        String to insert between elements during join.
@@ -146,26 +146,26 @@ public final class QuotingJoinerUtils {
      *         if {@code separator} is {@code null}
      *
      * @see #withSeparator(char)
-     * @see QuotingJoiner#withSeparator(String)
-     * @see QuotingJoiner#withSeparator(char)
+     * @see Joiner2#withSeparator(String)
+     * @see Joiner2#withSeparator(char)
      */
-    public static QuotingJoiner withSeparator(String separator) {
-        QuotingJoinerFactoryImpl factory = new QuotingJoinerFactoryImpl(separator);
-        QuotingJoiner x = factory.newInstance();
+    public static Joiner2 withSeparator(String separator) {
+        Joiner2FactoryImpl factory = new Joiner2FactoryImpl(separator);
+        Joiner2 x = factory.newInstance();
         return x;
     }
 
     /**
      * This is a convenience method to call {@link #withSeparator(String)}.
      */
-    public static QuotingJoiner withSeparator(char separator) {
+    public static Joiner2 withSeparator(char separator) {
         String separatorString = String.valueOf(separator);
-        QuotingJoiner x = withSeparator(separatorString);
+        Joiner2 x = withSeparator(separatorString);
         return x;
     }
 
     /**
-     * Constructs a new instance of {@link QuotingJoinerFactory}.  Unless an additional layer of
+     * Constructs a new instance of {@link Joiner2Factory}.  Unless an additional layer of
      * indirection is required for mocking or testing, it is usually sufficient to call
      * {@link #withSeparator(String)}.
      *
@@ -179,17 +179,17 @@ public final class QuotingJoinerUtils {
      * @throws NullPointerException
      *         if {@code separator} is {@code null}
      */
-    public static QuotingJoinerFactory newQuotingJoinerFactory(String separator) {
-        QuotingJoinerFactoryImpl x = new QuotingJoinerFactoryImpl(separator);
+    public static Joiner2Factory newQuotingJoinerFactory(String separator) {
+        Joiner2FactoryImpl x = new Joiner2FactoryImpl(separator);
         return x;
     }
 
     /**
      * This is a convenience method to call {@link #newQuotingJoinerFactory(String)}.
      */
-    public static QuotingJoinerFactory newQuotingJoinerFactory(char separator) {
+    public static Joiner2Factory newQuotingJoinerFactory(char separator) {
         String separatorString = String.valueOf(separator);
-        QuotingJoinerFactory x = newQuotingJoinerFactory(separatorString);
+        Joiner2Factory x = newQuotingJoinerFactory(separatorString);
         return x;
     }
 }

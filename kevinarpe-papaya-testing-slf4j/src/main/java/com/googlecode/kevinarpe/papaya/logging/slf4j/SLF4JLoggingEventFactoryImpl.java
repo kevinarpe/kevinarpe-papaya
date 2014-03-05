@@ -31,7 +31,6 @@ import org.slf4j.Marker;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-// TODO: Check final carefully everywhere.
 public final class SLF4JLoggingEventFactoryImpl
 implements SLF4JLoggingEventFactory {
 

@@ -38,8 +38,8 @@ import java.util.List;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @FullyTested
-final class QuotingJoinerImpl
-implements QuotingJoiner {
+final class Joiner2Impl
+implements Joiner2 {
 
     private final String _separator;
     private final String _leftQuote;
@@ -48,23 +48,23 @@ implements QuotingJoiner {
     private final String _noElementsText;
     private final boolean _skipNullsFlag;
 
-    QuotingJoinerImpl(String separator) {
+    Joiner2Impl(String separator) {
         this(
             ObjectArgs.checkNotNull(separator, "separator"),
-            QuotingJoinerUtils.DEFAULT_NULL_TEXT,
-            QuotingJoinerUtils.DEFAULT_LEFT_QUOTE,
-            QuotingJoinerUtils.DEFAULT_RIGHT_QUOTE,
-            QuotingJoinerUtils.DEFAULT_NO_ELEMENTS_TEXT,
-            QuotingJoinerUtils.DEFAULT_SKIP_NULLS_FLAG);
+            Joiner2Utils.DEFAULT_NULL_TEXT,
+            Joiner2Utils.DEFAULT_LEFT_QUOTE,
+            Joiner2Utils.DEFAULT_RIGHT_QUOTE,
+            Joiner2Utils.DEFAULT_NO_ELEMENTS_TEXT,
+            Joiner2Utils.DEFAULT_SKIP_NULLS_FLAG);
     }
 
-    QuotingJoinerImpl(
-            String separator,
-            String nullText,
-            String leftQuote,
-            String rightQuote,
-            String noElementsText,
-            boolean skipNullsFlag) {
+    Joiner2Impl(
+        String separator,
+        String nullText,
+        String leftQuote,
+        String rightQuote,
+        String noElementsText,
+        boolean skipNullsFlag) {
         this._separator = separator;
         this._nullText = nullText;
         this._leftQuote = leftQuote;
@@ -74,19 +74,19 @@ implements QuotingJoiner {
     }
 
     @Override
-    public QuotingJoinerImpl withSeparator(String separator) {
+    public Joiner2Impl withSeparator(String separator) {
         ObjectArgs.checkNotNull(separator, "separator");
 
-        QuotingJoinerImpl x =
-            new QuotingJoinerImpl(
+        Joiner2Impl x =
+            new Joiner2Impl(
                 separator, _nullText, _leftQuote, _rightQuote, _noElementsText, _skipNullsFlag);
         return x;
     }
 
     @Override
-    public QuotingJoinerImpl withSeparator(char separator) {
+    public Joiner2Impl withSeparator(char separator) {
         String separatorString = String.valueOf(separator);
-        QuotingJoinerImpl x = withSeparator(separatorString);
+        Joiner2Impl x = withSeparator(separatorString);
         return x;
     }
 
@@ -96,34 +96,34 @@ implements QuotingJoiner {
     }
 
     @Override
-    public QuotingJoinerImpl withQuotes(String leftQuote, String rightQuote) {
+    public Joiner2Impl withQuotes(String leftQuote, String rightQuote) {
         ObjectArgs.checkNotNull(leftQuote, "leftQuote");
         ObjectArgs.checkNotNull(rightQuote, "rightQuote");
 
-        QuotingJoinerImpl x = new QuotingJoinerImpl(
+        Joiner2Impl x = new Joiner2Impl(
             _separator, _nullText, leftQuote, rightQuote, _noElementsText, _skipNullsFlag);
         return x;
     }
 
     @Override
-    public QuotingJoinerImpl withQuotes(String leftQuote, char rightQuote) {
+    public Joiner2Impl withQuotes(String leftQuote, char rightQuote) {
         String rightQuoteString = String.valueOf(rightQuote);
-        QuotingJoinerImpl x = withQuotes(leftQuote, rightQuoteString);
+        Joiner2Impl x = withQuotes(leftQuote, rightQuoteString);
         return x;
     }
 
     @Override
-    public QuotingJoinerImpl withQuotes(char leftQuote, String rightQuote) {
+    public Joiner2Impl withQuotes(char leftQuote, String rightQuote) {
         String leftQuoteString = String.valueOf(leftQuote);
-        QuotingJoinerImpl x = withQuotes(leftQuoteString, rightQuote);
+        Joiner2Impl x = withQuotes(leftQuoteString, rightQuote);
         return x;
     }
 
     @Override
-    public QuotingJoinerImpl withQuotes(char leftQuote, char rightQuote) {
+    public Joiner2Impl withQuotes(char leftQuote, char rightQuote) {
         String leftQuoteString = String.valueOf(leftQuote);
         String rightQuoteString = String.valueOf(rightQuote);
-        QuotingJoinerImpl x = withQuotes(leftQuoteString, rightQuoteString);
+        Joiner2Impl x = withQuotes(leftQuoteString, rightQuoteString);
         return x;
     }
 
@@ -138,19 +138,19 @@ implements QuotingJoiner {
     }
 
     @Override
-    public QuotingJoinerImpl useForNoElements(String noElementsText) {
+    public Joiner2Impl useForNoElements(String noElementsText) {
         ObjectArgs.checkNotNull(noElementsText, "noElementsText");
 
-        QuotingJoinerImpl x =
-            new QuotingJoinerImpl(
+        Joiner2Impl x =
+            new Joiner2Impl(
                 _separator, _nullText, _leftQuote, _rightQuote, noElementsText, _skipNullsFlag);
         return x;
     }
 
     @Override
-    public QuotingJoinerImpl useForNoElements(char noElementsText) {
+    public Joiner2Impl useForNoElements(char noElementsText) {
         String noElementsTextString = String.valueOf(noElementsText);
-        QuotingJoinerImpl x = useForNoElements(noElementsTextString);
+        Joiner2Impl x = useForNoElements(noElementsTextString);
         return x;
     }
 
@@ -160,19 +160,19 @@ implements QuotingJoiner {
     }
 
     @Override
-    public QuotingJoinerImpl useForNull(String nullText) {
+    public Joiner2Impl useForNull(String nullText) {
         ObjectArgs.checkNotNull(nullText, "nullText");
 
-        QuotingJoinerImpl x =
-            new QuotingJoinerImpl(
+        Joiner2Impl x =
+            new Joiner2Impl(
                 _separator, nullText, _leftQuote, _rightQuote, _noElementsText, _skipNullsFlag);
         return x;
     }
 
     @Override
-    public QuotingJoinerImpl useForNull(char nullText) {
+    public Joiner2Impl useForNull(char nullText) {
         String nullTextString = String.valueOf(nullText);
-        QuotingJoinerImpl x = useForNull(nullTextString);
+        Joiner2Impl x = useForNull(nullTextString);
         return x;
     }
 
@@ -182,9 +182,9 @@ implements QuotingJoiner {
     }
 
     @Override
-    public QuotingJoinerImpl skipNulls(boolean flag) {
-        QuotingJoinerImpl x =
-            new QuotingJoinerImpl(
+    public Joiner2Impl skipNulls(boolean flag) {
+        Joiner2Impl x =
+            new Joiner2Impl(
                 _separator, _nullText, _leftQuote, _rightQuote, _noElementsText, flag);
         return x;
     }
@@ -340,17 +340,17 @@ implements QuotingJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl withKeyValueSeparator(String keyValueSeparator) {
+    public MapJoiner2Impl withKeyValueSeparator(String keyValueSeparator) {
         ObjectArgs.checkNotNull(keyValueSeparator, "keyValueSeparator");
 
-        QuotingMapJoinerImpl x = new QuotingMapJoinerImpl(this, keyValueSeparator);
+        MapJoiner2Impl x = new MapJoiner2Impl(this, keyValueSeparator);
         return x;
     }
 
     @Override
-    public QuotingMapJoinerImpl withKeyValueSeparator(char keyValueSeparator) {
+    public MapJoiner2Impl withKeyValueSeparator(char keyValueSeparator) {
         String keyValueSeparatorString = String.valueOf(keyValueSeparator);
-        QuotingMapJoinerImpl x = withKeyValueSeparator(keyValueSeparatorString);
+        MapJoiner2Impl x = withKeyValueSeparator(keyValueSeparatorString);
         return x;
     }
 }

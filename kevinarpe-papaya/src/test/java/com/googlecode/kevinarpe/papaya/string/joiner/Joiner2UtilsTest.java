@@ -31,72 +31,72 @@ import org.testng.annotations.Test;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class QuotingJoinerUtilsTest {
+public class Joiner2UtilsTest {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoinerUtils.withSeparator(String)
+    // Joiner2Utils.withSeparator(String)
     //
 
     @Test
     public void withSeparatorString_Pass() {
-        QuotingJoiner x = QuotingJoinerUtils.withSeparator(",");
+        Joiner2 x = Joiner2Utils.withSeparator(",");
         Assert.assertNotNull(x);
         Assert.assertEquals(x.withSeparator(), ",");
         _assertDefaults(x);
     }
 
-    private void _assertDefaults(QuotingJoiner x) {
-        Assert.assertEquals(x.withLeftQuote(), QuotingJoinerUtils.DEFAULT_LEFT_QUOTE);
-        Assert.assertEquals(x.withRightQuote(), QuotingJoinerUtils.DEFAULT_RIGHT_QUOTE);
-        Assert.assertEquals(x.useForNull(), QuotingJoinerUtils.DEFAULT_NULL_TEXT);
-        Assert.assertEquals(x.useForNoElements(), QuotingJoinerUtils.DEFAULT_NO_ELEMENTS_TEXT);
-        Assert.assertEquals(x.skipNulls(), QuotingJoinerUtils.DEFAULT_SKIP_NULLS_FLAG);
+    private void _assertDefaults(Joiner2 x) {
+        Assert.assertEquals(x.withLeftQuote(), Joiner2Utils.DEFAULT_LEFT_QUOTE);
+        Assert.assertEquals(x.withRightQuote(), Joiner2Utils.DEFAULT_RIGHT_QUOTE);
+        Assert.assertEquals(x.useForNull(), Joiner2Utils.DEFAULT_NULL_TEXT);
+        Assert.assertEquals(x.useForNoElements(), Joiner2Utils.DEFAULT_NO_ELEMENTS_TEXT);
+        Assert.assertEquals(x.skipNulls(), Joiner2Utils.DEFAULT_SKIP_NULLS_FLAG);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void withSeparatorString_FaillWithNull() {
-        QuotingJoinerUtils.withSeparator((String) null);
+        Joiner2Utils.withSeparator((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoinerUtils.withSeparator(char)
+    // Joiner2Utils.withSeparator(char)
     //
 
     @Test
     public void withSeparatorChar_Pass() {
-        QuotingJoiner x = QuotingJoinerUtils.withSeparator(',');
+        Joiner2 x = Joiner2Utils.withSeparator(',');
         Assert.assertNotNull(x);
         Assert.assertEquals(x.withSeparator(), ",");
         _assertDefaults(x);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoinerUtils.newQuotingJoinerFactory(String)
+    // Joiner2Utils.newQuotingJoinerFactory(String)
     //
 
     @Test
     public void newQuotingJoinerFactoryString_Pass() {
-        QuotingJoinerFactory x = QuotingJoinerUtils.newQuotingJoinerFactory(",");
+        Joiner2Factory x = Joiner2Utils.newQuotingJoinerFactory(",");
         Assert.assertNotNull(x);
-        QuotingJoiner y = x.newInstance();
+        Joiner2 y = x.newInstance();
         Assert.assertEquals(y.withSeparator(), ",");
         _assertDefaults(y);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void newQuotingJoinerFactoryString_FailWithNull() {
-        QuotingJoinerUtils.newQuotingJoinerFactory((String) null);
+        Joiner2Utils.newQuotingJoinerFactory((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // QuotingJoinerUtils.newQuotingJoinerFactory(char)
+    // Joiner2Utils.newQuotingJoinerFactory(char)
     //
 
     @Test
     public void newQuotingJoinerFactoryChar_Pass() {
-        QuotingJoinerFactory x = QuotingJoinerUtils.newQuotingJoinerFactory(',');
+        Joiner2Factory x = Joiner2Utils.newQuotingJoinerFactory(',');
         Assert.assertNotNull(x);
-        QuotingJoiner y = x.newInstance();
+        Joiner2 y = x.newInstance();
         Assert.assertEquals(y.withSeparator(), ",");
         _assertDefaults(y);
     }

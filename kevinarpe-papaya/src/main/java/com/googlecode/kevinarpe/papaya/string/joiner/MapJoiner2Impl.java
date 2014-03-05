@@ -36,10 +36,10 @@ import java.util.Map;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @FullyTested
-final class QuotingMapJoinerImpl
-implements QuotingMapJoiner {
+final class MapJoiner2Impl
+implements MapJoiner2 {
 
-    private final QuotingJoinerImpl _quotingJoiner;
+    private final Joiner2Impl _quotingJoiner;
     private final String _keyValueSeparator;
     private final String _keyLeftQuote;
     private final String _keyRightQuote;
@@ -48,21 +48,21 @@ implements QuotingMapJoiner {
     private final String _keyNullText;
     private final String _valueNullText;
 
-    // package-private for QuotingJoinerImpl to call
-    QuotingMapJoinerImpl(QuotingJoinerImpl quotingJoiner, String keyValueSeparator) {
+    // package-private for Joiner2Impl to call
+    MapJoiner2Impl(Joiner2Impl quotingJoiner, String keyValueSeparator) {
         this(
             ObjectArgs.checkNotNull(quotingJoiner, "quotingJoiner"),
             ObjectArgs.checkNotNull(keyValueSeparator, "keyValueSeparator"),
-            QuotingJoinerUtils.DEFAULT_KEY_LEFT_QUOTE,
-            QuotingJoinerUtils.DEFAULT_KEY_RIGHT_QUOTE,
-            QuotingJoinerUtils.DEFAULT_VALUE_LEFT_QUOTE,
-            QuotingJoinerUtils.DEFAULT_VALUE_RIGHT_QUOTE,
-            QuotingJoinerUtils.DEFAULT_KEY_NULL_TEXT,
-            QuotingJoinerUtils.DEFAULT_VALUE_NULL_TEXT);
+            Joiner2Utils.DEFAULT_KEY_LEFT_QUOTE,
+            Joiner2Utils.DEFAULT_KEY_RIGHT_QUOTE,
+            Joiner2Utils.DEFAULT_VALUE_LEFT_QUOTE,
+            Joiner2Utils.DEFAULT_VALUE_RIGHT_QUOTE,
+            Joiner2Utils.DEFAULT_KEY_NULL_TEXT,
+            Joiner2Utils.DEFAULT_VALUE_NULL_TEXT);
     }
 
-    private QuotingMapJoinerImpl(
-        QuotingJoinerImpl quotingJoiner,
+    private MapJoiner2Impl(
+        Joiner2Impl quotingJoiner,
         String keyValueSeparator,
         String keyLeftQuote,
         String keyRightQuote,
@@ -81,11 +81,11 @@ implements QuotingMapJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl withKeyValueSeparator(String keyValueSeparator) {
+    public MapJoiner2Impl withKeyValueSeparator(String keyValueSeparator) {
         ObjectArgs.checkNotNull(keyValueSeparator, "keyValueSeparator");
 
-        QuotingMapJoinerImpl x =
-            new QuotingMapJoinerImpl(
+        MapJoiner2Impl x =
+            new MapJoiner2Impl(
                 _quotingJoiner,
                 keyValueSeparator,
                 _keyLeftQuote,
@@ -98,9 +98,9 @@ implements QuotingMapJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl withKeyValueSeparator(char keyValueSeparator) {
+    public MapJoiner2Impl withKeyValueSeparator(char keyValueSeparator) {
         String keyValueSeparatorString = String.valueOf(keyValueSeparator);
-        QuotingMapJoinerImpl x = withKeyValueSeparator(keyValueSeparatorString);
+        MapJoiner2Impl x = withKeyValueSeparator(keyValueSeparatorString);
         return x;
     }
 
@@ -110,12 +110,12 @@ implements QuotingMapJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl withKeyQuotes(String leftQuote, String rightQuote) {
+    public MapJoiner2Impl withKeyQuotes(String leftQuote, String rightQuote) {
         ObjectArgs.checkNotNull(leftQuote, "leftQuote");
         ObjectArgs.checkNotNull(rightQuote, "rightQuote");
 
-        QuotingMapJoinerImpl x =
-            new QuotingMapJoinerImpl(
+        MapJoiner2Impl x =
+            new MapJoiner2Impl(
                 _quotingJoiner,
                 _keyValueSeparator,
                 leftQuote,
@@ -128,24 +128,24 @@ implements QuotingMapJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl withKeyQuotes(String leftQuote, char rightQuote) {
+    public MapJoiner2Impl withKeyQuotes(String leftQuote, char rightQuote) {
         String rightQuoteString = String.valueOf(rightQuote);
-        QuotingMapJoinerImpl x = withKeyQuotes(leftQuote, rightQuoteString);
+        MapJoiner2Impl x = withKeyQuotes(leftQuote, rightQuoteString);
         return x;
     }
 
     @Override
-    public QuotingMapJoinerImpl withKeyQuotes(char leftQuote, String rightQuote) {
+    public MapJoiner2Impl withKeyQuotes(char leftQuote, String rightQuote) {
         String leftQuoteString = String.valueOf(leftQuote);
-        QuotingMapJoinerImpl x = withKeyQuotes(leftQuoteString, rightQuote);
+        MapJoiner2Impl x = withKeyQuotes(leftQuoteString, rightQuote);
         return x;
     }
 
     @Override
-    public QuotingMapJoinerImpl withKeyQuotes(char leftQuote, char rightQuote) {
+    public MapJoiner2Impl withKeyQuotes(char leftQuote, char rightQuote) {
         String leftQuoteString = String.valueOf(leftQuote);
         String rightQuoteString = String.valueOf(rightQuote);
-        QuotingMapJoinerImpl x = withKeyQuotes(leftQuoteString, rightQuoteString);
+        MapJoiner2Impl x = withKeyQuotes(leftQuoteString, rightQuoteString);
         return x;
     }
 
@@ -160,12 +160,12 @@ implements QuotingMapJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl withValueQuotes(String leftQuote, String rightQuote) {
+    public MapJoiner2Impl withValueQuotes(String leftQuote, String rightQuote) {
         ObjectArgs.checkNotNull(leftQuote, "leftQuote");
         ObjectArgs.checkNotNull(rightQuote, "rightQuote");
 
-        QuotingMapJoinerImpl x =
-            new QuotingMapJoinerImpl(
+        MapJoiner2Impl x =
+            new MapJoiner2Impl(
                 _quotingJoiner,
                 _keyValueSeparator,
                 _keyLeftQuote,
@@ -178,24 +178,24 @@ implements QuotingMapJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl withValueQuotes(String leftQuote, char rightQuote) {
+    public MapJoiner2Impl withValueQuotes(String leftQuote, char rightQuote) {
         String rightQuoteString = String.valueOf(rightQuote);
-        QuotingMapJoinerImpl x = withValueQuotes(leftQuote, rightQuoteString);
+        MapJoiner2Impl x = withValueQuotes(leftQuote, rightQuoteString);
         return x;
     }
 
     @Override
-    public QuotingMapJoinerImpl withValueQuotes(char leftQuote, String rightQuote) {
+    public MapJoiner2Impl withValueQuotes(char leftQuote, String rightQuote) {
         String leftQuoteString = String.valueOf(leftQuote);
-        QuotingMapJoinerImpl x = withValueQuotes(leftQuoteString, rightQuote);
+        MapJoiner2Impl x = withValueQuotes(leftQuoteString, rightQuote);
         return x;
     }
 
     @Override
-    public QuotingMapJoinerImpl withValueQuotes(char leftQuote, char rightQuote) {
+    public MapJoiner2Impl withValueQuotes(char leftQuote, char rightQuote) {
         String leftQuoteString = String.valueOf(leftQuote);
         String rightQuoteString = String.valueOf(rightQuote);
-        QuotingMapJoinerImpl x = withValueQuotes(leftQuoteString, rightQuoteString);
+        MapJoiner2Impl x = withValueQuotes(leftQuoteString, rightQuoteString);
         return x;
     }
 
@@ -210,11 +210,11 @@ implements QuotingMapJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl useForNullKey(String keyNullText) {
+    public MapJoiner2Impl useForNullKey(String keyNullText) {
         ObjectArgs.checkNotNull(keyNullText, "keyNullText");
 
-        QuotingMapJoinerImpl x =
-            new QuotingMapJoinerImpl(
+        MapJoiner2Impl x =
+            new MapJoiner2Impl(
                 _quotingJoiner,
                 _keyValueSeparator,
                 _keyLeftQuote,
@@ -227,10 +227,10 @@ implements QuotingMapJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl useForNullKey(char keyNullText) {
+    public MapJoiner2Impl useForNullKey(char keyNullText) {
         String keyNullTextString = String.valueOf(keyNullText);
 
-        QuotingMapJoinerImpl x = useForNullKey(keyNullTextString);
+        MapJoiner2Impl x = useForNullKey(keyNullTextString);
         return x;
     }
 
@@ -240,11 +240,11 @@ implements QuotingMapJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl useForNullValue(String valueNullText) {
+    public MapJoiner2Impl useForNullValue(String valueNullText) {
         ObjectArgs.checkNotNull(valueNullText, "valueNullText");
 
-        QuotingMapJoinerImpl x =
-            new QuotingMapJoinerImpl(
+        MapJoiner2Impl x =
+            new MapJoiner2Impl(
                 _quotingJoiner,
                 _keyValueSeparator,
                 _keyLeftQuote,
@@ -257,10 +257,10 @@ implements QuotingMapJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl useForNullValue(char valueNullText) {
+    public MapJoiner2Impl useForNullValue(char valueNullText) {
         String valueNullTextString = String.valueOf(valueNullText);
 
-        QuotingMapJoinerImpl x = useForNullValue(valueNullTextString);
+        MapJoiner2Impl x = useForNullValue(valueNullTextString);
         return x;
     }
 
@@ -395,10 +395,10 @@ implements QuotingMapJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl withSeparator(String separator) {
-        QuotingJoinerImpl quotingJoiner = _quotingJoiner.withSeparator(separator);
-        QuotingMapJoinerImpl x =
-            new QuotingMapJoinerImpl(
+    public MapJoiner2Impl withSeparator(String separator) {
+        Joiner2Impl quotingJoiner = _quotingJoiner.withSeparator(separator);
+        MapJoiner2Impl x =
+            new MapJoiner2Impl(
                 quotingJoiner,
                 _keyValueSeparator,
                 _keyLeftQuote,
@@ -411,10 +411,10 @@ implements QuotingMapJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl withSeparator(char separator) {
-        QuotingJoinerImpl quotingJoiner = _quotingJoiner.withSeparator(separator);
-        QuotingMapJoinerImpl x =
-            new QuotingMapJoinerImpl(
+    public MapJoiner2Impl withSeparator(char separator) {
+        Joiner2Impl quotingJoiner = _quotingJoiner.withSeparator(separator);
+        MapJoiner2Impl x =
+            new MapJoiner2Impl(
                 quotingJoiner,
                 _keyValueSeparator,
                 _keyLeftQuote,
@@ -432,10 +432,10 @@ implements QuotingMapJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl withQuotes(String leftQuote, String rightQuote) {
-        QuotingJoinerImpl quotingJoiner = _quotingJoiner.withQuotes(leftQuote, rightQuote);
-        QuotingMapJoinerImpl x =
-            new QuotingMapJoinerImpl(
+    public MapJoiner2Impl withQuotes(String leftQuote, String rightQuote) {
+        Joiner2Impl quotingJoiner = _quotingJoiner.withQuotes(leftQuote, rightQuote);
+        MapJoiner2Impl x =
+            new MapJoiner2Impl(
                 quotingJoiner,
                 _keyValueSeparator,
                 _keyLeftQuote,
@@ -448,10 +448,10 @@ implements QuotingMapJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl withQuotes(String leftQuote, char rightQuote) {
-        QuotingJoinerImpl quotingJoiner = _quotingJoiner.withQuotes(leftQuote, rightQuote);
-        QuotingMapJoinerImpl x =
-            new QuotingMapJoinerImpl(
+    public MapJoiner2Impl withQuotes(String leftQuote, char rightQuote) {
+        Joiner2Impl quotingJoiner = _quotingJoiner.withQuotes(leftQuote, rightQuote);
+        MapJoiner2Impl x =
+            new MapJoiner2Impl(
                 quotingJoiner,
                 _keyValueSeparator,
                 _keyLeftQuote,
@@ -464,10 +464,10 @@ implements QuotingMapJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl withQuotes(char leftQuote, String rightQuote) {
-        QuotingJoinerImpl quotingJoiner = _quotingJoiner.withQuotes(leftQuote, rightQuote);
-        QuotingMapJoinerImpl x =
-            new QuotingMapJoinerImpl(
+    public MapJoiner2Impl withQuotes(char leftQuote, String rightQuote) {
+        Joiner2Impl quotingJoiner = _quotingJoiner.withQuotes(leftQuote, rightQuote);
+        MapJoiner2Impl x =
+            new MapJoiner2Impl(
                 quotingJoiner,
                 _keyValueSeparator,
                 _keyLeftQuote,
@@ -480,10 +480,10 @@ implements QuotingMapJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl withQuotes(char leftQuote, char rightQuote) {
-        QuotingJoinerImpl quotingJoiner = _quotingJoiner.withQuotes(leftQuote, rightQuote);
-        QuotingMapJoinerImpl x =
-            new QuotingMapJoinerImpl(
+    public MapJoiner2Impl withQuotes(char leftQuote, char rightQuote) {
+        Joiner2Impl quotingJoiner = _quotingJoiner.withQuotes(leftQuote, rightQuote);
+        MapJoiner2Impl x =
+            new MapJoiner2Impl(
                 quotingJoiner,
                 _keyValueSeparator,
                 _keyLeftQuote,
@@ -506,10 +506,10 @@ implements QuotingMapJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl useForNoElements(String noElementsText) {
-        QuotingJoinerImpl quotingJoiner = _quotingJoiner.useForNoElements(noElementsText);
-        QuotingMapJoinerImpl x =
-            new QuotingMapJoinerImpl(
+    public MapJoiner2Impl useForNoElements(String noElementsText) {
+        Joiner2Impl quotingJoiner = _quotingJoiner.useForNoElements(noElementsText);
+        MapJoiner2Impl x =
+            new MapJoiner2Impl(
                 quotingJoiner,
                 _keyValueSeparator,
                 _keyLeftQuote,
@@ -522,10 +522,10 @@ implements QuotingMapJoiner {
     }
 
     @Override
-    public QuotingMapJoinerImpl useForNoElements(char noElementsText) {
-        QuotingJoinerImpl quotingJoiner = _quotingJoiner.useForNoElements(noElementsText);
-        QuotingMapJoinerImpl x =
-            new QuotingMapJoinerImpl(
+    public MapJoiner2Impl useForNoElements(char noElementsText) {
+        Joiner2Impl quotingJoiner = _quotingJoiner.useForNoElements(noElementsText);
+        MapJoiner2Impl x =
+            new MapJoiner2Impl(
                 quotingJoiner,
                 _keyValueSeparator,
                 _keyLeftQuote,

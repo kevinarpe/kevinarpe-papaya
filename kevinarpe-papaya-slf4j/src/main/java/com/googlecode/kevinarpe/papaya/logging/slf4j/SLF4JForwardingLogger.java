@@ -25,14 +25,14 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@NotFullyTested
+@FullyTested
 public abstract class SLF4JForwardingLogger
 implements Logger {
 

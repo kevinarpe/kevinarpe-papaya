@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.string.joiner;
+package com.googlecode.kevinarpe.papaya.testing.log4j;
 
 /*
  * #%L
@@ -25,25 +25,28 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.google.common.base.Predicate;
+import org.apache.log4j.Level;
+import org.apache.log4j.spi.LoggingEvent;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@FullyTested
-class QuotingJoinerFactoryImpl
-implements QuotingJoinerFactory {
+public interface LoggingEventAnalyzer {
 
-    private final String _separator;
+    List<LoggingEvent> getLoggingEventList();
 
-    public QuotingJoinerFactoryImpl(String separator) {
-        _separator = ObjectArgs.checkNotNull(separator, "separator");
-    }
+    List<LoggingEvent> getLoggingEventListIncluding(
+        Predicate<LoggingEvent> predicate);
 
-    @Override
-    public QuotingJoinerImpl newInstance() {
-        QuotingJoinerImpl x = new QuotingJoinerImpl(_separator);
-        return x;
-    }
+    List<LoggingEvent> getLoggingEventListIncluding(Level level, Level... moreLevelArr);
+
+    List<LoggingEvent> getLoggingEventListIncluding(Set<Level> levelSet);
+
+    List<LoggingEvent> getLoggingEventListExcluding(Level level, Level... moreLevelArr);
+
+    List<LoggingEvent> getLoggingEventListExcluding(Set<Level> levelSet);
 }

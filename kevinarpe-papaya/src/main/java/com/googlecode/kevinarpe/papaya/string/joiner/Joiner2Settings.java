@@ -26,27 +26,27 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  */
 
 /**
- * Extends interface {@link SharedQuotingJoinerSettings} to add settings specific to
- * {@link QuotingJoiner}.
+ * Extends interface {@link SharedJoiner2Settings} to add settings specific to
+ * {@link Joiner2}.
  * <p>
- * See {@link SharedQuotingJoinerSettings} for an inheritance diagram.
+ * See {@link SharedJoiner2Settings} for an inheritance diagram.
  *
  * @param <TSelf>
- *        type that extends interface {@link SharedQuotingJoinerSettings} (for method chaining)
+ *        type that extends interface {@link SharedJoiner2Settings} (for method chaining)
  * @param <TQuotingMapJoinerSettings>
- *        type that extends {@link QuotingMapJoinerSettings}
+ *        type that extends {@link MapJoiner2Settings}
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see SharedQuotingJoinerSettings
- * @see QuotingJoiner
+ * @see SharedJoiner2Settings
+ * @see Joiner2
  */
-public interface QuotingJoinerSettings
+public interface Joiner2Settings
     <
-        TSelf extends SharedQuotingJoinerSettings<TSelf, TQuotingMapJoinerSettings>,
-        TQuotingMapJoinerSettings extends QuotingMapJoinerSettings<TQuotingMapJoinerSettings>
+        TSelf extends SharedJoiner2Settings<TSelf, TQuotingMapJoinerSettings>,
+        TQuotingMapJoinerSettings extends MapJoiner2Settings<TQuotingMapJoinerSettings>
     >
-extends SharedQuotingJoinerSettings<TSelf, TQuotingMapJoinerSettings> {
+extends SharedJoiner2Settings<TSelf, TQuotingMapJoinerSettings> {
 
     /**
      * Constructs a new instance with new text to use when joining {@code null} elements.
@@ -63,7 +63,7 @@ extends SharedQuotingJoinerSettings<TSelf, TQuotingMapJoinerSettings> {
      *
      * @see #useForNull(char)
      * @see #useForNull()
-     * @see QuotingJoinerUtils#DEFAULT_NULL_TEXT
+     * @see Joiner2Utils#DEFAULT_NULL_TEXT
      */
     TSelf useForNull(String nullText);
 
@@ -81,7 +81,7 @@ extends SharedQuotingJoinerSettings<TSelf, TQuotingMapJoinerSettings> {
      *
      * @see #useForNull(String)
      * @see #skipNulls()
-     * @see QuotingJoinerUtils#DEFAULT_NULL_TEXT
+     * @see Joiner2Utils#DEFAULT_NULL_TEXT
      */
     String useForNull();
 
@@ -98,7 +98,7 @@ extends SharedQuotingJoinerSettings<TSelf, TQuotingMapJoinerSettings> {
      *
      * @see #useForNull()
      * @see #skipNulls()
-     * @see QuotingJoinerUtils#DEFAULT_SKIP_NULLS_FLAG
+     * @see Joiner2Utils#DEFAULT_SKIP_NULLS_FLAG
      */
     TSelf skipNulls(boolean flag);
 
@@ -112,7 +112,7 @@ extends SharedQuotingJoinerSettings<TSelf, TQuotingMapJoinerSettings> {
      * </ul>
      *
      * @see #skipNulls(boolean)
-     * @see QuotingJoinerUtils#DEFAULT_SKIP_NULLS_FLAG
+     * @see Joiner2Utils#DEFAULT_SKIP_NULLS_FLAG
      */
     boolean skipNulls();
 }

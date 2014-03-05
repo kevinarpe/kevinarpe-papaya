@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.testing.log4j;
  * #L%
  */
 
+import com.google.common.collect.ImmutableList;
 import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
@@ -55,21 +56,18 @@ public final class Log4JTestUtils {
     public static void removeMockAppender() {
         Logger rootLogger = Logger.getRootLogger();
         rootLogger.removeAppender(mockAppender);
-        ArgumentCaptor<LoggingEvent> x = ArgumentCaptor.forClass(LoggingEvent.class);
-        verify(mockAppender).doAppend(x.capture());
-        List<LoggingEvent> loggingEventList = x.getAllValues();
     }
 
     public static List<LoggingEvent> getLoggingEventList() {
         ArgumentCaptor<LoggingEvent> argumentCaptor = ArgumentCaptor.forClass(LoggingEvent.class);
-        verify(mockAppender).doAppend(argumentCaptor.capture());
-        List<LoggingEvent> loggingEventList = argumentCaptor.getAllValues();
+        List<LoggingEvent> loggingEventList = null;
+        try {
+            verify(mockAppender).doAppend(argumentCaptor.capture());
+            loggingEventList = argumentCaptor.getAllValues();
+        }
+        catch (Throwable ignore) {
+            loggingEventList = ImmutableList.of();
+        }
         return loggingEventList;
-    }
-
-    public static LoggingEventAnalysis getLoggingEventAnalysis() {
-        List<LoggingEvent> loggingEventList = getLoggingEventList();
-        LoggingEventAnalysis x = new LoggingEventAnalysisImpl(loggingEventList);
-        return x;
     }
 }

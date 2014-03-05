@@ -26,37 +26,37 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  */
 
 /**
- * Settings shared between {@link QuotingJoiner} and {@link QuotingMapJoiner}.
+ * Settings shared between {@link Joiner2} and {@link MapJoiner2}.
  * <p>
  * Inheritance diagram:
  * <pre>{@code
  *     interface
- *     SharedQuotingJoinerSettings
+ *     SharedJoiner2Settings
  *        /                   \
  * interface                 interface
- * QuotingJoinerSettings     QuotingMapJoinerSettings
+ * Joiner2Settings     MapJoiner2Settings
  *    |                         |
  * interface                 interface
- * QuotingJoiner             QuotingMapJoiner
+ * Joiner2             MapJoiner2
  *    |                         |
  * class                     class
- * QuotingJoinerImpl         QuotingMapJoinerImpl
+ * Joiner2Impl         MapJoiner2Impl
  * }</pre>
  *
  * @param <TSelf>
  *        type that extends this interface (for method chaining)
  * @param <TQuotingMapJoinerSettings>
- *        type that extends {@link QuotingMapJoinerSettings}
+ *        type that extends {@link MapJoiner2Settings}
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see QuotingJoinerSettings
- * @see QuotingMapJoinerSettings
+ * @see Joiner2Settings
+ * @see MapJoiner2Settings
  */
-public interface SharedQuotingJoinerSettings
+public interface SharedJoiner2Settings
     <
-        TSelf extends SharedQuotingJoinerSettings<TSelf, TQuotingMapJoinerSettings>,
-        TQuotingMapJoinerSettings extends QuotingMapJoinerSettings<TQuotingMapJoinerSettings>
+        TSelf extends SharedJoiner2Settings<TSelf, TQuotingMapJoinerSettings>,
+        TQuotingMapJoinerSettings extends MapJoiner2Settings<TQuotingMapJoinerSettings>
     >
 {
 
@@ -116,8 +116,8 @@ public interface SharedQuotingJoinerSettings
      * @see #withQuotes(char, char)
      * @see #withLeftQuote()
      * @see #withRightQuote()
-     * @see QuotingJoinerUtils#DEFAULT_LEFT_QUOTE
-     * @see QuotingJoinerUtils#DEFAULT_RIGHT_QUOTE
+     * @see Joiner2Utils#DEFAULT_LEFT_QUOTE
+     * @see Joiner2Utils#DEFAULT_RIGHT_QUOTE
      */
     TSelf withQuotes(String leftQuote, String rightQuote);
 
@@ -143,7 +143,7 @@ public interface SharedQuotingJoinerSettings
      *
      * @see #withQuotes(String, String)
      * @see #withRightQuote()
-     * @see QuotingJoinerUtils#DEFAULT_LEFT_QUOTE
+     * @see Joiner2Utils#DEFAULT_LEFT_QUOTE
      */
     String withLeftQuote();
 
@@ -154,7 +154,7 @@ public interface SharedQuotingJoinerSettings
      *
      * @see #withQuotes(String, String)
      * @see #withLeftQuote()
-     * @see QuotingJoinerUtils#DEFAULT_RIGHT_QUOTE
+     * @see Joiner2Utils#DEFAULT_RIGHT_QUOTE
      */
     String withRightQuote();
 
@@ -173,7 +173,7 @@ public interface SharedQuotingJoinerSettings
      *
      * @see #useForNoElements(char)
      * @see #useForNoElements()
-     * @see QuotingJoinerUtils#DEFAULT_NO_ELEMENTS_TEXT
+     * @see Joiner2Utils#DEFAULT_NO_ELEMENTS_TEXT
      */
     TSelf useForNoElements(String noElementsText);
 
@@ -188,19 +188,19 @@ public interface SharedQuotingJoinerSettings
      * @return no elements text
      *
      * @see #useForNoElements(String)
-     * @see QuotingJoinerUtils#DEFAULT_NO_ELEMENTS_TEXT
+     * @see Joiner2Utils#DEFAULT_NO_ELEMENTS_TEXT
      */
     String useForNoElements();
 
     /**
-     * Constructs a new instance of {@link QuotingMapJoiner} to join map entries.
+     * Constructs a new instance of {@link MapJoiner2} to join map entries.
      *
      * @param keyValueSeparator
      *        String to insert between keys and values during join.
      *        Must not be {@code null}, but can be {@code ""} (empty string).
      *        Example: {@code "="} (equals)
      *
-     * @return new instance of {@link QuotingMapJoinerImpl}
+     * @return new instance of {@link MapJoiner2Impl}
      *
      * @throws NullPointerException
      *         if {@code keyValueSeparator} is {@code null}

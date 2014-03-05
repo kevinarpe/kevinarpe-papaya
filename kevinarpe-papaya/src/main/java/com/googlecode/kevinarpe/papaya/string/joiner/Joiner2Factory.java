@@ -25,17 +25,24 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  * #L%
  */
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 /**
+ * Factory to construct instances of {@link Joiner2}.  Unless an additional layer of
+ * indirection is required for mocking or testing, it is usually sufficient to call
+ * {@link Joiner2Utils#withSeparator(String)}.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see Joiner2Utils#newQuotingJoinerFactory(String)
+ * @see Joiner2Utils#newQuotingJoinerFactory(char)
+ * @see Joiner2Utils#withSeparator(String)
+ * @see Joiner2Utils#withSeparator(char)
  */
-public class QuotingJoinerFactoryImplTest {
+public interface Joiner2Factory {
 
-    @Test
-    public void newInstance_Pass() {
-        QuotingJoiner x = new QuotingJoinerFactoryImpl(",").newInstance();
-        Assert.assertEquals(x.withSeparator(), ",");
-    }
+    /**
+     * Constructs a new instance of {@link Joiner2}.
+     *
+     * @return new instance
+     */
+    Joiner2 newInstance();
 }

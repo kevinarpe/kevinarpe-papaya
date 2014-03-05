@@ -33,7 +33,7 @@ import java.util.Iterator;
 
 /**
  * Extension of Google Guava's {@link Joiner}.  To construct a new instance, see
- * {@link QuotingJoinerUtils#withSeparator(String)} and {@link QuotingJoinerUtils#withSeparator(char)}.
+ * {@link Joiner2Utils#withSeparator(String)} and {@link Joiner2Utils#withSeparator(char)}.
  * <p>
  * Differences to {@link Joiner}:
  * <ul>
@@ -45,7 +45,7 @@ import java.util.Iterator;
  *     <li>{@link #useForNoElements(String)}: During a join, if no elements are found, this text
  *     is used.  When joining elements for an exception or log message, {@code "(empty)"} is a good
  *     value to indicate to (exception and log) readers that no elements were found.</li>
- *     <li>Uses interface {@link QuotingJoiner}, instead of a concrete class.  This follows JavaEE
+ *     <li>Uses interface {@link Joiner2}, instead of a concrete class.  This follows JavaEE
  *     design principles, and is helpful for mocking and testing.  Due to Java interface limitations
  *     with generic methods, the methods {@code appendTo(Appendable, *)} are slightly different from
  *     {@link Joiner}.  The {@code Appendable} reference is not a generic type (for input and
@@ -54,27 +54,27 @@ import java.util.Iterator;
  *     {@link Joiner} does now allow these attributes to be set more than once.</li>
  *     <li>Settings accessors, e.g., {@link #withSeparator()}.</li>
  *     <li>Default settings are available as {@code public static final} members, e.g.,
- *     {@link QuotingJoinerUtils#DEFAULT_NULL_TEXT}.</li>
+ *     {@link Joiner2Utils#DEFAULT_NULL_TEXT}.</li>
  * </ul>
  * <p>
  * Examples:
  * <pre>{@code
- * QuotingJoinerUtils.withSeparator(", ").withQuotes("[", "]").join(list) -> "[a], [b], [c], ..."
- * QuotingJoinerUtils.withSeparator(", ").withQuotes("[", "]").join(listWithNulls) -> "[a], [b], [null], [c], ..."
- * QuotingJoinerUtils.withSeparator(", ").withQuotes("[", "]").skipNulls(true).join(listWithNulls) -> "[a], [b], [c], ..."
- * QuotingJoinerUtils.withSeparator(", ").withQuotes("[", "]").useForNoElements("(empty)").join(emptyList) -> "(empty)"
+ * Joiner2Utils.withSeparator(", ").withQuotes("[", "]").join(list) -> "[a], [b], [c], ..."
+ * Joiner2Utils.withSeparator(", ").withQuotes("[", "]").join(listWithNulls) -> "[a], [b], [null], [c], ..."
+ * Joiner2Utils.withSeparator(", ").withQuotes("[", "]").skipNulls(true).join(listWithNulls) -> "[a], [b], [c], ..."
+ * Joiner2Utils.withSeparator(", ").withQuotes("[", "]").useForNoElements("(empty)").join(emptyList) -> "(empty)"
  * }</pre>
  * <p>
- * See {@link SharedQuotingJoinerSettings} for an inheritance diagram.
+ * See {@link SharedJoiner2Settings} for an inheritance diagram.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see QuotingJoinerUtils
- * @see QuotingJoinerSettings
- * @see QuotingMapJoiner
+ * @see Joiner2Utils
+ * @see Joiner2Settings
+ * @see MapJoiner2
  */
-public interface QuotingJoiner
-extends QuotingJoinerSettings<QuotingJoiner, QuotingMapJoiner> {
+public interface Joiner2
+extends Joiner2Settings<Joiner2, MapJoiner2> {
 
     /**
      * This is a convenience method to call {@link #appendTo(Appendable, Iterable)}.

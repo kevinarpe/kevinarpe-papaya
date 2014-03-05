@@ -27,7 +27,7 @@ package com.googlecode.kevinarpe.papaya.testing.log4j.junit;
 
 import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.testing.log4j.Log4JTestUtils;
-import com.googlecode.kevinarpe.papaya.testing.log4j.LoggingEventAnalysis;
+import com.googlecode.kevinarpe.papaya.testing.log4j.LoggingEventAnalyzer;
 import org.apache.log4j.spi.LoggingEvent;
 import org.junit.After;
 import org.junit.Before;
@@ -55,8 +55,8 @@ public class JUnitLog4JTestBase {
         return x;
     }
 
-    public final LoggingEventAnalysis getLoggingEventAnalysis() {
-        LoggingEventAnalysis x = Log4JTestUtils.getLoggingEventAnalysis();
+    public final LoggingEventAnalyzer getLoggingEventAnalysis() {
+        LoggingEventAnalyzer x = Log4JTestUtils.getLoggingEventAnalysis();
         return x;
     }
 }
