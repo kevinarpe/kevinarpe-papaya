@@ -28,13 +28,13 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
 import com.google.common.collect.Lists;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.ISLF4JLoggingEventFactoryUtils;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEvent;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventAnalyzerImpl;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventFactory;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventFactoryImpl;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventFactoryUtils;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventFactoryUtilsInterface;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JMarkerNone;
 import org.slf4j.Marker;
 
@@ -50,7 +50,7 @@ implements SLF4JMockLogger {
     private final String _name;
     private final SLF4JMockLoggerConfig _config;
     private final SLF4JLoggingEventFactory _factory;
-    private final SLF4JLoggingEventFactoryUtilsInterface _factoryUtils;
+    private final ISLF4JLoggingEventFactoryUtils _factoryUtils;
     private final List<SLF4JLoggingEvent> _loggingEventList;
 
     public SLF4JMockLoggerImpl(String name, SLF4JMockLoggerConfigImpl config) {
@@ -65,7 +65,7 @@ implements SLF4JMockLogger {
             String name,
             SLF4JMockLoggerConfigImpl config,
             SLF4JLoggingEventFactory factory,
-            SLF4JLoggingEventFactoryUtilsInterface factoryUtils) {
+            ISLF4JLoggingEventFactoryUtils factoryUtils) {
         _name = StringArgs.checkNotEmptyOrWhitespace(name, "name");
         ObjectArgs.checkNotNull(config, "config");
         _config = new SLF4JMockLoggerConfigImpl(config);

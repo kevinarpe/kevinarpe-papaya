@@ -37,7 +37,7 @@ import org.slf4j.Marker;
 // TODO: LAST: What to do before next release?  Start to tighten up.
 // TODO: Write tests for testing-slf4j
 public final class SLF4JLoggingEventFactoryUtils
-implements SLF4JLoggingEventFactoryUtilsInterface {
+implements ISLF4JLoggingEventFactoryUtils {
 
     public SLF4JLoggingEventFactoryUtils() {
         // Empty.

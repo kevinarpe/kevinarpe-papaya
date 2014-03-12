@@ -50,7 +50,6 @@ public class Log4JTestUtilsTest {
         }
     }
 
-    // TODO: LAST: Why does this fail now with two 'new' calls?
     @Test
     public void pass() {
         Log4JTestUtils.addMockAppender();

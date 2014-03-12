@@ -31,7 +31,7 @@ import org.slf4j.Marker;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public interface SLF4JLoggingEventFactoryUtilsInterface {
+public interface ISLF4JLoggingEventFactoryUtils {
 
     SLF4JLoggingEvent newInstance(
             SLF4JLoggingEventFactory factory,

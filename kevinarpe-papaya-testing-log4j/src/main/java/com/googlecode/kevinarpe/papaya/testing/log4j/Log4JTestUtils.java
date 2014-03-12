@@ -34,6 +34,7 @@ import org.mockito.ArgumentCaptor;
 
 import java.util.List;
 
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -62,7 +63,7 @@ public final class Log4JTestUtils {
         ArgumentCaptor<LoggingEvent> argumentCaptor = ArgumentCaptor.forClass(LoggingEvent.class);
         List<LoggingEvent> loggingEventList = null;
         try {
-            verify(mockAppender).doAppend(argumentCaptor.capture());
+            verify(mockAppender, atLeastOnce()).doAppend(argumentCaptor.capture());
             loggingEventList = argumentCaptor.getAllValues();
         }
         catch (Throwable ignore) {
