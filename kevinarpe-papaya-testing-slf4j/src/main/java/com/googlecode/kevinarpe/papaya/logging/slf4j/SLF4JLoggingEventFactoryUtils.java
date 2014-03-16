@@ -34,7 +34,7 @@ import org.slf4j.Marker;
 // TODO: If all the *args classes were not static utils classes....
 // ... it might allow for very powerful Mockito verification
 // ... and avoid heaps of annoying tests for null, empty string, and whitespace string.
-// TODO: LAST: What to do before next release?  Start to tighten up.
+// TODO: What to do before next release?  Start to tighten up.
 // TODO: Write tests for testing-slf4j
 public final class SLF4JLoggingEventFactoryUtils
 implements ISLF4JLoggingEventFactoryUtils {

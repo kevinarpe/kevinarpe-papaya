@@ -51,6 +51,7 @@ implements SLF4JLoggingEventAnalyzer {
 
     public SLF4JLoggingEventAnalyzerImpl(List<SLF4JLoggingEvent> loggingEventList) {
         CollectionArgs.checkElementsNotNull(loggingEventList, "loggingEventList");
+
         _loggingEventList = ImmutableList.copyOf(loggingEventList);
     }
 
@@ -79,7 +80,7 @@ implements SLF4JLoggingEventAnalyzer {
     @Override
     public <T> List<SLF4JLoggingEvent> getLoggingEventListIncluding(
             SLF4JLoggingEventAttribute attribute, T value, T... moreValueArr) {
-        AnyOfLogLevel predicate = new AnyOfLogLevel(attribute, value, moreValueArr);
+        AnyAttributeValuePredicate predicate = new AnyAttributeValuePredicate(attribute, value, moreValueArr);
         List<SLF4JLoggingEvent> x = getLoggingEventListIncluding(predicate);
         return x;
     }
@@ -87,7 +88,7 @@ implements SLF4JLoggingEventAnalyzer {
     @Override
     public List<SLF4JLoggingEvent> getLoggingEventListIncluding(
             SLF4JLoggingEventAttribute attribute, Set<?> valueSet) {
-        AnyOfLogLevel predicate = new AnyOfLogLevel(attribute, valueSet);
+        AnyAttributeValuePredicate predicate = new AnyAttributeValuePredicate(attribute, valueSet);
         List<SLF4JLoggingEvent> x = getLoggingEventListIncluding(predicate);
         return x;
     }
@@ -95,7 +96,7 @@ implements SLF4JLoggingEventAnalyzer {
     @Override
     public <T> List<SLF4JLoggingEvent> getLoggingEventListExcluding(
             SLF4JLoggingEventAttribute attribute, T value, T... moreValueArr) {
-        AnyOfLogLevel predicate = new AnyOfLogLevel(attribute, value, moreValueArr);
+        AnyAttributeValuePredicate predicate = new AnyAttributeValuePredicate(attribute, value, moreValueArr);
         Predicate<SLF4JLoggingEvent> notPredicate = Predicates.not(predicate);
         List<SLF4JLoggingEvent> x = getLoggingEventListIncluding(notPredicate);
         return x;
@@ -104,19 +105,19 @@ implements SLF4JLoggingEventAnalyzer {
     @Override
     public List<SLF4JLoggingEvent> getLoggingEventListExcluding(
             SLF4JLoggingEventAttribute attribute, Set<?> valueSet) {
-        AnyOfLogLevel predicate = new AnyOfLogLevel(attribute, valueSet);
+        AnyAttributeValuePredicate predicate = new AnyAttributeValuePredicate(attribute, valueSet);
         Predicate<SLF4JLoggingEvent> notPredicate = Predicates.not(predicate);
         List<SLF4JLoggingEvent> x = getLoggingEventListIncluding(notPredicate);
         return x;
     }
 
-    static final class AnyOfLogLevel
+    static final class AnyAttributeValuePredicate
     implements Predicate<SLF4JLoggingEvent> {
 
         private final SLF4JLoggingEventAttribute _attribute;
         private final Set<?> _valueSet;
 
-        public <T> AnyOfLogLevel(
+        public <T> AnyAttributeValuePredicate(
                 SLF4JLoggingEventAttribute attribute, T logLevel, T... moreLogLevelArr) {
             this(attribute, _createSet(logLevel, moreLogLevelArr));
         }
@@ -130,7 +131,7 @@ implements SLF4JLoggingEventAnalyzer {
             return set;
         }
 
-        public AnyOfLogLevel(SLF4JLoggingEventAttribute attribute, Set<?> valueSet) {
+        public AnyAttributeValuePredicate(SLF4JLoggingEventAttribute attribute, Set<?> valueSet) {
             _attribute = ObjectArgs.checkNotNull(attribute, "attribute");
             _valueSet = CollectionArgs.checkNotEmptyAndElementsNotNull(valueSet, "valueSet");
         }

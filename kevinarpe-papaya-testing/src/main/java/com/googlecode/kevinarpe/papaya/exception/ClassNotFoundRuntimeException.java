@@ -25,24 +25,39 @@ package com.googlecode.kevinarpe.papaya.exception;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@NotFullyTested
 public class ClassNotFoundRuntimeException
 extends RuntimeException {
 
+    /**
+     * Calls RuntimeException#RuntimeException()
+     */
     public ClassNotFoundRuntimeException() {
         super();
     }
 
+    /**
+     * Calls RuntimeException#RuntimeException(String)
+     */
     public ClassNotFoundRuntimeException(String message) {
         super(message);
     }
 
+    /**
+     * Calls RuntimeException#RuntimeException(String, Throwable)
+     */
     public ClassNotFoundRuntimeException(String message, Throwable cause) {
         super(message, cause);
     }
 
+    /**
+     * Calls RuntimeException#RuntimeException(Throwable)
+     */
     public ClassNotFoundRuntimeException(Throwable cause) {
         super(cause);
     }
