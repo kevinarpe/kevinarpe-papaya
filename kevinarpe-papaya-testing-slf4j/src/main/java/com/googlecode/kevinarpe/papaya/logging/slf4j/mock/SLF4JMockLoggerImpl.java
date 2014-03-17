@@ -53,7 +53,7 @@ implements SLF4JMockLogger {
     private final ISLF4JLoggingEventFactoryUtils _factoryUtils;
     private final List<SLF4JLoggingEvent> _loggingEventList;
 
-    public SLF4JMockLoggerImpl(String name, SLF4JMockLoggerConfigImpl config) {
+    public SLF4JMockLoggerImpl(String name, SLF4JMockLoggerConfig config) {
         this(
             name,
             config,
@@ -63,12 +63,12 @@ implements SLF4JMockLogger {
 
     SLF4JMockLoggerImpl(
             String name,
-            SLF4JMockLoggerConfigImpl config,
+            SLF4JMockLoggerConfig config,
             SLF4JLoggingEventFactory factory,
             ISLF4JLoggingEventFactoryUtils factoryUtils) {
         _name = StringArgs.checkNotEmptyOrWhitespace(name, "name");
         ObjectArgs.checkNotNull(config, "config");
-        _config = new SLF4JMockLoggerConfigImpl(config);
+        _config = config.copy();
         _factory = ObjectArgs.checkNotNull(factory, "factory");
         _factoryUtils = ObjectArgs.checkNotNull(factoryUtils, "factoryUtils");
         _loggingEventList = Lists.newArrayList();

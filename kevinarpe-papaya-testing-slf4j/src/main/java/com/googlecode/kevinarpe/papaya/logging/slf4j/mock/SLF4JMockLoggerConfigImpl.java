@@ -111,4 +111,10 @@ implements SLF4JMockLoggerConfig {
         boolean last = map.put(logLevel, isEnabled);
         return last;
     }
+
+    @Override
+    public SLF4JMockLoggerConfigImpl copy() {
+        SLF4JMockLoggerConfigImpl x = new SLF4JMockLoggerConfigImpl(this);
+        return x;
+    }
 }

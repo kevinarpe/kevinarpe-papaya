@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
+package com.googlecode.kevinarpe.papaya.exception;
 
 /*
  * #%L
@@ -25,21 +25,15 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
-import org.slf4j.Marker;
+import org.testng.annotations.Test;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public interface SLF4JMockLoggerConfig {
+public class ClassNotFoundRuntimeExceptionTest {
 
-    boolean isEnabled(SLF4JLogLevel logLevel);
-
-    boolean isEnabled(Marker marker, SLF4JLogLevel logLevel);
-
-    boolean setEnabled(SLF4JLogLevel logLevel, boolean isEnabled);
-
-    boolean setEnabled(Marker marker, SLF4JLogLevel logLevel, boolean isEnabled);
-
-    SLF4JMockLoggerConfig copy();
+    @Test
+    public void pass() {
+        DelegateExceptionTestHelper.newInstance(ClassNotFoundRuntimeException.class).runAllTests();
+    }
 }

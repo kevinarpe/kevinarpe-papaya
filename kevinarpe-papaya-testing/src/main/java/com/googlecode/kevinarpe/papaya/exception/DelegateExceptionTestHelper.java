@@ -120,6 +120,7 @@ public final class DelegateExceptionTestHelper<TException extends Exception> {
         TException classUnderTest = _newInstance(ctor);
         _assertMessage(classUnderTest, "", null);
         _assertCause(classUnderTest, "", null);
+        _assertToString(classUnderTest, "");
     }
 
     public void testCtorString() {
@@ -131,7 +132,7 @@ public final class DelegateExceptionTestHelper<TException extends Exception> {
     }
 
     public void testCtorStringThrowable() {
-        Constructor<TException> ctor = _getCtor(String.class);
+        Constructor<TException> ctor = _getCtor(String.class, Throwable.class);
         final String message = "dummy";
         final Throwable cause = new Exception("exception");
         TException classUnderTest = _newInstance(ctor, message, cause);
@@ -140,10 +141,10 @@ public final class DelegateExceptionTestHelper<TException extends Exception> {
     }
 
     public void testCtorThrowable() {
-        Constructor<TException> ctor = _getCtor(String.class);
+        Constructor<TException> ctor = _getCtor(Throwable.class);
         final Throwable cause = new Exception("exception");
         TException classUnderTest = _newInstance(ctor, cause);
-        _assertMessage(classUnderTest, "Throwable", cause.getMessage());
+        _assertMessage(classUnderTest, "Throwable", cause.toString());
         _assertCause(classUnderTest, "Throwable", cause);
     }
 
@@ -183,14 +184,14 @@ public final class DelegateExceptionTestHelper<TException extends Exception> {
     }
 
     private void _assertMessage(
-        TException classUnderTest,
-        String ctorParamsDescription,
-        String optionalExpectedMessage) {
+            TException classUnderTest,
+            String ctorParamsDescription,
+            String optionalExpectedMessage) {
         if (!Objects.equal(optionalExpectedMessage, classUnderTest.getMessage())) {
             String msg = String.format(
                 "Constructor %s(%s) does not create new instance with expected message:"
                     + "%nExpected: '%s'"
-                    + "%nActual: '%s'",
+                    + "%nActual  : '%s'",
                 _exceptionClass.getName(),
                 ctorParamsDescription,
                 optionalExpectedMessage,
@@ -200,13 +201,30 @@ public final class DelegateExceptionTestHelper<TException extends Exception> {
     }
 
     private void _assertCause(
-        TException classUnderTest,
-        String ctorParamsDescription,
-        Throwable optionalExpectedCause) {
+            TException classUnderTest,
+            String ctorParamsDescription,
+            Throwable optionalExpectedCause) {
         if (optionalExpectedCause != classUnderTest.getCause()) {
             String msg = String.format(
                 "Constructor %s(%s) does not create new instance with expected cause",
                 _exceptionClass.getName(), ctorParamsDescription);
+            throw new AssertionError(msg);
+        }
+    }
+
+    private void _assertToString(TException classUnderTest, String ctorParamsDescription) {
+        String s = classUnderTest.getClass().getName();
+        String message = classUnderTest.getLocalizedMessage();
+        String expected = (message != null) ? (s + ": " + message) : s;
+        String actual = classUnderTest.toString();
+        if (!Objects.equal(expected, actual)) {
+            String msg = String.format("Unexpected result from new %s(%s).toString()"
+                + "%nExpected: '%s'"
+                + "%nActual  : '%s'",
+                _exceptionClass.getName(),
+                ctorParamsDescription,
+                expected,
+                actual);
             throw new AssertionError(msg);
         }
     }

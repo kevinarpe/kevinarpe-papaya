@@ -75,6 +75,11 @@ public class DelegateExceptionTestHelperTest {
         public BadDelegateException(Throwable cause) {
             super(new Exception("other"));
         }
+
+        @Override
+        public String toString() {
+            return UUID.randomUUID().toString();
+        }
     }
 
     private DelegateExceptionTestHelper.ClassProxy mockClassProxy;
@@ -96,9 +101,43 @@ public class DelegateExceptionTestHelperTest {
             DelegateExceptionTestHelper.newInstance(BadDelegateException.class);
     }
 
-    // TOOD: LAST: Finish tests, then use this for ClassNotFoundRuntimeException
     @Test
     public void testCtorVoid_Pass() {
         goodClassUnderTestWithoutMocks.testCtorVoid();
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void testCtorVoid_Fail() {
+        badClassUnderTestWithoutMocks.testCtorVoid();
+    }
+
+    @Test
+    public void testCtorString_Pass() {
+        goodClassUnderTestWithoutMocks.testCtorString();
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void testCtorString_Fail() {
+        badClassUnderTestWithoutMocks.testCtorString();
+    }
+
+    @Test
+    public void testCtorStringThrowable_Pass() {
+        goodClassUnderTestWithoutMocks.testCtorStringThrowable();
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void testCtorStringThrowable_Fail() {
+        badClassUnderTestWithoutMocks.testCtorStringThrowable();
+    }
+
+    @Test
+    public void testCtorThrowable_Pass() {
+        goodClassUnderTestWithoutMocks.testCtorThrowable();
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void testCtorThrowable_Fail() {
+        badClassUnderTestWithoutMocks.testCtorThrowable();
     }
 }

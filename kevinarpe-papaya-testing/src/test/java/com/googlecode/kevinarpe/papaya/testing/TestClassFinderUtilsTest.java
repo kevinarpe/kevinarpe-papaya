@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.testing;
  * #L%
  */
 
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertSame;
@@ -34,13 +35,20 @@ import static org.testng.Assert.assertSame;
  */
 public class TestClassFinderUtilsTest {
 
+    private TestClassFinderUtils testClassFinderUtils;
+
+    @BeforeMethod
+    public void beforeEachTestMethod() {
+        testClassFinderUtils = new TestClassFinderUtils();
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // TestClassFinderUtils.newInstance()
     //
 
     @Test
     public void newInstance_Pass() {
-        TestClassFinder classUnderTest = TestClassFinderUtils.newInstance();
+        TestClassFinder classUnderTest = testClassFinderUtils.newInstance();
         TestClassFinderImplTest.assertAttrEquals(
             classUnderTest,
             TestClassFinderUtils.DEFAULT_ROOT_DIR_PATH,
@@ -54,6 +62,6 @@ public class TestClassFinderUtilsTest {
 
     @Test
     public void newFactory_Pass() {
-        assertSame(TestClassFinderUtils.newFactory(), TestClassFinderFactoryImpl.INSTANCE);
+        assertSame(testClassFinderUtils.newFactory(), TestClassFinderFactoryImpl.INSTANCE);
     }
 }

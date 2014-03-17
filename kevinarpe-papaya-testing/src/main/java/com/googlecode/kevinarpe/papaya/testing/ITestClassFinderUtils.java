@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
+package com.googlecode.kevinarpe.papaya.testing;
 
 /*
  * #%L
@@ -25,21 +25,12 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
-import org.slf4j.Marker;
-
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public interface SLF4JMockLoggerConfig {
+public interface ITestClassFinderUtils {
 
-    boolean isEnabled(SLF4JLogLevel logLevel);
+    TestClassFinder newInstance();
 
-    boolean isEnabled(Marker marker, SLF4JLogLevel logLevel);
-
-    boolean setEnabled(SLF4JLogLevel logLevel, boolean isEnabled);
-
-    boolean setEnabled(Marker marker, SLF4JLogLevel logLevel, boolean isEnabled);
-
-    SLF4JMockLoggerConfig copy();
+    TestClassFinderFactory newFactory();
 }

@@ -41,7 +41,8 @@ import java.util.regex.Pattern;
  * @see #newFactory()
  */
 @FullyTested
-public final class TestClassFinderUtils {
+public final class TestClassFinderUtils
+implements ITestClassFinderUtils {
 
     /**
      * Default value for {@link TestClassFinder#withRootDirPath()}: System property
@@ -61,8 +62,8 @@ public final class TestClassFinderUtils {
      */
     public static final List<Pattern> DEFAULT_EXCLUDE_PATTERN_LIST = ImmutableList.of();
 
-    private TestClassFinderUtils() {
-        // disable
+    public TestClassFinderUtils() {
+        // Empty
     }
 
     /**
@@ -72,7 +73,8 @@ public final class TestClassFinderUtils {
      *
      * @see #newFactory()
      */
-    public static TestClassFinder newInstance() {
+    @Override
+    public TestClassFinder newInstance() {
         TestClassFinderFactory factory = newFactory();
         TestClassFinder x = factory.newInstance();
         return x;
@@ -87,7 +89,8 @@ public final class TestClassFinderUtils {
      *
      * @see #newInstance()
      */
-    public static TestClassFinderFactory newFactory() {
+    @Override
+    public TestClassFinderFactory newFactory() {
         return TestClassFinderFactoryImpl.INSTANCE;
     }
 }

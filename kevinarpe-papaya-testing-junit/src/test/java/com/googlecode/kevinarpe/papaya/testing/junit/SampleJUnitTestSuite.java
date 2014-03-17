@@ -43,7 +43,7 @@ extends Suite {
     // TODO: Does not run... How to make work at least a little?
 
     private static final Class[] TEST_CLASS_ARR =
-        TestClassFinderUtils.newInstance()
+        new TestClassFinderUtils().newInstance()
             .withRootDirPath(new File("kevinarpe-papaya-testing"))
             .withIncludePatterns(Pattern.compile("Test\\.java$"))
             .findAsArray();

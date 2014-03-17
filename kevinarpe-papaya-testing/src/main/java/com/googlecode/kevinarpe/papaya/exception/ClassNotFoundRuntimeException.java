@@ -25,12 +25,12 @@ package com.googlecode.kevinarpe.papaya.exception;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@NotFullyTested
+@FullyTested
 public class ClassNotFoundRuntimeException
 extends RuntimeException {
 

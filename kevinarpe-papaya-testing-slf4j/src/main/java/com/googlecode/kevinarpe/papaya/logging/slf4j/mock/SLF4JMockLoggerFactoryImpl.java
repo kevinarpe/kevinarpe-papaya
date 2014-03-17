@@ -70,12 +70,12 @@ implements SLF4JMockLoggerFactory {
     public SLF4JMockLoggerFactoryImpl(SLF4JMockLoggerFactoryImpl other) {
         ObjectArgs.checkNotNull(other, "other");
 
-        _config = new SLF4JMockLoggerConfigImpl(other._config);
+        _config = other._config.copy();
         _nameToLoggerMap = new HashMap<String, SLF4JMockLoggerImpl>(other._nameToLoggerMap);
     }
 
     @Override
-    public SLF4JMockLoggerConfig getConfig() {
+    public SLF4JMockLoggerConfigImpl getConfig() {
         return _config;
     }
 
