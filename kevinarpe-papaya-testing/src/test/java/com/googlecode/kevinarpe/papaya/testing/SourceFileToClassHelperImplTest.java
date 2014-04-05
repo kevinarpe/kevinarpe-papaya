@@ -52,7 +52,7 @@ public class SourceFileToClassHelperImplTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // SourceFileToClassHelperImplTest.getClass()
+    // SourceFileToClassHelperImpl.getClass()
     //
 
     @Test
