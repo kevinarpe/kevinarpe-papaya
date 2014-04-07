@@ -75,6 +75,11 @@ implements SLF4JMockLogger {
     }
 
     @Override
+    public String getName() {
+        return _name;
+    }
+
+    @Override
     public SLF4JMockLoggerConfig getConfig() {
         return _config;
     }
@@ -85,14 +90,10 @@ implements SLF4JMockLogger {
      *
      * @see SLF4JLoggingEventAnalyzerImpl
      */
+    @Override
     public List<SLF4JLoggingEvent> getLoggingEventList() {
         List<SLF4JLoggingEvent> x = Collections.unmodifiableList(_loggingEventList);
         return x;
-    }
-
-    @Override
-    public String getName() {
-        return _name;
     }
 
     private boolean _isEnabled(SLF4JLogLevel logLevel, Marker marker) {

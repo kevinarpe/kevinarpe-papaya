@@ -128,6 +128,8 @@ implements SLF4JLoggingEvent {
 
     @Override
     public <T> T getAttributeValue(SLF4JLoggingEventAttribute attribute) {
+        ObjectArgs.checkNotNull(attribute, "attribute");
+
         Object value = attribute.getValue(this);
         @SuppressWarnings("unchecked")
         T castValue = (T) value;

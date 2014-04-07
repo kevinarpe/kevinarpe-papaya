@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
  */
 
 import com.google.common.collect.Maps;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 import java.util.HashMap;
@@ -34,30 +35,9 @@ import java.util.Map;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public final class SLF4JMockLoggerFactoryImpl
 implements SLF4JMockLoggerFactory {
-
-//    public static final void main(String[] argArr) {
-//        Logger logger = LoggerFactory.getLogger(SLF4JMockLoggerFactoryImpl.class);
-//        try {
-//            a();
-//        }
-//        catch (Exception e) {
-//            logger.info("message", e);
-//        }
-//    }
-//
-//    private static void a() {
-//        b();
-//    }
-//
-//    private static void b() {
-//        c();
-//    }
-//
-//    private static void c() {
-//        throw new NullPointerException("exception");
-//    }
 
     private final SLF4JMockLoggerConfigImpl _config;
     private final Map<String, SLF4JMockLoggerImpl> _nameToLoggerMap;
@@ -81,9 +61,10 @@ implements SLF4JMockLoggerFactory {
 
     @Override
     public SLF4JMockLoggerImpl getLogger(String name) {
+        ObjectArgs.checkNotNull(name, "name");
+
         SLF4JMockLoggerImpl logger = _nameToLoggerMap.get(name);
         if (null == logger) {
-            // Replace with factory?
             logger = new SLF4JMockLoggerImpl(name, _config);
             _nameToLoggerMap.put(name, logger);
         }

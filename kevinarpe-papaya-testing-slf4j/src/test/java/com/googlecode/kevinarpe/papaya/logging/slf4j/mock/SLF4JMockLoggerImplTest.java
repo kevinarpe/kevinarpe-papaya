@@ -79,24 +79,6 @@ public class SLF4JMockLoggerImplTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // SLF4JMockLoggerImpl.getConfig()
-    //
-
-    @Test
-    public void getConfig_Pass() {
-        assertSame(classUnderTest.getConfig(), mockConfigCopy);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // SLF4JMockLoggerImpl.getConfig()
-    //
-
-    @Test
-    public void getName_Pass() {
-        assertEquals(classUnderTest.getName(), SLF4JMockLoggerImplTest.class.getName());
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     // Helpers
     //
 
@@ -136,6 +118,33 @@ public class SLF4JMockLoggerImplTest {
         _whenIsEnabled(marker, logLevel);
         when(mockFactoryUtils.newInstance(mockFactory, classUnderTest, logLevel, marker, msg, throwable))
             .thenReturn(mockLoggingEvent);
+        assertTrue(classUnderTest.getLoggingEventList().isEmpty());
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.getConfig()
+    //
+
+    @Test
+    public void getConfig_Pass() {
+        assertSame(classUnderTest.getConfig(), mockConfigCopy);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.getName()
+    //
+
+    @Test
+    public void getName_Pass() {
+        assertEquals(classUnderTest.getName(), SLF4JMockLoggerImplTest.class.getName());
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.getLoggingEventList()
+    //
+
+    @Test
+    public void getLoggingEventList_Pass() {
         assertTrue(classUnderTest.getLoggingEventList().isEmpty());
     }
 
@@ -300,5 +309,647 @@ public class SLF4JMockLoggerImplTest {
         classUnderTest.trace((Marker) null, msg, throwable);
     }
 
-    // TODO: LAST: Write tests for debug, etc.
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.isDebugEnabled()
+    //
+
+    @Test
+    public void isDebugEnabled_Pass() {
+        _whenIsEnabled(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.DEBUG);
+        assertTrue(classUnderTest.isDebugEnabled());
+        assertTrue(classUnderTest.isDebugEnabled(SLF4JMarkerNone.INSTANCE));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.debug(String)
+    //
+
+    @Test
+    public void debugString_Pass() {
+        _whenLogString(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.DEBUG);
+        classUnderTest.debug(msg);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.debug(String, Object)
+    //
+
+    @Test
+    public void debugStringObject_Pass() {
+        _whenLogStringObject(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.DEBUG);
+        classUnderTest.debug(format, arg);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.debug(String, Object, Object)
+    //
+
+    @Test
+    public void debugStringObjectObject_Pass() {
+        _whenLogStringObjectObject(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.DEBUG);
+        classUnderTest.debug(format, arg, arg2);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.debug(String, Object...)
+    //
+
+    @Test
+    public void debugStringObjectArr_Pass() {
+        _whenLogStringObjectArr(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.DEBUG);
+        classUnderTest.debug(format, argArr);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.debug(String, Throwable)
+    //
+
+    @Test
+    public void debugStringThrowable_Pass() {
+        _whenLogStringThrowable(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.DEBUG);
+        classUnderTest.debug(msg, throwable);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.isDebugEnabled(Marker)
+    //
+
+    @Test
+    public void isDebugEnabledMarker_Pass() {
+        _whenIsEnabled(mockMarker, SLF4JLogLevel.DEBUG);
+        assertTrue(classUnderTest.isDebugEnabled(mockMarker));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void isDebugEnabledMarker_FailWithNullMarker() {
+        classUnderTest.isDebugEnabled((Marker) null);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.debug(Marker, String)
+    //
+
+    @Test
+    public void debugMarkerString_Pass() {
+        _whenLogString(mockMarker, SLF4JLogLevel.DEBUG);
+        classUnderTest.debug(mockMarker, msg);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void debugMarkerString_FailWithNullMarker() {
+        classUnderTest.debug((Marker) null, msg);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.debug(Marker, String, Object)
+    //
+
+    @Test
+    public void debugMarkerStringObject_Pass() {
+        _whenLogStringObject(mockMarker, SLF4JLogLevel.DEBUG);
+        classUnderTest.debug(mockMarker, format, arg);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void debugMarkerStringObject_FailWithNullMarker() {
+        classUnderTest.debug((Marker) null, format, arg);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.debug(Marker, String, Object, Object)
+    //
+
+    @Test
+    public void debugMarkerStringObjectObject_Pass() {
+        _whenLogStringObjectObject(mockMarker, SLF4JLogLevel.DEBUG);
+        classUnderTest.debug(mockMarker, format, arg, arg2);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void debugMarkerStringObjectObject_FailWithNullMarker() {
+        classUnderTest.debug((Marker) null, format, arg, arg2);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.debug(Marker, String, Object...)
+    //
+
+    @Test
+    public void debugMarkerStringObjectArr_Pass() {
+        _whenLogStringObjectArr(mockMarker, SLF4JLogLevel.DEBUG);
+        classUnderTest.debug(mockMarker, format, argArr);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void debugMarkerStringObjectArr_FailWithNullMarker() {
+        classUnderTest.debug((Marker) null, format, argArr);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.debug(Marker, String, Throwable)
+    //
+
+    @Test
+    public void debugMarkerStringThrowable_Pass() {
+        _whenLogStringThrowable(mockMarker, SLF4JLogLevel.DEBUG);
+        classUnderTest.debug(mockMarker, msg, throwable);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void debugMarkerStringThrowable_FailWithNullMarker() {
+        classUnderTest.debug((Marker) null, msg, throwable);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.isInfoEnabled()
+    //
+
+    @Test
+    public void isInfoEnabled_Pass() {
+        _whenIsEnabled(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.INFO);
+        assertTrue(classUnderTest.isInfoEnabled());
+        assertTrue(classUnderTest.isInfoEnabled(SLF4JMarkerNone.INSTANCE));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.info(String)
+    //
+
+    @Test
+    public void infoString_Pass() {
+        _whenLogString(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.INFO);
+        classUnderTest.info(msg);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.info(String, Object)
+    //
+
+    @Test
+    public void infoStringObject_Pass() {
+        _whenLogStringObject(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.INFO);
+        classUnderTest.info(format, arg);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.info(String, Object, Object)
+    //
+
+    @Test
+    public void infoStringObjectObject_Pass() {
+        _whenLogStringObjectObject(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.INFO);
+        classUnderTest.info(format, arg, arg2);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.info(String, Object...)
+    //
+
+    @Test
+    public void infoStringObjectArr_Pass() {
+        _whenLogStringObjectArr(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.INFO);
+        classUnderTest.info(format, argArr);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.info(String, Throwable)
+    //
+
+    @Test
+    public void infoStringThrowable_Pass() {
+        _whenLogStringThrowable(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.INFO);
+        classUnderTest.info(msg, throwable);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.isInfoEnabled(Marker)
+    //
+
+    @Test
+    public void isInfoEnabledMarker_Pass() {
+        _whenIsEnabled(mockMarker, SLF4JLogLevel.INFO);
+        assertTrue(classUnderTest.isInfoEnabled(mockMarker));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void isInfoEnabledMarker_FailWithNullMarker() {
+        classUnderTest.isInfoEnabled((Marker) null);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.info(Marker, String)
+    //
+
+    @Test
+    public void infoMarkerString_Pass() {
+        _whenLogString(mockMarker, SLF4JLogLevel.INFO);
+        classUnderTest.info(mockMarker, msg);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void infoMarkerString_FailWithNullMarker() {
+        classUnderTest.info((Marker) null, msg);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.info(Marker, String, Object)
+    //
+
+    @Test
+    public void infoMarkerStringObject_Pass() {
+        _whenLogStringObject(mockMarker, SLF4JLogLevel.INFO);
+        classUnderTest.info(mockMarker, format, arg);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void infoMarkerStringObject_FailWithNullMarker() {
+        classUnderTest.info((Marker) null, format, arg);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.info(Marker, String, Object, Object)
+    //
+
+    @Test
+    public void infoMarkerStringObjectObject_Pass() {
+        _whenLogStringObjectObject(mockMarker, SLF4JLogLevel.INFO);
+        classUnderTest.info(mockMarker, format, arg, arg2);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void infoMarkerStringObjectObject_FailWithNullMarker() {
+        classUnderTest.info((Marker) null, format, arg, arg2);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.info(Marker, String, Object...)
+    //
+
+    @Test
+    public void infoMarkerStringObjectArr_Pass() {
+        _whenLogStringObjectArr(mockMarker, SLF4JLogLevel.INFO);
+        classUnderTest.info(mockMarker, format, argArr);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void infoMarkerStringObjectArr_FailWithNullMarker() {
+        classUnderTest.info((Marker) null, format, argArr);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.info(Marker, String, Throwable)
+    //
+
+    @Test
+    public void infoMarkerStringThrowable_Pass() {
+        _whenLogStringThrowable(mockMarker, SLF4JLogLevel.INFO);
+        classUnderTest.info(mockMarker, msg, throwable);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void infoMarkerStringThrowable_FailWithNullMarker() {
+        classUnderTest.info((Marker) null, msg, throwable);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.isWarnEnabled()
+    //
+
+    @Test
+    public void isWarnEnabled_Pass() {
+        _whenIsEnabled(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.WARN);
+        assertTrue(classUnderTest.isWarnEnabled());
+        assertTrue(classUnderTest.isWarnEnabled(SLF4JMarkerNone.INSTANCE));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.warn(String)
+    //
+
+    @Test
+    public void warnString_Pass() {
+        _whenLogString(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.WARN);
+        classUnderTest.warn(msg);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.warn(String, Object)
+    //
+
+    @Test
+    public void warnStringObject_Pass() {
+        _whenLogStringObject(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.WARN);
+        classUnderTest.warn(format, arg);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.warn(String, Object, Object)
+    //
+
+    @Test
+    public void warnStringObjectObject_Pass() {
+        _whenLogStringObjectObject(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.WARN);
+        classUnderTest.warn(format, arg, arg2);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.warn(String, Object...)
+    //
+
+    @Test
+    public void warnStringObjectArr_Pass() {
+        _whenLogStringObjectArr(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.WARN);
+        classUnderTest.warn(format, argArr);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.warn(String, Throwable)
+    //
+
+    @Test
+    public void warnStringThrowable_Pass() {
+        _whenLogStringThrowable(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.WARN);
+        classUnderTest.warn(msg, throwable);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.isWarnEnabled(Marker)
+    //
+
+    @Test
+    public void isWarnEnabledMarker_Pass() {
+        _whenIsEnabled(mockMarker, SLF4JLogLevel.WARN);
+        assertTrue(classUnderTest.isWarnEnabled(mockMarker));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void isWarnEnabledMarker_FailWithNullMarker() {
+        classUnderTest.isWarnEnabled((Marker) null);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.warn(Marker, String)
+    //
+
+    @Test
+    public void warnMarkerString_Pass() {
+        _whenLogString(mockMarker, SLF4JLogLevel.WARN);
+        classUnderTest.warn(mockMarker, msg);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void warnMarkerString_FailWithNullMarker() {
+        classUnderTest.warn((Marker) null, msg);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.warn(Marker, String, Object)
+    //
+
+    @Test
+    public void warnMarkerStringObject_Pass() {
+        _whenLogStringObject(mockMarker, SLF4JLogLevel.WARN);
+        classUnderTest.warn(mockMarker, format, arg);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void warnMarkerStringObject_FailWithNullMarker() {
+        classUnderTest.warn((Marker) null, format, arg);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.warn(Marker, String, Object, Object)
+    //
+
+    @Test
+    public void warnMarkerStringObjectObject_Pass() {
+        _whenLogStringObjectObject(mockMarker, SLF4JLogLevel.WARN);
+        classUnderTest.warn(mockMarker, format, arg, arg2);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void warnMarkerStringObjectObject_FailWithNullMarker() {
+        classUnderTest.warn((Marker) null, format, arg, arg2);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.warn(Marker, String, Object...)
+    //
+
+    @Test
+    public void warnMarkerStringObjectArr_Pass() {
+        _whenLogStringObjectArr(mockMarker, SLF4JLogLevel.WARN);
+        classUnderTest.warn(mockMarker, format, argArr);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void warnMarkerStringObjectArr_FailWithNullMarker() {
+        classUnderTest.warn((Marker) null, format, argArr);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.warn(Marker, String, Throwable)
+    //
+
+    @Test
+    public void warnMarkerStringThrowable_Pass() {
+        _whenLogStringThrowable(mockMarker, SLF4JLogLevel.WARN);
+        classUnderTest.warn(mockMarker, msg, throwable);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void warnMarkerStringThrowable_FailWithNullMarker() {
+        classUnderTest.warn((Marker) null, msg, throwable);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.isErrorEnabled()
+    //
+
+    @Test
+    public void isErrorEnabled_Pass() {
+        _whenIsEnabled(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.ERROR);
+        assertTrue(classUnderTest.isErrorEnabled());
+        assertTrue(classUnderTest.isErrorEnabled(SLF4JMarkerNone.INSTANCE));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.error(String)
+    //
+
+    @Test
+    public void errorString_Pass() {
+        _whenLogString(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.ERROR);
+        classUnderTest.error(msg);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.error(String, Object)
+    //
+
+    @Test
+    public void errorStringObject_Pass() {
+        _whenLogStringObject(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.ERROR);
+        classUnderTest.error(format, arg);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.error(String, Object, Object)
+    //
+
+    @Test
+    public void errorStringObjectObject_Pass() {
+        _whenLogStringObjectObject(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.ERROR);
+        classUnderTest.error(format, arg, arg2);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.error(String, Object...)
+    //
+
+    @Test
+    public void errorStringObjectArr_Pass() {
+        _whenLogStringObjectArr(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.ERROR);
+        classUnderTest.error(format, argArr);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.error(String, Throwable)
+    //
+
+    @Test
+    public void errorStringThrowable_Pass() {
+        _whenLogStringThrowable(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.ERROR);
+        classUnderTest.error(msg, throwable);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.isErrorEnabled(Marker)
+    //
+
+    @Test
+    public void isErrorEnabledMarker_Pass() {
+        _whenIsEnabled(mockMarker, SLF4JLogLevel.ERROR);
+        assertTrue(classUnderTest.isErrorEnabled(mockMarker));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void isErrorEnabledMarker_FailWithNullMarker() {
+        classUnderTest.isErrorEnabled((Marker) null);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.error(Marker, String)
+    //
+
+    @Test
+    public void errorMarkerString_Pass() {
+        _whenLogString(mockMarker, SLF4JLogLevel.ERROR);
+        classUnderTest.error(mockMarker, msg);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void errorMarkerString_FailWithNullMarker() {
+        classUnderTest.error((Marker) null, msg);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.error(Marker, String, Object)
+    //
+
+    @Test
+    public void errorMarkerStringObject_Pass() {
+        _whenLogStringObject(mockMarker, SLF4JLogLevel.ERROR);
+        classUnderTest.error(mockMarker, format, arg);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void errorMarkerStringObject_FailWithNullMarker() {
+        classUnderTest.error((Marker) null, format, arg);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.error(Marker, String, Object, Object)
+    //
+
+    @Test
+    public void errorMarkerStringObjectObject_Pass() {
+        _whenLogStringObjectObject(mockMarker, SLF4JLogLevel.ERROR);
+        classUnderTest.error(mockMarker, format, arg, arg2);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void errorMarkerStringObjectObject_FailWithNullMarker() {
+        classUnderTest.error((Marker) null, format, arg, arg2);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.error(Marker, String, Object...)
+    //
+
+    @Test
+    public void errorMarkerStringObjectArr_Pass() {
+        _whenLogStringObjectArr(mockMarker, SLF4JLogLevel.ERROR);
+        classUnderTest.error(mockMarker, format, argArr);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void errorMarkerStringObjectArr_FailWithNullMarker() {
+        classUnderTest.error((Marker) null, format, argArr);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.error(Marker, String, Throwable)
+    //
+
+    @Test
+    public void errorMarkerStringThrowable_Pass() {
+        _whenLogStringThrowable(mockMarker, SLF4JLogLevel.ERROR);
+        classUnderTest.error(mockMarker, msg, throwable);
+        assertEquals(classUnderTest.getLoggingEventList(), Arrays.asList(mockLoggingEvent));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void errorMarkerStringThrowable_FailWithNullMarker() {
+        classUnderTest.error((Marker) null, msg, throwable);
+    }
 }

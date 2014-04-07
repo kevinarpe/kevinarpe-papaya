@@ -25,8 +25,10 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
  * #L%
  */
 
+import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JMarkerNone;
@@ -38,11 +40,13 @@ import java.util.Map;
 /**
 * @author Kevin Connor ARPE (kevinarpe@gmail.com)
 */
+@FullyTested
 public final class SLF4JMockLoggerConfigImpl
 implements SLF4JMockLoggerConfig {
 
-    static final Marker DEFAULT_MARKER = SLF4JMarkerNone.INSTANCE;
-    static final boolean DEFAULT_IS_ENABLED = true;
+    public static final Marker DEFAULT_MARKER = SLF4JMarkerNone.INSTANCE;
+    public static final boolean DEFAULT_IS_ENABLED = true;
+
     private static final ImmutableMap<SLF4JLogLevel, Boolean> DEFAULT_LOG_LEVEL_TO_IS_ENABLED_MAP;
 
     static {
@@ -84,6 +88,9 @@ implements SLF4JMockLoggerConfig {
 
     @Override
     public boolean isEnabled(Marker marker, SLF4JLogLevel logLevel) {
+        ObjectArgs.checkNotNull(marker, "marker");
+        ObjectArgs.checkNotNull(logLevel, "logLevel");
+
         Map<SLF4JLogLevel, Boolean> map = _marker_To_logLevelToIsEnabledMap_Map.get(marker);
         if (null == map) {
             return DEFAULT_IS_ENABLED;
@@ -116,5 +123,25 @@ implements SLF4JMockLoggerConfig {
     public SLF4JMockLoggerConfigImpl copy() {
         SLF4JMockLoggerConfigImpl x = new SLF4JMockLoggerConfigImpl(this);
         return x;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(_marker_To_logLevelToIsEnabledMap_Map);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        // Ref: http://stackoverflow.com/a/5039178/257299
+        boolean result = (this == obj);
+        if (!result && obj instanceof SLF4JMockLoggerConfigImpl) {
+            final SLF4JMockLoggerConfigImpl other = (SLF4JMockLoggerConfigImpl) obj;
+            result =
+                Objects.equal(
+                    _marker_To_logLevelToIsEnabledMap_Map,
+                    other._marker_To_logLevelToIsEnabledMap_Map);
+        }
+        return result;
     }
 }

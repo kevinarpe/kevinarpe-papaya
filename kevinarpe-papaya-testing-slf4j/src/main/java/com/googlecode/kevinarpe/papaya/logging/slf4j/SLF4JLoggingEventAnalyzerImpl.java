@@ -60,7 +60,7 @@ implements SLF4JLoggingEventAnalyzer {
         return _loggingEventList;
     }
 
-    // TODO: LAST: Can we make this class somewhat generic with LoggingEventAnalysisImpl?
+    // TODO: Can we make this class somewhat generic with LoggingEventAnalysisImpl?
     // TODO: Make a wrapper for log4j.LoggingEvent -> SLF4JLoggingEvent?  Necessary?
     @Override
     public List<SLF4JLoggingEvent> getLoggingEventListIncluding(
