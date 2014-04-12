@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
@@ -34,6 +35,7 @@ import org.slf4j.helpers.MessageFormatter;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public final class SLF4JLoggingEventImpl
 implements SLF4JLoggingEvent {
 
@@ -59,7 +61,7 @@ implements SLF4JLoggingEvent {
         _logLevel = ObjectArgs.checkNotNull(logLevel, "logLevel");
         _marker = ObjectArgs.checkNotNull(marker, "marker");
         _message = ObjectArgs.checkNotNull(message, "message");
-        // The last element in 'optionalFormatArgArr' might be our Throwable.
+        // Extract last element from 'optionalFormatArgArr' if element has type Throwable.
         if (null == optionalThrowable
                 && null != optionalFormatArgArr
                 && optionalFormatArgArr.length > 0
@@ -127,7 +129,7 @@ implements SLF4JLoggingEvent {
     }
 
     @Override
-    public <T> T getAttributeValue(SLF4JLoggingEventAttribute attribute) {
+    public <T> T getAttributeValue(ISLF4JLoggingEventAttribute attribute) {
         ObjectArgs.checkNotNull(attribute, "attribute");
 
         Object value = attribute.getValue(this);

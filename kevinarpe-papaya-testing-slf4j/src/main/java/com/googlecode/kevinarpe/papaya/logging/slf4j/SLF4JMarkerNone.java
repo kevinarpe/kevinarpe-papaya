@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  */
 
 import com.google.common.collect.Iterators;
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 import org.slf4j.Marker;
 
 import java.util.Iterator;
@@ -33,6 +34,7 @@ import java.util.Iterator;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@NotFullyTested
 public final class SLF4JMarkerNone
 implements Marker {
 

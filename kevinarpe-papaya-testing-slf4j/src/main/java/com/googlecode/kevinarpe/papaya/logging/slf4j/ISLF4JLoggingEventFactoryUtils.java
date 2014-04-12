@@ -63,7 +63,7 @@ public interface ISLF4JLoggingEventFactoryUtils {
             SLF4JLogLevel logLevel,
             Marker marker,
             String message,
-            Object[] optionalFormatArgArr);
+            Object... optionalFormatArgArr);
 
     SLF4JLoggingEvent newInstance(
             SLF4JLoggingEventFactory factory,

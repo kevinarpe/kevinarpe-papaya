@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
@@ -32,7 +33,9 @@ import org.slf4j.Marker;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public enum SLF4JLoggingEventAttribute {
+@NotFullyTested
+public enum SLF4JLoggingEventAttribute
+implements ISLF4JLoggingEventAttribute {
 
     LOGGER(Logger.class) {
         @Override
@@ -105,8 +108,7 @@ public enum SLF4JLoggingEventAttribute {
         _valueClass = ObjectArgs.checkNotNull(valueClass, "valueClass");
     }
 
-    public abstract Object getValue(SLF4JLoggingEvent loggingEvent);
-
+    @Override
     public Class<?> getValueClass() {
         return _valueClass;
     }

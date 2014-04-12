@@ -25,18 +25,20 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@FullyTested
 public final class SLF4JLoggingEventFactoryImpl
 implements SLF4JLoggingEventFactory {
 
     public static final SLF4JLoggingEventFactoryImpl INSTANCE = new SLF4JLoggingEventFactoryImpl();
 
-    private SLF4JLoggingEventFactoryImpl() {
+    public SLF4JLoggingEventFactoryImpl() {
         // Empty.
     }
 

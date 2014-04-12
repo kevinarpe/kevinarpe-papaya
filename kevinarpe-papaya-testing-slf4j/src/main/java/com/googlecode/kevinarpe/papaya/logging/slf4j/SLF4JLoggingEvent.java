@@ -43,5 +43,5 @@ public interface SLF4JLoggingEvent {
     long getTimeStamp();
     String getFormattedMessage();
 
-    <T> T getAttributeValue(SLF4JLoggingEventAttribute attribute);
+    <T> T getAttributeValue(ISLF4JLoggingEventAttribute attribute);
 }

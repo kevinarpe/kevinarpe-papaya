@@ -25,25 +25,27 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-// TODO: If all the *args classes were not static utils classes....
-// ... it might allow for very powerful Mockito verification
-// ... and avoid heaps of annoying tests for null, empty string, and whitespace string.
 // TODO: What to do before next release?  Start to tighten up.
 // TODO: Write tests for testing-slf4j
+@FullyTested
 public final class SLF4JLoggingEventFactoryUtils
 implements ISLF4JLoggingEventFactoryUtils {
+
+    public static final SLF4JLoggingEventFactoryUtils INSTANCE =
+        new SLF4JLoggingEventFactoryUtils();
 
     public SLF4JLoggingEventFactoryUtils() {
         // Empty.
     }
 
-    private static final Object[] EMPTY_FORMAT_ARG_ARR = new Object[0];
+    static final Object[] EMPTY_FORMAT_ARG_ARR = new Object[0];
 
     @Override
     public SLF4JLoggingEvent newInstance(
@@ -99,7 +101,7 @@ implements ISLF4JLoggingEventFactoryUtils {
             SLF4JLogLevel logLevel,
             Marker marker,
             String message,
-            Object[] optionalFormatArgArr) {
+            Object... optionalFormatArgArr) {
         SLF4JLoggingEvent x =
             factory.newInstance(
                 logger, logLevel, marker, message, optionalFormatArgArr, (Throwable) null);

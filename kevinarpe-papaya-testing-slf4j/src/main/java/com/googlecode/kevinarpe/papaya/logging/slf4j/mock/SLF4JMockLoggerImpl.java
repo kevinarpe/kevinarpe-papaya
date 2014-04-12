@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
  */
 
 import com.google.common.collect.Lists;
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.ISLF4JLoggingEventFactoryUtils;
@@ -44,6 +45,7 @@ import java.util.List;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@NotFullyTested
 public final class SLF4JMockLoggerImpl
 implements SLF4JMockLogger {
 
@@ -52,6 +54,8 @@ implements SLF4JMockLogger {
     private final SLF4JLoggingEventFactory _factory;
     private final ISLF4JLoggingEventFactoryUtils _factoryUtils;
     private final List<SLF4JLoggingEvent> _loggingEventList;
+
+    // TODO: Test ctor
 
     public SLF4JMockLoggerImpl(String name, SLF4JMockLoggerConfig config) {
         this(

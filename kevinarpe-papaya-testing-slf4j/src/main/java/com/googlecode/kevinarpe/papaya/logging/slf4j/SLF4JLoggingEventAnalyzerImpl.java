@@ -47,6 +47,8 @@ import java.util.Set;
 public final class SLF4JLoggingEventAnalyzerImpl
 implements SLF4JLoggingEventAnalyzer {
 
+    // TODO: LAST: Test me
+
     private final List<SLF4JLoggingEvent> _loggingEventList;
 
     public SLF4JLoggingEventAnalyzerImpl(List<SLF4JLoggingEvent> loggingEventList) {
