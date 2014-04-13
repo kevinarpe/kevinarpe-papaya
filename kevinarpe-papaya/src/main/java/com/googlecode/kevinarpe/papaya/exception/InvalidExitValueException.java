@@ -25,9 +25,6 @@ package com.googlecode.kevinarpe.papaya.exception;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.List;
-
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
@@ -36,6 +33,9 @@ import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 import com.googlecode.kevinarpe.papaya.process.Process2;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Thrown by class {@link Process2} if the child process exit value is unexpected.
@@ -221,7 +221,7 @@ extends Exception {
     @Override
     public int hashCode() {
         int result = Objects.hashCode(getExitValue(), getValidExitValueList());
-        result = 31 * result + ThrowableUtils.hashCode(this);
+        result = 31 * result + ThrowableUtils.hashCode(this, IncludeStackTrace.YES);
         return result;
     }
 
@@ -232,7 +232,7 @@ extends Exception {
         if (!result && obj instanceof InvalidExitValueException) {
             final InvalidExitValueException other = (InvalidExitValueException) obj;
             result =
-                ThrowableUtils.equals(this, other)
+                ThrowableUtils.equals(this, other, IncludeStackTrace.YES)
                 && this.getExitValue() == other.getExitValue()
                 && Objects.equal(this.getValidExitValueList(), other.getValidExitValueList());
         }
@@ -248,7 +248,7 @@ extends Exception {
         if (!result && obj instanceof InvalidExitValueException) {
             final InvalidExitValueException other = (InvalidExitValueException) obj;
             result =
-                ThrowableUtils.equalsExcludingStackTrace(this, other)
+                ThrowableUtils.equals(this, other, IncludeStackTrace.NO)
                 && this.getExitValue() == other.getExitValue()
                 && Objects.equal(this.getValidExitValueList(), other.getValidExitValueList());
         }

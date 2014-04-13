@@ -25,7 +25,7 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
@@ -33,13 +33,15 @@ import org.slf4j.Marker;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@NotFullyTested
+@FullyTested
 public enum SLF4JLoggingEventAttribute
 implements ISLF4JLoggingEventAttribute {
 
     LOGGER(Logger.class) {
         @Override
         public Logger getValue(SLF4JLoggingEvent loggingEvent) {
+            ObjectArgs.checkNotNull(loggingEvent, "loggingEvent");
+
             Logger x = loggingEvent.getLogger();
             return x;
         }
@@ -47,6 +49,8 @@ implements ISLF4JLoggingEventAttribute {
     LEVEL(SLF4JLogLevel.class) {
         @Override
         public SLF4JLogLevel getValue(SLF4JLoggingEvent loggingEvent) {
+            ObjectArgs.checkNotNull(loggingEvent, "loggingEvent");
+
             SLF4JLogLevel x = loggingEvent.getLevel();
             return x;
         }
@@ -54,6 +58,8 @@ implements ISLF4JLoggingEventAttribute {
     MARKER(Marker.class) {
         @Override
         public Marker getValue(SLF4JLoggingEvent loggingEvent) {
+            ObjectArgs.checkNotNull(loggingEvent, "loggingEvent");
+
             Marker x = loggingEvent.getMarker();
             return x;
         }
@@ -61,6 +67,8 @@ implements ISLF4JLoggingEventAttribute {
     MESSAGE(String.class) {
         @Override
         public String getValue(SLF4JLoggingEvent loggingEvent) {
+            ObjectArgs.checkNotNull(loggingEvent, "loggingEvent");
+
             String x = loggingEvent.getMessage();
             return x;
         }
@@ -68,6 +76,8 @@ implements ISLF4JLoggingEventAttribute {
     MESSAGE_FORMAT_ARG_ARR(Object[].class) {
         @Override
         public Object[] getValue(SLF4JLoggingEvent loggingEvent) {
+            ObjectArgs.checkNotNull(loggingEvent, "loggingEvent");
+
             Object[] x = loggingEvent.getMessageFormatArgArr();
             return x;
         }
@@ -75,6 +85,8 @@ implements ISLF4JLoggingEventAttribute {
     THROWABLE(Throwable.class) {
         @Override
         public Throwable getValue(SLF4JLoggingEvent loggingEvent) {
+            ObjectArgs.checkNotNull(loggingEvent, "loggingEvent");
+
             Throwable x = loggingEvent.getThrowable();
             return x;
         }
@@ -82,6 +94,8 @@ implements ISLF4JLoggingEventAttribute {
     THREAD_NAME(String.class) {
         @Override
         public String getValue(SLF4JLoggingEvent loggingEvent) {
+            ObjectArgs.checkNotNull(loggingEvent, "loggingEvent");
+
             String x = loggingEvent.getThreadName();
             return x;
         }
@@ -89,6 +103,8 @@ implements ISLF4JLoggingEventAttribute {
     TIME_STAMP(Long.class) {
         @Override
         public Long getValue(SLF4JLoggingEvent loggingEvent) {
+            ObjectArgs.checkNotNull(loggingEvent, "loggingEvent");
+
             Long x = loggingEvent.getTimeStamp();
             return x;
         }
@@ -96,6 +112,8 @@ implements ISLF4JLoggingEventAttribute {
     FORMATTED_MESSAGE(String.class) {
         @Override
         public String getValue(SLF4JLoggingEvent loggingEvent) {
+            ObjectArgs.checkNotNull(loggingEvent, "loggingEvent");
+
             String x = loggingEvent.getFormattedMessage();
             return x;
         }

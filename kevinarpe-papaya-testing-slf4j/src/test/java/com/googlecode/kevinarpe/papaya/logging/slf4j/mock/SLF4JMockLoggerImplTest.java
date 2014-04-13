@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
  * #L%
  */
 
+import com.google.common.testing.EqualsTester;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.ISLF4JLoggingEventFactoryUtils;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEvent;
@@ -32,6 +33,7 @@ import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventFactory;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JMarkerNone;
 import org.slf4j.Marker;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
@@ -57,9 +59,12 @@ public class SLF4JMockLoggerImplTest {
 
     private Marker mockMarker;
     private SLF4JMockLoggerConfig mockConfig;
+    private SLF4JMockLoggerConfig mockConfig2;
     private SLF4JMockLoggerConfig mockConfigCopy;
     private SLF4JLoggingEventFactory mockFactory;
+    private SLF4JLoggingEventFactory mockFactory2;
     private ISLF4JLoggingEventFactoryUtils mockFactoryUtils;
+    private ISLF4JLoggingEventFactoryUtils mockFactoryUtils2;
     private SLF4JLoggingEvent mockLoggingEvent;
 
     private SLF4JMockLoggerImpl classUnderTest;
@@ -68,10 +73,13 @@ public class SLF4JMockLoggerImplTest {
     public void beforeEachTestMethod() {
         mockMarker = mock(Marker.class);
         mockConfig = mock(SLF4JMockLoggerConfig.class);
+        mockConfig2 = mock(SLF4JMockLoggerConfig.class);
         mockConfigCopy = mock(SLF4JMockLoggerConfig.class);
         when(mockConfig.copy()).thenReturn(mockConfigCopy);
         mockFactory = mock(SLF4JLoggingEventFactory.class);
+        mockFactory2 = mock(SLF4JLoggingEventFactory.class);
         mockFactoryUtils = mock(ISLF4JLoggingEventFactoryUtils.class);
+        mockFactoryUtils2 = mock(ISLF4JLoggingEventFactoryUtils.class);
         classUnderTest =
             new SLF4JMockLoggerImpl(
                 SLF4JMockLoggerImplTest.class.getName(), mockConfig, mockFactory, mockFactoryUtils);
@@ -119,6 +127,34 @@ public class SLF4JMockLoggerImplTest {
         when(mockFactoryUtils.newInstance(mockFactory, classUnderTest, logLevel, marker, msg, throwable))
             .thenReturn(mockLoggingEvent);
         assertTrue(classUnderTest.getLoggingEventList().isEmpty());
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.ctor()
+    //
+
+    @DataProvider
+    private static Object[][] _ctor_Fail_Data() {
+        SLF4JMockLoggerConfig mockSLF4JMockLoggerConfig = mock(SLF4JMockLoggerConfig.class);
+        return new Object[][] {
+            { (String) null, mockSLF4JMockLoggerConfig, NullPointerException.class },
+            { "", mockSLF4JMockLoggerConfig, IllegalArgumentException.class },
+            { "   ", mockSLF4JMockLoggerConfig, IllegalArgumentException.class },
+            { "name", (SLF4JMockLoggerConfig) null, NullPointerException.class },
+        };
+    }
+
+    @Test(dataProvider = "_ctor_Fail_Data")
+    public void ctor_Fail(
+            String name,
+            SLF4JMockLoggerConfig config,
+            Class<? extends Exception> expectedExceptionClass) {
+        try {
+            new SLF4JMockLoggerImpl(name, config);
+        }
+        catch (Exception e) {
+            assertSame(e.getClass(), expectedExceptionClass);
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -951,5 +987,31 @@ public class SLF4JMockLoggerImplTest {
     @Test(expectedExceptions = NullPointerException.class)
     public void errorMarkerStringThrowable_FailWithNullMarker() {
         classUnderTest.error((Marker) null, msg, throwable);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerImpl.hashCode()/equals()
+    //
+
+    @Test
+    public void hashCodeAndEquals_Pass() {
+        EqualsTester equalsTester = new EqualsTester();
+        equalsTester.addEqualityGroup(
+            new SLF4JMockLoggerImpl("name", mockConfig, mockFactory, mockFactoryUtils),
+            new SLF4JMockLoggerImpl("name", mockConfig, mockFactory, mockFactoryUtils));
+        equalsTester.addEqualityGroup(
+            new SLF4JMockLoggerImpl("name2", mockConfig, mockFactory, mockFactoryUtils),
+            new SLF4JMockLoggerImpl("name2", mockConfig, mockFactory, mockFactoryUtils));
+        equalsTester.addEqualityGroup(
+            new SLF4JMockLoggerImpl("name", mockConfig2, mockFactory, mockFactoryUtils),
+            new SLF4JMockLoggerImpl("name", mockConfig2, mockFactory, mockFactoryUtils));
+        equalsTester.addEqualityGroup(
+            new SLF4JMockLoggerImpl("name", mockConfig, mockFactory2, mockFactoryUtils),
+            new SLF4JMockLoggerImpl("name", mockConfig, mockFactory2, mockFactoryUtils));
+        equalsTester.addEqualityGroup(
+            new SLF4JMockLoggerImpl("name", mockConfig, mockFactory, mockFactoryUtils2),
+            new SLF4JMockLoggerImpl("name", mockConfig, mockFactory, mockFactoryUtils2));
+        // TODO: This does not test if _loggingEventList is compared for equality.
+        equalsTester.testEquals();
     }
 }

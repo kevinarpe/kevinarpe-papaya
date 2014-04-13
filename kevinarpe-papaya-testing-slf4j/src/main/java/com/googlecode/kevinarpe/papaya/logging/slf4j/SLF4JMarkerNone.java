@@ -59,6 +59,7 @@ implements Marker {
         return false;  // reference could not be found and removed
     }
 
+    @Deprecated
     @Override
     public boolean hasChildren() {
         return false;

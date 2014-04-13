@@ -25,14 +25,14 @@ package com.googlecode.kevinarpe.papaya.exception;
  * #L%
  */
 
-import java.util.Collection;
-
 import com.google.common.base.Objects;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.LongArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 import com.googlecode.kevinarpe.papaya.process.Process2;
+
+import java.util.Collection;
 
 /**
  * Thrown by class {@link Process2} when waiting for the child process to terminate exceeds the
@@ -181,7 +181,7 @@ extends Exception {
     @Override
     public int hashCode() {
         int result = Objects.hashCode(getTimeoutMillis());
-        result = 31 * result + ThrowableUtils.hashCode(this);
+        result = 31 * result + ThrowableUtils.hashCode(this, IncludeStackTrace.YES);
         return result;
     }
 
@@ -192,7 +192,7 @@ extends Exception {
         if (!result && obj instanceof TimeoutException) {
             final TimeoutException other = (TimeoutException) obj;
             result =
-                ThrowableUtils.equals(this, other)
+                ThrowableUtils.equals(this, other, IncludeStackTrace.YES)
                 && this.getTimeoutMillis() == other.getTimeoutMillis();
         }
         return result;
@@ -207,7 +207,7 @@ extends Exception {
         if (!result && obj instanceof TimeoutException) {
             final TimeoutException other = (TimeoutException) obj;
             result =
-                ThrowableUtils.equalsExcludingStackTrace(this, other)
+                ThrowableUtils.equals(this, other, IncludeStackTrace.NO)
                 && this.getTimeoutMillis() == other.getTimeoutMillis();
         }
         return result;

@@ -25,16 +25,22 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  * #L%
  */
 
+import com.google.common.base.Objects;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.exception.IncludeStackTrace;
+import com.googlecode.kevinarpe.papaya.exception.ThrowableUtils;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
+import java.util.Arrays;
+
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+// TODO: Needs to be public?
 @FullyTested
 public final class SLF4JLoggingEventImpl
 implements SLF4JLoggingEvent {
@@ -50,6 +56,29 @@ implements SLF4JLoggingEvent {
     private final String _threadName;
     private final long _timeStamp;
 
+    interface ISystem {
+        String getCurrentThreadName();
+        long currentTimeMillis();
+    }
+
+    private static class SystemImpl
+    implements ISystem {
+
+        public static final SystemImpl INSTANCE = new SystemImpl();
+
+        @Override
+        public String getCurrentThreadName() {
+            String x = Thread.currentThread().getName();
+            return x;
+        }
+
+        @Override
+        public long currentTimeMillis() {
+            long x = System.currentTimeMillis();
+            return x;
+        }
+    }
+
     public SLF4JLoggingEventImpl(
             Logger logger,
             SLF4JLogLevel logLevel,
@@ -57,15 +86,33 @@ implements SLF4JLoggingEvent {
             String message,
             Object[] optionalFormatArgArr,
             Throwable optionalThrowable) {
+        this(
+            logger,
+            logLevel,
+            marker,
+            message,
+            optionalFormatArgArr,
+            optionalThrowable,
+            SystemImpl.INSTANCE);
+    }
+
+    SLF4JLoggingEventImpl(
+            Logger logger,
+            SLF4JLogLevel logLevel,
+            Marker marker,
+            String message,
+            Object[] optionalFormatArgArr,
+            Throwable optionalThrowable,
+            ISystem system) {
         _logger = ObjectArgs.checkNotNull(logger, "logger");
         _logLevel = ObjectArgs.checkNotNull(logLevel, "logLevel");
         _marker = ObjectArgs.checkNotNull(marker, "marker");
         _message = ObjectArgs.checkNotNull(message, "message");
         // Extract last element from 'optionalFormatArgArr' if element has type Throwable.
         if (null == optionalThrowable
-                && null != optionalFormatArgArr
-                && optionalFormatArgArr.length > 0
-                && optionalFormatArgArr[optionalFormatArgArr.length - 1] instanceof Throwable) {
+            && null != optionalFormatArgArr
+            && optionalFormatArgArr.length > 0
+            && optionalFormatArgArr[optionalFormatArgArr.length - 1] instanceof Throwable) {
             optionalThrowable = (Throwable) optionalFormatArgArr[optionalFormatArgArr.length - 1];
             Object[] arr = new Object[optionalFormatArgArr.length - 1];
             System.arraycopy(optionalFormatArgArr, 0, arr, 0, arr.length);
@@ -74,8 +121,9 @@ implements SLF4JLoggingEvent {
         _formatArgArr =
             (null == optionalFormatArgArr ? EMPTY_FORMAT_ARG_ARR : optionalFormatArgArr.clone());
         _optionalThrowable = optionalThrowable;
-        _threadName = Thread.currentThread().getName();
-        _timeStamp = System.currentTimeMillis();
+        ObjectArgs.checkNotNull(system, "system");
+        _threadName = system.getCurrentThreadName();
+        _timeStamp = system.currentTimeMillis();
     }
 
     @Override
@@ -136,5 +184,34 @@ implements SLF4JLoggingEvent {
         @SuppressWarnings("unchecked")
         T castValue = (T) value;
         return castValue;
+    }
+
+    @Override
+    public int hashCode() {
+        int result =
+            Objects.hashCode(
+                _logger, _logLevel, _marker, _message, _optionalThrowable, _threadName, _timeStamp);
+        result = 31 * result + Arrays.hashCode(_formatArgArr);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        // Ref: http://stackoverflow.com/a/5039178/257299
+        boolean result = (this == obj);
+        if (!result && obj instanceof SLF4JLoggingEventImpl) {
+            final SLF4JLoggingEventImpl other = (SLF4JLoggingEventImpl) obj;
+            result =
+                _timeStamp == other._timeStamp
+                    && Objects.equal(_logger, other._logger)
+                    && Objects.equal(_logLevel, other._logLevel)
+                    && Objects.equal(_marker, other._marker)
+                    && Objects.equal(_message, other._message)
+                    && Arrays.equals(_formatArgArr, other._formatArgArr)
+                    && ThrowableUtils.equals(
+                    _optionalThrowable, other._optionalThrowable, IncludeStackTrace.YES)
+                    && Objects.equal(_threadName, other._threadName);
+        }
+        return result;
     }
 }

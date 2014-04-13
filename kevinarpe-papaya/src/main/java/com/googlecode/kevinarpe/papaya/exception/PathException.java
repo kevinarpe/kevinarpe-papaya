@@ -197,7 +197,7 @@ extends IOException {
                 getReason(),
                 getAbsPath(),
                 getOptAbsParentPath());
-        result = 31 * result + ThrowableUtils.hashCode(this);
+        result = 31 * result + ThrowableUtils.hashCode(this, IncludeStackTrace.YES);
         return result;
     }
 
@@ -208,7 +208,7 @@ extends IOException {
         if (!result && obj instanceof PathException) {
             final PathException other = (PathException) obj;
             result =
-                ThrowableUtils.equals(this, other)
+                ThrowableUtils.equals(this, other, IncludeStackTrace.YES)
                 && (this.getReason() == other.getReason())
                 && Objects.equal(this.getAbsPath(), other.getAbsPath())
                 && Objects.equal(this.getOptAbsParentPath(), other.getOptAbsParentPath());
@@ -225,7 +225,7 @@ extends IOException {
         if (!result && obj instanceof PathException) {
             final PathException other = (PathException) obj;
             result =
-                ThrowableUtils.equalsExcludingStackTrace(this, other)
+                ThrowableUtils.equals(this, other, IncludeStackTrace.NO)
                 && (getReason() == other.getReason())
                 && Objects.equal(this.getAbsPath(), other.getAbsPath())
                 && Objects.equal(this.getOptAbsParentPath(), other.getOptAbsParentPath());

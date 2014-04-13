@@ -1,5 +1,6 @@
 package com.googlecode.kevinarpe.papaya.logging.slf4j;
 
+import com.google.common.testing.EqualsTester;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.testng.annotations.BeforeMethod;
@@ -16,16 +17,24 @@ import static org.testng.Assert.assertTrue;
 public class SLF4JLoggingEventImplTest {
 
     private Logger mockLogger;
+    private Logger mockLogger2;
     private Marker mockMarker;
-    private Throwable mockThrowable;
+    private Marker mockMarker2;
+    private Throwable throwable;
+    private Throwable throwable2;
 
     private SLF4JLoggingEventImpl classUnderTest;
 
     @BeforeMethod
     public void beforeEachTestMethod() {
         mockLogger = mock(Logger.class);
+        mockLogger2 = mock(Logger.class);
         mockMarker = mock(Marker.class);
-        mockThrowable = mock(Throwable.class);
+        mockMarker2 = mock(Marker.class);
+        throwable = new Exception("message");
+            //mock(Throwable.class);
+        throwable2 = new Exception("message2");
+            //mock(Throwable.class);
         classUnderTest =
             new SLF4JLoggingEventImpl(
                 mockLogger,
@@ -39,6 +48,28 @@ public class SLF4JLoggingEventImplTest {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Helpers
     //
+
+    private static class SystemImpl
+        implements SLF4JLoggingEventImpl.ISystem {
+
+        private final String _currentThreadName;
+        private final long _currentTimeMillis;
+
+        private SystemImpl(String currentThreadName, long currentTimeMillis) {
+            _currentThreadName = currentThreadName;
+            _currentTimeMillis = currentTimeMillis;
+        }
+
+        @Override
+        public String getCurrentThreadName() {
+            return _currentThreadName;
+        }
+
+        @Override
+        public long currentTimeMillis() {
+            return _currentTimeMillis;
+        }
+    }
 
     public static void assertLoggingEventEquals(
             SLF4JLoggingEvent loggingEvent,
@@ -230,7 +261,7 @@ public class SLF4JLoggingEventImplTest {
             marker,
             message,
             new Object[] { "a", "b", "c" },
-            mockThrowable);
+            throwable);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -254,5 +285,178 @@ public class SLF4JLoggingEventImplTest {
     @Test(expectedExceptions = ClassCastException.class)
     public void getAttributeValue_FailWithClassCastException() {
         Integer x = classUnderTest.getAttributeValue(SLF4JLoggingEventAttribute.MESSAGE);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JLoggingEventImpl.hashCode()/equals()
+    //
+
+    @Test
+    public void hashCodeAndEquals_Pass() {
+        EqualsTester equalsTester = new EqualsTester();
+
+        equalsTester.addEqualityGroup(
+            new SLF4JLoggingEventImpl(
+                mockLogger,
+                SLF4JLogLevel.ERROR,
+                mockMarker,
+                "message",
+                new Object[] { "arg" },
+                throwable,
+                new SystemImpl("threadName", 1234)),
+            new SLF4JLoggingEventImpl(
+                mockLogger,
+                SLF4JLogLevel.ERROR,
+                mockMarker,
+                "message",
+                new Object[] { "arg" },
+                throwable,
+                new SystemImpl("threadName", 1234)));
+
+        equalsTester.addEqualityGroup(
+            new SLF4JLoggingEventImpl(
+                mockLogger2,
+                SLF4JLogLevel.ERROR,
+                mockMarker,
+                "message",
+                new Object[] { "arg" },
+                throwable,
+                new SystemImpl("threadName", 1234)),
+            new SLF4JLoggingEventImpl(
+                mockLogger2,
+                SLF4JLogLevel.ERROR,
+                mockMarker,
+                "message",
+                new Object[] { "arg" },
+                throwable,
+                new SystemImpl("threadName", 1234)));
+
+        equalsTester.addEqualityGroup(
+            new SLF4JLoggingEventImpl(
+                mockLogger,
+                SLF4JLogLevel.TRACE,
+                mockMarker,
+                "message",
+                new Object[] { "arg" },
+                throwable,
+                new SystemImpl("threadName", 1234)),
+            new SLF4JLoggingEventImpl(
+                mockLogger,
+                SLF4JLogLevel.TRACE,
+                mockMarker,
+                "message",
+                new Object[] { "arg" },
+                throwable,
+                new SystemImpl("threadName", 1234)));
+
+        equalsTester.addEqualityGroup(
+            new SLF4JLoggingEventImpl(
+                mockLogger,
+                SLF4JLogLevel.TRACE,
+                mockMarker2,
+                "message",
+                new Object[] { "arg" },
+                throwable,
+                new SystemImpl("threadName", 1234)),
+            new SLF4JLoggingEventImpl(
+                mockLogger,
+                SLF4JLogLevel.TRACE,
+                mockMarker2,
+                "message",
+                new Object[] { "arg" },
+                throwable,
+                new SystemImpl("threadName", 1234)));
+
+        equalsTester.addEqualityGroup(
+            new SLF4JLoggingEventImpl(
+                mockLogger,
+                SLF4JLogLevel.ERROR,
+                mockMarker,
+                "message2",
+                new Object[] { "arg" },
+                throwable,
+                new SystemImpl("threadName", 1234)),
+            new SLF4JLoggingEventImpl(
+                mockLogger,
+                SLF4JLogLevel.ERROR,
+                mockMarker,
+                "message2",
+                new Object[] { "arg" },
+                throwable,
+                new SystemImpl("threadName", 1234)));
+
+        equalsTester.addEqualityGroup(
+            new SLF4JLoggingEventImpl(
+                mockLogger,
+                SLF4JLogLevel.ERROR,
+                mockMarker,
+                "message",
+                new Object[] { "arg2" },
+                throwable,
+                new SystemImpl("threadName", 1234)),
+            new SLF4JLoggingEventImpl(
+                mockLogger,
+                SLF4JLogLevel.ERROR,
+                mockMarker,
+                "message",
+                new Object[] { "arg2" },
+                throwable,
+                new SystemImpl("threadName", 1234)));
+
+        equalsTester.addEqualityGroup(
+            new SLF4JLoggingEventImpl(
+                mockLogger,
+                SLF4JLogLevel.ERROR,
+                mockMarker,
+                "message",
+                new Object[] { "arg" },
+                throwable2,
+                new SystemImpl("threadName", 1234)),
+            new SLF4JLoggingEventImpl(
+                mockLogger,
+                SLF4JLogLevel.ERROR,
+                mockMarker,
+                "message",
+                new Object[] { "arg" },
+                throwable2,
+                new SystemImpl("threadName", 1234)));
+
+        equalsTester.addEqualityGroup(
+            new SLF4JLoggingEventImpl(
+                mockLogger,
+                SLF4JLogLevel.ERROR,
+                mockMarker,
+                "message",
+                new Object[] { "arg" },
+                throwable,
+                new SystemImpl("threadName2", 1234)),
+            new SLF4JLoggingEventImpl(
+                mockLogger,
+                SLF4JLogLevel.ERROR,
+                mockMarker,
+                "message",
+                new Object[] { "arg" },
+                throwable,
+                new SystemImpl("threadName2", 1234)));
+
+        equalsTester.addEqualityGroup(
+            new SLF4JLoggingEventImpl(
+                mockLogger,
+                SLF4JLogLevel.ERROR,
+                mockMarker,
+                "message",
+                new Object[] { "arg" },
+                throwable,
+                new SystemImpl("threadName", 12345)),
+            new SLF4JLoggingEventImpl(
+                mockLogger,
+                SLF4JLogLevel.ERROR,
+                mockMarker,
+                "message",
+                new Object[] { "arg" },
+                throwable,
+                new SystemImpl("threadName", 12345)));
+
+        equalsTester.testEquals();
     }
 }

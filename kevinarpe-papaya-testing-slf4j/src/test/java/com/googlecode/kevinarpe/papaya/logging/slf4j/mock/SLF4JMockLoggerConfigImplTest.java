@@ -35,6 +35,7 @@ public class SLF4JMockLoggerConfigImplTest {
             return false;
         }
 
+        @Deprecated
         @Override
         public boolean hasChildren() {
             return false;

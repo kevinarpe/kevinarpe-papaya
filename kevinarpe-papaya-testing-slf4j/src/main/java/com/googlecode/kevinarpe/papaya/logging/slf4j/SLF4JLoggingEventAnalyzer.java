@@ -46,6 +46,9 @@ public interface SLF4JLoggingEventAnalyzer {
     List<SLF4JLoggingEvent> getLoggingEventListIncluding(
            SLF4JLoggingEventAttribute attribute, Set<?> valueSet);
 
+    List<SLF4JLoggingEvent> getLoggingEventListExcluding(
+        Predicate<SLF4JLoggingEvent> predicate);
+
     <T> List<SLF4JLoggingEvent> getLoggingEventListExcluding(
             SLF4JLoggingEventAttribute attribute, T value, T... moreValueArr);
 

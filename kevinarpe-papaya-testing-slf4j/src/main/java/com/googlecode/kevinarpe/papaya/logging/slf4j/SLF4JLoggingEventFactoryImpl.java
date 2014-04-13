@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 
@@ -34,6 +35,7 @@ import org.slf4j.Marker;
  */
 @FullyTested
 public final class SLF4JLoggingEventFactoryImpl
+extends StatelessObject  // TODO: Use more!
 implements SLF4JLoggingEventFactory {
 
     public static final SLF4JLoggingEventFactoryImpl INSTANCE = new SLF4JLoggingEventFactoryImpl();

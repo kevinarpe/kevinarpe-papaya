@@ -25,8 +25,9 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
  * #L%
  */
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.ISLF4JLoggingEventFactoryUtils;
@@ -45,7 +46,7 @@ import java.util.List;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@NotFullyTested
+@FullyTested
 public final class SLF4JMockLoggerImpl
 implements SLF4JMockLogger {
 
@@ -55,14 +56,13 @@ implements SLF4JMockLogger {
     private final ISLF4JLoggingEventFactoryUtils _factoryUtils;
     private final List<SLF4JLoggingEvent> _loggingEventList;
 
-    // TODO: Test ctor
-
     public SLF4JMockLoggerImpl(String name, SLF4JMockLoggerConfig config) {
         this(
             name,
             config,
+            // TODO: Is there a semantic difference between using new or INSTANCE here?
             SLF4JLoggingEventFactoryImpl.INSTANCE,
-            new SLF4JLoggingEventFactoryUtils());
+            SLF4JLoggingEventFactoryUtils.INSTANCE);
     }
 
     SLF4JMockLoggerImpl(
@@ -533,5 +533,27 @@ implements SLF4JMockLogger {
         ObjectArgs.checkNotNull(marker, "marker");
 
         _log(SLF4JLogLevel.ERROR, marker, msg, t);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(_name, _config, _factory, _factoryUtils, _loggingEventList);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        // Ref: http://stackoverflow.com/a/5039178/257299
+        boolean result = (this == obj);
+        if (!result && obj instanceof SLF4JMockLoggerImpl) {
+            final SLF4JMockLoggerImpl other = (SLF4JMockLoggerImpl) obj;
+            result =
+                Objects.equal(_name, other._name)
+                    && Objects.equal(_config, other._config)
+                    && Objects.equal(_factory, other._factory)
+                    && Objects.equal(_factoryUtils, other._factoryUtils)
+                    && Objects.equal(_loggingEventList, other._loggingEventList);
+        }
+        return result;
     }
 }

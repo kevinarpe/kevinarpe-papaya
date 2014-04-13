@@ -25,31 +25,25 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  * #L%
  */
 
+import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
-import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@NotFullyTested
+@FullyTested
 public final class SLF4JLoggingEventAnalyzerImpl
 implements SLF4JLoggingEventAnalyzer {
 
-    // TODO: LAST: Test me
-
-    private final List<SLF4JLoggingEvent> _loggingEventList;
+    private final ImmutableList<SLF4JLoggingEvent> _loggingEventList;
 
     public SLF4JLoggingEventAnalyzerImpl(List<SLF4JLoggingEvent> loggingEventList) {
         CollectionArgs.checkElementsNotNull(loggingEventList, "loggingEventList");
@@ -69,20 +63,23 @@ implements SLF4JLoggingEventAnalyzer {
             Predicate<SLF4JLoggingEvent> predicate) {
         ObjectArgs.checkNotNull(predicate, "predicate");
 
-        List<SLF4JLoggingEvent> resultList = Lists.newArrayList();
+        ImmutableList.Builder<SLF4JLoggingEvent> builder = ImmutableList.builder();
         for (SLF4JLoggingEvent loggingEvent : _loggingEventList) {
             if (predicate.apply(loggingEvent)) {
-                resultList.add(loggingEvent);
+                builder.add(loggingEvent);
             }
         }
-        resultList = Collections.unmodifiableList(resultList);
-        return resultList;
+        List<SLF4JLoggingEvent> list = builder.build();
+        return list;
     }
 
     @Override
-    public <T> List<SLF4JLoggingEvent> getLoggingEventListIncluding(
-            SLF4JLoggingEventAttribute attribute, T value, T... moreValueArr) {
-        AnyAttributeValuePredicate predicate = new AnyAttributeValuePredicate(attribute, value, moreValueArr);
+    public <TAttributeValue> List<SLF4JLoggingEvent> getLoggingEventListIncluding(
+            SLF4JLoggingEventAttribute attribute,
+            TAttributeValue value,
+            TAttributeValue... moreValueArr) {
+        AnyAttributeValuePredicate predicate =
+            new AnyAttributeValuePredicate(attribute, value, moreValueArr);
         List<SLF4JLoggingEvent> x = getLoggingEventListIncluding(predicate);
         return x;
     }
@@ -96,11 +93,21 @@ implements SLF4JLoggingEventAnalyzer {
     }
 
     @Override
-    public <T> List<SLF4JLoggingEvent> getLoggingEventListExcluding(
-            SLF4JLoggingEventAttribute attribute, T value, T... moreValueArr) {
-        AnyAttributeValuePredicate predicate = new AnyAttributeValuePredicate(attribute, value, moreValueArr);
+    public List<SLF4JLoggingEvent> getLoggingEventListExcluding(
+            Predicate<SLF4JLoggingEvent> predicate) {
         Predicate<SLF4JLoggingEvent> notPredicate = Predicates.not(predicate);
         List<SLF4JLoggingEvent> x = getLoggingEventListIncluding(notPredicate);
+        return x;
+    }
+
+    @Override
+    public <TAttributeValue> List<SLF4JLoggingEvent> getLoggingEventListExcluding(
+            SLF4JLoggingEventAttribute attribute,
+            TAttributeValue value,
+            TAttributeValue... moreValueArr) {
+        AnyAttributeValuePredicate predicate =
+            new AnyAttributeValuePredicate(attribute, value, moreValueArr);
+        List<SLF4JLoggingEvent> x = getLoggingEventListExcluding(predicate);
         return x;
     }
 
@@ -108,43 +115,24 @@ implements SLF4JLoggingEventAnalyzer {
     public List<SLF4JLoggingEvent> getLoggingEventListExcluding(
             SLF4JLoggingEventAttribute attribute, Set<?> valueSet) {
         AnyAttributeValuePredicate predicate = new AnyAttributeValuePredicate(attribute, valueSet);
-        Predicate<SLF4JLoggingEvent> notPredicate = Predicates.not(predicate);
-        List<SLF4JLoggingEvent> x = getLoggingEventListIncluding(notPredicate);
+        List<SLF4JLoggingEvent> x = getLoggingEventListExcluding(predicate);
         return x;
     }
 
-    static final class AnyAttributeValuePredicate
-    implements Predicate<SLF4JLoggingEvent> {
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(_loggingEventList);
+        return result;
+    }
 
-        private final SLF4JLoggingEventAttribute _attribute;
-        private final Set<?> _valueSet;
-
-        public <T> AnyAttributeValuePredicate(
-                SLF4JLoggingEventAttribute attribute, T logLevel, T... moreLogLevelArr) {
-            this(attribute, _createSet(logLevel, moreLogLevelArr));
+    @Override
+    public boolean equals(Object obj) {
+        // Ref: http://stackoverflow.com/a/5039178/257299
+        boolean result = (this == obj);
+        if (!result && obj instanceof SLF4JLoggingEventAnalyzerImpl) {
+            final SLF4JLoggingEventAnalyzerImpl other = (SLF4JLoggingEventAnalyzerImpl) obj;
+            result = Objects.equal(_loggingEventList, other._loggingEventList);
         }
-
-        private static <T> Set<T> _createSet(T value, T... moreValueArr) {
-            ObjectArgs.checkNotNull(moreValueArr, "moreValueArr");
-
-            Set<T> set = new HashSet<T>(moreValueArr.length + 1);
-            set.add(value);
-            set.addAll(Arrays.asList(moreValueArr));
-            return set;
-        }
-
-        public AnyAttributeValuePredicate(SLF4JLoggingEventAttribute attribute, Set<?> valueSet) {
-            _attribute = ObjectArgs.checkNotNull(attribute, "attribute");
-            _valueSet = CollectionArgs.checkNotEmptyAndElementsNotNull(valueSet, "valueSet");
-        }
-
-        @Override
-        public boolean apply(@Nullable SLF4JLoggingEvent loggingEvent) {
-            ObjectArgs.checkNotNull(loggingEvent, "loggingEvent");
-
-            Object value = _attribute.getValue(loggingEvent);
-            boolean x = _valueSet.contains(value);
-            return x;
-        }
+        return result;
     }
 }

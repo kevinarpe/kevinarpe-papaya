@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
  * #L%
  */
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
@@ -69,5 +70,24 @@ implements SLF4JMockLoggerFactory {
             _nameToLoggerMap.put(name, logger);
         }
         return logger;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(_config, _nameToLoggerMap);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        // Ref: http://stackoverflow.com/a/5039178/257299
+        boolean result = (this == obj);
+        if (!result && obj instanceof SLF4JMockLoggerFactoryImpl) {
+            final SLF4JMockLoggerFactoryImpl other = (SLF4JMockLoggerFactoryImpl) obj;
+            result =
+                Objects.equal(_config, other._config)
+                && Objects.equal(_nameToLoggerMap, other._nameToLoggerMap);
+        }
+        return result;
     }
 }

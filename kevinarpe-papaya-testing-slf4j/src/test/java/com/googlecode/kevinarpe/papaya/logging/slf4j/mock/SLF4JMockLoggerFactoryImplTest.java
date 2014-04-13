@@ -1,6 +1,7 @@
 package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
 
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.google.common.testing.EqualsTester;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
@@ -59,5 +60,38 @@ public class SLF4JMockLoggerFactoryImplTest {
     @Test(expectedExceptions = NullPointerException.class)
     public void getLogger_FailWithNull() {
         new SLF4JMockLoggerFactoryImpl().getLogger((String) null);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SLF4JMockLoggerFactoryImpl.hashCode()/equals()
+    //
+
+    @Test
+    public void hashCodeAndEquals_Pass() {
+        EqualsTester equalsTester = new EqualsTester();
+
+        equalsTester.addEqualityGroup(
+            new SLF4JMockLoggerFactoryImpl(),
+            new SLF4JMockLoggerFactoryImpl());
+
+        SLF4JMockLoggerFactoryImpl x1 = new SLF4JMockLoggerFactoryImpl();
+        x1.getConfig()
+            .setEnabled(SLF4JLogLevel.DEBUG, !SLF4JMockLoggerConfigImpl.DEFAULT_IS_ENABLED);
+
+        SLF4JMockLoggerFactoryImpl x2 = new SLF4JMockLoggerFactoryImpl();
+        x2.getConfig()
+            .setEnabled(SLF4JLogLevel.DEBUG, !SLF4JMockLoggerConfigImpl.DEFAULT_IS_ENABLED);
+
+        equalsTester.addEqualityGroup(x1, x2);
+
+        SLF4JMockLoggerFactoryImpl x3 = new SLF4JMockLoggerFactoryImpl();
+        x3.getLogger("blah");
+
+        SLF4JMockLoggerFactoryImpl x4 = new SLF4JMockLoggerFactoryImpl();
+        x4.getLogger("blah");
+
+        equalsTester.addEqualityGroup(x3, x4);
+
+        equalsTester.testEquals();
     }
 }
