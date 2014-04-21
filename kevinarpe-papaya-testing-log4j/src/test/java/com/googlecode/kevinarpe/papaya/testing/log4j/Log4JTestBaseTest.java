@@ -25,37 +25,65 @@ package com.googlecode.kevinarpe.papaya.testing.log4j;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.testing.logging.LoggingEventAnalyzer;
+import com.googlecode.kevinarpe.papaya.testing.logging.LoggingEventAnalyzerFactory;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertSame;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class Log4JTestUtilsTest {
+public class Log4JTestBaseTest
+extends Log4JTestBase {
 
-    private static final Logger _logger = Logger.getLogger(Log4JTestUtilsTest.class);
+    private LoggingEventAnalyzerFactory<LoggingEvent, Log4JLoggingEventAttribute> mockFactory;
+    private LoggingEventAnalyzer<LoggingEvent, Log4JLoggingEventAttribute> mockAnalyzer;
+
+    @BeforeMethod
+    public void beforeEachTestMethod() {
+        @SuppressWarnings("unchecked")
+        LoggingEventAnalyzerFactory<LoggingEvent, Log4JLoggingEventAttribute> x =
+            mock(LoggingEventAnalyzerFactory.class);
+        mockFactory = x;
+
+        @SuppressWarnings("unchecked")
+        LoggingEventAnalyzer<LoggingEvent, Log4JLoggingEventAttribute> y =
+            mock(LoggingEventAnalyzer.class);
+        mockAnalyzer = y;
+    }
 
     private static class TestClass {
 
+        final Logger _logger = Logger.getLogger(TestClass.class);
+
         public TestClass(Level level, String message) {
+            super();
             _logger.log(level, message);
         }
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Log4JTestBase.getLoggingEventList()
+    //
+
     @Test
     public void pass() {
-        Log4JTestUtils.addMockAppender();
+        super.addMockAppender();
         new TestClass(Level.DEBUG, "dummy");
         new TestClass(Level.INFO, "dummy2");
-        List<LoggingEvent> loggingEventList = Log4JTestUtils.getLoggingEventList();
+        super.removeMockAppender();
+        List<LoggingEvent> loggingEventList = super.getLoggingEventList();
         assertEquals(loggingEventList.size(), 2);
         LoggingEvent loggingEvent0 = loggingEventList.get(0);
         assertEquals(loggingEvent0.getLevel(), Level.DEBUG);
@@ -68,16 +96,16 @@ public class Log4JTestUtilsTest {
     @Test
     public void failWithZeroAppenders() {
         new TestClass(Level.DEBUG, "dummy");
-        List<LoggingEvent> loggingEventList = Log4JTestUtils.getLoggingEventList();
+        List<LoggingEvent> loggingEventList = super.getLoggingEventList();
         assertEquals(loggingEventList.size(), 0);
     }
 
     @Test
     public void failWithZeroAppenders2() {
-        Log4JTestUtils.addMockAppender();
-        Log4JTestUtils.removeMockAppender();
+        super.addMockAppender();
+        super.removeMockAppender();
         new TestClass(Level.DEBUG, "dummy");
-        List<LoggingEvent> loggingEventList = Log4JTestUtils.getLoggingEventList();
+        List<LoggingEvent> loggingEventList = super.getLoggingEventList();
         assertEquals(loggingEventList.size(), 0);
     }
 
@@ -87,7 +115,19 @@ public class Log4JTestUtilsTest {
         Logger rootLogger = Logger.getRootLogger();
         rootLogger.addAppender(appender);
         new TestClass(Level.DEBUG, "dummy");
-        List<LoggingEvent> loggingEventList = Log4JTestUtils.getLoggingEventList();
+        List<LoggingEvent> loggingEventList = super.getLoggingEventList();
         assertEquals(loggingEventList.size(), 0);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Log4JTestBase.newLoggingEventAnalyzer()
+    //
+
+    @Test
+    public void newLoggingEventAnalyzer_Pass() {
+        Log4JTestBase classUnderTest = new Log4JTestBase(mockFactory);
+        List<LoggingEvent> loggingEventList = classUnderTest.getLoggingEventList();
+        when(mockFactory.newInstance(loggingEventList)).thenReturn(mockAnalyzer);
+        assertSame(classUnderTest.newLoggingEventAnalyzer(), mockAnalyzer);
     }
 }

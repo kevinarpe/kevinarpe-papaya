@@ -2,17 +2,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!-- Project homepage: http://code.google.com/p/kevinarpe-papaya -->
+    <!-- This POM is largely based upon that of Google Guava. -->
+
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>kevinarpe-papaya-parent</artifactId>
         <groupId>com.googlecode.kevinarpe-papaya</groupId>
+        <artifactId>kevinarpe-papaya-parent</artifactId>
         <version>0.0.13-SNAPSHOT</version>
     </parent>
-
-    <artifactId>kevinarpe-papaya-testing-slf4j</artifactId>
+    <artifactId>kevinarpe-papaya-testing-log4j-testng</artifactId>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
-    <description>Papaya for Testing SLF4J: Utilities for Java 1.6+ written by Kevin Connor ARPE</description>
+    <description>Papaya for Testing Log4J with TestNG: Utilities for Java 1.6+ written by Kevin Connor ARPE</description>
 
     <build>
         <plugins>
@@ -59,33 +62,18 @@
         </dependency>
         <dependency>
             <groupId>com.googlecode.kevinarpe-papaya</groupId>
-            <artifactId>kevinarpe-papaya-testing-logging</artifactId>
+            <artifactId>kevinarpe-papaya-testing-log4j</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.googlecode.kevinarpe-papaya</groupId>
-            <artifactId>kevinarpe-papaya-slf4j</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava-testlib</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
+

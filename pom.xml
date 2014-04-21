@@ -63,9 +63,11 @@
         <module>kevinarpe-papaya</module>
         <module>kevinarpe-papaya-joda-time</module>
         <module>kevinarpe-papaya-testing</module>
+        <module>kevinarpe-papaya-testing-logging</module>
         <module>kevinarpe-papaya-testing-junit</module>
         <module>kevinarpe-papaya-testing-log4j</module>
         <module>kevinarpe-papaya-testing-log4j-junit</module>
+        <module>kevinarpe-papaya-testing-log4j-testng</module>
         <module>kevinarpe-papaya-slf4j</module>
         <module>kevinarpe-papaya-testing-slf4j</module>
     </modules>

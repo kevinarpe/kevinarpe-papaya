@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.testing.EqualsTester;
+import com.googlecode.kevinarpe.papaya.testing.logging.AnyLoggingEventAttributeValuePredicate;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -94,42 +95,42 @@ public class SLF4JLoggingEventAnalyzerImplTest {
 
         assertEquals(
             classUnderTest.getLoggingEventListIncluding(
-                new AnyAttributeValuePredicate(
+                new AnyLoggingEventAttributeValuePredicate<SLF4JLoggingEvent>(
                     SLF4JLoggingEventAttribute.MESSAGE, MESSAGE1)),
             Arrays.asList(mockSLF4JLoggingEvent1));
 
         // Demonstrate non-matching message strings are ignored, e.g., "blah".
         assertEquals(
             classUnderTest.getLoggingEventListIncluding(
-                new AnyAttributeValuePredicate(
+                new AnyLoggingEventAttributeValuePredicate<SLF4JLoggingEvent>(
                     SLF4JLoggingEventAttribute.MESSAGE, "blah", MESSAGE1)),
             Arrays.asList(mockSLF4JLoggingEvent1));
 
         // Demonstrate duplicate message strings work.
         assertEquals(
             classUnderTest.getLoggingEventListIncluding(
-                new AnyAttributeValuePredicate(
+                new AnyLoggingEventAttributeValuePredicate<SLF4JLoggingEvent>(
                     SLF4JLoggingEventAttribute.MESSAGE, MESSAGE1, MESSAGE1)),
             Arrays.asList(mockSLF4JLoggingEvent1));
 
         // Demonstrate second logging event can be matched.
         assertEquals(
             classUnderTest.getLoggingEventListIncluding(
-                new AnyAttributeValuePredicate(
+                new AnyLoggingEventAttributeValuePredicate<SLF4JLoggingEvent>(
                     SLF4JLoggingEventAttribute.MESSAGE, MESSAGE2)),
             Arrays.asList(mockSLF4JLoggingEvent2));
 
         // Demonstrate both messages can be matched.
         assertEquals(
             classUnderTest.getLoggingEventListIncluding(
-                new AnyAttributeValuePredicate(
+                new AnyLoggingEventAttributeValuePredicate<SLF4JLoggingEvent>(
                     SLF4JLoggingEventAttribute.MESSAGE, MESSAGE1, "blah", MESSAGE2)),
             Arrays.asList(mockSLF4JLoggingEvent1, mockSLF4JLoggingEvent2));
 
         // Demonstrate both messages can be matched (again).
         assertEquals(
             classUnderTest.getLoggingEventListIncluding(
-                new AnyAttributeValuePredicate(
+                new AnyLoggingEventAttributeValuePredicate<SLF4JLoggingEvent>(
                     SLF4JLoggingEventAttribute.MESSAGE, MESSAGE2, "blah", MESSAGE1)),
             Arrays.asList(mockSLF4JLoggingEvent1, mockSLF4JLoggingEvent2));
     }
@@ -278,42 +279,42 @@ public class SLF4JLoggingEventAnalyzerImplTest {
 
         assertEquals(
             classUnderTest.getLoggingEventListExcluding(
-                new AnyAttributeValuePredicate(
+                new AnyLoggingEventAttributeValuePredicate<SLF4JLoggingEvent>(
                     SLF4JLoggingEventAttribute.MESSAGE, MESSAGE1)),
             Arrays.asList(mockSLF4JLoggingEvent2));
 
         // Demonstrate non-matching message strings are ignored, e.g., "blah".
         assertEquals(
             classUnderTest.getLoggingEventListExcluding(
-                new AnyAttributeValuePredicate(
+                new AnyLoggingEventAttributeValuePredicate<SLF4JLoggingEvent>(
                     SLF4JLoggingEventAttribute.MESSAGE, "blah", MESSAGE1)),
             Arrays.asList(mockSLF4JLoggingEvent2));
 
         // Demonstrate duplicate message strings work.
         assertEquals(
             classUnderTest.getLoggingEventListExcluding(
-                new AnyAttributeValuePredicate(
+                new AnyLoggingEventAttributeValuePredicate<SLF4JLoggingEvent>(
                     SLF4JLoggingEventAttribute.MESSAGE, MESSAGE1, MESSAGE1)),
             Arrays.asList(mockSLF4JLoggingEvent2));
 
         // Demonstrate second logging event can be matched.
         assertEquals(
             classUnderTest.getLoggingEventListExcluding(
-                new AnyAttributeValuePredicate(
+                new AnyLoggingEventAttributeValuePredicate<SLF4JLoggingEvent>(
                     SLF4JLoggingEventAttribute.MESSAGE, MESSAGE2)),
             Arrays.asList(mockSLF4JLoggingEvent1));
 
         // Demonstrate both messages can be matched.
         assertEquals(
             classUnderTest.getLoggingEventListExcluding(
-                new AnyAttributeValuePredicate(
+                new AnyLoggingEventAttributeValuePredicate<SLF4JLoggingEvent>(
                     SLF4JLoggingEventAttribute.MESSAGE, MESSAGE1, "blah", MESSAGE2)),
             Arrays.<Object>asList());
 
         // Demonstrate both messages can be matched (again).
         assertEquals(
             classUnderTest.getLoggingEventListExcluding(
-                new AnyAttributeValuePredicate(
+                new AnyLoggingEventAttributeValuePredicate<SLF4JLoggingEvent>(
                     SLF4JLoggingEventAttribute.MESSAGE, MESSAGE2, "blah", MESSAGE1)),
             Arrays.<Object>asList());
     }

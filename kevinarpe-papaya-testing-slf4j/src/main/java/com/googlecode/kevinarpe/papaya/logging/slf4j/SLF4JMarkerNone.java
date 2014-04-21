@@ -26,7 +26,8 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  */
 
 import com.google.common.collect.Iterators;
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 import org.slf4j.Marker;
 
 import java.util.Iterator;
@@ -34,11 +35,14 @@ import java.util.Iterator;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@NotFullyTested
+@FullyTested
 public final class SLF4JMarkerNone
+extends StatelessObject
 implements Marker {
 
     public static final SLF4JMarkerNone INSTANCE = new SLF4JMarkerNone();
+
+    public static final String NAME = "";
 
     private SLF4JMarkerNone() {
         // Empty
@@ -46,7 +50,7 @@ implements Marker {
 
     @Override
     public String getName() {
-        return "";
+        return NAME;
     }
 
     @Override

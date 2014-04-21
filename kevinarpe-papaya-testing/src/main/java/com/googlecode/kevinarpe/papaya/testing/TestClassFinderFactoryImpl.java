@@ -26,12 +26,14 @@ package com.googlecode.kevinarpe.papaya.testing;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @FullyTested
 class TestClassFinderFactoryImpl
+extends StatelessObject
 implements TestClassFinderFactory {
 
     public static final TestClassFinderFactoryImpl INSTANCE = new TestClassFinderFactoryImpl();

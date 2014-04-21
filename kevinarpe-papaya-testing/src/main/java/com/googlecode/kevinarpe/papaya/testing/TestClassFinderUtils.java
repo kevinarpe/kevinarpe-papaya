@@ -27,6 +27,7 @@ package com.googlecode.kevinarpe.papaya.testing;
 
 import com.google.common.collect.ImmutableList;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
 import java.io.File;
 import java.util.List;
@@ -42,6 +43,7 @@ import java.util.regex.Pattern;
  */
 @FullyTested
 public final class TestClassFinderUtils
+extends StatelessObject
 implements ITestClassFinderUtils {
 
     /**

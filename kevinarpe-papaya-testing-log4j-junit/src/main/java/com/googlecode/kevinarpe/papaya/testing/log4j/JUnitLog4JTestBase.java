@@ -26,36 +26,23 @@ package com.googlecode.kevinarpe.papaya.testing.log4j;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
-import org.apache.log4j.spi.LoggingEvent;
 import org.junit.After;
 import org.junit.Before;
-
-import java.util.List;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @NotFullyTested
-public class JUnitLog4JTestBase {
+public class JUnitLog4JTestBase
+extends Log4JTestBase {
 
     @Before
-    public final void Log4JTestBase_BeforeEachTest() {
-        Log4JTestUtils.addMockAppender();
+    public final void JUnitLog4JTestBase_BeforeEachTest() {
+        super.addMockAppender();
     }
 
     @After
-    public final void Log4JTestBase_AfterEachTest() {
-        Log4JTestUtils.removeMockAppender();
-    }
-
-    public final List<LoggingEvent> getLoggingEventList() {
-        List<LoggingEvent> x = Log4JTestUtils.getLoggingEventList();
-        return x;
-    }
-
-    public final LoggingEventAnalyzer getLoggingEventAnalysis() {
-        List<LoggingEvent> x = Log4JTestUtils.getLoggingEventList();
-        LoggingEventAnalyzerImpl y = new LoggingEventAnalyzerImpl(x);
-        return y;
+    public final void JUnitLog4JTestBase_AfterEachTest() {
+        super.removeMockAppender();
     }
 }

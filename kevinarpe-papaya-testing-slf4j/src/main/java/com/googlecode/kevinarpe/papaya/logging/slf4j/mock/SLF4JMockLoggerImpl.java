@@ -33,11 +33,11 @@ import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.ISLF4JLoggingEventFactoryUtils;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEvent;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventAnalyzerImpl;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventFactory;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventFactoryImpl;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventFactoryUtils;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JMarkerNone;
+import com.googlecode.kevinarpe.papaya.testing.logging.LoggingEventAnalyzerImpl;
 import org.slf4j.Marker;
 
 import java.util.Collections;
@@ -60,7 +60,6 @@ implements SLF4JMockLogger {
         this(
             name,
             config,
-            // TODO: Is there a semantic difference between using new or INSTANCE here?
             SLF4JLoggingEventFactoryImpl.INSTANCE,
             SLF4JLoggingEventFactoryUtils.INSTANCE);
     }
@@ -89,10 +88,7 @@ implements SLF4JMockLogger {
     }
 
     /**
-     *
-     * @return
-     *
-     * @see SLF4JLoggingEventAnalyzerImpl
+     * @see LoggingEventAnalyzerImpl
      */
     @Override
     public List<SLF4JLoggingEvent> getLoggingEventList() {

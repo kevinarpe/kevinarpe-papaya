@@ -1011,7 +1011,34 @@ public class SLF4JMockLoggerImplTest {
         equalsTester.addEqualityGroup(
             new SLF4JMockLoggerImpl("name", mockConfig, mockFactory, mockFactoryUtils2),
             new SLF4JMockLoggerImpl("name", mockConfig, mockFactory, mockFactoryUtils2));
-        // TODO: This does not test if _loggingEventList is compared for equality.
+
+        // Rather complex setup here to test _loggingEventList for equality.
+
+        // 1) Enable INFO level logging.
+        when(mockConfigCopy.isEnabled(SLF4JMarkerNone.INSTANCE, SLF4JLogLevel.INFO))
+            .thenReturn(true);
+
+        SLF4JMockLoggerImpl x =
+            new SLF4JMockLoggerImpl("name", mockConfig, mockFactory, mockFactoryUtils);
+        // 2) Mock when INFO/"message" is logged.
+        when(
+            mockFactoryUtils.newInstance(
+                mockFactory, x, SLF4JLogLevel.INFO, SLF4JMarkerNone.INSTANCE, "message"))
+            .thenReturn(mockLoggingEvent);
+        // 3) Do the log.
+        x.info("message");
+
+        SLF4JMockLoggerImpl y =
+            new SLF4JMockLoggerImpl("name", mockConfig, mockFactory, mockFactoryUtils);
+        // 4) Mock when INFO/"message" is logged.
+        when(
+            mockFactoryUtils.newInstance(
+                mockFactory, y, SLF4JLogLevel.INFO, SLF4JMarkerNone.INSTANCE, "message"))
+            .thenReturn(mockLoggingEvent);
+        // 5) Do the log.
+        y.info("message");
+
+        equalsTester.addEqualityGroup(x, y);
         equalsTester.testEquals();
     }
 }

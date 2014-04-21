@@ -32,8 +32,8 @@ import com.googlecode.kevinarpe.papaya.filesystem.TraversePathDepthPolicy;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterableFactory;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterator;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventAnalyzerImpl;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventAnalyzerImpl;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventAttribute;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.mock.SLF4JMockLoggerFactoryImpl;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.mock.SLF4JMockLoggerImpl;
@@ -348,6 +348,7 @@ public class TestClassFinderImplTest {
     private void _assertLogger(SLF4JLogLevel logLevel, int count) {
         SLF4JMockLoggerImpl logger =
             mockLoggerFactory.getLogger(TestClassFinderImpl.class.getName());
+
         SLF4JLoggingEventAnalyzerImpl analyzer =
             new SLF4JLoggingEventAnalyzerImpl(logger.getLoggingEventList());
         assertEquals(

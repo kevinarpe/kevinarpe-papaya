@@ -279,7 +279,7 @@ public class SLF4JLoggingEventImplTest {
 
     @Test(expectedExceptions = NullPointerException.class)
     public void getAttributeValue_FailWithNull() {
-        classUnderTest.getAttributeValue((ISLF4JLoggingEventAttribute) null);
+        classUnderTest.getAttributeValue((SLF4JLoggingEventAttribute) null);
     }
 
     @Test(expectedExceptions = ClassCastException.class)
