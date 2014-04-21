@@ -59,10 +59,10 @@ import java.util.Iterator;
  * <p>
  * Examples:
  * <pre>{@code
- * Joiner2Utils.withSeparator(", ").withQuotes("[", "]").join(list) -> "[a], [b], [c], ..."
- * Joiner2Utils.withSeparator(", ").withQuotes("[", "]").join(listWithNulls) -> "[a], [b], [null], [c], ..."
- * Joiner2Utils.withSeparator(", ").withQuotes("[", "]").skipNulls(true).join(listWithNulls) -> "[a], [b], [c], ..."
- * Joiner2Utils.withSeparator(", ").withQuotes("[", "]").useForNoElements("(empty)").join(emptyList) -> "(empty)"
+ * Joiner2Utils.INSTANCE.withSeparator(", ").withQuotes("[", "]").join(list) -> "[a], [b], [c], ..."
+ * Joiner2Utils.INSTANCE.withSeparator(", ").withQuotes("[", "]").join(listWithNulls) -> "[a], [b], [null], [c], ..."
+ * Joiner2Utils.INSTANCE.withSeparator(", ").withQuotes("[", "]").skipNulls(true).join(listWithNulls) -> "[a], [b], [c], ..."
+ * Joiner2Utils.INSTANCE.withSeparator(", ").withQuotes("[", "]").useForNoElements("(empty)").join(emptyList) -> "(empty)"
  * }</pre>
  * <p>
  * See {@link SharedJoiner2Settings} for an inheritance diagram.

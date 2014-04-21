@@ -63,7 +63,9 @@ public class EnumUtils {
             enumNameArr[i] = name;
         }
         String x =
-            Joiner2Utils.withSeparator(", ").withQuotes("'", "'").useForNoElements("(empty)")
+            Joiner2Utils.INSTANCE.withSeparator(", ")
+                .withQuotes("'", "'")
+                .useForNoElements("(empty)")
                 .join(enumNameArr);
         return x;
     }

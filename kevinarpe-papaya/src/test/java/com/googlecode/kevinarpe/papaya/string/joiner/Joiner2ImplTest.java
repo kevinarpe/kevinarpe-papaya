@@ -27,6 +27,7 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
 
 import org.mockito.Mockito;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -40,20 +41,27 @@ import java.util.List;
  */
 public class Joiner2ImplTest {
 
+    private Joiner2Utils classUnderTest;
+
+    @BeforeMethod
+    public void beforeEachTestMethod() {
+        classUnderTest = new Joiner2Utils();
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Joiner2Impl.withSeparator(String)
     //
 
     @Test
     public void withSeparatorString_Pass() {
-        Joiner2 x = Joiner2Utils.withSeparator(",");
+        Joiner2 x = classUnderTest.withSeparator(",");
         x = x.withSeparator("x");
         Assert.assertEquals(x.withSeparator(), "x");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void withSeparator_FailWithNull() {
-        Joiner2Utils.withSeparator("x").withSeparator((String) null);
+        classUnderTest.withSeparator("x").withSeparator((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -62,7 +70,7 @@ public class Joiner2ImplTest {
 
     @Test
     public void withSeparatorChar_Pass() {
-        Joiner2 x = Joiner2Utils.withSeparator(',');
+        Joiner2 x = classUnderTest.withSeparator(',');
         x = x.withSeparator('x');
         Assert.assertEquals(x.withSeparator(), "x");
     }
@@ -85,7 +93,7 @@ public class Joiner2ImplTest {
     @Test(dataProvider = "_withQuotes_Pass_Data")
     public void withQuotes_Pass(String leftQuote, String rightQuote) {
         // String, String
-        Joiner2 x = Joiner2Utils.withSeparator(",").withQuotes(leftQuote, rightQuote);
+        Joiner2 x = classUnderTest.withSeparator(",").withQuotes(leftQuote, rightQuote);
         Assert.assertEquals(x.withLeftQuote(), leftQuote);
         Assert.assertEquals(x.withRightQuote(), rightQuote);
 
@@ -93,7 +101,7 @@ public class Joiner2ImplTest {
         if (!rightQuote.isEmpty()) {
             char rightQuoteChar = rightQuote.charAt(0);
             String rightQuoteCharString = String.valueOf(rightQuoteChar);
-            x = Joiner2Utils.withSeparator(",").withQuotes(leftQuote, rightQuoteChar);
+            x = classUnderTest.withSeparator(",").withQuotes(leftQuote, rightQuoteChar);
             Assert.assertEquals(x.withLeftQuote(), leftQuote);
             Assert.assertEquals(x.withRightQuote(), rightQuoteCharString);
         }
@@ -102,7 +110,7 @@ public class Joiner2ImplTest {
         if (!leftQuote.isEmpty()) {
             char leftQuoteChar = leftQuote.charAt(0);
             String leftQuoteCharString = String.valueOf(leftQuoteChar);
-            x = Joiner2Utils.withSeparator(",").withQuotes(leftQuoteChar, rightQuote);
+            x = classUnderTest.withSeparator(",").withQuotes(leftQuoteChar, rightQuote);
             Assert.assertEquals(x.withLeftQuote(), leftQuoteCharString);
             Assert.assertEquals(x.withRightQuote(), rightQuote);
         }
@@ -113,7 +121,7 @@ public class Joiner2ImplTest {
             String leftQuoteCharString = String.valueOf(leftQuoteChar);
             char rightQuoteChar = rightQuote.charAt(0);
             String rightQuoteCharString = String.valueOf(rightQuoteChar);
-            x = Joiner2Utils.withSeparator(",").withQuotes(leftQuoteChar, rightQuoteChar);
+            x = classUnderTest.withSeparator(",").withQuotes(leftQuoteChar, rightQuoteChar);
             Assert.assertEquals(x.withLeftQuote(), leftQuoteCharString);
             Assert.assertEquals(x.withRightQuote(), rightQuoteCharString);
         }
@@ -131,7 +139,7 @@ public class Joiner2ImplTest {
     @Test(expectedExceptions = NullPointerException.class,
             dataProvider = "_withQuotes_FailWithNull_Data")
     public void withQuotes_FailWithNull(String leftQuote, String rightQuote) {
-        Joiner2Utils.withSeparator(",").withQuotes(leftQuote, rightQuote);
+        classUnderTest.withSeparator(",").withQuotes(leftQuote, rightQuote);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -140,14 +148,14 @@ public class Joiner2ImplTest {
 
     @Test
     public void useForNoElementsString_Pass() {
-        Joiner2 x = Joiner2Utils.withSeparator(",");
+        Joiner2 x = classUnderTest.withSeparator(",");
         x = x.useForNoElements("x");
         Assert.assertEquals(x.useForNoElements(), "x");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void useForNoElements_FailWithNull() {
-        Joiner2Utils.withSeparator("x").useForNoElements((String) null);
+        classUnderTest.withSeparator("x").useForNoElements((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,7 +164,7 @@ public class Joiner2ImplTest {
 
     @Test
     public void useForNoElementsChar_Pass() {
-        Joiner2 x = Joiner2Utils.withSeparator(',');
+        Joiner2 x = classUnderTest.withSeparator(',');
         x = x.useForNoElements('x');
         Assert.assertEquals(x.useForNoElements(), "x");
     }
@@ -167,14 +175,14 @@ public class Joiner2ImplTest {
 
     @Test
     public void useForNullString_Pass() {
-        Joiner2 x = Joiner2Utils.withSeparator(",");
+        Joiner2 x = classUnderTest.withSeparator(",");
         x = x.useForNull("x");
         Assert.assertEquals(x.useForNull(), "x");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void useForNull_FailWithNull() {
-        Joiner2Utils.withSeparator("x").useForNull((String) null);
+        classUnderTest.withSeparator("x").useForNull((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -183,7 +191,7 @@ public class Joiner2ImplTest {
 
     @Test
     public void useForNullChar_Pass() {
-        Joiner2 x = Joiner2Utils.withSeparator(',');
+        Joiner2 x = classUnderTest.withSeparator(',');
         x = x.useForNull('x');
         Assert.assertEquals(x.useForNull(), "x");
     }
@@ -194,7 +202,7 @@ public class Joiner2ImplTest {
 
     @Test
     public void skipNulls_Pass() {
-        Joiner2 x = Joiner2Utils.withSeparator(',');
+        Joiner2 x = classUnderTest.withSeparator(',');
         x = x.skipNulls(true);
         Assert.assertEquals(x.skipNulls(), true);
         x = x.skipNulls(false);
@@ -288,7 +296,7 @@ public class Joiner2ImplTest {
         Assert.assertTrue(
             (null == optLeftQuote && null == optRightQuote)
             || (null != optLeftQuote && null != optRightQuote));
-        Joiner2 joiner = Joiner2Utils.withSeparator(separator);
+        Joiner2 joiner = classUnderTest.withSeparator(separator);
         if (null != optLeftQuote && null != optRightQuote) {
             joiner = joiner.withQuotes(optLeftQuote, optRightQuote);
         }
@@ -382,28 +390,28 @@ public class Joiner2ImplTest {
     public void appendToAppendable1_FailWhenAppendableThrowsIOException()
     throws IOException {
         Appendable mockAppendable = _newMockAppendableThrowsIOException();
-        Joiner2Utils.withSeparator(",").appendTo(mockAppendable, "abc", "def");
+        classUnderTest.withSeparator(",").appendTo(mockAppendable, "abc", "def");
     }
 
     @Test(expectedExceptions = IOException.class)
     public void appendToAppendable2_FailWhenAppendableThrowsIOException()
     throws IOException {
         Appendable mockAppendable = _newMockAppendableThrowsIOException();
-        Joiner2Utils.withSeparator(",").appendTo(mockAppendable, Arrays.asList("abc").toArray());
+        classUnderTest.withSeparator(",").appendTo(mockAppendable, Arrays.asList("abc").toArray());
     }
 
     @Test(expectedExceptions = IOException.class)
     public void appendToAppendable3_FailWhenAppendableThrowsIOException()
     throws IOException {
         Appendable mockAppendable = _newMockAppendableThrowsIOException();
-        Joiner2Utils.withSeparator(",").appendTo(mockAppendable, Arrays.asList("abc"));
+        classUnderTest.withSeparator(",").appendTo(mockAppendable, Arrays.asList("abc"));
     }
 
     @Test(expectedExceptions = IOException.class)
     public void appendToAppendable4_FailWhenAppendableThrowsIOException()
     throws IOException {
         Appendable mockAppendable = _newMockAppendableThrowsIOException();
-        Joiner2Utils.withSeparator(",").appendTo(mockAppendable, Arrays.asList("abc").iterator());
+        classUnderTest.withSeparator(",").appendTo(mockAppendable, Arrays.asList("abc").iterator());
     }
 
     @DataProvider
@@ -421,7 +429,7 @@ public class Joiner2ImplTest {
     public <TAppendable extends Appendable>
     void appendToAppendable1_FailWithNull(TAppendable appendable, Object[] partArr)
     throws IOException {
-        Joiner2Utils.withSeparator(",").appendTo(appendable, "abc", "def", partArr);
+        classUnderTest.withSeparator(",").appendTo(appendable, "abc", "def", partArr);
     }
 
     @Test(expectedExceptions = NullPointerException.class,
@@ -429,7 +437,7 @@ public class Joiner2ImplTest {
     public <TAppendable extends Appendable>
     void appendToAppendable2_FailWithNull(TAppendable appendable, Object[] partArr)
     throws IOException {
-        Joiner2Utils.withSeparator(",").appendTo(appendable, partArr);
+        classUnderTest.withSeparator(",").appendTo(appendable, partArr);
     }
 
     @DataProvider
@@ -448,7 +456,7 @@ public class Joiner2ImplTest {
     public <TAppendable extends Appendable>
     void appendToAppendable3_FailWithNull(TAppendable appendable, Iterable<?> partIter)
     throws IOException {
-        Joiner2Utils.withSeparator(",").appendTo(appendable, partIter);
+        classUnderTest.withSeparator(",").appendTo(appendable, partIter);
     }
 
     @DataProvider
@@ -467,7 +475,7 @@ public class Joiner2ImplTest {
     public <TAppendable extends Appendable>
     void appendToAppendable4_FailWithNull(TAppendable appendable, Iterator<?> partIter)
     throws IOException {
-        Joiner2Utils.withSeparator(",").appendTo(appendable, partIter);
+        classUnderTest.withSeparator(",").appendTo(appendable, partIter);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -487,14 +495,14 @@ public class Joiner2ImplTest {
             dataProvider = "_appendArray12ToStringBuilder_FailWithNull_Data")
     public void appendArray1ToStringBuilder_FailWithNull(StringBuilder sb, Object[] partArr)
     throws IOException {
-        Joiner2Utils.withSeparator(",").appendTo(sb, "abc", "def", partArr);
+        classUnderTest.withSeparator(",").appendTo(sb, "abc", "def", partArr);
     }
 
     @Test(expectedExceptions = NullPointerException.class,
             dataProvider = "_appendArray12ToStringBuilder_FailWithNull_Data")
     public void appendArray2ToStringBuilder_FailWithNull(StringBuilder sb, Object[] partArr)
     throws IOException {
-        Joiner2Utils.withSeparator(",").appendTo(sb, partArr);
+        classUnderTest.withSeparator(",").appendTo(sb, partArr);
     }
 
     @DataProvider
@@ -511,7 +519,7 @@ public class Joiner2ImplTest {
         dataProvider = "_appendIterableToStringBuilder_FailWithNull_Data")
     public void appendIterableToStringBuilder_FailWithNull(StringBuilder sb, Iterable<?> partIter)
     throws IOException {
-        Joiner2Utils.withSeparator(",").appendTo(sb, partIter);
+        classUnderTest.withSeparator(",").appendTo(sb, partIter);
     }
 
     @DataProvider
@@ -528,7 +536,7 @@ public class Joiner2ImplTest {
         dataProvider = "_appendIteratorToStringBuilder_FailWithNull_Data")
     public void appendIteratorToStringBuilder_FailWithNull(StringBuilder sb, Iterator<?> partIter)
     throws IOException {
-        Joiner2Utils.withSeparator(",").appendTo(sb, partIter);
+        classUnderTest.withSeparator(",").appendTo(sb, partIter);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -538,25 +546,25 @@ public class Joiner2ImplTest {
     @Test(expectedExceptions = NullPointerException.class)
     public void join1_FailWithNull()
     throws IOException {
-        Joiner2Utils.withSeparator(",").join("abc", "def", (Object[]) null);
+        classUnderTest.withSeparator(",").join("abc", "def", (Object[]) null);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void join2_FailWithNull()
     throws IOException {
-        Joiner2Utils.withSeparator(",").join((Object[]) null);
+        classUnderTest.withSeparator(",").join((Object[]) null);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void join3_FailWithNull()
     throws IOException {
-        Joiner2Utils.withSeparator(",").join((Iterable<?>) null);
+        classUnderTest.withSeparator(",").join((Iterable<?>) null);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void join4_FailWithNull()
     throws IOException {
-        Joiner2Utils.withSeparator(",").join((Iterator<?>) null);
+        classUnderTest.withSeparator(",").join((Iterator<?>) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -565,14 +573,14 @@ public class Joiner2ImplTest {
 
     @Test
     public void withKeyValueSeparatorString_Pass() {
-        Joiner2 x = Joiner2Utils.withSeparator(",");
+        Joiner2 x = classUnderTest.withSeparator(",");
         MapJoiner2 y = x.withKeyValueSeparator("x");
         Assert.assertEquals(y.withKeyValueSeparator(), "x");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void withKeyValueSeparator_FailWithNull() {
-        Joiner2Utils.withSeparator("x").withKeyValueSeparator((String) null);
+        classUnderTest.withSeparator("x").withKeyValueSeparator((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -581,7 +589,7 @@ public class Joiner2ImplTest {
 
     @Test
     public void withKeyValueSeparatorChar_Pass() {
-        Joiner2 x = Joiner2Utils.withSeparator(",");
+        Joiner2 x = classUnderTest.withSeparator(",");
         MapJoiner2 y = x.withKeyValueSeparator('x');
         Assert.assertEquals(y.withKeyValueSeparator(), "x");
         Assert.assertEquals(y.withKeyLeftQuote(), Joiner2Utils.DEFAULT_KEY_LEFT_QUOTE);

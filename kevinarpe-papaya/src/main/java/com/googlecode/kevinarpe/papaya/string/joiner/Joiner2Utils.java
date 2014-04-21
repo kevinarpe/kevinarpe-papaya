@@ -27,6 +27,7 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
 
 import com.google.common.base.Joiner;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
 /**
  * Constants and static utilities for {@link Joiner2} and {@link MapJoiner2}.
@@ -37,13 +38,27 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
  * @see #withSeparator(char)
  * @see #newQuotingJoinerFactory(String)
  * @see #newQuotingJoinerFactory(char)
+ * @see StatelessObject
+ * @see IJoiner2Utils
  */
 // TODO: Add feature for counting?
 @FullyTested
-public final class Joiner2Utils {
-    
-    private Joiner2Utils() {
-        // disabled
+public final class Joiner2Utils
+extends StatelessObject
+implements IJoiner2Utils {
+
+    /**
+     * Single instance of this class provided for convenience.  Since this class is stateless, its
+     * behaviour is identical between this instance and others.
+     */
+    public static final Joiner2Utils INSTANCE = new Joiner2Utils();
+
+    /**
+     * For projects that require total, static-free mocking capabilities, use this constructor.
+     * Else, the static constant {@link #INSTANCE} will suffice.
+     */
+    public Joiner2Utils() {
+        // Empty.
     }
 
     /**
@@ -133,61 +148,39 @@ public final class Joiner2Utils {
     public static final String DEFAULT_VALUE_NULL_TEXT = "null";
 
     /**
-     * Constructs a new instance of {@link Joiner2}.
-     *
-     * @param separator
-     *        String to insert between elements during join.
-     *        Must not be {@code null}, but can be {@code ""} (empty string).
-     *        Example: {@code ", "} (comma + space)
-     *
-     * @return new instance
-     *
-     * @throws NullPointerException
-     *         if {@code separator} is {@code null}
-     *
-     * @see #withSeparator(char)
-     * @see Joiner2#withSeparator(String)
-     * @see Joiner2#withSeparator(char)
+     * {@inheritDoc}
      */
-    public static Joiner2 withSeparator(String separator) {
+    @Override
+    public Joiner2 withSeparator(String separator) {
         Joiner2FactoryImpl factory = new Joiner2FactoryImpl(separator);
         Joiner2 x = factory.newInstance();
         return x;
     }
 
     /**
-     * This is a convenience method to call {@link #withSeparator(String)}.
+     * {@inheritDoc}
      */
-    public static Joiner2 withSeparator(char separator) {
+    @Override
+    public Joiner2 withSeparator(char separator) {
         String separatorString = String.valueOf(separator);
         Joiner2 x = withSeparator(separatorString);
         return x;
     }
 
     /**
-     * Constructs a new instance of {@link Joiner2Factory}.  Unless an additional layer of
-     * indirection is required for mocking or testing, it is usually sufficient to call
-     * {@link #withSeparator(String)}.
-     *
-     * @param separator
-     *        String to insert between elements during join.
-     *        Must not be {@code null}, but can be {@code ""} (empty string).
-     *        Example: {@code ", "} (comma + space)
-     *
-     * @return new instance
-     *
-     * @throws NullPointerException
-     *         if {@code separator} is {@code null}
+     * {@inheritDoc}
      */
-    public static Joiner2Factory newQuotingJoinerFactory(String separator) {
+    @Override
+    public Joiner2Factory newQuotingJoinerFactory(String separator) {
         Joiner2FactoryImpl x = new Joiner2FactoryImpl(separator);
         return x;
     }
 
     /**
-     * This is a convenience method to call {@link #newQuotingJoinerFactory(String)}.
+     * {@inheritDoc}
      */
-    public static Joiner2Factory newQuotingJoinerFactory(char separator) {
+    @Override
+    public Joiner2Factory newQuotingJoinerFactory(char separator) {
         String separatorString = String.valueOf(separator);
         Joiner2Factory x = newQuotingJoinerFactory(separatorString);
         return x;

@@ -29,6 +29,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import org.mockito.Mockito;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -44,6 +45,13 @@ import java.util.Map;
  */
 public class MapJoiner2ImplTest {
 
+    private Joiner2Utils classUnderTest;
+
+    @BeforeMethod
+    public void beforeEachTestMethod() {
+        classUnderTest = new Joiner2Utils();
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // MapJoiner2Impl.withKeyValueSeparator(String)
     //
@@ -51,13 +59,13 @@ public class MapJoiner2ImplTest {
     @Test
     public void withKeyValueSeparatorString_Pass() {
         MapJoiner2 j =
-            Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withKeyValueSeparator("y");
+            classUnderTest.withSeparator(",").withKeyValueSeparator("x").withKeyValueSeparator("y");
         Assert.assertEquals(j.withKeyValueSeparator(), "y");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void withKeyValueSeparatorString_FailWithNull() {
-        Joiner2Utils.withSeparator("x").withKeyValueSeparator("y").withKeyValueSeparator((String) null);
+        classUnderTest.withSeparator("x").withKeyValueSeparator("y").withKeyValueSeparator((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,7 +75,7 @@ public class MapJoiner2ImplTest {
     @Test
     public void withKeyValueSeparatorChar_Pass() {
         MapJoiner2 j =
-            Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withKeyValueSeparator('y');
+            classUnderTest.withSeparator(",").withKeyValueSeparator("x").withKeyValueSeparator('y');
         Assert.assertEquals(j.withKeyValueSeparator(), "y");
     }
 
@@ -90,7 +98,7 @@ public class MapJoiner2ImplTest {
     public void withKeyQuotes_Pass(String leftQuote, String rightQuote) {
         // String, String
         MapJoiner2 x =
-            Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withKeyQuotes(leftQuote, rightQuote);
+            classUnderTest.withSeparator(",").withKeyValueSeparator("x").withKeyQuotes(leftQuote, rightQuote);
         Assert.assertEquals(x.withKeyLeftQuote(), leftQuote);
         Assert.assertEquals(x.withKeyRightQuote(), rightQuote);
 
@@ -98,8 +106,10 @@ public class MapJoiner2ImplTest {
         if (!rightQuote.isEmpty()) {
             char rightQuoteChar = rightQuote.charAt(0);
             String rightQuoteCharString = String.valueOf(rightQuoteChar);
-            x = Joiner2Utils.withSeparator(",")
-                .withKeyValueSeparator("x").withKeyQuotes(leftQuote, rightQuoteChar);
+            x =
+                classUnderTest.withSeparator(",")
+                    .withKeyValueSeparator("x")
+                    .withKeyQuotes(leftQuote, rightQuoteChar);
             Assert.assertEquals(x.withKeyLeftQuote(), leftQuote);
             Assert.assertEquals(x.withKeyRightQuote(), rightQuoteCharString);
         }
@@ -108,8 +118,10 @@ public class MapJoiner2ImplTest {
         if (!leftQuote.isEmpty()) {
             char leftQuoteChar = leftQuote.charAt(0);
             String leftQuoteCharString = String.valueOf(leftQuoteChar);
-            x = Joiner2Utils.withSeparator(",")
-                .withKeyValueSeparator("x").withKeyQuotes(leftQuoteChar, rightQuote);
+            x =
+                classUnderTest.withSeparator(",")
+                    .withKeyValueSeparator("x")
+                    .withKeyQuotes(leftQuoteChar, rightQuote);
             Assert.assertEquals(x.withKeyLeftQuote(), leftQuoteCharString);
             Assert.assertEquals(x.withKeyRightQuote(), rightQuote);
         }
@@ -120,8 +132,10 @@ public class MapJoiner2ImplTest {
             String leftQuoteCharString = String.valueOf(leftQuoteChar);
             char rightQuoteChar = rightQuote.charAt(0);
             String rightQuoteCharString = String.valueOf(rightQuoteChar);
-            x = Joiner2Utils.withSeparator(",")
-                .withKeyValueSeparator("x").withKeyQuotes(leftQuoteChar, rightQuoteChar);
+            x =
+                classUnderTest.withSeparator(",")
+                    .withKeyValueSeparator("x")
+                    .withKeyQuotes(leftQuoteChar, rightQuoteChar);
             Assert.assertEquals(x.withKeyLeftQuote(), leftQuoteCharString);
             Assert.assertEquals(x.withKeyRightQuote(), rightQuoteCharString);
         }
@@ -139,17 +153,17 @@ public class MapJoiner2ImplTest {
     @Test(expectedExceptions = NullPointerException.class,
         dataProvider = "_withKeyQuotes_FailWithNull_Data")
     public void withKeyQuotes_FailWithNull(String leftQuote, String rightQuote) {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withKeyQuotes(leftQuote, rightQuote);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("x").withKeyQuotes(leftQuote, rightQuote);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void withKeyQuotes2_FailWithNull() {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withKeyQuotes((String) null, 'a');
+        classUnderTest.withSeparator(",").withKeyValueSeparator("x").withKeyQuotes((String) null, 'a');
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void withKeyQuotes3_FailWithNull() {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withKeyQuotes('a', (String) null);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("x").withKeyQuotes('a', (String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -171,7 +185,7 @@ public class MapJoiner2ImplTest {
     public void withValueQuotes_Pass(String leftQuote, String rightQuote) {
         // String, String
         MapJoiner2 x =
-            Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withValueQuotes(leftQuote, rightQuote);
+            classUnderTest.withSeparator(",").withKeyValueSeparator("x").withValueQuotes(leftQuote, rightQuote);
         Assert.assertEquals(x.withValueLeftQuote(), leftQuote);
         Assert.assertEquals(x.withValueRightQuote(), rightQuote);
 
@@ -179,7 +193,7 @@ public class MapJoiner2ImplTest {
         if (!rightQuote.isEmpty()) {
             char rightQuoteChar = rightQuote.charAt(0);
             String rightQuoteCharString = String.valueOf(rightQuoteChar);
-            x = Joiner2Utils.withSeparator(",")
+            x = classUnderTest.withSeparator(",")
                 .withKeyValueSeparator("x").withValueQuotes(leftQuote, rightQuoteChar);
             Assert.assertEquals(x.withValueLeftQuote(), leftQuote);
             Assert.assertEquals(x.withValueRightQuote(), rightQuoteCharString);
@@ -189,7 +203,7 @@ public class MapJoiner2ImplTest {
         if (!leftQuote.isEmpty()) {
             char leftQuoteChar = leftQuote.charAt(0);
             String leftQuoteCharString = String.valueOf(leftQuoteChar);
-            x = Joiner2Utils.withSeparator(",")
+            x = classUnderTest.withSeparator(",")
                 .withKeyValueSeparator("x").withValueQuotes(leftQuoteChar, rightQuote);
             Assert.assertEquals(x.withValueLeftQuote(), leftQuoteCharString);
             Assert.assertEquals(x.withValueRightQuote(), rightQuote);
@@ -201,7 +215,7 @@ public class MapJoiner2ImplTest {
             String leftQuoteCharString = String.valueOf(leftQuoteChar);
             char rightQuoteChar = rightQuote.charAt(0);
             String rightQuoteCharString = String.valueOf(rightQuoteChar);
-            x = Joiner2Utils.withSeparator(",")
+            x = classUnderTest.withSeparator(",")
                 .withKeyValueSeparator("x").withValueQuotes(leftQuoteChar, rightQuoteChar);
             Assert.assertEquals(x.withValueLeftQuote(), leftQuoteCharString);
             Assert.assertEquals(x.withValueRightQuote(), rightQuoteCharString);
@@ -220,17 +234,17 @@ public class MapJoiner2ImplTest {
     @Test(expectedExceptions = NullPointerException.class,
         dataProvider = "_withValueQuotes_FailWithNull_Data")
     public void withValueQuotes_FailWithNull(String leftQuote, String rightQuote) {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withValueQuotes(leftQuote, rightQuote);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("x").withValueQuotes(leftQuote, rightQuote);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void withValueQuotes2_FailWithNull() {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withValueQuotes((String) null, 'a');
+        classUnderTest.withSeparator(",").withKeyValueSeparator("x").withValueQuotes((String) null, 'a');
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void withValueQuotes3_FailWithNull() {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withValueQuotes('a', (String) null);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("x").withValueQuotes('a', (String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -239,13 +253,13 @@ public class MapJoiner2ImplTest {
 
     @Test
     public void useForNullKeyString_Pass() {
-        MapJoiner2 x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").useForNullKey("y");
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("x").useForNullKey("y");
         Assert.assertEquals(x.useForNullKey(), "y");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void useForNullKeyString_FailWithNull() {
-        Joiner2Utils.withSeparator("x").withKeyValueSeparator("y").useForNullKey((String) null);
+        classUnderTest.withSeparator("x").withKeyValueSeparator("y").useForNullKey((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -254,7 +268,7 @@ public class MapJoiner2ImplTest {
 
     @Test
     public void useForNullKeyChar_Pass() {
-        MapJoiner2 x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").useForNullKey('y');
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("x").useForNullKey('y');
         Assert.assertEquals(x.useForNullKey(), "y");
     }
 
@@ -264,13 +278,13 @@ public class MapJoiner2ImplTest {
 
     @Test
     public void useForNullValueString_Pass() {
-        MapJoiner2 x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").useForNullValue("y");
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("x").useForNullValue("y");
         Assert.assertEquals(x.useForNullValue(), "y");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void useForNullValueString_FailWithNull() {
-        Joiner2Utils.withSeparator("x").withKeyValueSeparator("y").useForNullValue((String) null);
+        classUnderTest.withSeparator("x").withKeyValueSeparator("y").useForNullValue((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -279,7 +293,7 @@ public class MapJoiner2ImplTest {
 
     @Test
     public void useForNullValueChar_Pass() {
-        MapJoiner2 x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").useForNullValue('y');
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("x").useForNullValue('y');
         Assert.assertEquals(x.useForNullValue(), "y");
     }
 
@@ -385,7 +399,7 @@ public class MapJoiner2ImplTest {
         Assert.assertTrue(
             (null == optValueLeftQuote && null == optValueRightQuote)
             || (null != optValueLeftQuote && null != optValueRightQuote));
-        Joiner2 joiner = Joiner2Utils.withSeparator(separator);
+        Joiner2 joiner = classUnderTest.withSeparator(separator);
         MapJoiner2 mapJoiner = joiner.withKeyValueSeparator(keyValueSeparator);
         if (null != optLeftQuote && null != optRightQuote) {
             mapJoiner = mapJoiner.withQuotes(optLeftQuote, optRightQuote);
@@ -461,7 +475,7 @@ public class MapJoiner2ImplTest {
     public void appendMapToAppendable_FailWhenAppendableThrowsIOException()
     throws IOException {
         Appendable mockAppendable = _newMockAppendableThrowsIOException();
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=")
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=")
             .appendTo(mockAppendable, ImmutableMap.of("a", "1"));
     }
 
@@ -469,7 +483,7 @@ public class MapJoiner2ImplTest {
     public void appendIterableToAppendable_FailWhenAppendableThrowsIOException()
     throws IOException {
         Appendable mockAppendable = _newMockAppendableThrowsIOException();
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=")
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=")
             .appendTo(mockAppendable, ImmutableMap.of("a", "1").entrySet());
     }
 
@@ -477,7 +491,7 @@ public class MapJoiner2ImplTest {
     public void appendIteratorToAppendable_FailWhenAppendableThrowsIOException()
     throws IOException {
         Appendable mockAppendable = _newMockAppendableThrowsIOException();
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=")
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=")
             .appendTo(mockAppendable, ImmutableMap.of("a", "1").entrySet().iterator());
     }
 
@@ -496,7 +510,7 @@ public class MapJoiner2ImplTest {
     public <TAppendable extends Appendable>
     void appendMapToAppendable_FailWithNull(TAppendable appendable, Map<?, ?> map)
     throws IOException {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").appendTo(appendable, map);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=").appendTo(appendable, map);
     }
 
     @DataProvider
@@ -516,7 +530,7 @@ public class MapJoiner2ImplTest {
     void appendIterableToAppendable_FailWithNull(
             TAppendable appendable, Iterable<? extends Map.Entry<?, ?>> partIter)
     throws IOException {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").appendTo(appendable, partIter);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=").appendTo(appendable, partIter);
     }
 
     @DataProvider
@@ -536,7 +550,7 @@ public class MapJoiner2ImplTest {
     void appendIteratorToAppendable_FailWithNull(
             TAppendable appendable, Iterator<? extends Map.Entry<?, ?>> partIter)
     throws IOException {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").appendTo(appendable, partIter);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=").appendTo(appendable, partIter);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
@@ -545,7 +559,7 @@ public class MapJoiner2ImplTest {
         Appendable mockAppendable = Mockito.mock(Appendable.class);
         Iterator<? extends Map.Entry<?, ?>> partIter =
             Iterators.forArray(new Map.Entry<?, ?>[] { null });
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").appendTo(mockAppendable, partIter);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=").appendTo(mockAppendable, partIter);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -564,7 +578,7 @@ public class MapJoiner2ImplTest {
     @Test(expectedExceptions = NullPointerException.class,
             dataProvider = "_appendMapToStringBuilder_FailWithNull_Data")
     public void appendMapToStringBuilder_FailWithNull(StringBuilder sb, Map<?, ?> map) {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").appendTo(sb, map);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=").appendTo(sb, map);
     }
 
     @DataProvider
@@ -581,7 +595,7 @@ public class MapJoiner2ImplTest {
         dataProvider = "_appendIterableToStringBuilder_FailWithNull_Data")
     public void appendIterableToStringBuilder_FailWithNull(
             StringBuilder sb, Iterable<? extends Map.Entry<?, ?>> partIter) {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").appendTo(sb, partIter);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=").appendTo(sb, partIter);
     }
 
     @DataProvider
@@ -598,7 +612,7 @@ public class MapJoiner2ImplTest {
         dataProvider = "_appendIteratorToStringBuilder_FailWithNull_Data")
     public void appendIteratorToStringBuilder_FailWithNull(
             StringBuilder sb, Iterator<? extends Map.Entry<?, ?>> partIter) {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").appendTo(sb, partIter);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=").appendTo(sb, partIter);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -607,18 +621,18 @@ public class MapJoiner2ImplTest {
 
     @Test(expectedExceptions = NullPointerException.class)
     public void joinMap_FailWithNull() {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").join((Map<?, ?>) null);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=").join((Map<?, ?>) null);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void joinIterable_FailWithNull() {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=")
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=")
             .join((Iterable<? extends Map.Entry<?, ?>>) null);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void joinIterator_FailWithNull() {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=")
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=")
             .join((Iterator<? extends Map.Entry<?, ?>>) null);
     }
 
@@ -628,14 +642,14 @@ public class MapJoiner2ImplTest {
 
     @Test
     public void withSeparatorString_Pass() {
-        MapJoiner2 x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("=");
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("=");
         x = x.withSeparator("x");
         Assert.assertEquals(x.withSeparator(), "x");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void withSeparator_FailWithNull() {
-        Joiner2Utils.withSeparator("x").withKeyValueSeparator("=").withSeparator((String) null);
+        classUnderTest.withSeparator("x").withKeyValueSeparator("=").withSeparator((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -644,7 +658,7 @@ public class MapJoiner2ImplTest {
 
     @Test
     public void withSeparatorChar_Pass() {
-        MapJoiner2 x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("=");
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("=");
         x = x.withSeparator('x');
         Assert.assertEquals(x.withSeparator(), "x");
     }
@@ -668,7 +682,7 @@ public class MapJoiner2ImplTest {
     public void withQuotes_Pass(String leftQuote, String rightQuote) {
         // String, String
         MapJoiner2 x =
-            Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").withQuotes(leftQuote, rightQuote);
+            classUnderTest.withSeparator(",").withKeyValueSeparator("=").withQuotes(leftQuote, rightQuote);
         Assert.assertEquals(x.withLeftQuote(), leftQuote);
         Assert.assertEquals(x.withRightQuote(), rightQuote);
 
@@ -676,7 +690,7 @@ public class MapJoiner2ImplTest {
         if (!rightQuote.isEmpty()) {
             char rightQuoteChar = rightQuote.charAt(0);
             String rightQuoteCharString = String.valueOf(rightQuoteChar);
-            x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").withQuotes(leftQuote, rightQuoteChar);
+            x = classUnderTest.withSeparator(",").withKeyValueSeparator("=").withQuotes(leftQuote, rightQuoteChar);
             Assert.assertEquals(x.withLeftQuote(), leftQuote);
             Assert.assertEquals(x.withRightQuote(), rightQuoteCharString);
         }
@@ -685,7 +699,7 @@ public class MapJoiner2ImplTest {
         if (!leftQuote.isEmpty()) {
             char leftQuoteChar = leftQuote.charAt(0);
             String leftQuoteCharString = String.valueOf(leftQuoteChar);
-            x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").withQuotes(leftQuoteChar, rightQuote);
+            x = classUnderTest.withSeparator(",").withKeyValueSeparator("=").withQuotes(leftQuoteChar, rightQuote);
             Assert.assertEquals(x.withLeftQuote(), leftQuoteCharString);
             Assert.assertEquals(x.withRightQuote(), rightQuote);
         }
@@ -696,7 +710,7 @@ public class MapJoiner2ImplTest {
             String leftQuoteCharString = String.valueOf(leftQuoteChar);
             char rightQuoteChar = rightQuote.charAt(0);
             String rightQuoteCharString = String.valueOf(rightQuoteChar);
-            x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").withQuotes(leftQuoteChar, rightQuoteChar);
+            x = classUnderTest.withSeparator(",").withKeyValueSeparator("=").withQuotes(leftQuoteChar, rightQuoteChar);
             Assert.assertEquals(x.withLeftQuote(), leftQuoteCharString);
             Assert.assertEquals(x.withRightQuote(), rightQuoteCharString);
         }
@@ -714,7 +728,7 @@ public class MapJoiner2ImplTest {
     @Test(expectedExceptions = NullPointerException.class,
         dataProvider = "_withQuotes_FailWithNull_Data")
     public void withQuotes_FailWithNull(String leftQuote, String rightQuote) {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").withQuotes(leftQuote, rightQuote);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=").withQuotes(leftQuote, rightQuote);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -723,14 +737,14 @@ public class MapJoiner2ImplTest {
 
     @Test
     public void useForNoElementsString_Pass() {
-        MapJoiner2 x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("=");
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("=");
         x = x.useForNoElements("x");
         Assert.assertEquals(x.useForNoElements(), "x");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void useForNoElements_FailWithNull() {
-        Joiner2Utils.withSeparator("x").withKeyValueSeparator("=").useForNoElements((String) null);
+        classUnderTest.withSeparator("x").withKeyValueSeparator("=").useForNoElements((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -739,7 +753,7 @@ public class MapJoiner2ImplTest {
 
     @Test
     public void useForNoElementsChar_Pass() {
-        MapJoiner2 x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("=");
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("=");
         x = x.useForNoElements('x');
         Assert.assertEquals(x.useForNoElements(), "x");
     }
