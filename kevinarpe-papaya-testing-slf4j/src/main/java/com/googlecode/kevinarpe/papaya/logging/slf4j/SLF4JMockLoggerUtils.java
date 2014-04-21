@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.testing.log4j;
+package com.googlecode.kevinarpe.papaya.logging.slf4j;
 
 /*
  * #%L
@@ -26,27 +26,23 @@ package com.googlecode.kevinarpe.papaya.testing.log4j;
  */
 
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
-import com.googlecode.kevinarpe.papaya.testing.logging.LoggingEventAnalyzerFactory;
-import com.googlecode.kevinarpe.papaya.testing.logging.LoggingEventAnalyzerImpl;
-import org.apache.log4j.spi.LoggingEvent;
-
-import java.util.List;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public final class Log4JLoggingEventAnalyzerFactoryImpl
+public class SLF4JMockLoggerUtils
 extends StatelessObject
-implements LoggingEventAnalyzerFactory<LoggingEvent, Log4JLoggingEventAttribute> {
+implements ISLF4JMockLoggerUtils {
 
-    public static final Log4JLoggingEventAnalyzerFactoryImpl INSTANCE =
-        new Log4JLoggingEventAnalyzerFactoryImpl();
+    public static final SLF4JMockLoggerUtils INSTANCE = new SLF4JMockLoggerUtils();
+
+    public SLF4JMockLoggerUtils() {
+        // Empty.
+    }
 
     @Override
-    public LoggingEventAnalyzerImpl<LoggingEvent, Log4JLoggingEventAttribute>
-    newInstance(List<LoggingEvent> loggingEventList) {
-        LoggingEventAnalyzerImpl<LoggingEvent, Log4JLoggingEventAttribute> x =
-            new LoggingEventAnalyzerImpl<LoggingEvent, Log4JLoggingEventAttribute>(loggingEventList);
+    public SLF4JMockLoggerFactory newFactoryInstance() {
+        SLF4JMockLoggerFactoryImpl x = new SLF4JMockLoggerFactoryImpl();
         return x;
     }
 }

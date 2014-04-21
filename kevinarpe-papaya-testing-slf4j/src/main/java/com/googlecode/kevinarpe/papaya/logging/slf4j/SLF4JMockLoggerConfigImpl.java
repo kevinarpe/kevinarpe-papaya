@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
+package com.googlecode.kevinarpe.papaya.logging.slf4j;
 
 /*
  * #%L
@@ -30,8 +30,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JMarkerNone;
 import org.slf4j.Marker;
 
 import java.util.HashMap;
@@ -41,7 +39,7 @@ import java.util.Map;
 * @author Kevin Connor ARPE (kevinarpe@gmail.com)
 */
 @FullyTested
-public final class SLF4JMockLoggerConfigImpl
+final class SLF4JMockLoggerConfigImpl
 implements SLF4JMockLoggerConfig {
 
     public static final Marker DEFAULT_MARKER = SLF4JMarkerNone.INSTANCE;

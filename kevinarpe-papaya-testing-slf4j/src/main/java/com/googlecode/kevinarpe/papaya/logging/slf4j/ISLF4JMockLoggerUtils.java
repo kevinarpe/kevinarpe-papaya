@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
+package com.googlecode.kevinarpe.papaya.logging.slf4j;
 
 /*
  * #%L
@@ -25,16 +25,10 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEvent;
-import org.slf4j.Logger;
-
-import java.util.List;
-
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public interface SLF4JMockLogger
-extends Logger, SLF4JMockLoggerConfigurable {
+public interface ISLF4JMockLoggerUtils {
 
-    List<SLF4JLoggingEvent> getLoggingEventList();
+    SLF4JMockLoggerFactory newFactoryInstance();
 }

@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
+package com.googlecode.kevinarpe.papaya.logging.slf4j;
 
 /*
  * #%L
@@ -37,7 +37,7 @@ import java.util.Map;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @FullyTested
-public final class SLF4JMockLoggerFactoryImpl
+final class SLF4JMockLoggerFactoryImpl
 implements SLF4JMockLoggerFactory {
 
     private final SLF4JMockLoggerConfigImpl _config;

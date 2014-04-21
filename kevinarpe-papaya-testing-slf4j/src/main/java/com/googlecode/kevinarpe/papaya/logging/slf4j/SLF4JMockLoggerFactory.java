@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
+package com.googlecode.kevinarpe.papaya.logging.slf4j;
 
 /*
  * #%L
@@ -32,4 +32,7 @@ import org.slf4j.ILoggerFactory;
  */
 public interface SLF4JMockLoggerFactory
 extends ILoggerFactory, SLF4JMockLoggerConfigurable {
+
+    @Override
+    SLF4JMockLogger getLogger(String name);
 }

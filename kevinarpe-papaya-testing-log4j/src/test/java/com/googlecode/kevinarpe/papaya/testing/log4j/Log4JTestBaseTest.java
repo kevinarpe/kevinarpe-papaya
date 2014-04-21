@@ -25,43 +25,22 @@ package com.googlecode.kevinarpe.papaya.testing.log4j;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.testing.logging.LoggingEventAnalyzer;
-import com.googlecode.kevinarpe.papaya.testing.logging.LoggingEventAnalyzerFactory;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertSame;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public class Log4JTestBaseTest
 extends Log4JTestBase {
-
-    private LoggingEventAnalyzerFactory<LoggingEvent, Log4JLoggingEventAttribute> mockFactory;
-    private LoggingEventAnalyzer<LoggingEvent, Log4JLoggingEventAttribute> mockAnalyzer;
-
-    @BeforeMethod
-    public void beforeEachTestMethod() {
-        @SuppressWarnings("unchecked")
-        LoggingEventAnalyzerFactory<LoggingEvent, Log4JLoggingEventAttribute> x =
-            mock(LoggingEventAnalyzerFactory.class);
-        mockFactory = x;
-
-        @SuppressWarnings("unchecked")
-        LoggingEventAnalyzer<LoggingEvent, Log4JLoggingEventAttribute> y =
-            mock(LoggingEventAnalyzer.class);
-        mockAnalyzer = y;
-    }
 
     private static class TestClass {
 
@@ -117,17 +96,5 @@ extends Log4JTestBase {
         new TestClass(Level.DEBUG, "dummy");
         List<LoggingEvent> loggingEventList = super.getLoggingEventList();
         assertEquals(loggingEventList.size(), 0);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Log4JTestBase.newLoggingEventAnalyzer()
-    //
-
-    @Test
-    public void newLoggingEventAnalyzer_Pass() {
-        Log4JTestBase classUnderTest = new Log4JTestBase(mockFactory);
-        List<LoggingEvent> loggingEventList = classUnderTest.getLoggingEventList();
-        when(mockFactory.newInstance(loggingEventList)).thenReturn(mockAnalyzer);
-        assertSame(classUnderTest.newLoggingEventAnalyzer(), mockAnalyzer);
     }
 }

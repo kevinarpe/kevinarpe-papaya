@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
+package com.googlecode.kevinarpe.papaya.logging.slf4j;
 
 /*
  * #%L
@@ -28,7 +28,7 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public interface SLF4JMockLoggerConfigurable {
+interface SLF4JMockLoggerConfigurable {
 
     SLF4JMockLoggerConfig getConfig();
 }

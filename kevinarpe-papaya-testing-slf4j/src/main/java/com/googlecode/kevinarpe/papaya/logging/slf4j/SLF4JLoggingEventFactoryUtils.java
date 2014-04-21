@@ -36,7 +36,7 @@ import org.slf4j.Marker;
 // TODO: What to do before next release?  Start to tighten up.
 // TODO: Write tests for testing-slf4j
 @FullyTested
-public final class SLF4JLoggingEventFactoryUtils
+class SLF4JLoggingEventFactoryUtils
 extends StatelessObject
 implements ISLF4JLoggingEventFactoryUtils {
 

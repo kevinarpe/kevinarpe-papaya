@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
+package com.googlecode.kevinarpe.papaya.logging.slf4j;
 
 /*
  * #%L
@@ -30,14 +30,6 @@ import com.google.common.collect.Lists;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.ISLF4JLoggingEventFactoryUtils;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEvent;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventFactory;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventFactoryImpl;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventFactoryUtils;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JMarkerNone;
-import com.googlecode.kevinarpe.papaya.testing.logging.LoggingEventAnalyzerImpl;
 import org.slf4j.Marker;
 
 import java.util.Collections;
@@ -47,7 +39,7 @@ import java.util.List;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @FullyTested
-public final class SLF4JMockLoggerImpl
+final class SLF4JMockLoggerImpl
 implements SLF4JMockLogger {
 
     private final String _name;
@@ -88,7 +80,7 @@ implements SLF4JMockLogger {
     }
 
     /**
-     * @see LoggingEventAnalyzerImpl
+     * {@inheritDoc}
      */
     @Override
     public List<SLF4JLoggingEvent> getLoggingEventList() {

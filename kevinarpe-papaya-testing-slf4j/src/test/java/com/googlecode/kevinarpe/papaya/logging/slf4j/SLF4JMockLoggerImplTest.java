@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
+package com.googlecode.kevinarpe.papaya.logging.slf4j;
 
 /*
  * #%L
@@ -26,11 +26,6 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
  */
 
 import com.google.common.testing.EqualsTester;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.ISLF4JLoggingEventFactoryUtils;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEvent;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventFactory;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JMarkerNone;
 import org.slf4j.Marker;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;

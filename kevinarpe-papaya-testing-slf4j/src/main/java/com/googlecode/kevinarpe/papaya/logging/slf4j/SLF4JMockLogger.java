@@ -25,17 +25,19 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.testing.logging.LoggingEventAnalyzerImpl;
-
-import java.util.List;
+import com.googlecode.kevinarpe.papaya.testing.logging.CapturingLogger;
+import org.slf4j.Logger;
 
 /**
+ * Purpose-build SLF4J logger for testing.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see Logger
+ * @see CapturingLogger
+ * @see SLF4JMockLoggerUtils
  */
-public final class SLF4JLoggingEventAnalyzerImpl
-extends LoggingEventAnalyzerImpl<SLF4JLoggingEvent, SLF4JLoggingEventAttribute> {
-
-    public SLF4JLoggingEventAnalyzerImpl(List<SLF4JLoggingEvent> loggingEventList) {
-        super(loggingEventList);
-    }
+public interface SLF4JMockLogger
+extends Logger, SLF4JMockLoggerConfigurable, CapturingLogger<SLF4JLoggingEvent> {
+    // Empty.
 }

@@ -28,14 +28,37 @@ package com.googlecode.kevinarpe.papaya.testing.logging;
 import java.util.List;
 
 /**
+ * Provides access to logging events.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public interface LoggingEventAnalyzerFactory
-    <
-        TLoggingEvent,
-        TLoggingEventAttribute extends ILoggingEventAttribute<TLoggingEvent>
-    >
-{
-    LoggingEventAnalyzer<TLoggingEvent, TLoggingEventAttribute>
-    newInstance(List<TLoggingEvent> loggingEventList);
+public interface CapturingLogger<TLoggingEvent> {
+
+    /**
+     * Retrieves a list of logging events.
+     *
+     * To perform analysis (for testing), try these strategies:
+     * <pre>{@code
+     * List&lt;LoggingEvent> filteredLoggingEventList =
+     *     Collections2.filter(
+     *         getLoggingEventList(),
+     *         new AnyLoggingEventAttributeValuePredicate&lt;LoggingEvent>(
+     *             Log4JLoggingEventAttribute.LEVEL,
+     *             Level.DEBUG, Level.TRACE));
+     * }</pre>
+     *
+     * Or:
+     * <pre>{@code
+     * List&lt;LoggingEvent> filteredLoggingEventList =
+     *     Collections2.filter(
+     *         getLoggingEventList(),
+     *         Predicates.not(
+     *             new AnyLoggingEventAttributeValuePredicate&lt;LoggingEvent>(
+     *                 Log4JLoggingEventAttribute.LEVEL,
+     *                 Level.ERROR, Level.FATAL));
+     * }</pre>
+     *
+     * @return list of logging events
+     */
+    public List<TLoggingEvent> getLoggingEventList();
 }

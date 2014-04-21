@@ -27,9 +27,7 @@ package com.googlecode.kevinarpe.papaya.testing.log4j;
 
 import com.google.common.collect.ImmutableList;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.testing.logging.LoggingEventAnalyzer;
-import com.googlecode.kevinarpe.papaya.testing.logging.LoggingEventAnalyzerFactory;
+import com.googlecode.kevinarpe.papaya.testing.logging.CapturingLogger;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
@@ -48,20 +46,12 @@ import static org.mockito.Mockito.verify;
  *      >http://slackhacker.com/2009/12/08/testing-logging-behaviour-in-four-code-lines-flat/</a>
  */
 @FullyTested
-public class Log4JTestBase {
-
-    private final LoggingEventAnalyzerFactory<LoggingEvent, Log4JLoggingEventAttribute>
-        _loggingEventAnalyzerFactory;
+public class Log4JTestBase
+implements CapturingLogger<LoggingEvent> {
 
     private final Appender _mockAppender;
 
     protected Log4JTestBase() {
-        this(Log4JLoggingEventAnalyzerFactoryImpl.INSTANCE);
-    }
-
-    protected Log4JTestBase(
-            LoggingEventAnalyzerFactory<LoggingEvent, Log4JLoggingEventAttribute> factory) {
-        _loggingEventAnalyzerFactory = ObjectArgs.checkNotNull(factory, "factory");
         _mockAppender = mock(Appender.class);
     }
 
@@ -76,8 +66,9 @@ public class Log4JTestBase {
     }
 
     /**
-     * @see #newLoggingEventAnalyzer()
+     * {@inheritDoc}
      */
+    @Override
     public final List<LoggingEvent> getLoggingEventList() {
         ArgumentCaptor<LoggingEvent> argumentCaptor = ArgumentCaptor.forClass(LoggingEvent.class);
         List<LoggingEvent> loggingEventList = null;
@@ -89,13 +80,5 @@ public class Log4JTestBase {
             loggingEventList = ImmutableList.of();
         }
         return loggingEventList;
-    }
-
-    public final LoggingEventAnalyzer<LoggingEvent, Log4JLoggingEventAttribute>
-    newLoggingEventAnalyzer() {
-        List<LoggingEvent> loggingEventList = getLoggingEventList();
-        LoggingEventAnalyzer<LoggingEvent, Log4JLoggingEventAttribute> x =
-            _loggingEventAnalyzerFactory.newInstance(loggingEventList);
-        return x;
     }
 }

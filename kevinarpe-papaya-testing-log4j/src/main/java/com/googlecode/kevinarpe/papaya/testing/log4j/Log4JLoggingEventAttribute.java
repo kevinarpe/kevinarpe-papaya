@@ -34,12 +34,20 @@ import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.ThrowableInformation;
 
 /**
+ * Attributes for a Log4J logging event.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see ILoggingEventAttribute
+ * @see LoggingEvent
  */
 @FullyTested
 public enum Log4JLoggingEventAttribute
 implements ILoggingEventAttribute<LoggingEvent> {
 
+    /**
+     * Corresponds to {@link LoggingEvent#getLogger()}
+     */
     LOGGER(Logger.class) {
         @Override
         public Logger getValue(LoggingEvent loggingEvent) {
@@ -49,6 +57,10 @@ implements ILoggingEventAttribute<LoggingEvent> {
             return x;
         }
     },
+
+    /**
+     * Corresponds to {@link LoggingEvent#getLevel()}
+     */
     LEVEL(Level.class) {
         @Override
         public Level getValue(LoggingEvent loggingEvent) {
@@ -58,6 +70,10 @@ implements ILoggingEventAttribute<LoggingEvent> {
             return x;
         }
     },
+
+    /**
+     * Corresponds to {@link LoggingEvent#getMessage()}
+     */
     MESSAGE(String.class) {
         @Override
         public Object getValue(LoggingEvent loggingEvent) {
@@ -67,6 +83,11 @@ implements ILoggingEventAttribute<LoggingEvent> {
             return x;
         }
     },
+
+    /**
+     * Corresponds to {@link LoggingEvent#getThrowableInformation()}, followed by
+     * {@link ThrowableInformation#getThrowable()}
+     */
     THROWABLE(Throwable.class) {
         @Override
         public Throwable getValue(LoggingEvent loggingEvent) {
@@ -77,6 +98,10 @@ implements ILoggingEventAttribute<LoggingEvent> {
             return x;
         }
     },
+
+    /**
+     * Corresponds to {@link LoggingEvent#getThreadName()}
+     */
     THREAD_NAME(String.class) {
         @Override
         public String getValue(LoggingEvent loggingEvent) {
@@ -86,6 +111,10 @@ implements ILoggingEventAttribute<LoggingEvent> {
             return x;
         }
     },
+
+    /**
+     * Corresponds to {@link LoggingEvent#getTimeStamp()}
+     */
     TIME_STAMP(Long.class) {
         @Override
         public Long getValue(LoggingEvent loggingEvent) {

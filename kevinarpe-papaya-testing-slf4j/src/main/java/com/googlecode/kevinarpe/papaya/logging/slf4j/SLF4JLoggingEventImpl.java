@@ -42,7 +42,7 @@ import java.util.Arrays;
  */
 // TODO: Needs to be public?
 @FullyTested
-public final class SLF4JLoggingEventImpl
+final class SLF4JLoggingEventImpl
 implements SLF4JLoggingEvent {
 
     private static final Object[] EMPTY_FORMAT_ARG_ARR = new Object[0];

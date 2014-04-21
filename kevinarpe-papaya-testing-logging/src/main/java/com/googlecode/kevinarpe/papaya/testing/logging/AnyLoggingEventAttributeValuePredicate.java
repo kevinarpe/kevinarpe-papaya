@@ -36,8 +36,13 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
-* @author Kevin Connor ARPE (kevinarpe@gmail.com)
-*/
+ * Predicate to match logging events by attribute and allowed values.  Specifically designed for
+ * use with {@link CapturingLogger}.
+ *
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see CapturingLogger
+ */
 @FullyTested
 public final class AnyLoggingEventAttributeValuePredicate<TLoggingEvent>
 implements Predicate<TLoggingEvent> {
@@ -45,30 +50,74 @@ implements Predicate<TLoggingEvent> {
     private final ILoggingEventAttribute<TLoggingEvent> _attribute;
     private final Set<Object> _valueSet;
 
-    public <TAttributeValue> AnyLoggingEventAttributeValuePredicate(
+    /**
+     * Creates a new predicate from a logging event attribute and a series of allowed values.
+     *
+     * @param attribute
+     *        logging event attribute
+     * @param value
+     *        any value to match.  May be {@code null}
+     * @param moreValueArr
+     *        more values to match.  May contain {@code null}
+     *
+     * @throws NullPointerException
+     *         if {@code attribute} or {@code moreValueArr} is {@code null}
+     */
+    public AnyLoggingEventAttributeValuePredicate(
             ILoggingEventAttribute<TLoggingEvent> attribute,
-            TAttributeValue value,
-            TAttributeValue... moreValueArr) {
+            Object value,
+            Object... moreValueArr) {
         _attribute = ObjectArgs.checkNotNull(attribute, "attribute");
         _valueSet =
             Sets.<Object>newHashSet(
                 Lists2.newUnmodifiableListFromOneOrMoreValues(value, moreValueArr));
     }
 
+    /**
+     * Creates a new predicate from a logging event attribute and a set of allowed values.
+     *
+     * @param attribute
+     *        logging event attribute
+     * @param valueSet
+     *        values to match.  May contain {@code null}
+     *
+     * @throws NullPointerException
+     *         if {@code attribute} or {@code valueSet} is {@code null}
+     */
     public AnyLoggingEventAttributeValuePredicate(
             ILoggingEventAttribute<TLoggingEvent> attribute, Set<?> valueSet) {
         _attribute = ObjectArgs.checkNotNull(attribute, "attribute");
         _valueSet = Sets.<Object>newHashSet(CollectionArgs.checkNotEmpty(valueSet, "valueSet"));
     }
 
+    /**
+     * @return logging event attribute to perform the matching
+     */
     public ILoggingEventAttribute getAttribute() {
         return _attribute;
     }
 
+    /**
+     * @return unmodifiable set of allowed values
+     *
+     * @see Collections#unmodifiableSet(Set)
+     */
     public Set<Object> getValueSet() {
         return Collections.unmodifiableSet(_valueSet);
     }
 
+    /**
+     * Given a logging event, retrieve an attribute value and compare to allowed values.
+     * <hr/>
+     * Inherited docs:
+     * <br/>
+     * {@inheritDoc}
+     *
+     * @throws NullPointerException
+     *         if {@code loggingEvent} is {@code null}
+     *
+     * @see ILoggingEventAttribute#getValue(Object)
+     */
     @Override
     public boolean apply(TLoggingEvent loggingEvent) {
         ObjectArgs.checkNotNull(loggingEvent, "loggingEvent");

@@ -26,11 +26,27 @@ package com.googlecode.kevinarpe.papaya.testing.logging;
  */
 
 /**
+ * Attribute for a logging event, e.g., thread name, time stamp, or logger.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public interface ILoggingEventAttribute<TLoggingEvent> {
 
+    /**
+     * Retrieves the attribute value for a logging event.
+     *
+     * @param loggingEvent
+     *        object to retrieve an attribute value, e.g., thread name, time stamp, or logger
+     *
+     * @return logging event attribute value
+     *
+     * @throws NullPointerException
+     *         if {@code loggingEvent} is {@code null}
+     */
     Object getValue(TLoggingEvent loggingEvent);
 
+    /**
+     * @return type for this logging event attribute
+     */
     Class<?> getValueClass();
 }

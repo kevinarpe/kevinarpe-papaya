@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
+package com.googlecode.kevinarpe.papaya.logging.slf4j;
 
 /*
  * #%L
@@ -26,7 +26,6 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j.mock;
  */
 
 import com.google.common.testing.EqualsTester;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;

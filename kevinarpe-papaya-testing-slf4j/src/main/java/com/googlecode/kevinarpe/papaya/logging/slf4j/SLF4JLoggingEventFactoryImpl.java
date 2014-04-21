@@ -34,7 +34,7 @@ import org.slf4j.Marker;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @FullyTested
-public final class SLF4JLoggingEventFactoryImpl
+final class SLF4JLoggingEventFactoryImpl
 extends StatelessObject
 implements SLF4JLoggingEventFactory {
 

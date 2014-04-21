@@ -31,12 +31,20 @@ import org.slf4j.Logger;
 import org.slf4j.Marker;
 
 /**
+ * Attributes for a SLF4J logging event.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see ISLF4JLoggingEventAttribute
+ * @see SLF4JLoggingEvent
  */
 @FullyTested
 public enum SLF4JLoggingEventAttribute
 implements ISLF4JLoggingEventAttribute {
 
+    /**
+     * Corresponds to {@link SLF4JLoggingEvent#getLogger()}
+     */
     LOGGER(Logger.class) {
         @Override
         public Logger getValue(SLF4JLoggingEvent loggingEvent) {
@@ -46,6 +54,10 @@ implements ISLF4JLoggingEventAttribute {
             return x;
         }
     },
+
+    /**
+     * Corresponds to {@link SLF4JLoggingEvent#getLevel()}
+     */
     LEVEL(SLF4JLogLevel.class) {
         @Override
         public SLF4JLogLevel getValue(SLF4JLoggingEvent loggingEvent) {
@@ -55,6 +67,10 @@ implements ISLF4JLoggingEventAttribute {
             return x;
         }
     },
+
+    /**
+     * Corresponds to {@link SLF4JLoggingEvent#getMarker()}
+     */
     MARKER(Marker.class) {
         @Override
         public Marker getValue(SLF4JLoggingEvent loggingEvent) {
@@ -64,6 +80,10 @@ implements ISLF4JLoggingEventAttribute {
             return x;
         }
     },
+
+    /**
+     * Corresponds to {@link SLF4JLoggingEvent#getMessage()}
+     */
     MESSAGE(String.class) {
         @Override
         public String getValue(SLF4JLoggingEvent loggingEvent) {
@@ -73,6 +93,10 @@ implements ISLF4JLoggingEventAttribute {
             return x;
         }
     },
+
+    /**
+     * Corresponds to {@link SLF4JLoggingEvent#getMessageFormatArgArr()}
+     */
     MESSAGE_FORMAT_ARG_ARR(Object[].class) {
         @Override
         public Object[] getValue(SLF4JLoggingEvent loggingEvent) {
@@ -82,6 +106,10 @@ implements ISLF4JLoggingEventAttribute {
             return x;
         }
     },
+
+    /**
+     * Corresponds to {@link SLF4JLoggingEvent#getThrowable()}
+     */
     THROWABLE(Throwable.class) {
         @Override
         public Throwable getValue(SLF4JLoggingEvent loggingEvent) {
@@ -91,6 +119,10 @@ implements ISLF4JLoggingEventAttribute {
             return x;
         }
     },
+
+    /**
+     * Corresponds to {@link SLF4JLoggingEvent#getThreadName()}
+     */
     THREAD_NAME(String.class) {
         @Override
         public String getValue(SLF4JLoggingEvent loggingEvent) {
@@ -100,6 +132,10 @@ implements ISLF4JLoggingEventAttribute {
             return x;
         }
     },
+
+    /**
+     * Corresponds to {@link SLF4JLoggingEvent#getTimeStamp()}
+     */
     TIME_STAMP(Long.class) {
         @Override
         public Long getValue(SLF4JLoggingEvent loggingEvent) {
@@ -109,6 +145,10 @@ implements ISLF4JLoggingEventAttribute {
             return x;
         }
     },
+
+    /**
+     * Corresponds to {@link SLF4JLoggingEvent#getFormattedMessage()}
+     */
     FORMATTED_MESSAGE(String.class) {
         @Override
         public String getValue(SLF4JLoggingEvent loggingEvent) {
