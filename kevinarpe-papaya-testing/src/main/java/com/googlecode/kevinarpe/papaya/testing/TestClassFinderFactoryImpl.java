@@ -32,7 +32,7 @@ import com.googlecode.kevinarpe.papaya.object.StatelessObject;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @FullyTested
-class TestClassFinderFactoryImpl
+final class TestClassFinderFactoryImpl
 extends StatelessObject
 implements TestClassFinderFactory {
 

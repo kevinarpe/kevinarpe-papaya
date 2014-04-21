@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class Log4JLoggingEventAnalyzerFactoryImpl
+public final class Log4JLoggingEventAnalyzerFactoryImpl
 extends StatelessObject
 implements LoggingEventAnalyzerFactory<LoggingEvent, Log4JLoggingEventAttribute> {
 

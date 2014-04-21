@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  * #L%
  */
 
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -34,6 +35,13 @@ import static org.testng.Assert.assertSame;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public class SLF4JLevelLoggerUtilsTest {
+
+    private SLF4JLevelLoggerUtils classUnderTest;
+
+    @BeforeMethod
+    public void beforeEachTestMethod() {
+        classUnderTest = new SLF4JLevelLoggerUtils();
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // SLF4JLevelLoggerUtils.newInstance(SLF4JLogLevel logLevel, Class<?> clazz)
@@ -51,7 +59,7 @@ public class SLF4JLevelLoggerUtilsTest {
 
     private void _newInstance_Pass(
             SLF4JLogLevel logLevel, Class<? extends SLF4JLevelLogger> clazz) {
-        SLF4JLevelLogger x = SLF4JLevelLoggerUtils.newInstance(logLevel, SLF4JLevelLoggerUtilsTest.class);
+        SLF4JLevelLogger x = classUnderTest.newInstance(logLevel, SLF4JLevelLoggerUtilsTest.class);
         assertSame(x.getClass(), clazz);
     }
 
@@ -67,6 +75,6 @@ public class SLF4JLevelLoggerUtilsTest {
     @Test(dataProvider = "_newInstance_Fail_Data",
             expectedExceptions = NullPointerException.class)
     public void newInstance_Fail(SLF4JLogLevel logLevel, Class<?> clazz) {
-        SLF4JLevelLoggerUtils.newInstance(logLevel, clazz);
+        classUnderTest.newInstance(logLevel, clazz);
     }
 }

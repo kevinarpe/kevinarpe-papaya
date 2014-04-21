@@ -27,23 +27,53 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Methods to create new instances that implement interface SLF4JLevelLogger.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see StatelessObject
+ * @see ISLF4JLevelLoggerUtils
  */
 @FullyTested
-public class SLF4JLevelLoggerUtils {
+public final class SLF4JLevelLoggerUtils
+extends StatelessObject
+implements ISLF4JLevelLoggerUtils {
 
-    public static SLF4JLevelLogger newInstance(SLF4JLogLevel logLevel, Class<?> clazz) {
+    /**
+     * Single instance of this class provided for convenience.  Since this class is stateless, its
+     * behaviour is identical between this instance and others.
+     */
+    public static final SLF4JLevelLoggerUtils INSTANCE = new SLF4JLevelLoggerUtils();
+
+    /**
+     * For projects that require total, static-free mocking capabilities, use this constructor.
+     * Else, the static constant {@link #INSTANCE} will suffice.
+     */
+    public SLF4JLevelLoggerUtils() {
+        // Empty.
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SLF4JLevelLogger newInstance(SLF4JLogLevel logLevel, Class<?> clazz) {
         ILoggerFactory loggerFactory = LoggerFactory.getILoggerFactory();
         SLF4JLevelLogger x = newInstance(loggerFactory, logLevel, clazz);
         return x;
     }
 
-    public static SLF4JLevelLogger newInstance(
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SLF4JLevelLogger newInstance(
             ILoggerFactory loggerFactory, SLF4JLogLevel logLevel, Class<?> clazz) {
         ObjectArgs.checkNotNull(loggerFactory, "loggerFactory");
         ObjectArgs.checkNotNull(logLevel, "logLevel");
