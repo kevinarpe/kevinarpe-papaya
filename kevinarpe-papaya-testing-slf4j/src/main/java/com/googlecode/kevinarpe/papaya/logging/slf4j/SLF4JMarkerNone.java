@@ -33,6 +33,8 @@ import org.slf4j.Marker;
 import java.util.Iterator;
 
 /**
+ * Replacement marker for {@code null}.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @FullyTested
@@ -40,51 +42,115 @@ public final class SLF4JMarkerNone
 extends StatelessObject
 implements Marker {
 
+    /**
+     * The constructor is private so this is the only accessible instance of this class.
+     */
     public static final SLF4JMarkerNone INSTANCE = new SLF4JMarkerNone();
 
+    /**
+     * This marker always has an empty string as its name.
+     *
+     * @see #getName()
+     */
     public static final String NAME = "";
 
     private SLF4JMarkerNone() {
         // Empty
     }
 
+    /**
+     * Always returns {@link #NAME}.
+     * <hr/>
+     * Inherited docs:
+     * <br/>
+     * {@inheritDoc}
+     */
     @Override
     public String getName() {
         return NAME;
     }
 
+    /**
+     * Always does nothing.
+     * <hr/>
+     * Inherited docs:
+     * <br/>
+     * {@inheritDoc}
+     */
     @Override
     public void add(Marker reference) {
         // Do nothing
     }
 
+    /**
+     * Always does nothing and returns {@code false}.
+     * <hr/>
+     * Inherited docs:
+     * <br/>
+     * {@inheritDoc}
+     */
     @Override
     public boolean remove(Marker reference) {
         return false;  // reference could not be found and removed
     }
 
+    /**
+     * Always does nothing and returns {@code false}.
+     * <hr/>
+     * Inherited docs:
+     * <br/>
+     * {@inheritDoc}
+     */
     @Deprecated
     @Override
     public boolean hasChildren() {
         return false;
     }
 
+    /**
+     * Always does nothing and returns {@code false}.
+     * <hr/>
+     * Inherited docs:
+     * <br/>
+     * {@inheritDoc}
+     */
     @Override
     public boolean hasReferences() {
         return false;
     }
 
+    /**
+     * Always returns an empty iterator.
+     * <hr/>
+     * Inherited docs:
+     * <br/>
+     * {@inheritDoc}
+     */
     @Override
     public Iterator iterator() {
         Iterator x = Iterators.emptyIterator();
         return x;
     }
 
+    /**
+     * Always does nothing and returns {@code false}.
+     * <hr/>
+     * Inherited docs:
+     * <br/>
+     * {@inheritDoc}
+     */
     @Override
     public boolean contains(Marker other) {
         return false;
     }
 
+    /**
+     * Always does nothing and returns {@code false}.
+     * <hr/>
+     * Inherited docs:
+     * <br/>
+     * {@inheritDoc}
+     */
     @Override
     public boolean contains(String name) {
         return false;

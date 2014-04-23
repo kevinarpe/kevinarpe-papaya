@@ -26,9 +26,17 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  */
 
 /**
+ * For those projects that require full, static-free mocking capabilities, use this interface.
+ * Else, the concrete implementation {@link SLF4JMockLoggerUtils} will suffice.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public interface ISLF4JMockLoggerUtils {
 
+    /**
+     * Creates a new instance that implement interface SLF4JMockLoggerFactory.
+     *
+     * @return new instance
+     */
     SLF4JMockLoggerFactory newFactoryInstance();
 }

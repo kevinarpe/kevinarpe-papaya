@@ -33,8 +33,6 @@ import org.slf4j.Marker;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-// TODO: What to do before next release?  Start to tighten up.
-// TODO: Write tests for testing-slf4j
 @FullyTested
 class SLF4JLoggingEventFactoryUtils
 extends StatelessObject

@@ -30,17 +30,35 @@ import org.junit.After;
 import org.junit.Before;
 
 /**
+ * Convenient base class for testing classes with JUnit that employ Log4J for logging.
+ *
+ * Logging events are accessible via {@link #getLoggingEventList()}.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see Log4JTestBase
  */
 @NotFullyTested
 public class JUnitLog4JTestBase
 extends Log4JTestBase {
 
+    /**
+     * This method has a weird name to reduce the chance of subclass name overlap.  If one or more
+     * identically-named methods marked with {@link Before} exist in a class hierarchy, JUnit will
+     * only run a single method.  This can produce surprising results.  As a safety measure, this
+     * method is given a slightly odd name.
+     */
     @Before
     public final void JUnitLog4JTestBase_BeforeEachTest() {
         super.addMockAppender();
     }
 
+    /**
+     * This method has a weird name to reduce the chance of subclass name overlap.  If one or more
+     * identically-named methods marked with {@link After} exist in a class hierarchy, JUnit will
+     * only run a single method.  This can produce surprising results.  As a safety measure, this
+     * method is given a slightly odd name.
+     */
     @After
     public final void JUnitLog4JTestBase_AfterEachTest() {
         super.removeMockAppender();

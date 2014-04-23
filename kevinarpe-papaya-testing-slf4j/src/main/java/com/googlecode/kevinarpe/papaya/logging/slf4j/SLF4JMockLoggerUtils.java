@@ -28,18 +28,35 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
 /**
+ * Methods to create new instances that implement interface SLF4JMockLoggerFactory.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see StatelessObject
+ * @see ISLF4JMockLoggerUtils
+ * @see SLF4JMockLoggerFactory
  */
 public class SLF4JMockLoggerUtils
 extends StatelessObject
 implements ISLF4JMockLoggerUtils {
 
+    /**
+     * Single instance of this class provided for convenience.  Since this class is stateless, its
+     * behaviour is identical between this instance and others.
+     */
     public static final SLF4JMockLoggerUtils INSTANCE = new SLF4JMockLoggerUtils();
 
+    /**
+     * For projects that require total, static-free mocking capabilities, use this constructor.
+     * Else, the static constant {@link #INSTANCE} will suffice.
+     */
     public SLF4JMockLoggerUtils() {
         // Empty.
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SLF4JMockLoggerFactory newFactoryInstance() {
         SLF4JMockLoggerFactoryImpl x = new SLF4JMockLoggerFactoryImpl();

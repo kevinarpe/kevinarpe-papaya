@@ -28,7 +28,13 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
 import org.slf4j.ILoggerFactory;
 
 /**
+ * This is a 'typedef' for ILoggerFactory and a package-private interface
+ * SLF4JMockLoggerConfigurable.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see ILoggerFactory
+ * @see SLF4JMockLoggerUtils
  */
 public interface SLF4JMockLoggerFactory
 extends ILoggerFactory, SLF4JMockLoggerConfigurable {

@@ -31,7 +31,13 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 /**
+ * Convenient base class for testing classes with TestNG that employ Log4J for logging.
+ *
+ * Logging events are accessible via {@link #getLoggingEventList()}.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see Log4JTestBase
  */
 @NotFullyTested
 public class TestNGLog4JTestBase

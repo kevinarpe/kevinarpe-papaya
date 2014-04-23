@@ -34,7 +34,12 @@ import java.io.File;
 import java.util.regex.Pattern;
 
 /**
+ * This is a sample JUnit test suite.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see Suite
+ * @see TestClassFinderUtils#newInstance()
  */
 @RunWith(SampleJUnitTestSuite.class)
 public class SampleJUnitTestSuite

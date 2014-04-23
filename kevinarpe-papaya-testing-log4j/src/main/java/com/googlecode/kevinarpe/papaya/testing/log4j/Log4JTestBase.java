@@ -40,10 +40,21 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 /**
+ * Convenient base class for testing classes that employ Log4J for logging.
+ *
+ * Subclasses should call methods in this order:
+ * <ol>
+ *     <li>{@link #addMockAppender()} - capture logging events</li>
+ *     <li>{@link #removeMockAppender()} - cleanup</li>
+ *     <li>{@link #getLoggingEventList()} - perform logging event analysis</li>
+ * </ol>
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see <a href="http://slackhacker.com/2009/12/08/testing-logging-behaviour-in-four-code-lines-flat/"
  *      >http://slackhacker.com/2009/12/08/testing-logging-behaviour-in-four-code-lines-flat/</a>
+ * @see CapturingLogger
+ * @see LoggingEvent
  */
 @FullyTested
 public class Log4JTestBase
@@ -51,15 +62,43 @@ implements CapturingLogger<LoggingEvent> {
 
     private final Appender _mockAppender;
 
+    /**
+     * Creates a new mock logger.  Must be added to root logger via {@link #addMockAppender()}.
+     *
+     * @see #addMockAppender()
+     * @see #removeMockAppender()
+     */
     protected Log4JTestBase() {
         _mockAppender = mock(Appender.class);
     }
 
+    /**
+     * Appends a mock logger to the root logger.  Logging events are only captured after calling
+     * this method.
+     *
+     * Logging events are accessible via {@link #getLoggingEventList()}.
+     *
+     * @see Logger#getRootLogger()
+     * @see Logger#addAppender(Appender)
+     * @see #removeMockAppender()
+     * @see #getLoggingEventList()
+     */
     protected final void addMockAppender() {
         Logger rootLogger = Logger.getRootLogger();
         rootLogger.addAppender(_mockAppender);
     }
 
+    /**
+     * Removes the mock logger from the root logger.  Logging events are not capturing after calling
+     * this method.
+     *
+     * Logging events are accessible via {@link #getLoggingEventList()}.
+     *
+     * @see Logger#getRootLogger()
+     * @see Logger#removeAppender(Appender)
+     * @see #addMockAppender()
+     * @see #getLoggingEventList()
+     */
     protected final void removeMockAppender() {
         Logger rootLogger = Logger.getRootLogger();
         rootLogger.removeAppender(_mockAppender);

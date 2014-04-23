@@ -40,7 +40,6 @@ import java.util.Arrays;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-// TODO: Needs to be public?
 @FullyTested
 final class SLF4JLoggingEventImpl
 implements SLF4JLoggingEvent {

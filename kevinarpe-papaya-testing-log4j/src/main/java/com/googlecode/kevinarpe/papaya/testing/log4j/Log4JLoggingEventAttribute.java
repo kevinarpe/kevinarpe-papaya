@@ -132,6 +132,9 @@ implements ILoggingEventAttribute<LoggingEvent> {
         _valueClass = ObjectArgs.checkNotNull(valueClass, "valueClass");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<?> getValueClass() {
         return _valueClass;

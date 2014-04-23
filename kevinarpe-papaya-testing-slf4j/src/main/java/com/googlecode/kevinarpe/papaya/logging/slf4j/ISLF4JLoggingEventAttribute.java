@@ -28,7 +28,12 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
 import com.googlecode.kevinarpe.papaya.testing.logging.ILoggingEventAttribute;
 
 /**
+ * This is a 'typedef' for ILoggingEventAttribute&lt;SLF4JLoggingEvent>.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see ILoggingEventAttribute
+ * @see SLF4JLoggingEvent
  */
 public interface ISLF4JLoggingEventAttribute
 extends ILoggingEventAttribute<SLF4JLoggingEvent> {
