@@ -4,7 +4,7 @@
     <parent>
         <artifactId>kevinarpe-papaya-parent</artifactId>
         <groupId>com.googlecode.kevinarpe-papaya</groupId>
-        <version>0.0.13</version>
+        <version>0.0.14-SNAPSHOT</version>
     </parent>
 
     <artifactId>kevinarpe-papaya-testing-slf4j</artifactId>
