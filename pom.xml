@@ -158,9 +158,18 @@
                     </configuration>
                     <executions>
                         <execution>
+                            <id>package</id>
                             <phase>package</phase>
                             <goals>
                                 <goal>jar</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>site</id>
+                            <phase>site</phase>
+                            <goals>
+                                <!--Ref: http://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate.html-->
+                                <goal>aggregate</goal>
                             </goals>
                         </execution>
                     </executions>
