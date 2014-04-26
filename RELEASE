@@ -55,14 +55,31 @@ https://dev.c-ware.de/confluence/display/PUBLIC/Releasing+modules+of+a+multi-mod
 * After, git status will be "clean".
 * https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide#SonatypeOSSMavenRepositoryUsageGuide-8a.ReleaseIt
 ** Do the Nexus dance to push the staged release.
+** https://oss.sonatype.org/
+*** Staging Repositories
+*** Find (and select) your repo
+*** Click button 'Close'
+*** Enter witty comment
+*** Wait about one minute, then click button 'Refresh'
+*** Find (and select) your repo (again)
+*** Click button 'Release'
+*** Enter witty comment
 * TODO: Script the next few steps below, including tagging 
+* git tag
+** Find tag for most recent release
+* git checkout $tag_name
+* mvn javadoc:aggregate
+** New root HTML doc: target/site/apidocs/index.html
 * cd ../kevinarpe-papaya.docs
 * rm -Rf ./javadoc/*
-* cp -R ../kevinarpe-papaya/target/apidocs/* ./javadoc/
+* cp -R ../kevinarpe-papaya/target/site/apidocs/* ./javadoc/
 * git add . --all
 * git commit -a
+* git tag -d release
+* git push --delete origin release
 * git tag -a kevinarpe-papaya.docs-0.0.x -m 'Release x'
 ** Can we figure out the latest tag from kevinarpe-papaya?
+* git tag -a release -m 'Release x'
 * git push --tags origin master
 * Update project homepage with new Maven Central Repo dependency details:
     http://code.google.com/p/kevinarpe-papaya/ 
