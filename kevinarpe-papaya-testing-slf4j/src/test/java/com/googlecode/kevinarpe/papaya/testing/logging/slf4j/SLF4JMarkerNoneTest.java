@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.testing.logging.slf4j;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.testing.logging.slf4j.SLF4JMarkerNone;
 import org.slf4j.Marker;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

@@ -1,4 +1,10 @@
-package com.googlecode.kevinarpe.papaya.testing.logging.slf4j;
+/**
+ * Classes for logging with SLF4J
+ * <p>
+ * This package is a part of the open-source
+ * <a href="http://kevinarpe-papaya.googlecode.com">Papaya library</a>.
+ */
+package com.googlecode.kevinarpe.papaya.logging.slf4j;
 
 /*
  * #%L
@@ -24,22 +30,3 @@ package com.googlecode.kevinarpe.papaya.testing.logging.slf4j;
  * along with Papaya.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
-import org.slf4j.Marker;
-
-/**
- * @author Kevin Connor ARPE (kevinarpe@gmail.com)
- */
-interface SLF4JMockLoggerConfig {
-
-    boolean isEnabled(SLF4JLogLevel logLevel);
-
-    boolean isEnabled(Marker marker, SLF4JLogLevel logLevel);
-
-    boolean setEnabled(SLF4JLogLevel logLevel, boolean isEnabled);
-
-    boolean setEnabled(Marker marker, SLF4JLogLevel logLevel, boolean isEnabled);
-
-    SLF4JMockLoggerConfig copy();
-}

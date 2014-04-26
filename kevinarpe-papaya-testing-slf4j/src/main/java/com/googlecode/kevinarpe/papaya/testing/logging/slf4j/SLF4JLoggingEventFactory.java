@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.testing.logging.slf4j;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 

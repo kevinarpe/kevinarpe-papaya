@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.testing.logging.slf4j;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 import org.slf4j.Logger;
 import org.slf4j.Marker;

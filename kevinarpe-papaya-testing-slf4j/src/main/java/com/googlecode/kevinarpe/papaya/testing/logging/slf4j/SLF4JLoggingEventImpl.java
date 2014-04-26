@@ -30,6 +30,7 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.exception.IncludeStackTrace;
 import com.googlecode.kevinarpe.papaya.exception.ThrowableUtils;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.helpers.FormattingTuple;

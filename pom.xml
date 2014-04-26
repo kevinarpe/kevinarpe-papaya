@@ -35,10 +35,6 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-    <prerequisites>
-        <!-- Copied from Google Guava.  No idea which version is actually required. -->
-        <maven>3.0.3</maven>
-    </prerequisites>
     <scm>
         <connection>scm:git:https://code.google.com/p/kevinarpe-papaya/</connection>
         <developerConnection>scm:git:https://code.google.com/p/kevinarpe-papaya/
@@ -165,9 +161,6 @@
                             <phase>package</phase>
                             <goals>
                                 <goal>jar</goal>
-                                <!--Ref: http://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate.html-->
-                                <goal>aggregate</goal>
-                                <goal>aggregate-jar</goal>
                             </goals>
                         </execution>
                     </executions>

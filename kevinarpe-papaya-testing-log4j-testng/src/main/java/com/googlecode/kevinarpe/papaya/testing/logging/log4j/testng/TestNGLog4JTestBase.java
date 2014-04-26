@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.testing.logging.slf4j;
+package com.googlecode.kevinarpe.papaya.testing.logging.log4j.testng;
 
 /*
  * #%L
@@ -25,21 +25,31 @@ package com.googlecode.kevinarpe.papaya.testing.logging.slf4j;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
-import org.slf4j.Marker;
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.testing.logging.log4j.Log4JTestBase;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 
 /**
+ * Convenient base class for testing classes with TestNG that employ Log4J for logging.
+ *
+ * Logging events are accessible via {@link #getLoggingEventList()}.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see Log4JTestBase
  */
-interface SLF4JMockLoggerConfig {
+@NotFullyTested
+public class TestNGLog4JTestBase
+extends Log4JTestBase {
 
-    boolean isEnabled(SLF4JLogLevel logLevel);
+    @BeforeMethod
+    public final void Log4JTestBase_BeforeEachTest() {
+        super.addMockAppender();
+    }
 
-    boolean isEnabled(Marker marker, SLF4JLogLevel logLevel);
-
-    boolean setEnabled(SLF4JLogLevel logLevel, boolean isEnabled);
-
-    boolean setEnabled(Marker marker, SLF4JLogLevel logLevel, boolean isEnabled);
-
-    SLF4JMockLoggerConfig copy();
+    @AfterMethod
+    public final void Log4JTestBase_AfterEachTest() {
+        super.removeMockAppender();
+    }
 }

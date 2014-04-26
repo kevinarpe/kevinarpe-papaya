@@ -28,6 +28,8 @@ package com.googlecode.kevinarpe.papaya.testing.logging;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.googlecode.kevinarpe.papaya.container.Lists2;
+import com.googlecode.kevinarpe.papaya.testing.logging.AnyLoggingEventAttributeValuePredicate;
+import com.googlecode.kevinarpe.papaya.testing.logging.ILoggingEventAttribute;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

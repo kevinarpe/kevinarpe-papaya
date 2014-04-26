@@ -33,7 +33,7 @@ import com.googlecode.kevinarpe.papaya.filesystem.TraversePathDepthPolicy;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterableFactory;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterator;
-import com.googlecode.kevinarpe.papaya.testing.logging.slf4j.SLF4JLogLevel;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
 import com.googlecode.kevinarpe.papaya.testing.logging.slf4j.SLF4JLoggingEvent;
 import com.googlecode.kevinarpe.papaya.testing.logging.slf4j.SLF4JLoggingEventAttribute;
 import com.googlecode.kevinarpe.papaya.testing.logging.slf4j.SLF4JMockLogger;

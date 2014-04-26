@@ -30,6 +30,7 @@ import com.google.common.collect.Lists;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
 import org.slf4j.Marker;
 
 import java.util.Collections;

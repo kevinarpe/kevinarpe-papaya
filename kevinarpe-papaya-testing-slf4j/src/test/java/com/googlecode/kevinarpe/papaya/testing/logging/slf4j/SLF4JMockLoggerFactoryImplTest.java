@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.testing.logging.slf4j;
  */
 
 import com.google.common.testing.EqualsTester;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;

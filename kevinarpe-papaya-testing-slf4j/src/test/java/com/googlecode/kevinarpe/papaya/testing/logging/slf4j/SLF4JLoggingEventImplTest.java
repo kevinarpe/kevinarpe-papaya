@@ -26,6 +26,10 @@ package com.googlecode.kevinarpe.papaya.testing.logging.slf4j;
  */
 
 import com.google.common.testing.EqualsTester;
+import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
+import com.googlecode.kevinarpe.papaya.testing.logging.slf4j.SLF4JLoggingEvent;
+import com.googlecode.kevinarpe.papaya.testing.logging.slf4j.SLF4JLoggingEventAttribute;
+import com.googlecode.kevinarpe.papaya.testing.logging.slf4j.SLF4JLoggingEventImpl;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.testng.annotations.BeforeMethod;
