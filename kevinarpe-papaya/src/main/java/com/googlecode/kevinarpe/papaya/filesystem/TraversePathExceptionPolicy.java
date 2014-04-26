@@ -37,7 +37,7 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
  *
  * @see #IGNORE
  * @see #THROW
- * @see TraversePathIterable
+ * @see TraversePathIterableImpl
  */
 @FullyTested
 public enum TraversePathExceptionPolicy {

@@ -87,7 +87,7 @@ final class TraversePathLevel {
     static final Class<? extends List> DEFAULT_DIRECTORY_LISTING_LIST_CLASS = LinkedList.class;
 
     private final Factory _factory;
-    private final TraversePathIterator _parent;
+    private final AbstractTraversePathIteratorImpl _parent;
     private final int _depth;
     private final DirectoryListing _origDirectoryListing;
     private DirectoryListing _descendDirDirectoryListing;
@@ -95,13 +95,13 @@ final class TraversePathLevel {
     private DirectoryListing _iterateDirectoryListing;
     private Iterator<File> _iterateDirectoryListingIter;
 
-    TraversePathLevel(TraversePathIterator parent, File dirPath, int depth)
+    TraversePathLevel(AbstractTraversePathIteratorImpl parent, File dirPath, int depth)
     throws PathException {
         this(parent, FactoryImpl.INSTANCE, dirPath, depth);
     }
 
     TraversePathLevel(
-            TraversePathIterator parent,
+            AbstractTraversePathIteratorImpl parent,
             Factory factory,
             File dirPath,
             int depth)

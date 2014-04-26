@@ -25,7 +25,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 import java.io.File;
 import java.util.Comparator;
@@ -34,9 +34,9 @@ import java.util.Iterator;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@NotFullyTested
+@FullyTested
 final class TraversePathDepthLastIterator
-extends TraversePathIterator {
+extends AbstractTraversePathIteratorImpl {
 
     private boolean _isInitDone;
     private TraversePathLevel _currentLevel;  // null when depth == 0

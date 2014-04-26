@@ -25,14 +25,14 @@ package com.googlecode.kevinarpe.papaya.exception;
  * #L%
  */
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import com.google.common.base.Objects;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.PathArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * This is a more specific version of {@link FileNotFoundException} for resources available via
@@ -136,7 +136,7 @@ extends IOException {
     @Override
     public int hashCode() {
         int result = Objects.hashCode(getClassForResource(), getResourceName());
-        result = 31 * result + ThrowableUtils.hashCode(this);
+        result = 31 * result + ThrowableUtils.hashCode(this, IncludeStackTrace.YES);
         return result;
     }
 
@@ -147,7 +147,7 @@ extends IOException {
         if (!result && obj instanceof ClassResourceNotFoundException) {
             final ClassResourceNotFoundException other = (ClassResourceNotFoundException) obj;
             result =
-                ThrowableUtils.equals(this, other)
+                ThrowableUtils.equals(this, other, IncludeStackTrace.YES)
                 && getClassForResource() == other.getClassForResource()
                 && Objects.equal(getResourceName(), other.getResourceName());
         }
@@ -163,7 +163,7 @@ extends IOException {
         if (!result && obj instanceof ClassResourceNotFoundException) {
             final ClassResourceNotFoundException other = (ClassResourceNotFoundException) obj;
             result =
-                ThrowableUtils.equalsExcludingStackTrace(this, other)
+                ThrowableUtils.equals(this, other, IncludeStackTrace.NO)
                 && getClassForResource() == other.getClassForResource()
                 && Objects.equal(getResourceName(), other.getResourceName());
         }

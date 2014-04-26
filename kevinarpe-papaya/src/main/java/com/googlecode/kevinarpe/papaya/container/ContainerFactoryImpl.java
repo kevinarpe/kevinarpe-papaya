@@ -28,16 +28,25 @@ package com.googlecode.kevinarpe.papaya.container;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 /**
+ * Stateless factory for any Java container.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see ContainerFactory
+ * @see #INSTANCE
  */
 @FullyTested
 public class ContainerFactoryImpl
 implements ContainerFactory {
 
+    /**
+     * An instance of this (stateless) class.
+     */
     public static final ContainerFactoryImpl INSTANCE = new ContainerFactoryImpl();
 
+    /**
+     * {@inheritDoc}
+     */
     public <TContainerWithElementType>
     TContainerWithElementType newInstance(Class<?> containerClass)
     throws IllegalAccessException, InstantiationException, ClassCastException {

@@ -26,7 +26,7 @@ package com.googlecode.kevinarpe.papaya.container;
  */
 
 import com.google.common.collect.Lists;
-import org.junit.Assert;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;

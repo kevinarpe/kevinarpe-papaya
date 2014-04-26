@@ -80,7 +80,7 @@ public class TraversePathIteratorTestBase {
         new BaseTraversePathIterTest.ctor_Pass_Helper() {
 
             @Override
-            protected BaseTraversePathIter newInstance(
+            protected TraversePathIterSettingsImpl newInstance(
                     File dirPath,
                     TraversePathDepthPolicy depthPolicy,
                     TraversePathExceptionPolicy exceptionPolicy,
@@ -98,7 +98,7 @@ public class TraversePathIteratorTestBase {
     protected TraversePathIterable newInstance(TraversePathDepthPolicy depthPolicy) {
         Comparator<File> fileComparator = new FileNameNumericPrefixSmallestToLargestComparator();
         TraversePathIterable pathIter =
-            new TraversePathIterable(BASE_DIR_PATH, depthPolicy)
+            new TraversePathIterableImpl(BASE_DIR_PATH, depthPolicy)
                 .withOptionalDescendDirPathComparator(fileComparator)
                 .withOptionalIteratePathComparator(fileComparator);
         return pathIter;
@@ -163,7 +163,7 @@ public class TraversePathIteratorTestBase {
     }
 
     protected void core_hasNextAndNext_PassWithEvenNumericPrefixFilter(
-        TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
+            TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
     throws IOException {
         TraversePathIterable pathIterable = newInstance(depthPolicy);
         pathIterable =

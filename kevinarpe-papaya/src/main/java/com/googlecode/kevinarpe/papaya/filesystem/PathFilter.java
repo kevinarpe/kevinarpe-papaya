@@ -34,7 +34,7 @@ import java.io.FileFilter;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see DirectoryListing
- * @see TraversePathIterable
+ * @see TraversePathIterableImpl
  */
 public interface PathFilter {
 
@@ -50,7 +50,7 @@ public interface PathFilter {
      * @return {@code true} to include in the path list or {@code false} to exclude
      *
      * @see DirectoryListing
-     * @see TraversePathIterable
+     * @see TraversePathIterableImpl
      */
     boolean accept(File path, int depth);
 }

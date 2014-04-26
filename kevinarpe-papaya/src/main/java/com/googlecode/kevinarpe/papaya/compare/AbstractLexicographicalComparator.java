@@ -123,7 +123,7 @@ implements Comparator<TValue> {
 
     /**
      * Calls {@link String#compareTo(String)} or {@link String#compareToIgnoreCase(String)}
-     * depending on the result of {@link #getCaseSensitive()}.
+     * depending upon the result of {@link #getCaseSensitive()}.
      *
      * @param left
      *        must not be {@code null}

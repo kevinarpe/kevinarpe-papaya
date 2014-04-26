@@ -40,7 +40,7 @@ import static org.testng.Assert.assertNull;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class TraversePathIterableTest {
+public class TraversePathIterableImplTest {
 
     private final File newDirPath = new File("newDirPath");
 
@@ -72,7 +72,7 @@ public class TraversePathIterableTest {
         }
     };
 
-    private BaseTraversePathIter expected;
+    private TraversePathIterSettings expected;
     private TraversePathIterable classUnderTestWithDefaults;
     private TraversePathIterable classUnderTestWithoutDefaults;
 
@@ -80,7 +80,7 @@ public class TraversePathIterableTest {
     public void beforeEachTestMethod() {
         expected = BaseTraversePathIterTest.newInstance();
         classUnderTestWithDefaults =
-            new TraversePathIterable(expected.getRootDirPath(), expected.getDepthPolicy());
+            new TraversePathIterableImpl(expected.getRootDirPath(), expected.getDepthPolicy());
         classUnderTestWithoutDefaults =
             classUnderTestWithDefaults
                 .withOptionalDescendDirPathFilter(pathFilter)
@@ -90,7 +90,7 @@ public class TraversePathIterableTest {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // TraversePathIterable.ctor()
+    // TraversePathIterableImpl.ctor()
     //
 
     @Test
@@ -99,7 +99,7 @@ public class TraversePathIterableTest {
             classUnderTestWithDefaults,
             expected.getRootDirPath(),
             expected.getDepthPolicy(),
-            TraversePathIterable.DEFAULT_EXCEPTION_POLICY,
+            TraversePathIterableImpl.DEFAULT_EXCEPTION_POLICY,
             (PathFilter) null,
             (Comparator<File>) null,
             (PathFilter) null,
@@ -111,7 +111,7 @@ public class TraversePathIterableTest {
         new BaseTraversePathIterTest.ctor_Pass_Helper() {
 
             @Override
-            protected BaseTraversePathIter newInstance(
+            protected TraversePathIterSettingsImpl newInstance(
                     File dirPath,
                     TraversePathDepthPolicy depthPolicy,
                     TraversePathExceptionPolicy exceptionPolicy,
@@ -119,7 +119,7 @@ public class TraversePathIterableTest {
                     Comparator<File> optDescendDirPathComparator,
                     PathFilter optIteratePathFilter,
                     Comparator<File> optIteratePathComparator) {
-                return new TraversePathIterable(
+                return new TraversePathIterableImpl(
                     dirPath, depthPolicy, exceptionPolicy, optDescendDirPathFilter,
                     optDescendDirPathComparator, optIteratePathFilter, optIteratePathComparator);
             }
@@ -128,16 +128,16 @@ public class TraversePathIterableTest {
 
     @Test(expectedExceptions = NullPointerException.class)
     public void ctor_FailWithNullDirPath() {
-        new TraversePathIterable((File) null, TraversePathDepthPolicy.DEPTH_LAST);
+        new TraversePathIterableImpl((File) null, TraversePathDepthPolicy.DEPTH_LAST);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void ctor_FailWithNullDepthPolicy() {
-        new TraversePathIterable(new File("dummy"), (TraversePathDepthPolicy) null);
+        new TraversePathIterableImpl(new File("dummy"), (TraversePathDepthPolicy) null);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // TraversePathIterable.withRootDirPath()
+    // TraversePathIterableImpl.withRootDirPath()
     //
 
     @Test
@@ -163,7 +163,7 @@ public class TraversePathIterableTest {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // TraversePathIterable.withDepthPolicy()
+    // TraversePathIterableImpl.withDepthPolicy()
     //
 
     @Test
@@ -191,7 +191,7 @@ public class TraversePathIterableTest {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // TraversePathIterable.withExceptionPolicy()
+    // TraversePathIterableImpl.withExceptionPolicy()
     //
 
     @Test
@@ -199,7 +199,8 @@ public class TraversePathIterableTest {
         TraversePathExceptionPolicy exceptionPolicy =
             (classUnderTestWithDefaults.getExceptionPolicy() == TraversePathExceptionPolicy.THROW
                 ? TraversePathExceptionPolicy.IGNORE : TraversePathExceptionPolicy.THROW);
-        TraversePathIterable next = classUnderTestWithDefaults.withExceptionPolicy(exceptionPolicy);
+        TraversePathIterable next =
+            classUnderTestWithDefaults.withExceptionPolicy(exceptionPolicy);
         assertNotSame(next, classUnderTestWithDefaults);
         assertEquals(next.getExceptionPolicy(), exceptionPolicy);
         BaseTraversePathIterTest.assertAttrSame(
@@ -219,12 +220,13 @@ public class TraversePathIterableTest {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // TraversePathIterable.withOptionalDescendDirPathFilter()
+    // TraversePathIterableImpl.withOptionalDescendDirPathFilter()
     //
 
     @Test
     public void withOptionalDescendDirPathFilter_Pass() {
-        TraversePathIterable next = classUnderTestWithDefaults.withOptionalDescendDirPathFilter(pathFilter);
+        TraversePathIterable next =
+            classUnderTestWithDefaults.withOptionalDescendDirPathFilter(pathFilter);
         assertNotNull(next);
         assertNotSame(next, classUnderTestWithDefaults);
         assertEquals(next.getOptionalDescendDirPathFilter(), pathFilter);
@@ -248,7 +250,7 @@ public class TraversePathIterableTest {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // TraversePathIterable.withOptionalDescendDirPathComparator()
+    // TraversePathIterableImpl.withOptionalDescendDirPathComparator()
     //
 
     @Test
@@ -278,7 +280,7 @@ public class TraversePathIterableTest {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // TraversePathIterable.withOptionalIteratePathFilter()
+    // TraversePathIterableImpl.withOptionalIteratePathFilter()
     //
 
     @Test
@@ -307,7 +309,7 @@ public class TraversePathIterableTest {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // TraversePathIterable.withOptionalIteratePathComparator()
+    // TraversePathIterableImpl.withOptionalIteratePathComparator()
     //
 
     @Test
@@ -337,7 +339,7 @@ public class TraversePathIterableTest {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // TraversePathIterable.iterator()
+    // TraversePathIterableImpl.iterator()
     //
 
     @Test
@@ -351,14 +353,14 @@ public class TraversePathIterableTest {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // TraversePathIterable.hashCode()/equals()
+    // TraversePathIterableImpl.hashCode()/equals()
     //
 
     // TODO: Need more tests to cover all branches
     @Test
     public void hashCodeAndEquals_Pass() {
         new EqualsTester()
-            .addEqualityGroup(1, 1)  // Something that is not this class (TraversePathIterable)
+            .addEqualityGroup(1, 1)  // Something that is not this class (TraversePathIterableImpl)
             .addEqualityGroup(
                 classUnderTestWithoutDefaults,
                 classUnderTestWithoutDefaults.withRootDirPath(classUnderTestWithoutDefaults.getRootDirPath()))

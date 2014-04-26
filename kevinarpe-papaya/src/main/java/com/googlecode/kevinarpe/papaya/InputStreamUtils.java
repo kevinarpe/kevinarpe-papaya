@@ -25,11 +25,11 @@ package com.googlecode.kevinarpe.papaya;
  * #L%
  */
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Static helper methods for {@link InputStream}.
@@ -67,7 +67,6 @@ public final class InputStreamUtils {
      * 
      * @see InputStream#read()
      */
-    @NotFullyTested
     public static int checkedReadNextUnsignedByte(InputStream in)
     throws IOException {
         ObjectArgs.checkNotNull(in, "in");

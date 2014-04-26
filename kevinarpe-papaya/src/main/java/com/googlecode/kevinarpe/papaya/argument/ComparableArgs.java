@@ -1,7 +1,6 @@
 package com.googlecode.kevinarpe.papaya.argument;
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 
 /*
  * #%L
@@ -312,7 +311,7 @@ public final class ComparableArgs {
      *
      * @see #checkValueRange(Comparable, Comparable, Comparable, String)
      */
-    @NotFullyTested
+    @FullyTested
     public static <T extends Comparable<T>> T checkNotExactValue(
             T ref, T exactValue, String argName) {
         ObjectArgs.checkNotNull(ref, argName);

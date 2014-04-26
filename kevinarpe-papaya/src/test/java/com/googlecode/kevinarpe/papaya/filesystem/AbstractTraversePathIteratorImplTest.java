@@ -47,22 +47,22 @@ import static org.testng.Assert.assertSame;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @PrepareForTest(TraversePathLevel.class)
-public class TraversePathIteratorTest
+public class AbstractTraversePathIteratorImplTest
 extends PowerMockTestCase {
 
     private static final PathException DUMMY_PATH_EXCEPTION =
         new PathException(
             PathExceptionReason.PATH_IS_DIRECTORY, new File("dummy"), (File) null, "message");
 
-    private TraversePathIterator.Factory mockFactory;
+    private AbstractTraversePathIteratorImpl.Factory mockFactory;
 
     @BeforeMethod
     public void beforeEachTestMethod() {
-        mockFactory = mock(TraversePathIterator.Factory.class);
+        mockFactory = mock(AbstractTraversePathIteratorImpl.Factory.class);
     }
 
     private static class _TraversePathIterator
-    extends TraversePathIterator {
+    extends AbstractTraversePathIteratorImpl {
 
         _TraversePathIterator(
                 File dirPath,
@@ -116,7 +116,7 @@ extends PowerMockTestCase {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // TraversePathIterator.ctor()
+    // AbstractTraversePathIteratorImpl.ctor()
     //
 
     @Test
@@ -124,7 +124,7 @@ extends PowerMockTestCase {
         new BaseTraversePathIterTest.ctor_Pass_Helper() {
 
             @Override
-            protected BaseTraversePathIter newInstance(
+            protected TraversePathIterSettingsImpl newInstance(
                 File dirPath,
                 TraversePathDepthPolicy depthPolicy,
                 TraversePathExceptionPolicy exceptionPolicy,
@@ -145,7 +145,7 @@ extends PowerMockTestCase {
         new BaseTraversePathIterTest.ctor_Pass_Helper() {
 
             @Override
-            protected BaseTraversePathIter newInstance(
+            protected TraversePathIterSettingsImpl newInstance(
                 File dirPath,
                 TraversePathDepthPolicy depthPolicy,
                 TraversePathExceptionPolicy exceptionPolicy,
@@ -161,7 +161,7 @@ extends PowerMockTestCase {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // TraversePathIterator.tryAddLevel()
+    // AbstractTraversePathIteratorImpl.tryAddLevel()
     //
 
     @Test
@@ -207,7 +207,7 @@ extends PowerMockTestCase {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // TraversePathIterator.tryRemoveAndGetNextLevel()
+    // AbstractTraversePathIteratorImpl.tryRemoveAndGetNextLevel()
     //
 
     @Test
@@ -252,7 +252,7 @@ extends PowerMockTestCase {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // TraversePathIterator.remove()
+    // AbstractTraversePathIteratorImpl.remove()
     //
 
     @Test(expectedExceptions = UnsupportedOperationException.class)
