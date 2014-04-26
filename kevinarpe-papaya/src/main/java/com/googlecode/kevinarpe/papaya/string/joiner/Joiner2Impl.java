@@ -28,6 +28,7 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.container.Lists2;
+import com.googlecode.kevinarpe.papaya.string.joiner.formatter.Formatter2;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -42,8 +43,7 @@ final class Joiner2Impl
 implements Joiner2 {
 
     private final String _separator;
-    private final String _leftQuote;
-    private final String _rightQuote;
+    private final Formatter2 _formatter;
     private final String _nullText;
     private final String _noElementsText;
     private final boolean _skipNullsFlag;
@@ -52,23 +52,20 @@ implements Joiner2 {
         this(
             ObjectArgs.checkNotNull(separator, "separator"),
             Joiner2Utils.DEFAULT_NULL_TEXT,
-            Joiner2Utils.DEFAULT_LEFT_QUOTE,
-            Joiner2Utils.DEFAULT_RIGHT_QUOTE,
+            Joiner2Utils.DEFAULT_FORMATTER,
             Joiner2Utils.DEFAULT_NO_ELEMENTS_TEXT,
             Joiner2Utils.DEFAULT_SKIP_NULLS_FLAG);
     }
 
     Joiner2Impl(
-        String separator,
-        String nullText,
-        String leftQuote,
-        String rightQuote,
-        String noElementsText,
-        boolean skipNullsFlag) {
+            String separator,
+            String nullText,
+            Formatter2 formatter,
+            String noElementsText,
+            boolean skipNullsFlag) {
         this._separator = separator;
         this._nullText = nullText;
-        this._leftQuote = leftQuote;
-        this._rightQuote = rightQuote;
+        this._formatter = formatter;
         this._noElementsText = noElementsText;
         this._skipNullsFlag = skipNullsFlag;
     }
@@ -79,7 +76,7 @@ implements Joiner2 {
 
         Joiner2Impl x =
             new Joiner2Impl(
-                separator, _nullText, _leftQuote, _rightQuote, _noElementsText, _skipNullsFlag);
+                separator, _nullText, _formatter, _noElementsText, _skipNullsFlag);
         return x;
     }
 
@@ -96,45 +93,17 @@ implements Joiner2 {
     }
 
     @Override
-    public Joiner2Impl withQuotes(String leftQuote, String rightQuote) {
-        ObjectArgs.checkNotNull(leftQuote, "leftQuote");
-        ObjectArgs.checkNotNull(rightQuote, "rightQuote");
+    public Joiner2Impl withFormatter(Formatter2 formatter) {
+        ObjectArgs.checkNotNull(formatter, "formatter");
 
         Joiner2Impl x = new Joiner2Impl(
-            _separator, _nullText, leftQuote, rightQuote, _noElementsText, _skipNullsFlag);
+            _separator, _nullText, formatter, _noElementsText, _skipNullsFlag);
         return x;
     }
 
     @Override
-    public Joiner2Impl withQuotes(String leftQuote, char rightQuote) {
-        String rightQuoteString = String.valueOf(rightQuote);
-        Joiner2Impl x = withQuotes(leftQuote, rightQuoteString);
-        return x;
-    }
-
-    @Override
-    public Joiner2Impl withQuotes(char leftQuote, String rightQuote) {
-        String leftQuoteString = String.valueOf(leftQuote);
-        Joiner2Impl x = withQuotes(leftQuoteString, rightQuote);
-        return x;
-    }
-
-    @Override
-    public Joiner2Impl withQuotes(char leftQuote, char rightQuote) {
-        String leftQuoteString = String.valueOf(leftQuote);
-        String rightQuoteString = String.valueOf(rightQuote);
-        Joiner2Impl x = withQuotes(leftQuoteString, rightQuoteString);
-        return x;
-    }
-
-    @Override
-    public String withLeftQuote() {
-        return _leftQuote;
-    }
-
-    @Override
-    public String withRightQuote() {
-        return _rightQuote;
+    public Formatter2 withFormatter() {
+        return _formatter;
     }
 
     @Override
@@ -143,7 +112,7 @@ implements Joiner2 {
 
         Joiner2Impl x =
             new Joiner2Impl(
-                _separator, _nullText, _leftQuote, _rightQuote, noElementsText, _skipNullsFlag);
+                _separator, _nullText, _formatter, noElementsText, _skipNullsFlag);
         return x;
     }
 
@@ -165,7 +134,7 @@ implements Joiner2 {
 
         Joiner2Impl x =
             new Joiner2Impl(
-                _separator, nullText, _leftQuote, _rightQuote, _noElementsText, _skipNullsFlag);
+                _separator, nullText, _formatter, _noElementsText, _skipNullsFlag);
         return x;
     }
 
@@ -185,7 +154,7 @@ implements Joiner2 {
     public Joiner2Impl skipNulls(boolean flag) {
         Joiner2Impl x =
             new Joiner2Impl(
-                _separator, _nullText, _leftQuote, _rightQuote, _noElementsText, flag);
+                _separator, _nullText, _formatter, _noElementsText, flag);
         return x;
     }
 
@@ -248,15 +217,15 @@ implements Joiner2 {
         if (null == value && _skipNullsFlag) {
             return;
         }
-        String valueString = _toString(value, _leftQuote, _rightQuote);
+        String valueString = _toString(value);
         appendable.append(separator);
         appendable.append(valueString);
     }
 
-    private String _toString(Object value, String leftQuote, String rightQuote) {
+    private String _toString(Object value) {
         String x = (null == value) ? _nullText : value.toString();
-        x = leftQuote + x + rightQuote;
-        return x;
+        String y = _formatter.format(x);
+        return y;
     }
 
     @Override

@@ -54,8 +54,7 @@ public class Joiner2UtilsTest {
     }
 
     private void _assertDefaults(Joiner2 x) {
-        Assert.assertEquals(x.withLeftQuote(), Joiner2Utils.DEFAULT_LEFT_QUOTE);
-        Assert.assertEquals(x.withRightQuote(), Joiner2Utils.DEFAULT_RIGHT_QUOTE);
+        Assert.assertEquals(x.withFormatter(), Joiner2Utils.DEFAULT_FORMATTER);
         Assert.assertEquals(x.useForNull(), Joiner2Utils.DEFAULT_NULL_TEXT);
         Assert.assertEquals(x.useForNoElements(), Joiner2Utils.DEFAULT_NO_ELEMENTS_TEXT);
         Assert.assertEquals(x.skipNulls(), Joiner2Utils.DEFAULT_SKIP_NULLS_FLAG);

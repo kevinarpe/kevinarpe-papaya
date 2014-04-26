@@ -28,6 +28,8 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
 import com.google.common.base.Joiner;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
+import com.googlecode.kevinarpe.papaya.string.joiner.formatter.Formatter2;
+import com.googlecode.kevinarpe.papaya.string.joiner.formatter.StringFormatter;
 
 /**
  * Constants and static utilities for {@link Joiner2} and {@link MapJoiner2}.
@@ -41,11 +43,12 @@ import com.googlecode.kevinarpe.papaya.object.StatelessObject;
  * @see StatelessObject
  * @see IJoiner2Utils
  */
-// TODO: Add feature for counting?
 @FullyTested
 public final class Joiner2Utils
 extends StatelessObject
 implements IJoiner2Utils {
+
+    private static final Formatter2 _DEFAULT_FORMATTER = new StringFormatter("%s");
 
     /**
      * Single instance of this class provided for convenience.  Since this class is stateless, its
@@ -62,21 +65,12 @@ implements IJoiner2Utils {
     }
 
     /**
-     * Default value for {@link SharedJoiner2Settings#withLeftQuote()}: {@code ""}
-     * (empty string).
+     * Default value for {@link SharedJoiner2Settings#withFormatter()}: (no prefix or suffix)
      *
-     * @see #DEFAULT_RIGHT_QUOTE
-     * @see SharedJoiner2Settings#withQuotes(String, String)
+     * @see SharedJoiner2Settings#withFormatter(Formatter2)
      */
-    public static final String DEFAULT_LEFT_QUOTE = "";
-    /**
-     * Default value for {@link SharedJoiner2Settings#withRightQuote()}: {@code ""}
-     * (empty string).
-     *
-     * @see #DEFAULT_LEFT_QUOTE
-     * @see SharedJoiner2Settings#withQuotes(String, String)
-     */
-    public static final String DEFAULT_RIGHT_QUOTE = "";
+    public static final Formatter2 DEFAULT_FORMATTER = _DEFAULT_FORMATTER;
+
     /**
      * Default value for {@link SharedJoiner2Settings#useForNoElements()}: {@code ""}
      * (empty string).
@@ -84,6 +78,7 @@ implements IJoiner2Utils {
      * @see SharedJoiner2Settings#useForNoElements(String)
      */
     public static final String DEFAULT_NO_ELEMENTS_TEXT = "";
+
     /**
      * Default value for {@link Joiner2Settings#useForNull()}: {@code "null"}.
      * <p>
@@ -94,6 +89,7 @@ implements IJoiner2Utils {
      * @see Joiner2Settings#useForNull(String)
      */
     public static final String DEFAULT_NULL_TEXT = "null";
+
     /**
      * Default value for {@link Joiner2Settings#skipNulls()}: {@code false}.
      *
@@ -102,36 +98,18 @@ implements IJoiner2Utils {
     public static final boolean DEFAULT_SKIP_NULLS_FLAG = false;
 
     /**
-     * Default value for {@link MapJoiner2Settings#withKeyLeftQuote()}: {@code ""}
-     * (empty string).
+     * Default value for {@link MapJoiner2Settings#withKeyFormatter()}: (no prefix or suffix)
      *
-     * @see MapJoiner2Settings#withKeyQuotes(String, String)
+     * @see MapJoiner2Settings#withKeyFormatter(Formatter2)
      */
-    public static final String DEFAULT_KEY_LEFT_QUOTE = "";
+    public static final Formatter2 DEFAULT_KEY_FORMATTER = _DEFAULT_FORMATTER;
 
     /**
-     * Default value for {@link MapJoiner2Settings#withKeyRightQuote()}: {@code ""}
-     * (empty string).
+     * Default value for {@link MapJoiner2Settings#withValueFormatter()}: (no prefix or suffix)
      *
-     * @see MapJoiner2Settings#withKeyQuotes(String, String)
+     * @see MapJoiner2Settings#withValueFormatter(Formatter2)
      */
-    public static final String DEFAULT_KEY_RIGHT_QUOTE = "";
-
-    /**
-     * Default value for {@link MapJoiner2Settings#withValueLeftQuote()}: {@code ""}
-     * (empty string).
-     *
-     * @see MapJoiner2Settings#withValueQuotes(String, String)
-     */
-    public static final String DEFAULT_VALUE_LEFT_QUOTE = "";
-
-    /**
-     * Default value for {@link MapJoiner2Settings#withValueRightQuote()}: {@code ""}
-     * (empty string).
-     *
-     * @see MapJoiner2Settings#withValueQuotes(String, String)
-     */
-    public static final String DEFAULT_VALUE_RIGHT_QUOTE = "";
+    public static final Formatter2 DEFAULT_VALUE_FORMATTER = _DEFAULT_FORMATTER;
 
     /**
      * Default value for {@link MapJoiner2Settings#useForNullKey()}: {@code "null"}.

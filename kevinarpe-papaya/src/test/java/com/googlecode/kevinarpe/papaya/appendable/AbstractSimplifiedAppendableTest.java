@@ -25,14 +25,12 @@ package com.googlecode.kevinarpe.papaya.appendable;
  * #L%
  */
 
+import org.mockito.Mockito;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.testng.Assert.assertSame;
 
 public class AbstractSimplifiedAppendableTest {
 
@@ -42,7 +40,7 @@ public class AbstractSimplifiedAppendableTest {
 
     @BeforeMethod
     public void beforeEachTestMethod() {
-        mockAppendable = mock(Appendable.class);
+        mockAppendable = Mockito.mock(Appendable.class);
         final Appendable mockAppendable2 = mockAppendable;
         classUnderTest = new AbstractSimplifiedAppendable() {
             @Override
@@ -61,20 +59,20 @@ public class AbstractSimplifiedAppendableTest {
     @Test
     public void appendCharSequenceIntInt_Pass()
     throws IOException {
-        when(mockAppendable.append("def")).thenReturn(mockAppendable);
-        assertSame(classUnderTest.append("abcdefghi", 3, 6), mockAppendable);
+        Mockito.when(mockAppendable.append("def")).thenReturn(mockAppendable);
+        Assert.assertSame(classUnderTest.append("abcdefghi", 3, 6), mockAppendable);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void appendCharSequenceIntInt_FailWithNull()
     throws IOException {
-        assertSame(classUnderTest.append((CharSequence) null, -1, 6), mockAppendable);
+        Assert.assertSame(classUnderTest.append((CharSequence) null, -1, 6), mockAppendable);
     }
 
     @Test(expectedExceptions = IndexOutOfBoundsException.class)
     public void appendCharSequenceIntInt_FailWithIndexOutOfBoundsException()
     throws IOException {
-        assertSame(classUnderTest.append("abcdefghi", -1, 6), mockAppendable);
+        Assert.assertSame(classUnderTest.append("abcdefghi", -1, 6), mockAppendable);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,7 +82,7 @@ public class AbstractSimplifiedAppendableTest {
     @Test
     public void appendChar_Pass()
     throws IOException {
-        when(mockAppendable.append("c")).thenReturn(mockAppendable);
-        assertSame(classUnderTest.append('c'), mockAppendable);
+        Mockito.when(mockAppendable.append("c")).thenReturn(mockAppendable);
+        Assert.assertSame(classUnderTest.append('c'), mockAppendable);
     }
 }

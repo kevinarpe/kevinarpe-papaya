@@ -27,15 +27,12 @@ package com.googlecode.kevinarpe.papaya.filesystem;
 
 import com.googlecode.kevinarpe.papaya.StringUtils;
 import com.googlecode.kevinarpe.papaya.filesystem.compare.FileNameLexicographicalComparator;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.File;
 import java.util.Comparator;
-
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertSame;
-import static org.testng.Assert.assertTrue;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -68,16 +65,16 @@ public class BaseTraversePathIterTest {
     }
 
     public static void assertAttrSame(TraversePathIterSettings actual, TraversePathIterSettings expected) {
-        assertSame(actual.getRootDirPath(), expected.getRootDirPath());
-        assertSame(actual.getDepthPolicy(), expected.getDepthPolicy());
-        assertSame(actual.getExceptionPolicy(), expected.getExceptionPolicy());
-        assertSame(
+        Assert.assertSame(actual.getRootDirPath(), expected.getRootDirPath());
+        Assert.assertSame(actual.getDepthPolicy(), expected.getDepthPolicy());
+        Assert.assertSame(actual.getExceptionPolicy(), expected.getExceptionPolicy());
+        Assert.assertSame(
             actual.getOptionalDescendDirPathFilter(), expected.getOptionalDescendDirPathFilter());
-        assertSame(
+        Assert.assertSame(
             actual.getOptionalDescendDirPathComparator(),
             expected.getOptionalDescendDirPathComparator());
-        assertSame(actual.getOptionalIteratePathFilter(), expected.getOptionalIteratePathFilter());
-        assertSame(
+        Assert.assertSame(actual.getOptionalIteratePathFilter(), expected.getOptionalIteratePathFilter());
+        Assert.assertSame(
             actual.getOptionalIteratePathComparator(), expected.getOptionalIteratePathComparator());
     }
 
@@ -90,13 +87,13 @@ public class BaseTraversePathIterTest {
             Comparator<File> optDescendDirPathComparator,
             PathFilter optIteratePathFilter,
             Comparator<File> optIteratePathComparator) {
-        assertSame(actual.getRootDirPath(), dirPath);
-        assertSame(actual.getDepthPolicy(), depthPolicy);
-        assertSame(actual.getExceptionPolicy(), exceptionPolicy);
-        assertSame(actual.getOptionalDescendDirPathFilter(), optDescendDirPathFilter);
-        assertSame(actual.getOptionalDescendDirPathComparator(), optDescendDirPathComparator);
-        assertSame(actual.getOptionalIteratePathFilter(), optIteratePathFilter);
-        assertSame(actual.getOptionalIteratePathComparator(), optIteratePathComparator);
+        Assert.assertSame(actual.getRootDirPath(), dirPath);
+        Assert.assertSame(actual.getDepthPolicy(), depthPolicy);
+        Assert.assertSame(actual.getExceptionPolicy(), exceptionPolicy);
+        Assert.assertSame(actual.getOptionalDescendDirPathFilter(), optDescendDirPathFilter);
+        Assert.assertSame(actual.getOptionalDescendDirPathComparator(), optDescendDirPathComparator);
+        Assert.assertSame(actual.getOptionalIteratePathFilter(), optIteratePathFilter);
+        Assert.assertSame(actual.getOptionalIteratePathComparator(), optIteratePathComparator);
     }
 
     public static abstract class ctor_Pass_Helper {
@@ -114,19 +111,19 @@ public class BaseTraversePathIterTest {
                     expected.getOptionalIteratePathFilter(),
                     expected.getOptionalIteratePathComparator());
 
-            assertSame(actual.getRootDirPath(), expected.getRootDirPath());
-            assertSame(actual.getDepthPolicy(), expected.getDepthPolicy());
-            assertSame(actual.getExceptionPolicy(), expected.getExceptionPolicy());
-            assertSame(
+            Assert.assertSame(actual.getRootDirPath(), expected.getRootDirPath());
+            Assert.assertSame(actual.getDepthPolicy(), expected.getDepthPolicy());
+            Assert.assertSame(actual.getExceptionPolicy(), expected.getExceptionPolicy());
+            Assert.assertSame(
                 actual.getOptionalDescendDirPathFilter(),
                 expected.getOptionalDescendDirPathFilter());
-            assertSame(
+            Assert.assertSame(
                 actual.getOptionalDescendDirPathComparator(),
                 expected.getOptionalDescendDirPathComparator());
-            assertSame(
+            Assert.assertSame(
                 actual.getOptionalIteratePathFilter(),
                 expected.getOptionalIteratePathFilter());
-            assertSame(
+            Assert.assertSame(
                 actual.getOptionalIteratePathComparator(),
                 expected.getOptionalIteratePathComparator());
         }
@@ -173,14 +170,14 @@ public class BaseTraversePathIterTest {
 
     @Test
     public void ctor_Pass() {
-        assertSame(classUnderTest.getRootDirPath(), dirPath);
-        assertSame(classUnderTest.getDepthPolicy(), depthPolicy);
-        assertSame(classUnderTest.getExceptionPolicy(), exceptionPolicy);
-        assertSame(classUnderTest.getOptionalDescendDirPathFilter(), optDescendDirPathFilter);
-        assertSame(
+        Assert.assertSame(classUnderTest.getRootDirPath(), dirPath);
+        Assert.assertSame(classUnderTest.getDepthPolicy(), depthPolicy);
+        Assert.assertSame(classUnderTest.getExceptionPolicy(), exceptionPolicy);
+        Assert.assertSame(classUnderTest.getOptionalDescendDirPathFilter(), optDescendDirPathFilter);
+        Assert.assertSame(
             classUnderTest.getOptionalDescendDirPathComparator(), optDescendDirPathComparator);
-        assertSame(classUnderTest.getOptionalIteratePathFilter(), optIteratePathFilter);
-        assertSame(classUnderTest.getOptionalIteratePathComparator(), optIterateFileComparator);
+        Assert.assertSame(classUnderTest.getOptionalIteratePathFilter(), optIteratePathFilter);
+        Assert.assertSame(classUnderTest.getOptionalIteratePathComparator(), optIterateFileComparator);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -190,7 +187,7 @@ public class BaseTraversePathIterTest {
     @Test
     public void toString_Pass() {
         String x = classUnderTest.toString();
-        assertNotNull(x);
-        assertTrue(!StringUtils.isEmptyOrWhitespace(x));
+        Assert.assertNotNull(x);
+        Assert.assertTrue(!StringUtils.isEmptyOrWhitespace(x));
     }
 }
