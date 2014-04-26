@@ -28,16 +28,12 @@ package com.googlecode.kevinarpe.papaya.compare;
 import com.google.common.testing.EqualsTester;
 import com.googlecode.kevinarpe.papaya.filesystem.compare.FileNameLexicographicalComparator;
 import com.googlecode.kevinarpe.papaya.filesystem.compare.FileSizeSmallestToLargestComparator;
+import org.mockito.Mockito;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.File;
 import java.util.Comparator;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertSame;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -50,7 +46,7 @@ public class ReverseComparatorTest {
 
     @Test
     public void of_Pass() {
-        assertNotNull(ReverseComparator.of(new FileSizeSmallestToLargestComparator()));
+        Assert.assertNotNull(ReverseComparator.of(new FileSizeSmallestToLargestComparator()));
     }
 
     @Test
@@ -58,12 +54,12 @@ public class ReverseComparatorTest {
         final Comparator<File> comp = new FileSizeSmallestToLargestComparator();
         final Comparator<File> rev = ReverseComparator.of(comp);
         final Comparator<File> rev2 = ReverseComparator.of(rev);
-        assertSame(rev2, comp);
+        Assert.assertSame(rev2, comp);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void of_FailWithNull() {
-        assertNotNull(ReverseComparator.of(null));
+        Assert.assertNotNull(ReverseComparator.of(null));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -72,16 +68,16 @@ public class ReverseComparatorTest {
 
     @Test
     public void compare_Pass() {
-        File mockPath1 = mock(File.class);
-        File mockPath2 = mock(File.class);
+        File mockPath1 = Mockito.mock(File.class);
+        File mockPath2 = Mockito.mock(File.class);
 
-        when(mockPath1.length()).thenReturn(Long.valueOf(5));
-        when(mockPath2.length()).thenReturn(Long.valueOf(10));
+        Mockito.when(mockPath1.length()).thenReturn(Long.valueOf(5));
+        Mockito.when(mockPath2.length()).thenReturn(Long.valueOf(10));
 
         final Comparator<File> comp = new FileSizeSmallestToLargestComparator();
         final Comparator<File> rev = ReverseComparator.of(comp);
-        assertEquals(comp.compare(mockPath1, mockPath2), -1);
-        assertEquals(rev.compare(mockPath1, mockPath2), +1);
+        Assert.assertEquals(comp.compare(mockPath1, mockPath2), -1);
+        Assert.assertEquals(rev.compare(mockPath1, mockPath2), +1);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,6 +102,6 @@ public class ReverseComparatorTest {
 
     @Test
     public void toString_Pass() {
-        assertNotNull(ReverseComparator.of(new FileSizeSmallestToLargestComparator()).toString());
+        Assert.assertNotNull(ReverseComparator.of(new FileSizeSmallestToLargestComparator()).toString());
     }
 }

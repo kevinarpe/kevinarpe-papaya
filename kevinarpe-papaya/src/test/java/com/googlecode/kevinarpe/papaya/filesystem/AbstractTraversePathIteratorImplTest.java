@@ -28,20 +28,16 @@ package com.googlecode.kevinarpe.papaya.filesystem;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
 import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
 import com.googlecode.kevinarpe.papaya.exception.PathRuntimeException;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.testng.PowerMockTestCase;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.File;
 import java.util.Comparator;
-
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertSame;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -58,7 +54,7 @@ extends PowerMockTestCase {
 
     @BeforeMethod
     public void beforeEachTestMethod() {
-        mockFactory = mock(AbstractTraversePathIteratorImpl.Factory.class);
+        mockFactory = PowerMockito.mock(AbstractTraversePathIteratorImpl.Factory.class);
     }
 
     private static class _TraversePathIterator
@@ -105,13 +101,13 @@ extends PowerMockTestCase {
     throws PathException {
         final int origDepth = classUnderTest.getDepth();
         final int newDepth = 1 + origDepth;
-        TraversePathLevel mockTraversePathLevel = mock(TraversePathLevel.class);
-        when(mockFactory.newInstance(classUnderTest, dirPath, newDepth))
+        TraversePathLevel mockTraversePathLevel = PowerMockito.mock(TraversePathLevel.class);
+        Mockito.when(mockFactory.newInstance(classUnderTest, dirPath, newDepth))
             .thenReturn(mockTraversePathLevel);
 
-        assertSame(classUnderTest.tryAddLevel(dirPath), mockTraversePathLevel);
-        assertEquals(classUnderTest.getDepth(), newDepth);
-        verify(mockFactory).newInstance(classUnderTest, dirPath, newDepth);
+        Assert.assertSame(classUnderTest.tryAddLevel(dirPath), mockTraversePathLevel);
+        Assert.assertEquals(classUnderTest.getDepth(), newDepth);
+        Mockito.verify(mockFactory).newInstance(classUnderTest, dirPath, newDepth);
         return mockTraversePathLevel;
     }
 
@@ -180,13 +176,13 @@ extends PowerMockTestCase {
                 null, null, TraversePathExceptionPolicy.THROW, null, null, null, null, mockFactory);
 
         final File dirPath = new File("dummy");
-        when(mockFactory.newInstance(classUnderTest, dirPath, 1)).thenThrow(DUMMY_PATH_EXCEPTION);
+        Mockito.when(mockFactory.newInstance(classUnderTest, dirPath, 1)).thenThrow(DUMMY_PATH_EXCEPTION);
 
         try {
             classUnderTest.tryAddLevel(dirPath);
         }
         catch (Exception e) {
-            assertSame(e.getClass(), PathRuntimeException.class);
+            Assert.assertSame(e.getClass(), PathRuntimeException.class);
         }
     }
 
@@ -197,13 +193,13 @@ extends PowerMockTestCase {
             new _TraversePathIterator(null, null, TraversePathExceptionPolicy.IGNORE, null, null,
                                         null, null, mockFactory);
 
-        assertEquals(classUnderTest.getDepth(), 0);
+        Assert.assertEquals(classUnderTest.getDepth(), 0);
 
         final File dirPath = new File("dummy");
-        when(mockFactory.newInstance(classUnderTest, dirPath, 1)).thenThrow(DUMMY_PATH_EXCEPTION);
+        Mockito.when(mockFactory.newInstance(classUnderTest, dirPath, 1)).thenThrow(DUMMY_PATH_EXCEPTION);
 
-        assertNull(classUnderTest.tryAddLevel(dirPath));
-        assertEquals(classUnderTest.getDepth(), 0);
+        Assert.assertNull(classUnderTest.tryAddLevel(dirPath));
+        Assert.assertEquals(classUnderTest.getDepth(), 0);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -214,8 +210,8 @@ extends PowerMockTestCase {
     public void tryRemoveAndGetNextLevel_PassWithNoNextLevel() {
         _TraversePathIterator classUnderTest =
             new _TraversePathIterator(null, null, null, null, null, null, null, mockFactory);
-        assertEquals(classUnderTest.getDepth(), 0);
-        assertNull(classUnderTest.tryRemoveAndGetNextLevel());
+        Assert.assertEquals(classUnderTest.getDepth(), 0);
+        Assert.assertNull(classUnderTest.tryRemoveAndGetNextLevel());
     }
 
     @Test
@@ -227,9 +223,9 @@ extends PowerMockTestCase {
         final File dirPath = new File("dummy");
         TraversePathLevel mockTraversePathLevel = _addLevel(classUnderTest, dirPath);
 
-        assertEquals(classUnderTest.getDepth(), 1);
-        assertNull(classUnderTest.tryRemoveAndGetNextLevel());
-        assertEquals(classUnderTest.getDepth(), 0);
+        Assert.assertEquals(classUnderTest.getDepth(), 1);
+        Assert.assertNull(classUnderTest.tryRemoveAndGetNextLevel());
+        Assert.assertEquals(classUnderTest.getDepth(), 0);
     }
 
     @Test
@@ -244,11 +240,11 @@ extends PowerMockTestCase {
         final File dirPath2 = new File("dummy2");
         TraversePathLevel mockTraversePathLevel2 = _addLevel(classUnderTest, dirPath2);
 
-        assertEquals(classUnderTest.getDepth(), 2);
-        assertSame(classUnderTest.tryRemoveAndGetNextLevel(), mockTraversePathLevel);
-        assertEquals(classUnderTest.getDepth(), 1);
-        assertNull(classUnderTest.tryRemoveAndGetNextLevel());
-        assertEquals(classUnderTest.getDepth(), 0);
+        Assert.assertEquals(classUnderTest.getDepth(), 2);
+        Assert.assertSame(classUnderTest.tryRemoveAndGetNextLevel(), mockTraversePathLevel);
+        Assert.assertEquals(classUnderTest.getDepth(), 1);
+        Assert.assertNull(classUnderTest.tryRemoveAndGetNextLevel());
+        Assert.assertEquals(classUnderTest.getDepth(), 0);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////

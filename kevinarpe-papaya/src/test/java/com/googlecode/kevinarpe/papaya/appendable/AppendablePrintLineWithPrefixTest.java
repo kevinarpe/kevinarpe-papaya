@@ -25,16 +25,14 @@ package com.googlecode.kevinarpe.papaya.appendable;
  * #L%
  */
 
+import org.mockito.Mockito;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.io.PrintStream;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.testng.Assert.assertSame;
 
 public class AppendablePrintLineWithPrefixTest {
 
@@ -46,7 +44,7 @@ public class AppendablePrintLineWithPrefixTest {
 
     @BeforeMethod
     public void beforeEachTestMethod() {
-        mockPrintStream = mock(PrintStream.class);
+        mockPrintStream = Mockito.mock(PrintStream.class);
         classUnderTest = new AppendablePrintLineWithPrefix(mockPrintStream, PREFIX);
     }
 
@@ -56,7 +54,7 @@ public class AppendablePrintLineWithPrefixTest {
 
     @DataProvider
     private static Object[][] _ctor_FailWithNull_Data() {
-        PrintStream mockPrintStream2 = mock(PrintStream.class);
+        PrintStream mockPrintStream2 = Mockito.mock(PrintStream.class);
 
         return new Object[][] {
             { (PrintStream) null, (String) null },
@@ -84,7 +82,7 @@ public class AppendablePrintLineWithPrefixTest {
     @Test
     public void appendCharSequence_Pass()
     throws IOException {
-        assertSame(classUnderTest.append("abc"), classUnderTest);
-        verify(mockPrintStream).println((CharSequence) (PREFIX + "abc"));
+        Assert.assertSame(classUnderTest.append("abc"), classUnderTest);
+        Mockito.verify(mockPrintStream).println((CharSequence) (PREFIX + "abc"));
     }
 }

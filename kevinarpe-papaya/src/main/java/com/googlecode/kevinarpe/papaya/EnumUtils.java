@@ -29,6 +29,7 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 import com.googlecode.kevinarpe.papaya.string.joiner.Joiner2Utils;
+import com.googlecode.kevinarpe.papaya.string.joiner.formatter.StringFormatter;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -64,7 +65,7 @@ public class EnumUtils {
         }
         String x =
             Joiner2Utils.INSTANCE.withSeparator(", ")
-                .withQuotes("'", "'")
+                .withFormatter(new StringFormatter("'%s%'"))
                 .useForNoElements("(empty)")
                 .join(enumNameArr);
         return x;

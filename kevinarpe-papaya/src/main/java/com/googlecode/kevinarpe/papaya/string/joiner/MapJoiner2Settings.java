@@ -25,6 +25,8 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.string.joiner.formatter.Formatter2;
+
 /**
  * Extends interface {@link SharedJoiner2Settings} to add settings specific to
  * {@link MapJoiner2}.
@@ -53,134 +55,62 @@ extends SharedJoiner2Settings<TSelf, TSelf> {
     String withKeyValueSeparator();
 
     /**
-     * Constructs a new instance with new key prefix and suffix.  These values are prepended or
-     * appended to each key after its conversion to {@code String} during a join.
+     * Constructs a new instance with new key formatter.  Formatters can be used to add a prefix
+     * or suffix to each key.
      *
-     * @param leftQuote
-     *        String to prefix to keys during join.
-     *        Must not be {@code null}, but can be {@code ""} (empty string).
-     *        Example: {@code "("} (left paren/bracket)
-     * @param rightQuote
-     *        String to suffix to keys during join.
-     *        Must not be {@code null}, but can be {@code ""} (empty string).
-     *        Example: {@code ")"} (right paren/bracket)
+     * @param keyFormatter
+     *        key formatter to add a prefix and/or suffix to each key.
+     *        Must not be {@code null}.
      *
-     * @return new instance with new prefix and suffix for each key
+     * @return new instance with formatter for each key
      *
      * @throws NullPointerException
-     *         if {@code leftQuote} or {@code rightQuote} is {@code null}
+     *         if {@code keyFormatter} is {@code null}
      *
-     * @see #withKeyQuotes(String, char)
-     * @see #withKeyQuotes(char, String)
-     * @see #withKeyQuotes(char, char)
-     * @see #withKeyLeftQuote()
-     * @see #withKeyRightQuote()
-     * @see Joiner2Utils#DEFAULT_KEY_LEFT_QUOTE
-     * @see Joiner2Utils#DEFAULT_KEY_RIGHT_QUOTE
+     * @see #withKeyFormatter()
+     * @see #withValueFormatter(Formatter2)
+     * @see Joiner2Utils#DEFAULT_KEY_FORMATTER
      */
-    TSelf withKeyQuotes(String leftQuote, String rightQuote);
+    TSelf withKeyFormatter(Formatter2 keyFormatter);
 
     /**
-     * This is a convenience method to call {@link #withKeyQuotes(String, String)}.
+     * Retrieves the current key formatter.  The default is no prefix or suffix.
+     *
+     * @return current key formatter
+     *
+     * @see #withKeyFormatter(Formatter2)
+     * @see Joiner2Utils#DEFAULT_KEY_FORMATTER
      */
-    TSelf withKeyQuotes(String leftQuote, char rightQuote);
+    Formatter2 withKeyFormatter();
 
     /**
-     * This is a convenience method to call {@link #withKeyQuotes(String, String)}.
-     */
-    TSelf withKeyQuotes(char leftQuote, String rightQuote);
-
-    /**
-     * This is a convenience method to call {@link #withKeyQuotes(String, String)}.
-     */
-    TSelf withKeyQuotes(char leftQuote, char rightQuote);
-
-    /**
-     * Retrieves the current key prefix.  The default is {@code ""} (empty string).
+     * Constructs a new instance with new value formatter.  Formatters can be used to add a prefix
+     * or suffix to each value.
      *
-     * @return current key prefix
+     * @param valueFormatter
+     *        value formatter to add a prefix and/or suffix to each value.
+     *        Must not be {@code null}.
      *
-     * @see #withKeyQuotes(String, String)
-     * @see #withKeyRightQuote()
-     * @see Joiner2Utils#DEFAULT_KEY_LEFT_QUOTE
-     */
-    String withKeyLeftQuote();
-
-    /**
-     * Retrieves the current key suffix.  The default is {@code ""} (empty string).
-     *
-     * @return current key suffix
-     *
-     * @see #withKeyQuotes(String, String)
-     * @see #withKeyLeftQuote()
-     * @see Joiner2Utils#DEFAULT_KEY_RIGHT_QUOTE
-     */
-    String withKeyRightQuote();
-
-    /**
-     * Constructs a new instance with new value prefix and suffix.  These values are prepended or
-     * appended to each value after its conversion to {@code String} during a join.
-     *
-     * @param leftQuote
-     *        String to prefix to values during join.
-     *        Must not be {@code null}, but can be {@code ""} (empty string).
-     *        Example: {@code "("} (left paren/bracket)
-     * @param rightQuote
-     *        String to suffix to values during join.
-     *        Must not be {@code null}, but can be {@code ""} (empty string).
-     *        Example: {@code ")"} (right paren/bracket)
-     *
-     * @return new instance with new prefix and suffix for each value
+     * @return new instance with formatter for each value
      *
      * @throws NullPointerException
-     *         if {@code leftQuote} or {@code rightQuote} is {@code null}
+     *         if {@code keyFormatter} is {@code null}
      *
-     * @see #withValueQuotes(String, char)
-     * @see #withValueQuotes(char, String)
-     * @see #withValueQuotes(char, char)
-     * @see #withValueLeftQuote()
-     * @see #withValueRightQuote()
-     * @see Joiner2Utils#DEFAULT_VALUE_LEFT_QUOTE
-     * @see Joiner2Utils#DEFAULT_VALUE_RIGHT_QUOTE
+     * @see #withValueFormatter()
+     * @see #withKeyFormatter(Formatter2)
+     * @see Joiner2Utils#DEFAULT_VALUE_FORMATTER
      */
-    TSelf withValueQuotes(String leftQuote, String rightQuote);
+    TSelf withValueFormatter(Formatter2 valueFormatter);
 
     /**
-     * This is a convenience method to call {@link #withValueQuotes(String, String)}.
-     */
-    TSelf withValueQuotes(String leftQuote, char rightQuote);
-
-    /**
-     * This is a convenience method to call {@link #withValueQuotes(String, String)}.
-     */
-    TSelf withValueQuotes(char leftQuote, String rightQuote);
-
-    /**
-     * This is a convenience method to call {@link #withValueQuotes(String, String)}.
-     */
-    TSelf withValueQuotes(char leftQuote, char rightQuote);
-
-    /**
-     * Retrieves the current value prefix.  The default is {@code ""} (empty string).
+     * Retrieves the current value formatter.  The default is no prefix or suffix.
      *
-     * @return current value prefix
+     * @return current value formatter
      *
-     * @see #withValueQuotes(String, String)
-     * @see #withValueRightQuote()
-     * @see Joiner2Utils#DEFAULT_VALUE_LEFT_QUOTE
+     * @see #withValueFormatter(Formatter2)
+     * @see Joiner2Utils#DEFAULT_VALUE_FORMATTER
      */
-    String withValueLeftQuote();
-
-    /**
-     * Retrieves the current value suffix.  The default is {@code ""} (empty string).
-     *
-     * @return current value suffix
-     *
-     * @see #withValueQuotes(String, String)
-     * @see #withValueLeftQuote()
-     * @see Joiner2Utils#DEFAULT_VALUE_RIGHT_QUOTE
-     */
-    String withValueRightQuote();
+    Formatter2 withValueFormatter();
 
     /**
      * Constructs a new instance with new text to use when joining {@code null} keys.

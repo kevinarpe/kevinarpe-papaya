@@ -25,6 +25,8 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.string.joiner.formatter.Formatter2;
+import com.googlecode.kevinarpe.papaya.string.joiner.formatter.StringFormatter;
 import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -41,10 +43,14 @@ import java.util.List;
  */
 public class Joiner2ImplTest {
 
+    private Formatter2 mockFormatter;
+
     private Joiner2Utils classUnderTest;
 
     @BeforeMethod
     public void beforeEachTestMethod() {
+        mockFormatter = Mockito.mock(Formatter2.class);
+
         classUnderTest = new Joiner2Utils();
     }
 
@@ -76,70 +82,18 @@ public class Joiner2ImplTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Joiner2Impl.withQuotes(String, String)/withQuotes(String, char)/withQuotes(char, String)/withQuotes(char, char)
+    // Joiner2Impl.withFormatter(Formatter2)
     //
 
-    @DataProvider
-    private static Object[][] _withQuotes_Pass_Data() {
-        return new Object[][] {
-            { "xyz", "abc" },
-            { "", "abc" },
-            { "xyz", "" },
-            { "", "" },
-            { "   ", "   " },
-        };
+    @Test
+    public void withFormatterFormatter2_Pass() {
+        Joiner2 x = classUnderTest.withSeparator(",").withFormatter(mockFormatter);
+        Assert.assertSame(x.withFormatter(), mockFormatter);
     }
 
-    @Test(dataProvider = "_withQuotes_Pass_Data")
-    public void withQuotes_Pass(String leftQuote, String rightQuote) {
-        // String, String
-        Joiner2 x = classUnderTest.withSeparator(",").withQuotes(leftQuote, rightQuote);
-        Assert.assertEquals(x.withLeftQuote(), leftQuote);
-        Assert.assertEquals(x.withRightQuote(), rightQuote);
-
-        // String, char
-        if (!rightQuote.isEmpty()) {
-            char rightQuoteChar = rightQuote.charAt(0);
-            String rightQuoteCharString = String.valueOf(rightQuoteChar);
-            x = classUnderTest.withSeparator(",").withQuotes(leftQuote, rightQuoteChar);
-            Assert.assertEquals(x.withLeftQuote(), leftQuote);
-            Assert.assertEquals(x.withRightQuote(), rightQuoteCharString);
-        }
-
-        // char, String
-        if (!leftQuote.isEmpty()) {
-            char leftQuoteChar = leftQuote.charAt(0);
-            String leftQuoteCharString = String.valueOf(leftQuoteChar);
-            x = classUnderTest.withSeparator(",").withQuotes(leftQuoteChar, rightQuote);
-            Assert.assertEquals(x.withLeftQuote(), leftQuoteCharString);
-            Assert.assertEquals(x.withRightQuote(), rightQuote);
-        }
-
-        // char, char
-        if (!leftQuote.isEmpty() && !rightQuote.isEmpty()) {
-            char leftQuoteChar = leftQuote.charAt(0);
-            String leftQuoteCharString = String.valueOf(leftQuoteChar);
-            char rightQuoteChar = rightQuote.charAt(0);
-            String rightQuoteCharString = String.valueOf(rightQuoteChar);
-            x = classUnderTest.withSeparator(",").withQuotes(leftQuoteChar, rightQuoteChar);
-            Assert.assertEquals(x.withLeftQuote(), leftQuoteCharString);
-            Assert.assertEquals(x.withRightQuote(), rightQuoteCharString);
-        }
-    }
-
-    @DataProvider
-    private static Object[][] _withQuotes_FailWithNull_Data() {
-        return new Object[][] {
-            { (String) null, "xyz" },
-            { "xyz", (String) null },
-            { (String) null, (String) null },
-        };
-    }
-
-    @Test(expectedExceptions = NullPointerException.class,
-            dataProvider = "_withQuotes_FailWithNull_Data")
-    public void withQuotes_FailWithNull(String leftQuote, String rightQuote) {
-        classUnderTest.withSeparator(",").withQuotes(leftQuote, rightQuote);
+    @Test(expectedExceptions = NullPointerException.class)
+    public void withFormatterFormatter2_FaillWithNull() {
+        classUnderTest.withSeparator(",").withFormatter((Formatter2) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -218,87 +172,83 @@ public class Joiner2ImplTest {
     @DataProvider
     private static Object[][] _appendTo_Pass_Data() {
         return new Object[][] {
-            { ",", null, null, null, null, false, Arrays.asList(), "" },
-            { ",", null, null, null, null, false, Arrays.asList("a"), "a" },
-            { ",", null, null, null, null, false, Arrays.asList("a", "b"), "a,b" },
-            { ",", null, null, null, null, false, Arrays.asList("a", "b", "c"), "a,b,c" },
+            { ",", null, null, null, false, Arrays.asList(), "" },
+            { ",", null, null, null, false, Arrays.asList("a"), "a" },
+            { ",", null, null, null, false, Arrays.asList("a", "b"), "a,b" },
+            { ",", null, null, null, false, Arrays.asList("a", "b", "c"), "a,b,c" },
 
-            { ",", null, null, null, null, true, Arrays.asList(), "" },
-            { ",", null, null, null, null, true, Arrays.asList("a"), "a" },
-            { ",", null, null, null, null, true, Arrays.asList("a", "b"), "a,b" },
-            { ",", null, null, null, null, true, Arrays.asList("a", "b", "c"), "a,b,c" },
+            { ",", null, null, null, true, Arrays.asList(), "" },
+            { ",", null, null, null, true, Arrays.asList("a"), "a" },
+            { ",", null, null, null, true, Arrays.asList("a", "b"), "a,b" },
+            { ",", null, null, null, true, Arrays.asList("a", "b", "c"), "a,b,c" },
 
-            { ",", "[", "]", null, null, false, Arrays.asList(), "" },
-            { ",", "[", "]", null, null, false, Arrays.asList("a"), "[a]" },
-            { ",", "[", "]", null, null, false, Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", "[", "]", null, null, false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", new StringFormatter("[%s]"), null, null, false, Arrays.asList(), "" },
+            { ",", new StringFormatter("[%s]"), null, null, false, Arrays.asList("a"), "[a]" },
+            { ",", new StringFormatter("[%s]"), null, null, false, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", new StringFormatter("[%s]"), null, null, false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
 
-            { ",", "[", "]", null, null, true, Arrays.asList(), "" },
-            { ",", "[", "]", null, null, true, Arrays.asList("a"), "[a]" },
-            { ",", "[", "]", null, null, true, Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", "[", "]", null, null, true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", new StringFormatter("[%s]"), null, null, true, Arrays.asList(), "" },
+            { ",", new StringFormatter("[%s]"), null, null, true, Arrays.asList("a"), "[a]" },
+            { ",", new StringFormatter("[%s]"), null, null, true, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", new StringFormatter("[%s]"), null, null, true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
 
-            { ",", "[", "]", "(empty)", null, false, Arrays.asList(), "(empty)" },
-            { ",", "[", "]", "(empty)", null, false, Arrays.asList("a"), "[a]" },
-            { ",", "[", "]", "(empty)", null, false, Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", "[", "]", "(empty)", null, false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, false, Arrays.asList(), "(empty)" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, false, Arrays.asList("a"), "[a]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, false, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
 
-            { ",", "[", "]", "(empty)", null, true, Arrays.asList(), "(empty)" },
-            { ",", "[", "]", "(empty)", null, true, Arrays.asList("a"), "[a]" },
-            { ",", "[", "]", "(empty)", null, true, Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", "[", "]", "(empty)", null, true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, true, Arrays.asList(), "(empty)" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, true, Arrays.asList("a"), "[a]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, true, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
 
-            { ",", "[", "]", "(empty)", null, false, Arrays.asList(), "(empty)" },
-            { ",", "[", "]", "(empty)", null, false, Arrays.asList("a"), "[a]" },
-            { ",", "[", "]", "(empty)", null, false, Arrays.asList("a", null), "[a],[null]" },
-            { ",", "[", "]", "(empty)", null, false, Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", "[", "]", "(empty)", null, false, Arrays.asList("a", null, "b", null), "[a],[null],[b],[null]" },
-            { ",", "[", "]", "(empty)", null, false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
-            { ",", "[", "]", "(empty)", null, false, Arrays.asList("a", null, "b", null, "c", null), "[a],[null],[b],[null],[c],[null]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, false, Arrays.asList(), "(empty)" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, false, Arrays.asList("a"), "[a]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, false, Arrays.asList("a", null), "[a],[null]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, false, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, false, Arrays.asList("a", null, "b", null), "[a],[null],[b],[null]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, false, Arrays.asList("a", null, "b", null, "c", null), "[a],[null],[b],[null],[c],[null]" },
 
-            { ",", "[", "]", "(empty)", "nullValue", false, Arrays.asList(), "(empty)" },
-            { ",", "[", "]", "(empty)", "nullValue", false, Arrays.asList("a"), "[a]" },
-            { ",", "[", "]", "(empty)", "nullValue", false, Arrays.asList("a", null), "[a],[nullValue]" },
-            { ",", "[", "]", "(empty)", "nullValue", false, Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", "[", "]", "(empty)", "nullValue", false, Arrays.asList("a", null, "b", null), "[a],[nullValue],[b],[nullValue]" },
-            { ",", "[", "]", "(empty)", "nullValue", false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
-            { ",", "[", "]", "(empty)", "nullValue", false, Arrays.asList("a", null, "b", null, "c", null), "[a],[nullValue],[b],[nullValue],[c],[nullValue]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", "nullValue", false, Arrays.asList(), "(empty)" },
+            { ",", new StringFormatter("[%s]"), "(empty)", "nullValue", false, Arrays.asList("a"), "[a]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", "nullValue", false, Arrays.asList("a", null), "[a],[nullValue]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", "nullValue", false, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", "nullValue", false, Arrays.asList("a", null, "b", null), "[a],[nullValue],[b],[nullValue]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", "nullValue", false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", "nullValue", false, Arrays.asList("a", null, "b", null, "c", null), "[a],[nullValue],[b],[nullValue],[c],[nullValue]" },
 
-            { ",", "[", "]", "(empty)", "nullValue", true, Arrays.asList(), "(empty)" },
-            { ",", "[", "]", "(empty)", "nullValue", true, Arrays.asList("a"), "[a]" },
-            { ",", "[", "]", "(empty)", "nullValue", true, Arrays.asList("a", null), "[a]" },
-            { ",", "[", "]", "(empty)", "nullValue", true, Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", "[", "]", "(empty)", "nullValue", true, Arrays.asList("a", null, "b", null), "[a],[b]" },
-            { ",", "[", "]", "(empty)", "nullValue", true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
-            { ",", "[", "]", "(empty)", "nullValue", true, Arrays.asList("a", null, "b", null, "c", null), "[a],[b],[c]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", "nullValue", true, Arrays.asList(), "(empty)" },
+            { ",", new StringFormatter("[%s]"), "(empty)", "nullValue", true, Arrays.asList("a"), "[a]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", "nullValue", true, Arrays.asList("a", null), "[a]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", "nullValue", true, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", "nullValue", true, Arrays.asList("a", null, "b", null), "[a],[b]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", "nullValue", true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", "nullValue", true, Arrays.asList("a", null, "b", null, "c", null), "[a],[b],[c]" },
 
-            { ",", "[", "]", "(empty)", null, true, Arrays.asList(), "(empty)" },
-            { ",", "[", "]", "(empty)", null, true, Arrays.asList("a"), "[a]" },
-            { ",", "[", "]", "(empty)", null, true, Arrays.asList("a", null), "[a]" },
-            { ",", "[", "]", "(empty)", null, true, Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", "[", "]", "(empty)", null, true, Arrays.asList("a", null, "b", null), "[a],[b]" },
-            { ",", "[", "]", "(empty)", null, true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
-            { ",", "[", "]", "(empty)", null, true, Arrays.asList("a", null, "b", null, "c", null), "[a],[b],[c]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, true, Arrays.asList(), "(empty)" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, true, Arrays.asList("a"), "[a]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, true, Arrays.asList("a", null), "[a]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, true, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, true, Arrays.asList("a", null, "b", null), "[a],[b]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", new StringFormatter("[%s]"), "(empty)", null, true, Arrays.asList("a", null, "b", null, "c", null), "[a],[b],[c]" },
         };
     }
 
     @Test(dataProvider = "_appendTo_Pass_Data")
     public void appendTo_Pass(
             String separator,
-            String optLeftQuote,
-            String optRightQuote,
+            Formatter2 optFormatter,
             String optNoElementsText,
             String optNullText,
             boolean skipNullsFlag,
             List<String> partList,
             String expectedResult)
     throws IOException {
-        Assert.assertTrue(
-            (null == optLeftQuote && null == optRightQuote)
-            || (null != optLeftQuote && null != optRightQuote));
         Joiner2 joiner = classUnderTest.withSeparator(separator);
-        if (null != optLeftQuote && null != optRightQuote) {
-            joiner = joiner.withQuotes(optLeftQuote, optRightQuote);
+        if (null != optFormatter) {
+            joiner = joiner.withFormatter(optFormatter);
         }
         if (null != optNoElementsText) {
             joiner = joiner.useForNoElements(optNoElementsText);
@@ -592,10 +542,7 @@ public class Joiner2ImplTest {
         Joiner2 x = classUnderTest.withSeparator(",");
         MapJoiner2 y = x.withKeyValueSeparator('x');
         Assert.assertEquals(y.withKeyValueSeparator(), "x");
-        Assert.assertEquals(y.withKeyLeftQuote(), Joiner2Utils.DEFAULT_KEY_LEFT_QUOTE);
-        Assert.assertEquals(y.withKeyRightQuote(), Joiner2Utils.DEFAULT_KEY_RIGHT_QUOTE);
-        Assert.assertEquals(y.withValueLeftQuote(), Joiner2Utils.DEFAULT_VALUE_LEFT_QUOTE);
-        Assert.assertEquals(y.withValueRightQuote(), Joiner2Utils.DEFAULT_VALUE_RIGHT_QUOTE);
+        Assert.assertEquals(y.withFormatter(), Joiner2Utils.DEFAULT_FORMATTER);
         Assert.assertEquals(y.useForNullKey(), Joiner2Utils.DEFAULT_KEY_NULL_TEXT);
         Assert.assertEquals(y.useForNullValue(), Joiner2Utils.DEFAULT_VALUE_NULL_TEXT);
     }
