@@ -25,9 +25,10 @@ package com.googlecode.kevinarpe.papaya.appendable;
  * #L%
  */
 
-import java.io.IOException;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import java.io.IOException;
 
 /**
  * Reduces the number of methods required for implementation by interface {@link Appendable}
@@ -35,7 +36,7 @@ import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@NotFullyTested
+@FullyTested
 public abstract class AbstractSimplifiedAppendable
 implements Appendable {
 
@@ -43,11 +44,21 @@ implements Appendable {
      * This method calls {@link #append(CharSequence)}.
      * <p>
      * {@inheritDoc}
+     *
+     * @throws NullPointerException
+     *         if {@code csq} is {@code null}
+     * @throws IndexOutOfBoundsException
+     * <ul>
+     *     <li>if {@code code} or {@code end} are negative</li>
+     *     <li>if {@code end} is greater than {@code length}</li>
+     *     <li>if {@code start} is greater than {@code end}</li>
+     * </ul>
      */
-    @NotFullyTested
     @Override
-    public Appendable append(CharSequence csq, int start, int end)
+    public final Appendable append(CharSequence csq, int start, int end)
     throws IOException {
+        ObjectArgs.checkNotNull(csq, "csq");
+
         CharSequence csq2 = csq.subSequence(start, end);
         Appendable result = append(csq2);
         return result;
@@ -58,9 +69,8 @@ implements Appendable {
      * <p>
      * {@inheritDoc}
      */
-    @NotFullyTested
     @Override
-    public Appendable append(char c)
+    public final Appendable append(char c)
     throws IOException {
         String x = String.valueOf(c);
         Appendable result = append(x);

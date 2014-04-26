@@ -25,13 +25,13 @@ package com.googlecode.kevinarpe.papaya.appendable;
  * #L%
  */
 
-import java.io.IOException;
-import java.io.PrintStream;
-
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.process.ProcessBuilder2;
 import com.googlecode.kevinarpe.papaya.process.ProcessOutputStreamSettings;
+
+import java.io.IOException;
+import java.io.PrintStream;
 
 /**
  * This is a class is offered as a sample implementation of {@link AbstractSimplifiedAppendable},
@@ -45,8 +45,8 @@ import com.googlecode.kevinarpe.papaya.process.ProcessOutputStreamSettings;
  * 
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@NotFullyTested
-public class AppendablePrintLineWithPrefix
+@FullyTested
+public final class AppendablePrintLineWithPrefix
 extends AbstractSimplifiedAppendable {
     
     private final PrintStream _stream;
@@ -66,6 +66,9 @@ extends AbstractSimplifiedAppendable {
      *   <li>Must not be {@code null}, but can be empty</li>
      *   <li>Example: {@code "STDOUT: "} or {@code "STDERR: "}</li>
      * </ul>
+     *
+     * @throws NullPointerException
+     *         if {@code stream} or {@code prefix} is {@code null}
      */
     public AppendablePrintLineWithPrefix(PrintStream stream, String prefix) {
         _stream = ObjectArgs.checkNotNull(stream, "stream");
@@ -77,10 +80,15 @@ extends AbstractSimplifiedAppendable {
      * {@link PrintStream#println(String)}.
      * <p>
      * {@inheritDoc}
+     *
+     * @throws NullPointerException
+     *         if {@code csq} is {@code null}
      */
     @Override
     public Appendable append(CharSequence csq)
     throws IOException {
+        ObjectArgs.checkNotNull(csq, "csq");
+
         CharSequence x = (_prefix.isEmpty() ? csq : _prefix + csq);
         _stream.println(x);
         return this;

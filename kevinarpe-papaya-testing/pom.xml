@@ -10,7 +10,7 @@
     <parent>
         <groupId>com.googlecode.kevinarpe-papaya</groupId>
         <artifactId>kevinarpe-papaya-parent</artifactId>
-        <version>0.0.13-SNAPSHOT</version>
+        <version>0.0.13</version>
     </parent>
     <artifactId>kevinarpe-papaya-testing</artifactId>
     <name>${project.artifactId}</name>
@@ -64,11 +64,13 @@
             <groupId>com.googlecode.kevinarpe-papaya</groupId>
             <artifactId>kevinarpe-papaya-slf4j</artifactId>
             <version>${project.parent.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.googlecode.kevinarpe-papaya</groupId>
             <artifactId>kevinarpe-papaya-testing-slf4j</artifactId>
             <version>${project.parent.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>

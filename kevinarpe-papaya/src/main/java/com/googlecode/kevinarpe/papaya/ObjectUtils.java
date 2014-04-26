@@ -25,15 +25,16 @@ package com.googlecode.kevinarpe.papaya;
  * #L%
  */
 
-import java.util.Arrays;
-
 import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.argument.IntArgs;
 
+import java.util.Arrays;
+
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@NotFullyTested
 public final class ObjectUtils {
 
     // Disable default constructor
@@ -60,7 +61,6 @@ public final class ObjectUtils {
      * @see #appendHashCodes(int, int...)
      * @see Arrays#hashCode(Object[])
      */
-    @NotFullyTested
     public static int subclassHashCode(int superclassHashCode, Object... objectArr) {
         IntArgs.checkMinValue(superclassHashCode, 1, "superclassHashCode");
         for (int i = 0; i < objectArr.length; ++i) {
@@ -89,7 +89,6 @@ public final class ObjectUtils {
      * @see #subclassHashCode(int, Object...)
      * @see Arrays#hashCode(Object[])
      */
-    @NotFullyTested
     public static int appendHashCodes(int hashCode, int... moreHashCodeArr) {
         IntArgs.checkNotNegative(hashCode, "hashCode");
         ArrayArgs.checkNotEmpty(moreHashCodeArr, "moreHashCodeArr");

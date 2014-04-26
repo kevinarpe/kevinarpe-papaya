@@ -6,7 +6,7 @@
     <parent>
         <artifactId>kevinarpe-papaya-parent</artifactId>
         <groupId>com.googlecode.kevinarpe-papaya</groupId>
-        <version>0.0.13-SNAPSHOT</version>
+        <version>0.0.13</version>
     </parent>
 
     <artifactId>kevinarpe-papaya-testing-slf4j</artifactId>
@@ -82,10 +82,6 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava-testlib</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
         </dependency>
     </dependencies>
 </project>
