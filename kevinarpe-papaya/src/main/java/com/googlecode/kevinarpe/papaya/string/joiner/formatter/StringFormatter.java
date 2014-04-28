@@ -26,11 +26,18 @@ implements Formatter2 {
      * Creates a new formatter with a format string.
      *
      * @param format
-     *        a format string for {@link Formatter}.
-     *        Must not be {@code null}, empty, or only whitespace.
+     * <ul>
+     *     <li>Format string for {@link Formatter}</li>
+     *     <li>Must not be {@code null}, empty, or only whitespace</li>
+     *     <li>Example 1: {@code "%.6f"}</li>
+     *     <li>Example 2: {@code "[%s]"}</li>
+     *     <li>Example 3: {@code "[%1$s] '%1$s'"}</li>
+     * </ul>
      *
      * @throws IllegalArgumentException
      *         if {@link String#format(String, Object...)} fails
+     *
+     * @see Formatter
      */
     public StringFormatter(String format) {
         _format = StringArgs.checkNotEmptyOrWhitespace(format, "format");

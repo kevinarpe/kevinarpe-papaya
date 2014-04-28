@@ -32,14 +32,17 @@ import com.googlecode.kevinarpe.papaya.string.joiner.formatter.Formatter2;
 import com.googlecode.kevinarpe.papaya.string.joiner.formatter.StringFormatter;
 
 /**
- * Constants and static utilities for {@link Joiner2} and {@link MapJoiner2}.
+ * Constants and static utilities for {@link Joiner2} and {@link MapJoiner2}.  To use the methods in
+ * this class create a new instance via {@link #Joiner2Utils()} or use the public static member
+ * {@link #INSTANCE}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
+ * @see #INSTANCE
  * @see #withSeparator(String)
  * @see #withSeparator(char)
- * @see #newQuotingJoinerFactory(String)
- * @see #newQuotingJoinerFactory(char)
+ * @see #newJoiner2Factory(String)
+ * @see #newJoiner2Factory(char)
  * @see StatelessObject
  * @see IJoiner2Utils
  */
@@ -149,7 +152,7 @@ implements IJoiner2Utils {
      * {@inheritDoc}
      */
     @Override
-    public Joiner2Factory newQuotingJoinerFactory(String separator) {
+    public Joiner2Factory newJoiner2Factory(String separator) {
         Joiner2FactoryImpl x = new Joiner2FactoryImpl(separator);
         return x;
     }
@@ -158,9 +161,9 @@ implements IJoiner2Utils {
      * {@inheritDoc}
      */
     @Override
-    public Joiner2Factory newQuotingJoinerFactory(char separator) {
+    public Joiner2Factory newJoiner2Factory(char separator) {
         String separatorString = String.valueOf(separator);
-        Joiner2Factory x = newQuotingJoinerFactory(separatorString);
+        Joiner2Factory x = newJoiner2Factory(separatorString);
         return x;
     }
 }

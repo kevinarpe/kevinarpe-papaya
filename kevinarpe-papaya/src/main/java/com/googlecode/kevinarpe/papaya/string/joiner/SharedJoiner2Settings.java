@@ -32,16 +32,16 @@ import com.googlecode.kevinarpe.papaya.string.joiner.formatter.Formatter2;
  * <p>
  * Inheritance diagram:
  * <pre>{@code
- *     interface
+ *           interface
  *     SharedJoiner2Settings
- *        /                 \
- * interface               interface
- * Joiner2Settings     MapJoiner2Settings
- *    |                       |
- * interface               interface
- * Joiner2                MapJoiner2
- *    |                       |
- * class                   class
+ *        /                \
+ *   interface           interface
+ * Joiner2Settings   MapJoiner2Settings
+ *     |                     |
+ * interface             interface
+ *  Joiner2              MapJoiner2
+ *     |                     |
+ *   class                 class
  * Joiner2Impl         MapJoiner2Impl
  * }</pre>
  *

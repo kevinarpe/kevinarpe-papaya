@@ -1,7 +1,6 @@
 # Vi
 .*.swp
-.swp
-.swo
+.sw*
 
 # Maven
 target/

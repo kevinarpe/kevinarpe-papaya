@@ -10,6 +10,9 @@ import java.util.Formatter;
  * {@link StringFormatter}, this class has state.  The next count is stored internally.  Be careful
  * not to reuse instances of this class.
  *
+ * The only constructor is private; new instances are constructed via
+ * {@link #withDefaultFirstCount(String)} or {@link #withFirstCount(String, int)}.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see Formatter2
@@ -28,10 +31,11 @@ implements Formatter2 {
 
     private CountingStringFormatter(String format, int firstCount) {
         _format = StringArgs.checkNotEmptyOrWhitespace(format, "format");
-        _format("test value", _format, DEFAULT_FIRST_COUNT, "test");
 
         _firstCount = firstCount;
         _countOffset = 0;
+
+        _format("test value", _format, DEFAULT_FIRST_COUNT, "test");
     }
 
     /**
@@ -50,15 +54,20 @@ implements Formatter2 {
      * <ul>
      *     <li>Format string for {@link Formatter}</li>
      *     <li>Must not be {@code null}, empty, or only whitespace</li>
-     *     <li>Example 1: {@code "%d: [%s]"}</li>
-     *     <li>Example 2: {@code "[%2$s] %1$d"}</li>
+     *     <li>Example 1: {@code "[%.6f]"}</li>
+     *     <li>Example 2: {@code "%d: [%s]"}</li>
+     *     <li>Example 3: {@code "[%2$s] %1$d"}</li>
      * </ul>
      * @param firstCount
      *        the first number to use when counting.  May be any value (zero, negative, etc.)
      *
      * @return new formatter
      *
+     * @throws IllegalArgumentException
+     *         if {@link String#format(String, Object...)} fails
+     *
      * @see #withDefaultFirstCount(String)
+     * @see Formatter
      */
     public static CountingStringFormatter withFirstCount(String format, int firstCount) {
         CountingStringFormatter x = new CountingStringFormatter(format, firstCount);

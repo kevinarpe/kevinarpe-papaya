@@ -78,12 +78,12 @@ public class Joiner2UtilsTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Joiner2Utils.newQuotingJoinerFactory(String)
+    // Joiner2Utils.newJoiner2Factory(String)
     //
 
     @Test
     public void newQuotingJoinerFactoryString_Pass() {
-        Joiner2Factory x = classUnderTest.newQuotingJoinerFactory(",");
+        Joiner2Factory x = classUnderTest.newJoiner2Factory(",");
         Assert.assertNotNull(x);
         Joiner2 y = x.newInstance();
         Assert.assertEquals(y.withSeparator(), ",");
@@ -92,16 +92,16 @@ public class Joiner2UtilsTest {
 
     @Test(expectedExceptions = NullPointerException.class)
     public void newQuotingJoinerFactoryString_FailWithNull() {
-        classUnderTest.newQuotingJoinerFactory((String) null);
+        classUnderTest.newJoiner2Factory((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Joiner2Utils.newQuotingJoinerFactory(char)
+    // Joiner2Utils.newJoiner2Factory(char)
     //
 
     @Test
     public void newQuotingJoinerFactoryChar_Pass() {
-        Joiner2Factory x = classUnderTest.newQuotingJoinerFactory(',');
+        Joiner2Factory x = classUnderTest.newJoiner2Factory(',');
         Assert.assertNotNull(x);
         Joiner2 y = x.newInstance();
         Assert.assertEquals(y.withSeparator(), ",");

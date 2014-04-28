@@ -27,7 +27,8 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
 
 /**
  * For those projects that require full, static-free mocking capabilities, use this interface.
- * Else, the concrete implementation {@link Joiner2Utils} will suffice.
+ * Else, the concrete implementation {@link Joiner2Utils} or {@link Joiner2Utils#INSTANCE}
+ * will suffice.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
@@ -72,10 +73,10 @@ public interface IJoiner2Utils {
      * @throws NullPointerException
      *         if {@code separator} is {@code null}
      */
-    Joiner2Factory newQuotingJoinerFactory(String separator);
+    Joiner2Factory newJoiner2Factory(String separator);
 
     /**
-     * This is a convenience method to call {@link #newQuotingJoinerFactory(String)}.
+     * This is a convenience method to call {@link #newJoiner2Factory(String)}.
      */
-    Joiner2Factory newQuotingJoinerFactory(char separator);
+    Joiner2Factory newJoiner2Factory(char separator);
 }

@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  */
 
 import com.google.common.base.Joiner;
+import com.googlecode.kevinarpe.papaya.string.joiner.formatter.Formatter2;
 
 import java.io.IOException;
 import java.util.Formatter;
@@ -37,7 +38,8 @@ import java.util.Iterator;
  * <p>
  * Differences to {@link Joiner}:
  * <ul>
- *     <li>{@link #withQuotes(String, String)}: Prefix and suffix for each joined element</li>
+ *     <li>{@link #withFormatter(Formatter2)}: Format each joined element precisely.  Easily add a
+ *     prefix and/or suffix, e.g., {@code new StringFormatter("[%s]")}</li>
  *     <li>Default text for {@code null} values is {@code "null"}.  This matches the behavior of
  *     {@link Formatter}. By default, class {@link Joiner} will throw a {@link NullPointerException}
  *     when joining a {@code null} value, unless {@link Joiner#useForNull(String)} is called before
@@ -59,10 +61,20 @@ import java.util.Iterator;
  * <p>
  * Examples:
  * <pre>{@code
- * Joiner2Utils.INSTANCE.withSeparator(", ").withQuotes("[", "]").join(list) -> "[a], [b], [c], ..."
- * Joiner2Utils.INSTANCE.withSeparator(", ").withQuotes("[", "]").join(listWithNulls) -> "[a], [b], [null], [c], ..."
- * Joiner2Utils.INSTANCE.withSeparator(", ").withQuotes("[", "]").skipNulls(true).join(listWithNulls) -> "[a], [b], [c], ..."
- * Joiner2Utils.INSTANCE.withSeparator(", ").withQuotes("[", "]").useForNoElements("(empty)").join(emptyList) -> "(empty)"
+ * Joiner2Utils.INSTANCE.withSeparator(", ")
+ *     .withFormatter(new StringFormatter("[%s]"))
+ *     .join(list) -> "[a], [b], [c], ..."
+ * Joiner2Utils.INSTANCE.withSeparator(", ")
+ *     .withFormatter(new StringFormatter("[%s]"))
+ *     .join(listWithNulls) -> "[a], [b], [null], [c], ..."
+ * Joiner2Utils.INSTANCE.withSeparator(", ")
+ *     .withFormatter(new StringFormatter("[%s]"))
+ *     .skipNulls(true)
+ *     .join(listWithNulls) -> "[a], [b], [c], ..."
+ * Joiner2Utils.INSTANCE.withSeparator(", ")
+ *     .withFormatter(new StringFormatter("[%s]"))
+ *     .useForNoElements("(empty)")
+ *     .join(emptyList) -> "(empty)"
  * }</pre>
  * <p>
  * See {@link SharedJoiner2Settings} for an inheritance diagram.

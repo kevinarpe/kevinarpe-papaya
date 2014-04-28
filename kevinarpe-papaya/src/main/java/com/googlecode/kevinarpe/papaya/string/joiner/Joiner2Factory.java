@@ -32,8 +32,8 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see Joiner2Utils#newQuotingJoinerFactory(String)
- * @see Joiner2Utils#newQuotingJoinerFactory(char)
+ * @see Joiner2Utils#newJoiner2Factory(String)
+ * @see Joiner2Utils#newJoiner2Factory(char)
  * @see Joiner2Utils#withSeparator(String)
  * @see Joiner2Utils#withSeparator(char)
  */
