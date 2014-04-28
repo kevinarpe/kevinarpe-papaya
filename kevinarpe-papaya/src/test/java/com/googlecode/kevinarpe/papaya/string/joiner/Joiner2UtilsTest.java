@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  */
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
@@ -33,21 +34,27 @@ import org.testng.annotations.Test;
  */
 public class Joiner2UtilsTest {
 
+    private Joiner2Utils classUnderTest;
+
+    @BeforeMethod
+    public void beforeEachTestMethod() {
+        classUnderTest = new Joiner2Utils();
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Joiner2Utils.withSeparator(String)
     //
 
     @Test
     public void withSeparatorString_Pass() {
-        Joiner2 x = Joiner2Utils.withSeparator(",");
+        Joiner2 x = classUnderTest.withSeparator(",");
         Assert.assertNotNull(x);
         Assert.assertEquals(x.withSeparator(), ",");
         _assertDefaults(x);
     }
 
     private void _assertDefaults(Joiner2 x) {
-        Assert.assertEquals(x.withLeftQuote(), Joiner2Utils.DEFAULT_LEFT_QUOTE);
-        Assert.assertEquals(x.withRightQuote(), Joiner2Utils.DEFAULT_RIGHT_QUOTE);
+        Assert.assertEquals(x.withFormatter(), Joiner2Utils.DEFAULT_FORMATTER);
         Assert.assertEquals(x.useForNull(), Joiner2Utils.DEFAULT_NULL_TEXT);
         Assert.assertEquals(x.useForNoElements(), Joiner2Utils.DEFAULT_NO_ELEMENTS_TEXT);
         Assert.assertEquals(x.skipNulls(), Joiner2Utils.DEFAULT_SKIP_NULLS_FLAG);
@@ -55,7 +62,7 @@ public class Joiner2UtilsTest {
 
     @Test(expectedExceptions = NullPointerException.class)
     public void withSeparatorString_FaillWithNull() {
-        Joiner2Utils.withSeparator((String) null);
+        classUnderTest.withSeparator((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,19 +71,19 @@ public class Joiner2UtilsTest {
 
     @Test
     public void withSeparatorChar_Pass() {
-        Joiner2 x = Joiner2Utils.withSeparator(',');
+        Joiner2 x = classUnderTest.withSeparator(',');
         Assert.assertNotNull(x);
         Assert.assertEquals(x.withSeparator(), ",");
         _assertDefaults(x);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Joiner2Utils.newQuotingJoinerFactory(String)
+    // Joiner2Utils.newJoiner2Factory(String)
     //
 
     @Test
     public void newQuotingJoinerFactoryString_Pass() {
-        Joiner2Factory x = Joiner2Utils.newQuotingJoinerFactory(",");
+        Joiner2Factory x = classUnderTest.newJoiner2Factory(",");
         Assert.assertNotNull(x);
         Joiner2 y = x.newInstance();
         Assert.assertEquals(y.withSeparator(), ",");
@@ -85,16 +92,16 @@ public class Joiner2UtilsTest {
 
     @Test(expectedExceptions = NullPointerException.class)
     public void newQuotingJoinerFactoryString_FailWithNull() {
-        Joiner2Utils.newQuotingJoinerFactory((String) null);
+        classUnderTest.newJoiner2Factory((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Joiner2Utils.newQuotingJoinerFactory(char)
+    // Joiner2Utils.newJoiner2Factory(char)
     //
 
     @Test
     public void newQuotingJoinerFactoryChar_Pass() {
-        Joiner2Factory x = Joiner2Utils.newQuotingJoinerFactory(',');
+        Joiner2Factory x = classUnderTest.newJoiner2Factory(',');
         Assert.assertNotNull(x);
         Joiner2 y = x.newInstance();
         Assert.assertEquals(y.withSeparator(), ",");

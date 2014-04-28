@@ -27,22 +27,33 @@ package com.googlecode.kevinarpe.papaya.testing;
 
 import com.google.common.collect.ImmutableList;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
 import java.io.File;
 import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Constants and static utilities for {@link TestClassFinder}.
+ * Constants and static utilities for {@code TestClassFinder}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see #newInstance()
  * @see #newFactory()
+ * @see TestClassFinder
+ * @see StatelessObject
+ * @see ITestClassFinderUtils
  */
 @FullyTested
 public final class TestClassFinderUtils
+extends StatelessObject
 implements ITestClassFinderUtils {
+
+    /**
+     * Single instance of this class provided for convenience.  Since this class is stateless, its
+     * behaviour is identical between this instance and others.
+     */
+    public static final TestClassFinderUtils INSTANCE = new TestClassFinderUtils();
 
     /**
      * Default value for {@link TestClassFinder#withRootDirPath()}: System property
@@ -62,16 +73,16 @@ implements ITestClassFinderUtils {
      */
     public static final List<Pattern> DEFAULT_EXCLUDE_PATTERN_LIST = ImmutableList.of();
 
+    /**
+     * For projects that require total, static-free mocking capabilities, use this constructor.
+     * Else, the static constant {@link #INSTANCE} will suffice.
+     */
     public TestClassFinderUtils() {
         // Empty
     }
 
     /**
-     * Constructs a new instance of TestClassFinder.
-     *
-     * @return new instance
-     *
-     * @see #newFactory()
+     * {@inheritDoc}
      */
     @Override
     public TestClassFinder newInstance() {
@@ -81,13 +92,7 @@ implements ITestClassFinderUtils {
     }
 
     /**
-     * Retrieves a TestClassFinderFactory.  As the default factory implementation is stateless, a
-     * global instance is always returned by this helper.  Unless an additional layer of indirection
-     * is required for mocking or testing, it is usually sufficient to call {@link #newInstance()}.
-     *
-     * @return factory instance
-     *
-     * @see #newInstance()
+     * {@inheritDoc}
      */
     @Override
     public TestClassFinderFactory newFactory() {

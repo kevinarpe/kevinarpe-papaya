@@ -27,41 +27,53 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
 
 import com.google.common.base.Joiner;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.object.StatelessObject;
+import com.googlecode.kevinarpe.papaya.string.joiner.formatter.Formatter2;
+import com.googlecode.kevinarpe.papaya.string.joiner.formatter.StringFormatter;
 
 /**
- * Constants and static utilities for {@link Joiner2} and {@link MapJoiner2}.
+ * Constants and static utilities for {@link Joiner2} and {@link MapJoiner2}.  To use the methods in
+ * this class create a new instance via {@link #Joiner2Utils()} or use the public static member
+ * {@link #INSTANCE}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
+ * @see #INSTANCE
  * @see #withSeparator(String)
  * @see #withSeparator(char)
- * @see #newQuotingJoinerFactory(String)
- * @see #newQuotingJoinerFactory(char)
+ * @see #newJoiner2Factory(String)
+ * @see #newJoiner2Factory(char)
+ * @see StatelessObject
+ * @see IJoiner2Utils
  */
-// TODO: Add feature for counting?
 @FullyTested
-public final class Joiner2Utils {
-    
-    private Joiner2Utils() {
-        // disabled
+public final class Joiner2Utils
+extends StatelessObject
+implements IJoiner2Utils {
+
+    private static final Formatter2 _DEFAULT_FORMATTER = new StringFormatter("%s");
+
+    /**
+     * Single instance of this class provided for convenience.  Since this class is stateless, its
+     * behaviour is identical between this instance and others.
+     */
+    public static final Joiner2Utils INSTANCE = new Joiner2Utils();
+
+    /**
+     * For projects that require total, static-free mocking capabilities, use this constructor.
+     * Else, the static constant {@link #INSTANCE} will suffice.
+     */
+    public Joiner2Utils() {
+        // Empty.
     }
 
     /**
-     * Default value for {@link SharedJoiner2Settings#withLeftQuote()}: {@code ""}
-     * (empty string).
+     * Default value for {@link SharedJoiner2Settings#withFormatter()}: (no prefix or suffix)
      *
-     * @see #DEFAULT_RIGHT_QUOTE
-     * @see SharedJoiner2Settings#withQuotes(String, String)
+     * @see SharedJoiner2Settings#withFormatter(Formatter2)
      */
-    public static final String DEFAULT_LEFT_QUOTE = "";
-    /**
-     * Default value for {@link SharedJoiner2Settings#withRightQuote()}: {@code ""}
-     * (empty string).
-     *
-     * @see #DEFAULT_LEFT_QUOTE
-     * @see SharedJoiner2Settings#withQuotes(String, String)
-     */
-    public static final String DEFAULT_RIGHT_QUOTE = "";
+    public static final Formatter2 DEFAULT_FORMATTER = _DEFAULT_FORMATTER;
+
     /**
      * Default value for {@link SharedJoiner2Settings#useForNoElements()}: {@code ""}
      * (empty string).
@@ -69,6 +81,7 @@ public final class Joiner2Utils {
      * @see SharedJoiner2Settings#useForNoElements(String)
      */
     public static final String DEFAULT_NO_ELEMENTS_TEXT = "";
+
     /**
      * Default value for {@link Joiner2Settings#useForNull()}: {@code "null"}.
      * <p>
@@ -79,6 +92,7 @@ public final class Joiner2Utils {
      * @see Joiner2Settings#useForNull(String)
      */
     public static final String DEFAULT_NULL_TEXT = "null";
+
     /**
      * Default value for {@link Joiner2Settings#skipNulls()}: {@code false}.
      *
@@ -87,36 +101,18 @@ public final class Joiner2Utils {
     public static final boolean DEFAULT_SKIP_NULLS_FLAG = false;
 
     /**
-     * Default value for {@link MapJoiner2Settings#withKeyLeftQuote()}: {@code ""}
-     * (empty string).
+     * Default value for {@link MapJoiner2Settings#withKeyFormatter()}: (no prefix or suffix)
      *
-     * @see MapJoiner2Settings#withKeyQuotes(String, String)
+     * @see MapJoiner2Settings#withKeyFormatter(Formatter2)
      */
-    public static final String DEFAULT_KEY_LEFT_QUOTE = "";
+    public static final Formatter2 DEFAULT_KEY_FORMATTER = _DEFAULT_FORMATTER;
 
     /**
-     * Default value for {@link MapJoiner2Settings#withKeyRightQuote()}: {@code ""}
-     * (empty string).
+     * Default value for {@link MapJoiner2Settings#withValueFormatter()}: (no prefix or suffix)
      *
-     * @see MapJoiner2Settings#withKeyQuotes(String, String)
+     * @see MapJoiner2Settings#withValueFormatter(Formatter2)
      */
-    public static final String DEFAULT_KEY_RIGHT_QUOTE = "";
-
-    /**
-     * Default value for {@link MapJoiner2Settings#withValueLeftQuote()}: {@code ""}
-     * (empty string).
-     *
-     * @see MapJoiner2Settings#withValueQuotes(String, String)
-     */
-    public static final String DEFAULT_VALUE_LEFT_QUOTE = "";
-
-    /**
-     * Default value for {@link MapJoiner2Settings#withValueRightQuote()}: {@code ""}
-     * (empty string).
-     *
-     * @see MapJoiner2Settings#withValueQuotes(String, String)
-     */
-    public static final String DEFAULT_VALUE_RIGHT_QUOTE = "";
+    public static final Formatter2 DEFAULT_VALUE_FORMATTER = _DEFAULT_FORMATTER;
 
     /**
      * Default value for {@link MapJoiner2Settings#useForNullKey()}: {@code "null"}.
@@ -133,63 +129,41 @@ public final class Joiner2Utils {
     public static final String DEFAULT_VALUE_NULL_TEXT = "null";
 
     /**
-     * Constructs a new instance of {@link Joiner2}.
-     *
-     * @param separator
-     *        String to insert between elements during join.
-     *        Must not be {@code null}, but can be {@code ""} (empty string).
-     *        Example: {@code ", "} (comma + space)
-     *
-     * @return new instance
-     *
-     * @throws NullPointerException
-     *         if {@code separator} is {@code null}
-     *
-     * @see #withSeparator(char)
-     * @see Joiner2#withSeparator(String)
-     * @see Joiner2#withSeparator(char)
+     * {@inheritDoc}
      */
-    public static Joiner2 withSeparator(String separator) {
+    @Override
+    public Joiner2 withSeparator(String separator) {
         Joiner2FactoryImpl factory = new Joiner2FactoryImpl(separator);
         Joiner2 x = factory.newInstance();
         return x;
     }
 
     /**
-     * This is a convenience method to call {@link #withSeparator(String)}.
+     * {@inheritDoc}
      */
-    public static Joiner2 withSeparator(char separator) {
+    @Override
+    public Joiner2 withSeparator(char separator) {
         String separatorString = String.valueOf(separator);
         Joiner2 x = withSeparator(separatorString);
         return x;
     }
 
     /**
-     * Constructs a new instance of {@link Joiner2Factory}.  Unless an additional layer of
-     * indirection is required for mocking or testing, it is usually sufficient to call
-     * {@link #withSeparator(String)}.
-     *
-     * @param separator
-     *        String to insert between elements during join.
-     *        Must not be {@code null}, but can be {@code ""} (empty string).
-     *        Example: {@code ", "} (comma + space)
-     *
-     * @return new instance
-     *
-     * @throws NullPointerException
-     *         if {@code separator} is {@code null}
+     * {@inheritDoc}
      */
-    public static Joiner2Factory newQuotingJoinerFactory(String separator) {
+    @Override
+    public Joiner2Factory newJoiner2Factory(String separator) {
         Joiner2FactoryImpl x = new Joiner2FactoryImpl(separator);
         return x;
     }
 
     /**
-     * This is a convenience method to call {@link #newQuotingJoinerFactory(String)}.
+     * {@inheritDoc}
      */
-    public static Joiner2Factory newQuotingJoinerFactory(char separator) {
+    @Override
+    public Joiner2Factory newJoiner2Factory(char separator) {
         String separatorString = String.valueOf(separator);
-        Joiner2Factory x = newQuotingJoinerFactory(separatorString);
+        Joiner2Factory x = newJoiner2Factory(separatorString);
         return x;
     }
 }

@@ -28,16 +28,30 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
 import org.slf4j.Logger;
 
 /**
+ * Represents all the well-known logging levels in SLF4J.
+ *
+ * Create new loggers with this method: {@link #newLevelLogger(Logger)}
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see SLF4JLevelLogger
  */
 public enum SLF4JLogLevel {
 
+    /**
+     * Special case: Does not have an underlying logger and all methods do nothing.
+     */
     OFF {
         @Override
         public SLF4JLevelLogger newLevelLogger(Logger logger) {
             return SLF4JLevelLoggerOff.INSTANCE;
         }
     },
+    /**
+     * All logging methods are sent to ERROR level.
+     *
+     * @see Logger#error(String)
+     */
     ERROR {
         @Override
         public SLF4JLevelLoggerError newLevelLogger(Logger logger) {
@@ -45,6 +59,11 @@ public enum SLF4JLogLevel {
             return x;
         }
     },
+    /**
+     * All logging methods are sent to WARN level.
+     *
+     * @see Logger#warn(String)
+     */
     WARN {
         @Override
         public SLF4JLevelLoggerWarn newLevelLogger(Logger logger) {
@@ -52,6 +71,11 @@ public enum SLF4JLogLevel {
             return x;
         }
     },
+    /**
+     * All logging methods are sent to INFO level.
+     *
+     * @see Logger#info(String)
+     */
     INFO {
         @Override
         public SLF4JLevelLoggerInfo newLevelLogger(Logger logger) {
@@ -59,6 +83,11 @@ public enum SLF4JLogLevel {
             return x;
         }
     },
+    /**
+     * All logging methods are sent to DEBUG level.
+     *
+     * @see Logger#debug(String)
+     */
     DEBUG {
         @Override
         public SLF4JLevelLoggerDebug newLevelLogger(Logger logger) {
@@ -66,6 +95,11 @@ public enum SLF4JLogLevel {
             return x;
         }
     },
+    /**
+     * All logging methods are sent to TRACE level.
+     *
+     * @see Logger#trace(String)
+     */
     TRACE {
         @Override
         public SLF4JLevelLoggerTrace newLevelLogger(Logger logger) {
@@ -74,5 +108,16 @@ public enum SLF4JLogLevel {
         }
     };
 
+    /**
+     * Creates a new logger to only log at a single level.
+     *
+     * @param logger
+     *        underlying SLF4J logger
+     *
+     * @return new logger
+     *
+     * @throws NullPointerException
+     *         if {@code logger} is {@code null}
+     */
     public abstract SLF4JLevelLogger newLevelLogger(Logger logger);
 }

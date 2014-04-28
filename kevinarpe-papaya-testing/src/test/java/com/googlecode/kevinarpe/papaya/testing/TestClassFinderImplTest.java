@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.testing;
  * #L%
  */
 
+import com.google.common.collect.Collections2;
 import com.googlecode.kevinarpe.papaya.exception.ClassNotFoundRuntimeException;
 import com.googlecode.kevinarpe.papaya.exception.PathRuntimeException;
 import com.googlecode.kevinarpe.papaya.filesystem.PathFilter;
@@ -32,11 +33,13 @@ import com.googlecode.kevinarpe.papaya.filesystem.TraversePathDepthPolicy;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterableFactory;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterator;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventAnalyzerImpl;
 import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLogLevel;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.SLF4JLoggingEventAttribute;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.mock.SLF4JMockLoggerFactoryImpl;
-import com.googlecode.kevinarpe.papaya.logging.slf4j.mock.SLF4JMockLoggerImpl;
+import com.googlecode.kevinarpe.papaya.testing.logging.slf4j.SLF4JLoggingEvent;
+import com.googlecode.kevinarpe.papaya.testing.logging.slf4j.SLF4JLoggingEventAttribute;
+import com.googlecode.kevinarpe.papaya.testing.logging.slf4j.SLF4JMockLogger;
+import com.googlecode.kevinarpe.papaya.testing.logging.slf4j.SLF4JMockLoggerFactory;
+import com.googlecode.kevinarpe.papaya.testing.logging.slf4j.SLF4JMockLoggerUtils;
+import com.googlecode.kevinarpe.papaya.testing.logging.AnyLoggingEventAttributeValuePredicate;
 import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -66,7 +69,7 @@ public class TestClassFinderImplTest {
     private TestClassFinderImpl.IteratePathFilterFactory mockIteratePathFilterFactory;
     private PathFilter mockPathFilter;
     private SourceFileToClassHelper mockSourceFileToClassHelper;
-    private SLF4JMockLoggerFactoryImpl mockLoggerFactory;
+    private SLF4JMockLoggerFactory mockLoggerFactory;
     private TestClassFinderImpl classUnderTestWithoutMocks;
     private TestClassFinderImpl classUnderTestWithMocks;
 
@@ -78,7 +81,7 @@ public class TestClassFinderImplTest {
         mockIteratePathFilterFactory = mock(TestClassFinderImpl.IteratePathFilterFactory.class);
         mockPathFilter = mock(PathFilter.class);
         mockSourceFileToClassHelper = mock(SourceFileToClassHelper.class);
-        mockLoggerFactory = new SLF4JMockLoggerFactoryImpl();
+        mockLoggerFactory = SLF4JMockLoggerUtils.INSTANCE.newFactoryInstance();
         classUnderTestWithoutMocks = new TestClassFinderImpl();
         classUnderTestWithMocks =
             new TestClassFinderImpl(
@@ -346,14 +349,15 @@ public class TestClassFinderImplTest {
     }
 
     private void _assertLogger(SLF4JLogLevel logLevel, int count) {
-        SLF4JMockLoggerImpl logger =
+        SLF4JMockLogger logger =
             mockLoggerFactory.getLogger(TestClassFinderImpl.class.getName());
-        SLF4JLoggingEventAnalyzerImpl analyzer =
-            new SLF4JLoggingEventAnalyzerImpl(logger.getLoggingEventList());
         assertEquals(
-            analyzer.getLoggingEventListIncluding(
-                SLF4JLoggingEventAttribute.LEVEL, logLevel).size(),
-            count);
+            Collections2.filter(
+                logger.getLoggingEventList(),
+                new AnyLoggingEventAttributeValuePredicate<SLF4JLoggingEvent>(
+                    SLF4JLoggingEventAttribute.LEVEL, logLevel)).size(),
+            count
+        );
     }
 
     @Test(expectedExceptions = PathRuntimeException.class)

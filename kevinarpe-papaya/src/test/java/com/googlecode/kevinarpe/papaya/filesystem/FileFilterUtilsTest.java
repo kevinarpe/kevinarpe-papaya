@@ -26,21 +26,13 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  */
 
 import com.google.common.collect.ImmutableList;
+import org.mockito.Mockito;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Collection;
-
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotSame;
-import static org.testng.Assert.assertSame;
-import static org.testng.Assert.assertTrue;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -53,49 +45,49 @@ public class FileFilterUtilsTest {
 
     @Test
     public void anyOf_PassWithOneFileFilter() {
-        FileFilter mockFileFilter = mock(FileFilter.class);
+        FileFilter mockFileFilter = Mockito.mock(FileFilter.class);
 
-        assertSame(
+        Assert.assertSame(
             FileFilterUtils.anyOf(ImmutableList.of(mockFileFilter)),
             mockFileFilter);
     }
 
     @Test
     public void anyOf_PassWithTwoFileFilters() {
-        FileFilter mockFileFilter = mock(FileFilter.class);
-        FileFilter mockFileFilter2 = mock(FileFilter.class);
+        FileFilter mockFileFilter = Mockito.mock(FileFilter.class);
+        FileFilter mockFileFilter2 = Mockito.mock(FileFilter.class);
 
         FileFilter newFileFilter =
             FileFilterUtils.anyOf(ImmutableList.of(mockFileFilter, mockFileFilter2));
 
-        assertNotSame(newFileFilter, mockFileFilter);
-        assertNotSame(newFileFilter, mockFileFilter2);
+        Assert.assertNotSame(newFileFilter, mockFileFilter);
+        Assert.assertNotSame(newFileFilter, mockFileFilter2);
 
         File path = new File("dummy");
         int count = 0;
         int count2 = 0;
 
-        when(mockFileFilter.accept(path)).thenReturn(true);  ++count;
-        when(mockFileFilter2.accept(path)).thenThrow(new RuntimeException());
+        Mockito.when(mockFileFilter.accept(path)).thenReturn(true);  ++count;
+        Mockito.when(mockFileFilter2.accept(path)).thenThrow(new RuntimeException());
 
-        assertTrue(newFileFilter.accept(path));
-        verify(mockFileFilter, times(count)).accept(path);
-        verify(mockFileFilter2, times(count2)).accept(path);
+        Assert.assertTrue(newFileFilter.accept(path));
+        Mockito.verify(mockFileFilter, Mockito.times(count)).accept(path);
+        Mockito.verify(mockFileFilter2, Mockito.times(count2)).accept(path);
 
-        when(mockFileFilter.accept(path)).thenReturn(false);  ++count;
+        Mockito.when(mockFileFilter.accept(path)).thenReturn(false);  ++count;
         // Inverted version required here else throws RuntimeException
-        doReturn(true).when(mockFileFilter2).accept(path);  ++count2;
+        Mockito.doReturn(true).when(mockFileFilter2).accept(path);  ++count2;
 
-        assertTrue(newFileFilter.accept(path));
-        verify(mockFileFilter, times(count)).accept(path);
-        verify(mockFileFilter2, times(count2)).accept(path);
+        Assert.assertTrue(newFileFilter.accept(path));
+        Mockito.verify(mockFileFilter, Mockito.times(count)).accept(path);
+        Mockito.verify(mockFileFilter2, Mockito.times(count2)).accept(path);
 
-        when(mockFileFilter.accept(path)).thenReturn(false);  ++count;
-        when(mockFileFilter2.accept(path)).thenReturn(false);  ++count2;
+        Mockito.when(mockFileFilter.accept(path)).thenReturn(false);  ++count;
+        Mockito.when(mockFileFilter2.accept(path)).thenReturn(false);  ++count2;
 
-        assertFalse(newFileFilter.accept(path));
-        verify(mockFileFilter, times(count)).accept(path);
-        verify(mockFileFilter2, times(count2)).accept(path);
+        Assert.assertFalse(newFileFilter.accept(path));
+        Mockito.verify(mockFileFilter, Mockito.times(count)).accept(path);
+        Mockito.verify(mockFileFilter2, Mockito.times(count2)).accept(path);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
@@ -119,48 +111,48 @@ public class FileFilterUtilsTest {
 
     @Test
     public void allOf_PassWithOneFileFilter() {
-        FileFilter mockFileFilter = mock(FileFilter.class);
+        FileFilter mockFileFilter = Mockito.mock(FileFilter.class);
 
-        assertSame(
+        Assert.assertSame(
             FileFilterUtils.allOf(ImmutableList.of(mockFileFilter)),
             mockFileFilter);
     }
 
     @Test
     public void allOf_PassWithTwoFileFilters() {
-        FileFilter mockFileFilter = mock(FileFilter.class);
-        FileFilter mockFileFilter2 = mock(FileFilter.class);
+        FileFilter mockFileFilter = Mockito.mock(FileFilter.class);
+        FileFilter mockFileFilter2 = Mockito.mock(FileFilter.class);
 
         FileFilter newFileFilter =
             FileFilterUtils.allOf(ImmutableList.of(mockFileFilter, mockFileFilter2));
 
-        assertNotSame(newFileFilter, mockFileFilter);
-        assertNotSame(newFileFilter, mockFileFilter2);
+        Assert.assertNotSame(newFileFilter, mockFileFilter);
+        Assert.assertNotSame(newFileFilter, mockFileFilter2);
 
         File path = new File("dummy");
         int count = 0;
         int count2 = 0;
 
-        when(mockFileFilter.accept(path)).thenReturn(true);  ++count;
-        when(mockFileFilter2.accept(path)).thenReturn(true);  ++count2;
+        Mockito.when(mockFileFilter.accept(path)).thenReturn(true);  ++count;
+        Mockito.when(mockFileFilter2.accept(path)).thenReturn(true);  ++count2;
 
-        assertTrue(newFileFilter.accept(path));
-        verify(mockFileFilter, times(count)).accept(path);
-        verify(mockFileFilter2, times(count2)).accept(path);
+        Assert.assertTrue(newFileFilter.accept(path));
+        Mockito.verify(mockFileFilter, Mockito.times(count)).accept(path);
+        Mockito.verify(mockFileFilter2, Mockito.times(count2)).accept(path);
 
-        when(mockFileFilter.accept(path)).thenReturn(false);  ++count;
-        when(mockFileFilter2.accept(path)).thenReturn(true);
+        Mockito.when(mockFileFilter.accept(path)).thenReturn(false);  ++count;
+        Mockito.when(mockFileFilter2.accept(path)).thenReturn(true);
 
-        assertFalse(newFileFilter.accept(path));
-        verify(mockFileFilter, times(count)).accept(path);
-        verify(mockFileFilter2, times(count2)).accept(path);
+        Assert.assertFalse(newFileFilter.accept(path));
+        Mockito.verify(mockFileFilter, Mockito.times(count)).accept(path);
+        Mockito.verify(mockFileFilter2, Mockito.times(count2)).accept(path);
 
-        when(mockFileFilter.accept(path)).thenReturn(true);  ++count;
-        when(mockFileFilter2.accept(path)).thenReturn(false);  ++count2;
+        Mockito.when(mockFileFilter.accept(path)).thenReturn(true);  ++count;
+        Mockito.when(mockFileFilter2.accept(path)).thenReturn(false);  ++count2;
 
-        assertFalse(newFileFilter.accept(path));
-        verify(mockFileFilter, times(count)).accept(path);
-        verify(mockFileFilter2, times(count2)).accept(path);
+        Assert.assertFalse(newFileFilter.accept(path));
+        Mockito.verify(mockFileFilter, Mockito.times(count)).accept(path);
+        Mockito.verify(mockFileFilter2, Mockito.times(count2)).accept(path);
     }
 
     @Test(expectedExceptions = NullPointerException.class)

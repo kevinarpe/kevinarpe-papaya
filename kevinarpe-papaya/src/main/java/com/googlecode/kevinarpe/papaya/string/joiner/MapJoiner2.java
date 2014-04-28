@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  */
 
 import com.google.common.base.Joiner;
+import com.googlecode.kevinarpe.papaya.string.joiner.formatter.Formatter2;
 
 import java.io.IOException;
 import java.util.Formatter;
@@ -39,8 +40,10 @@ import java.util.Map;
  * <p>
  * Differences to {@code Joiner.MapJoiner}:
  * <ul>
- *     <li>{@link #withKeyQuotes(String, String)}: Prefix and suffix for each joined key</li>
- *     <li>{@link #withValueQuotes(String, String)}: Prefix and suffix for each joined value</li>
+ *     <li>{@link #withKeyFormatter(Formatter2)}: Format each joined key precisely.  Easily add a
+ *     prefix and/or suffix, e.g., {@code new StringFormatter("[%s]")}</li>
+ *     <li>{@link #withValueFormatter(Formatter2)}: Format each joined value precisely.  Easily add
+ *     a prefix and/or suffix, e.g., {@code new StringFormatter("[%s]")}</li>
  *     <li>Default text for {@code null} keys and values is {@code "null"}.  This matches the
  *     behavior of {@link Formatter}. By default, class {@link Joiner} will throw a
  *     {@link NullPointerException} when joining a {@code null} key or value, unless
@@ -65,13 +68,31 @@ import java.util.Map;
  * <p>
  * Examples:
  * <pre>{@code
- * Joiner2Utils.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=")
- *     .join(map) -> "[a=1], [b=2], [c=3], ..."
- * Joiner2Utils.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=")
- *     .join(mapWithNulls) -> "[a=1], [b=2], [null=3], [c=4], ..."
- * Joiner2Utils.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=").skipNulls(true)
- *     .join(mapWithNulls) -> "[a=1], [b=2], [c=3], ..."
- * Joiner2Utils.withSeparator(", ").withQuotes("[", "]").withKeyValueSeparator("=").useForNoElements("(empty)")
+ * Joiner2Utils.INSTANCE.withSeparator(", ")
+ *     .withFormatter(new StringFormatter("[%s]"))
+ *     .withKeyValueSeparator("=")
+ *     .withKeyFormatter(new StringFormatter("(%s)"))
+ *     .withValueFormatter(new StringFormatter("{%s}"))
+ *     .join(map) -> "[(a)={1}], [(b)={2}], [(c)={3}], ..."
+ * Joiner2Utils.INSTANCE.withSeparator(", ")
+ *     .withFormatter(new StringFormatter("[%s]"))
+ *     .withKeyValueSeparator("=")
+ *     .withKeyFormatter(new StringFormatter("(%s)"))
+ *     .withValueFormatter(new StringFormatter("{%s}"))
+ *     .join(mapWithNulls) -> "[(a)={1}], [(b)={2}], [(null)={3}], [(c)={4}], ..."
+ * Joiner2Utils.INSTANCE.withSeparator(", ")
+ *     .withFormatter(new StringFormatter("[%s]"))
+ *     .withKeyValueSeparator("=")
+ *     .withKeyFormatter(new StringFormatter("(%s)"))
+ *     .withValueFormatter(new StringFormatter("{%s}"))
+ *     .skipNulls(true)
+ *     .join(mapWithNulls) -> "[(a)={1}], [(b)={2}], [(c)={3}], ..."
+ * Joiner2Utils.INSTANCE.withSeparator(", ")
+ *     .withFormatter(new StringFormatter("[%s]"))
+ *     .withKeyValueSeparator("=")
+ *     .withKeyFormatter(new StringFormatter("(%s)"))
+ *     .withValueFormatter(new StringFormatter("{%s}"))
+ *     .useForNoElements("(empty)")
  *     .join(emptyMap) -> "(empty)"
  * }</pre>
  *

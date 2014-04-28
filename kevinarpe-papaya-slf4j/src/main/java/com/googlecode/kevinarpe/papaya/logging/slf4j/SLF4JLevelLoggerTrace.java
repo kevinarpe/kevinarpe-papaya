@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
@@ -32,6 +33,7 @@ import org.slf4j.Marker;
 /**
 * @author Kevin Connor ARPE (kevinarpe@gmail.com)
 */
+@FullyTested
 final class SLF4JLevelLoggerTrace
 implements SLF4JLevelLogger {
 

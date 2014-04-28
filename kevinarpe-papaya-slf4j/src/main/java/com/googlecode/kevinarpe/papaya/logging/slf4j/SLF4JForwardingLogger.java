@@ -25,12 +25,20 @@ package com.googlecode.kevinarpe.papaya.logging.slf4j;
  * #L%
  */
 
+import com.google.common.collect.ForwardingList;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 
 /**
+ * A logger which forwards all its method calls to another logger.  Similar to Google Guava's
+ * {@link ForwardingList}.
+ *
+ * Subclasses must only override a single method: {@link #delegate()}.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see Logger
  */
 @FullyTested
 public abstract class SLF4JForwardingLogger
@@ -40,6 +48,9 @@ implements Logger {
         // Empty
     }
 
+    /**
+     * @return backing delegate instance.  Must not be {@code null}.
+     */
     protected abstract Logger delegate();
 
     @Override

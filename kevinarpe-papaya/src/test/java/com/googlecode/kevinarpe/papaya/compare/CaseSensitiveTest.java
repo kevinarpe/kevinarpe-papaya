@@ -26,10 +26,9 @@ package com.googlecode.kevinarpe.papaya.compare;
  */
 
 import com.google.common.testing.EqualsTester;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import static org.testng.Assert.assertEquals;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -71,7 +70,7 @@ public class CaseSensitiveTest {
 
     @Test(dataProvider = "compare_Pass_Data")
     public void compare_Pass(String left, String right, CaseSensitive cs, int result) {
-        assertEquals(cs.compare(left, right), result);
+        Assert.assertEquals(cs.compare(left, right), result);
     }
 
     @DataProvider

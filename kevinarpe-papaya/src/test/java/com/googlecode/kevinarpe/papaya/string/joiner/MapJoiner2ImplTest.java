@@ -27,8 +27,11 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
+import com.googlecode.kevinarpe.papaya.string.joiner.formatter.Formatter2;
+import com.googlecode.kevinarpe.papaya.string.joiner.formatter.StringFormatter;
 import org.mockito.Mockito;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -44,6 +47,17 @@ import java.util.Map;
  */
 public class MapJoiner2ImplTest {
 
+    private Formatter2 mockFormatter;
+
+    private Joiner2Utils classUnderTest;
+
+    @BeforeMethod
+    public void beforeEachTestMethod() {
+        mockFormatter = Mockito.mock(Formatter2.class);
+
+        classUnderTest = new Joiner2Utils();
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // MapJoiner2Impl.withKeyValueSeparator(String)
     //
@@ -51,13 +65,13 @@ public class MapJoiner2ImplTest {
     @Test
     public void withKeyValueSeparatorString_Pass() {
         MapJoiner2 j =
-            Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withKeyValueSeparator("y");
+            classUnderTest.withSeparator(",").withKeyValueSeparator("x").withKeyValueSeparator("y");
         Assert.assertEquals(j.withKeyValueSeparator(), "y");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void withKeyValueSeparatorString_FailWithNull() {
-        Joiner2Utils.withSeparator("x").withKeyValueSeparator("y").withKeyValueSeparator((String) null);
+        classUnderTest.withSeparator("x").withKeyValueSeparator("y").withKeyValueSeparator((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,170 +81,42 @@ public class MapJoiner2ImplTest {
     @Test
     public void withKeyValueSeparatorChar_Pass() {
         MapJoiner2 j =
-            Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withKeyValueSeparator('y');
+            classUnderTest.withSeparator(",").withKeyValueSeparator("x").withKeyValueSeparator('y');
         Assert.assertEquals(j.withKeyValueSeparator(), "y");
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // MapJoiner2Impl.withKeyQuotes(String, String)/withKeyQuotes(String, char)/withKeyQuotes(char, String)/withKeyQuotes(char, char)
+    // MapJoiner2Impl.withKeyFormatter(Formatter2)
     //
 
-    @DataProvider
-    private static Object[][] _withKeyQuotes_Pass_Data() {
-        return new Object[][] {
-            { "xyz", "abc" },
-            { "", "abc" },
-            { "xyz", "" },
-            { "", "" },
-            { "   ", "   " },
-        };
-    }
-
-    @Test(dataProvider = "_withKeyQuotes_Pass_Data")
-    public void withKeyQuotes_Pass(String leftQuote, String rightQuote) {
-        // String, String
-        MapJoiner2 x =
-            Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withKeyQuotes(leftQuote, rightQuote);
-        Assert.assertEquals(x.withKeyLeftQuote(), leftQuote);
-        Assert.assertEquals(x.withKeyRightQuote(), rightQuote);
-
-        // String, char
-        if (!rightQuote.isEmpty()) {
-            char rightQuoteChar = rightQuote.charAt(0);
-            String rightQuoteCharString = String.valueOf(rightQuoteChar);
-            x = Joiner2Utils.withSeparator(",")
-                .withKeyValueSeparator("x").withKeyQuotes(leftQuote, rightQuoteChar);
-            Assert.assertEquals(x.withKeyLeftQuote(), leftQuote);
-            Assert.assertEquals(x.withKeyRightQuote(), rightQuoteCharString);
-        }
-
-        // char, String
-        if (!leftQuote.isEmpty()) {
-            char leftQuoteChar = leftQuote.charAt(0);
-            String leftQuoteCharString = String.valueOf(leftQuoteChar);
-            x = Joiner2Utils.withSeparator(",")
-                .withKeyValueSeparator("x").withKeyQuotes(leftQuoteChar, rightQuote);
-            Assert.assertEquals(x.withKeyLeftQuote(), leftQuoteCharString);
-            Assert.assertEquals(x.withKeyRightQuote(), rightQuote);
-        }
-
-        // char, char
-        if (!leftQuote.isEmpty() && !rightQuote.isEmpty()) {
-            char leftQuoteChar = leftQuote.charAt(0);
-            String leftQuoteCharString = String.valueOf(leftQuoteChar);
-            char rightQuoteChar = rightQuote.charAt(0);
-            String rightQuoteCharString = String.valueOf(rightQuoteChar);
-            x = Joiner2Utils.withSeparator(",")
-                .withKeyValueSeparator("x").withKeyQuotes(leftQuoteChar, rightQuoteChar);
-            Assert.assertEquals(x.withKeyLeftQuote(), leftQuoteCharString);
-            Assert.assertEquals(x.withKeyRightQuote(), rightQuoteCharString);
-        }
-    }
-
-    @DataProvider
-    private static Object[][] _withKeyQuotes_FailWithNull_Data() {
-        return new Object[][] {
-            { (String) null, "xyz" },
-            { "xyz", (String) null },
-            { (String) null, (String) null },
-        };
-    }
-
-    @Test(expectedExceptions = NullPointerException.class,
-        dataProvider = "_withKeyQuotes_FailWithNull_Data")
-    public void withKeyQuotes_FailWithNull(String leftQuote, String rightQuote) {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withKeyQuotes(leftQuote, rightQuote);
+    @Test
+    public void withKeyFormatterFormatter2_Pass() {
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("=");
+        x = x.withKeyFormatter(mockFormatter);
+        Assert.assertSame(x.withKeyFormatter(), mockFormatter);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
-    public void withKeyQuotes2_FailWithNull() {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withKeyQuotes((String) null, 'a');
-    }
-
-    @Test(expectedExceptions = NullPointerException.class)
-    public void withKeyQuotes3_FailWithNull() {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withKeyQuotes('a', (String) null);
+    public void withKeyFormatterFormatter2_FaillWithNull() {
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("=");
+        x.withKeyFormatter((Formatter2) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // MapJoiner2Impl.withValueQuotes(String, String)/withValueQuotes(String, char)/withValueQuotes(char, String)/withValueQuotes(char, char)
+    // MapJoiner2Impl.withValueFormatter(Formatter2)
     //
 
-    @DataProvider
-    private static Object[][] _withValueQuotes_Pass_Data() {
-        return new Object[][] {
-            { "xyz", "abc" },
-            { "", "abc" },
-            { "xyz", "" },
-            { "", "" },
-            { "   ", "   " },
-        };
-    }
-
-    @Test(dataProvider = "_withValueQuotes_Pass_Data")
-    public void withValueQuotes_Pass(String leftQuote, String rightQuote) {
-        // String, String
-        MapJoiner2 x =
-            Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withValueQuotes(leftQuote, rightQuote);
-        Assert.assertEquals(x.withValueLeftQuote(), leftQuote);
-        Assert.assertEquals(x.withValueRightQuote(), rightQuote);
-
-        // String, char
-        if (!rightQuote.isEmpty()) {
-            char rightQuoteChar = rightQuote.charAt(0);
-            String rightQuoteCharString = String.valueOf(rightQuoteChar);
-            x = Joiner2Utils.withSeparator(",")
-                .withKeyValueSeparator("x").withValueQuotes(leftQuote, rightQuoteChar);
-            Assert.assertEquals(x.withValueLeftQuote(), leftQuote);
-            Assert.assertEquals(x.withValueRightQuote(), rightQuoteCharString);
-        }
-
-        // char, String
-        if (!leftQuote.isEmpty()) {
-            char leftQuoteChar = leftQuote.charAt(0);
-            String leftQuoteCharString = String.valueOf(leftQuoteChar);
-            x = Joiner2Utils.withSeparator(",")
-                .withKeyValueSeparator("x").withValueQuotes(leftQuoteChar, rightQuote);
-            Assert.assertEquals(x.withValueLeftQuote(), leftQuoteCharString);
-            Assert.assertEquals(x.withValueRightQuote(), rightQuote);
-        }
-
-        // char, char
-        if (!leftQuote.isEmpty() && !rightQuote.isEmpty()) {
-            char leftQuoteChar = leftQuote.charAt(0);
-            String leftQuoteCharString = String.valueOf(leftQuoteChar);
-            char rightQuoteChar = rightQuote.charAt(0);
-            String rightQuoteCharString = String.valueOf(rightQuoteChar);
-            x = Joiner2Utils.withSeparator(",")
-                .withKeyValueSeparator("x").withValueQuotes(leftQuoteChar, rightQuoteChar);
-            Assert.assertEquals(x.withValueLeftQuote(), leftQuoteCharString);
-            Assert.assertEquals(x.withValueRightQuote(), rightQuoteCharString);
-        }
-    }
-
-    @DataProvider
-    private static Object[][] _withValueQuotes_FailWithNull_Data() {
-        return new Object[][] {
-            { (String) null, "xyz" },
-            { "xyz", (String) null },
-            { (String) null, (String) null },
-        };
-    }
-
-    @Test(expectedExceptions = NullPointerException.class,
-        dataProvider = "_withValueQuotes_FailWithNull_Data")
-    public void withValueQuotes_FailWithNull(String leftQuote, String rightQuote) {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withValueQuotes(leftQuote, rightQuote);
+    @Test
+    public void withValueFormatterFormatter2_Pass() {
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("=");
+        x = x.withValueFormatter(mockFormatter);
+        Assert.assertSame(x.withValueFormatter(), mockFormatter);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
-    public void withValueQuotes2_FailWithNull() {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withValueQuotes((String) null, 'a');
-    }
-
-    @Test(expectedExceptions = NullPointerException.class)
-    public void withValueQuotes3_FailWithNull() {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").withValueQuotes('a', (String) null);
+    public void withValueFormatterFormatter2_FaillWithNull() {
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("=");
+        x.withValueFormatter((Formatter2) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -239,13 +125,13 @@ public class MapJoiner2ImplTest {
 
     @Test
     public void useForNullKeyString_Pass() {
-        MapJoiner2 x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").useForNullKey("y");
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("x").useForNullKey("y");
         Assert.assertEquals(x.useForNullKey(), "y");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void useForNullKeyString_FailWithNull() {
-        Joiner2Utils.withSeparator("x").withKeyValueSeparator("y").useForNullKey((String) null);
+        classUnderTest.withSeparator("x").withKeyValueSeparator("y").useForNullKey((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -254,7 +140,7 @@ public class MapJoiner2ImplTest {
 
     @Test
     public void useForNullKeyChar_Pass() {
-        MapJoiner2 x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").useForNullKey('y');
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("x").useForNullKey('y');
         Assert.assertEquals(x.useForNullKey(), "y");
     }
 
@@ -264,13 +150,13 @@ public class MapJoiner2ImplTest {
 
     @Test
     public void useForNullValueString_Pass() {
-        MapJoiner2 x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").useForNullValue("y");
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("x").useForNullValue("y");
         Assert.assertEquals(x.useForNullValue(), "y");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void useForNullValueString_FailWithNull() {
-        Joiner2Utils.withSeparator("x").withKeyValueSeparator("y").useForNullValue((String) null);
+        classUnderTest.withSeparator("x").withKeyValueSeparator("y").useForNullValue((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -279,7 +165,7 @@ public class MapJoiner2ImplTest {
 
     @Test
     public void useForNullValueChar_Pass() {
-        MapJoiner2 x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("x").useForNullValue('y');
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("x").useForNullValue('y');
         Assert.assertEquals(x.useForNullValue(), "y");
     }
 
@@ -291,60 +177,60 @@ public class MapJoiner2ImplTest {
     @DataProvider
     private static Object[][] _appendTo_Pass_Data() {
         return new Object[][] {
-            { ",", "=", null, null, null, null, null, null, null, null, null, ImmutableMap.of(), "" },
-            { ",", "=", null, null, null, null, null, null, null, null, null, ImmutableMap.of("a", "1"), "a=1" },
-            { ",", "=", null, null, null, null, null, null, null, null, null, ImmutableMap.of("a", "1", "b", "2"), "a=1,b=2" },
-            { ",", "=", null, null, null, null, null, null, null, null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "a=1,b=2,c=3" },
+            { ",", "=", null, null, null, null, null, null, ImmutableMap.of(), "" },
+            { ",", "=", null, null, null, null, null, null, ImmutableMap.of("a", "1"), "a=1" },
+            { ",", "=", null, null, null, null, null, null, ImmutableMap.of("a", "1", "b", "2"), "a=1,b=2" },
+            { ",", "=", null, null, null, null, null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "a=1,b=2,c=3" },
 
-            { ",", "=", "[", "]", null, null, null, null, null, null, null, ImmutableMap.of(), "" },
-            { ",", "=", "[", "]", null, null, null, null, null, null, null, ImmutableMap.of("a", "1"), "[a=1]" },
-            { ",", "=", "[", "]", null, null, null, null, null, null, null, ImmutableMap.of("a", "1", "b", "2"), "[a=1],[b=2]" },
-            { ",", "=", "[", "]", null, null, null, null, null, null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[a=1],[b=2],[c=3]" },
+            { ",", "=", new StringFormatter("[%s]"), null, null, null, null, null, ImmutableMap.of(), "" },
+            { ",", "=", new StringFormatter("[%s]"), null, null, null, null, null, ImmutableMap.of("a", "1"), "[a=1]" },
+            { ",", "=", new StringFormatter("[%s]"), null, null, null, null, null, ImmutableMap.of("a", "1", "b", "2"), "[a=1],[b=2]" },
+            { ",", "=", new StringFormatter("[%s]"), null, null, null, null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[a=1],[b=2],[c=3]" },
 
-            { ",", "=", "[", "]", "(empty)", null, null, null, null, null, null, ImmutableMap.of(), "(empty)" },
-            { ",", "=", "[", "]", "(empty)", null, null, null, null, null, null, ImmutableMap.of("a", "1"), "[a=1]" },
-            { ",", "=", "[", "]", "(empty)", null, null, null, null, null, null, ImmutableMap.of("a", "1", "b", "2"), "[a=1],[b=2]" },
-            { ",", "=", "[", "]", "(empty)", null, null, null, null, null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[a=1],[b=2],[c=3]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", null, null, null, null, ImmutableMap.of(), "(empty)" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", null, null, null, null, ImmutableMap.of("a", "1"), "[a=1]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", null, null, null, null, ImmutableMap.of("a", "1", "b", "2"), "[a=1],[b=2]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", null, null, null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[a=1],[b=2],[c=3]" },
 
-            { ",", "=", "[", "]", "(empty)", "(", ")", null, null, null, null, ImmutableMap.of(), "(empty)" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", null, null, null, null, ImmutableMap.of("a", "1"), "[(a)=1]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", null, null, null, null, ImmutableMap.of("a", "1", "b", "2"), "[(a)=1],[(b)=2]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", null, null, null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)=1],[(b)=2],[(c)=3]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), null, null, null, ImmutableMap.of(), "(empty)" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), null, null, null, ImmutableMap.of("a", "1"), "[(a)=1]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), null, null, null, ImmutableMap.of("a", "1", "b", "2"), "[(a)=1],[(b)=2]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), null, null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)=1],[(b)=2],[(c)=3]" },
 
             // TODO: Create builders like ImmutableMap.of(*), but do not restrict null key/value
 
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, ImmutableMap.of(), "(empty)" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, ImmutableMap.of("a", "1"), "[(a)={1}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, _mapOf("a", "1", null, "2"), "[(a)={1}],[(null)={2}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, _mapOf("a", "1", null, "2", "b", null), "[(a)={1}],[(null)={2}],[(b)={null}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, ImmutableMap.of("a", "1", "b", "2"), "[(a)={1}],[(b)={2}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, _mapOf("a", "1", "b", "2", null, "3"), "[(a)={1}],[(b)={2}],[(null)={3}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, _mapOf("a", "1", "b", "2", null, "3", "c", null), "[(a)={1}],[(b)={2}],[(null)={3}],[(c)={null}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)={1}],[(b)={2}],[(c)={3}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, _mapOf("a", "1", "b", "2", "c", "3", null, "4"), "[(a)={1}],[(b)={2}],[(c)={3}],[(null)={4}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", null, null, _mapOf("a", "1", "b", "2", "c", "3", null, "4", "d", null), "[(a)={1}],[(b)={2}],[(c)={3}],[(null)={4}],[(d)={null}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), null, null, ImmutableMap.of(), "(empty)" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), null, null, ImmutableMap.of("a", "1"), "[(a)={1}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), null, null, _mapOf("a", "1", null, "2"), "[(a)={1}],[(null)={2}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), null, null, _mapOf("a", "1", null, "2", "b", null), "[(a)={1}],[(null)={2}],[(b)={null}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), null, null, ImmutableMap.of("a", "1", "b", "2"), "[(a)={1}],[(b)={2}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), null, null, _mapOf("a", "1", "b", "2", null, "3"), "[(a)={1}],[(b)={2}],[(null)={3}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), null, null, _mapOf("a", "1", "b", "2", null, "3", "c", null), "[(a)={1}],[(b)={2}],[(null)={3}],[(c)={null}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)={1}],[(b)={2}],[(c)={3}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), null, null, _mapOf("a", "1", "b", "2", "c", "3", null, "4"), "[(a)={1}],[(b)={2}],[(c)={3}],[(null)={4}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), null, null, _mapOf("a", "1", "b", "2", "c", "3", null, "4", "d", null), "[(a)={1}],[(b)={2}],[(c)={3}],[(null)={4}],[(d)={null}]" },
 
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, ImmutableMap.of(), "(empty)" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, ImmutableMap.of("a", "1"), "[(a)={1}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, _mapOf("a", "1", null, "2"), "[(a)={1}],[(nullKey)={2}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, _mapOf("a", "1", null, "2", "b", null), "[(a)={1}],[(nullKey)={2}],[(b)={null}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, ImmutableMap.of("a", "1", "b", "2"), "[(a)={1}],[(b)={2}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, _mapOf("a", "1", "b", "2", null, "3"), "[(a)={1}],[(b)={2}],[(nullKey)={3}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, _mapOf("a", "1", "b", "2", null, "3", "c", null), "[(a)={1}],[(b)={2}],[(nullKey)={3}],[(c)={null}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)={1}],[(b)={2}],[(c)={3}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, _mapOf("a", "1", "b", "2", "c", "3", null, "4"), "[(a)={1}],[(b)={2}],[(c)={3}],[(nullKey)={4}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", null, _mapOf("a", "1", "b", "2", "c", "3", null, "4", "d", null), "[(a)={1}],[(b)={2}],[(c)={3}],[(nullKey)={4}],[(d)={null}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", null, ImmutableMap.of(), "(empty)" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", null, ImmutableMap.of("a", "1"), "[(a)={1}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", null, _mapOf("a", "1", null, "2"), "[(a)={1}],[(nullKey)={2}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", null, _mapOf("a", "1", null, "2", "b", null), "[(a)={1}],[(nullKey)={2}],[(b)={null}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", null, ImmutableMap.of("a", "1", "b", "2"), "[(a)={1}],[(b)={2}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", null, _mapOf("a", "1", "b", "2", null, "3"), "[(a)={1}],[(b)={2}],[(nullKey)={3}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", null, _mapOf("a", "1", "b", "2", null, "3", "c", null), "[(a)={1}],[(b)={2}],[(nullKey)={3}],[(c)={null}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)={1}],[(b)={2}],[(c)={3}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", null, _mapOf("a", "1", "b", "2", "c", "3", null, "4"), "[(a)={1}],[(b)={2}],[(c)={3}],[(nullKey)={4}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", null, _mapOf("a", "1", "b", "2", "c", "3", null, "4", "d", null), "[(a)={1}],[(b)={2}],[(c)={3}],[(nullKey)={4}],[(d)={null}]" },
 
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", "nullValue", ImmutableMap.of(), "(empty)" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", "nullValue", ImmutableMap.of("a", "1"), "[(a)={1}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", "nullValue", _mapOf("a", "1", null, "2"), "[(a)={1}],[(nullKey)={2}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", "nullValue", _mapOf("a", "1", null, "2", "b", null), "[(a)={1}],[(nullKey)={2}],[(b)={nullValue}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", "nullValue", ImmutableMap.of("a", "1", "b", "2"), "[(a)={1}],[(b)={2}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", "nullValue", _mapOf("a", "1", "b", "2", null, "3"), "[(a)={1}],[(b)={2}],[(nullKey)={3}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", "nullValue", _mapOf("a", "1", "b", "2", null, "3", "c", null), "[(a)={1}],[(b)={2}],[(nullKey)={3}],[(c)={nullValue}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", "nullValue", ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)={1}],[(b)={2}],[(c)={3}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", "nullValue", _mapOf("a", "1", "b", "2", "c", "3", null, "4"), "[(a)={1}],[(b)={2}],[(c)={3}],[(nullKey)={4}]" },
-            { ",", "=", "[", "]", "(empty)", "(", ")", "{", "}", "nullKey", "nullValue", _mapOf("a", "1", "b", "2", "c", "3", null, "4", "d", null), "[(a)={1}],[(b)={2}],[(c)={3}],[(nullKey)={4}],[(d)={nullValue}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", "nullValue", ImmutableMap.of(), "(empty)" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", "nullValue", ImmutableMap.of("a", "1"), "[(a)={1}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", null, "2"), "[(a)={1}],[(nullKey)={2}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", null, "2", "b", null), "[(a)={1}],[(nullKey)={2}],[(b)={nullValue}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", "nullValue", ImmutableMap.of("a", "1", "b", "2"), "[(a)={1}],[(b)={2}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", "b", "2", null, "3"), "[(a)={1}],[(b)={2}],[(nullKey)={3}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", "b", "2", null, "3", "c", null), "[(a)={1}],[(b)={2}],[(nullKey)={3}],[(c)={nullValue}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", "nullValue", ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)={1}],[(b)={2}],[(c)={3}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", "b", "2", "c", "3", null, "4"), "[(a)={1}],[(b)={2}],[(c)={3}],[(nullKey)={4}]" },
+            { ",", "=", new StringFormatter("[%s]"), "(empty)", new StringFormatter("(%s)"), new StringFormatter("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", "b", "2", "c", "3", null, "4", "d", null), "[(a)={1}],[(b)={2}],[(c)={3}],[(nullKey)={4}],[(d)={nullValue}]" },
         };
     }
 
@@ -364,40 +250,28 @@ public class MapJoiner2ImplTest {
     public void appendTo_Pass(
             String separator,
             String keyValueSeparator,
-            String optLeftQuote,
-            String optRightQuote,
+            Formatter2 optFormatter,
             String optNoElementsText,
-            String optKeyLeftQuote,
-            String optKeyRightQuote,
-            String optValueLeftQuote,
-            String optValueRightQuote,
+            Formatter2 optKeyFormatter,
+            Formatter2 optValueFormatter,
             String optKeyNullText,
             String optValueNullText,
             Map<String, String> map,
             String expectedResult)
     throws IOException {
-        Assert.assertTrue(
-            (null == optLeftQuote && null == optRightQuote)
-            || (null != optLeftQuote && null != optRightQuote));
-        Assert.assertTrue(
-            (null == optKeyLeftQuote && null == optKeyRightQuote)
-            || (null != optKeyLeftQuote && null != optKeyRightQuote));
-        Assert.assertTrue(
-            (null == optValueLeftQuote && null == optValueRightQuote)
-            || (null != optValueLeftQuote && null != optValueRightQuote));
-        Joiner2 joiner = Joiner2Utils.withSeparator(separator);
+        Joiner2 joiner = classUnderTest.withSeparator(separator);
         MapJoiner2 mapJoiner = joiner.withKeyValueSeparator(keyValueSeparator);
-        if (null != optLeftQuote && null != optRightQuote) {
-            mapJoiner = mapJoiner.withQuotes(optLeftQuote, optRightQuote);
+        if (null != optFormatter) {
+            mapJoiner = mapJoiner.withFormatter(optFormatter);
         }
         if (null != optNoElementsText) {
             mapJoiner = mapJoiner.useForNoElements(optNoElementsText);
         }
-        if (null != optKeyLeftQuote && null != optKeyRightQuote) {
-            mapJoiner = mapJoiner.withKeyQuotes(optKeyLeftQuote, optKeyRightQuote);
+        if (null != optKeyFormatter) {
+            mapJoiner = mapJoiner.withKeyFormatter(optKeyFormatter);
         }
-        if (null != optValueLeftQuote && null != optValueRightQuote) {
-            mapJoiner = mapJoiner.withValueQuotes(optValueLeftQuote, optValueRightQuote);
+        if (null != optValueFormatter) {
+            mapJoiner = mapJoiner.withValueFormatter(optValueFormatter);
         }
         if (null != optKeyNullText) {
             mapJoiner = mapJoiner.useForNullKey(optKeyNullText);
@@ -461,7 +335,7 @@ public class MapJoiner2ImplTest {
     public void appendMapToAppendable_FailWhenAppendableThrowsIOException()
     throws IOException {
         Appendable mockAppendable = _newMockAppendableThrowsIOException();
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=")
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=")
             .appendTo(mockAppendable, ImmutableMap.of("a", "1"));
     }
 
@@ -469,7 +343,7 @@ public class MapJoiner2ImplTest {
     public void appendIterableToAppendable_FailWhenAppendableThrowsIOException()
     throws IOException {
         Appendable mockAppendable = _newMockAppendableThrowsIOException();
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=")
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=")
             .appendTo(mockAppendable, ImmutableMap.of("a", "1").entrySet());
     }
 
@@ -477,7 +351,7 @@ public class MapJoiner2ImplTest {
     public void appendIteratorToAppendable_FailWhenAppendableThrowsIOException()
     throws IOException {
         Appendable mockAppendable = _newMockAppendableThrowsIOException();
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=")
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=")
             .appendTo(mockAppendable, ImmutableMap.of("a", "1").entrySet().iterator());
     }
 
@@ -496,7 +370,7 @@ public class MapJoiner2ImplTest {
     public <TAppendable extends Appendable>
     void appendMapToAppendable_FailWithNull(TAppendable appendable, Map<?, ?> map)
     throws IOException {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").appendTo(appendable, map);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=").appendTo(appendable, map);
     }
 
     @DataProvider
@@ -516,7 +390,7 @@ public class MapJoiner2ImplTest {
     void appendIterableToAppendable_FailWithNull(
             TAppendable appendable, Iterable<? extends Map.Entry<?, ?>> partIter)
     throws IOException {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").appendTo(appendable, partIter);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=").appendTo(appendable, partIter);
     }
 
     @DataProvider
@@ -536,7 +410,7 @@ public class MapJoiner2ImplTest {
     void appendIteratorToAppendable_FailWithNull(
             TAppendable appendable, Iterator<? extends Map.Entry<?, ?>> partIter)
     throws IOException {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").appendTo(appendable, partIter);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=").appendTo(appendable, partIter);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
@@ -545,7 +419,7 @@ public class MapJoiner2ImplTest {
         Appendable mockAppendable = Mockito.mock(Appendable.class);
         Iterator<? extends Map.Entry<?, ?>> partIter =
             Iterators.forArray(new Map.Entry<?, ?>[] { null });
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").appendTo(mockAppendable, partIter);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=").appendTo(mockAppendable, partIter);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -564,7 +438,7 @@ public class MapJoiner2ImplTest {
     @Test(expectedExceptions = NullPointerException.class,
             dataProvider = "_appendMapToStringBuilder_FailWithNull_Data")
     public void appendMapToStringBuilder_FailWithNull(StringBuilder sb, Map<?, ?> map) {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").appendTo(sb, map);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=").appendTo(sb, map);
     }
 
     @DataProvider
@@ -581,7 +455,7 @@ public class MapJoiner2ImplTest {
         dataProvider = "_appendIterableToStringBuilder_FailWithNull_Data")
     public void appendIterableToStringBuilder_FailWithNull(
             StringBuilder sb, Iterable<? extends Map.Entry<?, ?>> partIter) {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").appendTo(sb, partIter);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=").appendTo(sb, partIter);
     }
 
     @DataProvider
@@ -598,7 +472,7 @@ public class MapJoiner2ImplTest {
         dataProvider = "_appendIteratorToStringBuilder_FailWithNull_Data")
     public void appendIteratorToStringBuilder_FailWithNull(
             StringBuilder sb, Iterator<? extends Map.Entry<?, ?>> partIter) {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").appendTo(sb, partIter);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=").appendTo(sb, partIter);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -607,18 +481,18 @@ public class MapJoiner2ImplTest {
 
     @Test(expectedExceptions = NullPointerException.class)
     public void joinMap_FailWithNull() {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").join((Map<?, ?>) null);
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=").join((Map<?, ?>) null);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void joinIterable_FailWithNull() {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=")
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=")
             .join((Iterable<? extends Map.Entry<?, ?>>) null);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void joinIterator_FailWithNull() {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=")
+        classUnderTest.withSeparator(",").withKeyValueSeparator("=")
             .join((Iterator<? extends Map.Entry<?, ?>>) null);
     }
 
@@ -628,14 +502,14 @@ public class MapJoiner2ImplTest {
 
     @Test
     public void withSeparatorString_Pass() {
-        MapJoiner2 x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("=");
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("=");
         x = x.withSeparator("x");
         Assert.assertEquals(x.withSeparator(), "x");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void withSeparator_FailWithNull() {
-        Joiner2Utils.withSeparator("x").withKeyValueSeparator("=").withSeparator((String) null);
+        classUnderTest.withSeparator("x").withKeyValueSeparator("=").withSeparator((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -644,77 +518,26 @@ public class MapJoiner2ImplTest {
 
     @Test
     public void withSeparatorChar_Pass() {
-        MapJoiner2 x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("=");
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("=");
         x = x.withSeparator('x');
         Assert.assertEquals(x.withSeparator(), "x");
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // MapJoiner2Impl.withQuotes(String, String)/withQuotes(String, char)/withQuotes(char, String)/withQuotes(char, char)
+    // MapJoiner2Impl.withFormatter(Formatter2)
     //
 
-    @DataProvider
-    private static Object[][] _withQuotes_Pass_Data() {
-        return new Object[][] {
-            { "xyz", "abc" },
-            { "", "abc" },
-            { "xyz", "" },
-            { "", "" },
-            { "   ", "   " },
-        };
+    @Test
+    public void withFormatterFormatter2_Pass() {
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("=");
+        x = x.withFormatter(mockFormatter);
+        Assert.assertSame(x.withFormatter(), mockFormatter);
     }
 
-    @Test(dataProvider = "_withQuotes_Pass_Data")
-    public void withQuotes_Pass(String leftQuote, String rightQuote) {
-        // String, String
-        MapJoiner2 x =
-            Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").withQuotes(leftQuote, rightQuote);
-        Assert.assertEquals(x.withLeftQuote(), leftQuote);
-        Assert.assertEquals(x.withRightQuote(), rightQuote);
-
-        // String, char
-        if (!rightQuote.isEmpty()) {
-            char rightQuoteChar = rightQuote.charAt(0);
-            String rightQuoteCharString = String.valueOf(rightQuoteChar);
-            x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").withQuotes(leftQuote, rightQuoteChar);
-            Assert.assertEquals(x.withLeftQuote(), leftQuote);
-            Assert.assertEquals(x.withRightQuote(), rightQuoteCharString);
-        }
-
-        // char, String
-        if (!leftQuote.isEmpty()) {
-            char leftQuoteChar = leftQuote.charAt(0);
-            String leftQuoteCharString = String.valueOf(leftQuoteChar);
-            x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").withQuotes(leftQuoteChar, rightQuote);
-            Assert.assertEquals(x.withLeftQuote(), leftQuoteCharString);
-            Assert.assertEquals(x.withRightQuote(), rightQuote);
-        }
-
-        // char, char
-        if (!leftQuote.isEmpty() && !rightQuote.isEmpty()) {
-            char leftQuoteChar = leftQuote.charAt(0);
-            String leftQuoteCharString = String.valueOf(leftQuoteChar);
-            char rightQuoteChar = rightQuote.charAt(0);
-            String rightQuoteCharString = String.valueOf(rightQuoteChar);
-            x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").withQuotes(leftQuoteChar, rightQuoteChar);
-            Assert.assertEquals(x.withLeftQuote(), leftQuoteCharString);
-            Assert.assertEquals(x.withRightQuote(), rightQuoteCharString);
-        }
-    }
-
-    @DataProvider
-    private static Object[][] _withQuotes_FailWithNull_Data() {
-        return new Object[][] {
-            { (String) null, "xyz" },
-            { "xyz", (String) null },
-            { (String) null, (String) null },
-        };
-    }
-
-    @Test(expectedExceptions = NullPointerException.class,
-        dataProvider = "_withQuotes_FailWithNull_Data")
-    public void withQuotes_FailWithNull(String leftQuote, String rightQuote) {
-        Joiner2Utils.withSeparator(",").withKeyValueSeparator("=").withQuotes(leftQuote, rightQuote);
+    @Test(expectedExceptions = NullPointerException.class)
+    public void withFormatterFormatter2_FaillWithNull() {
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("=");
+        x.withFormatter((Formatter2) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -723,14 +546,14 @@ public class MapJoiner2ImplTest {
 
     @Test
     public void useForNoElementsString_Pass() {
-        MapJoiner2 x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("=");
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("=");
         x = x.useForNoElements("x");
         Assert.assertEquals(x.useForNoElements(), "x");
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void useForNoElements_FailWithNull() {
-        Joiner2Utils.withSeparator("x").withKeyValueSeparator("=").useForNoElements((String) null);
+        classUnderTest.withSeparator("x").withKeyValueSeparator("=").useForNoElements((String) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -739,7 +562,7 @@ public class MapJoiner2ImplTest {
 
     @Test
     public void useForNoElementsChar_Pass() {
-        MapJoiner2 x = Joiner2Utils.withSeparator(",").withKeyValueSeparator("=");
+        MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("=");
         x = x.useForNoElements('x');
         Assert.assertEquals(x.useForNoElements(), "x");
     }

@@ -25,21 +25,23 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.string.joiner.formatter.Formatter2;
+
 /**
  * Settings shared between {@link Joiner2} and {@link MapJoiner2}.
  * <p>
  * Inheritance diagram:
  * <pre>{@code
- *     interface
+ *           interface
  *     SharedJoiner2Settings
- *        /                   \
- * interface                 interface
- * Joiner2Settings     MapJoiner2Settings
- *    |                         |
- * interface                 interface
- * Joiner2             MapJoiner2
- *    |                         |
- * class                     class
+ *        /                \
+ *   interface           interface
+ * Joiner2Settings   MapJoiner2Settings
+ *     |                     |
+ * interface             interface
+ *  Joiner2              MapJoiner2
+ *     |                     |
+ *   class                 class
  * Joiner2Impl         MapJoiner2Impl
  * }</pre>
  *
@@ -94,69 +96,32 @@ public interface SharedJoiner2Settings
     String withSeparator();
 
     /**
-     * Constructs a new instance with new element prefix and suffix.  These values are prepended or
-     * appended to each element after its conversion to {@code String} during a join.
+     * Constructs a new instance with new value formatter.  Formatters can be used to add a prefix
+     * or suffix to each value.
      *
-     * @param leftQuote
-     *        String to prefix to elements during join.
-     *        Must not be {@code null}, but can be {@code ""} (empty string).
-     *        Example: {@code "("} (left paren/bracket)
-     * @param rightQuote
-     *        String to suffix to elements during join.
-     *        Must not be {@code null}, but can be {@code ""} (empty string).
-     *        Example: {@code ")"} (right paren/bracket)
+     * @param formatter
+     *        value formatter to add a prefix and/or suffix to each value.
+     *        Must not be {@code null}.
      *
-     * @return new instance with new prefix and suffix for each element
+     * @return new instance with formatter for each element
      *
      * @throws NullPointerException
-     *         if {@code leftQuote} or {@code rightQuote} is {@code null}
+     *         if {@code formatter} is {@code null}
      *
-     * @see #withQuotes(String, char)
-     * @see #withQuotes(char, String)
-     * @see #withQuotes(char, char)
-     * @see #withLeftQuote()
-     * @see #withRightQuote()
-     * @see Joiner2Utils#DEFAULT_LEFT_QUOTE
-     * @see Joiner2Utils#DEFAULT_RIGHT_QUOTE
+     * @see #withFormatter()
+     * @see Joiner2Utils#DEFAULT_FORMATTER
      */
-    TSelf withQuotes(String leftQuote, String rightQuote);
+    TSelf withFormatter(Formatter2 formatter);
 
     /**
-     * This is a convenience method to call {@link #withQuotes(String, String)}.
-     */
-    TSelf withQuotes(String leftQuote, char rightQuote);
-
-    /**
-     * This is a convenience method to call {@link #withQuotes(String, String)}.
-     */
-    TSelf withQuotes(char leftQuote, String rightQuote);
-
-    /**
-     * This is a convenience method to call {@link #withQuotes(String, String)}.
-     */
-    TSelf withQuotes(char leftQuote, char rightQuote);
-
-    /**
-     * Retrieves the current element prefix.  The default is {@code ""} (empty string).
+     * Retrieves the current value formatter.  The default is no prefix or suffix.
      *
-     * @return current element prefix
+     * @return current value formatter
      *
-     * @see #withQuotes(String, String)
-     * @see #withRightQuote()
-     * @see Joiner2Utils#DEFAULT_LEFT_QUOTE
+     * @see #withFormatter(Formatter2)
+     * @see Joiner2Utils#DEFAULT_FORMATTER
      */
-    String withLeftQuote();
-
-    /**
-     * Retrieves the current element suffix.  The default is {@code ""} (empty string).
-     *
-     * @return current element suffix
-     *
-     * @see #withQuotes(String, String)
-     * @see #withLeftQuote()
-     * @see Joiner2Utils#DEFAULT_RIGHT_QUOTE
-     */
-    String withRightQuote();
+    Formatter2 withFormatter();
 
     /**
      * Constructs a new instance with new text to use when join finds no elements.

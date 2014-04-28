@@ -33,8 +33,10 @@ import com.googlecode.kevinarpe.papaya.exception.PathException;
 import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
 import com.googlecode.kevinarpe.papaya.filesystem.compare.FileNameLexicographicalComparator;
 import org.joda.time.DateTime;
+import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -48,26 +50,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotEquals;
-import static org.testng.Assert.assertSame;
-
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public class DirectoryListingTest {
 
     private static File _createMockDirPath(File[] pathArr) {
-        File mockDirPath = mock(File.class);
-        when(mockDirPath.exists()).thenReturn(true);
-        when(mockDirPath.isDirectory()).thenReturn(true);
-        when(mockDirPath.isFile()).thenReturn(false);
-        when(mockDirPath.listFiles()).thenReturn(pathArr);
+        File mockDirPath = Mockito.mock(File.class);
+        Mockito.when(mockDirPath.exists()).thenReturn(true);
+        Mockito.when(mockDirPath.isDirectory()).thenReturn(true);
+        Mockito.when(mockDirPath.isFile()).thenReturn(false);
+        Mockito.when(mockDirPath.listFiles()).thenReturn(pathArr);
         return mockDirPath;
     }
 
@@ -121,8 +114,8 @@ public class DirectoryListingTest {
     private void _core_ctor_Pass(
         DirectoryListing listDir, List<File> pathList, Class<? extends List> listClass) {
         List<File> pathList2 = listDir.getChildPathList();
-        assertEquals(pathList2, pathList);
-        assertEquals(pathList2.getClass(), listClass);
+        Assert.assertEquals(pathList2, pathList);
+        Assert.assertEquals(pathList2.getClass(), listClass);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
@@ -133,10 +126,10 @@ public class DirectoryListingTest {
 
     @DataProvider
     private static Object[][] _ctor_FailWithNull2_Data() {
-        File mockDirPath = mock(File.class);
-        when(mockDirPath.exists()).thenReturn(true);
-        when(mockDirPath.isDirectory()).thenReturn(true);
-        when(mockDirPath.isFile()).thenReturn(false);
+        File mockDirPath = Mockito.mock(File.class);
+        Mockito.when(mockDirPath.exists()).thenReturn(true);
+        Mockito.when(mockDirPath.isDirectory()).thenReturn(true);
+        Mockito.when(mockDirPath.isFile()).thenReturn(false);
 
         return new Object[][] {
             { mockDirPath, null },
@@ -157,18 +150,18 @@ public class DirectoryListingTest {
     @Test(expectedExceptions = PathException.class)
     public void ctor_FailWithDirNotExists()
     throws PathException {
-        File mockDirPath = mock(File.class);
-        when(mockDirPath.listFiles()).thenReturn(null);
-        when(mockDirPath.exists()).thenReturn(true).thenReturn(false);
-        when(mockDirPath.isDirectory()).thenReturn(true);
-        when(mockDirPath.isFile()).thenReturn(false);
+        File mockDirPath = Mockito.mock(File.class);
+        Mockito.when(mockDirPath.listFiles()).thenReturn(null);
+        Mockito.when(mockDirPath.exists()).thenReturn(true).thenReturn(false);
+        Mockito.when(mockDirPath.isDirectory()).thenReturn(true);
+        Mockito.when(mockDirPath.isFile()).thenReturn(false);
 
         try {
             new DirectoryListing(mockDirPath, ArrayList.class);
         }
         catch (PathException e) {
-            assertEquals(e.getReason(), PathExceptionReason.PATH_DOES_NOT_EXIST);
-            verify(mockDirPath).listFiles();
+            Assert.assertEquals(e.getReason(), PathExceptionReason.PATH_DOES_NOT_EXIST);
+            Mockito.verify(mockDirPath).listFiles();
             throw e;
         }
     }
@@ -176,19 +169,19 @@ public class DirectoryListingTest {
     @Test(expectedExceptions = PathException.class)
     public void ctor_FailWithRegularFilePath()
     throws PathException {
-        File mockDirPath = mock(File.class);
-        when(mockDirPath.listFiles()).thenReturn(null);
-        when(mockDirPath.exists()).thenReturn(true);
-        when(mockDirPath.isDirectory()).thenReturn(false);
+        File mockDirPath = Mockito.mock(File.class);
+        Mockito.when(mockDirPath.listFiles()).thenReturn(null);
+        Mockito.when(mockDirPath.exists()).thenReturn(true);
+        Mockito.when(mockDirPath.isDirectory()).thenReturn(false);
         // A wee bit tricky!  The first 'false' is to pass the PathArgs.checkDirectoryExists(),
         // and the second 'true' is to trigger a specific exception after File.listFiles() fails.
-        when(mockDirPath.isFile()).thenReturn(false).thenReturn(true);
+        Mockito.when(mockDirPath.isFile()).thenReturn(false).thenReturn(true);
 
         try {
             new DirectoryListing(mockDirPath, ArrayList.class);
         }
         catch (PathException e) {
-            assertEquals(e.getReason(), PathExceptionReason.PATH_IS_NORMAL_FILE);
+            Assert.assertEquals(e.getReason(), PathExceptionReason.PATH_IS_NORMAL_FILE);
             throw e;
         }
     }
@@ -196,18 +189,18 @@ public class DirectoryListingTest {
     @Test(expectedExceptions = PathException.class)
     public void ctor_FailWithDirNotExecutable()
     throws PathException {
-        File mockDirPath = mock(File.class);
-        when(mockDirPath.listFiles()).thenReturn(null);
-        when(mockDirPath.exists()).thenReturn(true);
-        when(mockDirPath.isDirectory()).thenReturn(true);
-        when(mockDirPath.isFile()).thenReturn(false);
-        when(mockDirPath.canExecute()).thenReturn(false);
+        File mockDirPath = Mockito.mock(File.class);
+        Mockito.when(mockDirPath.listFiles()).thenReturn(null);
+        Mockito.when(mockDirPath.exists()).thenReturn(true);
+        Mockito.when(mockDirPath.isDirectory()).thenReturn(true);
+        Mockito.when(mockDirPath.isFile()).thenReturn(false);
+        Mockito.when(mockDirPath.canExecute()).thenReturn(false);
 
         try {
             new DirectoryListing(mockDirPath, ArrayList.class);
         }
         catch (PathException e) {
-            assertEquals(
+            Assert.assertEquals(
                 e.getReason(), PathExceptionReason.PATH_IS_NON_EXECUTABLE_DIRECTORY);
             throw e;
         }
@@ -216,18 +209,18 @@ public class DirectoryListingTest {
     @Test(expectedExceptions = PathException.class)
     public void ctor_FailWithUnknownError()
     throws PathException {
-        File mockDirPath = mock(File.class);
-        when(mockDirPath.listFiles()).thenReturn(null);
-        when(mockDirPath.exists()).thenReturn(true);
-        when(mockDirPath.isDirectory()).thenReturn(true);
-        when(mockDirPath.isFile()).thenReturn(false);
-        when(mockDirPath.canExecute()).thenReturn(true);
+        File mockDirPath = Mockito.mock(File.class);
+        Mockito.when(mockDirPath.listFiles()).thenReturn(null);
+        Mockito.when(mockDirPath.exists()).thenReturn(true);
+        Mockito.when(mockDirPath.isDirectory()).thenReturn(true);
+        Mockito.when(mockDirPath.isFile()).thenReturn(false);
+        Mockito.when(mockDirPath.canExecute()).thenReturn(true);
 
         try {
             new DirectoryListing(mockDirPath, ArrayList.class);
         }
         catch (PathException e) {
-            assertEquals(
+            Assert.assertEquals(
                 e.getReason(), PathExceptionReason.UNKNOWN);
             throw e;
         }
@@ -249,10 +242,10 @@ public class DirectoryListingTest {
         DirectoryListing directoryListing = _createDirectoryListing(pathArr);
         DirectoryListing directoryListingCopy = new DirectoryListing(directoryListing);
 
-        assertEquals(directoryListingCopy, directoryListing);
-        assertEquals(directoryListing.getChildPathList(), pathList);
-        assertEquals(directoryListingCopy.getChildPathList(), pathList);
-        assertEquals(
+        Assert.assertEquals(directoryListingCopy, directoryListing);
+        Assert.assertEquals(directoryListing.getChildPathList(), pathList);
+        Assert.assertEquals(directoryListingCopy.getChildPathList(), pathList);
+        Assert.assertEquals(
             directoryListingCopy.getChildPathList().getClass(),
             DirectoryListing.DEFAULT_LIST_CLASS);
     }
@@ -286,10 +279,10 @@ public class DirectoryListingTest {
         DirectoryListing directoryListingCopy =
             new DirectoryListing(directoryListing, Vector.class);
 
-        assertNotEquals(directoryListingCopy, directoryListing);
-        assertEquals(directoryListing.getChildPathList(), pathList);
-        assertEquals(directoryListingCopy.getChildPathList(), pathList);
-        assertEquals(
+        Assert.assertNotEquals(directoryListingCopy, directoryListing);
+        Assert.assertEquals(directoryListing.getChildPathList(), pathList);
+        Assert.assertEquals(directoryListingCopy.getChildPathList(), pathList);
+        Assert.assertEquals(
             directoryListingCopy.getChildPathList().getClass(),
             Vector.class);
     }
@@ -318,13 +311,13 @@ public class DirectoryListingTest {
 
     private void _core_newInstance_FailWithException(Throwable throwable)
     throws IllegalAccessException, InstantiationException {
-        ContainerFactory mockContainerFactory = mock(ContainerFactory.class);
-        when(mockContainerFactory.newInstance(any(Class.class))).thenThrow(throwable);
+        ContainerFactory mockContainerFactory = Mockito.mock(ContainerFactory.class);
+        Mockito.when(mockContainerFactory.newInstance(Mockito.any(Class.class))).thenThrow(throwable);
         try {
             DirectoryListing._newInstance(mockContainerFactory, LinkedList.class);
         }
         catch (IllegalArgumentException e) {
-            assertSame(e.getCause(), throwable);
+            Assert.assertSame(e.getCause(), throwable);
             throw e;
         }
     }
@@ -339,11 +332,11 @@ public class DirectoryListingTest {
         File mockDirPath = _createMockDirPath(pathArr);
         {
             DirectoryListing directoryListing = new DirectoryListing(mockDirPath);
-            assertSame(directoryListing.getDirPath(), mockDirPath);
+            Assert.assertSame(directoryListing.getDirPath(), mockDirPath);
         }
         {
             DirectoryListing directoryListing = new DirectoryListing(mockDirPath, LinkedList.class);
-            assertSame(directoryListing.getDirPath(), mockDirPath);
+            Assert.assertSame(directoryListing.getDirPath(), mockDirPath);
         }
     }
 
@@ -357,15 +350,15 @@ public class DirectoryListingTest {
         List<File> pathList = Arrays.asList(pathArr);
         {
             DirectoryListing directoryListing = _createDirectoryListing(pathArr);
-            assertEquals(directoryListing.getChildPathList(), pathList);
-            assertEquals(
+            Assert.assertEquals(directoryListing.getChildPathList(), pathList);
+            Assert.assertEquals(
                 directoryListing.getChildPathList().getClass(),
                 DirectoryListing.DEFAULT_LIST_CLASS);
         }
         {
             DirectoryListing directoryListing = _createDirectoryListing(pathArr, LinkedList.class);
-            assertEquals(directoryListing.getChildPathList(), pathList);
-            assertEquals(
+            Assert.assertEquals(directoryListing.getChildPathList(), pathList);
+            Assert.assertEquals(
                 directoryListing.getChildPathList().getClass(),
                 LinkedList.class);
         }
@@ -482,8 +475,8 @@ public class DirectoryListingTest {
     private void _filterHelper(
             DirectoryListing directoryListing, FileFilter fileFilter, List<File> expectedPathList)
     throws PathException {
-        assertSame(directoryListing.filter(fileFilter), directoryListing);
-        assertEquals(directoryListing.getChildPathList(), expectedPathList);
+        Assert.assertSame(directoryListing.filter(fileFilter), directoryListing);
+        Assert.assertEquals(directoryListing.getChildPathList(), expectedPathList);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
@@ -512,22 +505,23 @@ public class DirectoryListingTest {
 
         Comparator<File> mockComparator =
             _createMockComparator(new FileNameLexicographicalComparator());
-        assertSame(
+        Assert.assertSame(
             directoryListing.sort(mockComparator),
             directoryListing);
         List<File> childPathList = directoryListing.getChildPathList();
-        assertEquals(childPathList.get(0).getName(), "abc");
-        assertEquals(childPathList.get(1).getName(), "def");
-        assertEquals(childPathList.get(2).getName(), "ghi");
-        verify(mockComparator, atLeast(1)).compare(any(File.class), any(File.class));
+        Assert.assertEquals(childPathList.get(0).getName(), "abc");
+        Assert.assertEquals(childPathList.get(1).getName(), "def");
+        Assert.assertEquals(childPathList.get(2).getName(), "ghi");
+        Mockito.verify(mockComparator, Mockito.atLeast(1))
+            .compare(Mockito.any(File.class), Mockito.any(File.class));
     }
 
     private Comparator<File> _createMockComparator(final Comparator<File> comparator) {
         // We cannot spy withSeparator a final class with Mockito (or Powermock), so we fake a spy here.
         // Create a mock, but delgate compare(T, T) calls to a real Comparator<T> instance.
         @SuppressWarnings("unchecked")
-        Comparator<File> mockComparator = (Comparator<File>) mock(Comparator.class);
-        when(mockComparator.compare(any(File.class), any(File.class)))
+        Comparator<File> mockComparator = (Comparator<File>) Mockito.mock(Comparator.class);
+        Mockito.when(mockComparator.compare(Mockito.any(File.class), Mockito.any(File.class)))
             .thenAnswer(new Answer<Integer>() {
                 @Override
                 public Integer answer(InvocationOnMock invocation) throws Throwable {
@@ -540,12 +534,12 @@ public class DirectoryListingTest {
     }
 
     private File _createMockFilePath(String name, DateTime lastModified) {
-        File mockFilePath = mock(File.class);
-        when(mockFilePath.exists()).thenReturn(true);
-        when(mockFilePath.isDirectory()).thenReturn(false);
-        when(mockFilePath.isFile()).thenReturn(true);
-        when(mockFilePath.getName()).thenReturn(name);
-        when(mockFilePath.lastModified()).thenReturn(lastModified.getMillis());
+        File mockFilePath = Mockito.mock(File.class);
+        Mockito.when(mockFilePath.exists()).thenReturn(true);
+        Mockito.when(mockFilePath.isDirectory()).thenReturn(false);
+        Mockito.when(mockFilePath.isFile()).thenReturn(true);
+        Mockito.when(mockFilePath.getName()).thenReturn(name);
+        Mockito.when(mockFilePath.lastModified()).thenReturn(lastModified.getMillis());
         return mockFilePath;
     }
 }

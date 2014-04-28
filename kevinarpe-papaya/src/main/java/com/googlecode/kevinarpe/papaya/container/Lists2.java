@@ -37,12 +37,11 @@ import java.util.List;
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-// TODO: Convert to interface so this can be more easily mocked?  Lists2Impl.
 @FullyTested
 public final class Lists2 {
 
     private Lists2() {
-        // disabled
+        // Disabled.
     }
 
     /**

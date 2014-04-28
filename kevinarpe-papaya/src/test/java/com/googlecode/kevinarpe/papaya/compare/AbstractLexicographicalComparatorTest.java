@@ -26,11 +26,8 @@ package com.googlecode.kevinarpe.papaya.compare;
  */
 
 import com.google.common.testing.EqualsTester;
+import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -61,7 +58,7 @@ public class AbstractLexicographicalComparatorTest {
     @Test
     public void ctor_PassWithCaseSensitive() {
         for (CaseSensitive cs : CaseSensitive.values()) {
-            assertEquals(new AbstractLexicographicalComparatorImpl(cs).getCaseSensitive(), cs);
+            Assert.assertEquals(new AbstractLexicographicalComparatorImpl(cs).getCaseSensitive(), cs);
         }
     }
 
@@ -77,7 +74,7 @@ public class AbstractLexicographicalComparatorTest {
     @Test
     public void setSensitive_Pass() {
         for (CaseSensitive cs : CaseSensitive.values()) {
-            assertEquals(new AbstractLexicographicalComparatorImpl().setCaseSensitive(cs).getCaseSensitive(), cs);
+            Assert.assertEquals(new AbstractLexicographicalComparatorImpl().setCaseSensitive(cs).getCaseSensitive(), cs);
         }
     }
 
@@ -92,11 +89,11 @@ public class AbstractLexicographicalComparatorTest {
 
     @Test
     public void isSensitive_Pass() {
-        assertTrue(
+        Assert.assertTrue(
             new AbstractLexicographicalComparatorImpl()
                 .setCaseSensitive(CaseSensitive.YES)
                 .isCaseSensitive());
-        assertFalse(
+        Assert.assertFalse(
             new AbstractLexicographicalComparatorImpl()
                 .setCaseSensitive(CaseSensitive.NO)
                 .isCaseSensitive());

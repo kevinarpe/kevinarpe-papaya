@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <!-- Project homepage: http://code.google.com/p/kevinarpe-papaya -->
     <!-- This POM is largely based upon that of Google Guava. -->
@@ -14,7 +12,7 @@
     </parent>
     <groupId>com.googlecode.kevinarpe-papaya</groupId>
     <artifactId>kevinarpe-papaya-parent</artifactId>
-    <version>0.0.13-SNAPSHOT</version>
+    <version>0.0.14-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
     <url>http://code.google.com/p/kevinarpe-papaya</url>
@@ -35,16 +33,12 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-    <prerequisites>
-        <!-- Copied from Google Guava.  No idea which version is actually required. -->
-        <maven>3.0.3</maven>
-    </prerequisites>
     <scm>
         <connection>scm:git:https://code.google.com/p/kevinarpe-papaya/</connection>
         <developerConnection>scm:git:https://code.google.com/p/kevinarpe-papaya/
         </developerConnection>
         <url>http://code.google.com/p/kevinarpe-papaya/source/browse</url>
-        <tag>HEAD</tag>
+        <tag>kevinarpe-papaya-parent-0.0.13</tag>
     </scm>
     <developers>
         <developer>
@@ -63,9 +57,11 @@
         <module>kevinarpe-papaya</module>
         <module>kevinarpe-papaya-joda-time</module>
         <module>kevinarpe-papaya-testing</module>
+        <module>kevinarpe-papaya-testing-logging</module>
         <module>kevinarpe-papaya-testing-junit</module>
         <module>kevinarpe-papaya-testing-log4j</module>
         <module>kevinarpe-papaya-testing-log4j-junit</module>
+        <module>kevinarpe-papaya-testing-log4j-testng</module>
         <module>kevinarpe-papaya-slf4j</module>
         <module>kevinarpe-papaya-testing-slf4j</module>
     </modules>
@@ -74,37 +70,34 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.6</java.version>
 
-        <maven-release-plugin.version>2.4.2</maven-release-plugin.version>
+        <maven-release-plugin.version>2.5</maven-release-plugin.version>
         <maven-scm-provider-gitexe.version>1.9</maven-scm-provider-gitexe.version>
         <maven-deploy-plugin.version>2.8.1</maven-deploy-plugin.version>
-
         <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
         <maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
         <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
         <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
-        <maven-surefire-plugin.version>2.16</maven-surefire-plugin.version>
-        <animal-sniffer-maven-plugin.version>1.10</animal-sniffer-maven-plugin.version>
+        <maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
+        <animal-sniffer-maven-plugin.version>1.11</animal-sniffer-maven-plugin.version>
         <license-maven-plugin.version>1.6</license-maven-plugin.version>
-        <sonar-maven-plugin.version>4.1.1</sonar-maven-plugin.version>
-
-        <maven-surefire-report-plugin.version>2.16</maven-surefire-report-plugin.version>
+        <sonar-maven-plugin.version>4.2</sonar-maven-plugin.version>
+        <maven-surefire-report-plugin.version>2.17</maven-surefire-report-plugin.version>
         <maven-jxr-plugin.version>2.4</maven-jxr-plugin.version>
         <maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
 
-        <testng.version>6.8.7</testng.version>
+        <testng.version>6.8.8</testng.version>
         <junit.version>4.11</junit.version>
         <mockito-all.version>1.9.5</mockito-all.version>
         <powermock.version>1.5.4</powermock.version>
-        <guava.version>16.0</guava.version>
-        <guava-testlib.version>16.0.1</guava-testlib.version>
+        <guava.version>17.0</guava.version>
+        <guava-testlib.version>17.0</guava-testlib.version>
         <joda-time.version>2.3</joda-time.version>
         <jsr305.version>2.0.3</jsr305.version>
-
         <log4j.version>1.2.17</log4j.version>
-        <slf4j-api.version>1.7.5</slf4j-api.version>
-        <logback-classic.version>1.1.1</logback-classic.version>
+        <slf4j-api.version>1.7.7</slf4j-api.version>
+        <logback-classic.version>1.1.2</logback-classic.version>
 
-        <maven-gpg-plugin.version>1.4</maven-gpg-plugin.version>
+        <maven-gpg-plugin.version>1.5</maven-gpg-plugin.version>
     </properties>
 
     <build>
@@ -163,12 +156,18 @@
                     </configuration>
                     <executions>
                         <execution>
+                            <id>package</id>
                             <phase>package</phase>
                             <goals>
                                 <goal>jar</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>site</id>
+                            <phase>site</phase>
+                            <goals>
                                 <!--Ref: http://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate.html-->
                                 <goal>aggregate</goal>
-                                <goal>aggregate-jar</goal>
                             </goals>
                         </execution>
                     </executions>
@@ -338,7 +337,6 @@
                 <artifactId>joda-time</artifactId>
                 <version>${joda-time.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
