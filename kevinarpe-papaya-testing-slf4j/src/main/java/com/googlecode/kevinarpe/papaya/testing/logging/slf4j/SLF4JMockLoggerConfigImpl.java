@@ -126,7 +126,7 @@ implements SLF4JMockLoggerConfig {
 
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(_marker_To_logLevelToIsEnabledMap_Map);
+        int result = _marker_To_logLevelToIsEnabledMap_Map.hashCode();
         return result;
     }
 

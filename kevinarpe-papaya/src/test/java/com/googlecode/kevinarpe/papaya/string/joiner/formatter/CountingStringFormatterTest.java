@@ -1,85 +1,167 @@
 package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
 
-import org.testng.Assert;
+/*
+ * #%L
+ * This file is part of Papaya.
+ * %%
+ * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * %%
+ * Papaya is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * GPL Classpath Exception:
+ * This project is subject to the "Classpath" exception as provided in
+ * the LICENSE file that accompanied this code.
+ * 
+ * Papaya is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Papaya.  If not, see <http://www.gnu.org/licenses/>.
+ * #L%
+ */
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertSame;
+
 public class CountingStringFormatterTest {
 
+    private static final String FORMAT = "%d: [%s]";
+
+    private Formatter2 mockFormatter;
+    private StringFormatterHelper mockStringFormatterHelper;
     private CountingStringFormatter classUnderTest;
 
     @BeforeMethod
     public void beforeEachTestMethod() {
-        classUnderTest = CountingStringFormatter.withDefaultFirstCount("%d: [%s]");
+        mockFormatter = mock(Formatter2.class);
+        mockStringFormatterHelper = mock(StringFormatterHelper.class);
+        classUnderTest =
+            new CountingStringFormatter(FORMAT, mockFormatter, mockStringFormatterHelper);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // StringFormatter.withDefaultFirstCount(String)
+    // CountingFormatter.ctor()
     //
 
-    @Test(expectedExceptions = NullPointerException.class)
-    public void withDefaultFirstCount_FailWithNull() {
-        CountingStringFormatter.withDefaultFirstCount((String) null);
+    @Test
+    public void ctor_Pass() {
+        CountingStringFormatter x = new CountingStringFormatter(FORMAT, mockFormatter);
+        assertEquals(x.getFirstCount(), CountingStringFormatter.DEFAULT_FIRST_COUNT);
+        assertEquals(x.getNextCount(), CountingStringFormatter.DEFAULT_FIRST_COUNT);
     }
-
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void withDefaultFirstCount_FailWithEmpty() {
-        CountingStringFormatter.withDefaultFirstCount("");
-    }
-
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void withDefaultFirstCount_FailWithOnlyWhitespace() {
-        CountingStringFormatter.withDefaultFirstCount("   ");
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // StringFormatter.withFirstCount(String)
-    //
-
-    @Test(expectedExceptions = NullPointerException.class)
-    public void withFirstCount_FailWithNull() {
-        CountingStringFormatter.withFirstCount((String) null, -1);
-    }
-
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void withFirstCount_FailWithEmpty() {
-        CountingStringFormatter.withFirstCount("", 0);
-    }
-
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void withFirstCount_FailWithOnlyWhitespace() {
-        CountingStringFormatter.withFirstCount("   ", 1);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // StringFormatter.format(Object)
-    //
 
     @DataProvider
-    private static Object[][] _format_Pass_Data() {
+    private static Object[][] _ctor_Fail_Data() {
+        Formatter2 mockFormatter2 = mock(Formatter2.class);
         return new Object[][] {
-            {
-                null,
-                String.format("%d: [null]", CountingStringFormatter.DEFAULT_FIRST_COUNT),
-                String.format("%d: [null]", 1 + CountingStringFormatter.DEFAULT_FIRST_COUNT),
-            },
-            {
-                "",
-                String.format("%d: []", CountingStringFormatter.DEFAULT_FIRST_COUNT),
-                String.format("%d: []", 1 + CountingStringFormatter.DEFAULT_FIRST_COUNT),
-            },
-            {
-                "abc",
-                String.format("%d: [abc]", CountingStringFormatter.DEFAULT_FIRST_COUNT),
-                String.format("%d: [abc]", 1 + CountingStringFormatter.DEFAULT_FIRST_COUNT),
-            },
+            { (String) null, mockFormatter2, NullPointerException.class },
+            { "abc", (Formatter2) null, NullPointerException.class },
+            { "", mockFormatter2, IllegalArgumentException.class },
+            { "   ", mockFormatter2, IllegalArgumentException.class },
         };
     }
 
-    @Test(dataProvider = "_format_Pass_Data")
-    public void format_Pass(Object value, String expected1, String expected2) {
-        Assert.assertEquals(classUnderTest.format(value), expected1);
-        Assert.assertEquals(classUnderTest.format(value), expected2);
+    @Test(dataProvider = "_ctor_Fail_Data",
+            expectedExceptions = Exception.class)
+    public void ctor_Fail(
+            String format, Formatter2 formatter, Class<? extends Exception> expectedExceptionClass)
+    throws Exception {
+        try {
+            new CountingStringFormatter(format, formatter);
+        }
+        catch (Exception e) {
+            assertSame(e.getClass(), expectedExceptionClass);
+            throw e;
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // CountingFormatter.format(Object)/.withFirstCount(int)
+    //
+
+    @Test
+    public void format_PassWithDefaultFirstCount() {
+        _format_Pass(classUnderTest, CountingStringFormatter.DEFAULT_FIRST_COUNT);
+    }
+
+    @Test
+    public void format_PassWithNonDefaultFirstCount() {
+        classUnderTest = classUnderTest.withFirstCount(42);
+        _format_Pass(classUnderTest, 42);
+    }
+
+    private void _format_Pass(CountingStringFormatter classUnderTest2, int firstCount) {
+        final String value = "value";
+        final String value2 = "value2";
+        when(mockFormatter.format(value)).thenReturn(value2);
+        when(
+            mockStringFormatterHelper.format(
+                anyString(),
+                eq(FORMAT),
+                eq(firstCount),
+                eq(value2)))
+            .thenReturn("result");
+        when(
+            mockStringFormatterHelper.format(
+                anyString(),
+                eq(FORMAT),
+                eq(1 + firstCount),
+                eq(value2)))
+            .thenReturn("result2");
+
+        assertEquals(classUnderTest2.getFirstCount(), firstCount);
+        assertEquals(classUnderTest2.getNextCount(), firstCount);
+
+        assertEquals(classUnderTest2.format(value), "result");
+
+        assertEquals(classUnderTest2.getFirstCount(), firstCount);
+        assertEquals(classUnderTest2.getNextCount(), 1 + firstCount);
+
+        assertEquals(classUnderTest2.format(value), "result2");
+
+        assertEquals(classUnderTest2.getFirstCount(), firstCount);
+        assertEquals(classUnderTest2.getNextCount(), 2 + firstCount);
+    }
+
+    @Test(expectedExceptions = RuntimeException.class)
+    public void format_FailWhenFormatThrowsException() {
+        RuntimeException aRuntimeException = new RuntimeException();
+        when(mockStringFormatterHelper.format(anyString(), anyString(), anyInt(), anyString()))
+            .thenThrow(aRuntimeException);
+        assertEquals(classUnderTest.getNextCount(), CountingStringFormatter.DEFAULT_FIRST_COUNT);
+        try {
+            classUnderTest.format("value");
+        }
+        catch (RuntimeException e) {
+            assertSame(e, aRuntimeException);
+            // Demonstrate the counter does not increment when exception thrown
+            assertEquals(
+                classUnderTest.getNextCount(), CountingStringFormatter.DEFAULT_FIRST_COUNT);
+            throw e;
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // CountingFormatter.toString()
+    //
+
+    @Test
+    public void toString_Pass() {
+        assertNotNull(classUnderTest.toString());
     }
 }

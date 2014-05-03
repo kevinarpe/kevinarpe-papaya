@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.properties;
+package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
 
 /*
  * #%L
@@ -28,22 +28,7 @@ package com.googlecode.kevinarpe.papaya.properties;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class PropertiesLoaderException
-extends Exception {
+interface StringFormatterHelper {
 
-    public PropertiesLoaderException() {
-        super();
-    }
-
-    public PropertiesLoaderException(String message) {
-        super(message);
-    }
-
-    public PropertiesLoaderException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public PropertiesLoaderException(Throwable cause) {
-        super(cause);
-    }
+    String format(String description, String format, Object... argArr);
 }

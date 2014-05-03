@@ -26,45 +26,45 @@ package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
  */
 
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import java.io.File;
+
 import static org.testng.Assert.assertEquals;
 
-public class StringFormatterTest {
+public class PathFormatterTest {
 
-    private static final String FORMAT = "[%s]";
-
-    private StringFormatterHelper mockStringFormatterHelper;
-    private StringFormatter classUnderTest;
+    private PathFormatter classUnderTest;
 
     @BeforeMethod
     public void beforeEachTestMethod() {
-        mockStringFormatterHelper = mock(StringFormatterHelper.class);
-        classUnderTest = new StringFormatter(FORMAT, mockStringFormatterHelper);
+        classUnderTest = new PathFormatter();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // StringFormatter.ctor()
+    // PathFormatter.format()
     //
 
-    @Test
-    public void ctor_Pass() {
-        new StringFormatter(FORMAT);
+    @DataProvider
+    private static Object[][] _format_Pass_Data() {
+        final File relPath = new File("abc/def");
+        final File absPath = new File("/abc/def");
+        return new Object[][] {
+            { (File) null, "null" },
+            { relPath, String.format("'%s' -> '%s'", relPath.getPath(), relPath.getAbsolutePath()) },
+            { absPath, String.format("'%s'", absPath.getPath()) },
+        };
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // StringFormatter.format(Object)
-    //
+    @Test(dataProvider = "_format_Pass_Data")
+    public void format_Pass(Object value, String expectedResult) {
+        String actualResult = classUnderTest.format(value);
+        assertEquals(actualResult, expectedResult);
+    }
 
-    @Test
-    public void format_Pass() {
-        String value = "value";
-        when(mockStringFormatterHelper.format(anyString(), eq(FORMAT), eq(value)))
-            .thenReturn("result");
-        assertEquals(classUnderTest.format(value), "result");
+    @Test(expectedExceptions = ClassCastException.class)
+    public void format_FailWithInvalidType() {
+        classUnderTest.format("abc");
     }
 }

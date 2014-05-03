@@ -25,46 +25,51 @@ package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
  * #L%
  */
 
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 
-public class StringFormatterTest {
+public class AbstractStringFormatterTest {
 
-    private static final String FORMAT = "[%s]";
+    private static class _AbstractStringFormatter
+    extends AbstractStringFormatter {
 
-    private StringFormatterHelper mockStringFormatterHelper;
-    private StringFormatter classUnderTest;
-
-    @BeforeMethod
-    public void beforeEachTestMethod() {
-        mockStringFormatterHelper = mock(StringFormatterHelper.class);
-        classUnderTest = new StringFormatter(FORMAT, mockStringFormatterHelper);
+        protected _AbstractStringFormatter(String format) {
+            super(format);
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // StringFormatter.ctor()
+    // AbstractStringFormatter.ctor(String)
     //
 
     @Test
     public void ctor_Pass() {
-        new StringFormatter(FORMAT);
+        assertEquals("abc", new _AbstractStringFormatter("abc").getFormat());
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void ctor_FailWithNull() {
+        new _AbstractStringFormatter((String) null);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void ctor_FailWithEmpty() {
+        new _AbstractStringFormatter("");
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void ctor_FailWithOnlyWhitespace() {
+        new _AbstractStringFormatter("   ");
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // StringFormatter.format(Object)
+    // AbstractStringFormatter.toString()
     //
 
     @Test
-    public void format_Pass() {
-        String value = "value";
-        when(mockStringFormatterHelper.format(anyString(), eq(FORMAT), eq(value)))
-            .thenReturn("result");
-        assertEquals(classUnderTest.format(value), "result");
+    public void toString_Pass() {
+        assertNotNull(new _AbstractStringFormatter("abc").toString());
     }
 }
