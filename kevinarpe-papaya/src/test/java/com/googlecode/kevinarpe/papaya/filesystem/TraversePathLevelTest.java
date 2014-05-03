@@ -54,7 +54,8 @@ import static org.testng.Assert.assertTrue;
     DirectoryListing.class,
     AbstractTraversePathIteratorImpl.class,
     TraversePathLevel.DescendDirFileFilter.class,
-    TraversePathLevel.IterateFileFilter.class
+    TraversePathLevel.IterateFileFilter.class,
+    TraversePathIterSettingsImpl.class
 })
 public class TraversePathLevelTest
 extends PowerMockTestCase {
@@ -195,14 +196,19 @@ extends PowerMockTestCase {
 
     private TraversePathLevel core_getDescendDirDirectoryListing_Pass()
     throws PathException {
-        when(mockFactory.newDirectoryListingInstance(
-            dirPath, TraversePathLevel.DEFAULT_DIRECTORY_LISTING_LIST_CLASS))
+        when(
+            mockFactory.newDirectoryListingInstance(
+                dirPath, TraversePathLevel.DEFAULT_DIRECTORY_LISTING_LIST_CLASS))
             .thenReturn(mockOrigDirectoryListing);
         when(mockFactory.newDirectoryListingInstance(mockOrigDirectoryListing))
             .thenReturn(mockDescendDirDirectoryListing);
+
         // This is related to craziness with JaCoCo (code coverage) + Mockito in Eclipse.
-//        when(mockAbstractTraversePathIteratorImpl.getOptionalDescendDirPathFilter()).thenReturn(mockPathFilter);
-        doReturn(mockPathFilter).when(mockAbstractTraversePathIteratorImpl).getOptionalDescendDirPathFilter();
+        when(mockAbstractTraversePathIteratorImpl.getOptionalDescendDirPathFilter())
+            .thenReturn(mockPathFilter);
+//        doReturn(mockPathFilter)
+//            .when(mockAbstractTraversePathIteratorImpl).getOptionalDescendDirPathFilter();
+
         when(mockFactory.newDescendDirFileFilterInstance(mockPathFilter, depth))
             .thenReturn(mockDescendDirFileFilter);
         when(mockAbstractTraversePathIteratorImpl.getOptionalDescendDirPathComparator())
