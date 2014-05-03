@@ -38,7 +38,7 @@ Might be helpful for multi-module release:
 http://onjavahell.blogspot.hk/2009/12/releasing-multi-module-project-using.html
 https://dev.c-ware.de/confluence/display/PUBLIC/Releasing+modules+of+a+multi-module+project+with+independent+version+numbers
 
-* mvn clean install site
+* mvn clean install
 ** Any compiler errors or failed/skipped tests must be cleaned-up.
 ** Fix any Javadoc warnings.  Re-run as many times as necessary: mvn javadoc:javadoc
 * git commit -a
