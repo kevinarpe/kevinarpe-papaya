@@ -45,14 +45,14 @@ import java.util.Properties;
  * <a href="http://hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d/src/share/classes/java/util/Properties.java"
  * >Properties.java</a>
  * <p>
- * To access an implementation, see {@link JavaPropertiesLoaderUtils#getInstance()}.
+ * To access an implementation, see {@link JdkPropertiesLoaderUtils#getInstance()}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see JavaPropertiesLoaderUtils
+ * @see JdkPropertiesLoaderUtils
  * @see Properties
  */
-public interface JavaPropertiesLoader {
+public interface JdkPropertiesLoader {
 
     /**
      * This is a derivative of the original {@link Properties#load(Reader)}.  The result is a list
@@ -77,7 +77,7 @@ public interface JavaPropertiesLoader {
      * @see Properties#load(Reader)
      * @see #load(InputStream)
      */
-    RandomAccessList<JavaProperty> load(Reader characterStream)
+    RandomAccessList<JdkProperty> load(Reader characterStream)
     throws IOException;
 
     /**
@@ -102,6 +102,6 @@ public interface JavaPropertiesLoader {
      * @see Properties#load(InputStream)
      * @see #load(Reader)
      */
-    RandomAccessList<JavaProperty> load(InputStream byteStream)
+    RandomAccessList<JdkProperty> load(InputStream byteStream)
     throws IOException;
 }

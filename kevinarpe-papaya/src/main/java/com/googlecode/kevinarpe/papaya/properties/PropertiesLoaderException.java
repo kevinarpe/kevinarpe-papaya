@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.input;
+package com.googlecode.kevinarpe.papaya.properties;
 
 /*
  * #%L
@@ -25,14 +25,25 @@ package com.googlecode.kevinarpe.papaya.input;
  * #L%
  */
 
-import java.io.InputStream;
-import java.io.Reader;
-
 /**
-* @author Kevin Connor ARPE (kevinarpe@gmail.com)
-*/
-public interface InputSource {
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
+public class PropertiesLoaderException
+extends Exception {
 
-    InputStream getByteStream();
-    Reader getCharacterStream();
+    public PropertiesLoaderException() {
+        super();
+    }
+
+    public PropertiesLoaderException(String message) {
+        super(message);
+    }
+
+    public PropertiesLoaderException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public PropertiesLoaderException(Throwable cause) {
+        super(cause);
+    }
 }

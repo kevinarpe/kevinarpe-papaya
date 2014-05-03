@@ -25,25 +25,22 @@ package com.googlecode.kevinarpe.papaya.properties;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.input.InputSource;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class JavaPropertiesLoaderException
-extends Exception {
+public interface PropertiesLoader {
 
-    public JavaPropertiesLoaderException() {
-        super();
-    }
+    PropertiesLoaderImpl withOptionalPolicy(PropertiesLoaderPolicy optionalPolicy);
 
-    public JavaPropertiesLoaderException(String message) {
-        super(message);
-    }
+    Properties loadAsProperties(List<InputSource> inputSourceList)
+    throws PropertiesLoaderException;
 
-    public JavaPropertiesLoaderException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public JavaPropertiesLoaderException(Throwable cause) {
-        super(cause);
-    }
+    Map<String, String> loadAsMap(List<InputSource> inputSourceList)
+    throws PropertiesLoaderException;
 }

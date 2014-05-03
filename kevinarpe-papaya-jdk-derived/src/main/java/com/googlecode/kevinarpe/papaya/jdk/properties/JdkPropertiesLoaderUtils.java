@@ -28,12 +28,37 @@ package com.googlecode.kevinarpe.papaya.jdk.properties;
  * #L%
  */
 
-import java.util.List;
-import java.util.RandomAccess;
-
 /**
+ * Utilities for {@link JdkPropertiesLoader}.  To use the methods in this class create a new
+ * instance via {@link #JdkPropertiesLoaderUtils()} or use the public static member
+ * {@link #INSTANCE}.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see #INSTANCE
  */
-public interface RandomAccessList<T>
-extends List<T>, RandomAccess {
+public class JdkPropertiesLoaderUtils
+implements IJdkPropertiesLoaderUtils {
+
+    /**
+     * Single instance of this class provided for convenience.  Since this class is stateless, its
+     * behaviour is identical between this instance and others.
+     */
+    public static final JdkPropertiesLoaderUtils INSTANCE = new JdkPropertiesLoaderUtils();
+
+    /**
+     * For projects that require total, static-free mocking capabilities, use this constructor.
+     * Else, the static constant {@link #INSTANCE} will suffice.
+     */
+    public JdkPropertiesLoaderUtils() {
+        // Empty.
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JdkPropertiesLoader getInstance() {
+        return JdkPropertiesLoaderImpl.INSTANCE;
+    }
 }

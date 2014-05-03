@@ -62,28 +62,28 @@ import java.util.Collections;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-class JavaPropertiesLoaderImpl
-implements JavaPropertiesLoader {
+class JdkPropertiesLoaderImpl
+implements JdkPropertiesLoader {
 
-    public static final JavaPropertiesLoaderImpl INSTANCE = new JavaPropertiesLoaderImpl();
+    public static final JdkPropertiesLoaderImpl INSTANCE = new JdkPropertiesLoaderImpl();
 
     @Override
-    public RandomAccessList<JavaProperty> load(Reader characterStream)
+    public RandomAccessList<JdkProperty> load(Reader characterStream)
     throws IOException {
         if (null == characterStream) {
             throw new NullPointerException("Argument 'reader' is null");
         }
-        RandomAccessList<JavaProperty> x = load0(new LineReader(characterStream));
+        RandomAccessList<JdkProperty> x = load0(new LineReader(characterStream));
         return x;
     }
 
     @Override
-    public RandomAccessList<JavaProperty> load(InputStream byteStream)
+    public RandomAccessList<JdkProperty> load(InputStream byteStream)
     throws IOException {
         if (null == byteStream) {
             throw new NullPointerException("Argument 'inStream' is null");
         }
-        RandomAccessList<JavaProperty> x = load0(new LineReader(byteStream));
+        RandomAccessList<JdkProperty> x = load0(new LineReader(byteStream));
         return x;
     }
 
@@ -91,9 +91,9 @@ implements JavaPropertiesLoader {
      * This is a nearly 100% copied from the original JDK8 source code.  With the exception of my
      * small changes, all copyrights remain with Oracle.
      */
-    private RandomAccessList<JavaProperty> load0 (LineReader lr)
+    private RandomAccessList<JdkProperty> load0 (LineReader lr)
     throws IOException {
-        ArrayList<JavaProperty> entryList = new ArrayList<JavaProperty>();
+        ArrayList<JdkProperty> entryList = new ArrayList<JdkProperty>();
 
         char[] convtBuf = new char[1024];
         int limit;
@@ -142,9 +142,9 @@ implements JavaPropertiesLoader {
             }
             String key = loadConvert(lr.lineBuf, 0, keyLen, convtBuf);
             String value = loadConvert(lr.lineBuf, valueStart, limit - valueStart, convtBuf);
-            entryList.add(new JavaProperty(key, value));
+            entryList.add(new JdkProperty(key, value));
         }
-        return (RandomAccessList<JavaProperty>) Collections.unmodifiableList(entryList);
+        return (RandomAccessList<JdkProperty>) Collections.unmodifiableList(entryList);
     }
 
     /**

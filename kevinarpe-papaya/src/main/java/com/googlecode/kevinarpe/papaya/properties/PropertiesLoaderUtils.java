@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.input;
+package com.googlecode.kevinarpe.papaya.properties;
 
 /*
  * #%L
@@ -25,14 +25,20 @@ package com.googlecode.kevinarpe.papaya.input;
  * #L%
  */
 
-import java.io.InputStream;
-import java.io.Reader;
+import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
 /**
-* @author Kevin Connor ARPE (kevinarpe@gmail.com)
-*/
-public interface InputSource {
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
+public class PropertiesLoaderUtils
+extends StatelessObject
+implements IPropertiesLoaderUtils {
 
-    InputStream getByteStream();
-    Reader getCharacterStream();
+    public static final PropertiesLoaderUtils INSTANCE = new PropertiesLoaderUtils();
+
+    @Override
+    public PropertiesLoader newInstance() {
+        PropertiesLoaderImpl x = new PropertiesLoaderImpl();
+        return x;
+    }
 }

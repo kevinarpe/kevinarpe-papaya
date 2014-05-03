@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.input;
+package com.googlecode.kevinarpe.papaya.properties;
 
 /*
  * #%L
@@ -25,14 +25,9 @@ package com.googlecode.kevinarpe.papaya.input;
  * #L%
  */
 
-import java.io.InputStream;
-import java.io.Reader;
-
 /**
-* @author Kevin Connor ARPE (kevinarpe@gmail.com)
-*/
-public interface InputSource {
-
-    InputStream getByteStream();
-    Reader getCharacterStream();
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
+public interface IPropertiesLoaderUtils {
+    PropertiesLoader newInstance();
 }

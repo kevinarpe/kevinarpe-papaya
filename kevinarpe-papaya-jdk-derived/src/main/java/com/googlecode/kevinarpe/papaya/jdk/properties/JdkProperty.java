@@ -29,36 +29,31 @@ package com.googlecode.kevinarpe.papaya.jdk.properties;
  */
 
 /**
- * Utilities for {@link JavaPropertiesLoader}.  To use the methods in this class create a new
- * instance via {@link #JavaPropertiesLoaderUtils()} or use the public static member
- * {@link #INSTANCE}.
- *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
- *
- * @see #INSTANCE
  */
-public class JavaPropertiesLoaderUtils
-implements IJavaPropertiesLoaderUtils {
+public class JdkProperty {
 
-    /**
-     * Single instance of this class provided for convenience.  Since this class is stateless, its
-     * behaviour is identical between this instance and others.
-     */
-    public static final JavaPropertiesLoaderUtils INSTANCE = new JavaPropertiesLoaderUtils();
+    private String _key;
+    private String _value;
 
-    /**
-     * For projects that require total, static-free mocking capabilities, use this constructor.
-     * Else, the static constant {@link #INSTANCE} will suffice.
-     */
-    public JavaPropertiesLoaderUtils() {
-        // Empty.
+    public JdkProperty(String key, String value) {
+        this._key = key;
+        this._value = value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JavaPropertiesLoader getInstance() {
-        return JavaPropertiesLoaderImpl.INSTANCE;
+    public String getKey() {
+        return _key;
+    }
+
+    public void setKey(String _key) {
+        this._key = _key;
+    }
+
+    public String getValue() {
+        return _value;
+    }
+
+    public void setValue(String _value) {
+        this._value = _value;
     }
 }
