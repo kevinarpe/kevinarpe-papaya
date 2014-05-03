@@ -27,6 +27,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
 
 import com.googlecode.kevinarpe.papaya.exception.PathException;
 import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.testng.PowerMockTestCase;
 import org.testng.annotations.BeforeMethod;
@@ -39,9 +40,8 @@ import java.util.List;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.when;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertSame;
@@ -54,7 +54,8 @@ import static org.testng.Assert.assertTrue;
     DirectoryListing.class,
     AbstractTraversePathIteratorImpl.class,
     TraversePathLevel.DescendDirFileFilter.class,
-    TraversePathLevel.IterateFileFilter.class
+    TraversePathLevel.IterateFileFilter.class,
+    TraversePathIterSettingsImpl.class
 })
 public class TraversePathLevelTest
 extends PowerMockTestCase {
@@ -195,14 +196,19 @@ extends PowerMockTestCase {
 
     private TraversePathLevel core_getDescendDirDirectoryListing_Pass()
     throws PathException {
-        when(mockFactory.newDirectoryListingInstance(
-            dirPath, TraversePathLevel.DEFAULT_DIRECTORY_LISTING_LIST_CLASS))
+        when(
+            mockFactory.newDirectoryListingInstance(
+                dirPath, TraversePathLevel.DEFAULT_DIRECTORY_LISTING_LIST_CLASS))
             .thenReturn(mockOrigDirectoryListing);
         when(mockFactory.newDirectoryListingInstance(mockOrigDirectoryListing))
             .thenReturn(mockDescendDirDirectoryListing);
+
         // This is related to craziness with JaCoCo (code coverage) + Mockito in Eclipse.
-//        when(mockAbstractTraversePathIteratorImpl.getOptionalDescendDirPathFilter()).thenReturn(mockPathFilter);
-        doReturn(mockPathFilter).when(mockAbstractTraversePathIteratorImpl).getOptionalDescendDirPathFilter();
+//        PowerMockito.when(mockAbstractTraversePathIteratorImpl.getOptionalDescendDirPathFilter())
+//            .thenReturn(mockPathFilter);
+        PowerMockito.doReturn(mockPathFilter)
+            .when(mockAbstractTraversePathIteratorImpl).getOptionalDescendDirPathFilter();
+
         when(mockFactory.newDescendDirFileFilterInstance(mockPathFilter, depth))
             .thenReturn(mockDescendDirFileFilter);
         when(mockAbstractTraversePathIteratorImpl.getOptionalDescendDirPathComparator())
@@ -287,9 +293,12 @@ extends PowerMockTestCase {
         when(mockFactory.newDirectoryListingInstance(
             dirPath, TraversePathLevel.DEFAULT_DIRECTORY_LISTING_LIST_CLASS))
             .thenReturn(mockOrigDirectoryListing);
+
         // This is related to craziness with JaCoCo (code coverage) + Mockito in Eclipse.
-//        when(mockAbstractTraversePathIteratorImpl.getOptionalIteratePathFilter()).thenReturn(mockPathFilter);
-        doReturn(mockPathFilter).when(mockAbstractTraversePathIteratorImpl).getOptionalIteratePathFilter();
+        when(mockAbstractTraversePathIteratorImpl.getOptionalIteratePathFilter())
+            .thenReturn(mockPathFilter);
+//        doReturn(mockPathFilter).when(mockAbstractTraversePathIteratorImpl).getOptionalIteratePathFilter();
+
         when(mockFactory.newDirectoryListingInstance(mockOrigDirectoryListing))
             .thenReturn(mockIterateDirectoryListing);
         when(mockFactory.newIterateFileFilterInstance(mockPathFilter, depth))

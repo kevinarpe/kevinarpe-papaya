@@ -38,7 +38,7 @@ Might be helpful for multi-module release:
 http://onjavahell.blogspot.hk/2009/12/releasing-multi-module-project-using.html
 https://dev.c-ware.de/confluence/display/PUBLIC/Releasing+modules+of+a+multi-module+project+with+independent+version+numbers
 
-* mvn clean install site
+* mvn clean install
 ** Any compiler errors or failed/skipped tests must be cleaned-up.
 ** Fix any Javadoc warnings.  Re-run as many times as necessary: mvn javadoc:javadoc
 * git commit -a
@@ -57,7 +57,7 @@ https://dev.c-ware.de/confluence/display/PUBLIC/Releasing+modules+of+a+multi-mod
 ** Do the Nexus dance to push the staged release.
 ** https://oss.sonatype.org/
 *** Staging Repositories
-*** Find (and select) your repo
+*** Find (and select) your repo (usually at the bottom)
 *** Click button 'Close'
 *** Enter witty comment
 *** Wait about one minute, then click button 'Refresh'
