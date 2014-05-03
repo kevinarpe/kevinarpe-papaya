@@ -57,7 +57,7 @@ https://dev.c-ware.de/confluence/display/PUBLIC/Releasing+modules+of+a+multi-mod
 ** Do the Nexus dance to push the staged release.
 ** https://oss.sonatype.org/
 *** Staging Repositories
-*** Find (and select) your repo
+*** Find (and select) your repo (usually at the bottom)
 *** Click button 'Close'
 *** Enter witty comment
 *** Wait about one minute, then click button 'Refresh'
