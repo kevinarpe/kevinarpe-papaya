@@ -28,45 +28,46 @@ package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
+import java.io.File;
+
 /**
- * Formats a value using {@code String.format()}.
+ * Formats file and directory paths to distinguish between relative and absolute paths.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see AbstractStringFormatter
  * @see Formatter2
- * @see String#format(String, Object...)
  */
 @FullyTested
-public final class StringFormatter
-extends AbstractStringFormatter
+public class PathFormatter
 implements Formatter2 {
 
-    private final StringFormatterHelper _stringFormatterHelper;
-
     /**
-     * @see AbstractStringFormatter#AbstractStringFormatter(String)
-     */
-    public StringFormatter(String format) {
-        this(format, StringFormatterHelperImpl.INSTANCE);
-    }
-
-    StringFormatter(String format, StringFormatterHelper stringFormatterHelper) {
-        super(format);
-        _stringFormatterHelper =
-            ObjectArgs.checkNotNull(stringFormatterHelper, "stringFormatterHelper");
-    }
-
-    /**
+     * Converts a path to a string.
+     * <ul>
+     *     <li>{@code null} -> {@code "null"}</li>
+     *     <li>absolute path -> {@code "'/abs/path'"}</li>
+     *     <li>relative path -> {@code "'rel/path' -> '/a/b/c/rel/path'"}</li>
+     * </ul>
+     * <hr/>
+     * Inherited docs:
+     * <br/>
      * {@inheritDoc}
      *
-     * @throws IllegalArgumentException
-     *         if {@link String#format(String, Object...)} fails
+     * @throws ClassCastException
+     *         if {@code value} is not a {@link File}
      */
     @Override
     public String format(Object value) {
-        final String format = getFormat();
-        String x = _stringFormatterHelper.format("value", format, value);
+        if (null == value) {
+            return StringFormatterHelperImpl.NULL_VALUE_AS_STRING;
+        }
+        ObjectArgs.checkAssignableToType(value.getClass(), File.class, "class of value");
+
+        File path = (File) value;
+        String x = String.format("'%s'", path.getPath());
+        if (!path.isAbsolute()) {
+            x = String.format("%s -> '%s'", x, path.getAbsolutePath());
+        }
         return x;
     }
 }
