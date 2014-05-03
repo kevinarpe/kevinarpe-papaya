@@ -15,6 +15,7 @@
     <version>0.0.15-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
+    <description>Papaya Parent: Utilities for Java 1.6+ written by Kevin Connor ARPE</description>
     <url>http://code.google.com/p/kevinarpe-papaya</url>
     <issueManagement>
         <system>code.google.com</system>
@@ -64,6 +65,7 @@
         <module>kevinarpe-papaya-testing-log4j-testng</module>
         <module>kevinarpe-papaya-slf4j</module>
         <module>kevinarpe-papaya-testing-slf4j</module>
+        <module>kevinarpe-papaya-jdk-derived</module>
     </modules>
 
     <properties>
@@ -231,7 +233,7 @@
                     <artifactId>license-maven-plugin</artifactId>
                     <version>${license-maven-plugin.version}</version>
                     <configuration>
-                        <licenseName>gpl-v3-with-classpath-exception</licenseName>
+                        <licenseName>kevinarpe-papaya</licenseName>
                         <licenseResolver>${project.baseUri}/src/license</licenseResolver>
                         <organizationName>Kevin Connor ARPE (kevinarpe@gmail.com)</organizationName>
                         <canUpdateCopyright>true</canUpdateCopyright>

@@ -28,22 +28,22 @@ package com.googlecode.kevinarpe.papaya.properties;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class PropertiesLoaderException
+public class JavaPropertiesLoaderException
 extends Exception {
 
-    public PropertiesLoaderException() {
+    public JavaPropertiesLoaderException() {
         super();
     }
 
-    public PropertiesLoaderException(String message) {
+    public JavaPropertiesLoaderException(String message) {
         super(message);
     }
 
-    public PropertiesLoaderException(String message, Throwable cause) {
+    public JavaPropertiesLoaderException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public PropertiesLoaderException(Throwable cause) {
+    public JavaPropertiesLoaderException(Throwable cause) {
         super(cause);
     }
 }
