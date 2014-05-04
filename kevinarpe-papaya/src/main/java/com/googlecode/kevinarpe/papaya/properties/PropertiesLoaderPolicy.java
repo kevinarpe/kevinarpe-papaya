@@ -30,10 +30,23 @@ import com.googlecode.kevinarpe.papaya.jdk.properties.JdkProperty;
 import java.util.List;
 
 /**
-* @author Kevin Connor ARPE (kevinarpe@gmail.com)
-*/ // Allow writing?  Not sure.
+ * Checks a group of properties for correctness.
+ *
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see DefaultPropertiesLoaderPolicy
+ */
 public interface PropertiesLoaderPolicy {
 
+    /**
+     * Applies a policy to a group of properties.  On failure, an exception is thrown.
+     *
+     * @param propertyList
+     *        may be empty, but must not be {@code null}
+     *
+     * @throws PropertiesLoaderException
+     *         if group of properties fails any checks/tests/policies
+     */
     void apply(List<JdkProperty> propertyList)
     throws PropertiesLoaderException;
 }

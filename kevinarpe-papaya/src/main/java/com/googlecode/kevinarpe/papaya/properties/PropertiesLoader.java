@@ -25,22 +25,49 @@ package com.googlecode.kevinarpe.papaya.properties;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.input.InputSource;
+import com.googlecode.kevinarpe.papaya.input.InputSource2;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 /**
+ * Loads groups of Java properties, checks for correctness, and carefully logs any overrides.
+ * <p>
+ * To construct new instances, see {@link PropertiesLoaderUtils#newInstance()}.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see PropertiesLoaderUtils
  */
 public interface PropertiesLoader {
 
+    /**
+     * Retrieves the current optional policy to check each group of properties.
+     *
+     * @return current policy which can be {@code null}
+     */
+    PropertiesLoaderPolicy withOptionalPolicy();
+
+    /**
+     * Constructs a new instance with a new optional policy to check each group of properties.
+     *
+     * @param optionalPolicy
+     *        policy for each group of properties.  Can be {@code null}
+     *
+     * @return new instance
+     */
     PropertiesLoaderImpl withOptionalPolicy(PropertiesLoaderPolicy optionalPolicy);
 
-    Properties loadAsProperties(List<InputSource> inputSourceList)
+    /**
+     *
+     * @param inputSourceList
+     * @return
+     * @throws PropertiesLoaderException
+     */
+    Properties loadAsProperties(List<InputSource2> inputSourceList)
     throws PropertiesLoaderException;
 
-    Map<String, String> loadAsMap(List<InputSource> inputSourceList)
+    Map<String, String> loadAsMap(List<InputSource2> inputSourceList)
     throws PropertiesLoaderException;
 }

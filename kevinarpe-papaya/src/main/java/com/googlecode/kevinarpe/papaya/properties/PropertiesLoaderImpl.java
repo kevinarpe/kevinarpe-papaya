@@ -26,9 +26,10 @@ package com.googlecode.kevinarpe.papaya.properties;
  */
 
 import com.google.common.collect.Maps;
-import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.input.InputSource;
+import com.googlecode.kevinarpe.papaya.input.IInputSource2Utils;
+import com.googlecode.kevinarpe.papaya.input.InputSource2;
+import com.googlecode.kevinarpe.papaya.input.InputSource2Utils;
 import com.googlecode.kevinarpe.papaya.jdk.properties.JdkPropertiesLoader;
 import com.googlecode.kevinarpe.papaya.jdk.properties.JdkPropertiesLoaderUtils;
 import com.googlecode.kevinarpe.papaya.jdk.properties.JdkProperty;
@@ -50,22 +51,35 @@ import java.util.Properties;
 final class PropertiesLoaderImpl
 implements PropertiesLoader {
 
-    static final PropertiesLoaderPolicy DEFAULT_POLICY =
-        PropertiesLoaderPolicyImpl.INSTANCE;
-
     private final PropertiesLoaderPolicy _optionalPolicy;
     private final JdkPropertiesLoader _jdkPropertiesLoader;
+    private final IInputSource2Utils _inputSource2Utils;
+    private final PropertiesMerger _propertiesMerger;
     private final Logger _logger;
 
     public PropertiesLoaderImpl() {
-        this(JdkPropertiesLoaderUtils.INSTANCE.getInstance(), LoggerFactory.getILoggerFactory());
+        this(_newLogger(LoggerFactory.getILoggerFactory()));
     }
 
-    public PropertiesLoaderImpl(
-        JdkPropertiesLoader jdkPropertiesLoader, ILoggerFactory loggerFactory) {
+    private PropertiesLoaderImpl(Logger logger) {
         this(
-            DEFAULT_POLICY,
+            PropertiesLoaderUtils.DEFAULT_POLICY,
+            JdkPropertiesLoaderUtils.INSTANCE.getInstance(),
+            InputSource2Utils.INSTANCE,
+            new PropertiesMergerImpl(logger),
+            logger);
+    }
+
+    PropertiesLoaderImpl(
+            JdkPropertiesLoader jdkPropertiesLoader,
+            IInputSource2Utils inputSource2Utils,
+            PropertiesMerger propertiesMerger,
+            ILoggerFactory loggerFactory) {
+        this(
+            PropertiesLoaderUtils.DEFAULT_POLICY,
             ObjectArgs.checkNotNull(jdkPropertiesLoader, "javaPropertiesLoader"),
+            ObjectArgs.checkNotNull(inputSource2Utils, "inputSource2Utils"),
+            ObjectArgs.checkNotNull(propertiesMerger, "propertiesMerger"),
             _newLogger(loggerFactory));
     }
 
@@ -77,24 +91,37 @@ implements PropertiesLoader {
     }
 
     private PropertiesLoaderImpl(
-        PropertiesLoaderPolicy optionalPolicy,
-        JdkPropertiesLoader jdkPropertiesLoader,
-        Logger logger) {
+            PropertiesLoaderPolicy optionalPolicy,
+            JdkPropertiesLoader jdkPropertiesLoader,
+            IInputSource2Utils inputSource2Utils,
+            PropertiesMerger propertiesMerger,
+            Logger logger) {
         _optionalPolicy = optionalPolicy;
-        _jdkPropertiesLoader =
-            ObjectArgs.checkNotNull(jdkPropertiesLoader, "javaPropertiesLoader");
+        _jdkPropertiesLoader = jdkPropertiesLoader;
+        _inputSource2Utils = inputSource2Utils;
+        _propertiesMerger = propertiesMerger;
         _logger = logger;
+    }
+
+    @Override
+    public PropertiesLoaderPolicy withOptionalPolicy() {
+        return _optionalPolicy;
     }
 
     @Override
     public PropertiesLoaderImpl withOptionalPolicy(PropertiesLoaderPolicy optionalPolicy) {
         PropertiesLoaderImpl x =
-            new PropertiesLoaderImpl(optionalPolicy, _jdkPropertiesLoader, _logger);
+            new PropertiesLoaderImpl(
+                optionalPolicy,
+                _jdkPropertiesLoader,
+                _inputSource2Utils,
+                _propertiesMerger,
+                _logger);
         return x;
     }
 
     @Override
-    public Properties loadAsProperties(List<InputSource> inputSourceList)
+    public Properties loadAsProperties(List<InputSource2> inputSourceList)
     throws PropertiesLoaderException {
         Map<String, String> map = loadAsMap(inputSourceList);
         Properties properties = new Properties();
@@ -103,35 +130,25 @@ implements PropertiesLoader {
     }
 
     @Override
-    public Map<String, String> loadAsMap(List<InputSource> inputSourceList)
+    public Map<String, String> loadAsMap(List<InputSource2> inputSourceList)
     throws PropertiesLoaderException {
-        CollectionArgs.checkNotEmptyAndElementsNotNull(inputSourceList, "inputSourceList");
+        _inputSource2Utils.checkValid(inputSourceList, "inputSourceList");
 
         LinkedHashMap<String, String> map = Maps.newLinkedHashMap();
         final int size = inputSourceList.size();
         for (int index = 0; index < size; ++index) {
-            InputSource inputSource = inputSourceList.get(index);
-            _checkInputSource(index, inputSource);
+            InputSource2 inputSource = inputSourceList.get(index);
             _logger.info("[%d of %d] Load properties: %s", 1 + index, size, inputSource);
             RandomAccessList<JdkProperty> propertyList = _loadPropertyList(inputSource);
             if (null != _optionalPolicy) {
                 _optionalPolicy.apply(propertyList);
             }
-            _mergeProperties(map, propertyList);
+            _propertiesMerger.merge(map, propertyList);
         }
         return map;
     }
 
-    private void _checkInputSource(int index, InputSource inputSource) {
-        if (null == inputSource.getByteStream() && null == inputSource.getCharacterStream()) {
-            throw new IllegalArgumentException(
-                String.format(
-                    "InputSource[%d] has a null byte stream and character stream: %s",
-                    index, inputSource));
-        }
-    }
-
-    private RandomAccessList<JdkProperty> _loadPropertyList(InputSource inputSource)
+    private RandomAccessList<JdkProperty> _loadPropertyList(InputSource2 inputSource)
     throws PropertiesLoaderException {
         try {
             if (null == inputSource.getCharacterStream()) {
@@ -149,42 +166,7 @@ implements PropertiesLoader {
             throw new PropertiesLoaderException(e);
         }
         finally {
-            _closeQuietly(inputSource);
-        }
-    }
-
-    private void _mergeProperties(
-            LinkedHashMap<String, String> map, RandomAccessList<JdkProperty> propertyList) {
-        _logger.debug("Loaded %d properties", propertyList.size());
-        final int size = propertyList.size();
-        for (int index = 0; index < size; ++index) {
-            JdkProperty property = propertyList.get(index);
-            _logger.debug("\t[%d of %d]: '%s' -> '%s'",
-                1 + index, size, property.getKey(), property.getValue());
-            if (map.containsKey(property.getKey())) {
-                String oldValue = map.get(property.getKey());
-                if (oldValue.equals(property.getValue())) {
-                    continue;
-                }
-                else {
-                    _logger.debug("\t\tOverrides old value: '%s'", oldValue);
-                }
-            }
-            map.put(property.getKey(), property.getValue());
-        }
-    }
-
-    private void _closeQuietly(InputSource inputSource) {
-        try {
-            if (null == inputSource.getCharacterStream()) {
-                inputSource.getByteStream().close();
-            }
-            else {
-                inputSource.getCharacterStream().close();
-            }
-        }
-        catch (IOException ignore) {
-            int dummy = 1;  // debug breakpoint
+            _inputSource2Utils.closeQuietly(inputSource);
         }
     }
 }

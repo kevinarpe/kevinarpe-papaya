@@ -36,6 +36,9 @@ implements IPropertiesLoaderUtils {
 
     public static final PropertiesLoaderUtils INSTANCE = new PropertiesLoaderUtils();
 
+    public static final PropertiesLoaderPolicy DEFAULT_POLICY =
+        DefaultPropertiesLoaderPolicy.INSTANCE;
+
     @Override
     public PropertiesLoader newInstance() {
         PropertiesLoaderImpl x = new PropertiesLoaderImpl();

@@ -29,5 +29,6 @@ package com.googlecode.kevinarpe.papaya.properties;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public interface IPropertiesLoaderUtils {
+
     PropertiesLoader newInstance();
 }

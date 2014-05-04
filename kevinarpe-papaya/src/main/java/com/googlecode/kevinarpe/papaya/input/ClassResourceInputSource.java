@@ -32,10 +32,10 @@ import java.io.InputStream;
 import java.io.Reader;
 
 /**
-* @author Kevin Connor ARPE (kevinarpe@gmail.com)
-*/
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public final class ClassResourceInputSource
-implements InputSource {
+implements InputSource2 {
 
     private final Class<?> _clazz;
     private final String _pathname;

@@ -40,10 +40,10 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 
 /**
-* @author Kevin Connor ARPE (kevinarpe@gmail.com)
-*/
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public final class FileInputSource
-implements InputSource {
+implements InputSource2 {
 
     private final File _filePath;
     private final InputStreamReader _inputStreamReader;

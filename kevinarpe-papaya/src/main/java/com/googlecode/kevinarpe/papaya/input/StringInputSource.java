@@ -34,10 +34,14 @@ import java.io.StringReader;
 import java.util.regex.Pattern;
 
 /**
-* @author Kevin Connor ARPE (kevinarpe@gmail.com)
-*/
+ *
+ *
+ * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ */
 public final class StringInputSource
-implements InputSource {
+implements InputSource2 {
+
+    private static final Pattern ANY_NEW_LINE_PATTERN = Pattern.compile("\r?\n");
 
     private final String _text;
     private final StringReader _stringReader;
@@ -59,8 +63,20 @@ implements InputSource {
 
     @Override
     public String toString() {
-        String fragment = Splitter.on(Pattern.compile("\r?\n")).split(_text).iterator().next();
-        String x = String.format("String: '%s...'", fragment);
+        String fragment = _getFragment();
+        String x = String.format("String: '%s'", fragment);
         return x;
+    }
+
+    private String _getFragment() {
+        String fragment = Splitter.on(ANY_NEW_LINE_PATTERN).split(_text).iterator().next();
+        boolean needsEllipsis = (fragment.length() != _text.length());
+        if (fragment.length() > 256) {
+            fragment = fragment.substring(0, 256);
+        }
+        if (needsEllipsis) {
+            fragment += "...";
+        }
+        return fragment;
     }
 }

@@ -28,32 +28,55 @@ package com.googlecode.kevinarpe.papaya.jdk.properties;
  * #L%
  */
 
+import java.util.Arrays;
+
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public class JdkProperty {
 
-    private String _key;
-    private String _value;
+    private String[] _keyValueArr;
 
     public JdkProperty(String key, String value) {
-        this._key = key;
-        this._value = value;
+        _keyValueArr = new String[] { key, value };
     }
 
     public String getKey() {
-        return _key;
+        return _keyValueArr[0];
     }
 
-    public void setKey(String _key) {
-        this._key = _key;
+    public void setKey(String key) {
+        _keyValueArr[0] = key;
     }
 
     public String getValue() {
-        return _value;
+        return _keyValueArr[1];
     }
 
-    public void setValue(String _value) {
-        this._value = _value;
+    public void setValue(String value) {
+        _keyValueArr[1] = value;
+    }
+
+    @Override
+    public int hashCode() {
+        int x = Arrays.hashCode(_keyValueArr);
+        return x;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        // Ref: http://stackoverflow.com/a/5039178/257299
+        boolean result = (this == obj);
+        if (!result && obj instanceof JdkProperty) {
+            final JdkProperty other = (JdkProperty) obj;
+            result = Arrays.equals(_keyValueArr, other._keyValueArr);
+        }
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        String x = String.format("Key: '%s', Value: '%s'", _keyValueArr[0], _keyValueArr[1]);
+        return x;
     }
 }
