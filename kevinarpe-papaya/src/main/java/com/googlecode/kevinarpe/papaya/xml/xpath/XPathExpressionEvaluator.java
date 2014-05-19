@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.xml;
+package com.googlecode.kevinarpe.papaya.xml.xpath;
 
 /*
  * #%L
@@ -25,25 +25,20 @@ package com.googlecode.kevinarpe.papaya.xml;
  * #L%
  */
 
+import org.w3c.dom.Node;
+
+import javax.xml.xpath.XPathExpression;
+
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class XPathHelperException
-extends Exception {
+interface XPathExpressionEvaluator {
 
-    public XPathHelperException() {
-        super();
-    }
-
-    public XPathHelperException(String message) {
-        super(message);
-    }
-
-    public XPathHelperException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public XPathHelperException(Throwable cause) {
-        super(cause);
-    }
+    Object evaluate(
+            XPathExpression xpe,
+            Node node,
+            StandardQName qname,
+            String xpath,
+            String xpathDescription)
+    throws XPathHelperException;
 }

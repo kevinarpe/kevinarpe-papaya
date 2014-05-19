@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.xml;
+package com.googlecode.kevinarpe.papaya.xml.xpath;
 
 /*
  * #%L
@@ -25,6 +25,11 @@ package com.googlecode.kevinarpe.papaya.xml;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.xml.xpath.StandardQName;
+import com.googlecode.kevinarpe.papaya.xml.xpath.XPathExpressionEvaluator;
+import com.googlecode.kevinarpe.papaya.xml.xpath.XPathExpressionFactory;
+import com.googlecode.kevinarpe.papaya.xml.xpath.XPathHelperException;
+import com.googlecode.kevinarpe.papaya.xml.xpath.XPathHelperImpl;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Node;

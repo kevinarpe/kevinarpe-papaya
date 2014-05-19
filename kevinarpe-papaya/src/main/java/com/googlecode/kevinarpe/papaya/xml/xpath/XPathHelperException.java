@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.xml;
+package com.googlecode.kevinarpe.papaya.xml.xpath;
 
 /*
  * #%L
@@ -25,27 +25,25 @@ package com.googlecode.kevinarpe.papaya.xml;
  * #L%
  */
 
-import javax.xml.xpath.XPath;
-
 /**
- * For those projects that require full, static-free mocking capabilities, use this interface.
- * Else, the concrete implementation {@link XPathHelperUtils} will suffice.
- *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public interface IXPathHelperUtils {
+public class XPathHelperException
+extends Exception {
 
-    /**
-     * Creates a new XPath helper.
-     *
-     * @param xpathExpressionCompiler
-     *        instance of {@link XPath}.
-     *        <br/>Example: {@code XPathFactory.newXPath()}
-     *
-     * @return new instance that implements {@link XPathHelper}
-     *
-     * @throws NullPointerException
-     *         if {@code xpathExpressionCompiler} is {@code null}
-     */
-    XPathHelper newInstance(XPath xpathExpressionCompiler);
+    public XPathHelperException() {
+        super();
+    }
+
+    public XPathHelperException(String message) {
+        super(message);
+    }
+
+    public XPathHelperException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public XPathHelperException(Throwable cause) {
+        super(cause);
+    }
 }

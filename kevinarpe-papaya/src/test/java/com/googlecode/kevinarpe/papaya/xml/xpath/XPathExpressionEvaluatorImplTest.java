@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.xml;
+package com.googlecode.kevinarpe.papaya.xml.xpath;
 
 /*
  * #%L
@@ -25,6 +25,9 @@ package com.googlecode.kevinarpe.papaya.xml;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.xml.xpath.StandardQName;
+import com.googlecode.kevinarpe.papaya.xml.xpath.XPathExpressionEvaluatorImpl;
+import com.googlecode.kevinarpe.papaya.xml.xpath.XPathHelperException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Node;
@@ -105,6 +108,7 @@ public class XPathExpressionEvaluatorImplTest {
         assertSame(
             classUnderTest.evaluate(
                 mockXPathExpression, mockNode, StandardQName.NODESET, XPATH, DESCRIPTION),
-            mockNodeList);
+            mockNodeList
+        );
     }
 }

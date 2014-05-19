@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.xml;
+package com.googlecode.kevinarpe.papaya.xml.xpath;
 
 /*
  * #%L
@@ -25,13 +25,27 @@ package com.googlecode.kevinarpe.papaya.xml;
  * #L%
  */
 
-import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPath;
 
 /**
+ * For those projects that require full, static-free mocking capabilities, use this interface.
+ * Else, the concrete implementation {@link XPathHelperUtils} will suffice.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-interface XPathExpressionFactory {
+public interface IXPathHelperUtils {
 
-    XPathExpression getInstance(String xpath, String description)
-    throws XPathHelperException;
+    /**
+     * Creates a new XPath helper.
+     *
+     * @param xpathExpressionCompiler
+     *        instance of {@link XPath}.
+     *        <br/>Example: {@code XPathFactory.newXPath()}
+     *
+     * @return new instance that implements {@link XPathHelper}
+     *
+     * @throws NullPointerException
+     *         if {@code xpathExpressionCompiler} is {@code null}
+     */
+    XPathHelper newInstance(XPath xpathExpressionCompiler);
 }

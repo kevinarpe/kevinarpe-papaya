@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.xml;
+package com.googlecode.kevinarpe.papaya.xml.xpath;
 
 /*
  * #%L
@@ -25,20 +25,13 @@ package com.googlecode.kevinarpe.papaya.xml;
  * #L%
  */
 
-import org.w3c.dom.Node;
-
 import javax.xml.xpath.XPathExpression;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-interface XPathExpressionEvaluator {
+interface XPathExpressionFactory {
 
-    Object evaluate(
-            XPathExpression xpe,
-            Node node,
-            StandardQName qname,
-            String xpath,
-            String xpathDescription)
+    XPathExpression getInstance(String xpath, String description)
     throws XPathHelperException;
 }
