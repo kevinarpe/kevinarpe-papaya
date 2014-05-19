@@ -12,7 +12,7 @@
     </parent>
     <groupId>com.googlecode.kevinarpe-papaya</groupId>
     <artifactId>kevinarpe-papaya-parent</artifactId>
-    <version>0.0.15-SNAPSHOT</version>
+    <version>0.0.15</version>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
     <url>http://code.google.com/p/kevinarpe-papaya</url>
@@ -38,7 +38,7 @@
         <developerConnection>scm:git:https://code.google.com/p/kevinarpe-papaya/
         </developerConnection>
         <url>http://code.google.com/p/kevinarpe-papaya/source/browse</url>
-        <tag>kevinarpe-papaya-parent-0.0.13</tag>
+        <tag>kevinarpe-papaya-parent-0.0.15</tag>
     </scm>
     <developers>
         <developer>
