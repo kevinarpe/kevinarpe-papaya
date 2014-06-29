@@ -33,12 +33,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Methods to create new instances that implement interface SLF4JLevelLogger.
+ * Methods to create new instances that implement interface {@link SLF4JLevelLogger}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see StatelessObject
  * @see ISLF4JLevelLoggerUtils
+ * @see #INSTANCE
  */
 @FullyTested
 public final class SLF4JLevelLoggerUtils
