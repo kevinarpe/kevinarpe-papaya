@@ -58,12 +58,6 @@
             <artifactId>kevinarpe-papaya-jdk-derived</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.googlecode.kevinarpe-papaya</groupId>-->
-            <!--<artifactId>kevinarpe-papaya-testing-slf4j</artifactId>-->
-            <!--&lt;!&ndash;TODO: Do we need this?&ndash;&gt;-->
-            <!--&lt;!&ndash;<version>${project.parent.version}</version>&ndash;&gt;-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>

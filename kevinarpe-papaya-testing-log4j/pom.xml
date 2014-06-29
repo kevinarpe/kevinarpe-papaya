@@ -59,11 +59,6 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.googlecode.kevinarpe-papaya</groupId>
-            <artifactId>kevinarpe-papaya-testing-logging</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
         </dependency>
