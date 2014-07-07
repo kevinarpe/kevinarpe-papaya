@@ -72,7 +72,17 @@ public final class StringUtils {
      * @see #NEW_LINE
      */
     public static final Pattern NEW_LINE_REGEX;
-    
+
+    /**
+     * A regular expression pattern to match either UNIX or Windows newlines:
+     * {@code Pattern.compile("\r?\n")}
+     * <p>
+     * This is useful when splitting text to its lines from a file of unknown source.
+     *
+     * @see #NEW_LINE_REGEX
+     */
+    public static final Pattern UNIX_OR_WINDOWS_NEW_LINE_REGEX;
+
     /**
      * This is the newline used by UNIX variants: "\n".  This value will never differ between
      * operating systems.
@@ -91,8 +101,8 @@ public final class StringUtils {
         NEW_LINE = System.getProperty("line.separator");
         UNIX_NEW_LINE = "\n";
         WINDOWS_NEW_LINE = "\r\n";
-        NEW_LINE_REGEX = Pattern.compile(Pattern.quote(NEW_LINE));
-        //_NEW_LINE_REGEX = Pattern.compile("\r?\n");
+        NEW_LINE_REGEX = Pattern.compile(NEW_LINE);
+        UNIX_OR_WINDOWS_NEW_LINE_REGEX = Pattern.compile("\r?\n");
     }
     
     /**

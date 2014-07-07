@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
+package com.googlecode.kevinarpe.papaya.container.builder;
 
 /*
  * #%L
@@ -27,49 +27,28 @@ package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
 
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
-public class AbstractStringFormatterTest {
-
-    private static class _AbstractStringFormatter
-    extends AbstractStringFormatter {
-
-        protected _AbstractStringFormatter(String format) {
-            super(format);
-        }
-    }
+public class LinkedListBuilderFactoryTest {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractStringFormatter.ctor(String)
+    // LinkedListBuilderFactory.create()
     //
 
     @Test
-    public void ctor_Pass() {
-        assertEquals("abc", new _AbstractStringFormatter("abc").getFormat());
-    }
-
-    @Test(expectedExceptions = NullPointerException.class)
-    public void ctor_FailWithNull() {
-        new _AbstractStringFormatter((String) null);
-    }
-
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void ctor_FailWithEmpty() {
-        new _AbstractStringFormatter("");
-    }
-
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void ctor_FailWithOnlyWhitespace() {
-        new _AbstractStringFormatter("   ");
+    public void create_Pass() {
+        LinkedListBuilderFactory<String> x = LinkedListBuilderFactory.create();
+        assertNotNull(x);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractStringFormatter.toString()
+    // LinkedListBuilderFactory.newInstance()
     //
 
     @Test
-    public void toString_Pass() {
-        assertNotNull(new _AbstractStringFormatter("abc").toString());
+    public void newInstance_Pass() {
+        LinkedListBuilder<String> x = LinkedListBuilderFactory.<String>create().newInstance();
+        assertTrue(x.isEmpty());
     }
 }

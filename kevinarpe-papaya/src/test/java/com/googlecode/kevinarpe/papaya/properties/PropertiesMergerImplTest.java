@@ -26,24 +26,26 @@ package com.googlecode.kevinarpe.papaya.properties;
  */
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.googlecode.kevinarpe.papaya.jdk.properties.JdkProperty;
 import com.googlecode.kevinarpe.papaya.testing.logging.slf4j.SLF4JMockLogger;
 import com.googlecode.kevinarpe.papaya.testing.logging.slf4j.SLF4JMockLoggerUtils;
 import org.slf4j.Logger;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.List;
 import java.util.Map;
 
-import static org.testng.Assert.assertEquals;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class PropertiesMergerImplTest {
 
     private PropertiesMergerImpl classUnderTest;
     private SLF4JMockLogger mockLogger;
+    private Map<? super String, ? super String> mockMap;
 
     @BeforeMethod
     public void beforeEachTestMethod() {
@@ -51,6 +53,11 @@ public class PropertiesMergerImplTest {
             SLF4JMockLoggerUtils.INSTANCE.newFactoryInstance().getLogger(
                 PropertiesMergerImplTest.class.getName());
         classUnderTest = new PropertiesMergerImpl(mockLogger);
+        {
+            @SuppressWarnings("unchecked")
+            Map<? super String, ? super String> mockMap2 = mock(Map.class);
+            mockMap = mockMap2;
+        }
     }
 
     @Test(expectedExceptions = NullPointerException.class)
@@ -58,17 +65,52 @@ public class PropertiesMergerImplTest {
         new PropertiesMergerImpl((Logger) null);
     }
 
-    @DataProvider
-    private static Object[][] _merge_PassWithEmpty_Data() {
-        return new Object[][] {
-            { ImmutableMap.<String, String>of(), ImmutableList.<JdkProperty>of() },
-        };
+    @Test
+    public void merge_PassWithEmptyJdkPropertyList() {
+        classUnderTest.merge(mockMap, ImmutableList.<JdkProperty>of());
+        verify(mockMap, never()).containsKey(anyString());
+        verify(mockMap, never()).get(anyString());
+        verify(mockMap, never()).put(anyString(), anyString());
     }
 
-    @Test(dataProvider = "_merge_PassWithEmpty_Data")
-    public void merge_PassWithEmpty(Map<String, String> map, List<JdkProperty> propertyList) {
-        final int mapSize = map.size();
-        classUnderTest.merge(map, propertyList);
-        assertEquals(map.size(), mapSize + propertyList.size());
+    @Test
+    public void merge_PassWithNewJdkProperties() {
+        classUnderTest.merge(
+            mockMap,
+            ImmutableList.of(new JdkProperty("key1", "value1"), new JdkProperty("key2", "value2")));
+        verify(mockMap).containsKey("key1");
+        verify(mockMap).containsKey("key2");
+        verify(mockMap, never()).get(anyString());
+        verify(mockMap).put("key1", "value1");
+        verify(mockMap).put("key2", "value2");
+    }
+
+    @Test
+    public void merge_PassWithOneDupeJdkProperty() {
+        when(mockMap.containsKey("key1")).thenReturn(true);
+        when(mockMap.get("key1")).thenReturn("value1");
+        classUnderTest.merge(
+            mockMap,
+            ImmutableList.of(new JdkProperty("key1", "value1"), new JdkProperty("key2", "value2")));
+        verify(mockMap).containsKey("key1");
+        verify(mockMap).containsKey("key2");
+        verify(mockMap).get("key1");
+        verify(mockMap).put("key2", "value2");
+    }
+
+    @Test
+    public void merge_PassWithAllDupeJdkProperties() {
+        when(mockMap.containsKey("key1")).thenReturn(true);
+        when(mockMap.get("key1")).thenReturn("value1");
+        when(mockMap.containsKey("key2")).thenReturn(true);
+        when(mockMap.get("key2")).thenReturn("value2");
+        classUnderTest.merge(
+            mockMap,
+            ImmutableList.of(new JdkProperty("key1", "value1"), new JdkProperty("key2", "value2")));
+        verify(mockMap).containsKey("key1");
+        verify(mockMap).containsKey("key2");
+        verify(mockMap).get("key1");
+        verify(mockMap).get("key2");
+        verify(mockMap, never()).put(anyString(), anyString());
     }
 }

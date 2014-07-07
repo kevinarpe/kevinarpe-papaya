@@ -76,10 +76,10 @@ public final class PathArgs {
      * @param clazz
      *        ref to class object to find resource
      * @param pathname
-     *        relative path (without leading "/") to resource,
-     *        e.g., {@code "proxy.properties"},
-     *        <br>or absolute path (with leading "/") to resource,
-     *        e.g., {@code "/proxy.properties"}
+     * <ul>
+     *     <li>relative path (without leading "/") to resource, e.g., {@code "proxy.properties"}</li>
+     *     <li>or absolute path (with leading "/") to resource, e.g., {@code "/proxy.properties"}</li>
+     * </ul>
      * @param pathnameArgName
      *        argument name for {@code pathname}, e.g., "outputFile" or "inputFile"
      *

@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertSame;
 
-public class StringFormatterHelperImplTest {
+public class StringFormatter2HelperImplTest {
 
     private StringFormatterHelperImpl classUnderTest;
 

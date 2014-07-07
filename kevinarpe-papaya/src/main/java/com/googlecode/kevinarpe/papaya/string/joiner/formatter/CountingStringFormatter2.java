@@ -32,17 +32,17 @@ import java.util.Formatter;
 
 /**
  * Formats a value using {@code String.format()} with an incrementing counter.  Unlike
- * {@link StringFormatter}, this class has state.  The next count is stored internally.  Be careful
+ * {@link StringFormatter2}, this class has state.  The next count is stored internally.  Be careful
  * when reusing instances of this class.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see AbstractStringFormatter
+ * @see AbstractStringFormatter2
  * @see Formatter2
  */
 @FullyTested
-public final class CountingStringFormatter
-extends AbstractStringFormatter
+public final class CountingStringFormatter2
+extends AbstractStringFormatter2
 implements Formatter2 {
 
     /**
@@ -87,15 +87,15 @@ implements Formatter2 {
      * @see #withFirstCount(int)
      * @see Formatter
      */
-    public CountingStringFormatter(String format, Formatter2 formatter) {
+    public CountingStringFormatter2(String format, Formatter2 formatter) {
         this(
             format,
             ObjectArgs.checkNotNull(formatter, "formatter"),
             StringFormatterHelperImpl.INSTANCE);
     }
 
-    CountingStringFormatter(
-            String format, Formatter2 formatter, StringFormatterHelper stringFormatterHelper) {
+    CountingStringFormatter2(
+        String format, Formatter2 formatter, StringFormatterHelper stringFormatterHelper) {
         this(
             format,
             ObjectArgs.checkNotNull(formatter, "formatter"),
@@ -103,11 +103,11 @@ implements Formatter2 {
             ObjectArgs.checkNotNull(stringFormatterHelper, "stringFormatterHelper"));
     }
 
-    private CountingStringFormatter(
-            String format,
-            Formatter2 formatter,
-            int firstCount,
-            StringFormatterHelper stringFormatterHelper) {
+    private CountingStringFormatter2(
+        String format,
+        Formatter2 formatter,
+        int firstCount,
+        StringFormatterHelper stringFormatterHelper) {
         super(format);
         _formatter = formatter;
         _firstCount = firstCount;
@@ -128,13 +128,13 @@ implements Formatter2 {
      *
      * @see #DEFAULT_FIRST_COUNT
      */
-    public CountingStringFormatter withFirstCount(int firstCount) {
+    public CountingStringFormatter2 withFirstCount(int firstCount) {
         if (0 != _countOffset) {
             throw new IllegalStateException(
                 "Cannot change first count after format() has been successfully called");
         }
-        CountingStringFormatter x =
-            new CountingStringFormatter(
+        CountingStringFormatter2 x =
+            new CountingStringFormatter2(
                 getFormat(), _formatter, firstCount, _stringFormatterHelper);
         return x;
     }

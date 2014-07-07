@@ -41,13 +41,17 @@ import java.io.Reader;
  * <p>
  * When possible, implementations are strongly recommended to override {@link #toString()} to
  * provide a human-readable description of the source for logging and debugging purposes.
+ * <p>
+ * About {@link #hashCode()} and {@link #equals(Object)}: They are normally not overridden by
+ * implementations as not all streams are guaranteed to be seekable (rewindable) in Java.  As a
+ * result, instances of this class should not be re-used.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see InputSource
- * @see StringInputSource
- * @see FileInputSource
- * @see ClassResourceInputSource
+ * @see StringInputSource2
+ * @see FileInputSource2
+ * @see ClassResourceInputSource2
  * @see PropertiesLoader
  */
 public interface InputSource2 {

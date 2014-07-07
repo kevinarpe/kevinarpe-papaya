@@ -28,12 +28,21 @@ package com.googlecode.kevinarpe.papaya.jdk.properties;
  * #L%
  */
 
+import java.io.InputStream;
+import java.io.Reader;
 import java.util.Arrays;
 
 /**
+ * Immutable {@code String} key-value pair for a single JDK property.
+ * <p>
+ * Overrides exist for methods {@link #hashCode()} and {@link #equals(Object)}.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see JdkPropertiesLoader#load(InputStream)
+ * @see JdkPropertiesLoader#load(Reader)
  */
-public class JdkProperty {
+public final class JdkProperty {
 
     private String[] _keyValueArr;
 
@@ -76,7 +85,7 @@ public class JdkProperty {
 
     @Override
     public String toString() {
-        String x = String.format("Key: '%s', Value: '%s'", _keyValueArr[0], _keyValueArr[1]);
+        String x = String.format("'%s'->'%s'", _keyValueArr[0], _keyValueArr[1]);
         return x;
     }
 }

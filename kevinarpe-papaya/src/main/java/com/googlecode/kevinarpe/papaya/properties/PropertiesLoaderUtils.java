@@ -28,17 +28,48 @@ package com.googlecode.kevinarpe.papaya.properties;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
 /**
+ * Constants and static utilities for {@link PropertiesLoader}.  To use the methods in this class
+ * create a new instance via {@link #PropertiesLoaderUtils()} or use the public static member
+ * {@link #INSTANCE}.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see #INSTANCE
+ * @see #newInstance()
+ * @see StatelessObject
+ * @see IPropertiesLoaderUtils
  */
-public class PropertiesLoaderUtils
+public final class PropertiesLoaderUtils
 extends StatelessObject
 implements IPropertiesLoaderUtils {
 
+    /**
+     * Single instance of this class provided for convenience.  Since this class is stateless, its
+     * behaviour is identical between this instance and others.
+     */
     public static final PropertiesLoaderUtils INSTANCE = new PropertiesLoaderUtils();
 
+    /**
+     * Default value for {@link PropertiesLoader#withOptionalPolicy()}.
+     *
+     * @see DefaultPropertiesLoaderPolicy
+     */
     public static final PropertiesLoaderPolicy DEFAULT_POLICY =
         DefaultPropertiesLoaderPolicy.INSTANCE;
 
+    /**
+     * For projects that require total, static-free mocking capabilities, use this constructor.
+     * Else, the static constant {@link #INSTANCE} will suffice.
+     */
+    public PropertiesLoaderUtils() {
+        // Empty
+    }
+
+    /**
+     * Constructs a new instance of {@code PropertiesLoader} with a default loader policy.
+     *
+     * @see #DEFAULT_POLICY
+     */
     @Override
     public PropertiesLoader newInstance() {
         PropertiesLoaderImpl x = new PropertiesLoaderImpl();

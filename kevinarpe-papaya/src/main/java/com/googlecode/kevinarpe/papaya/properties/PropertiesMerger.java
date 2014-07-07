@@ -35,5 +35,5 @@ import java.util.Map;
  */
 interface PropertiesMerger {
 
-    void merge(Map<String, String> map, List<JdkProperty> propertyList);
+    void merge(Map<? super String, ? super String> map, List<JdkProperty> propertyList);
 }

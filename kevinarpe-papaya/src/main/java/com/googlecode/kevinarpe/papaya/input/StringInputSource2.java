@@ -26,36 +26,58 @@ package com.googlecode.kevinarpe.papaya.input;
  */
 
 import com.google.common.base.Splitter;
+import com.googlecode.kevinarpe.papaya.StringUtils;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.regex.Pattern;
 
 /**
- *
+ * Encapsulates the characters of a file.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see ClassResourceInputSource2
+ * @see FileInputSource2
  */
-public final class StringInputSource
+@FullyTested
+public final class StringInputSource2
 implements InputSource2 {
-
-    private static final Pattern ANY_NEW_LINE_PATTERN = Pattern.compile("\r?\n");
 
     private final String _text;
     private final StringReader _stringReader;
 
-    public StringInputSource(String text) {
+    /**
+     * Constructs a new {@code StringReader}.
+     *
+     * @param text
+     *        any text, include empty
+     *
+     * @throws NullPointerException
+     *         if {@code text} is {@code null}
+     */
+    public StringInputSource2(String text) {
         _text = ObjectArgs.checkNotNull(text, "text");
         _stringReader = new StringReader(_text);
     }
 
+    /**
+     * Always {@code null}.
+     * <hr/>
+     * {@inheritDoc}
+     */
     @Override
     public InputStream getByteStream() {
         return null;
     }
 
+    /**
+     * Always non-{@code null}.
+     * <hr/>
+     * {@inheritDoc}
+     */
     @Override
     public Reader getCharacterStream() {
         return _stringReader;
@@ -69,7 +91,7 @@ implements InputSource2 {
     }
 
     private String _getFragment() {
-        String fragment = Splitter.on(ANY_NEW_LINE_PATTERN).split(_text).iterator().next();
+        String fragment = Splitter.on(StringUtils.NEW_LINE_REGEX).split(_text).iterator().next();
         boolean needsEllipsis = (fragment.length() != _text.length());
         if (fragment.length() > 256) {
             fragment = fragment.substring(0, 256);

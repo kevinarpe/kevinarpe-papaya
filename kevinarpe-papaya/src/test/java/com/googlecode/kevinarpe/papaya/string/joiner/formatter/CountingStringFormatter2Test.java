@@ -38,20 +38,20 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertSame;
 
-public class CountingStringFormatterTest {
+public class CountingStringFormatter2Test {
 
     private static final String FORMAT = "%d: [%s]";
 
     private Formatter2 mockFormatter;
     private StringFormatterHelper mockStringFormatterHelper;
-    private CountingStringFormatter classUnderTest;
+    private CountingStringFormatter2 classUnderTest;
 
     @BeforeMethod
     public void beforeEachTestMethod() {
         mockFormatter = mock(Formatter2.class);
         mockStringFormatterHelper = mock(StringFormatterHelper.class);
         classUnderTest =
-            new CountingStringFormatter(FORMAT, mockFormatter, mockStringFormatterHelper);
+            new CountingStringFormatter2(FORMAT, mockFormatter, mockStringFormatterHelper);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,9 +60,9 @@ public class CountingStringFormatterTest {
 
     @Test
     public void ctor_Pass() {
-        CountingStringFormatter x = new CountingStringFormatter(FORMAT, mockFormatter);
-        assertEquals(x.getFirstCount(), CountingStringFormatter.DEFAULT_FIRST_COUNT);
-        assertEquals(x.getNextCount(), CountingStringFormatter.DEFAULT_FIRST_COUNT);
+        CountingStringFormatter2 x = new CountingStringFormatter2(FORMAT, mockFormatter);
+        assertEquals(x.getFirstCount(), CountingStringFormatter2.DEFAULT_FIRST_COUNT);
+        assertEquals(x.getNextCount(), CountingStringFormatter2.DEFAULT_FIRST_COUNT);
     }
 
     @DataProvider
@@ -82,7 +82,7 @@ public class CountingStringFormatterTest {
             String format, Formatter2 formatter, Class<? extends Exception> expectedExceptionClass)
     throws Exception {
         try {
-            new CountingStringFormatter(format, formatter);
+            new CountingStringFormatter2(format, formatter);
         }
         catch (Exception e) {
             assertSame(e.getClass(), expectedExceptionClass);
@@ -96,7 +96,7 @@ public class CountingStringFormatterTest {
 
     @Test
     public void format_PassWithDefaultFirstCount() {
-        _format_Pass(classUnderTest, CountingStringFormatter.DEFAULT_FIRST_COUNT);
+        _format_Pass(classUnderTest, CountingStringFormatter2.DEFAULT_FIRST_COUNT);
     }
 
     @Test
@@ -105,7 +105,7 @@ public class CountingStringFormatterTest {
         _format_Pass(classUnderTest, 42);
     }
 
-    private void _format_Pass(CountingStringFormatter classUnderTest2, int firstCount) {
+    private void _format_Pass(CountingStringFormatter2 classUnderTest2, int firstCount) {
         final String value = "value";
         final String value2 = "value2";
         when(mockFormatter.format(value)).thenReturn(value2);
@@ -143,7 +143,7 @@ public class CountingStringFormatterTest {
         RuntimeException aRuntimeException = new RuntimeException();
         when(mockStringFormatterHelper.format(anyString(), anyString(), anyInt(), anyString()))
             .thenThrow(aRuntimeException);
-        assertEquals(classUnderTest.getNextCount(), CountingStringFormatter.DEFAULT_FIRST_COUNT);
+        assertEquals(classUnderTest.getNextCount(), CountingStringFormatter2.DEFAULT_FIRST_COUNT);
         try {
             classUnderTest.format("value");
         }
@@ -151,7 +151,7 @@ public class CountingStringFormatterTest {
             assertSame(e, aRuntimeException);
             // Demonstrate the counter does not increment when exception thrown
             assertEquals(
-                classUnderTest.getNextCount(), CountingStringFormatter.DEFAULT_FIRST_COUNT);
+                classUnderTest.getNextCount(), CountingStringFormatter2.DEFAULT_FIRST_COUNT);
             throw e;
         }
     }

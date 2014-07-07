@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
+package com.googlecode.kevinarpe.papaya.container.builder;
 
 /*
  * #%L
@@ -25,46 +25,30 @@ package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
  * #L%
  */
 
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
-public class StringFormatterTest {
-
-    private static final String FORMAT = "[%s]";
-
-    private StringFormatterHelper mockStringFormatterHelper;
-    private StringFormatter classUnderTest;
-
-    @BeforeMethod
-    public void beforeEachTestMethod() {
-        mockStringFormatterHelper = mock(StringFormatterHelper.class);
-        classUnderTest = new StringFormatter(FORMAT, mockStringFormatterHelper);
-    }
+public class PropertiesBuilderFactoryTest {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // StringFormatter.ctor()
+    // PropertiesBuilderFactory.create()
     //
 
     @Test
-    public void ctor_Pass() {
-        new StringFormatter(FORMAT);
+    public void create_Pass() {
+        PropertiesBuilderFactory x = PropertiesBuilderFactory.create();
+        assertNotNull(x);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // StringFormatter.format(Object)
+    // PropertiesBuilderFactory.newInstance()
     //
 
     @Test
-    public void format_Pass() {
-        String value = "value";
-        when(mockStringFormatterHelper.format(anyString(), eq(FORMAT), eq(value)))
-            .thenReturn("result");
-        assertEquals(classUnderTest.format(value), "result");
+    public void newInstance_Pass() {
+        PropertiesBuilder x = PropertiesBuilderFactory.create().newInstance();
+        assertTrue(x.isEmpty());
     }
 }

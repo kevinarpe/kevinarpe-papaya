@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
+package com.googlecode.kevinarpe.papaya.container.builder;
 
 /*
  * #%L
@@ -25,48 +25,56 @@ package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
  * #L%
  */
 
+import com.google.common.collect.Maps;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+
+import java.util.LinkedHashMap;
 
 /**
- * Formats a value using {@code String.format()}.
+ * Builds {@code LinkedHashMap} collections.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see AbstractStringFormatter
- * @see Formatter2
- * @see String#format(String, Object...)
+ * @param <TKey>
+ *        type of key for map
+ * @param <TValue>
+ *        type of value for map
+ *
+ * @see #create()
+ * @see MapBuilder
+ * @see LinkedHashMap
+ * @see LinkedHashMapBuilderFactory
+ * @see HashMapBuilder
+ * @see ImmutableMapBuilder
+ * @see PropertiesBuilder
  */
 @FullyTested
-public final class StringFormatter
-extends AbstractStringFormatter
-implements Formatter2 {
-
-    private final StringFormatterHelper _stringFormatterHelper;
+public final class LinkedHashMapBuilder<TKey, TValue>
+extends AbstractMapBuilder
+            <
+                LinkedHashMap<TKey, TValue>,
+                TKey,
+                TValue
+            > {
 
     /**
-     * @see AbstractStringFormatter#AbstractStringFormatter(String)
+     * Constructs a new builder.
      */
-    public StringFormatter(String format) {
-        this(format, StringFormatterHelperImpl.INSTANCE);
+    public static <TKey, TValue> LinkedHashMapBuilder<TKey, TValue> create() {
+        LinkedHashMapBuilder<TKey, TValue> x = new LinkedHashMapBuilder<TKey, TValue>();
+        return x;
     }
 
-    StringFormatter(String format, StringFormatterHelper stringFormatterHelper) {
-        super(format);
-        _stringFormatterHelper =
-            ObjectArgs.checkNotNull(stringFormatterHelper, "stringFormatterHelper");
+    private LinkedHashMapBuilder() {
+        // Empty
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @throws IllegalArgumentException
-     *         if {@link String#format(String, Object...)} fails
+     * Builds a new {@code LinkedHashMap} from values stored in the builder.
      */
     @Override
-    public String format(Object value) {
-        final String format = getFormat();
-        String x = _stringFormatterHelper.format("value", format, value);
+    public LinkedHashMap<TKey, TValue> build() {
+        LinkedHashMap<TKey, TValue> x = Maps.newLinkedHashMap(delegate());
         return x;
     }
 }

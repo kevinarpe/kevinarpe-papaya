@@ -35,11 +35,11 @@ import java.util.Formatter;
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see StringFormatter
- * @see CountingStringFormatter
+ * @see StringFormatter2
+ * @see CountingStringFormatter2
  */
 @FullyTested
-public abstract class AbstractStringFormatter {
+public abstract class AbstractStringFormatter2 {
 
     private final String _format;
 
@@ -63,7 +63,7 @@ public abstract class AbstractStringFormatter {
      * @see Formatter
      * @see #getFormat()
      */
-    protected AbstractStringFormatter(String format) {
+    protected AbstractStringFormatter2(String format) {
         _format = StringArgs.checkNotEmptyOrWhitespace(format, "format");
     }
 

@@ -25,8 +25,11 @@ package com.googlecode.kevinarpe.papaya.properties;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.container.builder.MapBuilder;
+import com.googlecode.kevinarpe.papaya.container.builder.MapBuilderFactory;
 import com.googlecode.kevinarpe.papaya.input.InputSource2;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -46,8 +49,10 @@ public interface PropertiesLoader {
      * Retrieves the current optional policy to check each group of properties.
      *
      * @return current policy which can be {@code null}
+     *
+     * @see #withOptionalPolicy(PropertiesLoaderPolicy)
      */
-    PropertiesLoaderPolicy withOptionalPolicy();
+    @Nullable PropertiesLoaderPolicy withOptionalPolicy();
 
     /**
      * Constructs a new instance with a new optional policy to check each group of properties.
@@ -56,18 +61,78 @@ public interface PropertiesLoader {
      *        policy for each group of properties.  Can be {@code null}
      *
      * @return new instance
+     *
+     * @see #withOptionalPolicy()
      */
-    PropertiesLoaderImpl withOptionalPolicy(PropertiesLoaderPolicy optionalPolicy);
+    PropertiesLoaderImpl withOptionalPolicy(@Nullable PropertiesLoaderPolicy optionalPolicy);
 
     /**
+     * Loads Java properties sequentially from a list of input sources.  Properties from later input
+     * sources (higher indices) override earlier input sources (lower indices).
+     * <p>
+     * About logging:
+     * <ul>
+     *     <li>Each properties source is logged at level INFO.</li>
+     *     <li>The number of properties found is logged at level DEBUG.</li>
+     *     <li>Each property (key and value) is logged at level TRACE.</li>
+     *     <li>Overriding properties are logged at level TRACE.</li>
+     * </ul>
+     * <p>
+     * To load properties to a different collection, see {@link #load(List, MapBuilderFactory)}.
      *
      * @param inputSourceList
-     * @return
+     *        one or more input sources to load properties
+     *
+     * @return new {@link Properties} instance
+     *
+     * @throws NullPointerException
+     *         if {@code inputSourceList} (or any element) is {@code null}
+     * @throws IllegalArgumentException
+     *         if number of elements in {@code inputSourceList} is zero
      * @throws PropertiesLoaderException
+     * <ul>
+     *     <li>if input source cannot be read</li>
+     *     <li>if properties from an input source fail policy (duplicates, etc.)</li>
+     * </ul>
+     *
+     * @see #load(List, MapBuilderFactory)
      */
-    Properties loadAsProperties(List<InputSource2> inputSourceList)
+    Properties load(List<? extends InputSource2> inputSourceList)
     throws PropertiesLoaderException;
 
-    Map<String, String> loadAsMap(List<InputSource2> inputSourceList)
+    /**
+     * Identical to {@link #load(List)}, except resulting collection can be any type of {@code Map}.
+     *
+     * @param inputSourceList
+     *        one or more input sources to load properties
+     * @param mapBuilderFactory
+     *        factory to build a {@code Map}
+     * @param <TMap>
+     *        extends Map&lt;String, String>
+     * @param <TMapBuilder>
+     *        extends MapBuilder&lt;TMap, String, String>
+     *
+     * @return new {@code TMap} instance
+     *
+     * @throws NullPointerException
+     *         if {@code inputSourceList} (or any element) is {@code null}
+     * @throws IllegalArgumentException
+     *         if number of elements in {@code inputSourceList} is zero
+     * @throws PropertiesLoaderException
+     * <ul>
+     *     <li>if input source cannot be read</li>
+     *     <li>if properties from an input source fail policy (duplicates, etc.)</li>
+     * </ul>
+     *
+     * @see #load(List)
+     * @see MapBuilderFactory
+     */
+    <
+        TMap extends Map<String, String>,
+        TMapBuilder extends MapBuilder<TMap, String, String>
+    >
+    TMap load(
+            List<? extends InputSource2> inputSourceList,
+            MapBuilderFactory<TMapBuilder> mapBuilderFactory)
     throws PropertiesLoaderException;
 }

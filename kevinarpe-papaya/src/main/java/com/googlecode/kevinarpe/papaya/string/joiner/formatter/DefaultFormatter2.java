@@ -26,48 +26,35 @@ package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-
-import java.io.File;
+import com.googlecode.kevinarpe.papaya.object.StatelessObject;
+import com.googlecode.kevinarpe.papaya.string.joiner.Joiner2Utils;
 
 /**
- * Formats file and directory paths to distinguish between relative and absolute paths.
+ * Formats a value using {@code String.valueOf(Object)}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
+ * @see #INSTANCE
+ * @see StatelessObject
  * @see Formatter2
+ * @see Joiner2Utils#DEFAULT_FORMATTER
+ * @see Joiner2Utils#DEFAULT_KEY_FORMATTER
+ * @see Joiner2Utils#DEFAULT_VALUE_FORMATTER
  */
 @FullyTested
-public class PathFormatter
+public final class DefaultFormatter2
+extends StatelessObject
 implements Formatter2 {
 
     /**
-     * Converts a path to a string.
-     * <ul>
-     *     <li>{@code null} -> {@code "null"}</li>
-     *     <li>absolute path -> {@code "'/abs/path'"}</li>
-     *     <li>relative path -> {@code "'rel/path' -> '/a/b/c/rel/path'"}</li>
-     * </ul>
-     * <hr/>
-     * Inherited docs:
-     * <br/>
-     * {@inheritDoc}
-     *
-     * @throws ClassCastException
-     *         if {@code value} is not a {@link File}
+     * Single instance of this class provided for convenience.  Since this class is stateless, its
+     * behaviour is identical between this instance and others.
      */
+    public static final DefaultFormatter2 INSTANCE = new DefaultFormatter2();
+
     @Override
     public String format(Object value) {
-        if (null == value) {
-            return StringFormatterHelperImpl.NULL_VALUE_AS_STRING;
-        }
-        ObjectArgs.checkAssignableToType(value.getClass(), File.class, "class of value");
-
-        File path = (File) value;
-        String x = String.format("'%s'", path.getPath());
-        if (!path.isAbsolute()) {
-            x = String.format("%s -> '%s'", x, path.getAbsolutePath());
-        }
+        String x = String.valueOf(value);
         return x;
     }
 }

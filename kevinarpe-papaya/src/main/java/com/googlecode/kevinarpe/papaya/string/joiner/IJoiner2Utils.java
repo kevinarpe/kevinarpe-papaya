@@ -31,6 +31,8 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
  * will suffice.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see Joiner2Utils
  */
 public interface IJoiner2Utils {
 

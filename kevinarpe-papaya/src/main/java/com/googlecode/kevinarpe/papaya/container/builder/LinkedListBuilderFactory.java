@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.input;
+package com.googlecode.kevinarpe.papaya.container.builder;
 
 /*
  * #%L
@@ -25,42 +25,44 @@ package com.googlecode.kevinarpe.papaya.input;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.argument.PathArgs;
-import com.googlecode.kevinarpe.papaya.exception.ClassResourceNotFoundException;
-
-import java.io.InputStream;
-import java.io.Reader;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
 /**
+ * Creates {@code LinkedListBuilder}s.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @param <TValue>
+ *        type of value for list elements
+ *
+ * @see #create()
+ * @see ListBuilderFactory
+ * @see LinkedListBuilder
+ * @see ArrayListBuilderFactory
+ * @see ImmutableListBuilderFactory
  */
-public final class ClassResourceInputSource
-implements InputSource2 {
+@FullyTested
+public final class LinkedListBuilderFactory<TValue>
+extends StatelessObject
+implements ListBuilderFactory<LinkedListBuilder<TValue>> {
 
-    private final Class<?> _clazz;
-    private final String _pathname;
-    private final InputStream _inputStream;
-
-    public ClassResourceInputSource(Class<?> clazz, String pathname)
-    throws ClassResourceNotFoundException {
-        _clazz = clazz;
-        _pathname = pathname;
-        _inputStream = PathArgs.checkClassResourceAsStreamExists(clazz, pathname, "pathname");
+    /**
+     * Constructs a new builder factory.
+     */
+    public static <TValue> LinkedListBuilderFactory<TValue> create() {
+        LinkedListBuilderFactory<TValue> x = new LinkedListBuilderFactory<TValue>();
+        return x;
     }
 
-    @Override
-    public InputStream getByteStream() {
-        return _inputStream;
+    private LinkedListBuilderFactory() {
+        // Empty
     }
 
+    /** {@inheritDoc} */
     @Override
-    public Reader getCharacterStream() {
-        return null;
-    }
-
-    @Override
-    public String toString() {
-        String x = String.format("Class resource: %s -> '%s'", _clazz.getName(), _pathname);
+    public LinkedListBuilder<TValue> newInstance() {
+        LinkedListBuilder<TValue> x = LinkedListBuilder.create();
         return x;
     }
 }

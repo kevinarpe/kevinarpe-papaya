@@ -32,7 +32,12 @@ import java.util.List;
 import java.util.RandomAccess;
 
 /**
+ * Merges interfaces {@code List} and {@code RandomAccess}
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see List
+ * @see RandomAccess
  */
 public interface RandomAccessList<T>
 extends List<T>, RandomAccess {

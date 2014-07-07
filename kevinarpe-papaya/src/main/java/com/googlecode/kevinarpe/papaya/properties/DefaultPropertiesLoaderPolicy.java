@@ -39,7 +39,10 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Checks a group of properties for correctness.
+ * Checks a group of properties for correctness.  When used with {@link PropertiesLoader}, the
+ * policy is applied to each properties file.  This will help to prevent (accidental) overlapping
+ * properties.
+ * <p>
  * <ul>
  *     <li>There must be no duplicate key-value pairs.
  *     <br/>Example: {@code ("abc" -> "def")} and {@code ("abc" -> "def")}</li>
@@ -68,6 +71,7 @@ implements PropertiesLoaderPolicy {
     static final String DUP_KEY_VALUE_PAIR_MSG = "Duplicate key-value pair";
     static final String DUP_KEY_MSG = "Duplicate key";
 
+    /** {@inheritDoc} */
     @Override
     public void apply(List<JdkProperty> propertyList)
     throws PropertiesLoaderException {

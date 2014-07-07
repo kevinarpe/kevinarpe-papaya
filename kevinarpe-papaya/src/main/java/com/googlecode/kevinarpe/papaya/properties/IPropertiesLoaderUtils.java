@@ -26,9 +26,20 @@ package com.googlecode.kevinarpe.papaya.properties;
  */
 
 /**
+ * For those projects that require full, static-free mocking capabilities, use this interface.
+ * Else, the concrete implementation {@link PropertiesLoaderUtils} or
+ * {@link PropertiesLoaderUtils#INSTANCE} will suffice.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see PropertiesLoaderUtils
  */
 public interface IPropertiesLoaderUtils {
 
+    /**
+     * Constructs a new instance of {@link PropertiesLoader}.
+     *
+     * @return new instance
+     */
     PropertiesLoader newInstance();
 }

@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.input;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
@@ -34,14 +35,36 @@ import java.io.IOException;
 import java.util.Collection;
 
 /**
+ /**
+ * Static utilities for {@link InputSource2}.  To use the methods in this class create a new
+ * instance via {@link #InputSource2Utils()} or use the public static member {@link #INSTANCE}.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see #INSTANCE
+ * @see StatelessObject
+ * @see IInputSource2Utils
  */
-public class InputSource2Utils
+@FullyTested
+public final class InputSource2Utils
 extends StatelessObject
 implements IInputSource2Utils {
 
+    /**
+     * Single instance of this class provided for convenience.  Since this class is stateless, its
+     * behaviour is identical between this instance and others.
+     */
     public static final InputSource2Utils INSTANCE = new InputSource2Utils();
 
+    /**
+     * For projects that require total, static-free mocking capabilities, use this constructor.
+     * Else, the static constant {@link #INSTANCE} will suffice.
+     */
+    public InputSource2Utils() {
+        // Empty
+    }
+
+    /** {@inheritDoc} */
     @Override
     public void checkValid(InputSource2 inputSource, String argName) {
         ObjectArgs.checkNotNull(inputSource, argName);
@@ -58,8 +81,10 @@ implements IInputSource2Utils {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
-    public void checkValid(Collection<InputSource2> inputSourceCollection, String argName) {
+    public void checkValid(
+            Collection<? extends InputSource2> inputSourceCollection, String argName) {
         CollectionArgs.checkNotEmptyAndElementsNotNull(inputSourceCollection, argName);
 
         final int size = inputSourceCollection.size();
@@ -71,6 +96,7 @@ implements IInputSource2Utils {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void close(InputSource2 inputSource)
     throws IOException {
@@ -95,6 +121,7 @@ implements IInputSource2Utils {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void closeQuietly(InputSource2 inputSource) {
         try {

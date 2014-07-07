@@ -29,42 +29,29 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.io.File;
-
 import static org.testng.Assert.assertEquals;
 
-public class PathFormatterTest {
+public class DefaultFormatter2Test {
 
-    private PathFormatter classUnderTest;
+    private DefaultFormatter2 classUnderTest;
 
     @BeforeMethod
     public void beforeEachTestMethod() {
-        classUnderTest = new PathFormatter();
+        classUnderTest = new DefaultFormatter2();
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // PathFormatter.format()
-    //
 
     @DataProvider
     private static Object[][] _format_Pass_Data() {
-        final File relPath = new File("abc/def");
-        final File absPath = new File("/abc/def");
         return new Object[][] {
-            { (File) null, "null" },
-            { relPath, String.format("'%s' -> '%s'", relPath.getPath(), relPath.getAbsolutePath()) },
-            { absPath, String.format("'%s'", absPath.getPath()) },
+            { "abc", "abc" },
+            { 123, "123" },
+            { null, "null" }
         };
     }
 
     @Test(dataProvider = "_format_Pass_Data")
-    public void format_Pass(Object value, String expectedResult) {
-        String actualResult = classUnderTest.format(value);
-        assertEquals(actualResult, expectedResult);
-    }
-
-    @Test(expectedExceptions = ClassCastException.class)
-    public void format_FailWithInvalidType() {
-        classUnderTest.format("abc");
+    public void format_Pass(Object input, String expected) {
+        String actual = classUnderTest.format(input);
+        assertEquals(actual, expected);
     }
 }
