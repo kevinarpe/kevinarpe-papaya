@@ -25,20 +25,19 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
-
+import com.googlecode.kevinarpe.papaya.exception.ClassResourceNotFoundException;
+import com.googlecode.kevinarpe.papaya.exception.PathException;
+import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
+import com.googlecode.kevinarpe.papaya.exception.PathExceptionTest;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.exception.ClassResourceNotFoundException;
-import com.googlecode.kevinarpe.papaya.exception.PathException;
-import com.googlecode.kevinarpe.papaya.exception.PathExceptionTest;
-import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -56,8 +55,9 @@ public class PathArgsTest {
     ///////////////////////////////////////////////////////////////////////////
     // FileArgs.checkResourceAsStreamExists
     //
-    
-    private static final String SAMPLE_RESOURCE_ABSOLUTE_PATHNAME = "/sample.txt";
+
+    // Also used by ClassResourceInputSource2Test
+    public static final String SAMPLE_RESOURCE_ABSOLUTE_PATHNAME = "/sample.txt";
     //private static final String SAMPLE2_RESOURCE_RELATIVE_PATHNAME = "sample2.txt";
     private static final String SAMPLE2_RESOURCE_ABSOLUTE_PATHNAME = "/com/googlecode/kevinarpe/papaya/args/sample2.txt";
     

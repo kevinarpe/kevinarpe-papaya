@@ -28,19 +28,45 @@ package com.googlecode.kevinarpe.papaya;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
+import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 import com.googlecode.kevinarpe.papaya.string.joiner.Joiner2Utils;
-import com.googlecode.kevinarpe.papaya.string.joiner.formatter.StringFormatter;
+import com.googlecode.kevinarpe.papaya.string.joiner.formatter.StringFormatter2;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see #INSTANCE
+ * @see StatelessObject
+ * @see IEnumUtils
  */
 @FullyTested
-public class EnumUtils {
+public final class EnumUtils
+extends StatelessObject
+implements IEnumUtils {
 
-    public static <TEnum extends Enum<TEnum>>
+    /**
+     * Single instance of this class provided for convenience.  Since this class is stateless, its
+     * behaviour is identical between this instance and others.
+     */
+    public static final EnumUtils INSTANCE = new EnumUtils();
+
+    /**
+     * For projects that require total, static-free mocking capabilities, use this constructor.
+     * Else, the static constant {@link #INSTANCE} will suffice.
+     */
+    public EnumUtils() {
+        // Empty.
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <TEnum extends Enum<TEnum>>
     TEnum valueOf(Class<TEnum> enumType, String name) {
+        ObjectArgs.checkNotNull(enumType, "enumType");
+        StringArgs.checkNotEmptyOrWhitespace(name, "name");
+
         try {
-            TEnum value = _fastValueOf(enumType, name);
+            TEnum value = Enum.valueOf(enumType, name);
             return value;
         }
         catch (Exception e) {
@@ -53,7 +79,7 @@ public class EnumUtils {
         }
     }
 
-    private static String _toStringList(Enum[] enumArr) {
+    private String _toStringList(Enum[] enumArr) {
         if (0 == enumArr.length) {
             return "(none)";
         }
@@ -65,25 +91,21 @@ public class EnumUtils {
         }
         String x =
             Joiner2Utils.INSTANCE.withSeparator(", ")
-                .withFormatter(new StringFormatter("'%s%'"))
+                .withFormatter(new StringFormatter2("'%s%'"))
                 .useForNoElements("(empty)")
                 .join(enumNameArr);
         return x;
     }
 
-    private static <TEnum extends Enum<TEnum>>
-    TEnum _fastValueOf(Class<TEnum> enumType, String name) {
+    /** {@inheritDoc} */
+    @Override
+    public <TEnum extends Enum<TEnum>>
+    TEnum tryValueOf(Class<TEnum> enumType, String name) {
         ObjectArgs.checkNotNull(enumType, "enumType");
         StringArgs.checkNotEmptyOrWhitespace(name, "name");
 
-        TEnum value = Enum.valueOf(enumType, name);
-        return value;
-    }
-
-    public static <TEnum extends Enum<TEnum>>
-    TEnum tryValueOf(Class<TEnum> enumType, String name) {
         try {
-            TEnum value = _fastValueOf(enumType, name);
+            TEnum value = Enum.valueOf(enumType, name);
             return value;
         }
         catch (Exception ignore) {

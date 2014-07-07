@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya;
  */
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -35,6 +36,13 @@ import java.util.List;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public class EnumUtilsTest {
+
+    private EnumUtils classUnderTest;
+
+    @BeforeMethod
+    public void beforeEachTestMethod() {
+        classUnderTest = new EnumUtils();
+    }
 
     private enum TestEnum {
         A, B, C;
@@ -47,7 +55,7 @@ public class EnumUtilsTest {
     @Test
     public void valueOf_Pass() {
         for (TestEnum e : TestEnum.values()) {
-            TestEnum e2 = EnumUtils.valueOf(TestEnum.class, e.name());
+            TestEnum e2 = classUnderTest.valueOf(TestEnum.class, e.name());
             Assert.assertSame(e2, e);
         }
     }
@@ -64,7 +72,7 @@ public class EnumUtilsTest {
     @Test(dataProvider = "_valueOf_FailWithNull_Data",
             expectedExceptions = NullPointerException.class)
     public void valueOf_FailWithNull(Class<TestEnum> enumType, String name) {
-        EnumUtils.valueOf(enumType, name);
+        classUnderTest.valueOf(enumType, name);
     }
 
     @DataProvider
@@ -78,7 +86,7 @@ public class EnumUtilsTest {
     @Test(dataProvider = "_valueOf_FailWithInvalidName_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void valueOf_FailWithInvalidName(String name) {
-        EnumUtils.valueOf(TestEnum.class, name);
+        classUnderTest.valueOf(TestEnum.class, name);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,20 +96,22 @@ public class EnumUtilsTest {
     @Test
     public void tryValueOf_Pass() {
         for (TestEnum e : TestEnum.values()) {
-            TestEnum e2 = EnumUtils.tryValueOf(TestEnum.class, e.name());
+            TestEnum e2 = classUnderTest.tryValueOf(TestEnum.class, e.name());
             Assert.assertSame(e2, e);
         }
     }
 
-    @Test(dataProvider = "_valueOf_FailWithNull_Data")
+    @Test(dataProvider = "_valueOf_FailWithNull_Data",
+            expectedExceptions = NullPointerException.class)
     public void tryValueOf_FailWithNull(Class<TestEnum> enumType, String name) {
-        TestEnum e = EnumUtils.tryValueOf(enumType, name);
+        TestEnum e = classUnderTest.tryValueOf(enumType, name);
         Assert.assertNull(e);
     }
 
-    @Test(dataProvider = "_valueOf_FailWithInvalidName_Data")
+    @Test(dataProvider = "_valueOf_FailWithInvalidName_Data",
+            expectedExceptions = IllegalArgumentException.class)
     public void tryValueOf_FailWithInvalidName(String name) {
-        TestEnum e = EnumUtils.tryValueOf(TestEnum.class, name);
+        TestEnum e = classUnderTest.tryValueOf(TestEnum.class, name);
         Assert.assertNull(e);
     }
 }

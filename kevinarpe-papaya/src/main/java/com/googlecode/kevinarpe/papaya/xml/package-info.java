@@ -1,5 +1,5 @@
 /**
- * Utilities for XML data
+ * Classes for XML data
  * <p>
  * This package is a part of the open-source
  * <a href="http://kevinarpe-papaya.googlecode.com">Papaya library</a>.

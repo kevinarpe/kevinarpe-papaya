@@ -28,8 +28,8 @@ package com.googlecode.kevinarpe.papaya.string.joiner;
 import com.google.common.base.Joiner;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
+import com.googlecode.kevinarpe.papaya.string.joiner.formatter.DefaultFormatter2;
 import com.googlecode.kevinarpe.papaya.string.joiner.formatter.Formatter2;
-import com.googlecode.kevinarpe.papaya.string.joiner.formatter.StringFormatter;
 
 /**
  * Constants and static utilities for {@link Joiner2} and {@link MapJoiner2}.  To use the methods in
@@ -51,7 +51,7 @@ public final class Joiner2Utils
 extends StatelessObject
 implements IJoiner2Utils {
 
-    private static final Formatter2 _DEFAULT_FORMATTER = new StringFormatter("%s");
+    private static final Formatter2 _DEFAULT_FORMATTER = DefaultFormatter2.INSTANCE;
 
     /**
      * Single instance of this class provided for convenience.  Since this class is stateless, its
@@ -128,9 +128,7 @@ implements IJoiner2Utils {
      */
     public static final String DEFAULT_VALUE_NULL_TEXT = "null";
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Joiner2 withSeparator(String separator) {
         Joiner2FactoryImpl factory = new Joiner2FactoryImpl(separator);
@@ -138,9 +136,7 @@ implements IJoiner2Utils {
         return x;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Joiner2 withSeparator(char separator) {
         String separatorString = String.valueOf(separator);
@@ -148,18 +144,14 @@ implements IJoiner2Utils {
         return x;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Joiner2Factory newJoiner2Factory(String separator) {
         Joiner2FactoryImpl x = new Joiner2FactoryImpl(separator);
         return x;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Joiner2Factory newJoiner2Factory(char separator) {
         String separatorString = String.valueOf(separator);

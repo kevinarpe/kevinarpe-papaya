@@ -85,6 +85,8 @@ import java.util.Iterator;
  * @see Joiner2Settings
  * @see MapJoiner2
  */
+// TODO: Consider Joiner2 and TypedJoiner2 where 'Typed' allows generic param for values
+// Will also help with Formatter2 being untyped.  Can have TypedFormatter2 also
 public interface Joiner2
 extends Joiner2Settings<Joiner2, MapJoiner2> {
 

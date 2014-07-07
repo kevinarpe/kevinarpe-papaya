@@ -54,6 +54,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.googlecode.kevinarpe-papaya</groupId>
+            <artifactId>kevinarpe-papaya-jdk-derived</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
         </dependency>

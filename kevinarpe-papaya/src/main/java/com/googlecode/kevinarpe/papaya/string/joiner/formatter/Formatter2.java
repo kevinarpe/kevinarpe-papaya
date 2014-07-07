@@ -31,8 +31,8 @@ package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see StringFormatter
- * @see CountingStringFormatter
+ * @see StringFormatter2
+ * @see CountingStringFormatter2
  */
 public interface Formatter2 {
 
