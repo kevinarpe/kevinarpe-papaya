@@ -70,11 +70,13 @@ https://dev.c-ware.de/confluence/display/PUBLIC/Releasing+modules+of+a+multi-mod
 * git checkout $tag_name
 * mvn javadoc:aggregate
 ** New root HTML doc: target/site/apidocs/index.html
+** [INFO] --- maven-javadoc-plugin:2.9.1:aggregate (default-cli) @ kevinarpe-papaya-parent ---
+[WARNING] Unable to find the resource 'home/kca/saveme2/git/kevinarpe-papaya/src/javadoc/stylesheet.css'. Using default Javadoc resources.
 * cd ../kevinarpe-papaya.docs
 * rm -Rf ./javadoc/*
 * cp -R ../kevinarpe-papaya/target/site/apidocs/* ./javadoc/
 * git add . --all
-* git commit -a
+* git commit -a -m 'Release x'
 * git tag -d release
 * git push --delete origin release
 * git tag -a kevinarpe-papaya.docs-0.0.x -m 'Release x'
