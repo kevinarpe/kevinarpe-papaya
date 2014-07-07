@@ -39,12 +39,12 @@ import java.io.Reader;
  * safe to reuse an input source, as Java byte- and character-streams cannot always reliably
  * be reset (to offset zero).
  * <p>
- * When possible, implementations are strongly recommended to override {@link #toString()} to
+ * When possible, implementations are strongly recommended to override {@link Object#toString()} to
  * provide a human-readable description of the source for logging and debugging purposes.
  * <p>
- * About {@link #hashCode()} and {@link #equals(Object)}: They are normally not overridden by
- * implementations as not all streams are guaranteed to be seekable (rewindable) in Java.  As a
- * result, instances of this class should not be re-used.
+ * About {@link Object#hashCode()} and {@link Object#equals(Object)}: They are normally not
+ * overridden by implementations as not all streams are guaranteed to be seekable (rewindable) in
+ * Java.  As a result, instances of this class should not be re-used.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
