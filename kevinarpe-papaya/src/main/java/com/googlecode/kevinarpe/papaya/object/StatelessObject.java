@@ -48,7 +48,7 @@ public class StatelessObject {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object obj) {
+    public final boolean equals(Object obj) {
         return (this == obj || (null != obj && this.getClass().equals(obj.getClass())));
     }
 
@@ -58,7 +58,7 @@ public class StatelessObject {
      * {@inheritDoc}
      */
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return this.getClass().hashCode();
     }
 }
