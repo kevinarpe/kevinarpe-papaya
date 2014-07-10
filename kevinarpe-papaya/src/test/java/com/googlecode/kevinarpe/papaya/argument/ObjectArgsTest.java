@@ -25,17 +25,15 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -106,13 +104,15 @@ public class ObjectArgsTest {
     
     @DataProvider
     public static Object[][] checkInstanceOfType_Pass_Data() {
+        String s = "";
+        Integer i = 0;
         return new Object[][] {
-                { new String(), String.class },
-                { new String(), CharSequence.class },
-                { new String(), Comparable.class },
-                { new Integer(0), Integer.class },
-                { new Integer(0), Number.class },
-                { new Integer(0), Comparable.class },
+            { s, String.class },
+            { s, CharSequence.class },
+            { s, Comparable.class },
+            { i, Integer.class },
+            { i, Number.class },
+            { i, Comparable.class },
         };
     }
     
@@ -186,7 +186,63 @@ public class ObjectArgsTest {
     public void checkInstanceOfType_FailWithNulls2(Object ref, Class<?> destClass) {
         ObjectArgs.checkInstanceOfType(ref, destClass, "refArgName");
     }
-    
+
+    ///////////////////////////////////////////////////////////////////////////
+    // ObjectArgs.checkCast
+    //
+
+    @Test(dataProvider = "checkInstanceOfType_Pass_Data")
+    public void checkCast_Pass(Object ref, Class<?> destClass) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(
+            ref ==
+                ObjectArgs.checkCast(ref, destClass, "refArgName", "destClassArgName"));
+        // Demonstrate argName can be anything ridiculous.
+        for (String refArgName: ARG_NAME_LIST) {
+            for (String destClassArgName: ARG_NAME_LIST) {
+                Assert.assertTrue(
+                    ref == ObjectArgs.checkCast(
+                        ref, destClass, refArgName, destClassArgName));
+            }
+        }
+    }
+
+    @Test(dataProvider = "checkInstanceOfType_Pass_Data")
+    public void checkCast_Pass2(Object ref, Class<?> destClass) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(
+            ref ==
+                ObjectArgs.checkCast(ref, destClass, "refArgName"));
+        // Demonstrate argName can be anything ridiculous.
+        for (String refArgName: ARG_NAME_LIST) {
+            Assert.assertTrue(ref == ObjectArgs.checkCast(ref, destClass, refArgName));
+        }
+    }
+
+    @Test(dataProvider = "checkInstanceOfType_FailWithInvalidDestClass_Data",
+            expectedExceptions = ClassCastException.class)
+    public void checkCast_FailWithInvalidDestClass(Object ref, Class<?> destClass) {
+        ObjectArgs.checkCast(ref, destClass, "refArgName", "destClassArgName");
+    }
+
+    @Test(dataProvider = "checkInstanceOfType_FailWithInvalidDestClass_Data",
+            expectedExceptions = ClassCastException.class)
+    public void checkCast_FailWithInvalidDestClass2(Object ref, Class<?> destClass) {
+        ObjectArgs.checkCast(ref, destClass, "refArgName");
+    }
+
+    @Test(dataProvider = "checkInstanceOfType_FailWithNulls_Data",
+            expectedExceptions = NullPointerException.class)
+    public void checkCast_FailWithNulls(Object ref, Class<?> destClass) {
+        ObjectArgs.checkCast(ref, destClass, "refArgName", "destClassArgName");
+    }
+
+    @Test(dataProvider = "checkInstanceOfType_FailWithNulls_Data",
+            expectedExceptions = NullPointerException.class)
+    public void checkCast_FailWithNulls2(Object ref, Class<?> destClass) {
+        ObjectArgs.checkCast(ref, destClass, "refArgName");
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // ObjectArgs.checkAssignableToType
     //

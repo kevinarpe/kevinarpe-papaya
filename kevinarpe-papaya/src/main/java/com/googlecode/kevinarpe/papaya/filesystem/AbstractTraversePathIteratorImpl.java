@@ -143,8 +143,8 @@ implements TraversePathIterator {
 
     protected final TraversePathLevel tryDescendDirPath() {
         TraversePathLevel currentLevel = null;
-        File dirPath = getRootDirPath();
-        PathFilter optDescendDirFilter = getOptionalDescendDirPathFilter();
+        File dirPath = withRootDirPath();
+        PathFilter optDescendDirFilter = withOptionalDescendDirPathFilter();
         if (null == optDescendDirFilter || optDescendDirFilter.accept(dirPath, 0)) {
             // If initial directory listing fails, but exceptions are ignored, '_currentLevel'
             // will remain null.
@@ -154,8 +154,8 @@ implements TraversePathIterator {
     }
 
     protected final boolean canIterateDirPath() {
-        File dirPath = getRootDirPath();
-        PathFilter optIteratePathFilter = getOptionalIteratePathFilter();
+        File dirPath = withRootDirPath();
+        PathFilter optIteratePathFilter = withOptionalIteratePathFilter();
         boolean result = (null == optIteratePathFilter || optIteratePathFilter.accept(dirPath, 0));
         return result;
     }
@@ -185,7 +185,7 @@ implements TraversePathIterator {
             level =  _factory.newInstance(this, dirPath, depth);
         }
         catch (PathException e) {
-            if (TraversePathExceptionPolicy.THROW == getExceptionPolicy()) {
+            if (TraversePathExceptionPolicy.THROW == withExceptionPolicy()) {
                 throw new PathRuntimeException(e);
             }
         }
@@ -225,7 +225,7 @@ implements TraversePathIterator {
      *         dictates to throw the exception ({@link TraversePathExceptionPolicy#THROW}).
      *
      * @see #next()
-     * @see #getExceptionPolicy()
+     * @see #withExceptionPolicy()
      */
     @Override
     public abstract boolean hasNext()
@@ -244,7 +244,7 @@ implements TraversePathIterator {
      *         dictates to throw the exception ({@link TraversePathExceptionPolicy#THROW}).
      *
      * @see #hasNext()
-     * @see #getExceptionPolicy()
+     * @see #withExceptionPolicy()
      */
     @Override
     public abstract File next()
@@ -260,7 +260,7 @@ implements TraversePathIterator {
     }
 
     /**
-     * @return number of levels below {@link #getRootDirPath()}.  Minimum value is zero.
+     * @return number of levels below {@link #withRootDirPath()}.  Minimum value is zero.
      */
     @Override
     public final int getDepth() {

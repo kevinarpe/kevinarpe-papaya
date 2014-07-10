@@ -33,17 +33,17 @@ import java.util.Comparator;
  */
 public interface TraversePathIterSettings {
     
-    File getRootDirPath();
+    File withRootDirPath();
 
-    TraversePathDepthPolicy getDepthPolicy();
+    TraversePathDepthPolicy withDepthPolicy();
 
-    TraversePathExceptionPolicy getExceptionPolicy();
+    TraversePathExceptionPolicy withExceptionPolicy();
 
-    PathFilter getOptionalDescendDirPathFilter();
+    PathFilter withOptionalDescendDirPathFilter();
 
-    Comparator<File> getOptionalDescendDirPathComparator();
+    Comparator<File> withOptionalDescendDirPathComparator();
 
-    PathFilter getOptionalIteratePathFilter();
+    PathFilter withOptionalIteratePathFilter();
 
-    Comparator<File> getOptionalIteratePathComparator();
+    Comparator<File> withOptionalIteratePathComparator();
 }

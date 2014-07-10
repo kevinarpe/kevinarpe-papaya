@@ -119,7 +119,7 @@ extends AbstractTraversePathIteratorImpl {
         if (_isNextElementDirPath) {
             _hasIteratedDirPath = true;
             _isNextElementDirPath = false;
-            return getRootDirPath();
+            return withRootDirPath();
         }
         Iterator<File> iterateDirPathIter =_currentLevel.getIterateDirectoryListingIter();
         File path = iterateDirPathIter.next();

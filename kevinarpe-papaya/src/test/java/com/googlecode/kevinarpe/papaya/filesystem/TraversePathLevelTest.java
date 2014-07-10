@@ -204,14 +204,14 @@ extends PowerMockTestCase {
             .thenReturn(mockDescendDirDirectoryListing);
 
         // This is related to craziness with JaCoCo (code coverage) + Mockito in Eclipse.
-//        PowerMockito.when(mockAbstractTraversePathIteratorImpl.getOptionalDescendDirPathFilter())
+//        PowerMockito.when(mockAbstractTraversePathIteratorImpl.withOptionalDescendDirPathFilter())
 //            .thenReturn(mockPathFilter);
         PowerMockito.doReturn(mockPathFilter)
-            .when(mockAbstractTraversePathIteratorImpl).getOptionalDescendDirPathFilter();
+            .when(mockAbstractTraversePathIteratorImpl).withOptionalDescendDirPathFilter();
 
         when(mockFactory.newDescendDirFileFilterInstance(mockPathFilter, depth))
             .thenReturn(mockDescendDirFileFilter);
-        when(mockAbstractTraversePathIteratorImpl.getOptionalDescendDirPathComparator())
+        when(mockAbstractTraversePathIteratorImpl.withOptionalDescendDirPathComparator())
             .thenReturn(mockDescendDirPathComparator);
 
         TraversePathLevel tpl =
@@ -295,15 +295,15 @@ extends PowerMockTestCase {
             .thenReturn(mockOrigDirectoryListing);
 
         // This is related to craziness with JaCoCo (code coverage) + Mockito in Eclipse.
-        when(mockAbstractTraversePathIteratorImpl.getOptionalIteratePathFilter())
+        when(mockAbstractTraversePathIteratorImpl.withOptionalIteratePathFilter())
             .thenReturn(mockPathFilter);
-//        doReturn(mockPathFilter).when(mockAbstractTraversePathIteratorImpl).getOptionalIteratePathFilter();
+//        doReturn(mockPathFilter).when(mockAbstractTraversePathIteratorImpl).withOptionalIteratePathFilter();
 
         when(mockFactory.newDirectoryListingInstance(mockOrigDirectoryListing))
             .thenReturn(mockIterateDirectoryListing);
         when(mockFactory.newIterateFileFilterInstance(mockPathFilter, depth))
             .thenReturn(mockIterateFileFilter);
-        when(mockAbstractTraversePathIteratorImpl.getOptionalIteratePathComparator())
+        when(mockAbstractTraversePathIteratorImpl.withOptionalIteratePathComparator())
             .thenReturn(mockIteratePathComparator);
 
         TraversePathLevel tpl =

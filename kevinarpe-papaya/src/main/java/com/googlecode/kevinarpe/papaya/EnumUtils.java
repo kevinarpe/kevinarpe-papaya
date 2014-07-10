@@ -33,6 +33,9 @@ import com.googlecode.kevinarpe.papaya.string.joiner.Joiner2Utils;
 import com.googlecode.kevinarpe.papaya.string.joiner.formatter.StringFormatter2;
 
 /**
+ * Static utilities for {@link Enum}.  To use the methods in this class create a new
+ * instance via {@link #EnumUtils()} or use the public static member {@link #INSTANCE}.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see #INSTANCE

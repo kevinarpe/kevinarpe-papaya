@@ -38,6 +38,7 @@ import java.util.Collection;
  *
  * @see FileFilterUtils
  */
+// TODO: Convert to I/*Utils format.
 @FullyTested
 public class PathFilterUtils {
 

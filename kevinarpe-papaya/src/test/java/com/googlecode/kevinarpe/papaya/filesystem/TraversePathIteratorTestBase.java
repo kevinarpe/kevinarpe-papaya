@@ -112,7 +112,7 @@ public class TraversePathIteratorTestBase {
 
         try {
             int max = createFiles(pathSpecArr);
-            if (TraversePathDepthPolicy.DEPTH_LAST == pathIter.getDepthPolicy()) {
+            if (TraversePathDepthPolicy.DEPTH_LAST == pathIter.withDepthPolicy()) {
                 assertTrue(pathIter.hasNext());
                 assertTrue(pathIter.hasNext());  // check for no further side effects
                 assertTrue(pathIter.hasNext());  // check for no further side effects
@@ -128,7 +128,7 @@ public class TraversePathIteratorTestBase {
                 assertEquals(count, numericFileName);
             }
             assertEquals(count, max);
-            if (TraversePathDepthPolicy.DEPTH_FIRST == pathIter.getDepthPolicy()) {
+            if (TraversePathDepthPolicy.DEPTH_FIRST == pathIter.withDepthPolicy()) {
                 assertTrue(pathIter.hasNext());
                 assertTrue(pathIter.hasNext());  // check for no further side effects
                 assertTrue(pathIter.hasNext());  // check for no further side effects

@@ -58,7 +58,8 @@ public interface XPathHelper {
      * @param qname
      *        Expected result type
      * @param xpathDescription
-     *        Human-readable description of XPath, e.g., number of shared in index composition
+     *        Human-readable description of XPath,
+     *        e.g., {@code "number of shares in stock index composition"}
      *
      * @return result of XPath expression.
      *         Never null and always can be cast to expected result type

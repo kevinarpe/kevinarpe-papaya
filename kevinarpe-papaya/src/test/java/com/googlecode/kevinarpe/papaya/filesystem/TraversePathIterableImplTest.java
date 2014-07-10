@@ -80,7 +80,7 @@ public class TraversePathIterableImplTest {
     public void beforeEachTestMethod() {
         expected = BaseTraversePathIterTest.newInstance();
         classUnderTestWithDefaults =
-            new TraversePathIterableImpl(expected.getRootDirPath(), expected.getDepthPolicy());
+            new TraversePathIterableImpl(expected.withRootDirPath(), expected.withDepthPolicy());
         classUnderTestWithoutDefaults =
             classUnderTestWithDefaults
                 .withOptionalDescendDirPathFilter(pathFilter)
@@ -97,9 +97,9 @@ public class TraversePathIterableImplTest {
     public void ctor_Pass() {
         BaseTraversePathIterTest.assertAttrSame(
             classUnderTestWithDefaults,
-            expected.getRootDirPath(),
-            expected.getDepthPolicy(),
-            TraversePathIterableImpl.DEFAULT_EXCEPTION_POLICY,
+            expected.withRootDirPath(),
+            expected.withDepthPolicy(),
+            TraversePathUtils.DEFAULT_EXCEPTION_POLICY,
             (PathFilter) null,
             (Comparator<File>) null,
             (PathFilter) null,
@@ -145,16 +145,16 @@ public class TraversePathIterableImplTest {
         final File newPath = new File("newPath");
         TraversePathIterable next = classUnderTestWithDefaults.withRootDirPath(newPath);
         assertNotSame(next, classUnderTestWithDefaults);
-        assertEquals(next.getRootDirPath(), newPath);
+        assertEquals(next.withRootDirPath(), newPath);
         BaseTraversePathIterTest.assertAttrSame(
             next,
             newPath,
-            classUnderTestWithDefaults.getDepthPolicy(),
-            classUnderTestWithDefaults.getExceptionPolicy(),
-            classUnderTestWithDefaults.getOptionalDescendDirPathFilter(),
-            classUnderTestWithDefaults.getOptionalDescendDirPathComparator(),
-            classUnderTestWithDefaults.getOptionalIteratePathFilter(),
-            classUnderTestWithDefaults.getOptionalIteratePathComparator());
+            classUnderTestWithDefaults.withDepthPolicy(),
+            classUnderTestWithDefaults.withExceptionPolicy(),
+            classUnderTestWithDefaults.withOptionalDescendDirPathFilter(),
+            classUnderTestWithDefaults.withOptionalDescendDirPathComparator(),
+            classUnderTestWithDefaults.withOptionalIteratePathFilter(),
+            classUnderTestWithDefaults.withOptionalIteratePathComparator());
     }
 
     @Test(expectedExceptions = NullPointerException.class)
@@ -169,20 +169,20 @@ public class TraversePathIterableImplTest {
     @Test
     public void withDepthPolicy_Pass() {
         TraversePathDepthPolicy depthPolicy =
-            (classUnderTestWithDefaults.getDepthPolicy() == TraversePathDepthPolicy.DEPTH_FIRST
+            (classUnderTestWithDefaults.withDepthPolicy() == TraversePathDepthPolicy.DEPTH_FIRST
                 ? TraversePathDepthPolicy.DEPTH_LAST : TraversePathDepthPolicy.DEPTH_FIRST);
         TraversePathIterable next = classUnderTestWithDefaults.withDepthPolicy(depthPolicy);
         assertNotSame(next, classUnderTestWithDefaults);
-        assertEquals(next.getDepthPolicy(), depthPolicy);
+        assertEquals(next.withDepthPolicy(), depthPolicy);
         BaseTraversePathIterTest.assertAttrSame(
             next,
-            classUnderTestWithDefaults.getRootDirPath(),
+            classUnderTestWithDefaults.withRootDirPath(),
             depthPolicy,
-            classUnderTestWithDefaults.getExceptionPolicy(),
-            classUnderTestWithDefaults.getOptionalDescendDirPathFilter(),
-            classUnderTestWithDefaults.getOptionalDescendDirPathComparator(),
-            classUnderTestWithDefaults.getOptionalIteratePathFilter(),
-            classUnderTestWithDefaults.getOptionalIteratePathComparator());
+            classUnderTestWithDefaults.withExceptionPolicy(),
+            classUnderTestWithDefaults.withOptionalDescendDirPathFilter(),
+            classUnderTestWithDefaults.withOptionalDescendDirPathComparator(),
+            classUnderTestWithDefaults.withOptionalIteratePathFilter(),
+            classUnderTestWithDefaults.withOptionalIteratePathComparator());
     }
 
     @Test(expectedExceptions = NullPointerException.class)
@@ -197,21 +197,21 @@ public class TraversePathIterableImplTest {
     @Test
     public void withExceptionPolicy_Pass() {
         TraversePathExceptionPolicy exceptionPolicy =
-            (classUnderTestWithDefaults.getExceptionPolicy() == TraversePathExceptionPolicy.THROW
+            (classUnderTestWithDefaults.withExceptionPolicy() == TraversePathExceptionPolicy.THROW
                 ? TraversePathExceptionPolicy.IGNORE : TraversePathExceptionPolicy.THROW);
         TraversePathIterable next =
             classUnderTestWithDefaults.withExceptionPolicy(exceptionPolicy);
         assertNotSame(next, classUnderTestWithDefaults);
-        assertEquals(next.getExceptionPolicy(), exceptionPolicy);
+        assertEquals(next.withExceptionPolicy(), exceptionPolicy);
         BaseTraversePathIterTest.assertAttrSame(
             next,
-            classUnderTestWithDefaults.getRootDirPath(),
-            classUnderTestWithDefaults.getDepthPolicy(),
+            classUnderTestWithDefaults.withRootDirPath(),
+            classUnderTestWithDefaults.withDepthPolicy(),
             exceptionPolicy,
-            classUnderTestWithDefaults.getOptionalDescendDirPathFilter(),
-            classUnderTestWithDefaults.getOptionalDescendDirPathComparator(),
-            classUnderTestWithDefaults.getOptionalIteratePathFilter(),
-            classUnderTestWithDefaults.getOptionalIteratePathComparator());
+            classUnderTestWithDefaults.withOptionalDescendDirPathFilter(),
+            classUnderTestWithDefaults.withOptionalDescendDirPathComparator(),
+            classUnderTestWithDefaults.withOptionalIteratePathFilter(),
+            classUnderTestWithDefaults.withOptionalIteratePathComparator());
     }
 
     @Test(expectedExceptions = NullPointerException.class)
@@ -229,16 +229,16 @@ public class TraversePathIterableImplTest {
             classUnderTestWithDefaults.withOptionalDescendDirPathFilter(pathFilter);
         assertNotNull(next);
         assertNotSame(next, classUnderTestWithDefaults);
-        assertEquals(next.getOptionalDescendDirPathFilter(), pathFilter);
+        assertEquals(next.withOptionalDescendDirPathFilter(), pathFilter);
         BaseTraversePathIterTest.assertAttrSame(
             next,
-            classUnderTestWithDefaults.getRootDirPath(),
-            classUnderTestWithDefaults.getDepthPolicy(),
-            classUnderTestWithDefaults.getExceptionPolicy(),
+            classUnderTestWithDefaults.withRootDirPath(),
+            classUnderTestWithDefaults.withDepthPolicy(),
+            classUnderTestWithDefaults.withExceptionPolicy(),
             pathFilter,
-            classUnderTestWithDefaults.getOptionalDescendDirPathComparator(),
-            classUnderTestWithDefaults.getOptionalIteratePathFilter(),
-            classUnderTestWithDefaults.getOptionalIteratePathComparator());
+            classUnderTestWithDefaults.withOptionalDescendDirPathComparator(),
+            classUnderTestWithDefaults.withOptionalIteratePathFilter(),
+            classUnderTestWithDefaults.withOptionalIteratePathComparator());
     }
 
     @Test
@@ -246,7 +246,7 @@ public class TraversePathIterableImplTest {
         TraversePathIterable next =
             classUnderTestWithDefaults.withOptionalDescendDirPathFilter((PathFilter) null);
         assertNotSame(next, classUnderTestWithDefaults);
-        assertNull(next.getOptionalDescendDirPathFilter());
+        assertNull(next.withOptionalDescendDirPathFilter());
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -259,16 +259,16 @@ public class TraversePathIterableImplTest {
             classUnderTestWithDefaults.withOptionalDescendDirPathComparator(fileComparator);
         assertNotNull(next);
         assertNotSame(next, classUnderTestWithDefaults);
-        assertEquals(next.getOptionalDescendDirPathComparator(), fileComparator);
+        assertEquals(next.withOptionalDescendDirPathComparator(), fileComparator);
         BaseTraversePathIterTest.assertAttrSame(
             next,
-            classUnderTestWithDefaults.getRootDirPath(),
-            classUnderTestWithDefaults.getDepthPolicy(),
-            classUnderTestWithDefaults.getExceptionPolicy(),
-            classUnderTestWithDefaults.getOptionalDescendDirPathFilter(),
+            classUnderTestWithDefaults.withRootDirPath(),
+            classUnderTestWithDefaults.withDepthPolicy(),
+            classUnderTestWithDefaults.withExceptionPolicy(),
+            classUnderTestWithDefaults.withOptionalDescendDirPathFilter(),
             fileComparator,
-            classUnderTestWithDefaults.getOptionalIteratePathFilter(),
-            classUnderTestWithDefaults.getOptionalIteratePathComparator());
+            classUnderTestWithDefaults.withOptionalIteratePathFilter(),
+            classUnderTestWithDefaults.withOptionalIteratePathComparator());
     }
 
     @Test
@@ -276,7 +276,7 @@ public class TraversePathIterableImplTest {
         TraversePathIterable next =
             classUnderTestWithDefaults.withOptionalDescendDirPathComparator((Comparator<File>) null);
         assertNotSame(next, classUnderTestWithDefaults);
-        assertNull(next.getOptionalDescendDirPathComparator());
+        assertNull(next.withOptionalDescendDirPathComparator());
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -288,16 +288,16 @@ public class TraversePathIterableImplTest {
         TraversePathIterable next = classUnderTestWithDefaults.withOptionalIteratePathFilter(pathFilter);
         assertNotNull(next);
         assertNotSame(next, classUnderTestWithDefaults);
-        assertEquals(next.getOptionalIteratePathFilter(), pathFilter);
+        assertEquals(next.withOptionalIteratePathFilter(), pathFilter);
         BaseTraversePathIterTest.assertAttrSame(
             next,
-            classUnderTestWithDefaults.getRootDirPath(),
-            classUnderTestWithDefaults.getDepthPolicy(),
-            classUnderTestWithDefaults.getExceptionPolicy(),
-            classUnderTestWithDefaults.getOptionalDescendDirPathFilter(),
-            classUnderTestWithDefaults.getOptionalIteratePathComparator(),
+            classUnderTestWithDefaults.withRootDirPath(),
+            classUnderTestWithDefaults.withDepthPolicy(),
+            classUnderTestWithDefaults.withExceptionPolicy(),
+            classUnderTestWithDefaults.withOptionalDescendDirPathFilter(),
+            classUnderTestWithDefaults.withOptionalIteratePathComparator(),
             pathFilter,
-            classUnderTestWithDefaults.getOptionalIteratePathComparator());
+            classUnderTestWithDefaults.withOptionalIteratePathComparator());
     }
 
     @Test
@@ -305,7 +305,7 @@ public class TraversePathIterableImplTest {
         TraversePathIterable next =
             classUnderTestWithDefaults.withOptionalIteratePathFilter((PathFilter) null);
         assertNotSame(next, classUnderTestWithDefaults);
-        assertNull(next.getOptionalIteratePathFilter());
+        assertNull(next.withOptionalIteratePathFilter());
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -318,15 +318,15 @@ public class TraversePathIterableImplTest {
             classUnderTestWithDefaults.withOptionalIteratePathComparator(fileComparator);
         assertNotNull(next);
         assertNotSame(next, classUnderTestWithDefaults);
-        assertEquals(next.getOptionalIteratePathComparator(), fileComparator);
+        assertEquals(next.withOptionalIteratePathComparator(), fileComparator);
         BaseTraversePathIterTest.assertAttrSame(
             next,
-            classUnderTestWithDefaults.getRootDirPath(),
-            classUnderTestWithDefaults.getDepthPolicy(),
-            classUnderTestWithDefaults.getExceptionPolicy(),
-            classUnderTestWithDefaults.getOptionalDescendDirPathFilter(),
-            classUnderTestWithDefaults.getOptionalDescendDirPathComparator(),
-            classUnderTestWithDefaults.getOptionalIteratePathFilter(),
+            classUnderTestWithDefaults.withRootDirPath(),
+            classUnderTestWithDefaults.withDepthPolicy(),
+            classUnderTestWithDefaults.withExceptionPolicy(),
+            classUnderTestWithDefaults.withOptionalDescendDirPathFilter(),
+            classUnderTestWithDefaults.withOptionalDescendDirPathComparator(),
+            classUnderTestWithDefaults.withOptionalIteratePathFilter(),
             fileComparator);
     }
 
@@ -335,7 +335,7 @@ public class TraversePathIterableImplTest {
         TraversePathIterable next =
             classUnderTestWithDefaults.withOptionalIteratePathComparator((Comparator<File>) null);
         assertNotSame(next, classUnderTestWithDefaults);
-        assertNull(next.getOptionalIteratePathComparator());
+        assertNull(next.withOptionalIteratePathComparator());
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -363,7 +363,7 @@ public class TraversePathIterableImplTest {
             .addEqualityGroup(1, 1)  // Something that is not this class (TraversePathIterableImpl)
             .addEqualityGroup(
                 classUnderTestWithoutDefaults,
-                classUnderTestWithoutDefaults.withRootDirPath(classUnderTestWithoutDefaults.getRootDirPath()))
+                classUnderTestWithoutDefaults.withRootDirPath(classUnderTestWithoutDefaults.withRootDirPath()))
             .addEqualityGroup(
                 classUnderTestWithoutDefaults.withRootDirPath(newDirPath),
                 classUnderTestWithoutDefaults.withRootDirPath(newDirPath))

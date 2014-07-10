@@ -36,5 +36,8 @@ import java.io.File;
  */
 public interface TraversePathIterableFactory {
 
+    /**
+     * @see TraversePathUtils#newTraversePathIterable(File, TraversePathDepthPolicy)
+     */
     TraversePathIterable newInstance(File dirPath, TraversePathDepthPolicy depthPolicy);
 }

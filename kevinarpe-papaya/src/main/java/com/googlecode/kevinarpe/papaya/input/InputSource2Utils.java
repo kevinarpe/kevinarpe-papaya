@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.util.Collection;
 
 /**
- /**
  * Static utilities for {@link InputSource2}.  To use the methods in this class create a new
  * instance via {@link #InputSource2Utils()} or use the public static member {@link #INSTANCE}.
  *

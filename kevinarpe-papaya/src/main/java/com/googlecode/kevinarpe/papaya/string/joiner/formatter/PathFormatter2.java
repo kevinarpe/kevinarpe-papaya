@@ -71,9 +71,8 @@ implements Formatter2 {
         if (null == value) {
             return StringFormatterHelperImpl.NULL_VALUE_AS_STRING;
         }
-        ObjectArgs.checkAssignableToType(value.getClass(), File.class, "class of value");
+        File path = ObjectArgs.checkCast(value.getClass(), File.class, "class of value");
 
-        File path = (File) value;
         String x = String.format("'%s'", path.getPath());
         if (!path.isAbsolute()) {
             x = String.format("%s -> '%s'", x, path.getAbsolutePath());

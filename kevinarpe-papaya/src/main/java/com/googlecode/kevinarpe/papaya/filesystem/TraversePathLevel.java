@@ -141,11 +141,11 @@ final class TraversePathLevel {
         if (null == _descendDirDirectoryListing) {
             DirectoryListing newDirListing =
                 _factory.newDirectoryListingInstance(_origDirectoryListing);
-            PathFilter descendDirPathFilter = _parent.getOptionalDescendDirPathFilter();
+            PathFilter descendDirPathFilter = _parent.withOptionalDescendDirPathFilter();
             DescendDirFileFilter fileFilter =
                 _factory.newDescendDirFileFilterInstance(descendDirPathFilter, _depth);
             newDirListing.filter(fileFilter);
-            sortDirListing(newDirListing, _parent.getOptionalDescendDirPathComparator());
+            sortDirListing(newDirListing, _parent.withOptionalDescendDirPathComparator());
             _descendDirDirectoryListing = newDirListing;
         }
         return _descendDirDirectoryListing;
@@ -189,7 +189,7 @@ final class TraversePathLevel {
 
     public DirectoryListing getIterateDirectoryListing() {
         if (null == _iterateDirectoryListing) {
-            PathFilter pathFilter = _parent.getOptionalIteratePathFilter();
+            PathFilter pathFilter = _parent.withOptionalIteratePathFilter();
             DirectoryListing newDirListing =
                 _factory.newDirectoryListingInstance(_origDirectoryListing);
             if (null != pathFilter) {
@@ -197,7 +197,7 @@ final class TraversePathLevel {
                     _factory.newIterateFileFilterInstance(pathFilter, _depth);
                 newDirListing.filter(fileFilter);
             }
-            sortDirListing(newDirListing, _parent.getOptionalIteratePathComparator());
+            sortDirListing(newDirListing, _parent.withOptionalIteratePathComparator());
             _iterateDirectoryListing = newDirListing;
         }
         return _iterateDirectoryListing;

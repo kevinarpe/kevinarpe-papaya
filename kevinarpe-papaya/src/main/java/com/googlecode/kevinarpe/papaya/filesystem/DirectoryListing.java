@@ -70,6 +70,7 @@ import java.util.RandomAccess;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 // TODO: implements Iteratable<File>?  Not sure yet.  Think about counterarguments first.
+// TODO: Convert to use I/*Utils.  Maybe all together in I/FileSystemUtils?
 @FullyTested
 public final class DirectoryListing {
 

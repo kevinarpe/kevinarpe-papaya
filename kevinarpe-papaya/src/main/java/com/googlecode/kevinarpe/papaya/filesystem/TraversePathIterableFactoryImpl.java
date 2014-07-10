@@ -28,25 +28,14 @@ package com.googlecode.kevinarpe.papaya.filesystem;
 import java.io.File;
 
 /**
- * Stateless factory for {@link TraversePathIterableImpl}.
- *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
- *
- * @see TraversePathIterableFactory
- * @see TraversePathIterableImpl
  */
-public class TraversePathIterableFactoryImpl
+final class TraversePathIterableFactoryImpl
 implements TraversePathIterableFactory {
 
-    /**
-     * An instance of this (stateless) class.
-     */
     public static final TraversePathIterableFactoryImpl INSTANCE =
         new TraversePathIterableFactoryImpl();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public TraversePathIterableImpl newInstance(File dirPath, TraversePathDepthPolicy depthPolicy) {
         TraversePathIterableImpl x = new TraversePathIterableImpl(dirPath, depthPolicy);

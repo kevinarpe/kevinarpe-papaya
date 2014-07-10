@@ -75,7 +75,7 @@ implements TraversePathIterSettings {
      * @see TraversePathIterableImpl#withRootDirPath(File)
      */
     @Override
-    public final File getRootDirPath() {
+    public final File withRootDirPath() {
         return _dirPath;
     }
 
@@ -85,7 +85,7 @@ implements TraversePathIterSettings {
      * @see TraversePathIterableImpl#withDepthPolicy(TraversePathDepthPolicy)
      */
     @Override
-    public final TraversePathDepthPolicy getDepthPolicy() {
+    public final TraversePathDepthPolicy withDepthPolicy() {
         return _depthPolicy;
     }
 
@@ -95,7 +95,7 @@ implements TraversePathIterSettings {
      * @see TraversePathIterableImpl#withExceptionPolicy(TraversePathExceptionPolicy)
      */
     @Override
-    public TraversePathExceptionPolicy getExceptionPolicy() {
+    public TraversePathExceptionPolicy withExceptionPolicy() {
         return _exceptionPolicy;
     }
 
@@ -105,7 +105,7 @@ implements TraversePathIterSettings {
      * @see TraversePathIterableImpl#withOptionalDescendDirPathFilter(PathFilter)
      */
     @Override
-    public final PathFilter getOptionalDescendDirPathFilter() {
+    public final PathFilter withOptionalDescendDirPathFilter() {
         return _optDescendDirPathFilter;
     }
 
@@ -115,7 +115,7 @@ implements TraversePathIterSettings {
      * @see TraversePathIterableImpl#withOptionalDescendDirPathComparator(Comparator)
      */
     @Override
-    public final Comparator<File> getOptionalDescendDirPathComparator() {
+    public final Comparator<File> withOptionalDescendDirPathComparator() {
         return _optDescendDirPathComparator;
     }
 
@@ -125,7 +125,7 @@ implements TraversePathIterSettings {
      * @see TraversePathIterableImpl#withOptionalIteratePathFilter(PathFilter)
      */
     @Override
-    public final PathFilter getOptionalIteratePathFilter() {
+    public final PathFilter withOptionalIteratePathFilter() {
         return _optIteratePathFilter;
     }
 
@@ -135,7 +135,7 @@ implements TraversePathIterSettings {
      * @see TraversePathIterableImpl#withOptionalIteratePathComparator(Comparator)
      */
     @Override
-    public final Comparator<File> getOptionalIteratePathComparator() {
+    public final Comparator<File> withOptionalIteratePathComparator() {
         return _optIteratePathComparator;
     }
 

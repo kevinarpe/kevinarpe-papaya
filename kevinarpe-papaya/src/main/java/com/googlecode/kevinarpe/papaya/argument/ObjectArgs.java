@@ -166,6 +166,27 @@ public final class ObjectArgs {
         }
         return ref;
     }
+
+    /**
+     * This is a convenience method for {@link #checkCast(Object, Class, String, String)}
+     * where {@code clazzArgName = "clazz"}.
+     */
+    public static <TSrc, TDest>
+    TDest checkCast(TSrc ref, Class<TDest> clazz, String refArgName) {
+        TDest x = checkCast(ref, clazz, refArgName, "clazz");
+        return x;
+    }
+
+    /**
+     * This is a convenience method for {@link #checkInstanceOfType(Object, Class, String, String)}
+     * where the result is cast to type {@code TDest}.
+     */
+    public static <TSrc, TDest>
+    TDest checkCast(TSrc ref, Class<TDest> clazz, String refArgName, String clazzArgName) {
+        checkInstanceOfType(ref, clazz, refArgName, clazzArgName);
+        TDest x = clazz.cast(ref);
+        return x;
+    }
     
     /**
      * This is a convenience method for
