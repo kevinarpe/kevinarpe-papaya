@@ -27,23 +27,25 @@ package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
-import com.googlecode.kevinarpe.papaya.string.joiner.Joiner2Utils;
 
 /**
- * Formats a value using {@code String.valueOf(Object)}.
+ * Automatically formats objects of any type to strings.
+ * <ul>
+ *     <li>{@link String} -> (double quote prefix and suffix) {@code "\"abc\""}</li>
+ *     <li>{@link Character} -> (single quote prefix and suffix) {@code "'Z'"}</li>
+ *     <li>{@link Boolean} -> (no prefix or suffix) {@code "true"} or {@code "false"}</li>
+ *     <li>{@link Number} -> (no prefix or suffix)
+ *     <li>Else -> (curly brace prefix and suffix) {@code "{<Object.toString()>}"}
+ * </ul>
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see #INSTANCE
  * @see StatelessObject
  * @see Formatter2
- * @see Joiner2Utils#DEFAULT_ELEMENT_FORMATTER
- * @see Joiner2Utils#DEFAULT_FINAL_FORMATTER
- * @see Joiner2Utils#DEFAULT_KEY_FORMATTER
- * @see Joiner2Utils#DEFAULT_VALUE_FORMATTER
  */
 @FullyTested
-public final class DefaultFormatter2
+public final class AutoFormatter2
 extends StatelessObject
 implements Formatter2 {
 
@@ -51,11 +53,27 @@ implements Formatter2 {
      * Single instance of this class provided for convenience.  Since this class is stateless, its
      * behaviour is identical between this instance and others.
      */
-    public static final DefaultFormatter2 INSTANCE = new DefaultFormatter2();
+    public static final AutoFormatter2 INSTANCE = new AutoFormatter2();
 
     @Override
     public String format(Object value) {
-        String x = String.valueOf(value);
-        return x;
+        if (null == value) {
+            return StringFormatterHelperImpl.NULL_VALUE_AS_STRING;
+        }
+        Class<?> clazz = value.getClass();
+        String result = null;
+        if (clazz.equals(String.class)) {
+            result = "\"" + value + "\"";
+        }
+        else if (clazz.equals(Character.class)) {
+            result = "'" + value + "'";
+        }
+        else if (clazz.equals(Boolean.class) || Number.class.isAssignableFrom(clazz)) {
+            result = value.toString();
+        }
+        else {
+            result = "{" + value.toString() + "}";
+        }
+        return result;
     }
 }

@@ -82,18 +82,18 @@ public class Joiner2ImplTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Joiner2Impl.withFormatter(Formatter2)
+    // Joiner2Impl.withElementFormatter(Formatter2)
     //
 
     @Test
     public void withFormatterFormatter2_Pass() {
-        Joiner2 x = classUnderTest.withSeparator(",").withFormatter(mockFormatter);
-        Assert.assertSame(x.withFormatter(), mockFormatter);
+        Joiner2 x = classUnderTest.withSeparator(",").withElementFormatter(mockFormatter);
+        Assert.assertSame(x.withElementFormatter(), mockFormatter);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void withFormatterFormatter2_FaillWithNull() {
-        classUnderTest.withSeparator(",").withFormatter((Formatter2) null);
+        classUnderTest.withSeparator(",").withElementFormatter((Formatter2) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -168,78 +168,106 @@ public class Joiner2ImplTest {
     // Joiner2Impl.appendTo(StringBuilder, *)/join(*) [pass only]
     //
 
+    private static final class _NegatingIntegerFormatter2
+    implements Formatter2 {
+
+        @Override
+        public String format(Object value) {
+            Integer x = (Integer) value;
+            String y = String.valueOf(-1 * x);
+            return y;
+        }
+    }
+
     @SuppressWarnings("unchecked")
     @DataProvider
     private static Object[][] _appendTo_Pass_Data() {
         return new Object[][] {
-            { ",", null, null, null, false, Arrays.asList(), "" },
-            { ",", null, null, null, false, Arrays.asList("a"), "a" },
-            { ",", null, null, null, false, Arrays.asList("a", "b"), "a,b" },
-            { ",", null, null, null, false, Arrays.asList("a", "b", "c"), "a,b,c" },
+            { ",", null, null, null, null, false, Arrays.asList(), "" },
+            { ",", null, null, null, null, false, Arrays.asList("a"), "a" },
+            { ",", null, null, null, null, false, Arrays.asList("a", "b"), "a,b" },
+            { ",", null, null, null, null, false, Arrays.asList("a", "b", "c"), "a,b,c" },
 
-            { ",", null, null, null, true, Arrays.asList(), "" },
-            { ",", null, null, null, true, Arrays.asList("a"), "a" },
-            { ",", null, null, null, true, Arrays.asList("a", "b"), "a,b" },
-            { ",", null, null, null, true, Arrays.asList("a", "b", "c"), "a,b,c" },
+            { ",", null, null, null, null, true, Arrays.asList(), "" },
+            { ",", null, null, null, null, true, Arrays.asList("a"), "a" },
+            { ",", null, null, null, null, true, Arrays.asList("a", "b"), "a,b" },
+            { ",", null, null, null, null, true, Arrays.asList("a", "b", "c"), "a,b,c" },
 
-            { ",", new StringFormatter2("[%s]"), null, null, false, Arrays.asList(), "" },
-            { ",", new StringFormatter2("[%s]"), null, null, false, Arrays.asList("a"), "[a]" },
-            { ",", new StringFormatter2("[%s]"), null, null, false, Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", new StringFormatter2("[%s]"), null, null, false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", new StringFormatter2("[%s]"), null, null, null, false, Arrays.asList(), "" },
+            { ",", new StringFormatter2("[%s]"), null, null, null, false, Arrays.asList("a"), "[a]" },
+            { ",", new StringFormatter2("[%s]"), null, null, null, false, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", new StringFormatter2("[%s]"), null, null, null, false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
 
-            { ",", new StringFormatter2("[%s]"), null, null, true, Arrays.asList(), "" },
-            { ",", new StringFormatter2("[%s]"), null, null, true, Arrays.asList("a"), "[a]" },
-            { ",", new StringFormatter2("[%s]"), null, null, true, Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", new StringFormatter2("[%s]"), null, null, true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", new StringFormatter2("[%s]"), null, null, null, true, Arrays.asList(), "" },
+            { ",", new StringFormatter2("[%s]"), null, null, null, true, Arrays.asList("a"), "[a]" },
+            { ",", new StringFormatter2("[%s]"), null, null, null, true, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", new StringFormatter2("[%s]"), null, null, null, true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
 
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, false, Arrays.asList(), "(empty)" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, false, Arrays.asList("a"), "[a]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, false, Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, false, Arrays.asList(), "<empty>" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, false, Arrays.asList("a"), "[a]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, false, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
 
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, true, Arrays.asList(), "(empty)" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, true, Arrays.asList("a"), "[a]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, true, Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, true, Arrays.asList(), "<empty>" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, true, Arrays.asList("a"), "[a]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, true, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
 
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, false, Arrays.asList(), "(empty)" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, false, Arrays.asList("a"), "[a]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, false, Arrays.asList("a", null), "[a],[null]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, false, Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, false, Arrays.asList("a", null, "b", null), "[a],[null],[b],[null]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, false, Arrays.asList("a", null, "b", null, "c", null), "[a],[null],[b],[null],[c],[null]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, false, Arrays.asList(), "<empty>" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, false, Arrays.asList("a"), "[a]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, false, Arrays.asList("a", null), "[a],null" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, false, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, false, Arrays.asList("a", null, "b", null), "[a],null,[b],null" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, false, Arrays.asList("a", null, "b", null, "c", null), "[a],null,[b],null,[c],null" },
 
-            { ",", new StringFormatter2("[%s]"), "(empty)", "nullValue", false, Arrays.asList(), "(empty)" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", "nullValue", false, Arrays.asList("a"), "[a]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", "nullValue", false, Arrays.asList("a", null), "[a],[nullValue]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", "nullValue", false, Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", "nullValue", false, Arrays.asList("a", null, "b", null), "[a],[nullValue],[b],[nullValue]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", "nullValue", false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", "nullValue", false, Arrays.asList("a", null, "b", null, "c", null), "[a],[nullValue],[b],[nullValue],[c],[nullValue]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", "nullValue", false, Arrays.asList(), "<empty>" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", "nullValue", false, Arrays.asList("a"), "[a]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", "nullValue", false, Arrays.asList("a", null), "[a],nullValue" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", "nullValue", false, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", "nullValue", false, Arrays.asList("a", null, "b", null), "[a],nullValue,[b],nullValue" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", "nullValue", false, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", "nullValue", false, Arrays.asList("a", null, "b", null, "c", null), "[a],nullValue,[b],nullValue,[c],nullValue" },
 
-            { ",", new StringFormatter2("[%s]"), "(empty)", "nullValue", true, Arrays.asList(), "(empty)" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", "nullValue", true, Arrays.asList("a"), "[a]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", "nullValue", true, Arrays.asList("a", null), "[a]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", "nullValue", true, Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", "nullValue", true, Arrays.asList("a", null, "b", null), "[a],[b]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", "nullValue", true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", "nullValue", true, Arrays.asList("a", null, "b", null, "c", null), "[a],[b],[c]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", "nullValue", true, Arrays.asList(), "<empty>" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", "nullValue", true, Arrays.asList("a"), "[a]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", "nullValue", true, Arrays.asList("a", null), "[a]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", "nullValue", true, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", "nullValue", true, Arrays.asList("a", null, "b", null), "[a],[b]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", "nullValue", true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", "nullValue", true, Arrays.asList("a", null, "b", null, "c", null), "[a],[b],[c]" },
 
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, true, Arrays.asList(), "(empty)" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, true, Arrays.asList("a"), "[a]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, true, Arrays.asList("a", null), "[a]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, true, Arrays.asList("a", "b"), "[a],[b]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, true, Arrays.asList("a", null, "b", null), "[a],[b]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
-            { ",", new StringFormatter2("[%s]"), "(empty)", null, true, Arrays.asList("a", null, "b", null, "c", null), "[a],[b],[c]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, true, Arrays.asList(), "<empty>" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, true, Arrays.asList("a"), "[a]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, true, Arrays.asList("a", null), "[a]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, true, Arrays.asList("a", "b"), "[a],[b]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, true, Arrays.asList("a", null, "b", null), "[a],[b]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, true, Arrays.asList("a", "b", "c"), "[a],[b],[c]" },
+            { ",", new StringFormatter2("[%s]"), null, "<empty>", null, true, Arrays.asList("a", null, "b", null, "c", null), "[a],[b],[c]" },
+
+            { ",", new _NegatingIntegerFormatter2(), new StringFormatter2("[%s]"), "<empty>", "nullValue", false, Arrays.asList(), "[<empty>]" },
+            { ",", new _NegatingIntegerFormatter2(), new StringFormatter2("[%s]"), "<empty>", "nullValue", false, Arrays.asList(123), "[-123]" },
+            { ",", new _NegatingIntegerFormatter2(), new StringFormatter2("[%s]"), "<empty>", "nullValue", false, Arrays.asList(123, null), "[-123,nullValue]" },
+            { ",", new _NegatingIntegerFormatter2(), new StringFormatter2("[%s]"), "<empty>", "nullValue", false, Arrays.asList(123, 456), "[-123,-456]" },
+            { ",", new _NegatingIntegerFormatter2(), new StringFormatter2("[%s]"), "<empty>", "nullValue", false, Arrays.asList(123, null, 456, null), "[-123,nullValue,-456,nullValue]" },
+            { ",", new _NegatingIntegerFormatter2(), new StringFormatter2("[%s]"), "<empty>", "nullValue", false, Arrays.asList(123, 456, 789), "[-123,-456,-789]" },
+            { ",", new _NegatingIntegerFormatter2(), new StringFormatter2("[%s]"), "<empty>", "nullValue", false, Arrays.asList(123, null, 456, null, 789, null), "[-123,nullValue,-456,nullValue,-789,nullValue]" },
+
+            { ",", new _NegatingIntegerFormatter2(), new StringFormatter2("[%s]"), "<empty>", "nullValue", true, Arrays.asList(), "[<empty>]" },
+            { ",", new _NegatingIntegerFormatter2(), new StringFormatter2("[%s]"), "<empty>", "nullValue", true, Arrays.asList(123), "[-123]" },
+            { ",", new _NegatingIntegerFormatter2(), new StringFormatter2("[%s]"), "<empty>", "nullValue", true, Arrays.asList(123, null), "[-123]" },
+            { ",", new _NegatingIntegerFormatter2(), new StringFormatter2("[%s]"), "<empty>", "nullValue", true, Arrays.asList(123, 456), "[-123,-456]" },
+            { ",", new _NegatingIntegerFormatter2(), new StringFormatter2("[%s]"), "<empty>", "nullValue", true, Arrays.asList(123, null, 456, null), "[-123,-456]" },
+            { ",", new _NegatingIntegerFormatter2(), new StringFormatter2("[%s]"), "<empty>", "nullValue", true, Arrays.asList(123, 456, 789), "[-123,-456,-789]" },
+            { ",", new _NegatingIntegerFormatter2(), new StringFormatter2("[%s]"), "<empty>", "nullValue", true, Arrays.asList(123, null, 456, null, 789, null), "[-123,-456,-789]" },
         };
     }
 
     @Test(dataProvider = "_appendTo_Pass_Data")
     public void appendTo_Pass(
             String separator,
-            Formatter2 optFormatter,
+            Formatter2 optElementFormatter,
+            Formatter2 optFinalFormatter,
             String optNoElementsText,
             String optNullText,
             boolean skipNullsFlag,
@@ -247,8 +275,11 @@ public class Joiner2ImplTest {
             String expectedResult)
     throws IOException {
         Joiner2 joiner = classUnderTest.withSeparator(separator);
-        if (null != optFormatter) {
-            joiner = joiner.withFormatter(optFormatter);
+        if (null != optElementFormatter) {
+            joiner = joiner.withElementFormatter(optElementFormatter);
+        }
+        if (null != optFinalFormatter) {
+            joiner = joiner.withFinalFormatter(optFinalFormatter);
         }
         if (null != optNoElementsText) {
             joiner = joiner.useForNoElements(optNoElementsText);
@@ -542,7 +573,7 @@ public class Joiner2ImplTest {
         Joiner2 x = classUnderTest.withSeparator(",");
         MapJoiner2 y = x.withKeyValueSeparator('x');
         Assert.assertEquals(y.withKeyValueSeparator(), "x");
-        Assert.assertEquals(y.withFormatter(), Joiner2Utils.DEFAULT_FORMATTER);
+        Assert.assertEquals(y.withElementFormatter(), Joiner2Utils.DEFAULT_ELEMENT_FORMATTER);
         Assert.assertEquals(y.useForNullKey(), Joiner2Utils.DEFAULT_KEY_NULL_TEXT);
         Assert.assertEquals(y.useForNullValue(), Joiner2Utils.DEFAULT_VALUE_NULL_TEXT);
     }

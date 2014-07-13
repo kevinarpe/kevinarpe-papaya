@@ -43,7 +43,8 @@ final class Joiner2Impl
 implements Joiner2 {
 
     private final String _separator;
-    private final Formatter2 _formatter;
+    private final Formatter2 _elementFormatter;
+    private final Formatter2 _finalFormatter;
     private final String _nullText;
     private final String _noElementsText;
     private final boolean _skipNullsFlag;
@@ -52,20 +53,23 @@ implements Joiner2 {
         this(
             ObjectArgs.checkNotNull(separator, "separator"),
             Joiner2Utils.DEFAULT_NULL_TEXT,
-            Joiner2Utils.DEFAULT_FORMATTER,
+            Joiner2Utils.DEFAULT_ELEMENT_FORMATTER,
+            Joiner2Utils.DEFAULT_FINAL_FORMATTER,
             Joiner2Utils.DEFAULT_NO_ELEMENTS_TEXT,
             Joiner2Utils.DEFAULT_SKIP_NULLS_FLAG);
     }
 
     Joiner2Impl(
-            String separator,
-            String nullText,
-            Formatter2 formatter,
-            String noElementsText,
-            boolean skipNullsFlag) {
+        String separator,
+        String nullText,
+        Formatter2 elementFormatter,
+        Formatter2 finalFormatter,
+        String noElementsText,
+        boolean skipNullsFlag) {
         this._separator = separator;
         this._nullText = nullText;
-        this._formatter = formatter;
+        this._elementFormatter = elementFormatter;
+        this._finalFormatter = finalFormatter;
         this._noElementsText = noElementsText;
         this._skipNullsFlag = skipNullsFlag;
     }
@@ -76,7 +80,12 @@ implements Joiner2 {
 
         Joiner2Impl x =
             new Joiner2Impl(
-                separator, _nullText, _formatter, _noElementsText, _skipNullsFlag);
+                separator,
+                _nullText,
+                _elementFormatter,
+                _finalFormatter,
+                _noElementsText,
+                _skipNullsFlag);
         return x;
     }
 
@@ -93,17 +102,43 @@ implements Joiner2 {
     }
 
     @Override
-    public Joiner2Impl withFormatter(Formatter2 formatter) {
-        ObjectArgs.checkNotNull(formatter, "formatter");
+    public Joiner2Impl withElementFormatter(Formatter2 elementFormatter) {
+        ObjectArgs.checkNotNull(elementFormatter, "elementFormatter");
 
-        Joiner2Impl x = new Joiner2Impl(
-            _separator, _nullText, formatter, _noElementsText, _skipNullsFlag);
+        Joiner2Impl x =
+            new Joiner2Impl(
+                _separator,
+                _nullText,
+                elementFormatter,
+                _finalFormatter,
+                _noElementsText,
+                _skipNullsFlag);
         return x;
     }
 
     @Override
-    public Formatter2 withFormatter() {
-        return _formatter;
+    public Formatter2 withElementFormatter() {
+        return _elementFormatter;
+    }
+
+    @Override
+    public Joiner2Impl withFinalFormatter(Formatter2 finalFormatter) {
+        ObjectArgs.checkNotNull(finalFormatter, "finalFormatter");
+
+        Joiner2Impl x =
+            new Joiner2Impl(
+                _separator,
+                _nullText,
+                _elementFormatter,
+                finalFormatter,
+                _noElementsText,
+                _skipNullsFlag);
+        return x;
+    }
+
+    @Override
+    public Formatter2 withFinalFormatter() {
+        return _finalFormatter;
     }
 
     @Override
@@ -112,7 +147,12 @@ implements Joiner2 {
 
         Joiner2Impl x =
             new Joiner2Impl(
-                _separator, _nullText, _formatter, noElementsText, _skipNullsFlag);
+                _separator,
+                _nullText,
+                _elementFormatter,
+                _finalFormatter,
+                noElementsText,
+                _skipNullsFlag);
         return x;
     }
 
@@ -134,7 +174,12 @@ implements Joiner2 {
 
         Joiner2Impl x =
             new Joiner2Impl(
-                _separator, nullText, _formatter, _noElementsText, _skipNullsFlag);
+                _separator,
+                nullText,
+                _elementFormatter,
+                _finalFormatter,
+                _noElementsText,
+                _skipNullsFlag);
         return x;
     }
 
@@ -154,7 +199,7 @@ implements Joiner2 {
     public Joiner2Impl skipNulls(boolean flag) {
         Joiner2Impl x =
             new Joiner2Impl(
-                _separator, _nullText, _formatter, _noElementsText, flag);
+                _separator, _nullText, _elementFormatter, _finalFormatter, _noElementsText, flag);
         return x;
     }
 
@@ -164,14 +209,10 @@ implements Joiner2 {
     }
 
     @Override
-    public Appendable appendTo(
-            Appendable appendable,
-            Object part1,
-            Object part2,
-            Object... partArr)
+    public Appendable appendTo(Appendable appendable, Object part1, Object part2, Object... partArr)
     throws IOException {
-        List<Object> list = Lists2.newUnmodifiableListFromTwoOrMoreValues(part1, part2, partArr);
-        appendTo(appendable, list);
+        String x = _join(part1, part2, partArr);
+        _appendTo(appendable, x);
         return appendable;
     }
 
@@ -179,8 +220,8 @@ implements Joiner2 {
     throws IOException {
         ObjectArgs.checkNotNull(partArr, "partArr");
 
-        Iterable<Object> partIterable = Arrays.asList(partArr);
-        appendTo(appendable, partIterable);
+        String x = _join(partArr);
+        _appendTo(appendable, x);
         return appendable;
     }
 
@@ -188,65 +229,32 @@ implements Joiner2 {
     throws IOException {
         ObjectArgs.checkNotNull(partIterable, "partIterable");
 
-        Iterator<?> partIter = partIterable.iterator();
-        appendTo(appendable, partIter);
+        String x = _join(partIterable);
+        _appendTo(appendable, x);
         return appendable;
     }
 
     public Appendable appendTo(Appendable appendable, Iterator<?> partIter)
     throws IOException {
-        ObjectArgs.checkNotNull(appendable, "appendable");
         ObjectArgs.checkNotNull(partIter, "partIter");
 
-        if (partIter.hasNext()) {
-            _appendNext(appendable, "", partIter);
-            while (partIter.hasNext()) {
-                _appendNext(appendable, _separator, partIter);
-            }
-        }
-        else {
-            appendable.append(_noElementsText);
-        }
+        String x = _join(partIter);
+        _appendTo(appendable, x);
         return appendable;
-    }
-
-    private <TAppendable extends Appendable>
-    void _appendNext(TAppendable appendable, String separator, Iterator<?> partIter)
-    throws IOException {
-        Object value = partIter.next();
-        if (null == value && _skipNullsFlag) {
-            return;
-        }
-        String valueString = _toString(value);
-        appendable.append(separator);
-        appendable.append(valueString);
-    }
-
-    private String _toString(Object value) {
-        String x = (null == value) ? _nullText : value.toString();
-        String y = _formatter.format(x);
-        return y;
     }
 
     @Override
     public StringBuilder appendTo(
-            StringBuilder builder,
-            Object part1,
-            Object part2,
-            Object... partArr) {
-        ObjectArgs.checkNotNull(partArr, "valueArr");
-
-        List<?> list = Lists2.newUnmodifiableListFromTwoOrMoreValues(part1, part2, partArr);
-        appendTo(builder, list);
+            StringBuilder builder, Object part1, Object part2, Object... partArr) {
+        String x = _join(part1, part2, partArr);
+        _appendTo(builder, x);
         return builder;
     }
 
     @Override
     public StringBuilder appendTo(StringBuilder builder, Object[] partArr) {
-        ObjectArgs.checkNotNull(partArr, "partArr");
-
-        Iterable<?> partIterable = Arrays.asList(partArr);
-        appendTo(builder, partIterable);
+        String x = _join(partArr);
+        _appendTo(builder, x);
         return builder;
     }
 
@@ -254,40 +262,29 @@ implements Joiner2 {
     public StringBuilder appendTo(StringBuilder builder, Iterable<?> partIterable) {
         ObjectArgs.checkNotNull(partIterable, "partIterable");
 
-        Iterator<?> partIter = partIterable.iterator();
-        appendTo(builder, partIter);
+        String x = _join(partIterable);
+        _appendTo(builder, x);
         return builder;
     }
 
     @Override
     public StringBuilder appendTo(StringBuilder builder, Iterator<?> partIter) {
-        try {
-            appendTo((Appendable) builder, partIter);
-        }
-        catch (IOException impossible) {
-            throw new Error("Unexpected exception", impossible);
-        }
+        ObjectArgs.checkNotNull(partIter, "partIter");
+
+        String x = _join(partIter);
+        _appendTo(builder, x);
         return builder;
     }
 
     @Override
     public String join(Object part1, Object part2, Object... partArr) {
-        ObjectArgs.checkNotNull(partArr, "valueArr");
-
-        List<Object> list = Lists2.newUnmodifiableListFromTwoOrMoreValues(part1, part2, partArr);
-        String x = join(list);
+        String x = _join(part1, part2, partArr);
         return x;
     }
 
     @Override
     public String join(Object[] partArr) {
-        ObjectArgs.checkNotNull(partArr, "partArr");
-
-        if (0 == partArr.length) {
-            return _noElementsText;
-        }
-        Iterable<Object> partIterable = Arrays.asList(partArr);
-        String x = join(partIterable);
+        String x = _join(partArr);
         return x;
     }
 
@@ -295,17 +292,84 @@ implements Joiner2 {
     public String join(Iterable<?> partIterable) {
         ObjectArgs.checkNotNull(partIterable, "partIterable");
 
-        Iterator<?> partIter = partIterable.iterator();
-        String x = join(partIter);
+        String x = _join(partIterable);
         return x;
     }
 
     @Override
     public String join(Iterator<?> partIter) {
-        StringBuilder sb = new StringBuilder();
-        appendTo(sb, partIter);
-        String sbs = sb.toString();
-        return sbs;
+        ObjectArgs.checkNotNull(partIter, "partIter");
+
+        String x = _join(partIter);
+        return x;
+    }
+
+    private String _join(Object part1, Object part2, Object... partArr) {
+        List<Object> list = Lists2.newUnmodifiableListFromTwoOrMoreValues(part1, part2, partArr);
+        String x = _join(list);
+        return x;
+    }
+
+    private String _join(Object[] partArr) {
+        ObjectArgs.checkNotNull(partArr, "partArr");
+
+        List<Object> partList = Arrays.asList(partArr);
+        String x = _join(partList);
+        return x;
+    }
+
+    private String _join(Iterable<?> partIterable) {
+        Iterator<?> partIter = partIterable.iterator();
+        String x = _join(partIter);
+        return x;
+    }
+
+    private String _join(Iterator<?> partIter) {
+        String result = null;
+        if (partIter.hasNext()) {
+            StringBuilder sb = new StringBuilder();
+            _appendNext(sb, "", partIter);
+            while (partIter.hasNext()) {
+                _appendNext(sb, _separator, partIter);
+            }
+            result = sb.toString();
+        }
+        else {
+            result = _noElementsText;
+        }
+        result = _finalFormatter.format(result);
+        return result;
+    }
+
+    private void _appendNext(StringBuilder builder, String separator, Iterator<?> partIter) {
+        Object value = partIter.next();
+        if (null == value && _skipNullsFlag) {
+            return;
+        }
+        String valueString = _toString(value);
+        builder.append(separator);
+        builder.append(valueString);
+    }
+
+    private String _toString(Object value) {
+        if (null == value) {
+            return _nullText;
+        }
+        String x = _elementFormatter.format(value);
+        return x;
+    }
+
+    private void _appendTo(Appendable appendable, String s)
+        throws IOException {
+        ObjectArgs.checkNotNull(appendable, "appendable");
+
+        appendable.append(s);
+    }
+
+    private void _appendTo(StringBuilder builder, String s) {
+        ObjectArgs.checkNotNull(builder, "builder");
+
+        builder.append(s);
     }
 
     @Override

@@ -199,10 +199,8 @@ implements MapJoiner2 {
     @Override
     public Appendable appendTo(Appendable appendable, Map<?, ?> map)
     throws IOException {
-        ObjectArgs.checkNotNull(map, "map");
-
-        Iterable<? extends Map.Entry<?, ?>> partIterable = map.entrySet();
-        appendTo(appendable, partIterable);
+        String x = _join(map);
+        _appendTo(appendable, x);
         return appendable;
     }
 
@@ -212,63 +210,25 @@ implements MapJoiner2 {
     throws IOException {
         ObjectArgs.checkNotNull(partIterable, "partIterable");
 
-        Iterator<? extends Map.Entry<?, ?>> partIter = partIterable.iterator();
-        appendTo(appendable, partIter);
+        String x = _join(partIterable);
+        _appendTo(appendable, x);
         return appendable;
     }
 
     @Override
     public Appendable appendTo(Appendable appendable, Iterator<? extends Map.Entry<?, ?>> partIter)
     throws IOException {
-        ObjectArgs.checkNotNull(appendable, "appendable");
         ObjectArgs.checkNotNull(partIter, "partIter");
 
-        if (partIter.hasNext()) {
-            _appendNext(appendable, partIter);
-            while (partIter.hasNext()) {
-                appendable.append(_quotingJoiner.withSeparator());
-                _appendNext(appendable, partIter);
-            }
-        }
-        else {
-            appendable.append(_quotingJoiner.useForNoElements());
-        }
+        String x = _join(partIter);
+        _appendTo(appendable, x);
         return appendable;
-    }
-
-    private void _appendNext(Appendable appendable, Iterator<? extends Map.Entry<?, ?>> partIter)
-    throws IOException {
-        Map.Entry<?, ?> entry = partIter.next();
-        if (null == entry) {
-            throw new NullPointerException("Map entry is null");
-        }
-        Object key = entry.getKey();
-        String quotedKeyString = _keyToString(key);
-        Object value = entry.getValue();
-        String quotedValueString = _valueToString(value);
-        String keyValuePair = quotedKeyString + _keyValueSeparator + quotedValueString;
-        String quotedKeyValuePair = _quotingJoiner.withFormatter().format(keyValuePair);
-        appendable.append(quotedKeyValuePair);
-    }
-
-    private String _keyToString(Object key) {
-        String x = (null == key) ? _keyNullText : key.toString();
-        String y = _keyFormatter.format(x);
-        return y;
-    }
-
-    private String _valueToString(Object value) {
-        String x = (null == value) ? _valueNullText : value.toString();
-        String y = _valueFormatter.format(x);
-        return y;
     }
 
     @Override
     public StringBuilder appendTo(StringBuilder builder, Map<?, ?> map) {
-        ObjectArgs.checkNotNull(map, "map");
-
-        Iterable<? extends Map.Entry<?, ?>> partIterable = map.entrySet();
-        appendTo(builder, partIterable);
+        String x = _join(map);
+        _appendTo(builder, x);
         return builder;
     }
 
@@ -277,29 +237,24 @@ implements MapJoiner2 {
             StringBuilder builder, Iterable<? extends Map.Entry<?, ?>> partIterable) {
         ObjectArgs.checkNotNull(partIterable, "partIterable");
 
-        Iterator<? extends Map.Entry<?, ?>> partIter = partIterable.iterator();
-        appendTo(builder, partIter);
+        String x = _join(partIterable);
+        _appendTo(builder, x);
         return builder;
     }
 
     @Override
     public StringBuilder appendTo(
-        StringBuilder builder, Iterator<? extends Map.Entry<?, ?>> partIter) {
-            try {
-            appendTo((Appendable) builder, partIter);
-        }
-        catch (IOException e) {
-            throw new Error("Unexpected exception", e);
-        }
+            StringBuilder builder, Iterator<? extends Map.Entry<?, ?>> partIter) {
+        ObjectArgs.checkNotNull(partIter, "partIter");
+
+        String x = _join(partIter);
+        _appendTo(builder, x);
         return builder;
     }
 
     @Override
     public String join(Map<?, ?> map) {
-        ObjectArgs.checkNotNull(map, "map");
-
-        Iterable<? extends Map.Entry<?, ?>> partIterable = map.entrySet();
-        String x = join(partIterable);
+        String x = _join(map);
         return x;
     }
 
@@ -307,17 +262,16 @@ implements MapJoiner2 {
     public String join(Iterable<? extends Map.Entry<?, ?>> partIterable) {
         ObjectArgs.checkNotNull(partIterable, "partIterable");
 
-        Iterator<? extends Map.Entry<?, ?>> partIter = partIterable.iterator();
-        String x = join(partIter);
+        String x = _join(partIterable);
         return x;
     }
 
     @Override
     public String join(Iterator<? extends Map.Entry<?, ?>> partIter) {
-        StringBuilder sb = new StringBuilder();
-        appendTo(sb, partIter);
-        String sbs = sb.toString();
-        return sbs;
+        ObjectArgs.checkNotNull(partIter, "partIter");
+
+        String x = _join(partIter);
+        return x;
     }
 
     @Override
@@ -354,8 +308,8 @@ implements MapJoiner2 {
     }
 
     @Override
-    public MapJoiner2Impl withFormatter(Formatter2 formatter) {
-        Joiner2Impl quotingJoiner = _quotingJoiner.withFormatter(formatter);
+    public MapJoiner2Impl withElementFormatter(Formatter2 formatter) {
+        Joiner2Impl quotingJoiner = _quotingJoiner.withElementFormatter(formatter);
         MapJoiner2Impl x =
             new MapJoiner2Impl(
                 quotingJoiner,
@@ -368,8 +322,27 @@ implements MapJoiner2 {
     }
 
     @Override
-    public Formatter2 withFormatter() {
-        return _quotingJoiner.withFormatter();
+    public Formatter2 withElementFormatter() {
+        return _quotingJoiner.withElementFormatter();
+    }
+
+    @Override
+    public MapJoiner2Impl withFinalFormatter(Formatter2 formatter) {
+        Joiner2Impl quotingJoiner = _quotingJoiner.withFinalFormatter(formatter);
+        MapJoiner2Impl x =
+            new MapJoiner2Impl(
+                quotingJoiner,
+                _keyValueSeparator,
+                _keyFormatter,
+                _valueFormatter,
+                _keyNullText,
+                _valueNullText);
+        return x;
+    }
+
+    @Override
+    public Formatter2 withFinalFormatter() {
+        return _quotingJoiner.withFinalFormatter();
     }
 
     @Override
@@ -403,5 +376,84 @@ implements MapJoiner2 {
     @Override
     public String useForNoElements() {
         return _quotingJoiner.useForNoElements();
+    }
+
+    private String _join(Map<?, ?> map) {
+        ObjectArgs.checkNotNull(map, "map");
+
+        Iterable<? extends Map.Entry<?, ?>> partIterable = map.entrySet();
+        String x = _join(partIterable);
+        return x;
+    }
+
+    private String _join(Iterable<? extends Map.Entry<?, ?>> partIterable) {
+        Iterator<? extends Map.Entry<?, ?>> partIter = partIterable.iterator();
+        String x = _join(partIter);
+        return x;
+    }
+
+    private String _join(Iterator<? extends Map.Entry<?, ?>> partIter) {
+        String result = null;
+        if (partIter.hasNext()) {
+            StringBuilder sb = new StringBuilder();
+            _appendNext(sb, "", partIter);
+            final String separator = _quotingJoiner.withSeparator();
+            while (partIter.hasNext()) {
+                _appendNext(sb, separator, partIter);
+            }
+            result = sb.toString();
+        }
+        else {
+            result = _quotingJoiner.useForNoElements();
+        }
+        result = _quotingJoiner.withFinalFormatter().format(result);
+        return result;
+    }
+
+    private void _appendNext(
+            StringBuilder stringBuilder,
+            String separator,
+            Iterator<? extends Map.Entry<?, ?>> partIter) {
+        Map.Entry<?, ?> entry = partIter.next();
+        if (null == entry) {
+            throw new NullPointerException("Map entry is null");
+        }
+        Object key = entry.getKey();
+        String quotedKeyString = _keyToString(key);
+        Object value = entry.getValue();
+        String quotedValueString = _valueToString(value);
+        String keyValuePair = quotedKeyString + _keyValueSeparator + quotedValueString;
+        String quotedKeyValuePair = _quotingJoiner.withElementFormatter().format(keyValuePair);
+        stringBuilder.append(separator);
+        stringBuilder.append(quotedKeyValuePair);
+    }
+
+    private String _keyToString(Object key) {
+        if (null == key) {
+            return _keyNullText;
+        }
+        String x = _keyFormatter.format(key);
+        return x;
+    }
+
+    private String _valueToString(Object value) {
+        if (null == value) {
+            return _valueNullText;
+        }
+        String x = _valueFormatter.format(value);
+        return x;
+    }
+
+    private void _appendTo(Appendable appendable, String s)
+        throws IOException {
+        ObjectArgs.checkNotNull(appendable, "appendable");
+
+        appendable.append(s);
+    }
+
+    private void _appendTo(StringBuilder builder, String s) {
+        ObjectArgs.checkNotNull(builder, "builder");
+
+        builder.append(s);
     }
 }

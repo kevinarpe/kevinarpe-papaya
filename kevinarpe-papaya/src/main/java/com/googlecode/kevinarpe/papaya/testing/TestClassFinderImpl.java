@@ -37,7 +37,7 @@ import com.googlecode.kevinarpe.papaya.filesystem.PathFilter;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathDepthPolicy;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterableFactory;
-import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterableFactoryImpl;
+import com.googlecode.kevinarpe.papaya.filesystem.TraversePathUtils;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +67,7 @@ implements TestClassFinder {
     // Replace with static method, e.g, withRootDirPath(File)
     public TestClassFinderImpl() {
         this(
-            TraversePathIterableFactoryImpl.INSTANCE,
+            TraversePathUtils.INSTANCE.getTraversePathIterableFactory(),
             IteratePathFilterFactoryImpl.INSTANCE,
             SourceFileToClassHelperImpl.INSTANCE,
             LoggerFactory.getILoggerFactory());

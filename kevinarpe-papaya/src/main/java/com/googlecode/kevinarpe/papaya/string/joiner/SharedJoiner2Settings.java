@@ -96,11 +96,13 @@ public interface SharedJoiner2Settings
     String withSeparator();
 
     /**
-     * Constructs a new instance with new value formatter.  Formatters can be used to add a prefix
-     * or suffix to each value.
+     * Constructs a new instance with new element formatter.  If the element is a map key-value
+     * pair, this formatter will be applied <i>after</i> the key-value pair is joined.
+     * <p>
+     * Formatters can be used to add a prefix or suffix to each element.
      *
      * @param formatter
-     *        value formatter to add a prefix and/or suffix to each value.
+     *        value formatter to add a prefix and/or suffix to each element.
      *        Must not be {@code null}.
      *
      * @return new instance with formatter for each element
@@ -108,20 +110,54 @@ public interface SharedJoiner2Settings
      * @throws NullPointerException
      *         if {@code formatter} is {@code null}
      *
-     * @see #withFormatter()
-     * @see Joiner2Utils#DEFAULT_FORMATTER
+     * @see #withElementFormatter()
+     * @see Joiner2Utils#DEFAULT_ELEMENT_FORMATTER
+     * @see #withFinalFormatter(Formatter2)
      */
-    TSelf withFormatter(Formatter2 formatter);
+    TSelf withElementFormatter(Formatter2 formatter);
 
     /**
-     * Retrieves the current value formatter.  The default is no prefix or suffix.
+     * Retrieves the current element formatter.  The default is no prefix or suffix.
      *
-     * @return current value formatter
+     * @return current element formatter
      *
-     * @see #withFormatter(Formatter2)
-     * @see Joiner2Utils#DEFAULT_FORMATTER
+     * @see #withElementFormatter(Formatter2)
+     * @see Joiner2Utils#DEFAULT_ELEMENT_FORMATTER
+     * @see #withFinalFormatter()
      */
-    Formatter2 withFormatter();
+    Formatter2 withElementFormatter();
+
+    /**
+     * Constructs a new instance with new final formatter.  This formatter will be applied
+     * <i>after</i> all elements are joined.
+     * <p>
+     * Formatters can be used to add a prefix or suffix to each element.
+     *
+     * @param formatter
+     *        value formatter to add a prefix and/or suffix to each element.
+     *        Must not be {@code null}.
+     *
+     * @return new instance with final formatter
+     *
+     * @throws NullPointerException
+     *         if {@code formatter} is {@code null}
+     *
+     * @see #withFinalFormatter()
+     * @see Joiner2Utils#DEFAULT_FINAL_FORMATTER
+     * @see #withElementFormatter(Formatter2)
+     */
+    TSelf withFinalFormatter(Formatter2 formatter);
+
+    /**
+     * Retrieves the current final formatter.  The default is no prefix or suffix.
+     *
+     * @return current final formatter
+     *
+     * @see #withFinalFormatter(Formatter2)
+     * @see Joiner2Utils#DEFAULT_FINAL_FORMATTER
+     * @see #withElementFormatter()
+     */
+    Formatter2 withFinalFormatter();
 
     /**
      * Constructs a new instance with new text to use when join finds no elements.
@@ -129,7 +165,7 @@ public interface SharedJoiner2Settings
      * @param noElementsText
      *        String to be used when join finds no elements.
      *        Must not be {@code null}, but can be {@code ""} (empty string).
-     *        Example: {@code "(empty)"}
+     *        Example: {@code "<empty>"}
      *
      * @return new instance with new no elements text
      *

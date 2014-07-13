@@ -42,15 +42,16 @@ import java.util.Map;
  * <ul>
  *     <li>{@link #withKeyFormatter(Formatter2)}: Format each joined key precisely.  Easily add a
  *     prefix and/or suffix, e.g., {@code new StringFormatter("[%s]")}</li>
- *     <li>{@link #withValueFormatter(Formatter2)}: Format each joined value precisely.  Easily add
- *     a prefix and/or suffix, e.g., {@code new StringFormatter("[%s]")}</li>
+ *     <li>{@link #withValueFormatter(Formatter2)}: Format each joined value precisely.</li>
+ *     <li>{@link #withElementFormatter(Formatter2)}: Format each joined key-value pair precisely.</li>
+ *     <li>{@link #withFinalFormatter(Formatter2)}: Format all joined elements.</li>
  *     <li>Default text for {@code null} keys and values is {@code "null"}.  This matches the
  *     behavior of {@link Formatter}. By default, class {@link Joiner} will throw a
  *     {@link NullPointerException} when joining a {@code null} key or value, unless
  *     {@link Joiner#useForNull(String)} is called before joining.  This is a source of many
  *     surprising/annoying/accidental runtime exceptions.</li>
  *     <li>{@link #useForNoElements(String)}: During a join, if no map entries are found, this text
- *     is used.  When joining map entries for an exception or log message, {@code "(empty)"} is a
+ *     is used.  When joining map entries for an exception or log message, {@code "<empty>"} is a
  *     good value to indicate to (exception and log) readers that no map entries were found.</li>
  *     <li>Uses interface {@link MapJoiner2}, instead of a concrete class.  This follows
  *     JavaEE design principles, and is helpful for mocking and testing.  Due to Java interface
@@ -69,31 +70,31 @@ import java.util.Map;
  * Examples:
  * <pre>{@code
  * Joiner2Utils.INSTANCE.withSeparator(", ")
- *     .withFormatter(new StringFormatter("[%s]"))
+ *     .withElementFormatter(new StringFormatter("[%s]"))
  *     .withKeyValueSeparator("=")
  *     .withKeyFormatter(new StringFormatter("(%s)"))
  *     .withValueFormatter(new StringFormatter("{%s}"))
  *     .join(map) -> "[(a)={1}], [(b)={2}], [(c)={3}], ..."
  * Joiner2Utils.INSTANCE.withSeparator(", ")
- *     .withFormatter(new StringFormatter("[%s]"))
+ *     .withElementFormatter(new StringFormatter("[%s]"))
  *     .withKeyValueSeparator("=")
  *     .withKeyFormatter(new StringFormatter("(%s)"))
  *     .withValueFormatter(new StringFormatter("{%s}"))
  *     .join(mapWithNulls) -> "[(a)={1}], [(b)={2}], [(null)={3}], [(c)={4}], ..."
  * Joiner2Utils.INSTANCE.withSeparator(", ")
- *     .withFormatter(new StringFormatter("[%s]"))
+ *     .withElementFormatter(new StringFormatter("[%s]"))
  *     .withKeyValueSeparator("=")
  *     .withKeyFormatter(new StringFormatter("(%s)"))
  *     .withValueFormatter(new StringFormatter("{%s}"))
  *     .skipNulls(true)
  *     .join(mapWithNulls) -> "[(a)={1}], [(b)={2}], [(c)={3}], ..."
  * Joiner2Utils.INSTANCE.withSeparator(", ")
- *     .withFormatter(new StringFormatter("[%s]"))
+ *     .withElementFormatter(new StringFormatter("[%s]"))
  *     .withKeyValueSeparator("=")
  *     .withKeyFormatter(new StringFormatter("(%s)"))
  *     .withValueFormatter(new StringFormatter("{%s}"))
- *     .useForNoElements("(empty)")
- *     .join(emptyMap) -> "(empty)"
+ *     .useForNoElements("<empty>")
+ *     .join(emptyMap) -> "<empty>"
  * }</pre>
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)

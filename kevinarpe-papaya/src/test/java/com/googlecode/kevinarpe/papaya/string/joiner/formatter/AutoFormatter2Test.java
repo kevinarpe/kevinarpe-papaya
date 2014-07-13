@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.container.builder;
+package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
 
 /*
  * #%L
@@ -25,44 +25,42 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
-import com.google.common.collect.ImmutableMap;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.Properties;
-
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
 
-public class PropertiesBuilderTest {
+public class AutoFormatter2Test {
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // PropertiesBuilder.create()
-    //
+    private AutoFormatter2 classUnderTest;
 
-    @Test
-    public void create_Pass() {
-        PropertiesBuilder x = PropertiesBuilder.create();
-        assertNotNull(x);
+    @BeforeMethod
+    public void beforeEachTestMethod() {
+        classUnderTest = new AutoFormatter2();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // PropertiesBuilder.build()
+    // AutoFormatter2.format()
     //
 
-    @Test
-    public void build_PassWithEmpty() {
-        PropertiesBuilder classUnderTest = PropertiesBuilder.create();
-        Properties map = classUnderTest.build();
-        assertTrue(map.isEmpty());
+    @DataProvider
+    private static Object[][] _format_Pass_Data() {
+        Object x = new Object();
+        return new Object[][] {
+            { null, StringFormatterHelperImpl.NULL_VALUE_AS_STRING },
+            { "abc", "\"abc\"" },
+            { 'Q', "'Q'"},
+            { Boolean.TRUE, "true"},
+            { 123, "123" },
+            { 123.456, "123.456" },
+            { x, "{" + x + "}" }
+        };
     }
 
-    @Test
-    public void build_Pass() {
-        ImmutableMap<String, String> inputMap = ImmutableMap.of("abc", "def", "ghi", "jkl");
-        PropertiesBuilder classUnderTest = PropertiesBuilder.create();
-        classUnderTest.putAll(inputMap);
-        Properties map = classUnderTest.build();
-        assertEquals(map, inputMap);
+    @Test(dataProvider = "_format_Pass_Data")
+    public void format_Pass(Object value, String expected) {
+        String actual = classUnderTest.format(value);
+        assertEquals(actual, expected);
     }
 }

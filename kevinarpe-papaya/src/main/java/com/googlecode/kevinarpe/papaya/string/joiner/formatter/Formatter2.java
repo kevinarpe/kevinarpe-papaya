@@ -34,6 +34,7 @@ package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
  * @see StringFormatter2
  * @see CountingStringFormatter2
  */
+// TODO: Later release: Changed this interface to not allow null values.  Use abstract base class to enforce.
 public interface Formatter2 {
 
     /**

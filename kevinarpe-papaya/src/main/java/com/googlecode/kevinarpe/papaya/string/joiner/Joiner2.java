@@ -38,17 +38,18 @@ import java.util.Iterator;
  * <p>
  * Differences to {@link Joiner}:
  * <ul>
- *     <li>{@link #withFormatter(Formatter2)}: Format each joined element precisely.  Easily add a
- *     prefix and/or suffix, e.g., {@code new StringFormatter("[%s]")}</li>
+ *     <li>{@link #withElementFormatter(Formatter2)}: Format each joined element precisely.  Easily
+ *     add a prefix and/or suffix, e.g., {@code new StringFormatter("[%s]")}</li>
+ *     <li>{@link #withFinalFormatter(Formatter2)}: Format all joined elements.</li>
  *     <li>Default text for {@code null} values is {@code "null"}.  This matches the behavior of
  *     {@link Formatter}. By default, class {@link Joiner} will throw a {@link NullPointerException}
  *     when joining a {@code null} value, unless {@link Joiner#useForNull(String)} is called before
  *     joining.  This is a source of many surprising/annoying/accidental runtime exceptions.</li>
  *     <li>{@link #useForNoElements(String)}: During a join, if no elements are found, this text
- *     is used.  When joining elements for an exception or log message, {@code "(empty)"} is a good
+ *     is used.  When joining elements for an exception or log message, {@code "<empty>"} is a good
  *     value to indicate to (exception and log) readers that no elements were found.</li>
  *     <li>Uses interface {@link Joiner2}, instead of a concrete class.  This follows JavaEE
- *     design principles, and is helpful for mocking and testing.  Due to Java interface limitations
+ *     design principles and is helpful for mocking and testing.  Due to Java interface limitations
  *     with generic methods, the methods {@code appendTo(Appendable, *)} are slightly different from
  *     {@link Joiner}.  The {@code Appendable} reference is not a generic type (for input and
  *     output).</li>
@@ -62,19 +63,22 @@ import java.util.Iterator;
  * Examples:
  * <pre>{@code
  * Joiner2Utils.INSTANCE.withSeparator(", ")
- *     .withFormatter(new StringFormatter("[%s]"))
- *     .join(list) -> "[a], [b], [c], ..."
+ *     .withElementFormatter(new StringFormatter("[%s]"))
+ *     .withFinalFormatter(new StringFormatter("(%s)"))
+ *     .join(list) -> "([a], [b], [c], ...)"
  * Joiner2Utils.INSTANCE.withSeparator(", ")
- *     .withFormatter(new StringFormatter("[%s]"))
- *     .join(listWithNulls) -> "[a], [b], [null], [c], ..."
+ *     .withElementFormatter(new StringFormatter("[%s]"))
+ *     .withFinalFormatter(new StringFormatter("(%s)"))
+ *     .join(listWithNulls) -> "([a], [b], [null], [c], ...)"
  * Joiner2Utils.INSTANCE.withSeparator(", ")
- *     .withFormatter(new StringFormatter("[%s]"))
+ *     .withElementFormatter(new StringFormatter("[%s]"))
+ *     .withFinalFormatter(new StringFormatter("(%s)"))
  *     .skipNulls(true)
- *     .join(listWithNulls) -> "[a], [b], [c], ..."
+ *     .join(listWithNulls) -> "([a], [b], [c], ...)"
  * Joiner2Utils.INSTANCE.withSeparator(", ")
- *     .withFormatter(new StringFormatter("[%s]"))
- *     .useForNoElements("(empty)")
- *     .join(emptyList) -> "(empty)"
+ *     .withElementFormatter(new StringFormatter("[%s]"))
+ *     .useForNoElements("<empty>")
+ *     .join(emptyList) -> "<empty>"
  * }</pre>
  * <p>
  * See {@link SharedJoiner2Settings} for an inheritance diagram.
@@ -96,11 +100,7 @@ extends Joiner2Settings<Joiner2, MapJoiner2> {
      * @throws NullPointerException
      *         if {@code appendable} or {@code partArr} is {@code null}
      */
-    Appendable appendTo(
-            Appendable appendable,
-            Object part1,
-            Object part2,
-            Object... partArr)
+    Appendable appendTo(Appendable appendable, Object part1, Object part2, Object... partArr)
     throws IOException;
 
     /**
@@ -158,11 +158,7 @@ extends Joiner2Settings<Joiner2, MapJoiner2> {
      * @throws NullPointerException
      *         if {@code builder} or {@code partArr} is {@code null}
      */
-    StringBuilder appendTo(
-        StringBuilder builder,
-        Object part1,
-        Object part2,
-        Object... partArr);
+    StringBuilder appendTo(StringBuilder builder, Object part1, Object part2, Object... partArr);
 
     /**
      * This is a convenience method to call {@link #appendTo(StringBuilder, Iterable)}.

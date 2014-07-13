@@ -68,11 +68,18 @@ implements IJoiner2Utils {
     }
 
     /**
-     * Default value for {@link SharedJoiner2Settings#withFormatter()}: (no prefix or suffix)
+     * Default value for {@link SharedJoiner2Settings#withElementFormatter()}: (no prefix or suffix)
      *
-     * @see SharedJoiner2Settings#withFormatter(Formatter2)
+     * @see SharedJoiner2Settings#withElementFormatter(Formatter2)
      */
-    public static final Formatter2 DEFAULT_FORMATTER = _DEFAULT_FORMATTER;
+    public static final Formatter2 DEFAULT_ELEMENT_FORMATTER = _DEFAULT_FORMATTER;
+
+    /**
+     * Default value for {@link SharedJoiner2Settings#withFinalFormatter()}: (no prefix or suffix)
+     *
+     * @see SharedJoiner2Settings#withFinalFormatter(Formatter2)
+     */
+    public static final Formatter2 DEFAULT_FINAL_FORMATTER = _DEFAULT_FORMATTER;
 
     /**
      * Default value for {@link SharedJoiner2Settings#useForNoElements()}: {@code ""}

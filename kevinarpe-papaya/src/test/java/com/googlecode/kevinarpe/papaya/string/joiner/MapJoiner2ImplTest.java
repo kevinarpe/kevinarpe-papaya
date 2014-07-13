@@ -174,68 +174,99 @@ public class MapJoiner2ImplTest {
     // MapJoiner2Impl.appendTo(StringBuilder, *)/join(*) [pass only]
     //
 
+    private static final class _NegatingIntegerFormatter2
+        implements Formatter2 {
+
+        @Override
+        public String format(Object value) {
+            Integer x = (Integer) value;
+            String y = String.valueOf(-1 * x);
+            return y;
+        }
+    }
+
     @DataProvider
     private static Object[][] _appendTo_Pass_Data() {
         return new Object[][] {
-            { ",", "=", null, null, null, null, null, null, ImmutableMap.of(), "" },
-            { ",", "=", null, null, null, null, null, null, ImmutableMap.of("a", "1"), "a=1" },
-            { ",", "=", null, null, null, null, null, null, ImmutableMap.of("a", "1", "b", "2"), "a=1,b=2" },
-            { ",", "=", null, null, null, null, null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "a=1,b=2,c=3" },
+            { ",", "=", null, null, null, null, null, null, null, ImmutableMap.of(), "" },
+            { ",", "=", null, null, null, null, null, null, null, ImmutableMap.of("a", "1"), "a=1" },
+            { ",", "=", null, null, null, null, null, null, null, ImmutableMap.of("a", "1", "b", "2"), "a=1,b=2" },
+            { ",", "=", null, null, null, null, null, null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "a=1,b=2,c=3" },
 
-            { ",", "=", new StringFormatter2("[%s]"), null, null, null, null, null, ImmutableMap.of(), "" },
-            { ",", "=", new StringFormatter2("[%s]"), null, null, null, null, null, ImmutableMap.of("a", "1"), "[a=1]" },
-            { ",", "=", new StringFormatter2("[%s]"), null, null, null, null, null, ImmutableMap.of("a", "1", "b", "2"), "[a=1],[b=2]" },
-            { ",", "=", new StringFormatter2("[%s]"), null, null, null, null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[a=1],[b=2],[c=3]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, null, null, null, null, null, ImmutableMap.of(), "" },
+            { ",", "=", new StringFormatter2("[%s]"), null, null, null, null, null, null, ImmutableMap.of("a", "1"), "[a=1]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, null, null, null, null, null, ImmutableMap.of("a", "1", "b", "2"), "[a=1],[b=2]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, null, null, null, null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[a=1],[b=2],[c=3]" },
 
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", null, null, null, null, ImmutableMap.of(), "(empty)" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", null, null, null, null, ImmutableMap.of("a", "1"), "[a=1]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", null, null, null, null, ImmutableMap.of("a", "1", "b", "2"), "[a=1],[b=2]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", null, null, null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[a=1],[b=2],[c=3]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", null, null, null, null, ImmutableMap.of(), "<empty>" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", null, null, null, null, ImmutableMap.of("a", "1"), "[a=1]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", null, null, null, null, ImmutableMap.of("a", "1", "b", "2"), "[a=1],[b=2]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", null, null, null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[a=1],[b=2],[c=3]" },
 
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), null, null, null, ImmutableMap.of(), "(empty)" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), null, null, null, ImmutableMap.of("a", "1"), "[(a)=1]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), null, null, null, ImmutableMap.of("a", "1", "b", "2"), "[(a)=1],[(b)=2]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), null, null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)=1],[(b)=2],[(c)=3]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), null, null, null, ImmutableMap.of(), "<empty>" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), null, null, null, ImmutableMap.of("a", "1"), "[(a)=1]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), null, null, null, ImmutableMap.of("a", "1", "b", "2"), "[(a)=1],[(b)=2]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), null, null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)=1],[(b)=2],[(c)=3]" },
 
-            // TODO: Create builders like ImmutableMap.of(*), but do not restrict null key/value
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, ImmutableMap.of(), "<empty>" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, ImmutableMap.of("a", "1"), "[(a)={1}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, _mapOf("a", "1", null, "2"), "[(a)={1}],[null={2}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, _mapOf("a", "1", null, "2", "b", null), "[(a)={1}],[null={2}],[(b)=null]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, ImmutableMap.of("a", "1", "b", "2"), "[(a)={1}],[(b)={2}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, _mapOf("a", "1", "b", "2", null, "3"), "[(a)={1}],[(b)={2}],[null={3}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, _mapOf("a", "1", "b", "2", null, "3", "c", null), "[(a)={1}],[(b)={2}],[null={3}],[(c)=null]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)={1}],[(b)={2}],[(c)={3}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, _mapOf("a", "1", "b", "2", "c", "3", null, "4"), "[(a)={1}],[(b)={2}],[(c)={3}],[null={4}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, _mapOf("a", "1", "b", "2", "c", "3", null, "4", "d", null), "[(a)={1}],[(b)={2}],[(c)={3}],[null={4}],[(d)=null]" },
 
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, ImmutableMap.of(), "(empty)" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, ImmutableMap.of("a", "1"), "[(a)={1}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, _mapOf("a", "1", null, "2"), "[(a)={1}],[(null)={2}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, _mapOf("a", "1", null, "2", "b", null), "[(a)={1}],[(null)={2}],[(b)={null}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, ImmutableMap.of("a", "1", "b", "2"), "[(a)={1}],[(b)={2}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, _mapOf("a", "1", "b", "2", null, "3"), "[(a)={1}],[(b)={2}],[(null)={3}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, _mapOf("a", "1", "b", "2", null, "3", "c", null), "[(a)={1}],[(b)={2}],[(null)={3}],[(c)={null}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)={1}],[(b)={2}],[(c)={3}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, _mapOf("a", "1", "b", "2", "c", "3", null, "4"), "[(a)={1}],[(b)={2}],[(c)={3}],[(null)={4}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), null, null, _mapOf("a", "1", "b", "2", "c", "3", null, "4", "d", null), "[(a)={1}],[(b)={2}],[(c)={3}],[(null)={4}],[(d)={null}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, ImmutableMap.of(), "<empty>" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, ImmutableMap.of("a", "1"), "[(a)={1}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, _mapOf("a", "1", null, "2"), "[(a)={1}],[nullKey={2}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, _mapOf("a", "1", null, "2", "b", null), "[(a)={1}],[nullKey={2}],[(b)=null]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, ImmutableMap.of("a", "1", "b", "2"), "[(a)={1}],[(b)={2}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, _mapOf("a", "1", "b", "2", null, "3"), "[(a)={1}],[(b)={2}],[nullKey={3}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, _mapOf("a", "1", "b", "2", null, "3", "c", null), "[(a)={1}],[(b)={2}],[nullKey={3}],[(c)=null]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)={1}],[(b)={2}],[(c)={3}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, _mapOf("a", "1", "b", "2", "c", "3", null, "4"), "[(a)={1}],[(b)={2}],[(c)={3}],[nullKey={4}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, _mapOf("a", "1", "b", "2", "c", "3", null, "4", "d", null), "[(a)={1}],[(b)={2}],[(c)={3}],[nullKey={4}],[(d)=null]" },
 
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, ImmutableMap.of(), "(empty)" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, ImmutableMap.of("a", "1"), "[(a)={1}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, _mapOf("a", "1", null, "2"), "[(a)={1}],[(nullKey)={2}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, _mapOf("a", "1", null, "2", "b", null), "[(a)={1}],[(nullKey)={2}],[(b)={null}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, ImmutableMap.of("a", "1", "b", "2"), "[(a)={1}],[(b)={2}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, _mapOf("a", "1", "b", "2", null, "3"), "[(a)={1}],[(b)={2}],[(nullKey)={3}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, _mapOf("a", "1", "b", "2", null, "3", "c", null), "[(a)={1}],[(b)={2}],[(nullKey)={3}],[(c)={null}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)={1}],[(b)={2}],[(c)={3}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, _mapOf("a", "1", "b", "2", "c", "3", null, "4"), "[(a)={1}],[(b)={2}],[(c)={3}],[(nullKey)={4}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", null, _mapOf("a", "1", "b", "2", "c", "3", null, "4", "d", null), "[(a)={1}],[(b)={2}],[(c)={3}],[(nullKey)={4}],[(d)={null}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", ImmutableMap.of(), "<empty>" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", ImmutableMap.of("a", "1"), "[(a)={1}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", null, "2"), "[(a)={1}],[nullKey={2}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", null, "2", "b", null), "[(a)={1}],[nullKey={2}],[(b)=nullValue]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", ImmutableMap.of("a", "1", "b", "2"), "[(a)={1}],[(b)={2}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", "b", "2", null, "3"), "[(a)={1}],[(b)={2}],[nullKey={3}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", "b", "2", null, "3", "c", null), "[(a)={1}],[(b)={2}],[nullKey={3}],[(c)=nullValue]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)={1}],[(b)={2}],[(c)={3}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", "b", "2", "c", "3", null, "4"), "[(a)={1}],[(b)={2}],[(c)={3}],[nullKey={4}]" },
+            { ",", "=", new StringFormatter2("[%s]"), null, "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", "b", "2", "c", "3", null, "4", "d", null), "[(a)={1}],[(b)={2}],[(c)={3}],[nullKey={4}],[(d)=nullValue]" },
 
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", ImmutableMap.of(), "(empty)" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", ImmutableMap.of("a", "1"), "[(a)={1}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", null, "2"), "[(a)={1}],[(nullKey)={2}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", null, "2", "b", null), "[(a)={1}],[(nullKey)={2}],[(b)={nullValue}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", ImmutableMap.of("a", "1", "b", "2"), "[(a)={1}],[(b)={2}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", "b", "2", null, "3"), "[(a)={1}],[(b)={2}],[(nullKey)={3}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", "b", "2", null, "3", "c", null), "[(a)={1}],[(b)={2}],[(nullKey)={3}],[(c)={nullValue}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", ImmutableMap.of("a", "1", "b", "2", "c", "3"), "[(a)={1}],[(b)={2}],[(c)={3}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", "b", "2", "c", "3", null, "4"), "[(a)={1}],[(b)={2}],[(c)={3}],[(nullKey)={4}]" },
-            { ",", "=", new StringFormatter2("[%s]"), "(empty)", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", "b", "2", "c", "3", null, "4", "d", null), "[(a)={1}],[(b)={2}],[(c)={3}],[(nullKey)={4}],[(d)={nullValue}]" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", ImmutableMap.of(), "<<empty>>" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", ImmutableMap.of("a", "1"), "<[(a)={1}]>" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", null, "2"), "<[(a)={1}],[nullKey={2}]>" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", null, "2", "b", null), "<[(a)={1}],[nullKey={2}],[(b)=nullValue]>" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", ImmutableMap.of("a", "1", "b", "2"), "<[(a)={1}],[(b)={2}]>" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", "b", "2", null, "3"), "<[(a)={1}],[(b)={2}],[nullKey={3}]>" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", "b", "2", null, "3", "c", null), "<[(a)={1}],[(b)={2}],[nullKey={3}],[(c)=nullValue]>" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", ImmutableMap.of("a", "1", "b", "2", "c", "3"), "<[(a)={1}],[(b)={2}],[(c)={3}]>" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", "b", "2", "c", "3", null, "4"), "<[(a)={1}],[(b)={2}],[(c)={3}],[nullKey={4}]>" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new StringFormatter2("(%s)"), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf("a", "1", "b", "2", "c", "3", null, "4", "d", null), "<[(a)={1}],[(b)={2}],[(c)={3}],[nullKey={4}],[(d)=nullValue]>" },
+
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new _NegatingIntegerFormatter2(), new StringFormatter2("{%s}"), "nullKey", "nullValue", ImmutableMap.of(), "<<empty>>" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new _NegatingIntegerFormatter2(), new StringFormatter2("{%s}"), "nullKey", "nullValue", ImmutableMap.of(123, "1"), "<[-123={1}]>" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new _NegatingIntegerFormatter2(), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf(123, "1", null, "2"), "<[-123={1}],[nullKey={2}]>" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new _NegatingIntegerFormatter2(), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf(123, "1", null, "2", 456, null), "<[-123={1}],[nullKey={2}],[-456=nullValue]>" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new _NegatingIntegerFormatter2(), new StringFormatter2("{%s}"), "nullKey", "nullValue", ImmutableMap.of(123, "1", 456, "2"), "<[-123={1}],[-456={2}]>" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new _NegatingIntegerFormatter2(), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf(123, "1", 456, "2", null, "3"), "<[-123={1}],[-456={2}],[nullKey={3}]>" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new _NegatingIntegerFormatter2(), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf(123, "1", 456, "2", null, "3", 789, null), "<[-123={1}],[-456={2}],[nullKey={3}],[-789=nullValue]>" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new _NegatingIntegerFormatter2(), new StringFormatter2("{%s}"), "nullKey", "nullValue", ImmutableMap.of(123, "1", 456, "2", 789, "3"), "<[-123={1}],[-456={2}],[-789={3}]>" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new _NegatingIntegerFormatter2(), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf(123, "1", 456, "2", 789, "3", null, "4"), "<[-123={1}],[-456={2}],[-789={3}],[nullKey={4}]>" },
+            { ",", "=", new StringFormatter2("[%s]"), new StringFormatter2("<%s>"), "<empty>", new _NegatingIntegerFormatter2(), new StringFormatter2("{%s}"), "nullKey", "nullValue", _mapOf(123, "1", 456, "2", 789, "3", null, "4", 234, null), "<[-123={1}],[-456={2}],[-789={3}],[nullKey={4}],[-234=nullValue]>" },
         };
     }
 
-    private static Map<String, String> _mapOf(String... arr) {
-        Map<String, String> map = new LinkedHashMap<String, String>();
+    private static Map<Object, Object> _mapOf(Object... arr) {
+        Map<Object, Object> map = new LinkedHashMap<Object, Object>();
         for (int i = 0; i < arr.length; i += 2) {
             if (map.containsKey(arr[i])) {
                 throw new IllegalArgumentException(String.format(
@@ -250,7 +281,8 @@ public class MapJoiner2ImplTest {
     public void appendTo_Pass(
             String separator,
             String keyValueSeparator,
-            Formatter2 optFormatter,
+            Formatter2 optElementFormatter,
+            Formatter2 optFinalFormatter,
             String optNoElementsText,
             Formatter2 optKeyFormatter,
             Formatter2 optValueFormatter,
@@ -261,8 +293,11 @@ public class MapJoiner2ImplTest {
     throws IOException {
         Joiner2 joiner = classUnderTest.withSeparator(separator);
         MapJoiner2 mapJoiner = joiner.withKeyValueSeparator(keyValueSeparator);
-        if (null != optFormatter) {
-            mapJoiner = mapJoiner.withFormatter(optFormatter);
+        if (null != optElementFormatter) {
+            mapJoiner = mapJoiner.withElementFormatter(optElementFormatter);
+        }
+        if (null != optFinalFormatter) {
+            mapJoiner = mapJoiner.withFinalFormatter(optFinalFormatter);
         }
         if (null != optNoElementsText) {
             mapJoiner = mapJoiner.useForNoElements(optNoElementsText);
@@ -524,20 +559,20 @@ public class MapJoiner2ImplTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // MapJoiner2Impl.withFormatter(Formatter2)
+    // MapJoiner2Impl.withElementFormatter(Formatter2)
     //
 
     @Test
     public void withFormatterFormatter2_Pass() {
         MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("=");
-        x = x.withFormatter(mockFormatter);
-        Assert.assertSame(x.withFormatter(), mockFormatter);
+        x = x.withElementFormatter(mockFormatter);
+        Assert.assertSame(x.withElementFormatter(), mockFormatter);
     }
 
     @Test(expectedExceptions = NullPointerException.class)
     public void withFormatterFormatter2_FaillWithNull() {
         MapJoiner2 x = classUnderTest.withSeparator(",").withKeyValueSeparator("=");
-        x.withFormatter((Formatter2) null);
+        x.withElementFormatter((Formatter2) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

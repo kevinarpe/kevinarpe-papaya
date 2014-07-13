@@ -94,8 +94,8 @@ implements IEnumUtils {
         }
         String x =
             Joiner2Utils.INSTANCE.withSeparator(", ")
-                .withFormatter(new StringFormatter2("'%s%'"))
-                .useForNoElements("(empty)")
+                .withElementFormatter(new StringFormatter2("'%s%'"))
+                .useForNoElements("<empty>")
                 .join(enumNameArr);
         return x;
     }
