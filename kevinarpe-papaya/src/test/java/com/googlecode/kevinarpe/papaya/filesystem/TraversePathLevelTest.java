@@ -204,10 +204,10 @@ extends PowerMockTestCase {
             .thenReturn(mockDescendDirDirectoryListing);
 
         // This is related to craziness with JaCoCo (code coverage) + Mockito in Eclipse.
-//        PowerMockito.when(mockAbstractTraversePathIteratorImpl.withOptionalDescendDirPathFilter())
-//            .thenReturn(mockPathFilter);
-        PowerMockito.doReturn(mockPathFilter)
-            .when(mockAbstractTraversePathIteratorImpl).withOptionalDescendDirPathFilter();
+        PowerMockito.when(mockAbstractTraversePathIteratorImpl.withOptionalDescendDirPathFilter())
+            .thenReturn(mockPathFilter);
+//        PowerMockito.doReturn(mockPathFilter)
+//            .when(mockAbstractTraversePathIteratorImpl).withOptionalDescendDirPathFilter();
 
         when(mockFactory.newDescendDirFileFilterInstance(mockPathFilter, depth))
             .thenReturn(mockDescendDirFileFilter);
