@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.filesystem.filter.PathFilter;
 
 import java.io.File;
 import java.util.Comparator;

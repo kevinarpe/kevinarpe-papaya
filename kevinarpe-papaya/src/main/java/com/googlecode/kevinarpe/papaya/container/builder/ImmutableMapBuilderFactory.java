@@ -25,8 +25,11 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
+import com.google.common.collect.ImmutableMap;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-import com.googlecode.kevinarpe.papaya.object.StatelessObject;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+
+import java.util.Map;
 
 /**
  * Creates {@code ImmutableMapBuilder}s.
@@ -47,8 +50,13 @@ import com.googlecode.kevinarpe.papaya.object.StatelessObject;
  */
 @FullyTested
 public final class ImmutableMapBuilderFactory<TKey, TValue>
-extends StatelessObject
-implements MapBuilderFactory<ImmutableMapBuilder<TKey, TValue>> {
+extends AbstractMapBuilderFactory
+                <
+                    TKey,
+                    TValue,
+                    ImmutableMap<TKey, TValue>,
+                    ImmutableMapBuilder<TKey, TValue>
+                > {
 
     /**
      * Constructs a new builder factory.
@@ -64,8 +72,46 @@ implements MapBuilderFactory<ImmutableMapBuilder<TKey, TValue>> {
 
     /** {@inheritDoc} */
     @Override
-    public ImmutableMapBuilder<TKey, TValue> newInstance() {
+    public ImmutableMapBuilder<TKey, TValue> builder() {
         ImmutableMapBuilder<TKey, TValue> x = ImmutableMapBuilder.create();
+        return x;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImmutableMap<TKey, TValue> copyOf(Map<? extends TKey, ? extends TValue> map) {
+        ObjectArgs.checkNotNull(map, "map");
+
+        ImmutableMap<TKey, TValue> x = ImmutableMap.copyOf(map);
+        return x;
+    }
+
+    private static final class _MapBuilderFactoryHelper<TKey, TValue>
+    implements MapBuilderFactoryHelper<TKey, TValue, ImmutableMap<TKey, TValue>> {
+
+        private final ImmutableMap.Builder<TKey, TValue> builder;
+
+        private _MapBuilderFactoryHelper() {
+            builder = ImmutableMap.builder();
+        }
+
+        @Override
+        public void put(TKey key, TValue value) {
+            builder.put(key, value);
+        }
+
+        @Override
+        public ImmutableMap<TKey, TValue> getMap() {
+            ImmutableMap<TKey, TValue> x = builder.build();
+            return x;
+        }
+    }
+
+    @Override
+    protected MapBuilderFactoryHelper<TKey, TValue, ImmutableMap<TKey, TValue>>
+    createMapBuilderHelper(int initialCapacity) {
+        _MapBuilderFactoryHelper<TKey, TValue> x =
+            new _MapBuilderFactoryHelper<TKey, TValue>();
         return x;
     }
 }

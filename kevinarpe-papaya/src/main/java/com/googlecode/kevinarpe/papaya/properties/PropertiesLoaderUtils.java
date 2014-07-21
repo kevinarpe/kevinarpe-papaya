@@ -50,12 +50,12 @@ implements IPropertiesLoaderUtils {
     public static final PropertiesLoaderUtils INSTANCE = new PropertiesLoaderUtils();
 
     /**
-     * Default value for {@link PropertiesLoader#withOptionalPolicy()}.
+     * Default value for {@link PropertiesLoader#withPolicy()}.
      *
-     * @see DefaultPropertiesLoaderPolicy
+     * @see PropertiesLoaderPolicyForDuplicates
      */
     public static final PropertiesLoaderPolicy DEFAULT_POLICY =
-        DefaultPropertiesLoaderPolicy.INSTANCE;
+        PropertiesLoaderPolicyForDuplicates.INSTANCE;
 
     /**
      * For projects that require total, static-free mocking capabilities, use this constructor.

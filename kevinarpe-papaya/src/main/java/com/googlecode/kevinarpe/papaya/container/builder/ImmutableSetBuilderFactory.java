@@ -25,8 +25,13 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
+import com.google.common.collect.ImmutableSet;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
+import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
+
+import java.util.Collection;
 
 /**
  * Creates {@code HashMapBuilder}s.
@@ -45,7 +50,7 @@ import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 @FullyTested
 public final class ImmutableSetBuilderFactory<TValue>
 extends StatelessObject
-implements SetBuilderFactory<ImmutableSetBuilder<TValue>> {
+implements SetBuilderFactory<TValue, ImmutableSet<TValue>, ImmutableSetBuilder<TValue>> {
 
     /**
      * Constructs a new builder factory.
@@ -61,8 +66,40 @@ implements SetBuilderFactory<ImmutableSetBuilder<TValue>> {
 
     /** {@inheritDoc} */
     @Override
-    public ImmutableSetBuilder<TValue> newInstance() {
+    public ImmutableSetBuilder<TValue> builder() {
         ImmutableSetBuilder<TValue> x = ImmutableSetBuilder.create();
+        return x;
+    }
+
+    /**
+     * Immutable sets do not allow {@code null} elements.
+     * <hr/>
+     * {@inheritDoc}
+     *
+     * @throws NullPointerException
+     *         if {@code collection} (or any element) is {@code null}
+     */
+    @Override
+    public ImmutableSet<TValue> copyOf(TValue... elementArr) {
+        ArrayArgs.checkElementsNotNull(elementArr, "elementArr");
+
+        ImmutableSet<TValue> x = ImmutableSet.copyOf(elementArr);
+        return x;
+    }
+
+    /**
+     * Immutable sets do not allow {@code null} elements.
+     * <hr/>
+     * {@inheritDoc}
+     *
+     * @throws NullPointerException
+     *         if {@code collection} (or any element) is {@code null}
+     */
+    @Override
+    public ImmutableSet<TValue> copyOf(Collection<? extends TValue> collection) {
+        CollectionArgs.checkElementsNotNull(collection, "collection");
+
+        ImmutableSet<TValue> x = ImmutableSet.copyOf(collection);
         return x;
     }
 }

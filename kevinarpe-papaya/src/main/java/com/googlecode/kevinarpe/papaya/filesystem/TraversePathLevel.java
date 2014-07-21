@@ -29,7 +29,10 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.IntArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
+import com.googlecode.kevinarpe.papaya.filesystem.filter.PathFilter;
+import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
+import javax.annotation.concurrent.Immutable;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Comparator;
@@ -45,31 +48,25 @@ final class TraversePathLevel {
 
     static interface Factory {
 
-        DirectoryListing newDirectoryListingInstance(File dirPath, Class<? extends List> listClass)
+        DirectoryListing newDirectoryListingInstance(File dirPath)
         throws PathException;
 
-        DirectoryListing newDirectoryListingInstance(DirectoryListing other);
+        FileFilter newDescendDirFileFilterInstance(PathFilter pathFilter, int depth);
 
-        DescendDirFileFilter newDescendDirFileFilterInstance(PathFilter pathFilter, int depth);
-
-        IterateFileFilter newIterateFileFilterInstance(PathFilter pathFilter, int depth);
+        FileFilter newIterateFileFilterInstance(PathFilter pathFilter, int depth);
     }
 
+    @Immutable
     static final class FactoryImpl
+    extends StatelessObject
     implements Factory {
 
         static final FactoryImpl INSTANCE = new FactoryImpl();
 
         @Override
-        public DirectoryListing newDirectoryListingInstance(
-                File dirPath, Class<? extends List> listClass)
+        public DirectoryListingImpl newDirectoryListingInstance(File dirPath)
         throws PathException {
-            return new DirectoryListing(dirPath, listClass);
-        }
-
-        @Override
-        public DirectoryListing newDirectoryListingInstance(DirectoryListing other) {
-            return new DirectoryListing(other);
+            return new DirectoryListingImpl(dirPath);
         }
 
         @Override
@@ -87,13 +84,14 @@ final class TraversePathLevel {
     static final Class<? extends List> DEFAULT_DIRECTORY_LISTING_LIST_CLASS = LinkedList.class;
 
     private final Factory _factory;
+    // TODO: LAST: Need to rethink this package.  Can we write interfaces first?
     private final AbstractTraversePathIteratorImpl _parent;
     private final int _depth;
-    private final DirectoryListing _origDirectoryListing;
-    private DirectoryListing _descendDirDirectoryListing;
-    private Iterator<File> _descendDirDirectoryListingIter;
-    private DirectoryListing _iterateDirectoryListing;
-    private Iterator<File> _iterateDirectoryListingIter;
+    private final DirectoryListing _origDirListing;
+    private DirectoryListing _descendDirListing;
+    private Iterator<File> _descendDirListingIter;
+    private DirectoryListing _iterateDirListing;
+    private Iterator<File> _iterateDirListingIter;
 
     TraversePathLevel(AbstractTraversePathIteratorImpl parent, File dirPath, int depth)
     throws PathException {
@@ -101,19 +99,17 @@ final class TraversePathLevel {
     }
 
     TraversePathLevel(
-            AbstractTraversePathIteratorImpl parent,
-            Factory factory,
-            File dirPath,
-            int depth)
+            AbstractTraversePathIteratorImpl parent, Factory factory, File dirPath, int depth)
     throws PathException {
         _parent = ObjectArgs.checkNotNull(parent, "parent");
         _factory = ObjectArgs.checkNotNull(factory, "factory");
-        _origDirectoryListing =
-            _factory.newDirectoryListingInstance(dirPath, DEFAULT_DIRECTORY_LISTING_LIST_CLASS);
+        _origDirListing = _factory.newDirectoryListingInstance(dirPath);
         _depth = IntArgs.checkPositive(depth, "getDepth");
     }
 
+    @Immutable
     static final class DescendDirFileFilter
+    extends StatelessObject
     implements FileFilter {
 
         private final PathFilter _pathFilter;
@@ -137,36 +133,39 @@ final class TraversePathLevel {
         }
     }
 
-    public DirectoryListing getDescendDirDirectoryListing() {
-        if (null == _descendDirDirectoryListing) {
-            DirectoryListing newDirListing =
-                _factory.newDirectoryListingInstance(_origDirectoryListing);
-            PathFilter descendDirPathFilter = _parent.withOptionalDescendDirPathFilter();
-            DescendDirFileFilter fileFilter =
+    DirectoryListing getDescendDirListing() {
+        if (null == _descendDirListing) {
+            PathFilter descendDirPathFilter = _parent.withDescendDirPathFilter();
+            FileFilter fileFilter =
                 _factory.newDescendDirFileFilterInstance(descendDirPathFilter, _depth);
-            newDirListing.filter(fileFilter);
-            sortDirListing(newDirListing, _parent.withOptionalDescendDirPathComparator());
-            _descendDirDirectoryListing = newDirListing;
+            DirectoryListing newDirListing = _origDirListing.filter(fileFilter);
+            Comparator<File> pathComparator = _parent.withDescendDirPathComparator();
+            _descendDirListing = newDirListing.sort(pathComparator);
+            _descendDirListingIter = _descendDirListing.iterator();
         }
-        return _descendDirDirectoryListing;
+        return _descendDirListing;
     }
 
-    private void sortDirListing(DirectoryListing dirListing, Comparator<File> optPathComparator) {
-        if (null != optPathComparator) {
-            dirListing.sort(optPathComparator);
-        }
+    Iterator<File> getDescendDirListingIter() {
+        getDescendDirListing();
+        return _descendDirListingIter;
     }
 
-    public Iterator<File> getDescendDirDirectoryListingIter() {
-        if (null == _descendDirDirectoryListingIter) {
-            DirectoryListing descendDirDirectoryListing = getDescendDirDirectoryListing();
-            List<File> childPathList = descendDirDirectoryListing.getChildPathList();
-            _descendDirDirectoryListingIter = childPathList.iterator();
-        }
-        return _descendDirDirectoryListingIter;
+    boolean descendDirListingIter_hasNext() {
+        getDescendDirListing();
+        boolean x = _descendDirListingIter.hasNext();
+        return x;
     }
 
+    File descendDirListingIter_next() {
+        getDescendDirListing();
+        File path = _descendDirListingIter.next();
+        return path;
+    }
+
+    @Immutable
     static final class IterateFileFilter
+    extends StatelessObject
     implements FileFilter {
 
         private final PathFilter _pathFilter;
@@ -187,28 +186,32 @@ final class TraversePathLevel {
         }
     }
 
-    public DirectoryListing getIterateDirectoryListing() {
-        if (null == _iterateDirectoryListing) {
-            PathFilter pathFilter = _parent.withOptionalIteratePathFilter();
-            DirectoryListing newDirListing =
-                _factory.newDirectoryListingInstance(_origDirectoryListing);
-            if (null != pathFilter) {
-                IterateFileFilter fileFilter =
-                    _factory.newIterateFileFilterInstance(pathFilter, _depth);
-                newDirListing.filter(fileFilter);
-            }
-            sortDirListing(newDirListing, _parent.withOptionalIteratePathComparator());
-            _iterateDirectoryListing = newDirListing;
+    DirectoryListing getIterateDirListing() {
+        if (null == _iterateDirListing) {
+            PathFilter pathFilter = _parent.withIteratePathFilter();
+            FileFilter fileFilter = _factory.newIterateFileFilterInstance(pathFilter, _depth);
+            DirectoryListing newDirListing = _origDirListing.filter(fileFilter);
+            Comparator<File> pathComparator = _parent.withIteratePathComparator();
+            _iterateDirListing = newDirListing.sort(pathComparator);
+            _iterateDirListingIter = _iterateDirListing.iterator();
         }
-        return _iterateDirectoryListing;
+        return _iterateDirListing;
     }
 
-    public Iterator<File> getIterateDirectoryListingIter() {
-        if (null == _iterateDirectoryListingIter) {
-            DirectoryListing iterateDirectoryListing = getIterateDirectoryListing();
-            List<File> childPathList = iterateDirectoryListing.getChildPathList();
-            _iterateDirectoryListingIter = childPathList.iterator();
-        }
-        return _iterateDirectoryListingIter;
+    Iterator<File> getIterateDirListingIter() {
+        getIterateDirListing();
+        return _iterateDirListingIter;
+    }
+
+    boolean iterateDirListingIter_hasNext() {
+        getIterateDirListing();
+        boolean x = _iterateDirListingIter.hasNext();
+        return x;
+    }
+
+    File iterateDirListingIter_next() {
+        getIterateDirListing();
+        File path = _iterateDirListingIter.next();
+        return path;
     }
 }

@@ -40,7 +40,6 @@ import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -52,7 +51,7 @@ import java.util.Properties;
 final class PropertiesLoaderImpl
 implements PropertiesLoader {
 
-    private final PropertiesLoaderPolicy _optionalPolicy;
+    private final PropertiesLoaderPolicy _policy;
     private final JdkPropertiesLoaderHelper _jdkPropertiesLoaderHelper;
     private final IInputSource2Utils _inputSource2Utils;
     private final PropertiesMerger _propertiesMerger;
@@ -94,12 +93,12 @@ implements PropertiesLoader {
     }
 
     PropertiesLoaderImpl(
-            PropertiesLoaderPolicy optionalPolicy,
+            PropertiesLoaderPolicy policy,
             JdkPropertiesLoaderHelper jdkPropertiesLoaderHelper,
             IInputSource2Utils inputSource2Utils,
             PropertiesMerger propertiesMerger,
             Logger logger) {
-        _optionalPolicy = optionalPolicy;
+        _policy = policy;
         _jdkPropertiesLoaderHelper = jdkPropertiesLoaderHelper;
         _inputSource2Utils = inputSource2Utils;
         _propertiesMerger = propertiesMerger;
@@ -108,17 +107,16 @@ implements PropertiesLoader {
 
     /** {@inheritDoc} */
     @Override
-    public @Nullable PropertiesLoaderPolicy withOptionalPolicy() {
-        return _optionalPolicy;
+    public PropertiesLoaderPolicy withPolicy() {
+        return _policy;
     }
 
     /** {@inheritDoc} */
     @Override
-    public PropertiesLoaderImpl withOptionalPolicy(
-            @Nullable PropertiesLoaderPolicy optionalPolicy) {
+    public PropertiesLoaderImpl withPolicy(PropertiesLoaderPolicy policy) {
         PropertiesLoaderImpl x =
             new PropertiesLoaderImpl(
-                optionalPolicy,
+                ObjectArgs.checkNotNull(policy, "policy"),
                 _jdkPropertiesLoaderHelper,
                 _inputSource2Utils,
                 _propertiesMerger,
@@ -141,13 +139,13 @@ implements PropertiesLoader {
     public
     <
         TMap extends Map<String, String>,
-        TMapBuilder extends MapBuilder<TMap, String, String>
+        TMapBuilder extends MapBuilder<String, String, TMap>,
+        TMapBuilderFactory extends MapBuilderFactory<String, String, TMap, TMapBuilder>
     >
     TMap load(
-            List<? extends InputSource2> inputSourceList,
-            MapBuilderFactory<TMapBuilder> mapBuilderFactory)
+            List<? extends InputSource2> inputSourceList, TMapBuilderFactory mapBuilderFactory)
     throws PropertiesLoaderException {
-        TMapBuilder mapBuilder = mapBuilderFactory.newInstance();
+        TMapBuilder mapBuilder = mapBuilderFactory.builder();
         _load(inputSourceList, mapBuilder);
         TMap map = mapBuilder.build();
         return map;
@@ -164,9 +162,7 @@ implements PropertiesLoader {
             _logger.info("[%d of %d] Load properties: %s", 1 + index, size, inputSource);
             RandomAccessList<JdkProperty> propertyList =
                 _jdkPropertiesLoaderHelper.loadPropertyList(inputSource);
-            if (null != _optionalPolicy) {
-                _optionalPolicy.apply(propertyList);
-            }
+            _policy.apply(propertyList);
             _propertiesMerger.merge(map, propertyList);
         }
     }

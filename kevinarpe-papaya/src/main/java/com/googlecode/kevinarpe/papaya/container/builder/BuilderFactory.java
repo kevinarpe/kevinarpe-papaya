@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.filesystem;
+package com.googlecode.kevinarpe.papaya.container.builder;
 
 /*
  * #%L
@@ -25,32 +25,23 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
-import java.io.File;
-import java.io.FileFilter;
-
 /**
- * Extends {@link FileFilter} to add {@code getDepth} parameter to {@link #accept(File, int)}.
+ * Base interface for all builders.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see DirectoryListing
- * @see TraversePathIterableImpl
+ * @param <TBuilder>
+ *        type of builder: extends Builder&lt;?>
+ *
+ * @see CollectionBuilderFactory
+ * @see ListBuilderFactory
+ * @see SetBuilderFactory
+ * @see MapBuilderFactory
  */
-public interface PathFilter {
+public interface BuilderFactory<TBuilder extends Builder<?>> {
 
     /**
-     * Tests whether or not {@code path} at {@code getDepth} should be included in a path list.
-     *
-     * @param path
-     *        filesystem path to test.  Not guaranteed to exist when this method is called.
-     *
-     * @param depth
-     *        number of levels below the parent directory.  Always >= 1.
-     *
-     * @return {@code true} to include in the path list or {@code false} to exclude
-     *
-     * @see DirectoryListing
-     * @see TraversePathIterableImpl
+     * Creates a new builder instance.
      */
-    boolean accept(File path, int depth);
+    TBuilder builder();
 }

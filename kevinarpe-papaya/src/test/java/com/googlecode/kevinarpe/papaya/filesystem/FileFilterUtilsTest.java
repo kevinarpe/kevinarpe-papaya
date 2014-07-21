@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  */
 
 import com.google.common.collect.ImmutableList;
+import com.googlecode.kevinarpe.papaya.filesystem.filter.FileFilterUtils;
 import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.Test;

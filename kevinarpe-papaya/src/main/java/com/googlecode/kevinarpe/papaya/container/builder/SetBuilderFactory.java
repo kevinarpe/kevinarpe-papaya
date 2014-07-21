@@ -25,6 +25,8 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
+import java.util.Set;
+
 /**
  * Base interface for all {@code SetBuilder} factories.
  *
@@ -37,10 +39,11 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * @see LinkedHashSetBuilderFactory
  * @see ImmutableSetBuilderFactory
  */
-public interface SetBuilderFactory<TSetBuilder extends SetBuilder<?, ?>> {
-
-    /**
-     * Creates a new {@code SetBuilder} instance.
-     */
-    TSetBuilder newInstance();
+public interface SetBuilderFactory
+    <
+        TValue,
+        TSet extends Set<TValue>,
+        TSetBuilder extends SetBuilder<TValue, TSet, TSetBuilder>
+    >
+extends CollectionBuilderFactory<TValue, TSet, TSetBuilder> {
 }

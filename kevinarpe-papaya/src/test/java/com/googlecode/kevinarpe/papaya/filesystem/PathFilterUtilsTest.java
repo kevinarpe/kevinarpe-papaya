@@ -26,6 +26,8 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  */
 
 import com.google.common.collect.ImmutableList;
+import com.googlecode.kevinarpe.papaya.filesystem.filter.PathFilter;
+import com.googlecode.kevinarpe.papaya.filesystem.filter.PathFilterUtils;
 import org.testng.annotations.Test;
 
 import java.io.File;

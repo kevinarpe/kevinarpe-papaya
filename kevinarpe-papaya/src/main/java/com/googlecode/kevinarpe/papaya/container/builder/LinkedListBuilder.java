@@ -49,8 +49,9 @@ import java.util.LinkedList;
 public final class LinkedListBuilder<TValue>
 extends AbstractListBuilder
             <
+                TValue,
                 LinkedList<TValue>,
-                TValue
+                LinkedListBuilder<TValue>
             > {
 
     /**
@@ -72,5 +73,10 @@ extends AbstractListBuilder
     public LinkedList<TValue> build() {
         LinkedList<TValue> x = Lists.newLinkedList(delegate());
         return x;
+    }
+
+    @Override
+    protected LinkedListBuilder<TValue> self() {
+        return this;
     }
 }

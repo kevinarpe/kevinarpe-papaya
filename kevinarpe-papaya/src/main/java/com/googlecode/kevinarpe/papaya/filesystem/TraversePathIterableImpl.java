@@ -28,7 +28,9 @@ package com.googlecode.kevinarpe.papaya.filesystem;
 import com.google.common.base.Objects;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.filesystem.filter.PathFilter;
 
+import javax.annotation.concurrent.Immutable;
 import java.io.File;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -41,14 +43,14 @@ import java.util.Iterator;
  * <p>
  * Methods for directory traversal:
  * <ul>
- *     <li>{@link #withOptionalDescendDirPathFilter(PathFilter)}</li>
- *     <li>{@link #withOptionalDescendDirPathComparator(Comparator)}</li>
+ *     <li>{@link #withDescendDirPathFilter(PathFilter)}</li>
+ *     <li>{@link #withDescendDirPathComparator(Comparator)}</li>
  * </ul>
  * <p>
  * Methods for path iteration:
  * <ul>
- *     <li>{@link #withOptionalIteratePathFilter(PathFilter)}</li>
- *     <li>{@link #withOptionalIteratePathComparator(Comparator)}</li>
+ *     <li>{@link #withIteratePathFilter(PathFilter)}</li>
+ *     <li>{@link #withIteratePathComparator(Comparator)}</li>
  * </ul>
  * <p>
  * Example: Iterate all normal files (non-directories) in a directory tree.  This is equivalent to
@@ -57,150 +59,141 @@ import java.util.Iterator;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see TraversePathDepthPolicy
- * @see TraversePathIterSettingsImpl
+ * @see AbstractTraversePathIterSettings
  */
+@Immutable
 @FullyTested
 final class TraversePathIterableImpl
-extends TraversePathIterSettingsImpl
+extends AbstractTraversePathIterSettings
 implements TraversePathIterable {
 
     public TraversePathIterableImpl(File dirPath, TraversePathDepthPolicy depthPolicy) {
-        super(
-            ObjectArgs.checkNotNull(dirPath, "dirPath"),
-            ObjectArgs.checkNotNull(depthPolicy, "depthPolicy"),
-            TraversePathUtils.DEFAULT_EXCEPTION_POLICY,
-            (PathFilter) null,
-            (Comparator<File>) null,
-            (PathFilter) null,
-            (Comparator<File>) null);
+        this(
+            dirPath,
+            depthPolicy,
+            TraversePathIterableUtils.DEFAULT_EXCEPTION_POLICY,
+            TraversePathIterableUtils.DEFAULT_DESCEND_DIR_PATH_FILTER,
+            TraversePathIterableUtils.DEFAULT_DESCEND_DIR_PATH_COMPARATOR,
+            TraversePathIterableUtils.DEFAULT_ITERATE_PATH_FILTER,
+            TraversePathIterableUtils.DEFAULT_ITERATE_PATH_COMPARATOR);
     }
 
     TraversePathIterableImpl(
-        File dirPath,
-        TraversePathDepthPolicy depthPolicy,
-        TraversePathExceptionPolicy exceptionPolicy,
-        PathFilter optDescendDirPathFilter,
-        Comparator<File> optDescendDirPathComparator,
-        PathFilter optIteratePathFilter,
-        Comparator<File> optIteratePathComparator) {
+            File dirPath,
+            TraversePathDepthPolicy depthPolicy,
+            TraversePathExceptionPolicy exceptionPolicy,
+            PathFilter descendDirPathFilter,
+            Comparator<File> descendDirPathComparator,
+            PathFilter iteratePathFilter,
+            Comparator<File> optIteratePathComparator) {
         super(
-            dirPath,
-            depthPolicy,
-            exceptionPolicy,
-            optDescendDirPathFilter,
-            optDescendDirPathComparator,
-            optIteratePathFilter,
-            optIteratePathComparator);
+            ObjectArgs.checkNotNull(dirPath, "dirPath"),
+            ObjectArgs.checkNotNull(depthPolicy, "depthPolicy"),
+            ObjectArgs.checkNotNull(exceptionPolicy, "exceptionPolicy"),
+            ObjectArgs.checkNotNull(descendDirPathFilter, "descendDirPathFilter"),
+            ObjectArgs.checkNotNull(descendDirPathComparator, "descendDirPathComparator"),
+            ObjectArgs.checkNotNull(iteratePathFilter, "iteratePathFilter"),
+            ObjectArgs.checkNotNull(optIteratePathComparator, "optIteratePathComparator"));
     }
 
-    /** {@inheritDoc} */
     @Override
     public TraversePathIterable withRootDirPath(File rootDirPath) {
         return new TraversePathIterableImpl(
             ObjectArgs.checkNotNull(rootDirPath, "rootDirPath"),
             withDepthPolicy(),
             withExceptionPolicy(),
-            withOptionalDescendDirPathFilter(),
-            withOptionalDescendDirPathComparator(),
-            withOptionalIteratePathFilter(),
-            withOptionalIteratePathComparator());
+            withDescendDirPathFilter(),
+            withDescendDirPathComparator(),
+            withIteratePathFilter(),
+            withIteratePathComparator());
     }
 
-    /** {@inheritDoc} */
     @Override
     public TraversePathIterableImpl withDepthPolicy(TraversePathDepthPolicy depthPolicy) {
         return new TraversePathIterableImpl(
             withRootDirPath(),
             ObjectArgs.checkNotNull(depthPolicy, "depthPolicy"),
             withExceptionPolicy(),
-            withOptionalDescendDirPathFilter(),
-            withOptionalDescendDirPathComparator(),
-            withOptionalIteratePathFilter(),
-            withOptionalIteratePathComparator());
+            withDescendDirPathFilter(),
+            withDescendDirPathComparator(),
+            withIteratePathFilter(),
+            withIteratePathComparator());
     }
 
-    /** {@inheritDoc} */
     @Override
     public TraversePathIterable withExceptionPolicy(TraversePathExceptionPolicy exceptionPolicy) {
         return new TraversePathIterableImpl(
             withRootDirPath(),
             withDepthPolicy(),
             ObjectArgs.checkNotNull(exceptionPolicy, "exceptionPolicy"),
-            withOptionalDescendDirPathFilter(),
-            withOptionalDescendDirPathComparator(),
-            withOptionalIteratePathFilter(),
-            withOptionalIteratePathComparator());
+            withDescendDirPathFilter(),
+            withDescendDirPathComparator(),
+            withIteratePathFilter(),
+            withIteratePathComparator());
     }
 
-    /** {@inheritDoc} */
     @Override
-    public TraversePathIterableImpl withOptionalDescendDirPathFilter(
-        PathFilter optDescendDirPathFilter) {
+    public TraversePathIterableImpl withDescendDirPathFilter(PathFilter descendDirPathFilter) {
         return new TraversePathIterableImpl(
             withRootDirPath(),
             withDepthPolicy(),
             withExceptionPolicy(),
-            optDescendDirPathFilter,
-            withOptionalDescendDirPathComparator(),
-            withOptionalIteratePathFilter(),
-            withOptionalIteratePathComparator());
+            ObjectArgs.checkNotNull(descendDirPathFilter, "descendDirPathFilter"),
+            withDescendDirPathComparator(),
+            withIteratePathFilter(),
+            withIteratePathComparator());
     }
 
-    /** {@inheritDoc} */
     @Override
-    public TraversePathIterable withOptionalDescendDirPathComparator(
-        Comparator<File> optDescendDirPathComparator) {
+    public TraversePathIterable withDescendDirPathComparator(
+            Comparator<File> descendDirPathComparator) {
         return new TraversePathIterableImpl(
             withRootDirPath(),
             withDepthPolicy(),
             withExceptionPolicy(),
-            withOptionalDescendDirPathFilter(),
-            optDescendDirPathComparator,
-            withOptionalIteratePathFilter(),
-            withOptionalIteratePathComparator());
+            withDescendDirPathFilter(),
+            ObjectArgs.checkNotNull(descendDirPathComparator, "descendDirPathComparator"),
+            withIteratePathFilter(),
+            withIteratePathComparator());
     }
 
-    /** {@inheritDoc} */
     @Override
-    public TraversePathIterable withOptionalIteratePathFilter(PathFilter optIteratePathFilter) {
+    public TraversePathIterable withIteratePathFilter(PathFilter iteratePathFilter) {
         return new TraversePathIterableImpl(
             withRootDirPath(),
             withDepthPolicy(),
             withExceptionPolicy(),
-            withOptionalDescendDirPathFilter(),
-            withOptionalDescendDirPathComparator(),
-            optIteratePathFilter,
-            withOptionalIteratePathComparator());
+            withDescendDirPathFilter(),
+            withDescendDirPathComparator(),
+            ObjectArgs.checkNotNull(iteratePathFilter, "iteratePathFilter"),
+            withIteratePathComparator());
     }
 
-    /** {@inheritDoc} */
     @Override
-    public TraversePathIterable withOptionalIteratePathComparator(
-        Comparator<File> optIteratePathComparator) {
+    public TraversePathIterable withIteratePathComparator(
+            Comparator<File> iteratePathComparator) {
         return new TraversePathIterableImpl(
             withRootDirPath(),
             withDepthPolicy(),
             withExceptionPolicy(),
-            withOptionalDescendDirPathFilter(),
-            withOptionalDescendDirPathComparator(),
-            withOptionalIteratePathFilter(),
-            optIteratePathComparator);
+            withDescendDirPathFilter(),
+            withDescendDirPathComparator(),
+            withIteratePathFilter(),
+            ObjectArgs.checkNotNull(iteratePathComparator, "iteratePathComparator"));
     }
 
-    /** {@inheritDoc} */
     @Override
     public TraversePathIterator iterator() {
         final TraversePathDepthPolicy depthPolicy = withDepthPolicy();
         return depthPolicy.createTraversePathIterator(
             withRootDirPath(),
             withExceptionPolicy(),
-            withOptionalDescendDirPathFilter(),
-            withOptionalDescendDirPathComparator(),
-            withOptionalIteratePathFilter(),
-            withOptionalIteratePathComparator());
+            withDescendDirPathFilter(),
+            withDescendDirPathComparator(),
+            withIteratePathFilter(),
+            withIteratePathComparator());
     }
 
-    /** {@inheritDoc} */
     @Override
     public final int hashCode() {
         int result =
@@ -208,14 +201,13 @@ implements TraversePathIterable {
                 withRootDirPath(),
                 withDepthPolicy(),
                 withExceptionPolicy(),
-                withOptionalDescendDirPathFilter(),
-                withOptionalDescendDirPathComparator(),
-                withOptionalIteratePathFilter(),
-                withOptionalIteratePathComparator());
+                withDescendDirPathFilter(),
+                withDescendDirPathComparator(),
+                withIteratePathFilter(),
+                withIteratePathComparator());
         return result;
     }
 
-    /** {@inheritDoc} */
     @Override
     public final boolean equals(Object obj) {
         // Ref: http://stackoverflow.com/a/5039178/257299
@@ -227,17 +219,17 @@ implements TraversePathIterable {
                     && Objects.equal(this.withDepthPolicy(), other.withDepthPolicy())
                     && Objects.equal(this.withExceptionPolicy(), other.withExceptionPolicy())
                     && Objects.equal(
-                            this.withOptionalDescendDirPathFilter(),
-                            other.withOptionalDescendDirPathFilter())
+                            this.withDescendDirPathFilter(),
+                            other.withDescendDirPathFilter())
                     && Objects.equal(
-                            this.withOptionalDescendDirPathComparator(),
-                            other.withOptionalDescendDirPathComparator())
+                            this.withDescendDirPathComparator(),
+                            other.withDescendDirPathComparator())
                     && Objects.equal(
-                            this.withOptionalIteratePathFilter(),
-                            other.withOptionalIteratePathFilter())
+                            this.withIteratePathFilter(),
+                            other.withIteratePathFilter())
                     && Objects.equal(
-                            this.withOptionalIteratePathComparator(),
-                            other.withOptionalIteratePathComparator());
+                            this.withIteratePathComparator(),
+                            other.withIteratePathComparator());
         }
         return result;
     }

@@ -36,13 +36,13 @@ import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
-public class DefaultPropertiesLoaderPolicyTest {
+public class PropertiesLoaderPolicyForDuplicatesTest {
 
-    private DefaultPropertiesLoaderPolicy classUnderTest;
+    private PropertiesLoaderPolicyForDuplicates classUnderTest;
 
     @BeforeMethod
     public void beforeEachTestMethod() {
-        classUnderTest = new DefaultPropertiesLoaderPolicy();
+        classUnderTest = new PropertiesLoaderPolicyForDuplicates();
     }
 
     @DataProvider
@@ -126,10 +126,10 @@ public class DefaultPropertiesLoaderPolicyTest {
             int dupKeyValuePairCount = 0;
             int dupKeyCount = 0;
             for (String line : lineList) {
-                if (line.contains(DefaultPropertiesLoaderPolicy.DUP_KEY_VALUE_PAIR_MSG)) {
+                if (line.contains(PropertiesLoaderPolicyForDuplicates.DUP_KEY_VALUE_PAIR_MSG)) {
                     ++dupKeyValuePairCount;
                 }
-                else if (line.contains(DefaultPropertiesLoaderPolicy.DUP_KEY_MSG)) {
+                else if (line.contains(PropertiesLoaderPolicyForDuplicates.DUP_KEY_MSG)) {
                     ++dupKeyCount;
                 }
                 else {

@@ -26,10 +26,10 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.filesystem.filter.PathFilter;
 
 import java.io.File;
 import java.util.Comparator;
-import java.util.Iterator;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -68,12 +68,10 @@ extends AbstractTraversePathIteratorImpl {
     private void _descendAndUpdateCurrentLevel() {
         if (null != _currentLevel) {
             while (true) {
-                Iterator<File> descendDirPathIter =
-                    _currentLevel.getDescendDirDirectoryListingIter();
-                if (!descendDirPathIter.hasNext()) {
+                if (!_currentLevel.descendDirListingIter_hasNext()) {
                     break;
                 }
-                File descendDirPath = descendDirPathIter.next();
+                File descendDirPath = _currentLevel.descendDirListingIter_next();
                 TraversePathLevel newCurrentLevel = tryAddLevel(descendDirPath);
                 if (null != newCurrentLevel) {
                     _currentLevel = newCurrentLevel;
@@ -93,7 +91,7 @@ extends AbstractTraversePathIteratorImpl {
     @Override
     public boolean hasNext() {
         _doInit();
-        while (null != _currentLevel && !_currentLevel.getIterateDirectoryListingIter().hasNext()) {
+        while (null != _currentLevel && !_currentLevel.iterateDirListingIter_hasNext()) {
             _currentLevel = tryRemoveAndGetNextLevel();
             _descendAndUpdateCurrentLevel();
         }
@@ -110,7 +108,7 @@ extends AbstractTraversePathIteratorImpl {
             }
             return false;
         }
-        return _currentLevel.getIterateDirectoryListingIter().hasNext();
+        return _currentLevel.iterateDirListingIter_hasNext();
     }
 
     @Override
@@ -121,8 +119,7 @@ extends AbstractTraversePathIteratorImpl {
             _isNextElementDirPath = false;
             return withRootDirPath();
         }
-        Iterator<File> iterateDirPathIter =_currentLevel.getIterateDirectoryListingIter();
-        File path = iterateDirPathIter.next();
+        File path = _currentLevel.iterateDirListingIter_next();
         return path;
     }
 }

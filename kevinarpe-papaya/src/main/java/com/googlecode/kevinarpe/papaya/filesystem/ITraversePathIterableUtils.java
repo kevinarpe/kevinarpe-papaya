@@ -25,19 +25,21 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.filesystem.filter.PathFilter;
+
 import java.io.File;
 import java.util.Comparator;
 
 /**
  * For those projects that require full, static-free mocking capabilities, use this interface.
- * Else, the concrete implementation {@link TraversePathUtils} or {@link TraversePathUtils#INSTANCE}
- * will suffice.
+ * Else, the concrete implementation {@link TraversePathIterableUtils} or
+ * {@link TraversePathIterableUtils#INSTANCE} will suffice.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see TraversePathUtils
+ * @see TraversePathIterableUtils
  */
-public interface ITraversePathUtils {
+public interface ITraversePathIterableUtils {
 
     /**
      * Constructs an iterable with its required attributes and none of its optional attributes:
@@ -49,7 +51,7 @@ public interface ITraversePathUtils {
      * </ul>
      * <p>
      * The exception policy is set to the default:
-     * {@link TraversePathUtils#DEFAULT_EXCEPTION_POLICY}.  It can be changed via
+     * {@link TraversePathIterableUtils#DEFAULT_EXCEPTION_POLICY}.  It can be changed via
      * {@link TraversePathIterable#withExceptionPolicy(TraversePathExceptionPolicy)}.
      *
      * @param dirPath
@@ -66,21 +68,21 @@ public interface ITraversePathUtils {
      * @see TraversePathIterable#withRootDirPath(File)
      * @see TraversePathIterable#withDepthPolicy(TraversePathDepthPolicy)
      * @see TraversePathIterable#withExceptionPolicy(TraversePathExceptionPolicy)
-     * @see TraversePathUtils#DEFAULT_EXCEPTION_POLICY
-     * @see TraversePathIterable#withOptionalDescendDirPathFilter(PathFilter)
-     * @see TraversePathIterable#withOptionalDescendDirPathComparator(Comparator)
-     * @see TraversePathIterable#withOptionalIteratePathFilter(PathFilter)
-     * @see TraversePathIterable#withOptionalIteratePathComparator(Comparator)
-     * @see #getTraversePathIterableFactory()
+     * @see TraversePathIterableUtils#DEFAULT_EXCEPTION_POLICY
+     * @see TraversePathIterable#withDescendDirPathFilter(PathFilter)
+     * @see TraversePathIterable#withDescendDirPathComparator(Comparator)
+     * @see TraversePathIterable#withIteratePathFilter(PathFilter)
+     * @see TraversePathIterable#withIteratePathComparator(Comparator)
+     * @see #getFactory()
      */
-    TraversePathIterable newTraversePathIterable(File dirPath, TraversePathDepthPolicy depthPolicy);
+    TraversePathIterable newInstance(File dirPath, TraversePathDepthPolicy depthPolicy);
 
     /**
      * Retrieves the global instance that implements interface {@link TraversePathIterableFactory}.
      *
      * @return global instance
      *
-     * @see #newTraversePathIterable(File, TraversePathDepthPolicy)
+     * @see #newInstance(File, TraversePathDepthPolicy)
      */
-    TraversePathIterableFactory getTraversePathIterableFactory();
+    TraversePathIterableFactory getFactory();
 }

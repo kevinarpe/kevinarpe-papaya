@@ -26,10 +26,14 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.ForwardingList;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -69,11 +73,12 @@ import java.util.List;
 @FullyTested
 public abstract class AbstractListBuilder
     <
+        TValue,
         TList extends List<TValue>,
-        TValue
+        TSelf extends ListBuilder<TValue, TList, TSelf>
     >
 extends ForwardingList<TValue>
-implements ListBuilder<TList, TValue> {
+implements ListBuilder<TValue, TList, TSelf> {
 
     private final ArrayList<TValue> _list;
 
@@ -88,4 +93,36 @@ implements ListBuilder<TList, TValue> {
 
     @Override
     public abstract TList build();
+
+    protected abstract TSelf self();
+
+    @Override
+    public TSelf addMany(TValue... valueArr) {
+        ObjectArgs.checkNotNull(valueArr, "valueArr");
+
+        if (0 != valueArr.length) {
+            addMany(Arrays.asList(valueArr));
+        }
+        TSelf x = self();
+        return x;
+    }
+
+    @Override
+    public TSelf addMany(Iterable<? extends TValue> valueIterable) {
+        ObjectArgs.checkNotNull(valueIterable, "valueIterable");
+
+        Iterator<? extends TValue> valueIter = valueIterable.iterator();
+        addMany(valueIter);
+        TSelf x = self();
+        return x;
+    }
+
+    @Override
+    public TSelf addMany(Iterator<? extends TValue> valueIter) {
+        ObjectArgs.checkNotNull(valueIter, "valueIter");
+
+        Iterators.addAll(_list, valueIter);
+        TSelf x = self();
+        return x;
+    }
 }

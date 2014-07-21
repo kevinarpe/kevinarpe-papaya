@@ -49,8 +49,9 @@ import java.util.LinkedHashSet;
 public final class LinkedHashSetBuilder<TValue>
 extends AbstractSetBuilder
             <
+                TValue,
                 LinkedHashSet<TValue>,
-                TValue
+                LinkedHashSetBuilder<TValue>
             > {
 
     /**
@@ -72,5 +73,10 @@ extends AbstractSetBuilder
     public LinkedHashSet<TValue> build() {
         LinkedHashSet<TValue> x = Sets.newLinkedHashSet(delegate());
         return x;
+    }
+
+    @Override
+    protected LinkedHashSetBuilder<TValue> self() {
+        return this;
     }
 }

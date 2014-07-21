@@ -32,12 +32,12 @@ import java.util.Map;
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @param <TMap>
- *        type of map to build: extends Map&lt;TKey, TValue>
  * @param <TKey>
  *        type of key for map
  * @param <TValue>
  *        type of value for map
+ * @param <TMap>
+ *        type of map to build: extends Map&lt;TKey, TValue>
  *
  * @see Map
  * @see Builder
@@ -48,9 +48,9 @@ import java.util.Map;
  */
 public interface MapBuilder
     <
-        TMap extends Map<TKey, TValue>,
         TKey,
-        TValue
+        TValue,
+        TMap extends Map<TKey, TValue>
     >
 extends Map<TKey, TValue>, Builder<TMap> {
 }

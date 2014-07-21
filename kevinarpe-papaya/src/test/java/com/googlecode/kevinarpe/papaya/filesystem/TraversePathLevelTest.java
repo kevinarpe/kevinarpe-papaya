@@ -27,6 +27,8 @@ package com.googlecode.kevinarpe.papaya.filesystem;
 
 import com.googlecode.kevinarpe.papaya.exception.PathException;
 import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
+import com.googlecode.kevinarpe.papaya.filesystem.filter.PathFilter;
+import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.testng.PowerMockTestCase;
@@ -34,14 +36,12 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.when;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertSame;
@@ -50,29 +50,34 @@ import static org.testng.Assert.assertTrue;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@PrepareForTest({
-    DirectoryListing.class,
-    AbstractTraversePathIteratorImpl.class,
-    TraversePathLevel.DescendDirFileFilter.class,
-    TraversePathLevel.IterateFileFilter.class,
-    TraversePathIterSettingsImpl.class
-})
+//@PrepareForTest({
+//    DirectoryListing.class,
+//    AbstractTraversePathIteratorImpl.class,
+//    TraversePathLevel.DescendDirFileFilter.class,
+//    TraversePathLevel.IterateFileFilter.class,
+//    TraversePathIterSettingsImpl.class
+//})
+@PrepareForTest(AbstractTraversePathIteratorImpl.class)
 public class TraversePathLevelTest
 extends PowerMockTestCase {
 
     private AbstractTraversePathIteratorImpl mockAbstractTraversePathIteratorImpl;
     private TraversePathLevel.Factory mockFactory;
-    private DirectoryListing mockOrigDirectoryListing;
-    private DirectoryListing mockDescendDirDirectoryListing;
-    private DirectoryListing mockIterateDirectoryListing;
-    private TraversePathLevel.DescendDirFileFilter mockDescendDirFileFilter;
-    private TraversePathLevel.IterateFileFilter mockIterateFileFilter;
-    private PathFilter mockPathFilter;
+    private DirectoryListing mockOrigDirListing;
+    private DirectoryListing mockDescendDirListing;
+    private DirectoryListing mockDescendDirListing2;
+    private DirectoryListing mockIterateDirListing;
+    private DirectoryListing mockIterateDirListing2;
+    private FileFilter mockDescendDirFileFilter;
+    private FileFilter mockIterateFileFilter;
+    private PathFilter mockDescendPathFilter;
+    private PathFilter mockIteratePathFilter;
     private Comparator<File> mockDescendDirPathComparator;
     private Comparator<File> mockIteratePathComparator;
-    private List<File> mockPathList;
-    private Iterator<File> mockDescendDirDirectoryListingIter;
-    private Iterator<File> mockIterateDirectoryListingIter;
+    private List<File> mockDescendDirPathList;
+    private List<File> mockIterateDirPathList;
+    private Iterator<File> descendDirListingIter;
+    private Iterator<File> iterateDirListingIter;
     private File mockPath;
 
     private final File dirPath = new File("topDir");
@@ -81,20 +86,55 @@ extends PowerMockTestCase {
     @SuppressWarnings("unchecked")
     @BeforeMethod(alwaysRun = true)
     public void beforeEachTest() {
-        mockAbstractTraversePathIteratorImpl = mock(AbstractTraversePathIteratorImpl.class);
-        mockFactory = mock(TraversePathLevel.Factory.class);
-        mockOrigDirectoryListing = mock(DirectoryListing.class);
-        mockDescendDirDirectoryListing = mock(DirectoryListing.class);
-        mockIterateDirectoryListing = mock(DirectoryListing.class);
-        mockDescendDirFileFilter = mock(TraversePathLevel.DescendDirFileFilter.class);
-        mockIterateFileFilter = mock(TraversePathLevel.IterateFileFilter.class);
-        mockPathFilter = mock(PathFilter.class);
-        mockDescendDirPathComparator = (Comparator<File>) mock(Comparator.class);
-        mockIteratePathComparator = (Comparator<File>) mock(Comparator.class);
-        mockPathList = (List<File>) mock(List.class);
-        mockDescendDirDirectoryListingIter = (Iterator<File>) mock(Iterator.class);
-        mockIterateDirectoryListingIter = (Iterator<File>) mock(Iterator.class);
-        mockPath = mock(File.class);
+        mockAbstractTraversePathIteratorImpl =
+            PowerMockito.mock(
+                AbstractTraversePathIteratorImpl.class,
+                Mockito.withSettings().name("mockAbstractTraversePathIteratorImpl"));
+        mockFactory = Mockito.mock(TraversePathLevel.Factory.class, "mockFactory");
+        mockOrigDirListing = Mockito.mock(DirectoryListing.class, "mockOrigDirListing");
+        mockDescendDirListing = Mockito.mock(DirectoryListing.class, "mockDescendDirListing");
+        mockDescendDirListing2 = Mockito.mock(DirectoryListing.class, "mockDescendDirListing2");
+        mockIterateDirListing = Mockito.mock(DirectoryListing.class, "mockIterateDirListing");
+        mockIterateDirListing2 = Mockito.mock(DirectoryListing.class, "mockIterateDirListing2");
+        mockDescendDirFileFilter = Mockito.mock(FileFilter.class, "mockDescendDirFileFilter");
+        mockIterateFileFilter = Mockito.mock(FileFilter.class, "mockIterateFileFilter");
+        mockDescendPathFilter = Mockito.mock(PathFilter.class, "mockDescendPathFilter");
+        mockIteratePathFilter = Mockito.mock(PathFilter.class, "mockIteratePathFilter");
+        {
+            @SuppressWarnings("unchecked")
+            Comparator<File> x =
+                (Comparator<File>) Mockito.mock(Comparator.class, "mockDescendDirPathComparator");
+            mockDescendDirPathComparator = x;
+        }
+        {
+            @SuppressWarnings("unchecked")
+            Comparator<File> x =
+                (Comparator<File>) Mockito.mock(Comparator.class, "mockIteratePathComparator");
+            mockIteratePathComparator = x;
+        }
+        {
+            @SuppressWarnings("unchecked")
+            List<File> x = (List<File>) Mockito.mock(List.class, "mockDescendDirPathList ");
+            mockDescendDirPathList = x;
+        }
+        {
+            @SuppressWarnings("unchecked")
+            List<File> x = (List<File>) Mockito.mock(List.class, "mockIterateDirPathList");
+            mockIterateDirPathList = x;
+        }
+        {
+            @SuppressWarnings("unchecked")
+            Iterator<File> x =
+                (Iterator<File>) Mockito.mock(Iterator.class, "descendDirListingIter");
+            descendDirListingIter = x;
+        }
+        {
+            @SuppressWarnings("unchecked")
+            Iterator<File> x =
+                (Iterator<File>) Mockito.mock(Iterator.class, "iterateDirListingIter");
+            iterateDirListingIter = x;
+        }
+        mockPath = Mockito.mock(File.class, "mockPath");
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,7 +147,7 @@ extends PowerMockTestCase {
         new TraversePathLevel(mockAbstractTraversePathIteratorImpl, mockFactory, dirPath, depth);
         verify(mockFactory)
             .newDirectoryListingInstance(
-                dirPath, TraversePathLevel.DEFAULT_DIRECTORY_LISTING_LIST_CLASS);
+                dirPath);
     }
 
     @Test
@@ -115,8 +155,8 @@ extends PowerMockTestCase {
     throws PathException {
         PathException expected = new PathException(
             PathExceptionReason.PATH_IS_DIRECTORY, new File("dummy"), null, "message");
-        when(mockFactory.newDirectoryListingInstance(
-            dirPath, TraversePathLevel.DEFAULT_DIRECTORY_LISTING_LIST_CLASS))
+        Mockito.when(mockFactory.newDirectoryListingInstance(
+                dirPath))
             .thenThrow(expected);
         try {
             new TraversePathLevel(mockAbstractTraversePathIteratorImpl, mockFactory, dirPath, depth);
@@ -160,7 +200,7 @@ extends PowerMockTestCase {
     public void DescendDirFileFilter_accept_PassWithPathNotDirectory() {
         TraversePathLevel.DescendDirFileFilter classUnderTest =
             new TraversePathLevel.DescendDirFileFilter((PathFilter) null, depth);
-        when(mockPath.isDirectory()).thenReturn(false);
+        Mockito.when(mockPath.isDirectory()).thenReturn(false);
         assertFalse(classUnderTest.accept(mockPath));
     }
 
@@ -168,24 +208,24 @@ extends PowerMockTestCase {
     public void DescendDirFileFilter_accept_PassWithPathIsDirectoryAndNoPathFilter() {
         TraversePathLevel.DescendDirFileFilter classUnderTest =
             new TraversePathLevel.DescendDirFileFilter((PathFilter) null, depth);
-        when(mockPath.isDirectory()).thenReturn(true);
+        Mockito.when(mockPath.isDirectory()).thenReturn(true);
         assertTrue(classUnderTest.accept(mockPath));
     }
 
     @Test
     public void DescendDirFileFilter_accept_PassWithPathIsDirectoryAndHasPathFilter() {
         TraversePathLevel.DescendDirFileFilter classUnderTest =
-            new TraversePathLevel.DescendDirFileFilter(mockPathFilter, depth);
-        when(mockPath.isDirectory()).thenReturn(true);
+            new TraversePathLevel.DescendDirFileFilter(mockDescendPathFilter, depth);
+        Mockito.when(mockPath.isDirectory()).thenReturn(true);
 
         for (boolean accept : new boolean[] { true, false }) {
-            when(mockPathFilter.accept(mockPath, depth)).thenReturn(accept);
+            Mockito.when(mockDescendPathFilter.accept(mockPath, depth)).thenReturn(accept);
             assertEquals(classUnderTest.accept(mockPath), accept);
         }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // TraversePathLevel.getDescendDirDirectoryListing()
+    // TraversePathLevel.getDescendDirListing()
     //
 
     @Test
@@ -196,39 +236,36 @@ extends PowerMockTestCase {
 
     private TraversePathLevel core_getDescendDirDirectoryListing_Pass()
     throws PathException {
-        when(
-            mockFactory.newDirectoryListingInstance(
-                dirPath, TraversePathLevel.DEFAULT_DIRECTORY_LISTING_LIST_CLASS))
-            .thenReturn(mockOrigDirectoryListing);
-        when(mockFactory.newDirectoryListingInstance(mockOrigDirectoryListing))
-            .thenReturn(mockDescendDirDirectoryListing);
-
-        // This is related to craziness with JaCoCo (code coverage) + Mockito in Eclipse.
-        PowerMockito.when(mockAbstractTraversePathIteratorImpl.withOptionalDescendDirPathFilter())
-            .thenReturn(mockPathFilter);
-//        PowerMockito.doReturn(mockPathFilter)
-//            .when(mockAbstractTraversePathIteratorImpl).withOptionalDescendDirPathFilter();
-
-        when(mockFactory.newDescendDirFileFilterInstance(mockPathFilter, depth))
+        Mockito.when(mockFactory.newDirectoryListingInstance(dirPath))
+            .thenReturn(mockOrigDirListing);
+        Mockito.when(mockAbstractTraversePathIteratorImpl.withDescendDirPathFilter())
+            .thenReturn(mockDescendPathFilter);
+        Mockito.when(mockFactory.newDescendDirFileFilterInstance(mockDescendPathFilter, depth))
             .thenReturn(mockDescendDirFileFilter);
-        when(mockAbstractTraversePathIteratorImpl.withOptionalDescendDirPathComparator())
+        Mockito.when(mockOrigDirListing.filter(mockDescendDirFileFilter))
+            .thenReturn(mockDescendDirListing);
+        Mockito.when(mockAbstractTraversePathIteratorImpl.withDescendDirPathComparator())
             .thenReturn(mockDescendDirPathComparator);
+        Mockito.when(mockDescendDirListing.sort(mockDescendDirPathComparator))
+            .thenReturn(mockDescendDirListing2);
+        Mockito.when(mockDescendDirListing2.iterator()).thenReturn(descendDirListingIter);
 
-        TraversePathLevel tpl =
-            new TraversePathLevel(mockAbstractTraversePathIteratorImpl, mockFactory, dirPath, depth);
+        TraversePathLevel level =
+            new TraversePathLevel(
+                mockAbstractTraversePathIteratorImpl, mockFactory, dirPath, depth);
 
-        assertSame(mockDescendDirDirectoryListing, tpl.getDescendDirDirectoryListing());
+        assertSame(mockDescendDirListing2, level.getDescendDirListing());
 
-        verify(mockDescendDirDirectoryListing, times(1)).filter(mockDescendDirFileFilter);
-        verify(mockDescendDirDirectoryListing, times(1)).sort(mockDescendDirPathComparator);
+        verify(mockOrigDirListing).filter(mockDescendDirFileFilter);
+        verify(mockDescendDirListing).sort(mockDescendDirPathComparator);
 
         // Run exactly the same test + verify again.  This confirms the result is cached internally.
-        assertSame(mockDescendDirDirectoryListing, tpl.getDescendDirDirectoryListing());
+        assertSame(mockDescendDirListing2, level.getDescendDirListing());
 
-        verify(mockDescendDirDirectoryListing, times(1)).filter(mockDescendDirFileFilter);
-        verify(mockDescendDirDirectoryListing, times(1)).sort(mockDescendDirPathComparator);
+        verify(mockOrigDirListing).filter(mockDescendDirFileFilter);
+        verify(mockDescendDirListing).sort(mockDescendDirPathComparator);
 
-        return tpl;
+        return level;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -240,19 +277,16 @@ extends PowerMockTestCase {
     throws PathException {
         TraversePathLevel tpl = core_getDescendDirDirectoryListing_Pass();
 
-        when(mockDescendDirDirectoryListing.getChildPathList()).thenReturn(mockPathList);
-        when(mockPathList.iterator()).thenReturn(mockDescendDirDirectoryListingIter);
+        assertSame(descendDirListingIter, tpl.getDescendDirListingIter());
 
-        assertSame(mockDescendDirDirectoryListingIter, tpl.getDescendDirDirectoryListingIter());
-
-        verify(mockDescendDirDirectoryListing, times(1)).getChildPathList();
-        verify(mockPathList, times(1)).iterator();
+        verify(mockDescendDirListing2).iterator();
 
         // Run exactly the same test + verify again.  This confirms the result is cached internally.
-        assertSame(mockDescendDirDirectoryListingIter, tpl.getDescendDirDirectoryListingIter());
+        assertSame(descendDirListingIter, tpl.getDescendDirListingIter());
 
-        verify(mockDescendDirDirectoryListing, times(1)).getChildPathList();
-        verify(mockPathList, times(1)).iterator();
+        // We have called 'getDescendDirListingIter()' a second time, but we do not increase the
+        // verify call count here -- keep as one to confirm we are cached.
+        verify(mockDescendDirListing2).iterator();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -262,10 +296,10 @@ extends PowerMockTestCase {
     @Test
     public void IterateFileFilter_accept_PassWithNonNullPathFilter() {
         TraversePathLevel.IterateFileFilter classUnderTest =
-            new TraversePathLevel.IterateFileFilter(mockPathFilter, depth);
+            new TraversePathLevel.IterateFileFilter(mockIteratePathFilter, depth);
 
         for (boolean accept : new boolean[] { true, false }) {
-            when(mockPathFilter.accept(mockPath, depth)).thenReturn(accept);
+            Mockito.when(mockIteratePathFilter.accept(mockPath, depth)).thenReturn(accept);
             assertEquals(classUnderTest.accept(mockPath), accept);
         }
     }
@@ -279,7 +313,7 @@ extends PowerMockTestCase {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // TraversePathLevel.getIterateDirectoryListing()
+    // TraversePathLevel.getIterateDirListing()
     //
 
     @Test
@@ -290,35 +324,36 @@ extends PowerMockTestCase {
 
     private TraversePathLevel core_getIterateDirectoryListing_Pass()
     throws PathException {
-        when(mockFactory.newDirectoryListingInstance(
-            dirPath, TraversePathLevel.DEFAULT_DIRECTORY_LISTING_LIST_CLASS))
-            .thenReturn(mockOrigDirectoryListing);
-
-        // This is related to craziness with JaCoCo (code coverage) + Mockito in Eclipse.
-        when(mockAbstractTraversePathIteratorImpl.withOptionalIteratePathFilter())
-            .thenReturn(mockPathFilter);
-//        doReturn(mockPathFilter).when(mockAbstractTraversePathIteratorImpl).withOptionalIteratePathFilter();
-
-        when(mockFactory.newDirectoryListingInstance(mockOrigDirectoryListing))
-            .thenReturn(mockIterateDirectoryListing);
-        when(mockFactory.newIterateFileFilterInstance(mockPathFilter, depth))
+        Mockito.when(mockFactory.newDirectoryListingInstance(dirPath))
+            .thenReturn(mockOrigDirListing);
+        Mockito.when(mockAbstractTraversePathIteratorImpl.withIteratePathFilter())
+            .thenReturn(mockIteratePathFilter);
+        Mockito.when(mockFactory.newIterateFileFilterInstance(mockIteratePathFilter, depth))
             .thenReturn(mockIterateFileFilter);
-        when(mockAbstractTraversePathIteratorImpl.withOptionalIteratePathComparator())
+        Mockito.when(mockOrigDirListing.filter(mockIterateFileFilter))
+            .thenReturn(mockIterateDirListing);
+        Mockito.when(mockAbstractTraversePathIteratorImpl.withIteratePathComparator())
             .thenReturn(mockIteratePathComparator);
+        Mockito.when(mockIterateDirListing.sort(mockIteratePathComparator))
+            .thenReturn(mockIterateDirListing2);
+        Mockito.when(mockIterateDirListing2.iterator()).thenReturn(iterateDirListingIter);
 
         TraversePathLevel tpl =
-            new TraversePathLevel(mockAbstractTraversePathIteratorImpl, mockFactory, dirPath, depth);
+            new TraversePathLevel(
+                mockAbstractTraversePathIteratorImpl, mockFactory, dirPath, depth);
 
-        assertSame(mockIterateDirectoryListing, tpl.getIterateDirectoryListing());
+        assertSame(mockIterateDirListing2, tpl.getIterateDirListing());
 
-        verify(mockIterateDirectoryListing, times(1)).filter(mockIterateFileFilter);
-        verify(mockIterateDirectoryListing, times(1)).sort(mockIteratePathComparator);
+        verify(mockOrigDirListing).filter(mockIterateFileFilter);
+        verify(mockIterateDirListing).sort(mockIteratePathComparator);
 
         // Run exactly the same test + verify again.  This confirms the result is cached internally.
-        assertSame(mockIterateDirectoryListing, tpl.getIterateDirectoryListing());
+        assertSame(mockIterateDirListing2, tpl.getIterateDirListing());
 
-        verify(mockIterateDirectoryListing, times(1)).filter(mockIterateFileFilter);
-        verify(mockIterateDirectoryListing, times(1)).sort(mockIteratePathComparator);
+        // We have called 'getIterateDirListing()' a second time, but we do not increase the verify
+        // call count here -- keep as one to confirm we are cached.
+        verify(mockOrigDirListing).filter(mockIterateFileFilter);
+        verify(mockIterateDirListing).sort(mockIteratePathComparator);
 
         return tpl;
     }
@@ -332,18 +367,15 @@ extends PowerMockTestCase {
         throws PathException {
         TraversePathLevel tpl = core_getIterateDirectoryListing_Pass();
 
-        when(mockIterateDirectoryListing.getChildPathList()).thenReturn(mockPathList);
-        when(mockPathList.iterator()).thenReturn(mockIterateDirectoryListingIter);
+        assertSame(iterateDirListingIter, tpl.getIterateDirListingIter());
 
-        assertSame(mockIterateDirectoryListingIter, tpl.getIterateDirectoryListingIter());
-
-        verify(mockIterateDirectoryListing, times(1)).getChildPathList();
-        verify(mockPathList, times(1)).iterator();
+        verify(mockIterateDirListing2).iterator();
 
         // Run exactly the same test + verify again.  This confirms the result is cached internally.
-        assertSame(mockIterateDirectoryListingIter, tpl.getIterateDirectoryListingIter());
+        assertSame(iterateDirListingIter, tpl.getIterateDirListingIter());
 
-        verify(mockIterateDirectoryListing, times(1)).getChildPathList();
-        verify(mockPathList, times(1)).iterator();
+        // We have called 'getIterateDirListingIter()' a second time, but we do not increase the
+        // verify call count here -- keep as one to confirm we are cached.
+        verify(mockIterateDirListing2).iterator();
     }
 }

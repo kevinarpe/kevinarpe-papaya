@@ -25,6 +25,8 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
+import java.util.List;
+
 /**
  * Base interface for all {@code ListBuilder} factories.
  *
@@ -37,10 +39,11 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * @see LinkedListBuilderFactory
  * @see ImmutableListBuilderFactory
  */
-public interface ListBuilderFactory<TListBuilder extends ListBuilder<?, ?>> {
-
-    /**
-     * Creates a new {@code ListBuilder} instance.
-     */
-    TListBuilder newInstance();
+public interface ListBuilderFactory
+    <
+        TValue,
+        TList extends List<TValue>,
+        TListBuilder extends ListBuilder<TValue, TList, TListBuilder>
+    >
+extends CollectionBuilderFactory<TValue, TList, TListBuilder> {
 }

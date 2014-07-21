@@ -30,6 +30,7 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
 import com.googlecode.kevinarpe.papaya.exception.PathRuntimeException;
+import com.googlecode.kevinarpe.papaya.filesystem.filter.PathFilter;
 
 import java.io.File;
 import java.util.Comparator;
@@ -73,11 +74,11 @@ import java.util.NoSuchElementException;
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see TraversePathIterSettingsImpl
+ * @see AbstractTraversePathIterSettings
  */
 @FullyTested
 abstract class AbstractTraversePathIteratorImpl
-extends TraversePathIterSettingsImpl
+extends AbstractTraversePathIterSettings
 implements TraversePathIterator {
 
     static interface Factory {
@@ -102,13 +103,13 @@ implements TraversePathIterator {
     private final LinkedList<TraversePathLevel> _levelList;
 
     AbstractTraversePathIteratorImpl(
-        File dirPath,
-        TraversePathDepthPolicy depthPolicy,
-        TraversePathExceptionPolicy exceptionPolicy,
-        PathFilter optDescendDirPathFilter,
-        Comparator<File> optDescendDirPathComparator,
-        PathFilter optIteratePathFilter,
-        Comparator<File> optIteratePathComparator) {
+            File dirPath,
+            TraversePathDepthPolicy depthPolicy,
+            TraversePathExceptionPolicy exceptionPolicy,
+            PathFilter optDescendDirPathFilter,
+            Comparator<File> optDescendDirPathComparator,
+            PathFilter optIteratePathFilter,
+            Comparator<File> optIteratePathComparator) {
         this(
             dirPath,
             depthPolicy,
@@ -121,14 +122,14 @@ implements TraversePathIterator {
     }
 
     AbstractTraversePathIteratorImpl(
-        File dirPath,
-        TraversePathDepthPolicy depthPolicy,
-        TraversePathExceptionPolicy exceptionPolicy,
-        PathFilter optDescendDirPathFilter,
-        Comparator<File> optDescendDirPathComparator,
-        PathFilter optIteratePathFilter,
-        Comparator<File> optIteratePathComparator,
-        Factory factory) {
+            File dirPath,
+            TraversePathDepthPolicy depthPolicy,
+            TraversePathExceptionPolicy exceptionPolicy,
+            PathFilter optDescendDirPathFilter,
+            Comparator<File> optDescendDirPathComparator,
+            PathFilter optIteratePathFilter,
+            Comparator<File> optIteratePathComparator,
+            Factory factory) {
         super(
             dirPath,
             depthPolicy,
@@ -144,7 +145,7 @@ implements TraversePathIterator {
     protected final TraversePathLevel tryDescendDirPath() {
         TraversePathLevel currentLevel = null;
         File dirPath = withRootDirPath();
-        PathFilter optDescendDirFilter = withOptionalDescendDirPathFilter();
+        PathFilter optDescendDirFilter = withDescendDirPathFilter();
         if (null == optDescendDirFilter || optDescendDirFilter.accept(dirPath, 0)) {
             // If initial directory listing fails, but exceptions are ignored, '_currentLevel'
             // will remain null.
@@ -155,7 +156,7 @@ implements TraversePathIterator {
 
     protected final boolean canIterateDirPath() {
         File dirPath = withRootDirPath();
-        PathFilter optIteratePathFilter = withOptionalIteratePathFilter();
+        PathFilter optIteratePathFilter = withIteratePathFilter();
         boolean result = (null == optIteratePathFilter || optIteratePathFilter.accept(dirPath, 0));
         return result;
     }

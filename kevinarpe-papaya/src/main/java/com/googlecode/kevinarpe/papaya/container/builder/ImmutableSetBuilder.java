@@ -46,8 +46,9 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 public final class ImmutableSetBuilder<TValue>
 extends AbstractSetBuilder
             <
+                TValue,
                 ImmutableSet<TValue>,
-                TValue
+                ImmutableSetBuilder<TValue>
             > {
 
     /**
@@ -69,5 +70,10 @@ extends AbstractSetBuilder
     public ImmutableSet<TValue> build() {
         ImmutableSet<TValue> x = ImmutableSet.copyOf(delegate());
         return x;
+    }
+
+    @Override
+    protected ImmutableSetBuilder<TValue> self() {
+        return this;
     }
 }

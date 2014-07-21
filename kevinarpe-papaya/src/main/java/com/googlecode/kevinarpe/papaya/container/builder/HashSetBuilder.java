@@ -48,8 +48,9 @@ import java.util.HashSet;
 public final class HashSetBuilder<TValue>
 extends AbstractSetBuilder
             <
+                TValue,
                 HashSet<TValue>,
-                TValue
+                HashSetBuilder<TValue>
             > {
 
     /**
@@ -71,5 +72,10 @@ extends AbstractSetBuilder
     public HashSet<TValue> build() {
         HashSet<TValue> x = Sets.newHashSet(delegate());
         return x;
+    }
+
+    @Override
+    protected HashSetBuilder<TValue> self() {
+        return this;
     }
 }

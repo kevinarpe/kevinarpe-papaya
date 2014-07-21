@@ -28,6 +28,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
 import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
 import com.googlecode.kevinarpe.papaya.exception.PathRuntimeException;
+import com.googlecode.kevinarpe.papaya.filesystem.filter.PathFilter;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -120,7 +121,7 @@ extends PowerMockTestCase {
         new BaseTraversePathIterTest.ctor_Pass_Helper() {
 
             @Override
-            protected TraversePathIterSettingsImpl newInstance(
+            protected AbstractTraversePathIterSettings newInstance(
                 File dirPath,
                 TraversePathDepthPolicy depthPolicy,
                 TraversePathExceptionPolicy exceptionPolicy,
@@ -141,7 +142,7 @@ extends PowerMockTestCase {
         new BaseTraversePathIterTest.ctor_Pass_Helper() {
 
             @Override
-            protected TraversePathIterSettingsImpl newInstance(
+            protected AbstractTraversePathIterSettings newInstance(
                 File dirPath,
                 TraversePathDepthPolicy depthPolicy,
                 TraversePathExceptionPolicy exceptionPolicy,

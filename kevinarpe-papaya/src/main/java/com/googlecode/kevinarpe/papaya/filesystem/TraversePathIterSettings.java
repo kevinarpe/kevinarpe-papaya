@@ -25,6 +25,8 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.filesystem.filter.PathFilter;
+
 import java.io.File;
 import java.util.Comparator;
 
@@ -32,18 +34,54 @@ import java.util.Comparator;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public interface TraversePathIterSettings {
-    
+
+    /**
+     * @return root directory to traverse.  There is no guarantee this directory exists, but this
+     *         value is never {@code null}.
+     *
+     * @see TraversePathIterable#withRootDirPath(File)
+     */
     File withRootDirPath();
 
+    /**
+     * @return when to descend directories: first or last.  Never {@code null}.
+     *
+     * @see TraversePathIterable#withDepthPolicy(TraversePathDepthPolicy)
+     */
     TraversePathDepthPolicy withDepthPolicy();
 
+    /**
+     * @return how to handle exceptions thrown during directory listings
+     *
+     * @see TraversePathIterable#withExceptionPolicy(TraversePathExceptionPolicy)
+     */
     TraversePathExceptionPolicy withExceptionPolicy();
 
-    PathFilter withOptionalDescendDirPathFilter();
+    /**
+     * @return filter used before traversing directories.  May be {@code null}.
+     *
+     * @see TraversePathIterable#withDescendDirPathFilter(PathFilter)
+     */
+    PathFilter withDescendDirPathFilter();
 
-    Comparator<File> withOptionalDescendDirPathComparator();
+    /**
+     * @return comparator to sort directories before traversal.  May be {@code null}.
+     *
+     * @see TraversePathIterable#withDescendDirPathComparator(Comparator)
+     */
+    Comparator<File> withDescendDirPathComparator();
 
-    PathFilter withOptionalIteratePathFilter();
+    /**
+     * @return filter used before iterating paths.  May be {@code null}.
+     *
+     * @see TraversePathIterable#withIteratePathFilter(PathFilter)
+     */
+    PathFilter withIteratePathFilter();
 
-    Comparator<File> withOptionalIteratePathComparator();
+    /**
+     * @return comparator to sort paths before iteration.  May be {@code null}.
+     *
+     * @see TraversePathIterable#withIteratePathComparator(Comparator)
+     */
+    Comparator<File> withIteratePathComparator();
 }

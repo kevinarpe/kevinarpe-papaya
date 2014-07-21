@@ -25,8 +25,14 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
+import com.google.common.collect.Lists;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * Creates {@code LinkedListBuilder}s.
@@ -45,7 +51,7 @@ import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 @FullyTested
 public final class LinkedListBuilderFactory<TValue>
 extends StatelessObject
-implements ListBuilderFactory<LinkedListBuilder<TValue>> {
+implements ListBuilderFactory<TValue, LinkedList<TValue>, LinkedListBuilder<TValue>> {
 
     /**
      * Constructs a new builder factory.
@@ -61,8 +67,26 @@ implements ListBuilderFactory<LinkedListBuilder<TValue>> {
 
     /** {@inheritDoc} */
     @Override
-    public LinkedListBuilder<TValue> newInstance() {
+    public LinkedListBuilder<TValue> builder() {
         LinkedListBuilder<TValue> x = LinkedListBuilder.create();
+        return x;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LinkedList<TValue> copyOf(TValue... elementArr) {
+        ObjectArgs.checkNotNull(elementArr, "elementArr");
+
+        LinkedList<TValue> x = Lists.newLinkedList(Arrays.asList(elementArr));
+        return x;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LinkedList<TValue> copyOf(Collection<? extends TValue> collection) {
+        ObjectArgs.checkNotNull(collection, "collection");
+
+        LinkedList<TValue> x = new LinkedList<TValue>(collection);
         return x;
     }
 }

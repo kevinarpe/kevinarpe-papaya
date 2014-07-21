@@ -50,9 +50,9 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 public final class ImmutableMapBuilder<TKey, TValue>
 extends AbstractMapBuilder
             <
-                ImmutableMap<TKey, TValue>,
                 TKey,
-                TValue
+                TValue,
+                ImmutableMap<TKey, TValue>
             > {
 
     /**

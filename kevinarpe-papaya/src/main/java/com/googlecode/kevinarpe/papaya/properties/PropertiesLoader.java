@@ -29,7 +29,6 @@ import com.googlecode.kevinarpe.papaya.container.builder.MapBuilder;
 import com.googlecode.kevinarpe.papaya.container.builder.MapBuilderFactory;
 import com.googlecode.kevinarpe.papaya.input.InputSource2;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -46,25 +45,28 @@ import java.util.Properties;
 public interface PropertiesLoader {
 
     /**
-     * Retrieves the current optional policy to check each group of properties.
+     * Retrieves the current policy to check each group of properties.
      *
-     * @return current policy which can be {@code null}
+     * @return current policy.  Never {@code null}
      *
-     * @see #withOptionalPolicy(PropertiesLoaderPolicy)
+     * @see #withPolicy(PropertiesLoaderPolicy)
      */
-    @Nullable PropertiesLoaderPolicy withOptionalPolicy();
+    PropertiesLoaderPolicy withPolicy();
 
     /**
-     * Constructs a new instance with a new optional policy to check each group of properties.
+     * Constructs a new instance with a new policy to check each group of properties.
      *
-     * @param optionalPolicy
-     *        policy for each group of properties.  Can be {@code null}
+     * @param policy
+     *        policy for each group of properties.  Must not be {@code null}
      *
      * @return new instance
      *
-     * @see #withOptionalPolicy()
+     * @see #withPolicy()
+     *
+     * @throws NullPointerException
+     *         if {@code policy} is {@code null}
      */
-    PropertiesLoaderImpl withOptionalPolicy(@Nullable PropertiesLoaderPolicy optionalPolicy);
+    PropertiesLoader withPolicy(PropertiesLoaderPolicy policy);
 
     /**
      * Loads Java properties sequentially from a list of input sources.  Properties from later input
@@ -129,10 +131,10 @@ public interface PropertiesLoader {
      */
     <
         TMap extends Map<String, String>,
-        TMapBuilder extends MapBuilder<TMap, String, String>
+        TMapBuilder extends MapBuilder<String, String, TMap>,
+        TMapBuilderFactory extends MapBuilderFactory<String, String, TMap, TMapBuilder>
     >
     TMap load(
-            List<? extends InputSource2> inputSourceList,
-            MapBuilderFactory<TMapBuilder> mapBuilderFactory)
+            List<? extends InputSource2> inputSourceList, TMapBuilderFactory mapBuilderFactory)
     throws PropertiesLoaderException;
 }

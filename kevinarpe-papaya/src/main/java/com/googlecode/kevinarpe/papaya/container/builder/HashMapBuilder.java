@@ -52,9 +52,9 @@ import java.util.HashMap;
 public final class HashMapBuilder<TKey, TValue>
 extends AbstractMapBuilder
             <
-                HashMap<TKey, TValue>,
                 TKey,
-                TValue
+                TValue,
+                HashMap<TKey, TValue>
             > {
 
     /**

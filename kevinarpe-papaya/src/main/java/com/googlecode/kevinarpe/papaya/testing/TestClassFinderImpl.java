@@ -33,11 +33,11 @@ import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.container.Lists2;
 import com.googlecode.kevinarpe.papaya.exception.ClassNotFoundRuntimeException;
 import com.googlecode.kevinarpe.papaya.exception.PathRuntimeException;
-import com.googlecode.kevinarpe.papaya.filesystem.PathFilter;
+import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterableUtils;
+import com.googlecode.kevinarpe.papaya.filesystem.filter.PathFilter;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathDepthPolicy;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterableFactory;
-import com.googlecode.kevinarpe.papaya.filesystem.TraversePathUtils;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +67,7 @@ implements TestClassFinder {
     // Replace with static method, e.g, withRootDirPath(File)
     public TestClassFinderImpl() {
         this(
-            TraversePathUtils.INSTANCE.getTraversePathIterableFactory(),
+            TraversePathIterableUtils.INSTANCE.getFactory(),
             IteratePathFilterFactoryImpl.INSTANCE,
             SourceFileToClassHelperImpl.INSTANCE,
             LoggerFactory.getILoggerFactory());
@@ -229,7 +229,7 @@ implements TestClassFinder {
         PathFilter iteratePathFilter = _iteratePathFilterFactory.newInstance(this);
         TraversePathIterable pathIterable = _traversePathIterableFactory.newInstance(
             _rootDirPath, TraversePathDepthPolicy.DEPTH_LAST);
-        pathIterable = pathIterable.withOptionalIteratePathFilter(iteratePathFilter);
+        pathIterable = pathIterable.withIteratePathFilter(iteratePathFilter);
         return pathIterable;
     }
 

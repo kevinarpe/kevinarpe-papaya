@@ -25,12 +25,29 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.List;
+
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 public class LinkedHashSetBuilderFactoryTest {
+
+    private LinkedHashSetBuilderFactory<String> classUnderTest;
+
+    @BeforeMethod
+    public void beforeEachTestMethod() {
+        classUnderTest = LinkedHashSetBuilderFactory.create();
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // LinkedHashSetBuilderFactory.create()
@@ -38,17 +55,69 @@ public class LinkedHashSetBuilderFactoryTest {
 
     @Test
     public void create_Pass() {
-        LinkedHashSetBuilderFactory<String> x = LinkedHashSetBuilderFactory.create();
-        assertNotNull(x);
+        assertNotNull(classUnderTest);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // LinkedHashSetBuilderFactory.newInstance()
+    // LinkedHashSetBuilderFactory.builder()
     //
 
     @Test
-    public void newInstance_Pass() {
-        LinkedHashSetBuilder<String> x = LinkedHashSetBuilderFactory.<String>create().newInstance();
+    public void builder_Pass() {
+        LinkedHashSetBuilder<String> x = classUnderTest.builder();
         assertTrue(x.isEmpty());
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // LinkedHashSetBuilderFactory.copyOf()
+    //
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void copyOf_FailWithNull() {
+        classUnderTest.copyOf((Collection<String>) null);
+    }
+
+    @DataProvider
+    private static Object[][] _copyOf_Pass_Data() {
+        return new Object[][] {
+            {
+                Lists.<String>newArrayList(),
+                Lists.<String>newArrayList()
+            },
+            {
+                Lists.<String>newArrayList("abc", "def", "ghi", "abc"),
+                Lists.<String>newArrayList("abc", "def", "ghi")
+            },
+            {
+                Lists.<String>newLinkedList(),
+                Lists.<String>newArrayList()
+            },
+            {
+                Lists.<String>newLinkedList(Arrays.asList("abc", "def", "ghi", "abc")),
+                Lists.<String>newArrayList("abc", "def", "ghi")
+            },
+            {
+                Sets.<String>newHashSet(),
+                Lists.<String>newArrayList()
+            },
+            {
+                Sets.<String>newHashSet("def", "ghi", "abc", "abc"),
+                Lists.<String>newArrayList(Sets.<String>newHashSet("def", "ghi", "abc", "abc"))
+            },
+            {
+                Sets.<String>newLinkedHashSet(),
+                Lists.<String>newArrayList()
+            },
+            {
+                Sets.<String>newLinkedHashSet(Arrays.asList("def", "ghi", "abc", "abc")),
+                Lists.<String>newArrayList("def", "ghi", "abc")
+            }
+        };
+    }
+
+    @Test(dataProvider = "_copyOf_Pass_Data")
+    public void copyOf_Pass(Collection<String> source, List<String> expected) {
+        LinkedHashSet<String> copy = classUnderTest.copyOf(source);
+        assertEquals(copy, expected);
     }
 }

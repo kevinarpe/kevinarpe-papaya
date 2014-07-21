@@ -26,7 +26,10 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-import com.googlecode.kevinarpe.papaya.object.StatelessObject;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Creates {@code LinkedHashMapBuilder}s.
@@ -47,8 +50,13 @@ import com.googlecode.kevinarpe.papaya.object.StatelessObject;
  */
 @FullyTested
 public final class LinkedHashMapBuilderFactory<TKey, TValue>
-extends StatelessObject
-implements MapBuilderFactory<LinkedHashMapBuilder<TKey, TValue>> {
+extends AbstractMapBuilderFactory
+                <
+                    TKey,
+                    TValue,
+                    LinkedHashMap<TKey, TValue>,
+                    LinkedHashMapBuilder<TKey, TValue>
+                > {
 
     /**
      * Constructs a new builder factory.
@@ -65,8 +73,45 @@ implements MapBuilderFactory<LinkedHashMapBuilder<TKey, TValue>> {
 
     /** {@inheritDoc} */
     @Override
-    public LinkedHashMapBuilder<TKey, TValue> newInstance() {
+    public LinkedHashMapBuilder<TKey, TValue> builder() {
         LinkedHashMapBuilder<TKey, TValue> x = LinkedHashMapBuilder.create();
+        return x;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LinkedHashMap<TKey, TValue> copyOf(Map<? extends TKey, ? extends TValue> map) {
+        ObjectArgs.checkNotNull(map, "map");
+
+        LinkedHashMap<TKey, TValue> x = new LinkedHashMap<TKey, TValue>(map);
+        return x;
+    }
+
+    private static final class _MapBuilderFactoryHelper<TKey, TValue>
+    implements MapBuilderFactoryHelper<TKey, TValue, LinkedHashMap<TKey, TValue>> {
+
+        private final LinkedHashMap<TKey, TValue> map;
+
+        private _MapBuilderFactoryHelper(int initialCapacity) {
+            map = new LinkedHashMap<TKey, TValue>(initialCapacity);
+        }
+
+        @Override
+        public void put(TKey key, TValue value) {
+            map.put(key, value);
+        }
+
+        @Override
+        public LinkedHashMap<TKey, TValue> getMap() {
+            return map;
+        }
+    }
+
+    @Override
+    protected MapBuilderFactoryHelper<TKey, TValue, LinkedHashMap<TKey, TValue>>
+    createMapBuilderHelper(int initialCapacity) {
+        _MapBuilderFactoryHelper<TKey, TValue> x =
+            new _MapBuilderFactoryHelper<TKey, TValue>(initialCapacity);
         return x;
     }
 }

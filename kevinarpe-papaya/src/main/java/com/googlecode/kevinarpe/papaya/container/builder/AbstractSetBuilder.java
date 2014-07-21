@@ -26,9 +26,13 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.ForwardingSet;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -52,23 +56,56 @@ import java.util.Set;
 @FullyTested
 public abstract class AbstractSetBuilder
     <
+        TValue,
         TSet extends Set<TValue>,
-        TValue
+        TSelf extends AbstractSetBuilder<TValue, TSet, TSelf>
     >
 extends ForwardingSet<TValue>
-implements SetBuilder<TSet, TValue> {
+implements SetBuilder<TValue, TSet, TSelf> {
 
-    private final LinkedHashSet<TValue> _list;
+    private final LinkedHashSet<TValue> _set;
 
     protected AbstractSetBuilder() {
-        _list = Sets.newLinkedHashSet();
+        _set = Sets.newLinkedHashSet();
     }
 
     @Override
     protected final Set<TValue> delegate() {
-        return _list;
+        return _set;
     }
 
     @Override
     public abstract TSet build();
+
+    protected abstract TSelf self();
+
+    @Override
+    public TSelf addMany(TValue... valueArr) {
+        ObjectArgs.checkNotNull(valueArr, "valueArr");
+
+        if (0 != valueArr.length) {
+            addMany(Arrays.asList(valueArr));
+        }
+        TSelf x = self();
+        return x;
+    }
+
+    @Override
+    public TSelf addMany(Iterable<? extends TValue> valueIterable) {
+        ObjectArgs.checkNotNull(valueIterable, "valueIterable");
+
+        Iterator<? extends TValue> valueIter = valueIterable.iterator();
+        addMany(valueIter);
+        TSelf x = self();
+        return x;
+    }
+
+    @Override
+    public TSelf addMany(Iterator<? extends TValue> valueIter) {
+        ObjectArgs.checkNotNull(valueIter, "valueIter");
+
+        Iterators.addAll(_set, valueIter);
+        TSelf x = self();
+        return x;
+    }
 }

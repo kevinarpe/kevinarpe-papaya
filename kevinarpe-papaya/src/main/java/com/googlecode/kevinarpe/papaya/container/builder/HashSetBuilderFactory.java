@@ -25,8 +25,13 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
+import com.google.common.collect.Sets;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
+
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Creates {@code HashMapBuilder}s.
@@ -45,7 +50,7 @@ import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 @FullyTested
 public final class HashSetBuilderFactory<TValue>
 extends StatelessObject
-implements SetBuilderFactory<HashSetBuilder<TValue>> {
+implements SetBuilderFactory<TValue, HashSet<TValue>, HashSetBuilder<TValue>> {
 
     /**
      * Constructs a new builder factory.
@@ -61,8 +66,26 @@ implements SetBuilderFactory<HashSetBuilder<TValue>> {
 
     /** {@inheritDoc} */
     @Override
-    public HashSetBuilder<TValue> newInstance() {
+    public HashSetBuilder<TValue> builder() {
         HashSetBuilder<TValue> x = HashSetBuilder.create();
+        return x;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HashSet<TValue> copyOf(TValue... elementArr) {
+        ObjectArgs.checkNotNull(elementArr, "elementArr");
+
+        HashSet<TValue> x = Sets.newHashSet(elementArr);
+        return x;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HashSet<TValue> copyOf(Collection<? extends TValue> collection) {
+        ObjectArgs.checkNotNull(collection, "collection");
+
+        HashSet<TValue> x = new HashSet<TValue>(collection);
         return x;
     }
 }

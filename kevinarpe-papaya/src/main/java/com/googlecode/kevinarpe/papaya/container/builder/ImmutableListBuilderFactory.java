@@ -25,8 +25,13 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
+import com.google.common.collect.ImmutableList;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
+import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
+
+import java.util.Collection;
 
 /**
  * Creates {@code ImmutableListBuilder}s.
@@ -45,7 +50,7 @@ import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 @FullyTested
 public final class ImmutableListBuilderFactory<TValue>
 extends StatelessObject
-implements ListBuilderFactory<ImmutableListBuilder<TValue>> {
+implements ListBuilderFactory<TValue, ImmutableList<TValue>, ImmutableListBuilder<TValue>> {
 
     /**
      * Constructs a new builder factory.
@@ -61,8 +66,40 @@ implements ListBuilderFactory<ImmutableListBuilder<TValue>> {
 
     /** {@inheritDoc} */
     @Override
-    public ImmutableListBuilder<TValue> newInstance() {
+    public ImmutableListBuilder<TValue> builder() {
         ImmutableListBuilder<TValue> x = ImmutableListBuilder.create();
+        return x;
+    }
+
+    /**
+     * Immutable lists do not allow {@code null} elements.
+     * <hr/>
+     * {@inheritDoc}
+     *
+     * @throws NullPointerException
+     *         if {@code collection} (or any element) is {@code null}
+     */
+    @Override
+    public ImmutableList<TValue> copyOf(TValue... elementArr) {
+        ArrayArgs.checkElementsNotNull(elementArr, "elementArr");
+
+        ImmutableList<TValue> x = ImmutableList.copyOf(elementArr);
+        return x;
+    }
+
+    /**
+     * Immutable lists do not allow {@code null} elements.
+     * <hr/>
+     * {@inheritDoc}
+     *
+     * @throws NullPointerException
+     *         if {@code collection} (or any element) is {@code null}
+     */
+    @Override
+    public ImmutableList<TValue> copyOf(Collection<? extends TValue> collection) {
+        CollectionArgs.checkElementsNotNull(collection, "collection");
+
+        ImmutableList<TValue> x = ImmutableList.copyOf(collection);
         return x;
     }
 }

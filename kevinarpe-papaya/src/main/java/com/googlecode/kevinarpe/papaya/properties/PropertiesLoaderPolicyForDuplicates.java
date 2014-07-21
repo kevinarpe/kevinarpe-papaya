@@ -61,12 +61,12 @@ import java.util.List;
  * @see PropertiesLoaderPolicy
  */
 @FullyTested
-public final class DefaultPropertiesLoaderPolicy
+public final class PropertiesLoaderPolicyForDuplicates
 extends StatelessObject
 implements PropertiesLoaderPolicy {
 
-    public static final DefaultPropertiesLoaderPolicy INSTANCE =
-        new DefaultPropertiesLoaderPolicy();
+    public static final PropertiesLoaderPolicyForDuplicates INSTANCE =
+        new PropertiesLoaderPolicyForDuplicates();
 
     static final String DUP_KEY_VALUE_PAIR_MSG = "Duplicate key-value pair";
     static final String DUP_KEY_MSG = "Duplicate key";

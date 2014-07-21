@@ -49,8 +49,9 @@ import java.util.ArrayList;
 public final class ArrayListBuilder<TValue>
 extends AbstractListBuilder
             <
+                TValue,
                 ArrayList<TValue>,
-                TValue
+                ArrayListBuilder<TValue>
             > {
 
     /**
@@ -72,5 +73,10 @@ extends AbstractListBuilder
     public ArrayList<TValue> build() {
         ArrayList<TValue> x = Lists.newArrayList(delegate());
         return x;
+    }
+
+    @Override
+    protected ArrayListBuilder<TValue> self() {
+        return this;
     }
 }

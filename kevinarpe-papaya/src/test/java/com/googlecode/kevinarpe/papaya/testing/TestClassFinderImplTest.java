@@ -28,7 +28,7 @@ package com.googlecode.kevinarpe.papaya.testing;
 import com.google.common.collect.Collections2;
 import com.googlecode.kevinarpe.papaya.exception.ClassNotFoundRuntimeException;
 import com.googlecode.kevinarpe.papaya.exception.PathRuntimeException;
-import com.googlecode.kevinarpe.papaya.filesystem.PathFilter;
+import com.googlecode.kevinarpe.papaya.filesystem.filter.PathFilter;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathDepthPolicy;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterable;
 import com.googlecode.kevinarpe.papaya.filesystem.TraversePathIterableFactory;
@@ -327,7 +327,7 @@ public class TestClassFinderImplTest {
             .thenReturn(mockTraversePathIterable);
         when(mockIteratePathFilterFactory.newInstance(any(TestClassFinderImpl.class)))
             .thenReturn(mockPathFilter);
-        when(mockTraversePathIterable.withOptionalIteratePathFilter(mockPathFilter))
+        when(mockTraversePathIterable.withIteratePathFilter(mockPathFilter))
             .thenReturn(mockTraversePathIterable);
         when(mockTraversePathIterable.iterator()).thenReturn(mockTraversePathIterator);
         when(mockTraversePathIterator.hasNext()).thenReturn(true, true, true, false);

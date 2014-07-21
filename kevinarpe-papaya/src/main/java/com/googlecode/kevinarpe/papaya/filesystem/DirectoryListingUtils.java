@@ -25,57 +25,52 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.exception.PathException;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
+import javax.annotation.concurrent.Immutable;
 import java.io.File;
 
 /**
- * Static utilities for {@link TraversePathIterable} and {@link TraversePathIterableFactory}.
- * To use the methods in this class create a new instance via {@link #TraversePathUtils()} or use
- * the public static member {@link #INSTANCE}.
+ * Static utilities for {@code DirectoryListing} and {@code DirectoryListingFactory}.
+ * <p>
+ * To use the methods in this class create a new instance via {@link #DirectoryListingUtils()}
+ * or use the public static member {@link #INSTANCE}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @see #INSTANCE
  * @see StatelessObject
- * @see ITraversePathUtils
+ * @see IDirectoryListingUtils
+ * @see DirectoryListing
+ * @see DirectoryListingFactory
  */
-public final class TraversePathUtils
+@Immutable
+public final class DirectoryListingUtils
 extends StatelessObject
-implements ITraversePathUtils {
+implements IDirectoryListingUtils {
 
     /**
      * Single instance of this class provided for convenience.  Since this class is stateless, its
      * behaviour is identical between this instance and others.
      */
-    public static final TraversePathUtils INSTANCE = new TraversePathUtils();
+    public static final DirectoryListingUtils INSTANCE = new DirectoryListingUtils();
 
-    /**
-     * Used by the constructor to set the default exception policy for path iterators.  The value
-     * is {@link TraversePathExceptionPolicy#THROW}.
-     *
-     * @see #newTraversePathIterable(File, TraversePathDepthPolicy)
-     * @see TraversePathIterable#withExceptionPolicy()
-     * @see TraversePathIterable#withExceptionPolicy(TraversePathExceptionPolicy)
-     */
-    public static final TraversePathExceptionPolicy DEFAULT_EXCEPTION_POLICY =
-        TraversePathExceptionPolicy.THROW;
-
-    public TraversePathUtils() {
+    public DirectoryListingUtils() {
         // Empty
     }
 
     /** {@inheritDoc} */
     @Override
-    public TraversePathIterable newTraversePathIterable(
-        File dirPath, TraversePathDepthPolicy depthPolicy) {
-        TraversePathIterableImpl x = new TraversePathIterableImpl(dirPath, depthPolicy);
-        return x;
+    public DirectoryListingFactory getFactory() {
+        return DirectoryListingFactoryImpl.INSTANCE;
     }
 
     /** {@inheritDoc} */
     @Override
-    public TraversePathIterableFactory getTraversePathIterableFactory() {
-        return TraversePathIterableFactoryImpl.INSTANCE;
+    public DirectoryListing newInstance(File dirPath)
+    throws PathException {
+        DirectoryListing x = getFactory().newInstance(dirPath);
+        return x;
     }
 }

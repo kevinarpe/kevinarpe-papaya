@@ -52,9 +52,9 @@ import java.util.LinkedHashMap;
 public final class LinkedHashMapBuilder<TKey, TValue>
 extends AbstractMapBuilder
             <
-                LinkedHashMap<TKey, TValue>,
                 TKey,
-                TValue
+                TValue,
+                LinkedHashMap<TKey, TValue>
             > {
 
     /**

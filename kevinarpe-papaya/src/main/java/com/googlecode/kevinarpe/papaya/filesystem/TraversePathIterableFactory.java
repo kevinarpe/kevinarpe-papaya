@@ -28,7 +28,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
 import java.io.File;
 
 /**
- * Factory for {@link TraversePathIterable}.
+ * Factory for {@code TraversePathIterable}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
@@ -37,7 +37,8 @@ import java.io.File;
 public interface TraversePathIterableFactory {
 
     /**
-     * @see TraversePathUtils#newTraversePathIterable(File, TraversePathDepthPolicy)
+     * @see TraversePathIterableUtils#newInstance(File, TraversePathDepthPolicy)
+     * @see TraversePathIterableUtils#getFactory()
      */
     TraversePathIterable newInstance(File dirPath, TraversePathDepthPolicy depthPolicy);
 }

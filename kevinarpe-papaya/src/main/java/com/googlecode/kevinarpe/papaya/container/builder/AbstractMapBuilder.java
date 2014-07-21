@@ -55,12 +55,12 @@ import java.util.Map;
 @FullyTested
 public abstract class AbstractMapBuilder
     <
-        TMap extends Map<TKey, TValue>,
         TKey,
-        TValue
+        TValue,
+        TMap extends Map<TKey, TValue>
     >
 extends ForwardingMap<TKey, TValue>
-implements MapBuilder<TMap, TKey, TValue> {
+implements MapBuilder<TKey, TValue, TMap> {
 
     private final LinkedHashMap<TKey, TValue> _map;
 

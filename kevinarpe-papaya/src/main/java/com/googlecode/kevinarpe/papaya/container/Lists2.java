@@ -44,6 +44,7 @@ public final class Lists2 {
         // Disabled.
     }
 
+    // TODO: Remove me.  Replaced by Lists.asList() from Guava
     /**
      * Creates a list from at least one value.  This method is useful to transform arguments of
      * style {@code (T value1, T... moreValueArr)} to a list.  This pattern is an extension of pure

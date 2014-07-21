@@ -25,8 +25,13 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
+import com.google.common.collect.Lists;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Creates {@code ArrayListBuilder}s.
@@ -45,7 +50,7 @@ import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 @FullyTested
 public final class ArrayListBuilderFactory<TValue>
 extends StatelessObject
-implements ListBuilderFactory<ArrayListBuilder<TValue>> {
+implements ListBuilderFactory<TValue, ArrayList<TValue>, ArrayListBuilder<TValue>> {
 
     /**
      * Constructs a new builder factory.
@@ -61,8 +66,26 @@ implements ListBuilderFactory<ArrayListBuilder<TValue>> {
 
     /** {@inheritDoc} */
     @Override
-    public ArrayListBuilder<TValue> newInstance() {
+    public ArrayListBuilder<TValue> builder() {
         ArrayListBuilder<TValue> x = ArrayListBuilder.create();
+        return x;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ArrayList<TValue> copyOf(TValue... elementArr) {
+        ObjectArgs.checkNotNull(elementArr, "elementArr");
+
+        ArrayList<TValue> x = Lists.newArrayList(elementArr);
+        return x;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ArrayList<TValue> copyOf(Collection<? extends TValue> collection) {
+        ObjectArgs.checkNotNull(collection, "collection");
+
+        ArrayList<TValue> x = new ArrayList<TValue>(collection);
         return x;
     }
 }

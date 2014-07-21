@@ -54,6 +54,7 @@ import static org.testng.Assert.assertSame;
 public class PropertiesLoaderImplTest {
 
     private PropertiesLoaderPolicy mockPropertiesLoaderPolicy;
+    private PropertiesLoaderPolicy mockPropertiesLoaderPolicy2;
     private JdkPropertiesLoaderHelper mockJdkPropertiesLoaderHelper;
     private IInputSource2Utils mockIInputSource2Utils;
     private PropertiesMerger mockPropertiesMerger;
@@ -63,8 +64,15 @@ public class PropertiesLoaderImplTest {
     private InputSource2 mockInputSource2A;
     private InputSource2 mockInputSource2B;
     private List<InputSource2> inputSourceList;
-    private MapBuilderFactory<MapBuilder<Map<String, String>, String, String>> mockMapBuilderFactory;
-    private MapBuilder<Map<String, String>, String, String> mockMapBuilder;
+    private MapBuilderFactory
+                <
+                    String,
+                    String,
+                    Map<String, String>,
+                    MapBuilder<String, String, Map<String, String>>
+                >
+        mockMapBuilderFactory;
+    private MapBuilder<String, String, Map<String, String>> mockMapBuilder;
     private Map<String, String> mockMap;
     private RandomAccessList<JdkProperty> mockJdkPropertyListA;
     private RandomAccessList<JdkProperty> mockJdkPropertyListB;
@@ -72,11 +80,14 @@ public class PropertiesLoaderImplTest {
     @BeforeMethod
     public void beforeEachTestMethod() {
         mockPropertiesLoaderPolicy = mock(PropertiesLoaderPolicy.class);
+        mockPropertiesLoaderPolicy2 = mock(PropertiesLoaderPolicy.class);
         mockJdkPropertiesLoaderHelper = mock(JdkPropertiesLoaderHelper.class);
         mockIInputSource2Utils = mock(IInputSource2Utils.class);
         mockPropertiesMerger = mock(PropertiesMerger.class);
         mockSLF4JMockLoggerFactory = mock(SLF4JMockLoggerFactory.class);
-        logger = SLF4JMockLoggerUtils.INSTANCE.newFactoryInstance().getLogger(PropertiesLoaderImplTest.class.getName());
+        logger =
+            SLF4JMockLoggerUtils.INSTANCE.newFactoryInstance()
+                .getLogger(PropertiesLoaderImplTest.class.getName());
         classUnderTest =
             new PropertiesLoaderImpl(
                 mockPropertiesLoaderPolicy,
@@ -89,13 +100,19 @@ public class PropertiesLoaderImplTest {
         inputSourceList = Arrays.asList(mockInputSource2A, mockInputSource2B);
         {
             @SuppressWarnings("unchecked")
-            MapBuilderFactory<MapBuilder<Map<String, String>, String, String>> x =
-                mock(MapBuilderFactory.class);
+            MapBuilderFactory
+                    <
+                        String,
+                        String,
+                        Map<String, String>,
+                        MapBuilder<String, String, Map<String, String>>
+                    >
+                x = mock(MapBuilderFactory.class);
             mockMapBuilderFactory = x;
         }
         {
             @SuppressWarnings("unchecked")
-            MapBuilder<Map<String, String>, String, String> x = mock(MapBuilder.class);
+            MapBuilder<String, String, Map<String, String>> x = mock(MapBuilder.class);
             mockMapBuilder = x;
         }
         {
@@ -127,6 +144,22 @@ public class PropertiesLoaderImplTest {
             mockPropertiesMerger,
             mockSLF4JMockLoggerFactory);
         verify(mockSLF4JMockLoggerFactory).getLogger(anyString());
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // PropertiesLoaderImpl.withPolicy()
+    //
+
+    @Test
+    public void withPolicy_Pass() {
+        assertSame(classUnderTest.withPolicy(), mockPropertiesLoaderPolicy);
+        classUnderTest = classUnderTest.withPolicy(mockPropertiesLoaderPolicy2);
+        assertSame(classUnderTest.withPolicy(), mockPropertiesLoaderPolicy2);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void withPolicy_FailWithNull() {
+        classUnderTest.withPolicy((PropertiesLoaderPolicy) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -183,7 +216,7 @@ public class PropertiesLoaderImplTest {
     @Test
     public void load_Pass()
     throws PropertiesLoaderException {
-        when(mockMapBuilderFactory.newInstance()).thenReturn(mockMapBuilder);
+        when(mockMapBuilderFactory.builder()).thenReturn(mockMapBuilder);
         when(mockMapBuilder.build()).thenReturn(mockMap);
         when(mockJdkPropertiesLoaderHelper.loadPropertyList(mockInputSource2A))
             .thenReturn(mockJdkPropertyListA);

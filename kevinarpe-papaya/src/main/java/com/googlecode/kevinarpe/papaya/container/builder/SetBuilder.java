@@ -45,8 +45,9 @@ import java.util.Set;
  */
 public interface SetBuilder
     <
+        TValue,
         TSet extends Set<TValue>,
-        TValue
+        TSelf extends SetBuilder<TValue, TSet, TSelf>
     >
-extends Set<TValue>, Builder<TSet> {
+extends Set<TValue>, CollectionBuilder<TValue, TSet, TSelf> {
 }

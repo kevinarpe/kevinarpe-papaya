@@ -47,8 +47,9 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 public final class ImmutableListBuilder<TValue>
 extends AbstractListBuilder
             <
+                TValue,
                 ImmutableList<TValue>,
-                TValue
+                ImmutableListBuilder<TValue>
             > {
 
     /**
@@ -70,5 +71,10 @@ extends AbstractListBuilder
     public ImmutableList<TValue> build() {
         ImmutableList<TValue> x = ImmutableList.copyOf(delegate());
         return x;
+    }
+
+    @Override
+    protected ImmutableListBuilder<TValue> self() {
+        return this;
     }
 }

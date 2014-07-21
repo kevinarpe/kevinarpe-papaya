@@ -26,7 +26,10 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-import com.googlecode.kevinarpe.papaya.object.StatelessObject;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Creates {@code HashMapBuilder}s.
@@ -38,7 +41,6 @@ import com.googlecode.kevinarpe.papaya.object.StatelessObject;
  * @param <TValue>
  *        type of value for map
  *
- * @see #create()
  * @see MapBuilderFactory
  * @see HashMapBuilder
  * @see LinkedHashMapBuilderFactory
@@ -47,8 +49,13 @@ import com.googlecode.kevinarpe.papaya.object.StatelessObject;
  */
 @FullyTested
 public final class HashMapBuilderFactory<TKey, TValue>
-extends StatelessObject
-implements MapBuilderFactory<HashMapBuilder<TKey, TValue>> {
+extends AbstractMapBuilderFactory
+                <
+                    TKey,
+                    TValue,
+                    HashMap<TKey, TValue>,
+                    HashMapBuilder<TKey, TValue>
+                > {
 
     /**
      * Constructs a new builder factory.
@@ -64,8 +71,45 @@ implements MapBuilderFactory<HashMapBuilder<TKey, TValue>> {
 
     /** {@inheritDoc} */
     @Override
-    public HashMapBuilder<TKey, TValue> newInstance() {
+    public HashMapBuilder<TKey, TValue> builder() {
         HashMapBuilder<TKey, TValue> x = HashMapBuilder.create();
+        return x;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HashMap<TKey, TValue> copyOf(Map<? extends TKey, ? extends TValue> map) {
+        ObjectArgs.checkNotNull(map, "map");
+
+        HashMap<TKey, TValue> x = new HashMap<TKey, TValue>(map);
+        return x;
+    }
+
+    private static final class _MapBuilderFactoryHelper<TKey, TValue>
+    implements MapBuilderFactoryHelper<TKey, TValue, HashMap<TKey, TValue>> {
+
+        private final HashMap<TKey, TValue> map;
+
+        private _MapBuilderFactoryHelper(int initialCapacity) {
+            map = new HashMap<TKey, TValue>(initialCapacity);
+        }
+
+        @Override
+        public void put(TKey key, TValue value) {
+            map.put(key, value);
+        }
+
+        @Override
+        public HashMap<TKey, TValue> getMap() {
+            return map;
+        }
+    }
+
+    @Override
+    protected MapBuilderFactoryHelper<TKey, TValue, HashMap<TKey, TValue>>
+    createMapBuilderHelper(int initialCapacity) {
+        _MapBuilderFactoryHelper<TKey, TValue> x =
+            new _MapBuilderFactoryHelper<TKey, TValue>(initialCapacity);
         return x;
     }
 }

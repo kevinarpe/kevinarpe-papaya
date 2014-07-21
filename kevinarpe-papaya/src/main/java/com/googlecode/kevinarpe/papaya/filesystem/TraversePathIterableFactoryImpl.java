@@ -25,12 +25,17 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.object.StatelessObject;
+
+import javax.annotation.concurrent.Immutable;
 import java.io.File;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@Immutable
 final class TraversePathIterableFactoryImpl
+extends StatelessObject
 implements TraversePathIterableFactory {
 
     public static final TraversePathIterableFactoryImpl INSTANCE =

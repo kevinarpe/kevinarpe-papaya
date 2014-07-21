@@ -26,7 +26,12 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 
 /**
  * Creates {@code LinkedHashMapBuilder}s.
@@ -45,7 +50,7 @@ import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 @FullyTested
 public final class LinkedHashSetBuilderFactory<TValue>
 extends StatelessObject
-implements SetBuilderFactory<LinkedHashSetBuilder<TValue>> {
+implements SetBuilderFactory<TValue, LinkedHashSet<TValue>, LinkedHashSetBuilder<TValue>> {
 
     /**
      * Constructs a new builder factory.
@@ -61,8 +66,26 @@ implements SetBuilderFactory<LinkedHashSetBuilder<TValue>> {
 
     /** {@inheritDoc} */
     @Override
-    public LinkedHashSetBuilder<TValue> newInstance() {
+    public LinkedHashSetBuilder<TValue> builder() {
         LinkedHashSetBuilder<TValue> x = LinkedHashSetBuilder.create();
+        return x;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LinkedHashSet<TValue> copyOf(TValue... elementArr) {
+        ObjectArgs.checkNotNull(elementArr, "elementArr");
+
+        LinkedHashSet<TValue> x = new LinkedHashSet<TValue>(Arrays.asList(elementArr));
+        return x;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LinkedHashSet<TValue> copyOf(Collection<? extends TValue> collection) {
+        ObjectArgs.checkNotNull(collection, "collection");
+
+        LinkedHashSet<TValue> x = new LinkedHashSet<TValue>(collection);
         return x;
     }
 }

@@ -25,23 +25,58 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
+import java.util.Collection;
+import java.util.Map;
+
 /**
- * Base interface for all {@code MapBuilder} factories.
+ * Base interface for all map builder factories.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
+ * @param <TKey>
+ *        type of key for map
+ * @param <TValue>
+ *        type of value for map
+ * @param <TMap>
+ *        type of map to build: extends Map&lt;TKey, TValue>
  * @param <TMapBuilder>
- *        extends MapBuilder
+ *        type of map builder to create: extends MapBuilder
  *
  * @see HashMapBuilderFactory
  * @see LinkedHashMapBuilderFactory
  * @see ImmutableMapBuilderFactory
  * @see PropertiesBuilderFactory
  */
-public interface MapBuilderFactory<TMapBuilder extends MapBuilder<?, ?, ?>> {
+// TODO: Rename to MapFactory?
+public interface MapBuilderFactory
+    <
+        TKey,
+        TValue,
+        TMap extends Map<TKey, TValue>,
+        TMapBuilder extends MapBuilder<TKey, TValue, TMap>
+    >
+extends BuilderFactory<TMapBuilder> {
+
+// TODO: LAST: Test me
+    TMap copyOf(Class<TKey> keyClass, Class<TValue> valueClass, Object... keysAndValuesArr);
+
+    TMap copyOf(
+            Collection<? extends TKey> keyCollection, Collection<? extends TValue> valueCollection);
+
+    TMap copyOf(Map.Entry<? extends TKey, ? extends TValue>... entryArr);
+
+    TMap copyOf(Collection<? extends Map.Entry<? extends TKey, ? extends TValue>> entryCollection);
 
     /**
-     * Creates a new {@code MapBuilder} instance.
+     * Copies a map.
+     *
+     * @param map
+     *        must not be {@code null}
+     *
+     * @return copy of {@code map}
+     *
+     * @throws NullPointerException
+     *         if {@code map} is {@code null}
      */
-    TMapBuilder newInstance();
+    TMap copyOf(Map<? extends TKey, ? extends TValue> map);
 }

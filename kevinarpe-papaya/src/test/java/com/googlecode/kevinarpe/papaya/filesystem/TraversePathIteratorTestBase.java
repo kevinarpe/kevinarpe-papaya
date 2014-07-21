@@ -28,6 +28,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
 import com.beust.jcommander.internal.Sets;
 import com.google.common.base.Splitter;
 import com.googlecode.kevinarpe.papaya.filesystem.compare.FileNameNumericPrefixSmallestToLargestComparator;
+import com.googlecode.kevinarpe.papaya.filesystem.filter.PathFilter;
 import com.googlecode.kevinarpe.papaya.string.NumericPrefix;
 
 import java.io.File;
@@ -80,7 +81,7 @@ public class TraversePathIteratorTestBase {
         new BaseTraversePathIterTest.ctor_Pass_Helper() {
 
             @Override
-            protected TraversePathIterSettingsImpl newInstance(
+            protected AbstractTraversePathIterSettings newInstance(
                     File dirPath,
                     TraversePathDepthPolicy depthPolicy,
                     TraversePathExceptionPolicy exceptionPolicy,
@@ -99,8 +100,8 @@ public class TraversePathIteratorTestBase {
         Comparator<File> fileComparator = new FileNameNumericPrefixSmallestToLargestComparator();
         TraversePathIterable pathIter =
             new TraversePathIterableImpl(BASE_DIR_PATH, depthPolicy)
-                .withOptionalDescendDirPathComparator(fileComparator)
-                .withOptionalIteratePathComparator(fileComparator);
+                .withDescendDirPathComparator(fileComparator)
+                .withIteratePathComparator(fileComparator);
         return pathIter;
     }
 
@@ -167,7 +168,7 @@ public class TraversePathIteratorTestBase {
     throws IOException {
         TraversePathIterable pathIterable = newInstance(depthPolicy);
         pathIterable =
-            pathIterable.withOptionalIteratePathFilter(ONLY_ACCEPT_EVEN_NUMERIC_PREFIX_PATH_FILTER);
+            pathIterable.withIteratePathFilter(ONLY_ACCEPT_EVEN_NUMERIC_PREFIX_PATH_FILTER);
         TraversePathIterator pathIter = pathIterable.iterator();
 
         recursiveDeleteDir(BASE_DIR_PATH);
@@ -199,7 +200,7 @@ public class TraversePathIteratorTestBase {
             TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
     throws IOException {
         TraversePathIterable pathIterable = newInstance(depthPolicy);
-        pathIterable = pathIterable.withOptionalIteratePathFilter(ONLY_ACCEPT_ROOT_DIR_PATH_FILTER);
+        pathIterable = pathIterable.withIteratePathFilter(ONLY_ACCEPT_ROOT_DIR_PATH_FILTER);
         TraversePathIterator pathIter = pathIterable.iterator();
 
         recursiveDeleteDir(BASE_DIR_PATH);
@@ -220,7 +221,7 @@ public class TraversePathIteratorTestBase {
             TraversePathDepthPolicy depthPolicy, String[] pathSpecArr)
     throws IOException {
         TraversePathIterable pathIterable = newInstance(depthPolicy);
-        pathIterable = pathIterable.withOptionalIteratePathFilter(ACCEPT_NONE_PATH_FILTER);
+        pathIterable = pathIterable.withIteratePathFilter(ACCEPT_NONE_PATH_FILTER);
         TraversePathIterator pathIter = pathIterable.iterator();
 
         recursiveDeleteDir(BASE_DIR_PATH);

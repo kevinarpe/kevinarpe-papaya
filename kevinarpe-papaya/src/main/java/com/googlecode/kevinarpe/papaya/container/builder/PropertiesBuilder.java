@@ -26,7 +26,9 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -44,7 +46,7 @@ import java.util.Properties;
  */
 @FullyTested
 public final class PropertiesBuilder
-extends AbstractMapBuilder<Properties, Object, Object> {
+extends AbstractMapBuilder<Object, Object, Properties> {
 
     /**
      * Constructs a new builder.
@@ -65,6 +67,103 @@ extends AbstractMapBuilder<Properties, Object, Object> {
     public Properties build() {
         Properties x = new Properties();
         x.putAll(delegate());
+        return x;
+    }
+
+    /**
+     * Adds a new key-value pair, or replaces the value for an existing pair.  Class
+     * {@link Properties} is a subclass of {@code Hashtable&lt;Object, Object>}, so the argument
+     * types here are {@code Object}, but the type for {@code key} and {@code value} is checked to
+     * be {@link String}.
+     *
+     * @param key
+     *        must be type {@code String}, but may be {@code null}
+     * @param value
+     *        must be type {@code String}, but may be {@code null}
+     *
+     * @return previous value for {@code key}
+     *
+     * @throws ClassCastException
+     *         if {@code key} or {@code value} cannot be safely cast to type {@code String}
+     *
+     * @see Properties#put(Object, Object)
+     * @see #putAll(Map)
+     * @see #setProperty(String, String)
+     */
+    public Object put(Object key, Object value) {
+        ObjectArgs.checkCast(key, String.class, "key");
+        ObjectArgs.checkCast(value, String.class, "value");
+
+        Object oldValue = super.put(key, value);
+        return oldValue;
+    }
+
+    /**
+     * Adds all key-value pairs from a map.
+     *
+     * @param map
+     *        keys and values must be type {@code String}.  Can be empty, but not {@code null}
+     *
+     * @throws NullPointerException
+     *         if {@code map} is {@code null}
+     * @throws ClassCastException
+     *         if a key or value cannot be safely cast to type {@code String}
+     *
+     * @see Properties#putAll(Map)
+     * @see #put(Object, Object)
+     */
+    @Override
+    public void putAll(Map<?, ?> map) {
+        ObjectArgs.checkNotNull(map, "map");
+
+        int index = 0;
+        for (Map.Entry<?, ?> entry : map.entrySet()) {
+            String keyArgName = "key[" + index + "]";
+            String valueArgName = "value[" + index + "]";
+            ObjectArgs.checkCast(entry.getKey(), String.class, keyArgName);
+            ObjectArgs.checkCast(entry.getValue(), String.class, valueArgName);
+            ++index;
+        }
+        super.putAll(map);
+    }
+
+    /**
+     * Convenience method to call {@link #get(Object)}.
+     *
+     * @see Properties#getProperty(String)
+     * @see #getProperty(String, String)
+     * @see #setProperty(String, String)
+     */
+    public String getProperty(String key) {
+        String x = (String) get(key);
+        return x;
+    }
+
+    /**
+     * Convenience method to call {@link #get(Object)}, but replace {@code null} value with
+     * {@code defaultValue} (which may also be {@code null}).
+     *
+     * @see Properties#getProperty(String, String)
+     * @see #getProperty(String)
+     * @see #setProperty(String, String)
+     */
+    public String getProperty(String key, String defaultValue) {
+        String x = (String) get(key);
+        if (null == x) {
+            x = defaultValue;
+        }
+        return x;
+    }
+
+    /**
+     * Convenience method to call {@link #put(Object, Object)}.
+     *
+     * @see Properties#setProperty(String, String)
+     * @see #getProperty(String)
+     * @see #getProperty(String, String)
+     */
+    public Object setProperty(String key, String value) {
+        Object x = put(key, value);
         return x;
     }
 }

@@ -32,10 +32,10 @@ import java.util.List;
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @param <TList>
- *        type of list to build: extends List&lt;TValue>
  * @param <TValue>
  *        type of value for list elements
+ * @param <TList>
+ *        type of list to build: extends List&lt;TValue>
  *
  * @see List
  * @see Builder
@@ -45,8 +45,9 @@ import java.util.List;
  */
 public interface ListBuilder
     <
+        TValue,
         TList extends List<TValue>,
-        TValue
+        TSelf extends ListBuilder<TValue, TList, TSelf>
     >
-extends List<TValue>, Builder<TList> {
+extends List<TValue>, CollectionBuilder<TValue, TList, TSelf> {
 }

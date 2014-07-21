@@ -191,6 +191,7 @@ public class ObjectArgsTest {
     // ObjectArgs.checkCast
     //
 
+    // TODO: Test null here
     @Test(dataProvider = "checkInstanceOfType_Pass_Data")
     public void checkCast_Pass(Object ref, Class<?> destClass) {
         // Two steps here: (1) call the method, (2) assert the result

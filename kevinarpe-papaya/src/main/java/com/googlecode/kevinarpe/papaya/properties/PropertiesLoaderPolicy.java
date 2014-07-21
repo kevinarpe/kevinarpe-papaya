@@ -34,7 +34,7 @@ import java.util.List;
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see DefaultPropertiesLoaderPolicy
+ * @see PropertiesLoaderPolicyForDuplicates
  */
 public interface PropertiesLoaderPolicy {
 

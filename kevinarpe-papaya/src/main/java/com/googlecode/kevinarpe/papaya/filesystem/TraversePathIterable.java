@@ -26,6 +26,8 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  */
 
 import com.googlecode.kevinarpe.papaya.compare.ComparatorUtils;
+import com.googlecode.kevinarpe.papaya.filesystem.filter.PathFilter;
+import com.googlecode.kevinarpe.papaya.filesystem.filter.PathFilterUtils;
 
 import java.io.File;
 import java.util.Collection;
@@ -75,7 +77,7 @@ extends TraversePathIterSettings, Iterable<File> {
 
     /**
      * Constructs a <b>new</b> iterable from the current, replacing the exception policy.  The
-     * default value is {@link #DEFAULT_EXCEPTION_POLICY}.
+     * default value is {@link TraversePathIterableUtils#DEFAULT_EXCEPTION_POLICY}.
      *
      * @param exceptionPolicy
      *        how to handle exceptions thrown during directory listings.  Must not be {@code null}.
@@ -85,7 +87,7 @@ extends TraversePathIterSettings, Iterable<File> {
      * @throws NullPointerException
      *         if {@code exceptionPolicy} is {@code null}
      *
-     * @see #DEFAULT_EXCEPTION_POLICY
+     * @see TraversePathIterableUtils#DEFAULT_EXCEPTION_POLICY
      * @see #withExceptionPolicy()
      */
     TraversePathIterable withExceptionPolicy(TraversePathExceptionPolicy exceptionPolicy);
@@ -112,16 +114,16 @@ extends TraversePathIterSettings, Iterable<File> {
      * If the path filter is {@code null}, then <i>all</i> directories are traversed.  To combine
      * more than one path filter, consider using {@link PathFilterUtils#anyOf(Collection)} or
      * {@link PathFilterUtils#allOf(Collection)}.  To control which paths are iterated, see
-     * {@link #withOptionalIteratePathFilter(PathFilter)}.
+     * {@link #withIteratePathFilter(PathFilter)}.
      *
      * @param optDescendDirPathFilter
      *        path filter for descend directories.  May be {@code null}.
      *
      * @return <b>new</b> iterable
      *
-     * @see #withOptionalDescendDirPathFilter()
+     * @see #withDescendDirPathFilter()
      */
-    TraversePathIterable withOptionalDescendDirPathFilter(PathFilter optDescendDirPathFilter);
+    TraversePathIterable withDescendDirPathFilter(PathFilter optDescendDirPathFilter);
 
     /**
      * Constructs a <b>new</b> iterable from the current, replacing the optional descend directory
@@ -130,16 +132,16 @@ extends TraversePathIterSettings, Iterable<File> {
      * {@link ComparatorUtils#chain(Collection)}.
      * <p>
      * To control the order paths are iterated, see
-     * {@link #withOptionalIteratePathComparator(Comparator)}.
+     * {@link #withIteratePathComparator(Comparator)}.
      *
      * @param optDescendDirPathComparator
      *        comparator to sort descend directories.  May be {@code null}.
      *
      * @return <b>new</b> iterable
      *
-     * @see #withOptionalDescendDirPathComparator()
+     * @see #withDescendDirPathComparator()
      */
-    TraversePathIterable withOptionalDescendDirPathComparator(
+    TraversePathIterable withDescendDirPathComparator(
         Comparator<File> optDescendDirPathComparator);
 
     /**
@@ -166,18 +168,18 @@ extends TraversePathIterSettings, Iterable<File> {
      * {@link PathFilterUtils#anyOf(Collection)} or {@link PathFilterUtils#allOf(Collection)}.
      * <p>
      * To control which directories are traversed, see
-     * {@link #withOptionalIteratePathFilter(PathFilter)}.
+     * {@link #withIteratePathFilter(PathFilter)}.
      * To control how directories are paths are traversed, see
-     * {@link #withOptionalDescendDirPathFilter(PathFilter)}.
+     * {@link #withDescendDirPathFilter(PathFilter)}.
      *
      * @param optIteratePathFilter
      *        path filter for iterated paths.  May be {@code null}.
      *
      * @return <b>new</b> iterable
      *
-     * @see #withOptionalIteratePathFilter()
+     * @see #withIteratePathFilter()
      */
-    TraversePathIterable withOptionalIteratePathFilter(PathFilter optIteratePathFilter);
+    TraversePathIterable withIteratePathFilter(PathFilter optIteratePathFilter);
 
     /**
      * Constructs a <b>new</b> iterable from the current, replacing the optional iterated paths
@@ -186,16 +188,16 @@ extends TraversePathIterSettings, Iterable<File> {
      * {@link ComparatorUtils#chain(Collection)}.
      * <p>
      * To control the order directories are traversed, see
-     * {@link #withOptionalDescendDirPathComparator(Comparator)}.
+     * {@link #withDescendDirPathComparator(Comparator)}.
      *
      * @param optIteratePathComparator
      *        comparator to sort iterated paths.  May be {@code null}.
      *
      * @return <b>new</b> iterable
      *
-     * @see #withOptionalIteratePathComparator()
+     * @see #withIteratePathComparator()
      */
-    TraversePathIterable withOptionalIteratePathComparator(
+    TraversePathIterable withIteratePathComparator(
         Comparator<File> optIteratePathComparator);
 
     /**
@@ -214,10 +216,10 @@ extends TraversePathIterSettings, Iterable<File> {
      *     <li>{@link #withRootDirPath()}</li>
      *     <li>{@link #withDepthPolicy()}</li>
      *     <li>{@link #withExceptionPolicy()}</li>
-     *     <li>{@link #withOptionalDescendDirPathFilter()}</li>
-     *     <li>{@link #withOptionalDescendDirPathComparator()}</li>
-     *     <li>{@link #withOptionalIteratePathFilter()}</li>
-     *     <li>{@link #withOptionalIteratePathComparator()}</li>
+     *     <li>{@link #withDescendDirPathFilter()}</li>
+     *     <li>{@link #withDescendDirPathComparator()}</li>
+     *     <li>{@link #withIteratePathFilter()}</li>
+     *     <li>{@link #withIteratePathComparator()}</li>
      * </ul>
      * <hr/>
      * {@inheritDoc}
@@ -231,10 +233,10 @@ extends TraversePathIterSettings, Iterable<File> {
      *     <li>{@link #withRootDirPath()}</li>
      *     <li>{@link #withDepthPolicy()}</li>
      *     <li>{@link #withExceptionPolicy()}</li>
-     *     <li>{@link #withOptionalDescendDirPathFilter()}</li>
-     *     <li>{@link #withOptionalDescendDirPathComparator()}</li>
-     *     <li>{@link #withOptionalIteratePathFilter()}</li>
-     *     <li>{@link #withOptionalIteratePathComparator()}</li>
+     *     <li>{@link #withDescendDirPathFilter()}</li>
+     *     <li>{@link #withDescendDirPathComparator()}</li>
+     *     <li>{@link #withIteratePathFilter()}</li>
+     *     <li>{@link #withIteratePathComparator()}</li>
      * </ul>
      * <hr/>
      * {@inheritDoc}

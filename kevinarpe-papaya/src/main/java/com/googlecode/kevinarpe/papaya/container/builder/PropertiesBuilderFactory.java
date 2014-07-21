@@ -26,7 +26,10 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-import com.googlecode.kevinarpe.papaya.object.StatelessObject;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Creates {@code PropertiesBuilder}s.
@@ -42,8 +45,7 @@ import com.googlecode.kevinarpe.papaya.object.StatelessObject;
  */
 @FullyTested
 public final class PropertiesBuilderFactory
-extends StatelessObject
-implements MapBuilderFactory<PropertiesBuilder> {
+extends AbstractMapBuilderFactory<Object, Object, Properties, PropertiesBuilder> {
 
     /**
      * Constructs a new builder factory.
@@ -59,8 +61,45 @@ implements MapBuilderFactory<PropertiesBuilder> {
 
     /** {@inheritDoc} */
     @Override
-    public PropertiesBuilder newInstance() {
+    public PropertiesBuilder builder() {
         PropertiesBuilder x = PropertiesBuilder.create();
         return x;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Properties copyOf(Map<?, ?> map) {
+        Properties x = new Properties();
+        x.putAll(map);
+        return x;
+    }
+
+    private static final class _MapBuilderFactoryHelper
+    implements MapBuilderFactoryHelper<Object, Object, Properties> {
+
+        private final Properties prop;
+
+        private _MapBuilderFactoryHelper() {
+            prop = new Properties();
+        }
+
+        @Override
+        public void put(Object key, Object value) {
+            ObjectArgs.checkCast(key, String.class, "key");
+            ObjectArgs.checkCast(value, String.class, "value");
+
+            prop.put(key, value);
+        }
+
+        @Override
+        public Properties getMap() {
+            return prop;
+        }
+    }
+
+    @Override
+    protected MapBuilderFactoryHelper<Object, Object, Properties>
+    createMapBuilderHelper(int initialCapacity) {
+        return null;
     }
 }
