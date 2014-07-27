@@ -33,7 +33,7 @@ import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.PathArgs;
 import com.googlecode.kevinarpe.papaya.container.Collections3;
 import com.googlecode.kevinarpe.papaya.container.ICollections3;
-import com.googlecode.kevinarpe.papaya.container.builder.ImmutableListBuilderFactory;
+import com.googlecode.kevinarpe.papaya.container.builder.ImmutableListFactory;
 import com.googlecode.kevinarpe.papaya.exception.PathException;
 import com.googlecode.kevinarpe.papaya.exception.PathExceptionReason;
 
@@ -52,8 +52,8 @@ import java.util.Iterator;
 final class DirectoryListingImpl
 implements DirectoryListing {
 
-    private static final ImmutableListBuilderFactory<File> IMMUTABLE_LIST_BUILDER_FACTORY =
-        ImmutableListBuilderFactory.create();
+    private static final ImmutableListFactory<File> IMMUTABLE_LIST_BUILDER_FACTORY =
+        ImmutableListFactory.create();
     private final File _dirPath;
     private final ImmutableList<File> _childPathList;
     private final ICollections3 _collections3;

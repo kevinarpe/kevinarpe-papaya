@@ -41,7 +41,7 @@ import java.util.LinkedHashSet;
  *
  * @see SetBuilder
  * @see HashSet
- * @see HashSetBuilderFactory
+ * @see HashSetFactory
  * @see LinkedHashSetBuilder
  * @see ImmutableSetBuilder
  */

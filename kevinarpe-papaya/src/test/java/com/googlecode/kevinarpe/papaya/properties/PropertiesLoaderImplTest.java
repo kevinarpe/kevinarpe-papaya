@@ -26,7 +26,7 @@ package com.googlecode.kevinarpe.papaya.properties;
  */
 
 import com.googlecode.kevinarpe.papaya.container.builder.MapBuilder;
-import com.googlecode.kevinarpe.papaya.container.builder.MapBuilderFactory;
+import com.googlecode.kevinarpe.papaya.container.builder.MapFactory;
 import com.googlecode.kevinarpe.papaya.input.IInputSource2Utils;
 import com.googlecode.kevinarpe.papaya.input.InputSource2;
 import com.googlecode.kevinarpe.papaya.jdk.properties.JdkProperty;
@@ -64,14 +64,13 @@ public class PropertiesLoaderImplTest {
     private InputSource2 mockInputSource2A;
     private InputSource2 mockInputSource2B;
     private List<InputSource2> inputSourceList;
-    private MapBuilderFactory
-                <
-                    String,
-                    String,
-                    Map<String, String>,
-                    MapBuilder<String, String, Map<String, String>>
-                >
-        mockMapBuilderFactory;
+    private MapFactory<
+                        String,
+                        String,
+                        Map<String, String>,
+                        MapBuilder<String, String, Map<String, String>>
+                    >
+        mockMapFactory;
     private MapBuilder<String, String, Map<String, String>> mockMapBuilder;
     private Map<String, String> mockMap;
     private RandomAccessList<JdkProperty> mockJdkPropertyListA;
@@ -100,15 +99,14 @@ public class PropertiesLoaderImplTest {
         inputSourceList = Arrays.asList(mockInputSource2A, mockInputSource2B);
         {
             @SuppressWarnings("unchecked")
-            MapBuilderFactory
-                    <
-                        String,
-                        String,
-                        Map<String, String>,
-                        MapBuilder<String, String, Map<String, String>>
-                    >
-                x = mock(MapBuilderFactory.class);
-            mockMapBuilderFactory = x;
+            MapFactory<
+                                    String,
+                                    String,
+                                    Map<String, String>,
+                                    MapBuilder<String, String, Map<String, String>>
+                                >
+                x = mock(MapFactory.class);
+            mockMapFactory = x;
         }
         {
             @SuppressWarnings("unchecked")
@@ -173,7 +171,7 @@ public class PropertiesLoaderImplTest {
         doThrow(exception)
             .when(mockIInputSource2Utils).checkValid(inputSourceList, "inputSourceList");
         try {
-            classUnderTest.load(inputSourceList, mockMapBuilderFactory);
+            classUnderTest.load(inputSourceList, mockMapFactory);
         }
         catch (Exception e) {
             assertSame(e, exception);
@@ -188,7 +186,7 @@ public class PropertiesLoaderImplTest {
         when(mockJdkPropertiesLoaderHelper.loadPropertyList(mockInputSource2A))
             .thenThrow(exception);
         try {
-            classUnderTest.load(inputSourceList, mockMapBuilderFactory);
+            classUnderTest.load(inputSourceList, mockMapFactory);
         }
         catch (Exception e) {
             assertSame(e, exception);
@@ -205,7 +203,7 @@ public class PropertiesLoaderImplTest {
         doThrow(exception).
             when(mockPropertiesLoaderPolicy).apply(mockJdkPropertyListA);
         try {
-            classUnderTest.load(inputSourceList, mockMapBuilderFactory);
+            classUnderTest.load(inputSourceList, mockMapFactory);
         }
         catch (Exception e) {
             assertSame(e, exception);
@@ -216,13 +214,13 @@ public class PropertiesLoaderImplTest {
     @Test
     public void load_Pass()
     throws PropertiesLoaderException {
-        when(mockMapBuilderFactory.builder()).thenReturn(mockMapBuilder);
+        when(mockMapFactory.builder()).thenReturn(mockMapBuilder);
         when(mockMapBuilder.build()).thenReturn(mockMap);
         when(mockJdkPropertiesLoaderHelper.loadPropertyList(mockInputSource2A))
             .thenReturn(mockJdkPropertyListA);
         when(mockJdkPropertiesLoaderHelper.loadPropertyList(mockInputSource2B))
             .thenReturn(mockJdkPropertyListB);
-        Map<String, String> map = classUnderTest.load(inputSourceList, mockMapBuilderFactory);
+        Map<String, String> map = classUnderTest.load(inputSourceList, mockMapFactory);
         assertSame(map, mockMap);
         InOrder inOrder =
             inOrder(mockIInputSource2Utils, mockJdkPropertiesLoaderHelper, mockPropertiesMerger);

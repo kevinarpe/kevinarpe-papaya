@@ -26,7 +26,7 @@ package com.googlecode.kevinarpe.papaya.container;
  */
 
 import com.googlecode.kevinarpe.papaya.container.builder.ListBuilder;
-import com.googlecode.kevinarpe.papaya.container.builder.ListBuilderFactory;
+import com.googlecode.kevinarpe.papaya.container.builder.ListFactory;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
 import javax.annotation.concurrent.Immutable;
@@ -38,7 +38,7 @@ import java.util.List;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-// TODO: LAST: Test me
+// TODO: Test me
 @Immutable
 public class Collections3
 extends StatelessObject
@@ -56,7 +56,7 @@ implements ICollections3 {
         TInputCollection extends Collection<? extends TValue>,
         TOutputList extends List<TValue>,
         TListBuilder extends ListBuilder<TValue, TOutputList, TListBuilder>,
-        TListBuilderFactory extends ListBuilderFactory<TValue, TOutputList, TListBuilder>
+        TListBuilderFactory extends ListFactory<TValue, TOutputList, TListBuilder>
     >
     TOutputList sort(TInputCollection collection, TListBuilderFactory listBuilderFactory) {
         TOutputList list = listBuilderFactory.copyOf(collection);
@@ -70,7 +70,7 @@ implements ICollections3 {
         TInputCollection extends Collection<? extends TValue>,
         TOutputList extends List<TValue>,
         TListBuilder extends ListBuilder<TValue, TOutputList, TListBuilder>,
-        TListBuilderFactory extends ListBuilderFactory<TValue, TOutputList, TListBuilder>
+        TListBuilderFactory extends ListFactory<TValue, TOutputList, TListBuilder>
     >
     TOutputList sort(
             TInputCollection collection,

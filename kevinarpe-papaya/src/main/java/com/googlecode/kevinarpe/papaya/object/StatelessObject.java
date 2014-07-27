@@ -49,7 +49,14 @@ public class StatelessObject {
      */
     @Override
     public final boolean equals(Object obj) {
-        return (this == obj || (null != obj && this.getClass().equals(obj.getClass())));
+        if (this == obj) {
+            return true;
+        }
+        if (null == obj) {
+            return false;
+        }
+        boolean x = this.getClass().equals(obj.getClass());
+        return x;
     }
 
     /**
@@ -59,6 +66,7 @@ public class StatelessObject {
      */
     @Override
     public final int hashCode() {
-        return this.getClass().hashCode();
+        int x = this.getClass().hashCode();
+        return x;
     }
 }

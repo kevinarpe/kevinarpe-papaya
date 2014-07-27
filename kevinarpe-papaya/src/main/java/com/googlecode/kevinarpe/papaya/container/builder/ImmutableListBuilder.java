@@ -39,7 +39,7 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
  * @see #create()
  * @see ListBuilder
  * @see ImmutableList
- * @see ImmutableListBuilderFactory
+ * @see ImmutableListFactory
  * @see ArrayListBuilder
  * @see LinkedListBuilder
  */

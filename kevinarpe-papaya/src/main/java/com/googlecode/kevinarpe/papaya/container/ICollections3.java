@@ -27,7 +27,7 @@ package com.googlecode.kevinarpe.papaya.container;
 
 import com.google.common.collect.Collections2;
 import com.googlecode.kevinarpe.papaya.container.builder.ListBuilder;
-import com.googlecode.kevinarpe.papaya.container.builder.ListBuilderFactory;
+import com.googlecode.kevinarpe.papaya.container.builder.ListFactory;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -53,7 +53,7 @@ public interface ICollections3 {
         TInputCollection extends Collection<? extends TValue>,
         TOutputList extends List<TValue>,
         TListBuilder extends ListBuilder<TValue, TOutputList, TListBuilder>,
-        TListBuilderFactory extends ListBuilderFactory<TValue, TOutputList, TListBuilder>
+        TListBuilderFactory extends ListFactory<TValue, TOutputList, TListBuilder>
     >
     TOutputList sort(TInputCollection collection, TListBuilderFactory listBuilderFactory);
 
@@ -62,7 +62,7 @@ public interface ICollections3 {
         TInputCollection extends Collection<? extends TValue>,
         TOutputList extends List<TValue>,
         TListBuilder extends ListBuilder<TValue, TOutputList, TListBuilder>,
-        TListBuilderFactory extends ListBuilderFactory<TValue, TOutputList, TListBuilder>
+        TListBuilderFactory extends ListFactory<TValue, TOutputList, TListBuilder>
         >
     TOutputList sort(
             TInputCollection collection,

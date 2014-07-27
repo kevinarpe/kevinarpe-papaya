@@ -84,7 +84,7 @@ final class TraversePathLevel {
     static final Class<? extends List> DEFAULT_DIRECTORY_LISTING_LIST_CLASS = LinkedList.class;
 
     private final Factory _factory;
-    // TODO: LAST: Need to rethink this package.  Can we write interfaces first?
+    // TODO: Need to rethink this package.  Can we write interfaces first?
     private final AbstractTraversePathIteratorImpl _parent;
     private final int _depth;
     private final DirectoryListing _origDirListing;

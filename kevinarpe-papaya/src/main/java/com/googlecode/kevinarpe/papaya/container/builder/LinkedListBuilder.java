@@ -41,7 +41,7 @@ import java.util.LinkedList;
  * @see #create()
  * @see ListBuilder
  * @see LinkedList
- * @see LinkedListBuilderFactory
+ * @see LinkedListFactory
  * @see ArrayListBuilder
  * @see ImmutableListBuilder
  */

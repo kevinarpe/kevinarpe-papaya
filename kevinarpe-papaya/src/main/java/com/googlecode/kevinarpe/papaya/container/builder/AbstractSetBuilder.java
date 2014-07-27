@@ -80,7 +80,7 @@ implements SetBuilder<TValue, TSet, TSelf> {
     protected abstract TSelf self();
 
     @Override
-    public TSelf addMany(TValue... valueArr) {
+    public final TSelf addMany(TValue... valueArr) {
         ObjectArgs.checkNotNull(valueArr, "valueArr");
 
         if (0 != valueArr.length) {
@@ -91,7 +91,7 @@ implements SetBuilder<TValue, TSet, TSelf> {
     }
 
     @Override
-    public TSelf addMany(Iterable<? extends TValue> valueIterable) {
+    public final TSelf addMany(Iterable<? extends TValue> valueIterable) {
         ObjectArgs.checkNotNull(valueIterable, "valueIterable");
 
         Iterator<? extends TValue> valueIter = valueIterable.iterator();
@@ -101,7 +101,7 @@ implements SetBuilder<TValue, TSet, TSelf> {
     }
 
     @Override
-    public TSelf addMany(Iterator<? extends TValue> valueIter) {
+    public final TSelf addMany(Iterator<? extends TValue> valueIter) {
         ObjectArgs.checkNotNull(valueIter, "valueIter");
 
         Iterators.addAll(_set, valueIter);

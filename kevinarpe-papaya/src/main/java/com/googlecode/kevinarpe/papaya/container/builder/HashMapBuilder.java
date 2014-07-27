@@ -43,7 +43,7 @@ import java.util.HashMap;
  * @see #create()
  * @see MapBuilder
  * @see HashMap
- * @see HashMapBuilderFactory
+ * @see HashMapFactory
  * @see LinkedHashMapBuilder
  * @see ImmutableMapBuilder
  * @see PropertiesBuilder

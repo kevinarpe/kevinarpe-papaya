@@ -2,8 +2,6 @@ package com.googlecode.kevinarpe.papaya.argument;
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
-import java.lang.reflect.TypeVariable;
-
 /*
  * #%L
  * This file is part of Papaya.
@@ -134,7 +132,7 @@ public final class ObjectArgs {
      * @param ref
      *        an object reference
      * @param destClass
-     *        destination type after cast
+     *        class for destination type after cast
      * @param refArgName
      *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @param destClassArgName
@@ -210,7 +208,7 @@ public final class ObjectArgs {
      * @param ref
      *        an object reference, including {@code null}
      * @param clazz
-     *        destination type after cast
+     *        class for destination type after cast
      * @param refArgName
      *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @param clazzArgName
@@ -263,9 +261,9 @@ public final class ObjectArgs {
      * {@link #checkInstanceOfType(Object, Class, String, String)}.
      * 
      * @param srcClass
-     *        source type before cast
+     *        class for source type before cast
      * @param destClass
-     *        destination type after cast
+     *        class for destination type after cast
      * @param srcClassArgName
      *        argument name for {@code srcClass},
      *        e.g., "strListClass" or "searchRegexClass"
@@ -300,18 +298,5 @@ public final class ObjectArgs {
                 srcClassArgName, srcClass.getName(), destClass.getName(), w, w2);
             throw new ClassCastException(msg);
         }
-    }
-
-    // TODO: Test me
-    public static <T> Class<T> checkNotGenericType(Class<T> clazz, String argName) {
-        ObjectArgs.checkNotNull(clazz, argName);
-
-        TypeVariable<? extends Class<?>>[] typeParamArr = clazz.getTypeParameters();
-        if (0 != typeParamArr.length) {
-            throw new IllegalArgumentException(String.format(
-                "Argument '%s' is a generic type declaration, e.g., List.class: %s",
-                argName, clazz.getName()));
-        }
-        return clazz;
     }
 }

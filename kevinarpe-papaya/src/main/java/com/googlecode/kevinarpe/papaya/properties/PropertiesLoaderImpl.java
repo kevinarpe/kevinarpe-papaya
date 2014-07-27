@@ -28,7 +28,7 @@ package com.googlecode.kevinarpe.papaya.properties;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.container.builder.MapBuilder;
-import com.googlecode.kevinarpe.papaya.container.builder.MapBuilderFactory;
+import com.googlecode.kevinarpe.papaya.container.builder.MapFactory;
 import com.googlecode.kevinarpe.papaya.container.builder.PropertiesBuilder;
 import com.googlecode.kevinarpe.papaya.input.IInputSource2Utils;
 import com.googlecode.kevinarpe.papaya.input.InputSource2;
@@ -140,7 +140,7 @@ implements PropertiesLoader {
     <
         TMap extends Map<String, String>,
         TMapBuilder extends MapBuilder<String, String, TMap>,
-        TMapBuilderFactory extends MapBuilderFactory<String, String, TMap, TMapBuilder>
+        TMapBuilderFactory extends MapFactory<String, String, TMap, TMapBuilder>
     >
     TMap load(
             List<? extends InputSource2> inputSourceList, TMapBuilderFactory mapBuilderFactory)

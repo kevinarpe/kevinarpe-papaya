@@ -40,7 +40,7 @@ import java.util.HashSet;
  *
  * @see SetBuilder
  * @see HashSet
- * @see HashSetBuilderFactory
+ * @see HashSetFactory
  * @see LinkedHashSetBuilder
  * @see ImmutableSetBuilder
  */

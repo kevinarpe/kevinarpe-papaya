@@ -39,7 +39,7 @@ import java.util.Properties;
  * @see #create()
  * @see MapBuilder
  * @see Properties
- * @see PropertiesBuilderFactory
+ * @see PropertiesFactory
  * @see HashMapBuilder
  * @see LinkedHashMapBuilder
  * @see ImmutableMapBuilder

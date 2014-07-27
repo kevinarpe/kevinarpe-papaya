@@ -41,7 +41,7 @@ import java.util.ArrayList;
  * @see #create()
  * @see ListBuilder
  * @see ArrayList
- * @see ArrayListBuilderFactory
+ * @see ArrayListFactory
  * @see LinkedListBuilder
  * @see ImmutableListBuilder
  */

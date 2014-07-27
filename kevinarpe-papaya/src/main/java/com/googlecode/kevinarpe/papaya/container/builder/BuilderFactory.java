@@ -33,10 +33,10 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * @param <TBuilder>
  *        type of builder: extends Builder&lt;?>
  *
- * @see CollectionBuilderFactory
- * @see ListBuilderFactory
- * @see SetBuilderFactory
- * @see MapBuilderFactory
+ * @see CollectionFactory
+ * @see ListFactory
+ * @see SetFactory
+ * @see MapFactory
  */
 public interface BuilderFactory<TBuilder extends Builder<?>> {
 

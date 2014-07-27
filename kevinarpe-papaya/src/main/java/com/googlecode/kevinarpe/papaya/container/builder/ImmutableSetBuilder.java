@@ -38,7 +38,7 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
  *
  * @see SetBuilder
  * @see ImmutableSet
- * @see ImmutableSetBuilderFactory
+ * @see ImmutableSetFactory
  * @see HashSetBuilder
  * @see LinkedHashSetBuilder
  */

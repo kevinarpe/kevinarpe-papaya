@@ -41,7 +41,7 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
  * @see #create()
  * @see MapBuilder
  * @see ImmutableMap
- * @see ImmutableMapBuilderFactory
+ * @see ImmutableMapFactory
  * @see HashMapBuilder
  * @see LinkedHashMapBuilder
  * @see PropertiesBuilder

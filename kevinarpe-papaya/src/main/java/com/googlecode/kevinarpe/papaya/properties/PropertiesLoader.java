@@ -26,7 +26,7 @@ package com.googlecode.kevinarpe.papaya.properties;
  */
 
 import com.googlecode.kevinarpe.papaya.container.builder.MapBuilder;
-import com.googlecode.kevinarpe.papaya.container.builder.MapBuilderFactory;
+import com.googlecode.kevinarpe.papaya.container.builder.MapFactory;
 import com.googlecode.kevinarpe.papaya.input.InputSource2;
 
 import java.util.List;
@@ -80,7 +80,7 @@ public interface PropertiesLoader {
      *     <li>Overriding properties are logged at level TRACE.</li>
      * </ul>
      * <p>
-     * To load properties to a different collection, see {@link #load(List, MapBuilderFactory)}.
+     * To load properties to a different collection, see {@link #load(List, MapFactory)}.
      *
      * @param inputSourceList
      *        one or more input sources to load properties
@@ -97,7 +97,7 @@ public interface PropertiesLoader {
      *     <li>if properties from an input source fail policy (duplicates, etc.)</li>
      * </ul>
      *
-     * @see #load(List, MapBuilderFactory)
+     * @see #load(List, MapFactory)
      */
     Properties load(List<? extends InputSource2> inputSourceList)
     throws PropertiesLoaderException;
@@ -127,12 +127,12 @@ public interface PropertiesLoader {
      * </ul>
      *
      * @see #load(List)
-     * @see MapBuilderFactory
+     * @see MapFactory
      */
     <
         TMap extends Map<String, String>,
         TMapBuilder extends MapBuilder<String, String, TMap>,
-        TMapBuilderFactory extends MapBuilderFactory<String, String, TMap, TMapBuilder>
+        TMapBuilderFactory extends MapFactory<String, String, TMap, TMapBuilder>
     >
     TMap load(
             List<? extends InputSource2> inputSourceList, TMapBuilderFactory mapBuilderFactory)
