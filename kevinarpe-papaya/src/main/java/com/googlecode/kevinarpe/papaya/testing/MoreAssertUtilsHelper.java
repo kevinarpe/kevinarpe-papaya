@@ -40,7 +40,7 @@ interface MoreAssertUtilsHelper {
             TActual actual,
             TExpected expected,
             @Nullable String optionalMessagePrefixFormat,
-            Object[] formatArgArr);
+            Object... formatArgArr);
 
     <TBase, TActual extends TBase, TExpected extends TBase>
     void assertNeitherNull(
@@ -48,14 +48,14 @@ interface MoreAssertUtilsHelper {
             TActual actual,
             TExpected expected,
             @Nullable String optionalMessagePrefixFormat,
-            Object[] formatArgArr);
+            Object... formatArgArr);
 
     int assertSameContainerSize(
             Class<?> containerClass,
             int actualContainerSize,
             int expectedContainerSize,
             @Nullable String optionalMessagePrefixFormat,
-            Object[] formatArgArr);
+            Object... formatArgArr);
 
     void throwAssertionError(
             @Nullable String optionalMessagePrefixFormat,
@@ -69,7 +69,7 @@ interface MoreAssertUtilsHelper {
             Set<T> actualSet,
             Set<? extends T> expectedSet,
             @Nullable String optionalMessagePrefixFormat,
-            Object[] formatArgArr);
+            Object... formatArgArr);
 
     <TKey, TValue>
     void assertMapEntrySetEquals(
@@ -77,5 +77,5 @@ interface MoreAssertUtilsHelper {
             Map<TKey, TValue> actualMap,
             Map<? extends TKey, ? extends TValue> expectedMap,
             @Nullable String optionalMessagePrefixFormat,
-            Object[] formatArgArr);
+            Object... formatArgArr);
 }

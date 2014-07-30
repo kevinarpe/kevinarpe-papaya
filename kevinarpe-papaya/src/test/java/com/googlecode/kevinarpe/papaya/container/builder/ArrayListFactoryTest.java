@@ -31,7 +31,7 @@ import static org.testng.Assert.assertNotNull;
 
 public class ArrayListFactoryTest {
 
-    // TODO: LAST: Improve tests like HashSetFactoryTest
+    // TODO: Improve tests like HashSetFactoryTest
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // ArrayListBuilderFactory.create()

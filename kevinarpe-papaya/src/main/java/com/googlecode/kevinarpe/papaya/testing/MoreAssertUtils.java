@@ -60,58 +60,59 @@ implements IMoreAssertUtils {
 
     @Override
     public <T> void assertListEquals(
-            @Nullable List<T> actual, @Nullable List<? extends T> expected) {
+            @Nullable List<T> actualList, @Nullable List<? extends T> expectedList) {
         final String optionalMessagePrefixFormat = null;
-        _coreAssertListEquals(actual, expected, optionalMessagePrefixFormat);
+        _coreAssertListEquals(actualList, expectedList, optionalMessagePrefixFormat);
     }
 
     @Override
     public <T> void assertListEquals(
-            @Nullable List<T> actual,
-            @Nullable List<? extends T> expected,
+            @Nullable List<T> actualList,
+            @Nullable List<? extends T> expectedList,
             String messagePrefixFormat,
             Object... formatArgArr) {
         StringArgs.checkNotEmptyOrWhitespace(messagePrefixFormat, "messagePrefixFormat");
         ObjectArgs.checkNotNull(formatArgArr, "formatArgArr");
 
-        _coreAssertListEquals(actual, expected, messagePrefixFormat, formatArgArr);
-    }
-
-    @Override
-    public <T> void assertSetEquals(@Nullable Set<T> actual, @Nullable Set<? extends T> expected) {
-        final String optionalMessagePrefixFormat = null;
-        _coreAssertSetEquals(actual, expected, optionalMessagePrefixFormat);
+        _coreAssertListEquals(actualList, expectedList, messagePrefixFormat, formatArgArr);
     }
 
     @Override
     public <T> void assertSetEquals(
-            @Nullable Set<T> actual,
-            @Nullable Set<? extends T> expected,
+            @Nullable Set<T> actualSet, @Nullable Set<? extends T> expectedSet) {
+        final String optionalMessagePrefixFormat = null;
+        _coreAssertSetEquals(actualSet, expectedSet, optionalMessagePrefixFormat);
+    }
+
+    @Override
+    public <T> void assertSetEquals(
+            @Nullable Set<T> actualSet,
+            @Nullable Set<? extends T> expectedSet,
             String messagePrefixFormat,
             Object... formatArgArr) {
         StringArgs.checkNotEmptyOrWhitespace(messagePrefixFormat, "messagePrefixFormat");
         ObjectArgs.checkNotNull(formatArgArr, "formatArgArr");
 
-        _coreAssertSetEquals(actual, expected, messagePrefixFormat, formatArgArr);
+        _coreAssertSetEquals(actualSet, expectedSet, messagePrefixFormat, formatArgArr);
     }
 
     @Override
     public <T> void assertLinkedSetEquals(
-        @Nullable Set<T> actual, @Nullable Set<? extends T> expected) {
+            @Nullable Set<T> actualSet, @Nullable Set<? extends T> expectedSet) {
         final String optionalMessagePrefixFormat = null;
-        _coreAssertLinkedSetEquals(actual, expected, optionalMessagePrefixFormat);
+        _coreAssertLinkedSetEquals(actualSet, expectedSet, optionalMessagePrefixFormat);
     }
 
     @Override
     public <T> void assertLinkedSetEquals(
-        @Nullable Set<T> actual,
-        @Nullable Set<? extends T> expected,
-        String messagePrefixFormat,
-        Object... formatArgArr) {
+            @Nullable Set<T> actualSet,
+            @Nullable Set<? extends T> expectedSet,
+            String messagePrefixFormat,
+            Object... formatArgArr) {
         StringArgs.checkNotEmptyOrWhitespace(messagePrefixFormat, "messagePrefixFormat");
         ObjectArgs.checkNotNull(formatArgArr, "formatArgArr");
 
-        _coreAssertLinkedSetEquals(actual, expected, messagePrefixFormat, formatArgArr);
+        _coreAssertLinkedSetEquals(actualSet, expectedSet, messagePrefixFormat, formatArgArr);
     }
 
     @Override

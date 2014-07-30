@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.testing;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
 import javax.annotation.Nullable;
@@ -34,7 +35,7 @@ import java.util.Set;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-// TODO: Test me
+@FullyTested
 final class MoreAssertUtilsHelperImpl
 extends StatelessObject
 implements MoreAssertUtilsHelper {
@@ -48,7 +49,7 @@ implements MoreAssertUtilsHelper {
             TActual actual,
             TExpected expected,
             @Nullable String optionalMessagePrefixFormat,
-            Object[] formatArgArr) {
+            Object... formatArgArr) {
 
         if (!actual.equals(expected)) {
             throwAssertionError(optionalMessagePrefixFormat, formatArgArr,
@@ -79,8 +80,8 @@ implements MoreAssertUtilsHelper {
         if (actualHashCode != expectedHashCode) {
             throwAssertionError(optionalMessagePrefixFormat, formatArgArr,
                 "%1$ss not equal: %1$ss pass equals() test, but fail test: actual%1$s.hashCode() != expected%1$s.hashCode()"
-                    + "%n\tActual  : %d"
-                    + "%n\tExpected: %d"
+                    + "%n\tActual  : %2$d"
+                    + "%n\tExpected: %3$d"
                     + "%n\tProbably hashCode() has incorrect override definition",
                 clazz.getSimpleName(), actualHashCode, expectedHashCode);
         }
@@ -93,7 +94,7 @@ implements MoreAssertUtilsHelper {
             TActual actual,
             TExpected expected,
             @Nullable String optionalMessagePrefixFormat,
-            Object[] formatArgArr) {
+            Object... formatArgArr) {
 
         if (null == actual && null != expected) {
             throwAssertionError(optionalMessagePrefixFormat, formatArgArr,
@@ -113,7 +114,7 @@ implements MoreAssertUtilsHelper {
             int actualContainerSize,
             int expectedContainerSize,
             @Nullable String optionalMessagePrefixFormat,
-            Object[] formatArgArr) {
+            Object... formatArgArr) {
 
         if (actualContainerSize != expectedContainerSize) {
             throwAssertionError(optionalMessagePrefixFormat, formatArgArr,
@@ -144,7 +145,7 @@ implements MoreAssertUtilsHelper {
             Set<T> actualSet,
             Set<? extends T> expectedSet,
             @Nullable String optionalMessagePrefixFormat,
-            Object[] formatArgArr) {
+            Object... formatArgArr) {
 
         for (T expectedValue : expectedSet) {
             if (!actualSet.contains(expectedValue)) {
@@ -182,7 +183,7 @@ implements MoreAssertUtilsHelper {
             Map<TKey, TValue> actualMap,
             Map<? extends TKey, ? extends TValue> expectedMap,
             @Nullable String optionalMessagePrefixFormat,
-            Object[] formatArgArr) {
+            Object... formatArgArr) {
 
         if (!actualMap.entrySet().equals(expectedMap.entrySet())) {
             throwAssertionError(optionalMessagePrefixFormat, formatArgArr,
