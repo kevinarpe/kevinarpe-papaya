@@ -26,7 +26,6 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.Lists;
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
@@ -46,7 +45,6 @@ import java.util.ArrayList;
  * @see LinkedListFactory
  * @see ImmutableListFactory
  */
-@FullyTested
 public final class ArrayListFactory<TValue>
 extends StatelessObject
 implements ListFactory<TValue, ArrayList<TValue>, ArrayListBuilder<TValue>> {

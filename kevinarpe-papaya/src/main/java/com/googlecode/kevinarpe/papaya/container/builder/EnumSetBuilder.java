@@ -25,56 +25,55 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
-import com.google.common.collect.Lists;
-
-import java.util.LinkedList;
+import java.util.EnumSet;
+import java.util.HashSet;
 
 /**
- * Builds {@code LinkedList} collections.
+ * Builds {@code HashSet} collections.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @param <TValue>
- *        type of value for list elements
+ *        type of value for set elements
  *
- * @see #create()
- * @see ListBuilder
- * @see LinkedList
- * @see LinkedListFactory
- * @see ArrayListBuilder
- * @see ImmutableListBuilder
+ * @see SetBuilder
+ * @see HashSet
+ * @see HashSetFactory
+ * @see LinkedHashSetBuilder
+ * @see ImmutableSetBuilder
  */
-public final class LinkedListBuilder<TValue>
-extends AbstractListBuilder
+public final class EnumSetBuilder<TValue extends Enum<TValue>>
+extends AbstractSetBuilder
             <
                 TValue,
-                LinkedList<TValue>,
-                LinkedListBuilder<TValue>
+                EnumSet<TValue>,
+                EnumSetBuilder<TValue>
             > {
 
     /**
      * Constructs a new builder.
      */
-    public static <TValue> LinkedListBuilder<TValue> create() {
-        LinkedListBuilder<TValue> x = new LinkedListBuilder<TValue>();
+    public static <TValue extends Enum<TValue>>
+    EnumSetBuilder<TValue> create(Class<TValue> valueClass) {
+        EnumSetBuilder<TValue> x = new EnumSetBuilder<TValue>(valueClass);
         return x;
     }
 
-    private LinkedListBuilder() {
-        super(new LinkedList<TValue>());
+    private EnumSetBuilder(Class<TValue> valueClass) {
+        super(EnumSet.noneOf(valueClass));
     }
 
     /**
-     * Builds a new {@code ArrayList} from values stored in the builder.
+     * Builds a new {@code EnumSet} from values stored in the builder.
      */
     @Override
-    public LinkedList<TValue> build() {
-        LinkedList<TValue> x = Lists.newLinkedList(delegate());
+    public EnumSet<TValue> build() {
+        EnumSet<TValue> x = EnumSet.copyOf(delegate());
         return x;
     }
 
     @Override
-    protected LinkedListBuilder<TValue> self() {
+    protected EnumSetBuilder<TValue> self() {
         return this;
     }
 }

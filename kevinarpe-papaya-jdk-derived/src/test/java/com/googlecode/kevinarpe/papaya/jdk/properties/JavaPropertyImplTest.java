@@ -34,13 +34,13 @@ import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 
-public class JdkPropertyTest {
+public class JavaPropertyImplTest {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Helpers
     //
 
-    private void _assertKeyAndValue(JdkProperty classUnderTest, String key, String value) {
+    private void _assertKeyAndValue(JavaPropertyImpl classUnderTest, String key, String value) {
         assertEquals(classUnderTest.getKey(), key);
         assertEquals(classUnderTest.getValue(), value);
     }
@@ -49,49 +49,33 @@ public class JdkPropertyTest {
     // JdkProperty.ctor()
     //
 
-    @Test
-    public void ctor_Pass() {
-        _assertKeyAndValue(new JdkProperty("abc", "def"), "abc", "def");
-        _assertKeyAndValue(new JdkProperty(null, null), null, null);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // JdkProperty.setKey()
-    //
-
     @DataProvider
-    private static Object[][] _setKeyOrValue_Pass_Data() {
+    private static Object[][] _ctor_Pass_Data() {
         return new Object[][] {
-            { "abc", "def", "ghi" },
-            { "abc", null, "ghi" },
-            { null, "def", "ghi" },
-            { "abc", "abc", "ghi" },
-
-            { "abc", "def", null },
-            { "abc", null, null },
-            { null, "def", null },
-            { "abc", "abc", null },
+            { "", "def" },
+            { "abc", "" },
+            { "", "" },
         };
     }
 
-    @Test(dataProvider = "_setKeyOrValue_Pass_Data")
-    public void setKey_Pass(String key1, String key2, String value) {
-        JdkProperty classUnderTest = new JdkProperty(key1, value);
-        _assertKeyAndValue(classUnderTest, key1, value);
-        classUnderTest.setKey(key2);
-        _assertKeyAndValue(classUnderTest, key2, value);
+    @Test(dataProvider = "_ctor_Pass_Data")
+    public void ctor_Pass(String key, String value) {
+        _assertKeyAndValue(new JavaPropertyImpl(key, value), key, value);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // JdkProperty.setValue()
-    //
+    @DataProvider
+    private static Object[][] _ctor_FailWithNull_Data() {
+        return new Object[][] {
+            { null, "def" },
+            { "abc", null },
+            { null, null },
+        };
+    }
 
-    @Test(dataProvider = "_setKeyOrValue_Pass_Data")
-    public void setValue_Pass(String key, String value1, String value2) {
-        JdkProperty classUnderTest = new JdkProperty(key, value1);
-        _assertKeyAndValue(classUnderTest, key, value1);
-        classUnderTest.setValue(value2);
-        _assertKeyAndValue(classUnderTest, key, value2);
+    @Test(expectedExceptions = NullPointerException.class,
+            dataProvider = "_ctor_FailWithNull_Data")
+    public void ctor_FailWithNull(String key, String value) {
+        new JavaPropertyImpl(key, value);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,10 +85,18 @@ public class JdkPropertyTest {
     @Test
     public void hashCodeAndEquals_Pass() {
         EqualsTester equalsTester = new EqualsTester();
-        equalsTester.addEqualityGroup(new JdkProperty("abc", "def"), new JdkProperty("abc", "def"));
-        equalsTester.addEqualityGroup(new JdkProperty("abc", "ghi"), new JdkProperty("abc", "ghi"));
-        equalsTester.addEqualityGroup(new JdkProperty("ghi", "def"), new JdkProperty("ghi", "def"));
-        equalsTester.addEqualityGroup(new JdkProperty(null, null), new JdkProperty(null, null));
+        equalsTester.addEqualityGroup(
+            new JavaPropertyImpl("abc", "def"), new JavaPropertyImpl("abc", "def"));
+        equalsTester.addEqualityGroup(
+            new JavaPropertyImpl("abc", "ghi"), new JavaPropertyImpl("abc", "ghi"));
+        equalsTester.addEqualityGroup(
+            new JavaPropertyImpl("ghi", "def"), new JavaPropertyImpl("ghi", "def"));
+        equalsTester.addEqualityGroup(
+            new JavaPropertyImpl("", "def"), new JavaPropertyImpl("", "def"));
+        equalsTester.addEqualityGroup(
+            new JavaPropertyImpl("abc", ""), new JavaPropertyImpl("abc", ""));
+        equalsTester.addEqualityGroup(
+            new JavaPropertyImpl("", ""), new JavaPropertyImpl("", ""));
         equalsTester.testEquals();
     }
 }

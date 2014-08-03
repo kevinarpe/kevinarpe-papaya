@@ -25,7 +25,6 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
@@ -44,7 +43,6 @@ import java.util.Properties;
  * @see LinkedHashMapFactory
  * @see ImmutableMapFactory
  */
-@FullyTested
 public final class PropertiesFactory
 extends ForwardingMapFactoryHelper<Object, Object, Properties>
 implements MapFactory<Object, Object, Properties, PropertiesBuilder> {
@@ -60,9 +58,14 @@ implements MapFactory<Object, Object, Properties, PropertiesBuilder> {
     private final MapFactoryHelper<Object, Object, Properties> _mapFactoryHelper;
 
     private PropertiesFactory() {
+        this(new MapBuilderUtils<Object, Object, Properties>());
+    }
+
+    PropertiesFactory(IMapBuilderUtils<Object, Object, Properties> mapBuilderUtils) {
         _mapFactoryHelper =
             new MapFactoryHelperImpl<Object, Object, Properties>(
-                new _MapFactoryHelperHelperFactory());
+                new _MinimalistMapBuilderFactory(),
+                mapBuilderUtils);
     }
 
     /** {@inheritDoc} */
@@ -85,29 +88,29 @@ implements MapFactory<Object, Object, Properties, PropertiesBuilder> {
         return _mapFactoryHelper;
     }
 
-    private static final class _MapFactoryHelperHelperFactory
+    private static final class _MinimalistMapBuilderFactory
     extends StatelessObject
-    implements MapFactoryHelperHelperFactory
+    implements MinimalistMapBuilderFactory
                     <
                         Object,
                         Object,
                         Properties,
-                        _MapFactoryHelperHelper
+                        _MinimalistMapBuilder
                     > {
 
         @Override
-        public _MapFactoryHelperHelper newInstance() {
-            _MapFactoryHelperHelper x = new _MapFactoryHelperHelper();
+        public _MinimalistMapBuilder newInstance() {
+            _MinimalistMapBuilder x = new _MinimalistMapBuilder();
             return x;
         }
     }
 
-    private static final class _MapFactoryHelperHelper
-    implements MapFactoryHelperHelper<Object, Object, Properties> {
+    private static final class _MinimalistMapBuilder
+    implements MinimalistMapBuilder<Object, Object, Properties> {
 
         private final Properties _prop;
 
-        private _MapFactoryHelperHelper() {
+        private _MinimalistMapBuilder() {
             _prop = new Properties();
         }
 

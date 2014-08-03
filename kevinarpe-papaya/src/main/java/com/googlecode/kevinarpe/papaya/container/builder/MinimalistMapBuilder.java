@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.properties;
+package com.googlecode.kevinarpe.papaya.container.builder;
 
 /*
  * #%L
@@ -25,15 +25,18 @@ package com.googlecode.kevinarpe.papaya.properties;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.jdk.properties.JavaProperty;
-
-import java.util.List;
 import java.util.Map;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-interface PropertiesMerger {
+public interface MinimalistMapBuilder
+    <
+        TKey,
+        TValue,
+        TMap extends Map<TKey, TValue>
+    >
+extends MinimalistMap<TKey,TValue> {
 
-    void merge(Map<? super String, ? super String> map, List<JavaProperty> propertyList);
+    TMap getMap();
 }

@@ -26,7 +26,6 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.Sets;
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
@@ -46,7 +45,6 @@ import java.util.HashSet;
  * @see LinkedHashSetFactory
  * @see ImmutableSetFactory
  */
-@FullyTested
 public final class HashSetFactory<TValue>
 extends StatelessObject
 implements SetFactory<TValue, HashSet<TValue>, HashSetBuilder<TValue>> {

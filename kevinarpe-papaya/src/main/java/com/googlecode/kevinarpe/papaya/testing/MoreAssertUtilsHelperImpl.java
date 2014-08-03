@@ -29,6 +29,7 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
 import javax.annotation.Nullable;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -90,7 +91,7 @@ implements MoreAssertUtilsHelper {
     @Override
     public <TBase, TActual extends TBase, TExpected extends TBase>
     void assertNeitherNull(
-            Class<TBase> collectionClass,
+            Class<TBase> clazz,
             TActual actual,
             TExpected expected,
             @Nullable String optionalMessagePrefixFormat,
@@ -99,12 +100,12 @@ implements MoreAssertUtilsHelper {
         if (null == actual && null != expected) {
             throwAssertionError(optionalMessagePrefixFormat, formatArgArr,
                 "%ss not equal: Actual is null, but expected is not null",
-                collectionClass.getSimpleName());
+                clazz.getSimpleName());
         }
         if (null != actual && null == expected) {
             throwAssertionError(optionalMessagePrefixFormat, formatArgArr,
                 "%ss not equal: Actual is not null, but expected is null",
-                collectionClass.getSimpleName());
+                clazz.getSimpleName());
         }
     }
 
@@ -140,14 +141,15 @@ implements MoreAssertUtilsHelper {
     }
 
     @Override
-    public <T> void assertSetContains(
+    public <TValue>
+    void assertSetContains(
             String setDescription,
-            Set<T> actualSet,
-            Set<? extends T> expectedSet,
+            Set<TValue> actualSet,
+            Set<? extends TValue> expectedSet,
             @Nullable String optionalMessagePrefixFormat,
             Object... formatArgArr) {
 
-        for (T expectedValue : expectedSet) {
+        for (TValue expectedValue : expectedSet) {
             if (!actualSet.contains(expectedValue)) {
                 throwAssertionError(optionalMessagePrefixFormat, formatArgArr,
                     "%ss not equal: Actual does not contain expected value: '%s'",
@@ -155,7 +157,7 @@ implements MoreAssertUtilsHelper {
             }
         }
 
-        for (T actualValue : actualSet) {
+        for (TValue actualValue : actualSet) {
             if (!expectedSet.contains(actualValue)) {
                 throwAssertionError(optionalMessagePrefixFormat, formatArgArr,
                     "%ss not equal: Expected does not contain actual value: '%s'",
@@ -195,6 +197,28 @@ implements MoreAssertUtilsHelper {
             throwAssertionError(optionalMessagePrefixFormat, formatArgArr,
                 "%ss not equal: Actual map contains each expected key-value pair, but fails test: expectedMap.entrySet().equals(actualMap.entrySet())",
                 mapDescription);
+        }
+    }
+
+    // TODO: LAST: Test me
+    @Override
+    public void assertBothIteratorsDoNotHaveNext(
+            String containerDescription,
+            Iterator<?> actualIter,
+            Iterator<?> expectedIter,
+            @Nullable String optionalMessagePrefixFormat,
+            Object... formatArgArr) {
+        final String prefix =
+            "%ss not equal: Size is equal, but number of elements by iteration is not equal";
+        if (actualIter.hasNext() && !expectedIter.hasNext()) {
+            throwAssertionError(optionalMessagePrefixFormat, formatArgArr,
+                prefix + "%n\tActual has more elements than expected",
+                containerDescription);
+        }
+        if (!actualIter.hasNext() && expectedIter.hasNext()) {
+            throwAssertionError(optionalMessagePrefixFormat, formatArgArr,
+                prefix + "%n\tExpected has more elements than actual",
+                containerDescription);
         }
     }
 }

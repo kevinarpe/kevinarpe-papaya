@@ -33,7 +33,6 @@ import java.util.Map;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-// TODO: Test me
 public final class MapEntryUtils
 implements IMapEntryUtils {
 

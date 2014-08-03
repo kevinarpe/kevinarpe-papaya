@@ -26,9 +26,9 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.Maps;
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Builds {@code LinkedHashMap} collections.
@@ -48,13 +48,13 @@ import java.util.LinkedHashMap;
  * @see ImmutableMapBuilder
  * @see PropertiesBuilder
  */
-@FullyTested
 public final class LinkedHashMapBuilder<TKey, TValue>
 extends AbstractMapBuilder
             <
                 TKey,
                 TValue,
-                LinkedHashMap<TKey, TValue>
+                LinkedHashMap<TKey, TValue>,
+                LinkedHashMapBuilder<TKey, TValue>
             > {
 
     /**
@@ -66,7 +66,11 @@ extends AbstractMapBuilder
     }
 
     private LinkedHashMapBuilder() {
-        // Empty
+        this(new LinkedHashMap<TKey, TValue>());
+    }
+
+    LinkedHashMapBuilder(Map<TKey, TValue> map) {
+        super(map);
     }
 
     /**
@@ -76,5 +80,10 @@ extends AbstractMapBuilder
     public LinkedHashMap<TKey, TValue> build() {
         LinkedHashMap<TKey, TValue> x = Maps.newLinkedHashMap(delegate());
         return x;
+    }
+
+    @Override
+    protected LinkedHashMapBuilder<TKey, TValue> self() {
+        return this;
     }
 }

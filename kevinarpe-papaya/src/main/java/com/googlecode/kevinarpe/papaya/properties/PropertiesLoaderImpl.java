@@ -33,9 +33,8 @@ import com.googlecode.kevinarpe.papaya.container.builder.PropertiesBuilder;
 import com.googlecode.kevinarpe.papaya.input.IInputSource2Utils;
 import com.googlecode.kevinarpe.papaya.input.InputSource2;
 import com.googlecode.kevinarpe.papaya.input.InputSource2Utils;
-import com.googlecode.kevinarpe.papaya.jdk.properties.JdkPropertiesLoaderUtils;
-import com.googlecode.kevinarpe.papaya.jdk.properties.JdkProperty;
-import com.googlecode.kevinarpe.papaya.jdk.properties.RandomAccessList;
+import com.googlecode.kevinarpe.papaya.jdk.properties.JavaPropertiesLoaderUtils;
+import com.googlecode.kevinarpe.papaya.jdk.properties.JavaProperty;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +51,7 @@ final class PropertiesLoaderImpl
 implements PropertiesLoader {
 
     private final PropertiesLoaderPolicy _policy;
-    private final JdkPropertiesLoaderHelper _jdkPropertiesLoaderHelper;
+    private final JavaPropertiesLoaderHelper _javaPropertiesLoaderHelper;
     private final IInputSource2Utils _inputSource2Utils;
     private final PropertiesMerger _propertiesMerger;
     private final Logger _logger;
@@ -64,8 +63,8 @@ implements PropertiesLoader {
     private PropertiesLoaderImpl(Logger logger) {
         this(
             PropertiesLoaderUtils.DEFAULT_POLICY,
-            new JdkPropertiesLoaderHelperImpl(
-                JdkPropertiesLoaderUtils.INSTANCE.getInstance(),
+            new JavaPropertiesLoaderHelperImpl(
+                JavaPropertiesLoaderUtils.INSTANCE.getInstance(),
                 InputSource2Utils.INSTANCE),
             InputSource2Utils.INSTANCE,
             new PropertiesMergerImpl(logger),
@@ -73,13 +72,13 @@ implements PropertiesLoader {
     }
 
     PropertiesLoaderImpl(
-            JdkPropertiesLoaderHelper jdkPropertiesLoaderHelper,
+            JavaPropertiesLoaderHelper javaPropertiesLoaderHelper,
             IInputSource2Utils inputSource2Utils,
             PropertiesMerger propertiesMerger,
             ILoggerFactory loggerFactory) {
         this(
             PropertiesLoaderUtils.DEFAULT_POLICY,
-            ObjectArgs.checkNotNull(jdkPropertiesLoaderHelper, "jdkPropertiesLoaderHelper"),
+            ObjectArgs.checkNotNull(javaPropertiesLoaderHelper, "jdkPropertiesLoaderHelper"),
             ObjectArgs.checkNotNull(inputSource2Utils, "inputSource2Utils"),
             ObjectArgs.checkNotNull(propertiesMerger, "propertiesMerger"),
             _newLogger(loggerFactory));
@@ -94,12 +93,12 @@ implements PropertiesLoader {
 
     PropertiesLoaderImpl(
             PropertiesLoaderPolicy policy,
-            JdkPropertiesLoaderHelper jdkPropertiesLoaderHelper,
+            JavaPropertiesLoaderHelper javaPropertiesLoaderHelper,
             IInputSource2Utils inputSource2Utils,
             PropertiesMerger propertiesMerger,
             Logger logger) {
         _policy = policy;
-        _jdkPropertiesLoaderHelper = jdkPropertiesLoaderHelper;
+        _javaPropertiesLoaderHelper = javaPropertiesLoaderHelper;
         _inputSource2Utils = inputSource2Utils;
         _propertiesMerger = propertiesMerger;
         _logger = logger;
@@ -117,7 +116,7 @@ implements PropertiesLoader {
         PropertiesLoaderImpl x =
             new PropertiesLoaderImpl(
                 ObjectArgs.checkNotNull(policy, "policy"),
-                _jdkPropertiesLoaderHelper,
+                _javaPropertiesLoaderHelper,
                 _inputSource2Utils,
                 _propertiesMerger,
                 _logger);
@@ -139,11 +138,10 @@ implements PropertiesLoader {
     public
     <
         TMap extends Map<String, String>,
-        TMapBuilder extends MapBuilder<String, String, TMap>,
-        TMapBuilderFactory extends MapFactory<String, String, TMap, TMapBuilder>
+        TMapBuilder extends MapBuilder<String, String, TMap, TMapBuilder>,
+        TMapFactory extends MapFactory<String, String, TMap, TMapBuilder>
     >
-    TMap load(
-            List<? extends InputSource2> inputSourceList, TMapBuilderFactory mapBuilderFactory)
+    TMap load(List<? extends InputSource2> inputSourceList, TMapFactory mapBuilderFactory)
     throws PropertiesLoaderException {
         TMapBuilder mapBuilder = mapBuilderFactory.builder();
         _load(inputSourceList, mapBuilder);
@@ -160,8 +158,8 @@ implements PropertiesLoader {
         for (int index = 0; index < size; ++index) {
             InputSource2 inputSource = inputSourceList.get(index);
             _logger.info("[%d of %d] Load properties: %s", 1 + index, size, inputSource);
-            RandomAccessList<JdkProperty> propertyList =
-                _jdkPropertiesLoaderHelper.loadPropertyList(inputSource);
+            List<JavaProperty> propertyList =
+                _javaPropertiesLoaderHelper.loadPropertyList(inputSource);
             _policy.apply(propertyList);
             _propertiesMerger.merge(map, propertyList);
         }

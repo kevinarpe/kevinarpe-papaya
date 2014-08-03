@@ -28,17 +28,46 @@ package com.googlecode.kevinarpe.papaya.jdk.properties;
  * #L%
  */
 
-import java.util.List;
-import java.util.RandomAccess;
+import java.io.InputStream;
+import java.io.Reader;
+import java.util.Map;
 
 /**
- * Merges interfaces {@code List} and {@code RandomAccess}
+ * Immutable {@code String} key-value pair for a single JDK property.
+ * <p>
+ * Overrides must exist for methods {@link #hashCode()} and {@link #equals(Object)}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see List
- * @see RandomAccess
+ * @see JavaPropertiesLoader#load(InputStream)
+ * @see JavaPropertiesLoader#load(Reader)
  */
-public interface RandomAccessList<T>
-extends List<T>, RandomAccess {
+public interface JavaProperty
+extends Map.Entry<String, String> {
+
+    /**
+     * Never {@code null}, but may be empty.
+     * <hr/>
+     * {@inheritDoc}
+     */
+    @Override
+    String getKey();
+
+    /**
+     * Never {@code null}, but may be empty.
+     * <hr/>
+     * {@inheritDoc}
+     */
+    @Override
+    String getValue();
+
+    /**
+     * Always throws {@code UnsupportedOperationException}.
+     * <hr/>
+     * {@inheritDoc}
+     *
+     * @throws UnsupportedOperationException
+     */
+    @Override
+    String setValue(String value);
 }

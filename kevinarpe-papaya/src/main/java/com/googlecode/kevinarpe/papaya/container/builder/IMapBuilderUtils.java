@@ -30,14 +30,29 @@ import java.util.Map;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public interface MapFactoryHelperHelper
+public interface IMapBuilderUtils
     <
         TKey,
         TValue,
         TMap extends Map<TKey, TValue>
     > {
 
-    void put(TKey key, TValue value);
+    void putMany(
+            MinimalistMap<TKey, TValue> map,
+            Class<TKey> keyClass,
+            Class<TValue> valueClass,
+            Object... keysAndValuesArr);
 
-    TMap getMap();
+    void putMany(
+            MinimalistMap<TKey, TValue> map,
+            Iterable<? extends TKey> keyIterable,
+            Iterable<? extends TValue> valueIterable);
+
+    void putMany(
+            MinimalistMap<TKey, TValue> map,
+            Map.Entry<? extends TKey, ? extends TValue>... entryArr);
+
+    void putMany(
+            MinimalistMap<TKey, TValue> map,
+            Iterable<? extends Map.Entry<? extends TKey, ? extends TValue>> entryIterable);
 }

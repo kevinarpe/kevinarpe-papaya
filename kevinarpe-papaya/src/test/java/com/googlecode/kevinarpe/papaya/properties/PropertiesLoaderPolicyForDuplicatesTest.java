@@ -27,7 +27,7 @@ package com.googlecode.kevinarpe.papaya.properties;
 
 import com.google.common.base.Splitter;
 import com.googlecode.kevinarpe.papaya.StringUtils;
-import com.googlecode.kevinarpe.papaya.jdk.properties.JdkProperty;
+import com.googlecode.kevinarpe.papaya.jdk.properties.JavaProperty;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -49,15 +49,15 @@ public class PropertiesLoaderPolicyForDuplicatesTest {
     private static Object[][] _apply_Pass_Data() {
         return new Object[][] {
             {
-                JdkPropertyTestUtils.asPropertyList(),
+                JavaPropertyTestUtils.asPropertyList(),
                 0, 0
             },
             {
-                JdkPropertyTestUtils.asPropertyList("abc", "def"),
+                JavaPropertyTestUtils.asPropertyList("abc", "def"),
                 0, 0
             },
             {
-                JdkPropertyTestUtils.asPropertyList(
+                JavaPropertyTestUtils.asPropertyList(
                     "abc", "def",
                     "ghi", "jkl",
                     "mno", "def",
@@ -65,40 +65,40 @@ public class PropertiesLoaderPolicyForDuplicatesTest {
                 0, 0
             },
             {
-                JdkPropertyTestUtils.asPropertyList(
+                JavaPropertyTestUtils.asPropertyList(
                     "abc", "def",
                     "abc", "def"),
                 1, 0
             },
             {
-                JdkPropertyTestUtils.asPropertyList(
+                JavaPropertyTestUtils.asPropertyList(
                     "abc", "def",
                     "abc", "def",
                     "abc", "def"),
                 2, 0
             },
             {
-                JdkPropertyTestUtils.asPropertyList(
+                JavaPropertyTestUtils.asPropertyList(
                     "abc", "def",
                     "abc", "ghi"),
                 0, 1
             },
             {
-                JdkPropertyTestUtils.asPropertyList(
+                JavaPropertyTestUtils.asPropertyList(
                     "abc", "def",
                     "abc", "ghi",
                     "abc", "jkl"),
                 0, 2
             },
             {
-                JdkPropertyTestUtils.asPropertyList(
+                JavaPropertyTestUtils.asPropertyList(
                     "abc", "def",
                     "abc", "def",
                     "abc", "ghi"),
                 1, 1
             },
             {
-                JdkPropertyTestUtils.asPropertyList(
+                JavaPropertyTestUtils.asPropertyList(
                     "abc", "def",
                     "abc", "def",
                     "abc", "def",
@@ -111,7 +111,7 @@ public class PropertiesLoaderPolicyForDuplicatesTest {
 
     @Test(dataProvider = "_apply_Pass_Data")
     public void apply_Pass(
-            List<JdkProperty> propertyList,
+            List<JavaProperty> propertyList,
             int expectedDupKeyValuePairCount,
             int expectedDupKeyCount) {
         try {

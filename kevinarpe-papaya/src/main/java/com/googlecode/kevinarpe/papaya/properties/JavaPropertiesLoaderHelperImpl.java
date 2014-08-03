@@ -29,40 +29,38 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.input.IInputSource2Utils;
 import com.googlecode.kevinarpe.papaya.input.InputSource2;
-import com.googlecode.kevinarpe.papaya.jdk.properties.JdkPropertiesLoader;
-import com.googlecode.kevinarpe.papaya.jdk.properties.JdkProperty;
-import com.googlecode.kevinarpe.papaya.jdk.properties.RandomAccessList;
+import com.googlecode.kevinarpe.papaya.jdk.properties.JavaPropertiesLoader;
+import com.googlecode.kevinarpe.papaya.jdk.properties.JavaProperty;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @FullyTested
-final class JdkPropertiesLoaderHelperImpl
-implements JdkPropertiesLoaderHelper {
+final class JavaPropertiesLoaderHelperImpl
+implements JavaPropertiesLoaderHelper {
 
-    private final JdkPropertiesLoader _jdkPropertiesLoader;
+    private final JavaPropertiesLoader _javaPropertiesLoader;
     private final IInputSource2Utils _inputSource2Utils;
 
-    JdkPropertiesLoaderHelperImpl(
-        JdkPropertiesLoader jdkPropertiesLoader, IInputSource2Utils inputSource2Utils) {
-        _jdkPropertiesLoader = ObjectArgs.checkNotNull(jdkPropertiesLoader, "jdkPropertiesLoader");
+    JavaPropertiesLoaderHelperImpl(
+        JavaPropertiesLoader javaPropertiesLoader, IInputSource2Utils inputSource2Utils) {
+        _javaPropertiesLoader = ObjectArgs.checkNotNull(javaPropertiesLoader, "jdkPropertiesLoader");
         _inputSource2Utils = ObjectArgs.checkNotNull(inputSource2Utils, "inputSource2Utils");
     }
 
     @Override
-    public RandomAccessList<JdkProperty> loadPropertyList(InputSource2 inputSource)
+    public List<JavaProperty> loadPropertyList(InputSource2 inputSource)
     throws PropertiesLoaderException {
         try {
             if (null == inputSource.getCharacterStream()) {
-                RandomAccessList<JdkProperty> x =
-                    _jdkPropertiesLoader.load(inputSource.getByteStream());
+                List<JavaProperty> x = _javaPropertiesLoader.load(inputSource.getByteStream());
                 return x;
             }
             else {
-                RandomAccessList<JdkProperty> x =
-                    _jdkPropertiesLoader.load(inputSource.getCharacterStream());
+                List<JavaProperty> x = _javaPropertiesLoader.load(inputSource.getCharacterStream());
                 return x;
             }
         }

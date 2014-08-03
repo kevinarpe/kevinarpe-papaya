@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.properties;
+package com.googlecode.kevinarpe.papaya.container.builder;
 
 /*
  * #%L
@@ -25,15 +25,18 @@ package com.googlecode.kevinarpe.papaya.properties;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.input.InputSource2;
-import com.googlecode.kevinarpe.papaya.jdk.properties.JdkProperty;
-import com.googlecode.kevinarpe.papaya.jdk.properties.RandomAccessList;
+import java.util.Map;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-interface JdkPropertiesLoaderHelper {
+public interface MinimalistMapBuilderFactory
+    <
+        TKey,
+        TValue,
+        TMap extends Map<TKey, TValue>,
+        TMapFactoryHelper extends MinimalistMapBuilder<TKey, TValue, TMap>
+    > {
 
-    RandomAccessList<JdkProperty> loadPropertyList(InputSource2 inputSource)
-    throws PropertiesLoaderException;
+    TMapFactoryHelper newInstance();
 }

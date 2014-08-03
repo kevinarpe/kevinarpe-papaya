@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.container.builder;
+package com.googlecode.kevinarpe.papaya.properties;
 
 /*
  * #%L
@@ -25,18 +25,16 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
-import java.util.Map;
+import com.googlecode.kevinarpe.papaya.input.InputSource2;
+import com.googlecode.kevinarpe.papaya.jdk.properties.JavaProperty;
+
+import java.util.List;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public interface MapFactoryHelperHelperFactory
-    <
-        TKey,
-        TValue,
-        TMap extends Map<TKey, TValue>,
-        TMapFactoryHelper extends MapFactoryHelperHelper<TKey, TValue, TMap>
-    > {
+interface JavaPropertiesLoaderHelper {
 
-    TMapFactoryHelper newInstance();
+    List<JavaProperty> loadPropertyList(InputSource2 inputSource)
+    throws PropertiesLoaderException;
 }

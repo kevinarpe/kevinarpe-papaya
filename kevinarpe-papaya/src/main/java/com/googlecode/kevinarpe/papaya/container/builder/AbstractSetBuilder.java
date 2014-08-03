@@ -27,8 +27,6 @@ package com.googlecode.kevinarpe.papaya.container.builder;
 
 import com.google.common.collect.ForwardingSet;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Sets;
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 import java.util.Arrays;
@@ -53,7 +51,6 @@ import java.util.Set;
  * @see LinkedHashSetBuilder
  * @see ImmutableSetBuilder
  */
-@FullyTested
 public abstract class AbstractSetBuilder
     <
         TValue,
@@ -63,10 +60,11 @@ public abstract class AbstractSetBuilder
 extends ForwardingSet<TValue>
 implements SetBuilder<TValue, TSet, TSelf> {
 
-    private final LinkedHashSet<TValue> _set;
+    private final Set<TValue> _set;
 
-    protected AbstractSetBuilder() {
-        _set = Sets.newLinkedHashSet();
+    protected AbstractSetBuilder(Set<TValue> set) {
+        super();
+        _set = ObjectArgs.checkNotNull(set, "set");
     }
 
     @Override

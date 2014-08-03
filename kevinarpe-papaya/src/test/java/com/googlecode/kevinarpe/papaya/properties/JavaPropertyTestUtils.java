@@ -25,15 +25,23 @@ package com.googlecode.kevinarpe.papaya.properties;
  * #L%
  */
 
+import com.google.common.collect.Lists;
 import com.googlecode.kevinarpe.papaya.jdk.properties.JavaProperty;
+import com.googlecode.kevinarpe.papaya.jdk.properties.JavaPropertyImpl;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-interface PropertiesMerger {
+public class JavaPropertyTestUtils {
 
-    void merge(Map<? super String, ? super String> map, List<JavaProperty> propertyList);
+    public static List<JavaProperty> asPropertyList(String... argArr) {
+        List<JavaProperty> list = Lists.newArrayListWithCapacity(argArr.length);
+        for (int i = 0; i < argArr.length; i += 2) {
+            JavaProperty property = new JavaPropertyImpl(argArr[i], argArr[1 + i]);
+            list.add(property);
+        }
+        return list;
+    }
 }

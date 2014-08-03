@@ -26,7 +26,6 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.Sets;
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 import java.util.HashSet;
 
@@ -44,7 +43,6 @@ import java.util.HashSet;
  * @see LinkedHashSetBuilder
  * @see ImmutableSetBuilder
  */
-@FullyTested
 public final class HashSetBuilder<TValue>
 extends AbstractSetBuilder
             <
@@ -62,7 +60,7 @@ extends AbstractSetBuilder
     }
 
     private HashSetBuilder() {
-        // Empty
+        super(new HashSet<TValue>());
     }
 
     /**

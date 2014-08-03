@@ -26,7 +26,6 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.Lists;
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 import java.util.ArrayList;
 
@@ -45,7 +44,6 @@ import java.util.ArrayList;
  * @see LinkedListBuilder
  * @see ImmutableListBuilder
  */
-@FullyTested
 public final class ArrayListBuilder<TValue>
 extends AbstractListBuilder
             <
@@ -63,7 +61,7 @@ extends AbstractListBuilder
     }
 
     private ArrayListBuilder() {
-        // Empty
+        super(new ArrayList<TValue>());
     }
 
     /**

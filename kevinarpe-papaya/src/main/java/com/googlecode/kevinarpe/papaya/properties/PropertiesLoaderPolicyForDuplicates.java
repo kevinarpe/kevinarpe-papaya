@@ -32,7 +32,7 @@ import com.google.common.collect.Maps;
 import com.googlecode.kevinarpe.papaya.StringUtils;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.jdk.properties.JdkProperty;
+import com.googlecode.kevinarpe.papaya.jdk.properties.JavaProperty;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
 import java.util.HashMap;
@@ -73,7 +73,7 @@ implements PropertiesLoaderPolicy {
 
     /** {@inheritDoc} */
     @Override
-    public void apply(List<JdkProperty> propertyList)
+    public void apply(List<? extends JavaProperty> propertyList)
     throws PropertiesLoaderException {
         ObjectArgs.checkNotNull(propertyList, "propertyList");
 
@@ -82,7 +82,7 @@ implements PropertiesLoaderPolicy {
         final int size = propertyList.size();
 
         for (int index = 0; index < size; ++index) {
-            JdkProperty property = propertyList.get(index);
+            JavaProperty property = propertyList.get(index);
             _checkKeyAndValue(map, errorList, size, index, property.getKey(), property.getValue());
         }
 

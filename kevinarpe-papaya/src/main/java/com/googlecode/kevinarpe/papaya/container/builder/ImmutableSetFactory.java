@@ -26,7 +26,6 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.ImmutableSet;
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
@@ -45,7 +44,6 @@ import com.googlecode.kevinarpe.papaya.object.StatelessObject;
  * @see LinkedHashSetFactory
  * @see ImmutableSetFactory
  */
-@FullyTested
 public final class ImmutableSetFactory<TValue>
 extends StatelessObject
 implements SetFactory<TValue, ImmutableSet<TValue>, ImmutableSetBuilder<TValue>> {

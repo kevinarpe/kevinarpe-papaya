@@ -27,7 +27,7 @@ package com.googlecode.kevinarpe.papaya.properties;
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.jdk.properties.JdkProperty;
+import com.googlecode.kevinarpe.papaya.jdk.properties.JavaProperty;
 import org.slf4j.Logger;
 
 import java.util.Iterator;
@@ -48,12 +48,12 @@ implements PropertiesMerger {
     }
 
     @Override
-    public void merge(Map<? super String, ? super String> map, List<JdkProperty> propertyList) {
+    public void merge(Map<? super String, ? super String> map, List<JavaProperty> propertyList) {
         _logger.debug("Loaded %d properties", propertyList.size());
         final int size = propertyList.size();
         int index = 0;
-        for (Iterator<JdkProperty> iter = propertyList.iterator(); iter.hasNext(); ++index) {
-            final JdkProperty property = iter.next();
+        for (Iterator<JavaProperty> iter = propertyList.iterator(); iter.hasNext(); ++index) {
+            final JavaProperty property = iter.next();
             final String key = property.getKey();
             final String value = property.getValue();
 

@@ -26,7 +26,8 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.ImmutableSet;
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+
+import java.util.LinkedHashSet;
 
 /**
  * Builds {@code ImmutableSet} collections.
@@ -42,7 +43,6 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
  * @see HashSetBuilder
  * @see LinkedHashSetBuilder
  */
-@FullyTested
 public final class ImmutableSetBuilder<TValue>
 extends AbstractSetBuilder
             <
@@ -60,7 +60,7 @@ extends AbstractSetBuilder
     }
 
     private ImmutableSetBuilder() {
-        // Empty
+        super(new LinkedHashSet<TValue>());
     }
 
     /**

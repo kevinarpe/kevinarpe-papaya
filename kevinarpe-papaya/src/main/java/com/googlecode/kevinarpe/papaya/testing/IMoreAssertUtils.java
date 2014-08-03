@@ -35,34 +35,34 @@ import java.util.Set;
  */
 public interface IMoreAssertUtils {
 
-    <T>
-    void assertListEquals(@Nullable List<T> actual, @Nullable List<? extends T> expected);
+    <TValue>
+    void assertListEquals(@Nullable List<TValue> actual, @Nullable List<? extends TValue> expected);
 
-    <T>
+    <TValue>
     void assertListEquals(
-            @Nullable List<T> actual,
-            @Nullable List<? extends T> expected,
+            @Nullable List<TValue> actual,
+            @Nullable List<? extends TValue> expected,
             String messagePrefixFormat,
             Object... formatArgArr);
 
-    <T>
-    void assertSetEquals(@Nullable Set<T> actual, @Nullable Set<? extends T> expected);
+    <TValue>
+    void assertSetEquals(@Nullable Set<TValue> actual, @Nullable Set<? extends TValue> expected);
 
-    <T>
+    <TValue>
     void assertSetEquals(
-            @Nullable Set<T> actual,
-            @Nullable Set<? extends T> expected,
+            @Nullable Set<TValue> actual,
+            @Nullable Set<? extends TValue> expected,
             String messagePrefixFormat,
             Object... formatArgArr);
 
-    <T>
+    <TValue>
     void assertLinkedSetEquals(
-            @Nullable Set<T> actual, @Nullable Set<? extends T> expected);
+            @Nullable Set<TValue> actual, @Nullable Set<? extends TValue> expected);
 
-    <T>
+    <TValue>
     void assertLinkedSetEquals(
-            @Nullable Set<T> actual,
-            @Nullable Set<? extends T> expected,
+            @Nullable Set<TValue> actual,
+            @Nullable Set<? extends TValue> expected,
             String messagePrefixFormat,
             Object... formatArgArr);
 

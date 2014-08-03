@@ -25,7 +25,7 @@ package com.googlecode.kevinarpe.papaya.properties;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.jdk.properties.JdkProperty;
+import com.googlecode.kevinarpe.papaya.jdk.properties.JavaProperty;
 
 import java.util.List;
 
@@ -47,6 +47,6 @@ public interface PropertiesLoaderPolicy {
      * @throws PropertiesLoaderException
      *         if group of properties fails any checks/tests/policies
      */
-    void apply(List<JdkProperty> propertyList)
+    void apply(List<? extends JavaProperty> propertyList)
     throws PropertiesLoaderException;
 }

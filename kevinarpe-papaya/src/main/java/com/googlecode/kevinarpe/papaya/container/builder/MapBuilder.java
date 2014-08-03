@@ -50,7 +50,20 @@ public interface MapBuilder
     <
         TKey,
         TValue,
-        TMap extends Map<TKey, TValue>
+        TMap extends Map<TKey, TValue>,
+        TSelf extends MapBuilder<TKey, TValue, TMap, TSelf>
     >
 extends Map<TKey, TValue>, Builder<TMap> {
+
+    TSelf putOne(TKey key, TValue value);
+
+    TSelf putMany(Class<TKey> keyClass, Class<TValue> valueClass, Object... keysAndValuesArr);
+
+    TSelf putMany(Iterable<? extends TKey> keyIterable, Iterable<? extends TValue> valueIterable);
+
+    TSelf putMany(Map.Entry<? extends TKey, ? extends TValue>... entryArr);
+
+    TSelf putMany(Iterable<? extends Map.Entry<? extends TKey, ? extends TValue>> entryIterable);
+
+    TSelf putMany(Map<? extends TKey, ? extends TValue> map);
 }

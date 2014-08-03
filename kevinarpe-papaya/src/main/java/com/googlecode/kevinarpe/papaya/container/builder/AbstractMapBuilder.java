@@ -26,8 +26,8 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.ForwardingMap;
-import com.google.common.collect.Maps;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -57,22 +57,99 @@ public abstract class AbstractMapBuilder
     <
         TKey,
         TValue,
-        TMap extends Map<TKey, TValue>
+        TMap extends Map<TKey, TValue>,
+        TSelf extends MapBuilder<TKey, TValue, TMap, TSelf>
     >
 extends ForwardingMap<TKey, TValue>
-implements MapBuilder<TKey, TValue, TMap> {
+implements MapBuilder<TKey, TValue, TMap, TSelf> {
 
-    private final LinkedHashMap<TKey, TValue> _map;
+    private final Map<TKey, TValue> _map;
+    private final IMapBuilderUtils<TKey, TValue, TMap> _mapBuilderUtils;
+    private final MinimalistMap<TKey, TValue> _minimalistMap;
 
-    protected AbstractMapBuilder() {
-        _map = Maps.newLinkedHashMap();
+    protected AbstractMapBuilder(Map<TKey, TValue> map) {
+        this(map, new MapBuilderUtils<TKey, TValue, TMap>(), new _MinimalistMap<TKey, TValue>(map));
+    }
+
+    AbstractMapBuilder(
+            Map<TKey, TValue> map,
+            IMapBuilderUtils<TKey, TValue, TMap> mapBuilderUtils,
+            MinimalistMap<TKey, TValue> minimalistMap) {
+        super();
+        _map = ObjectArgs.checkNotNull(map, "map");
+        _mapBuilderUtils = ObjectArgs.checkNotNull(mapBuilderUtils, "mapBuilderUtils");
+        _minimalistMap = ObjectArgs.checkNotNull(minimalistMap, "minimalistMap");
     }
 
     @Override
-    protected final LinkedHashMap<TKey, TValue> delegate() {
+    protected final Map<TKey, TValue> delegate() {
         return _map;
     }
 
     @Override
     public abstract TMap build();
+
+    protected abstract TSelf self();
+
+    @Override
+    public final TSelf putOne(TKey key, TValue value) {
+        _map.put(key, value);
+        TSelf x = self();
+        return x;
+    }
+
+    @Override
+    public final TSelf putMany(
+            Class<TKey> keyClass, Class<TValue> valueClass, Object... keysAndValuesArr) {
+        _mapBuilderUtils.putMany(_minimalistMap, keyClass, valueClass, keysAndValuesArr);
+        TSelf x = self();
+        return x;
+    }
+
+    @Override
+    public final TSelf putMany(
+            Iterable<? extends TKey> keyIterable, Iterable<? extends TValue> valueIterable) {
+        _mapBuilderUtils.putMany(_minimalistMap, keyIterable, valueIterable);
+        TSelf x = self();
+        return x;
+    }
+
+    @Override
+    public final TSelf putMany(Map.Entry<? extends TKey, ? extends TValue>... entryArr) {
+        _mapBuilderUtils.putMany(_minimalistMap, entryArr);
+        TSelf x = self();
+        return x;
+    }
+
+    @Override
+    public final TSelf putMany(
+            Iterable<? extends Map.Entry<? extends TKey, ? extends TValue>> entryIterable) {
+        _mapBuilderUtils.putMany(_minimalistMap, entryIterable);
+        TSelf x = self();
+        return x;
+    }
+
+    @Override
+    public final TSelf putMany(Map<? extends TKey, ? extends TValue> map) {
+        ObjectArgs.checkNotNull(map, "map");
+
+        _map.putAll(map);
+        TSelf x = self();
+        return x;
+    }
+
+    private static final class _MinimalistMap<TKey, TValue>
+    implements MinimalistMap<TKey, TValue> {
+
+        private final Map<TKey, TValue> _map;
+
+        private _MinimalistMap(Map<TKey, TValue> map) {
+            _map = map;
+        }
+
+        @Override
+        public void put(TKey key, TValue value) {
+            _map.put(key, value);
+        }
+    }
 }

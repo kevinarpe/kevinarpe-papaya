@@ -27,44 +27,44 @@ package com.googlecode.kevinarpe.papaya.properties;
 
 import com.googlecode.kevinarpe.papaya.input.IInputSource2Utils;
 import com.googlecode.kevinarpe.papaya.input.InputSource2;
-import com.googlecode.kevinarpe.papaya.jdk.properties.JdkPropertiesLoader;
-import com.googlecode.kevinarpe.papaya.jdk.properties.JdkProperty;
-import com.googlecode.kevinarpe.papaya.jdk.properties.RandomAccessList;
+import com.googlecode.kevinarpe.papaya.jdk.properties.JavaPropertiesLoader;
+import com.googlecode.kevinarpe.papaya.jdk.properties.JavaProperty;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertSame;
 
-public class JdkPropertiesLoaderHelperImplTest {
+public class JavaPropertiesLoaderHelperImplTest {
 
-    private JdkPropertiesLoader mockJdkPropertiesLoader;
+    private JavaPropertiesLoader mockJavaPropertiesLoader;
     private IInputSource2Utils mockIInputSource2Utils;
-    private JdkPropertiesLoaderHelperImpl classUnderTest;
+    private JavaPropertiesLoaderHelperImpl classUnderTest;
     private InputSource2 mockInputSource2;
     private InputStream mockInputStream;
     private Reader mockReader;
-    private RandomAccessList<JdkProperty> mockJdkPropertyList;
+    private List<JavaProperty> mockJavaPropertyList;
 
     @BeforeMethod
     public void beforeEachTestMethod() {
-        mockJdkPropertiesLoader = mock(JdkPropertiesLoader.class);
+        mockJavaPropertiesLoader = mock(JavaPropertiesLoader.class);
         mockIInputSource2Utils = mock(IInputSource2Utils.class);
         classUnderTest =
-            new JdkPropertiesLoaderHelperImpl(mockJdkPropertiesLoader, mockIInputSource2Utils);
+            new JavaPropertiesLoaderHelperImpl(mockJavaPropertiesLoader, mockIInputSource2Utils);
         mockInputSource2 = mock(InputSource2.class);
         mockInputStream = mock(InputStream.class);
         mockReader = mock(Reader.class);
         {
             @SuppressWarnings("unchecked")
-            RandomAccessList<JdkProperty> x = mock(RandomAccessList.class);
-            mockJdkPropertyList = x;
+            List<JavaProperty> x = mock(List.class);
+            mockJavaPropertyList = x;
         }
     }
 
@@ -77,7 +77,7 @@ public class JdkPropertiesLoaderHelperImplTest {
     throws IOException, PropertiesLoaderException {
         when(mockInputSource2.getByteStream()).thenReturn(mockInputStream);
         IOException exception = new IOException();
-        when(mockJdkPropertiesLoader.load(mockInputStream)).thenThrow(exception);
+        when(mockJavaPropertiesLoader.load(mockInputStream)).thenThrow(exception);
         try {
             classUnderTest.loadPropertyList(mockInputSource2);
         }
@@ -93,7 +93,7 @@ public class JdkPropertiesLoaderHelperImplTest {
     throws IOException, PropertiesLoaderException {
         when(mockInputSource2.getCharacterStream()).thenReturn(mockReader);
         IOException exception = new IOException();
-        when(mockJdkPropertiesLoader.load(mockReader)).thenThrow(exception);
+        when(mockJavaPropertiesLoader.load(mockReader)).thenThrow(exception);
         try {
             classUnderTest.loadPropertyList(mockInputSource2);
         }
@@ -108,10 +108,9 @@ public class JdkPropertiesLoaderHelperImplTest {
     public void loadPropertyList_PassWhenInputSourceIsByteStream()
     throws IOException, PropertiesLoaderException {
         when(mockInputSource2.getByteStream()).thenReturn(mockInputStream);
-        when(mockJdkPropertiesLoader.load(mockInputStream)).thenReturn(mockJdkPropertyList);
-        RandomAccessList<JdkProperty> jdkPropertyList =
-            classUnderTest.loadPropertyList(mockInputSource2);
-        assertSame(jdkPropertyList, mockJdkPropertyList);
+        when(mockJavaPropertiesLoader.load(mockInputStream)).thenReturn(mockJavaPropertyList);
+        List<JavaProperty> javaPropertyList = classUnderTest.loadPropertyList(mockInputSource2);
+        assertSame(javaPropertyList, mockJavaPropertyList);
         verify(mockIInputSource2Utils).closeQuietly(mockInputSource2);
     }
 
@@ -119,10 +118,9 @@ public class JdkPropertiesLoaderHelperImplTest {
     public void loadPropertyList_PassWhenInputSourceIsCharacterStream()
     throws IOException, PropertiesLoaderException {
         when(mockInputSource2.getCharacterStream()).thenReturn(mockReader);
-        when(mockJdkPropertiesLoader.load(mockReader)).thenReturn(mockJdkPropertyList);
-        RandomAccessList<JdkProperty> jdkPropertyList =
-            classUnderTest.loadPropertyList(mockInputSource2);
-        assertSame(jdkPropertyList, mockJdkPropertyList);
+        when(mockJavaPropertiesLoader.load(mockReader)).thenReturn(mockJavaPropertyList);
+        List<JavaProperty> javaPropertyList = classUnderTest.loadPropertyList(mockInputSource2);
+        assertSame(javaPropertyList, mockJavaPropertyList);
         verify(mockIInputSource2Utils).closeQuietly(mockInputSource2);
     }
 }

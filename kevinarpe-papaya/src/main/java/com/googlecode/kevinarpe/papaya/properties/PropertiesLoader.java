@@ -131,10 +131,9 @@ public interface PropertiesLoader {
      */
     <
         TMap extends Map<String, String>,
-        TMapBuilder extends MapBuilder<String, String, TMap>,
-        TMapBuilderFactory extends MapFactory<String, String, TMap, TMapBuilder>
+        TMapBuilder extends MapBuilder<String, String, TMap, TMapBuilder>,
+        TMapFactory extends MapFactory<String, String, TMap, TMapBuilder>
     >
-    TMap load(
-            List<? extends InputSource2> inputSourceList, TMapBuilderFactory mapBuilderFactory)
+    TMap load(List<? extends InputSource2> inputSourceList, TMapFactory mapBuilderFactory)
     throws PropertiesLoaderException;
 }

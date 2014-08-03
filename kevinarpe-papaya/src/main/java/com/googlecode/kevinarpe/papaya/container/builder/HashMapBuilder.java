@@ -29,6 +29,7 @@ import com.google.common.collect.Maps;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Builds {@code HashMap} collections.
@@ -54,7 +55,8 @@ extends AbstractMapBuilder
             <
                 TKey,
                 TValue,
-                HashMap<TKey, TValue>
+                HashMap<TKey, TValue>,
+                HashMapBuilder<TKey, TValue>
             > {
 
     /**
@@ -66,7 +68,11 @@ extends AbstractMapBuilder
     }
 
     private HashMapBuilder() {
-        // Empty
+        this(new HashMap<TKey, TValue>());
+    }
+
+    HashMapBuilder(Map<TKey, TValue> map) {
+        super(map);
     }
 
     /**
@@ -76,5 +82,10 @@ extends AbstractMapBuilder
     public HashMap<TKey, TValue> build() {
         HashMap<TKey, TValue> x = Maps.newHashMap(delegate());
         return x;
+    }
+
+    @Override
+    protected HashMapBuilder<TKey, TValue> self() {
+        return this;
     }
 }

@@ -51,7 +51,7 @@ public interface MapFactory
         TKey,
         TValue,
         TMap extends Map<TKey, TValue>,
-        TMapBuilder extends MapBuilder<TKey, TValue, TMap>
+        TMapBuilder extends MapBuilder<TKey, TValue, TMap, TMapBuilder>
     >
 extends BuilderFactory<TMapBuilder>, MapFactoryHelper<TKey, TValue, TMap> {
 

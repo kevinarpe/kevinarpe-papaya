@@ -26,13 +26,14 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.ImmutableMap;
+import com.googlecode.kevinarpe.papaya.testing.MoreAssertUtils;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
 
 public class LinkedHashMapBuilderTest {
 
@@ -50,19 +51,20 @@ public class LinkedHashMapBuilderTest {
     // LinkedHashMapBuilder.build()
     //
 
-    @Test
-    public void build_PassWithEmpty() {
-        LinkedHashMapBuilder<String, String> classUnderTest = LinkedHashMapBuilder.create();
-        LinkedHashMap<String, String> map = classUnderTest.build();
-        assertTrue(map.isEmpty());
+    @DataProvider
+    private static Object[][] _build_Pass_Data() {
+        return new Object[][] {
+            { ImmutableMap.of()},
+            { ImmutableMap.of("abc", 123)},
+            { ImmutableMap.of("abc", 123, "def", 456)},
+        };
     }
 
-    @Test
-    public void build_Pass() {
-        ImmutableMap<String, String> inputMap = ImmutableMap.of("abc", "def", "ghi", "jkl");
-        LinkedHashMapBuilder<String, String> classUnderTest = LinkedHashMapBuilder.create();
+    @Test(dataProvider = "_build_Pass_Data")
+    public void build_Pass(Map<String, Integer> inputMap) {
+        LinkedHashMapBuilder<String, Integer> classUnderTest = LinkedHashMapBuilder.create();
         classUnderTest.putAll(inputMap);
-        LinkedHashMap<String, String> map = classUnderTest.build();
-        assertEquals(map, inputMap);
+        LinkedHashMap<String, Integer> map = classUnderTest.build();
+        MoreAssertUtils.INSTANCE.assertLinkedMapEquals(map, inputMap);
     }
 }

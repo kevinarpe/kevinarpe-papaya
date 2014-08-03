@@ -26,11 +26,13 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.ImmutableMap;
+import com.googlecode.kevinarpe.papaya.testing.MoreAssertUtils;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertEquals;
+import java.util.Map;
+
 import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
 
 public class ImmutableMapBuilderTest {
 
@@ -48,19 +50,20 @@ public class ImmutableMapBuilderTest {
     // ImmutableMapBuilder.build()
     //
 
-    @Test
-    public void build_PassWithEmpty() {
-        ImmutableMapBuilder<String, String> classUnderTest = ImmutableMapBuilder.create();
-        ImmutableMap<String, String> map = classUnderTest.build();
-        assertTrue(map.isEmpty());
+    @DataProvider
+    private static Object[][] _build_Pass_Data() {
+        return new Object[][] {
+            { ImmutableMap.of()},
+            { ImmutableMap.of("abc", 123)},
+            { ImmutableMap.of("abc", 123, "def", 456)},
+        };
     }
 
-    @Test
-    public void build_Pass() {
-        ImmutableMap<String, String> inputMap = ImmutableMap.of("abc", "def", "ghi", "jkl");
-        ImmutableMapBuilder<String, String> classUnderTest = ImmutableMapBuilder.create();
+    @Test(dataProvider = "_build_Pass_Data")
+    public void build_Pass(Map<String, Integer> inputMap) {
+        ImmutableMapBuilder<String, Integer> classUnderTest = ImmutableMapBuilder.create();
         classUnderTest.putAll(inputMap);
-        ImmutableMap<String, String> map = classUnderTest.build();
-        assertEquals(map, inputMap);
+        ImmutableMap<String, Integer> map = classUnderTest.build();
+        MoreAssertUtils.INSTANCE.assertLinkedMapEquals(map, inputMap);
     }
 }

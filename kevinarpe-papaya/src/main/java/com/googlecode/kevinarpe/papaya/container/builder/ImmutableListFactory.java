@@ -26,7 +26,6 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.ImmutableList;
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
@@ -45,7 +44,6 @@ import com.googlecode.kevinarpe.papaya.object.StatelessObject;
  * @see ArrayListFactory
  * @see LinkedListFactory
  */
-@FullyTested
 public final class ImmutableListFactory<TValue>
 extends StatelessObject
 implements ListFactory<TValue, ImmutableList<TValue>, ImmutableListBuilder<TValue>> {

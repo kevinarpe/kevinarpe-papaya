@@ -25,56 +25,58 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 
-import java.util.LinkedList;
+import java.util.EnumSet;
+import java.util.HashSet;
 
 /**
- * Builds {@code LinkedList} collections.
+ * Builds {@code HashSet} collections.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @param <TValue>
- *        type of value for list elements
+ *        type of value for set elements
  *
- * @see #create()
- * @see ListBuilder
- * @see LinkedList
- * @see LinkedListFactory
- * @see ArrayListBuilder
- * @see ImmutableListBuilder
+ * @see SetBuilder
+ * @see HashSet
+ * @see HashSetFactory
+ * @see LinkedHashSetBuilder
+ * @see ImmutableSetBuilder
  */
-public final class LinkedListBuilder<TValue>
-extends AbstractListBuilder
+public final class ImmutableEnumSetBuilder<TValue extends Enum<TValue>>
+extends AbstractSetBuilder
             <
                 TValue,
-                LinkedList<TValue>,
-                LinkedListBuilder<TValue>
+                ImmutableSet<TValue>,
+                ImmutableEnumSetBuilder<TValue>
             > {
 
     /**
      * Constructs a new builder.
      */
-    public static <TValue> LinkedListBuilder<TValue> create() {
-        LinkedListBuilder<TValue> x = new LinkedListBuilder<TValue>();
+    public static <TValue extends Enum<TValue>>
+    ImmutableEnumSetBuilder<TValue> create(Class<TValue> valueClass) {
+        ImmutableEnumSetBuilder<TValue> x = new ImmutableEnumSetBuilder<TValue>(valueClass);
         return x;
     }
 
-    private LinkedListBuilder() {
-        super(new LinkedList<TValue>());
+    private ImmutableEnumSetBuilder(Class<TValue> valueClass) {
+        super(EnumSet.noneOf(valueClass));
     }
 
     /**
-     * Builds a new {@code ArrayList} from values stored in the builder.
+     * Builds a new immutable {@code EnumSet} from values stored in the builder.
      */
     @Override
-    public LinkedList<TValue> build() {
-        LinkedList<TValue> x = Lists.newLinkedList(delegate());
+    public ImmutableSet<TValue> build() {
+        ImmutableSet<TValue> x = Sets.immutableEnumSet(delegate());
         return x;
     }
 
     @Override
-    protected LinkedListBuilder<TValue> self() {
+    protected ImmutableEnumSetBuilder<TValue> self() {
         return this;
     }
 }

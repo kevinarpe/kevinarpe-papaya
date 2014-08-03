@@ -26,7 +26,8 @@ package com.googlecode.kevinarpe.papaya.properties;
  */
 
 import com.google.common.collect.ImmutableList;
-import com.googlecode.kevinarpe.papaya.jdk.properties.JdkProperty;
+import com.googlecode.kevinarpe.papaya.jdk.properties.JavaProperty;
+import com.googlecode.kevinarpe.papaya.jdk.properties.JavaPropertyImpl;
 import com.googlecode.kevinarpe.papaya.testing.logging.slf4j.SLF4JMockLogger;
 import com.googlecode.kevinarpe.papaya.testing.logging.slf4j.SLF4JMockLoggerUtils;
 import org.slf4j.Logger;
@@ -67,7 +68,7 @@ public class PropertiesMergerImplTest {
 
     @Test
     public void merge_PassWithEmptyJdkPropertyList() {
-        classUnderTest.merge(mockMap, ImmutableList.<JdkProperty>of());
+        classUnderTest.merge(mockMap, ImmutableList.<JavaProperty>of());
         verify(mockMap, never()).containsKey(anyString());
         verify(mockMap, never()).get(anyString());
         verify(mockMap, never()).put(anyString(), anyString());
@@ -77,7 +78,8 @@ public class PropertiesMergerImplTest {
     public void merge_PassWithNewJdkProperties() {
         classUnderTest.merge(
             mockMap,
-            ImmutableList.of(new JdkProperty("key1", "value1"), new JdkProperty("key2", "value2")));
+            ImmutableList.<JavaProperty>of(
+                new JavaPropertyImpl("key1", "value1"), new JavaPropertyImpl("key2", "value2")));
         verify(mockMap).containsKey("key1");
         verify(mockMap).containsKey("key2");
         verify(mockMap, never()).get(anyString());
@@ -91,7 +93,8 @@ public class PropertiesMergerImplTest {
         when(mockMap.get("key1")).thenReturn("value1");
         classUnderTest.merge(
             mockMap,
-            ImmutableList.of(new JdkProperty("key1", "value1"), new JdkProperty("key2", "value2")));
+            ImmutableList.<JavaProperty>of(
+                new JavaPropertyImpl("key1", "value1"), new JavaPropertyImpl("key2", "value2")));
         verify(mockMap).containsKey("key1");
         verify(mockMap).containsKey("key2");
         verify(mockMap).get("key1");
@@ -106,7 +109,8 @@ public class PropertiesMergerImplTest {
         when(mockMap.get("key2")).thenReturn("value2");
         classUnderTest.merge(
             mockMap,
-            ImmutableList.of(new JdkProperty("key1", "value1"), new JdkProperty("key2", "value2")));
+            ImmutableList.<JavaProperty>of(
+                new JavaPropertyImpl("key1", "value1"), new JavaPropertyImpl("key2", "value2")));
         verify(mockMap).containsKey("key1");
         verify(mockMap).containsKey("key2");
         verify(mockMap).get("key1");

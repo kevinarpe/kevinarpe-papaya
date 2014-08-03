@@ -29,20 +29,36 @@ package com.googlecode.kevinarpe.papaya.jdk.properties;
  */
 
 /**
- * For those projects that require full, static-free mocking capabilities, use this interface.
- * Else, the concrete implementation {@link JdkPropertiesLoaderUtils} or
- * {@link JdkPropertiesLoaderUtils#INSTANCE} will suffice.
+ * Utilities for {@link JavaPropertiesLoader}.  To use the methods in this class create a new
+ * instance via {@link #JavaPropertiesLoaderUtils()} or use the public static member
+ * {@link #INSTANCE}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see JdkPropertiesLoaderUtils
+ * @see #INSTANCE
  */
-public interface IJdkPropertiesLoaderUtils {
+public final class JavaPropertiesLoaderUtils
+implements IJavaPropertiesLoaderUtils {
 
     /**
-     * Retrieves the global instance that implements interface {@link JdkPropertiesLoader}.
-     *
-     * @return global instance
+     * Single instance of this class provided for convenience.  Since this class is stateless, its
+     * behaviour is identical between this instance and others.
      */
-    JdkPropertiesLoader getInstance();
+    public static final JavaPropertiesLoaderUtils INSTANCE = new JavaPropertiesLoaderUtils();
+
+    /**
+     * For projects that require total, static-free mocking capabilities, use this constructor.
+     * Else, the static constant {@link #INSTANCE} will suffice.
+     */
+    public JavaPropertiesLoaderUtils() {
+        // Empty.
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JavaPropertiesLoader getInstance() {
+        return JavaPropertiesLoaderImpl.INSTANCE;
+    }
 }

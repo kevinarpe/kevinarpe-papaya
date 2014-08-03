@@ -44,7 +44,7 @@ implements IMockitoUtils {
         // Empty
     }
 
-    // TODO: Can we make this safer?  Make a not about runtime ClassCastException if clazz is rubbish
+    // TODO: Can we make this safer?  Make a note about runtime ClassCastException if clazz is rubbish
     @Override
     public <T> T mockGenericInterface(Class<?> clazz) {
         ObjectArgs.checkNotNull(clazz, "clazz");
@@ -59,9 +59,14 @@ implements IMockitoUtils {
         StringArgs.checkNotEmptyOrWhitespace(mockObjectName, "mockObjectName");
         // TODO: Create new ClassArgs to test class obj attributes.
         if (!clazz.isInterface()) {
-            throw new IllegalArgumentException(String.format(
-                "Argument '%s' is not a generic interface, e.g., List.class: %s",
-                "clazz", clazz.getName()));
+            String msg =
+                String.format("Argument '%s' is not a generic interface, e.g., List.class: %s",
+                    "clazz", clazz.getName());
+            for (Class<?> interfaceClass : clazz.getInterfaces()) {
+                msg += String.format(
+                    "%n\tMaybe you meant (interface) %s.class?", interfaceClass.getSimpleName());
+            }
+            throw new IllegalArgumentException(msg);
         }
         {
             TypeVariable[] typeParamArr = clazz.getTypeParameters();

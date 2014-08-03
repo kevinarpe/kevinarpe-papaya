@@ -53,37 +53,37 @@ package com.googlecode.kevinarpe.papaya.jdk.properties;
  * #L%
  */
 
+import com.google.common.collect.ImmutableList;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-class JdkPropertiesLoaderImpl
-implements JdkPropertiesLoader {
+final class JavaPropertiesLoaderImpl
+implements JavaPropertiesLoader {
 
-    public static final JdkPropertiesLoaderImpl INSTANCE = new JdkPropertiesLoaderImpl();
+    public static final JavaPropertiesLoaderImpl INSTANCE = new JavaPropertiesLoaderImpl();
 
     @Override
-    public RandomAccessList<JdkProperty> load(Reader characterStream)
+    public ImmutableList<JavaProperty> load(Reader characterStream)
     throws IOException {
         if (null == characterStream) {
-            throw new NullPointerException("Argument 'reader' is null");
+            throw new NullPointerException("Argument 'characterStream' is null");
         }
-        RandomAccessList<JdkProperty> x = load0(new LineReader(characterStream));
+        ImmutableList<JavaProperty> x = load0(new LineReader(characterStream));
         return x;
     }
 
     @Override
-    public RandomAccessList<JdkProperty> load(InputStream byteStream)
+    public ImmutableList<JavaProperty> load(InputStream byteStream)
     throws IOException {
         if (null == byteStream) {
-            throw new NullPointerException("Argument 'inStream' is null");
+            throw new NullPointerException("Argument 'byteStream' is null");
         }
-        RandomAccessList<JdkProperty> x = load0(new LineReader(byteStream));
+        ImmutableList<JavaProperty> x = load0(new LineReader(byteStream));
         return x;
     }
 
@@ -91,9 +91,9 @@ implements JdkPropertiesLoader {
      * This is a nearly 100% copied from the original JDK8 source code.  With the exception of my
      * small changes, all copyrights remain with Oracle.
      */
-    private RandomAccessList<JdkProperty> load0 (LineReader lr)
+    private ImmutableList<JavaProperty> load0 (LineReader lr)
     throws IOException {
-        ArrayList<JdkProperty> entryList = new ArrayList<JdkProperty>();
+        ImmutableList.Builder<JavaProperty> listBuilder = ImmutableList.builder();
 
         char[] convtBuf = new char[1024];
         int limit;
@@ -142,9 +142,11 @@ implements JdkPropertiesLoader {
             }
             String key = loadConvert(lr.lineBuf, 0, keyLen, convtBuf);
             String value = loadConvert(lr.lineBuf, valueStart, limit - valueStart, convtBuf);
-            entryList.add(new JdkProperty(key, value));
+            JavaPropertyImpl prop = new JavaPropertyImpl(key, value);
+            listBuilder.add(prop);
         }
-        return (RandomAccessList<JdkProperty>) Collections.unmodifiableList(entryList);
+        ImmutableList<JavaProperty> list = listBuilder.build();
+        return list;
     }
 
     /**

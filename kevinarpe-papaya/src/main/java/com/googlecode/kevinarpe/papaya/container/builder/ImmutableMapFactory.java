@@ -26,7 +26,6 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.ImmutableMap;
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
@@ -49,7 +48,6 @@ import java.util.Map;
  * @see LinkedHashMapFactory
  * @see PropertiesFactory
  */
-@FullyTested
 public final class ImmutableMapFactory<TKey, TValue>
 extends ForwardingMapFactoryHelper<TKey, TValue, ImmutableMap<TKey, TValue>>
 implements MapFactory
@@ -71,9 +69,14 @@ implements MapFactory
     private final MapFactoryHelper<TKey, TValue, ImmutableMap<TKey, TValue>> _mapFactoryHelper;
 
     private ImmutableMapFactory() {
+        this(new MapBuilderUtils<TKey, TValue, ImmutableMap<TKey, TValue>>());
+    }
+
+    ImmutableMapFactory(IMapBuilderUtils<TKey, TValue, ImmutableMap<TKey, TValue>> mapBuilderUtils) {
         _mapFactoryHelper =
             new MapFactoryHelperImpl<TKey, TValue, ImmutableMap<TKey, TValue>>(
-                new _MapFactoryHelperHelperFactory<TKey, TValue>());
+                new _MinimalistMapBuilderFactory<TKey, TValue>(),
+                mapBuilderUtils);
     }
 
     @Override
@@ -97,29 +100,29 @@ implements MapFactory
         return x;
     }
 
-    private static final class _MapFactoryHelperHelperFactory<TKey, TValue>
+    private static final class _MinimalistMapBuilderFactory<TKey, TValue>
     extends StatelessObject
-    implements MapFactoryHelperHelperFactory
+    implements MinimalistMapBuilderFactory
                     <
                         TKey,
                         TValue,
                         ImmutableMap<TKey, TValue>,
-                        _MapFactoryHelperHelper<TKey, TValue>
+                        _MinimalistMapBuilder<TKey, TValue>
                     > {
 
         @Override
-        public _MapFactoryHelperHelper<TKey, TValue> newInstance() {
-            _MapFactoryHelperHelper<TKey, TValue> x = new _MapFactoryHelperHelper<TKey, TValue>();
+        public _MinimalistMapBuilder<TKey, TValue> newInstance() {
+            _MinimalistMapBuilder<TKey, TValue> x = new _MinimalistMapBuilder<TKey, TValue>();
             return x;
         }
     }
 
-    private static final class _MapFactoryHelperHelper<TKey, TValue>
-    implements MapFactoryHelperHelper<TKey, TValue, ImmutableMap<TKey, TValue>> {
+    private static final class _MinimalistMapBuilder<TKey, TValue>
+    implements MinimalistMapBuilder<TKey, TValue, ImmutableMap<TKey, TValue>> {
 
         private final ImmutableMap.Builder<TKey, TValue> builder;
 
-        private _MapFactoryHelperHelper() {
+        private _MinimalistMapBuilder() {
             builder = ImmutableMap.builder();
         }
 

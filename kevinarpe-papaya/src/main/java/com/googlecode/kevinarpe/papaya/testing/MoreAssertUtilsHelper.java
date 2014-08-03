@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.testing;
  */
 
 import javax.annotation.Nullable;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -44,7 +45,7 @@ interface MoreAssertUtilsHelper {
 
     <TBase, TActual extends TBase, TExpected extends TBase>
     void assertNeitherNull(
-            Class<TBase> collectionClass,
+            Class<TBase> clazz,
             TActual actual,
             TExpected expected,
             @Nullable String optionalMessagePrefixFormat,
@@ -63,11 +64,11 @@ interface MoreAssertUtilsHelper {
             String format,
             Object... formatArgArr);
 
-    <T>
+    <TValue>
     void assertSetContains(
             String setDescription,
-            Set<T> actualSet,
-            Set<? extends T> expectedSet,
+            Set<TValue> actualSet,
+            Set<? extends TValue> expectedSet,
             @Nullable String optionalMessagePrefixFormat,
             Object... formatArgArr);
 
@@ -76,6 +77,13 @@ interface MoreAssertUtilsHelper {
             String mapDescription,
             Map<TKey, TValue> actualMap,
             Map<? extends TKey, ? extends TValue> expectedMap,
+            @Nullable String optionalMessagePrefixFormat,
+            Object... formatArgArr);
+
+    void assertBothIteratorsDoNotHaveNext(
+            String containerDescription,
+            Iterator<?> actualIter,
+            Iterator<?> expectedIter,
             @Nullable String optionalMessagePrefixFormat,
             Object... formatArgArr);
 }

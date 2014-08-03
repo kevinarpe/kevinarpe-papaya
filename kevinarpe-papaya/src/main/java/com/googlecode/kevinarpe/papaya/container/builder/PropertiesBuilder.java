@@ -28,6 +28,7 @@ package com.googlecode.kevinarpe.papaya.container.builder;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -46,7 +47,7 @@ import java.util.Properties;
  */
 @FullyTested
 public final class PropertiesBuilder
-extends AbstractMapBuilder<Object, Object, Properties> {
+extends AbstractMapBuilder<Object, Object, Properties, PropertiesBuilder> {
 
     /**
      * Constructs a new builder.
@@ -57,7 +58,11 @@ extends AbstractMapBuilder<Object, Object, Properties> {
     }
 
     private PropertiesBuilder() {
-        // Empty
+        this(new HashMap<Object, Object>());
+    }
+
+    PropertiesBuilder(Map<Object, Object> map) {
+        super(map);
     }
 
     /**
@@ -68,6 +73,11 @@ extends AbstractMapBuilder<Object, Object, Properties> {
         Properties x = new Properties();
         x.putAll(delegate());
         return x;
+    }
+
+    @Override
+    protected PropertiesBuilder self() {
+        return this;
     }
 
     /**

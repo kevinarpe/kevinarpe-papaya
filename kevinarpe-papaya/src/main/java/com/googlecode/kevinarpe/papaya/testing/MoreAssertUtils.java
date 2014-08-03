@@ -58,17 +58,45 @@ implements IMoreAssertUtils {
             ObjectArgs.checkNotNull(moreAssertUtilsHelper, "moreAssertUtilsHelper");
     }
 
+    /**
+     * This is a convenience method to call {@link #assertListEquals(List, List, String, Object...)}
+     * without an assert message prefix.
+     */
     @Override
-    public <T> void assertListEquals(
-            @Nullable List<T> actualList, @Nullable List<? extends T> expectedList) {
+    public <TValue>
+    void assertListEquals(
+            @Nullable List<TValue> actualList, @Nullable List<? extends TValue> expectedList) {
         final String optionalMessagePrefixFormat = null;
         _coreAssertListEquals(actualList, expectedList, optionalMessagePrefixFormat);
     }
 
+    /**
+     * Compares two lists for equality.  Nulls are handled correctly.  Methods
+     * {@link List#equals(Object)} and {@link List#hashCode()} are also tested.
+     *
+     * @param actualList
+     *        may be {@code null} or empty
+     * @param expectedList
+     *        may be {@code null} or empty
+     * @param messagePrefixFormat
+     *        assert message prefix: used as format for {@link String#format(String, Object...)}.
+     *        Must not be {@code null}, empty or only whitespace.
+     * @param formatArgArr
+     *        assert message prefix: used as arg array for {@link String#format(String, Object...)}.
+     *        Must not be {@code null}, but may be empty or contain {@code null} elements.
+     *
+     * @throws NullPointerException
+     *         if {@code messagePrefixFormat} or {@code formatArgArr} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code messagePrefixFormat} is empty or only whitespace
+     * @throws AssertionError
+     *         if lists are not equal
+     */
     @Override
-    public <T> void assertListEquals(
-            @Nullable List<T> actualList,
-            @Nullable List<? extends T> expectedList,
+    public <TValue>
+    void assertListEquals(
+            @Nullable List<TValue> actualList,
+            @Nullable List<? extends TValue> expectedList,
             String messagePrefixFormat,
             Object... formatArgArr) {
         StringArgs.checkNotEmptyOrWhitespace(messagePrefixFormat, "messagePrefixFormat");
@@ -78,16 +106,18 @@ implements IMoreAssertUtils {
     }
 
     @Override
-    public <T> void assertSetEquals(
-            @Nullable Set<T> actualSet, @Nullable Set<? extends T> expectedSet) {
+    public <TValue>
+    void assertSetEquals(
+            @Nullable Set<TValue> actualSet, @Nullable Set<? extends TValue> expectedSet) {
         final String optionalMessagePrefixFormat = null;
         _coreAssertSetEquals(actualSet, expectedSet, optionalMessagePrefixFormat);
     }
 
     @Override
-    public <T> void assertSetEquals(
-            @Nullable Set<T> actualSet,
-            @Nullable Set<? extends T> expectedSet,
+    public <TValue>
+    void assertSetEquals(
+            @Nullable Set<TValue> actualSet,
+            @Nullable Set<? extends TValue> expectedSet,
             String messagePrefixFormat,
             Object... formatArgArr) {
         StringArgs.checkNotEmptyOrWhitespace(messagePrefixFormat, "messagePrefixFormat");
@@ -97,16 +127,18 @@ implements IMoreAssertUtils {
     }
 
     @Override
-    public <T> void assertLinkedSetEquals(
-            @Nullable Set<T> actualSet, @Nullable Set<? extends T> expectedSet) {
+    public <TValue>
+    void assertLinkedSetEquals(
+            @Nullable Set<TValue> actualSet, @Nullable Set<? extends TValue> expectedSet) {
         final String optionalMessagePrefixFormat = null;
         _coreAssertLinkedSetEquals(actualSet, expectedSet, optionalMessagePrefixFormat);
     }
 
     @Override
-    public <T> void assertLinkedSetEquals(
-            @Nullable Set<T> actualSet,
-            @Nullable Set<? extends T> expectedSet,
+    public <TValue>
+    void assertLinkedSetEquals(
+            @Nullable Set<TValue> actualSet,
+            @Nullable Set<? extends TValue> expectedSet,
             String messagePrefixFormat,
             Object... formatArgArr) {
         StringArgs.checkNotEmptyOrWhitespace(messagePrefixFormat, "messagePrefixFormat");
@@ -116,7 +148,8 @@ implements IMoreAssertUtils {
     }
 
     @Override
-    public <TKey, TValue> void assertMapEquals(
+    public <TKey, TValue>
+    void assertMapEquals(
             @Nullable Map<TKey, TValue> actualMap,
             @Nullable Map<? extends TKey, ? extends TValue> expectedMap) {
         final String optionalMessagePrefixFormat = null;
@@ -125,7 +158,8 @@ implements IMoreAssertUtils {
     }
 
     @Override
-    public <TKey, TValue> void assertMapEquals(
+    public <TKey, TValue>
+    void assertMapEquals(
             @Nullable Map<TKey, TValue> actualMap,
             @Nullable Map<? extends TKey, ? extends TValue> expectedMap,
             @Nullable String messagePrefixFormat,
@@ -137,7 +171,8 @@ implements IMoreAssertUtils {
     }
 
     @Override
-    public <TKey, TValue> void assertLinkedMapEquals(
+    public <TKey, TValue>
+    void assertLinkedMapEquals(
             @Nullable Map<TKey, TValue> actualMap,
             @Nullable Map<? extends TKey, ? extends TValue> expectedMap) {
         final String optionalMessagePrefixFormat = null;
@@ -146,7 +181,8 @@ implements IMoreAssertUtils {
     }
 
     @Override
-    public <TKey, TValue> void assertLinkedMapEquals(
+    public <TKey, TValue>
+    void assertLinkedMapEquals(
             @Nullable Map<TKey, TValue> actualMap,
             @Nullable Map<? extends TKey, ? extends TValue> expectedMap,
             @Nullable String messagePrefixFormat,
@@ -157,9 +193,9 @@ implements IMoreAssertUtils {
         _coreAssertLinkedMapEquals(actualMap, expectedMap, messagePrefixFormat, formatArgArr);
     }
 
-    private <T> void _coreAssertListEquals(
-            @Nullable List<T> actualList,
-            @Nullable List<? extends T> expectedList,
+    private <TValue> void _coreAssertListEquals(
+            @Nullable List<TValue> actualList,
+            @Nullable List<? extends TValue> expectedList,
             @Nullable String optionalMessagePrefixFormat,
             Object... formatArgArr) {
         if (actualList == expectedList) {  // also covers 'null == null'
@@ -168,33 +204,41 @@ implements IMoreAssertUtils {
         moreAssertUtilsHelper.assertNeitherNull(
             List.class, actualList, expectedList, optionalMessagePrefixFormat, formatArgArr);
 
-        final int size =
-            moreAssertUtilsHelper.assertSameContainerSize(
-                List.class,
-                actualList.size(),
-                expectedList.size(),
-                optionalMessagePrefixFormat,
-                formatArgArr);
+        moreAssertUtilsHelper.assertSameContainerSize(
+            List.class,
+            actualList.size(),
+            expectedList.size(),
+            optionalMessagePrefixFormat,
+            formatArgArr);
 
-        for (int i = 0; i < size; ++i) {
-            T actualValue = actualList.get(i);
-            T expectedValue = expectedList.get(i);
+        Iterator<TValue> actualIter = actualList.iterator();
+        Iterator<? extends TValue> expectedIter = expectedList.iterator();
+        int index = 0;
+        while (actualIter.hasNext() && expectedIter.hasNext()) {
+            TValue actualValue = actualIter.next();
+            TValue expectedValue = expectedIter.next();
             if (!Objects.equal(actualValue, expectedValue)) {
                 moreAssertUtilsHelper.throwAssertionError(optionalMessagePrefixFormat, formatArgArr,
                     "Lists not equal: Index %d: Actual != Expected:"
                         + "%n\tActual  : '%s'"
                         + "%n\tExpected: '%s'",
-                    i, actualValue, expectedValue);
+                    index, actualValue, expectedValue);
             }
+            ++index;
         }
+
+        // TODO: LAST: Fix tests here
+        moreAssertUtilsHelper.assertBothIteratorsDoNotHaveNext(
+            "List", actualIter, expectedIter, optionalMessagePrefixFormat, formatArgArr);
 
         moreAssertUtilsHelper.assertEqualsAndHashCodeCorrect(
             List.class, actualList, expectedList, optionalMessagePrefixFormat, formatArgArr);
     }
 
-    private <T> void _coreAssertSetEquals(
-            @Nullable Set<T> actualSet,
-            @Nullable Set<? extends T> expectedSet,
+    private <TValue>
+    void _coreAssertSetEquals(
+            @Nullable Set<TValue> actualSet,
+            @Nullable Set<? extends TValue> expectedSet,
             @Nullable String optionalMessagePrefixFormat,
             Object... formatArgArr) {
         if (actualSet == expectedSet) {  // also covers 'null == null'
@@ -210,7 +254,6 @@ implements IMoreAssertUtils {
             optionalMessagePrefixFormat,
             formatArgArr);
 
-
         moreAssertUtilsHelper.assertSetContains(
             "Set", actualSet, expectedSet, optionalMessagePrefixFormat, formatArgArr);
 
@@ -218,9 +261,10 @@ implements IMoreAssertUtils {
             Set.class, actualSet, expectedSet, optionalMessagePrefixFormat, formatArgArr);
     }
 
-    private <T> void _coreAssertLinkedSetEquals(
-            @Nullable Set<T> actualSet,
-            @Nullable Set<? extends T> expectedSet,
+    private <TValue>
+    void _coreAssertLinkedSetEquals(
+            @Nullable Set<TValue> actualSet,
+            @Nullable Set<? extends TValue> expectedSet,
             @Nullable String optionalMessagePrefixFormat,
             Object... formatArgArr) {
         if (actualSet == expectedSet) {  // also covers 'null == null'
@@ -237,13 +281,13 @@ implements IMoreAssertUtils {
                 optionalMessagePrefixFormat,
                 formatArgArr);
 
-        Iterator<T> actualIter = actualSet.iterator();
-        Iterator<? extends T> expectedIter = expectedSet.iterator();
+        Iterator<TValue> actualIter = actualSet.iterator();
+        Iterator<? extends TValue> expectedIter = expectedSet.iterator();
         int count = 0;
         while (expectedIter.hasNext() && actualIter.hasNext()) {
             ++count;
-            T actualValue = actualIter.next();
-            T expectedValue = expectedIter.next();
+            TValue actualValue = actualIter.next();
+            TValue expectedValue = expectedIter.next();
 
             if (!Objects.equal(actualValue, expectedValue)) {
                 moreAssertUtilsHelper.throwAssertionError(optionalMessagePrefixFormat, formatArgArr,
@@ -254,10 +298,9 @@ implements IMoreAssertUtils {
             }
         }
 
-        if (expectedIter.hasNext() != actualIter.hasNext()) {
-            moreAssertUtilsHelper.throwAssertionError(optionalMessagePrefixFormat, formatArgArr,
-                "LinkedSets not equal: Size is equal, but number of elements by iteration is not equal");
-        }
+        // TODO: LAST: Fix tests here
+        moreAssertUtilsHelper.assertBothIteratorsDoNotHaveNext(
+            "LinkedSet", actualIter, expectedIter, optionalMessagePrefixFormat, formatArgArr);
 
         moreAssertUtilsHelper.assertSetContains(
             "LinkedSet", actualSet, expectedSet, optionalMessagePrefixFormat, formatArgArr);
@@ -266,7 +309,8 @@ implements IMoreAssertUtils {
             Set.class, actualSet, expectedSet, optionalMessagePrefixFormat, formatArgArr);
     }
 
-    private <TKey, TValue> void _coreAssertMapEquals(
+    private <TKey, TValue>
+    void _coreAssertMapEquals(
             @Nullable Map<TKey, TValue> actualMap,
             @Nullable Map<? extends TKey, ? extends TValue> expectedMap,
             @Nullable String optionalMessagePrefixFormat,
@@ -329,7 +373,8 @@ implements IMoreAssertUtils {
             Map.class, actualMap, expectedMap, optionalMessagePrefixFormat, formatArgArr);
     }
 
-    private <TKey, TValue> void _coreAssertLinkedMapEquals(
+    private <TKey, TValue>
+    void _coreAssertLinkedMapEquals(
             @Nullable Map<TKey, TValue> actualMap,
             @Nullable Map<? extends TKey, ? extends TValue> expectedMap,
             @Nullable String optionalMessagePrefixFormat,
@@ -381,10 +426,13 @@ implements IMoreAssertUtils {
             }
         }
 
-        if (expectedEntryIter.hasNext() != actualEntryIter.hasNext()) {
-            moreAssertUtilsHelper.throwAssertionError(optionalMessagePrefixFormat, formatArgArr,
-                "LinkedMaps not equal: Size is equal, but number of elements by iteration is not equal");
-        }
+        // TODO: LAST: Fix tests here
+        moreAssertUtilsHelper.assertBothIteratorsDoNotHaveNext(
+            "LinkedMap",
+            actualEntryIter,
+            expectedEntryIter,
+            optionalMessagePrefixFormat,
+            formatArgArr);
 
         moreAssertUtilsHelper.assertMapEntrySetEquals(
             "LinkedMap", actualMap, expectedMap, optionalMessagePrefixFormat, formatArgArr);

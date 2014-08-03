@@ -28,6 +28,8 @@ package com.googlecode.kevinarpe.papaya.jdk.properties;
  * #L%
  */
 
+import com.google.common.collect.ImmutableList;
+
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -35,6 +37,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -45,14 +48,14 @@ import java.util.Properties;
  * <a href="http://hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d/src/share/classes/java/util/Properties.java"
  * >Properties.java</a>
  * <p>
- * To access an implementation, see {@link JdkPropertiesLoaderUtils#getInstance()}.
+ * To access an implementation, see {@link JavaPropertiesLoaderUtils#getInstance()}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see JdkPropertiesLoaderUtils
+ * @see JavaPropertiesLoaderUtils
  * @see Properties
  */
-public interface JdkPropertiesLoader {
+public interface JavaPropertiesLoader {
 
     /**
      * This is a derivative of the original {@link Properties#load(Reader)}.  The result is a list
@@ -64,8 +67,12 @@ public interface JdkPropertiesLoader {
      *        To read from a file, use {@link FileReader}.
      *        To read from a string use {@link StringReader}.
      *
-     * @return mutable list of mutable entries.  Order of entries follows input exactly.
-     *         Duplicate keys and key-value pairs may exist.
+     * @return list of entries, such that:
+     * <ul>
+     *     <li>order of entries follows input exactly</li>
+     *     <li>duplicate keys and key-value pairs may exist</li>
+     *     <li>default implementation uses {@link ImmutableList}</li>
+     * </ul>
      *
      * @throws NullPointerException
      *         if {@code characterStream} is null
@@ -77,7 +84,7 @@ public interface JdkPropertiesLoader {
      * @see Properties#load(Reader)
      * @see #load(InputStream)
      */
-    RandomAccessList<JdkProperty> load(Reader characterStream)
+    List<JavaProperty> load(Reader characterStream)
     throws IOException;
 
     /**
@@ -89,8 +96,12 @@ public interface JdkPropertiesLoader {
      *        stream of bytes to read.
      *        To read from a file, use {@link FileInputStream}
      *
-     * @return mutable list of mutable entries.  Order of entries follows input exactly.
-     *         Duplicate keys and key-value pairs may exist.
+     * @return list of entries, such that:
+     * <ul>
+     *     <li>order of entries follows input exactly</li>
+     *     <li>duplicate keys and key-value pairs may exist</li>
+     *     <li>default implementation uses {@link ImmutableList}</li>
+     * </ul>
      *
      * @throws NullPointerException
      *         if {@code byteStream} is null
@@ -102,6 +113,6 @@ public interface JdkPropertiesLoader {
      * @see Properties#load(InputStream)
      * @see #load(Reader)
      */
-    RandomAccessList<JdkProperty> load(InputStream byteStream)
+    List<JavaProperty> load(InputStream byteStream)
     throws IOException;
 }

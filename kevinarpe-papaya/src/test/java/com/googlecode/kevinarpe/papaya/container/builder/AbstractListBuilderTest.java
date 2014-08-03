@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.properties;
+package com.googlecode.kevinarpe.papaya.container.builder;
 
 /*
  * #%L
@@ -25,15 +25,8 @@ package com.googlecode.kevinarpe.papaya.properties;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.jdk.properties.JavaProperty;
+public class AbstractListBuilderTest {
 
-import java.util.List;
-import java.util.Map;
+    // TODO: LAST
 
-/**
- * @author Kevin Connor ARPE (kevinarpe@gmail.com)
- */
-interface PropertiesMerger {
-
-    void merge(Map<? super String, ? super String> map, List<JavaProperty> propertyList);
 }
