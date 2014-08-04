@@ -27,6 +27,7 @@ package com.googlecode.kevinarpe.papaya.container.builder;
 
 import com.google.common.collect.ForwardingList;
 import com.google.common.collect.Iterators;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 import java.util.ArrayList;
@@ -68,6 +69,7 @@ import java.util.List;
  * @see LinkedListBuilder
  * @see ImmutableListBuilder
  */
+@FullyTested
 public abstract class AbstractListBuilder
     <
         TValue,

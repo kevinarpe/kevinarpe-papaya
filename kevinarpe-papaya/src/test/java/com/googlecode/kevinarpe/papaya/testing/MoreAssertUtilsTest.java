@@ -29,12 +29,14 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.googlecode.kevinarpe.papaya.testing.mockito.MockitoUtils;
+import org.mockito.Mockito;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -103,6 +105,15 @@ public class MoreAssertUtilsTest {
         List<String> expectedList = Lists.newArrayList("def");
         _when_assertSameContainerSize(List.class, actualList, expectedList);
         _when_throwAssertionError(anAssertionError);
+        _coreAssertListEquals(actualList, expectedList, anAssertionError);
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void assertListEquals_FailWhen_assertBothIteratorsDoNotHaveNext_Throws_AssertionException() {
+        List<String> actualList = Lists.newArrayList("abc");
+        List<String> expectedList = Lists.newArrayList("abc", "def");
+        _when_assertBothIteratorsDoNotHaveNext_Throws_AssertionException(
+            "List", anAssertionError);
         _coreAssertListEquals(actualList, expectedList, anAssertionError);
     }
 
@@ -215,16 +226,11 @@ public class MoreAssertUtilsTest {
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void assertLinkedSetEquals_FailWhenActualSizeLessThanExpected() {
-        Set<String> actualSet = Sets.newLinkedHashSet(Arrays.asList("abc"));
-        Set<String> expectedSet = Sets.newLinkedHashSet(Arrays.asList("abc", "def"));
-        _coreAssertLinkedSetEquals_Fail(actualSet, expectedSet);
-    }
-
-    @Test(expectedExceptions = AssertionError.class)
-    public void assertLinkedSetEquals_FailWhenExpectedSizeLessThanActual() {
+    public void assertLinkedSetEquals_FailWhen_assertBothIteratorsDoNotHaveNext_Throws_AssertionException() {
         Set<String> actualSet = Sets.newLinkedHashSet(Arrays.asList("abc", "def"));
         Set<String> expectedSet = Sets.newLinkedHashSet(Arrays.asList("abc"));
+        _when_assertBothIteratorsDoNotHaveNext_Throws_AssertionException(
+            "LinkedSet", anAssertionError);
         _coreAssertLinkedSetEquals_Fail(actualSet, expectedSet);
     }
 
@@ -422,18 +428,11 @@ public class MoreAssertUtilsTest {
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void assertLinkedMapEquals_FailWhenActualSizeLessThanExpected() {
-        Map<String, Integer> actualMap = ImmutableMap.of("abc", 123);
-        Map<String, Integer> expectedMap = ImmutableMap.of("abc", 123, "def", 456);
-        _when_throwAssertionError(anAssertionError);
-        _coreAssertLinkedMapEquals(actualMap, expectedMap, anAssertionError);
-    }
-
-    @Test(expectedExceptions = AssertionError.class)
-    public void assertLinkedMapEquals_FailWhenExpectedSizeLessThanActual() {
+    public void assertLinkedMapEquals_FailWhen_assertBothIteratorsDoNotHaveNext_Throws_AssertionException() {
         Map<String, Integer> actualMap = ImmutableMap.of("abc", 123, "def", 456);
         Map<String, Integer> expectedMap = ImmutableMap.of("abc", 123);
-        _when_throwAssertionError(anAssertionError);
+        _when_assertBothIteratorsDoNotHaveNext_Throws_AssertionException(
+            "LinkedMap", anAssertionError);
         _coreAssertLinkedMapEquals(actualMap, expectedMap, anAssertionError);
     }
 
@@ -520,6 +519,26 @@ public class MoreAssertUtilsTest {
         doThrow(anAssertionError)
             .when(mockMoreAssertUtilsHelper)
             .throwAssertionError(eq(FORMAT), eq(FORMAT_ARG_ARR), anyString(), anyVararg());
+    }
+
+    private void _when_assertBothIteratorsDoNotHaveNext_Throws_AssertionException(
+            String containerDescription, AssertionError anAssertionError) {
+        doThrow(anAssertionError)
+            .when(mockMoreAssertUtilsHelper)
+            .assertBothIteratorsDoNotHaveNext(
+                eq(containerDescription),
+                Mockito.<Iterator<?>>any(),
+                Mockito.<Iterator<?>>any(),
+                eq((String) null),
+                anyVararg());
+        doThrow(anAssertionError)
+            .when(mockMoreAssertUtilsHelper)
+            .assertBothIteratorsDoNotHaveNext(
+                eq(containerDescription),
+                Mockito.<Iterator<?>>any(),
+                Mockito.<Iterator<?>>any(),
+                eq(FORMAT),
+                Mockito.anyVararg());
     }
 
     private <TBase, TActual extends TBase, TExpected extends TBase>

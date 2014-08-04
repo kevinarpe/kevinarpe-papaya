@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.testing;
  */
 
 import com.google.common.base.Objects;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
@@ -37,18 +38,33 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * Assert utilities.  These methods were written to fill a gap left by JUnit and TestNG.  To use the
+ * methods in this class create a new instance via {@link #MoreAssertUtils()} or use the public
+ * static member {@link #INSTANCE}.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see #INSTANCE
+ * @see StatelessObject
+ * @see IMoreAssertUtils
  */
-// TODO: Test me
+@FullyTested
 public final class MoreAssertUtils
 extends StatelessObject
 implements IMoreAssertUtils {
 
-    public static final MoreAssertUtils INSTANCE =
-        new MoreAssertUtils();
+    /**
+     * Single instance of this class provided for convenience.  Since this class is stateless, its
+     * behaviour is identical between this instance and others.
+     */
+    public static final MoreAssertUtils INSTANCE = new MoreAssertUtils();
 
     private final MoreAssertUtilsHelper moreAssertUtilsHelper;
 
+    /**
+     * For projects that require total, static-free mocking capabilities, use this constructor.
+     * Else, the static constant {@link #INSTANCE} will suffice.
+     */
     public MoreAssertUtils() {
         this(MoreAssertUtilsHelperImpl.INSTANCE);
     }
@@ -58,10 +74,7 @@ implements IMoreAssertUtils {
             ObjectArgs.checkNotNull(moreAssertUtilsHelper, "moreAssertUtilsHelper");
     }
 
-    /**
-     * This is a convenience method to call {@link #assertListEquals(List, List, String, Object...)}
-     * without an assert message prefix.
-     */
+    /** {@inheritDoc */
     @Override
     public <TValue>
     void assertListEquals(
@@ -70,28 +83,7 @@ implements IMoreAssertUtils {
         _coreAssertListEquals(actualList, expectedList, optionalMessagePrefixFormat);
     }
 
-    /**
-     * Compares two lists for equality.  Nulls are handled correctly.  Methods
-     * {@link List#equals(Object)} and {@link List#hashCode()} are also tested.
-     *
-     * @param actualList
-     *        may be {@code null} or empty
-     * @param expectedList
-     *        may be {@code null} or empty
-     * @param messagePrefixFormat
-     *        assert message prefix: used as format for {@link String#format(String, Object...)}.
-     *        Must not be {@code null}, empty or only whitespace.
-     * @param formatArgArr
-     *        assert message prefix: used as arg array for {@link String#format(String, Object...)}.
-     *        Must not be {@code null}, but may be empty or contain {@code null} elements.
-     *
-     * @throws NullPointerException
-     *         if {@code messagePrefixFormat} or {@code formatArgArr} is {@code null}
-     * @throws IllegalArgumentException
-     *         if {@code messagePrefixFormat} is empty or only whitespace
-     * @throws AssertionError
-     *         if lists are not equal
-     */
+    /** {@inheritDoc */
     @Override
     public <TValue>
     void assertListEquals(
@@ -105,6 +97,7 @@ implements IMoreAssertUtils {
         _coreAssertListEquals(actualList, expectedList, messagePrefixFormat, formatArgArr);
     }
 
+    /** {@inheritDoc */
     @Override
     public <TValue>
     void assertSetEquals(
@@ -113,6 +106,7 @@ implements IMoreAssertUtils {
         _coreAssertSetEquals(actualSet, expectedSet, optionalMessagePrefixFormat);
     }
 
+    /** {@inheritDoc */
     @Override
     public <TValue>
     void assertSetEquals(
@@ -126,6 +120,7 @@ implements IMoreAssertUtils {
         _coreAssertSetEquals(actualSet, expectedSet, messagePrefixFormat, formatArgArr);
     }
 
+    /** {@inheritDoc */
     @Override
     public <TValue>
     void assertLinkedSetEquals(
@@ -134,6 +129,7 @@ implements IMoreAssertUtils {
         _coreAssertLinkedSetEquals(actualSet, expectedSet, optionalMessagePrefixFormat);
     }
 
+    /** {@inheritDoc */
     @Override
     public <TValue>
     void assertLinkedSetEquals(
@@ -147,16 +143,17 @@ implements IMoreAssertUtils {
         _coreAssertLinkedSetEquals(actualSet, expectedSet, messagePrefixFormat, formatArgArr);
     }
 
+    /** {@inheritDoc */
     @Override
     public <TKey, TValue>
     void assertMapEquals(
             @Nullable Map<TKey, TValue> actualMap,
             @Nullable Map<? extends TKey, ? extends TValue> expectedMap) {
         final String optionalMessagePrefixFormat = null;
-
         _coreAssertMapEquals(actualMap, expectedMap, optionalMessagePrefixFormat);
     }
 
+    /** {@inheritDoc */
     @Override
     public <TKey, TValue>
     void assertMapEquals(
@@ -170,6 +167,7 @@ implements IMoreAssertUtils {
         _coreAssertMapEquals(actualMap, expectedMap, messagePrefixFormat, formatArgArr);
     }
 
+    /** {@inheritDoc */
     @Override
     public <TKey, TValue>
     void assertLinkedMapEquals(
@@ -180,6 +178,7 @@ implements IMoreAssertUtils {
         _coreAssertLinkedMapEquals(actualMap, expectedMap, optionalMessagePrefixFormat);
     }
 
+    /** {@inheritDoc */
     @Override
     public <TKey, TValue>
     void assertLinkedMapEquals(
@@ -227,7 +226,6 @@ implements IMoreAssertUtils {
             ++index;
         }
 
-        // TODO: LAST: Fix tests here
         moreAssertUtilsHelper.assertBothIteratorsDoNotHaveNext(
             "List", actualIter, expectedIter, optionalMessagePrefixFormat, formatArgArr);
 
@@ -298,7 +296,6 @@ implements IMoreAssertUtils {
             }
         }
 
-        // TODO: LAST: Fix tests here
         moreAssertUtilsHelper.assertBothIteratorsDoNotHaveNext(
             "LinkedSet", actualIter, expectedIter, optionalMessagePrefixFormat, formatArgArr);
 
@@ -426,7 +423,6 @@ implements IMoreAssertUtils {
             }
         }
 
-        // TODO: LAST: Fix tests here
         moreAssertUtilsHelper.assertBothIteratorsDoNotHaveNext(
             "LinkedMap",
             actualEntryIter,

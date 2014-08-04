@@ -200,7 +200,6 @@ implements MoreAssertUtilsHelper {
         }
     }
 
-    // TODO: LAST: Test me
     @Override
     public void assertBothIteratorsDoNotHaveNext(
             String containerDescription,

@@ -28,7 +28,19 @@ package com.googlecode.kevinarpe.papaya.container.builder;
 import java.util.Iterator;
 
 /**
+ * Base interface for all container builders.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @param <TValue>
+ *        type of container element
+ * @param <TContainer>
+ *        type of container (to hold zero or more elements of type {@code TValue})
+ * @param <TSelf>
+ *        see <a href="http://en.wikipedia.org/wiki/Curiously_recurring_template_pattern"
+ *        >curiously recurring template pattern (CRTP)</a>
+ *
+ * @see Builder
  */
 public interface ContainerBuilder
     <
@@ -39,16 +51,50 @@ public interface ContainerBuilder
 extends Builder<TContainer> {
 
     /**
-     * Adds many values to the collection builder.
+     * Adds many values to the builder.
      *
      * @param valueArr
-     *        zero or more value to add; must not be {@code null}
+     *        zero or more values to add; must not be {@code null}
      *
      * @return reference to self
+     *
+     * @throws NullPointerException
+     *         if {@code valueArr} is {@code null}
+     *
+     * @see #addMany(Iterable)
+     * @see #addMany(Iterator)
      */
     TSelf addMany(TValue... valueArr);
 
+    /**
+     * Adds many values to the builder.
+     *
+     * @param valueIterable
+     *        zero or more values to add; must not be {@code null}
+     *
+     * @return reference to self
+     *
+     * @throws NullPointerException
+     *         if {@code valueIterable} is {@code null}
+     *
+     * @see #addMany(Object[])
+     * @see #addMany(Iterator)
+     */
     TSelf addMany(Iterable<? extends TValue> valueIterable);
 
+    /**
+     * Adds many values to the builder.
+     *
+     * @param valueIter
+     *        zero or more values to add; must not be {@code null}
+     *
+     * @return reference to self
+     *
+     * @throws NullPointerException
+     *         if {@code valueIterable} is {@code null}
+     *
+     * @see #addMany(Iterator)
+     * @see #addMany(Iterable)
+     */
     TSelf addMany(Iterator<? extends TValue> valueIter);
 }

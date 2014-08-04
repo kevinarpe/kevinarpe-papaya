@@ -27,6 +27,7 @@ package com.googlecode.kevinarpe.papaya.testing;
 
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
+import com.google.common.collect.UnmodifiableIterator;
 import com.googlecode.kevinarpe.papaya.testing.mockito.MockitoUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -35,6 +36,7 @@ import org.testng.annotations.Test;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -438,15 +440,42 @@ public class MoreAssertUtilsHelperImplTest {
         final HashMap<String, Integer> actualMap = new HashMap<String, Integer>();
         actualMap.put("abc", 123);
         final HashMap<String, Integer> expectedMap = new HashMap<String, Integer>(actualMap);
+        classUnderTest.assertMapEntrySetEquals(
+            "Map", actualMap, expectedMap, FORMAT, FORMAT_ARG_ARR);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // MoreAssertUtilsHelperImpl.assertBothIteratorsDoNotHaveNext()
+    //
+
+    @DataProvider
+    private static Object[][] _assertBothIteratorsDoNotHaveNext_Fail_Data() {
+        return new Object[][] {
+            { Iterators.forArray("abc"), Iterators.<String>forArray() },
+            { Iterators.<String>forArray(), Iterators.forArray("abc") },
+        };
+    }
+
+    @Test(expectedExceptions = AssertionError.class,
+            dataProvider = "_assertBothIteratorsDoNotHaveNext_Fail_Data")
+    public void assertBothIteratorsDoNotHaveNext_Fail(
+            final Iterator<?> actualIter, final Iterator<?> expectedIter) {
         _checkExceptionMessagePrefix(
             new Runnable() {
                 @Override
                 public void run() {
-                    classUnderTest.assertMapEntrySetEquals(
-                        "Map", actualMap, expectedMap, FORMAT, FORMAT_ARG_ARR);
+                    classUnderTest.assertBothIteratorsDoNotHaveNext(
+                        "Container", actualIter, expectedIter, FORMAT, FORMAT_ARG_ARR);
                 }
             },
             PREFIX);
+    }
+
+    @Test
+    public void assertBothIteratorsDoNotHaveNext_Pass() {
+        UnmodifiableIterator<String> iter = Iterators.<String>forArray();
+        classUnderTest.assertBothIteratorsDoNotHaveNext(
+            "Container", iter, iter, FORMAT, FORMAT_ARG_ARR);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
