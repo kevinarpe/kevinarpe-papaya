@@ -25,68 +25,49 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
-import com.google.common.collect.ForwardingMap;
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.google.common.collect.BiMap;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.container.ForwardingBiMap;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Base class for all implementations of {@code MapBuilder}.  The underlying map is an instance of
- * {@link LinkedHashMap}.
- *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
- *
- * @param <TMap>
- *        type of map to build: extends Map&lt;TKey, TValue>
- * @param <TKey>
- *        type of key for map
- * @param <TValue>
- *        type of value for map
- *
- * @see ForwardingMap
- * @see MapBuilder
- * @see HashMapBuilder
- * @see LinkedHashMapBuilder
- * @see ImmutableMapBuilder
- * @see PropertiesBuilder
  */
-@FullyTested
-public abstract class AbstractMapBuilder
+public abstract class AbstractBiMapBuilder
     <
         TKey,
         TValue,
-        TMap extends Map<TKey, TValue>,
-        TSelf extends MapBuilder<TKey, TValue, TMap, TSelf>
+        TMap extends BiMap<TKey, TValue>,
+        TSelf extends BiMapBuilder<TKey, TValue, TMap, TSelf>
     >
-extends ForwardingMap<TKey, TValue>
-implements MapBuilder<TKey, TValue, TMap, TSelf> {
+extends ForwardingBiMap<TKey, TValue>
+implements BiMapBuilder<TKey, TValue, TMap, TSelf> {
 
-    private final Map<TKey, TValue> _map;
-    private final IMapBuilderUtils<TKey, TValue, TMap> _mapBuilderUtils;
+    private final BiMap<TKey, TValue> _biMap;
+    private final IMapBuilderUtils<TKey, TValue, TMap> _biMapBuilderUtils;
     private final MinimalistMap<TKey, TValue> _minimalistMap;
 
-    protected AbstractMapBuilder(Map<TKey, TValue> map) {
+    protected AbstractBiMapBuilder(BiMap<TKey, TValue> biMap) {
         this(
-            map,
+            biMap,
             new MapBuilderUtils<TKey, TValue, TMap>(),
-            new MinimalistMapImpl<TKey, TValue>(map));
+            new MinimalistMapImpl<TKey, TValue>(biMap));
     }
 
-    AbstractMapBuilder(
-            Map<TKey, TValue> map,
+    AbstractBiMapBuilder(
+            BiMap<TKey, TValue> biMap,
             IMapBuilderUtils<TKey, TValue, TMap> mapBuilderUtils,
             MinimalistMap<TKey, TValue> minimalistMap) {
         super();
-        _map = ObjectArgs.checkNotNull(map, "map");
-        _mapBuilderUtils = ObjectArgs.checkNotNull(mapBuilderUtils, "mapBuilderUtils");
+        _biMap = ObjectArgs.checkNotNull(biMap, "biMap");
+        _biMapBuilderUtils = ObjectArgs.checkNotNull(mapBuilderUtils, "mapBuilderUtils");
         _minimalistMap = ObjectArgs.checkNotNull(minimalistMap, "minimalistMap");
     }
 
     @Override
-    protected final Map<TKey, TValue> delegate() {
-        return _map;
+    protected final BiMap<TKey, TValue> delegate() {
+        return _biMap;
     }
 
     @Override
@@ -96,7 +77,7 @@ implements MapBuilder<TKey, TValue, TMap, TSelf> {
 
     @Override
     public final TSelf putOne(TKey key, TValue value) {
-        _map.put(key, value);
+        _biMap.put(key, value);
         TSelf x = self();
         return x;
     }
@@ -104,7 +85,7 @@ implements MapBuilder<TKey, TValue, TMap, TSelf> {
     @Override
     public final TSelf putMany(
             Class<TKey> keyClass, Class<TValue> valueClass, Object... keysAndValuesArr) {
-        _mapBuilderUtils.putMany(_minimalistMap, keyClass, valueClass, keysAndValuesArr);
+        _biMapBuilderUtils.putMany(_minimalistMap, keyClass, valueClass, keysAndValuesArr);
         TSelf x = self();
         return x;
     }
@@ -112,14 +93,14 @@ implements MapBuilder<TKey, TValue, TMap, TSelf> {
     @Override
     public final TSelf putMany(
             Iterable<? extends TKey> keyIterable, Iterable<? extends TValue> valueIterable) {
-        _mapBuilderUtils.putMany(_minimalistMap, keyIterable, valueIterable);
+        _biMapBuilderUtils.putMany(_minimalistMap, keyIterable, valueIterable);
         TSelf x = self();
         return x;
     }
 
     @Override
     public final TSelf putMany(Map.Entry<? extends TKey, ? extends TValue>... entryArr) {
-        _mapBuilderUtils.putMany(_minimalistMap, entryArr);
+        _biMapBuilderUtils.putMany(_minimalistMap, entryArr);
         TSelf x = self();
         return x;
     }
@@ -127,7 +108,7 @@ implements MapBuilder<TKey, TValue, TMap, TSelf> {
     @Override
     public final TSelf putMany(
             Iterable<? extends Map.Entry<? extends TKey, ? extends TValue>> entryIterable) {
-        _mapBuilderUtils.putMany(_minimalistMap, entryIterable);
+        _biMapBuilderUtils.putMany(_minimalistMap, entryIterable);
         TSelf x = self();
         return x;
     }
@@ -136,7 +117,7 @@ implements MapBuilder<TKey, TValue, TMap, TSelf> {
     public final TSelf putMany(Map<? extends TKey, ? extends TValue> map) {
         ObjectArgs.checkNotNull(map, "map");
 
-        _map.putAll(map);
+        _biMap.putAll(map);
         TSelf x = self();
         return x;
     }

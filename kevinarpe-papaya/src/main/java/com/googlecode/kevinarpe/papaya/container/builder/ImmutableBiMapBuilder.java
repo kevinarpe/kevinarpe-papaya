@@ -25,58 +25,68 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableBiMap;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
- * Builds {@code ArrayList} collections.
+ * Builds {@code HashMap} collections.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
+ * @param <TKey>
+ *        type of key for map
  * @param <TValue>
- *        type of value for list elements
+ *        type of value for map
  *
  * @see #create()
- * @see ListBuilder
- * @see ArrayList
- * @see ArrayListFactory
- * @see LinkedListBuilder
- * @see ImmutableListBuilder
+ * @see MapBuilder
+ * @see HashMap
+ * @see HashMapFactory
+ * @see LinkedHashMapBuilder
+ * @see ImmutableMapBuilder
+ * @see PropertiesBuilder
  */
 @FullyTested
-public final class ArrayListBuilder<TValue>
-extends AbstractListBuilder
+public final class ImmutableBiMapBuilder<TKey, TValue>
+extends AbstractBiMapBuilder
             <
+                TKey,
                 TValue,
-                ArrayList<TValue>,
-                ArrayListBuilder<TValue>
+                ImmutableBiMap<TKey, TValue>,
+                ImmutableBiMapBuilder<TKey, TValue>
             > {
 
     /**
      * Constructs a new builder.
      */
-    public static <TValue> ArrayListBuilder<TValue> create() {
-        ArrayListBuilder<TValue> x = new ArrayListBuilder<TValue>();
+    public static <TKey, TValue> ImmutableBiMapBuilder<TKey, TValue> create() {
+        ImmutableBiMapBuilder<TKey, TValue> x = new ImmutableBiMapBuilder<TKey, TValue>();
         return x;
     }
 
-    private ArrayListBuilder() {
-        super(new ArrayList<TValue>());
+    private ImmutableBiMapBuilder() {
+        this(HashBiMap.<TKey, TValue>create());
+    }
+
+    ImmutableBiMapBuilder(BiMap<TKey, TValue> map) {
+        super(map);
     }
 
     /**
-     * Builds a new {@code ArrayList} from values stored in the builder.
+     * Builds a new {@code HashMap} from values stored in the builder.
      */
     @Override
-    public ArrayList<TValue> build() {
-        ArrayList<TValue> x = Lists.newArrayList(delegate());
+    public ImmutableBiMap<TKey, TValue> build() {
+        ImmutableBiMap<TKey, TValue> x = ImmutableBiMap.copyOf(delegate());
         return x;
     }
 
     @Override
-    protected ArrayListBuilder<TValue> self() {
+    protected ImmutableBiMapBuilder<TKey, TValue> self() {
         return this;
     }
 }

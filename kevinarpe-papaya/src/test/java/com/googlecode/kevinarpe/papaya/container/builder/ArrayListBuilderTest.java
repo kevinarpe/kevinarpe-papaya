@@ -32,6 +32,7 @@ import java.util.ArrayList;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNotSame;
 import static org.testng.Assert.assertTrue;
 
 public class ArrayListBuilderTest {
@@ -64,5 +65,8 @@ public class ArrayListBuilderTest {
         classUnderTest.addAll(inputList);
         ArrayList<String> list = classUnderTest.build();
         assertEquals(list, inputList);
+        ArrayList<String> list2 = classUnderTest.build();
+        assertNotSame(list2, list);
+        assertEquals(list2, inputList);
     }
 }
