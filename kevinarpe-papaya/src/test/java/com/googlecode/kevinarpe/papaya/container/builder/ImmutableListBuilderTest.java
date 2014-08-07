@@ -26,22 +26,20 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.ImmutableList;
+import com.googlecode.kevinarpe.papaya.testing.MoreAssertUtils;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNotSame;
 import static org.testng.Assert.assertTrue;
 
 public class ImmutableListBuilderTest {
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // ImmutableListBuilder.create()
-    //
+    private ImmutableListBuilder<String> classUnderTest;
 
-    @Test
-    public void create_Pass() {
-        ImmutableListBuilder<String> x = ImmutableListBuilder.create();
-        assertNotNull(x);
+    @BeforeMethod
+    public void beforeEachTestMethod() {
+        classUnderTest = ImmutableListBuilder.create();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +48,6 @@ public class ImmutableListBuilderTest {
 
     @Test
     public void build_PassWithEmpty() {
-        ImmutableListBuilder<String> classUnderTest = ImmutableListBuilder.create();
         ImmutableList<String> list = classUnderTest.build();
         assertTrue(list.isEmpty());
     }
@@ -58,9 +55,11 @@ public class ImmutableListBuilderTest {
     @Test
     public void build_Pass() {
         ImmutableList<String> inputList = ImmutableList.of("abc", "def", "ghi", "jkl");
-        ImmutableListBuilder<String> classUnderTest = ImmutableListBuilder.create();
         classUnderTest.addAll(inputList);
         ImmutableList<String> list = classUnderTest.build();
-        assertEquals(list, inputList);
+        MoreAssertUtils.INSTANCE.assertListEquals(list, inputList);
+        ImmutableList<String> list2 = classUnderTest.build();
+        assertNotSame(list2, list);
+        MoreAssertUtils.INSTANCE.assertListEquals(list2, inputList);
     }
 }

@@ -25,6 +25,8 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Lists;
 import com.googlecode.kevinarpe.papaya.testing.mockito.MockitoUtils;
 import com.googlecode.kevinarpe.papaya.testing.testng.TestNGPermutationBuilderUtils;
@@ -34,40 +36,39 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.AbstractMap;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertSame;
 
-public class AbstractMapBuilderTest {
+public class AbstractBiMapBuilderTest {
 
-    private static class _AbstractMapBuilder
-    extends AbstractMapBuilder<String, Integer, Map<String, Integer>, _AbstractMapBuilder> {
+    private static class _AbstractBiMapBuilder
+    extends AbstractBiMapBuilder<String, Integer, BiMap<String, Integer>, _AbstractBiMapBuilder> {
 
-        private _AbstractMapBuilder(
-                Map<String, Integer> map,
-                IMapBuilderUtils<String, Integer, Map<String, Integer>> mapBuilderUtils,
+        private _AbstractBiMapBuilder(
+                BiMap<String, Integer> map,
+                IMapBuilderUtils<String, Integer, BiMap<String, Integer>> mapBuilderUtils,
                 MinimalistMap<String, Integer> minimalistMap) {
             super(map, mapBuilderUtils, minimalistMap);
         }
 
         @Override
-        public Map<String, Integer> build() {
+        public BiMap<String, Integer> build() {
             return delegate();
         }
 
         @Override
-        protected _AbstractMapBuilder self() {
+        protected _AbstractBiMapBuilder self() {
             return this;
         }
     }
 
-    private Map<String, Integer> mockMap;
-    private IMapBuilderUtils<String, Integer, Map<String, Integer>> mockMapBuilderUtils;
+    private BiMap<String, Integer> mockBiMap;
+    private IMapBuilderUtils<String, Integer, BiMap<String, Integer>> mockMapBuilderUtils;
     private static MinimalistMap<String, Integer> mockMinimalistMap;
 
-    private _AbstractMapBuilder classUnderTest;
+    private _AbstractBiMapBuilder classUnderTest;
 
     @BeforeClass
     public void beforeAllTests() {
@@ -77,85 +78,86 @@ public class AbstractMapBuilderTest {
     @BeforeMethod
     public void beforeEachTest() {
         beforeAllTests();
-        mockMap = MockitoUtils.INSTANCE.mockGenericInterface(Map.class);
+        mockBiMap = MockitoUtils.INSTANCE.mockGenericInterface(BiMap.class);
         mockMapBuilderUtils = MockitoUtils.INSTANCE.mockGenericInterface(IMapBuilderUtils.class);
 
-        classUnderTest = new _AbstractMapBuilder(mockMap, mockMapBuilderUtils, mockMinimalistMap);
+        classUnderTest =
+            new _AbstractBiMapBuilder(mockBiMap, mockMapBuilderUtils, mockMinimalistMap);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractMapBuilder.ctor()
+    // AbstractBiMapBuilder.ctor()
     //
 
     @DataProvider
     private static Object[][] _ctor_FailWithNull_Data() {
         return TestNGPermutationBuilderUtils.INSTANCE
-            .withNullableParam(new HashMap<String, Integer>())
-            .addNullableParam(new MapBuilderUtils<String, Integer, Map<String, Integer>>())
+            .withNullableParam(HashBiMap.<String, Integer>create())
+            .addNullableParam(new MapBuilderUtils<String, Integer, BiMap<String, Integer>>())
             .addNullableParam(mockMinimalistMap)
             .build();
     }
 
     @Test(expectedExceptions = NullPointerException.class,
-            dataProvider = "_ctor_FailWithNull_Data")
+        dataProvider = "_ctor_FailWithNull_Data")
     public void ctor_FailWithNull(
-            Map<String, Integer> map,
-            IMapBuilderUtils<String, Integer, Map<String, Integer>> mapBuilderUtils,
-            MinimalistMap<String, Integer> minimalistMap) {
-        new _AbstractMapBuilder(map, mapBuilderUtils, minimalistMap);
+        BiMap<String, Integer> map,
+        IMapBuilderUtils<String, Integer, BiMap<String, Integer>> mapBuilderUtils,
+        MinimalistMap<String, Integer> minimalistMap) {
+        new _AbstractBiMapBuilder(map, mapBuilderUtils, minimalistMap);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractMapBuilder.putOne()
+    // AbstractBiMapBuilder.putOne()
     //
 
     @Test
     public void putOne_Pass() {
-        _AbstractMapBuilder x = classUnderTest.putOne("abc", 123);
+        _AbstractBiMapBuilder x = classUnderTest.putOne("abc", 123);
         assertSame(x, classUnderTest);
-        verify(mockMap).put("abc", 123);
+        verify(mockBiMap).put("abc", 123);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractMapBuilder.putMany(Class, Class, Object...)
+    // AbstractBiMapBuilder.putMany(Class, Class, Object...)
     //
 
     @Test
     public void putMany_ObjectArr_Pass() {
         Object[] arr = new Object[] { "abc", 123 };
-        _AbstractMapBuilder x = classUnderTest.putMany(String.class, Integer.class, arr);
+        _AbstractBiMapBuilder x = classUnderTest.putMany(String.class, Integer.class, arr);
         assertSame(x, classUnderTest);
         verify(mockMapBuilderUtils).putMany(mockMinimalistMap, String.class, Integer.class, arr);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractMapBuilder.putMany(Iterable, Iterable)
+    // AbstractBiMapBuilder.putMany(Iterable, Iterable)
     //
 
     @Test
     public void putMany_IterableIterable_Pass() {
         Iterable<String> keyIterable = Lists.newArrayList("abc");
         Iterable<Integer> valueIterable = Lists.newArrayList(123);
-        _AbstractMapBuilder x = classUnderTest.putMany(keyIterable, valueIterable);
+        _AbstractBiMapBuilder x = classUnderTest.putMany(keyIterable, valueIterable);
         assertSame(x, classUnderTest);
         verify(mockMapBuilderUtils).putMany(mockMinimalistMap, keyIterable, valueIterable);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractMapBuilder.putMany(Map.Entry...)
+    // AbstractBiMapBuilder.putMany(Map.Entry...)
     //
 
     @SuppressWarnings("unchecked")
     @Test
     public void putMany_MapEntryArr_Pass() {
         Map.Entry<String, Integer>[] entryArr = new Map.Entry[0];
-        _AbstractMapBuilder x = classUnderTest.putMany(entryArr);
+        _AbstractBiMapBuilder x = classUnderTest.putMany(entryArr);
         assertSame(x, classUnderTest);
         verify(mockMapBuilderUtils).putMany(mockMinimalistMap, entryArr);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractMapBuilder.putMany(Iterable)
+    // AbstractBiMapBuilder.putMany(Iterable)
     //
 
     @Test
@@ -164,19 +166,19 @@ public class AbstractMapBuilderTest {
         Iterable<Map.Entry<String, Integer>> entryIterable =
             Lists.<Map.Entry<String, Integer>>newArrayList(
                 new AbstractMap.SimpleImmutableEntry<String, Integer>("abc", 123));
-        _AbstractMapBuilder x = classUnderTest.putMany(entryIterable);
+        _AbstractBiMapBuilder x = classUnderTest.putMany(entryIterable);
         assertSame(x, classUnderTest);
         verify(mockMapBuilderUtils).putMany(mockMinimalistMap, entryIterable);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractMapBuilder.putMany(Map)
+    // AbstractBiMapBuilder.putMany(Map)
     //
 
     @Test
     public void putMany_Map_Pass() {
-        _AbstractMapBuilder x = classUnderTest.putMany(mockMap);
+        _AbstractBiMapBuilder x = classUnderTest.putMany(mockBiMap);
         assertSame(x, classUnderTest);
-        verify(mockMap).putAll(mockMap);
+        verify(mockBiMap).putAll(mockBiMap);
     }
 }

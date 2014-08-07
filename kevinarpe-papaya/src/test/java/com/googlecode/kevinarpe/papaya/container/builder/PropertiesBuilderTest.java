@@ -26,51 +26,175 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.googlecode.kevinarpe.papaya.testing.MoreAssertUtils;
+import com.googlecode.kevinarpe.papaya.testing.testng.TestNGPermutationBuilderUtils;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.UUID;
 
-import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotSame;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertSame;
+import static org.testng.Assert.assertTrue;
 
 public class PropertiesBuilderTest {
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // PropertiesBuilder.create()
-    //
+    private PropertiesBuilder classUnderTest;
 
-    @Test
-    public void create_Pass() {
-        PropertiesBuilder x = PropertiesBuilder.create();
-        assertNotNull(x);
+    @BeforeMethod
+    public void beforeEachTestMethod() {
+        classUnderTest = PropertiesBuilder.create();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // PropertiesBuilder.build()
     //
 
+    @Test
+    public void build_PassWithEmpty() {
+        Properties map = classUnderTest.build();
+        assertTrue(map.isEmpty());
+        Properties map2 = classUnderTest.build();
+        assertTrue(map2.isEmpty());
+        assertNotSame(map, map2);
+    }
+
     @DataProvider
     private static Object[][] _build_Pass_Data() {
         return new Object[][] {
-            { _copyOf(ImmutableMap.<String, String>of()) },
-            { _copyOf(ImmutableMap.of("abc", "def")) },
-            { _copyOf(ImmutableMap.of("abc", "ABC", "def", "DEF")) },
+            { ImmutableMap.of() },
+            { ImmutableMap.of("abc", "ABC") },
+            { ImmutableMap.of("abc", "ABC", "def", "DEF") },
         };
     }
 
-    private static Properties _copyOf(Map<String, String> map) {
-        Properties prop = new Properties();
-        prop.putAll(map);
-        return prop;
+    @Test(dataProvider = "_build_Pass_Data")
+    public void build_Pass(Map<String, String> inputMap) {
+        PropertiesBuilder classUnderTest = PropertiesBuilder.create();
+        classUnderTest.putAll(inputMap);
+        Properties map = classUnderTest.build();
+        MoreAssertUtils.INSTANCE.assertMapEquals(map, inputMap);
+        Properties map2 = classUnderTest.build();
+        assertNotSame(map, map2);
+        MoreAssertUtils.INSTANCE.assertMapEquals(map2, inputMap);
     }
 
-    @Test(dataProvider = "_build_Pass_Data")
-    public void build_Pass(Properties inputProp) {
-        PropertiesBuilder classUnderTest = PropertiesBuilder.create();
-        classUnderTest.putAll(inputProp);
-        Properties prop = classUnderTest.build();
-        MoreAssertUtils.INSTANCE.assertMapEquals(prop, inputProp);
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // PropertiesBuilder.put()
+    //
+
+    @DataProvider
+    private static Object[][] _put_FailWithClassCastException_Data() {
+        return new Object[][] {
+            { 123, "abc" },
+            { "abc", 123 },
+            { 123, 456 },
+        };
+    }
+
+    @Test(expectedExceptions = ClassCastException.class,
+            dataProvider = "_put_FailWithClassCastException_Data")
+    public void put_FailWithClassCastException(Object key, Object value) {
+        classUnderTest.put(key, value);
+    }
+
+    @DataProvider
+    private static Object[][] _put_Pass_Data() {
+        Object[][] x =
+            TestNGPermutationBuilderUtils.INSTANCE
+                .withParam(null, "", "   ", "abc")
+                .addParam(null, "", "   ", "def")
+                .build();
+        return x;
+    }
+
+    @Test(dataProvider = "_put_Pass_Data")
+    public void put_Pass(Object key, Object value) {
+        classUnderTest.put(key, value);
+        assertTrue(classUnderTest.containsKey(key));
+        assertEquals(classUnderTest.get(key), value);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // PropertiesBuilder.putAll()
+    //
+
+    @DataProvider
+    private static Object[][] _putAll_FailWithClassCastException_Data() {
+        return new Object[][] {
+            { ImmutableMap.of(123, "abc") },
+            { ImmutableMap.of("abc", 123) },
+            { ImmutableMap.of(123, 456) },
+        };
+    }
+
+    @Test(expectedExceptions = ClassCastException.class,
+            dataProvider = "_putAll_FailWithClassCastException_Data")
+    public void putAll_FailWithClassCastException(Map<?, ?> map) {
+        classUnderTest.putAll(map);
+    }
+
+    @Test(dataProvider = "_put_Pass_Data")
+    public void putAll_Pass(String key, String value) {
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put(key, value);
+        classUnderTest.putAll(map);
+        assertTrue(classUnderTest.containsKey(key));
+        assertEquals(classUnderTest.get(key), value);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // PropertiesBuilder.getProperty(String)
+    //
+
+    @Test(dataProvider = "_put_Pass_Data")
+    public void getProperty_String_Pass(String key, String value) {
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put(key, value);
+        classUnderTest.putAll(map);
+        assertEquals(classUnderTest.getProperty(key), value);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // PropertiesBuilder.getProperty(String, String)
+    //
+
+    @Test(dataProvider = "_put_Pass_Data")
+    public void getProperty_StringString_Pass(String key, String value) {
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put(key, value);
+        classUnderTest.putAll(map);
+        String defaultValue = UUID.randomUUID().toString();
+        String expectedValue = (null == value) ? defaultValue : value;
+        assertEquals(classUnderTest.getProperty(key, defaultValue), expectedValue);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // PropertiesBuilder.setProperty(String, String)
+    //
+
+    @Test(dataProvider = "_put_Pass_Data")
+    public void setProperty_Pass(String key, String value) {
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put(key, value);
+        {
+            Object oldValue = classUnderTest.setProperty(key, value);
+            assertNull(oldValue);
+            assertTrue(classUnderTest.containsKey(key));
+            assertEquals(classUnderTest.get(key), value);
+        }
+        {
+            Object oldValue = classUnderTest.setProperty(key, value);
+            assertSame(oldValue, value);
+            assertTrue(classUnderTest.containsKey(key));
+            assertEquals(classUnderTest.get(key), value);
+        }
     }
 }

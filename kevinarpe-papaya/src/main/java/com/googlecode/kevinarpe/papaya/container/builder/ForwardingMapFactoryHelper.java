@@ -25,14 +25,11 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-
 import java.util.Map;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@FullyTested
 public abstract class ForwardingMapFactoryHelper
     <
         TKey,

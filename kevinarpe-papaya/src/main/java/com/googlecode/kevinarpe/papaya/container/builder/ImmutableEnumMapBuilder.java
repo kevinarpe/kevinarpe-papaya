@@ -26,9 +26,10 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
-import java.util.LinkedHashMap;
+import java.util.EnumMap;
 
 /**
  * Builds {@code ImmutableMap} collections.
@@ -49,25 +50,28 @@ import java.util.LinkedHashMap;
  * @see PropertiesBuilder
  */
 @FullyTested
-public final class ImmutableMapBuilder<TKey, TValue>
+public final class ImmutableEnumMapBuilder<TKey extends Enum<TKey>, TValue>
 extends AbstractMapBuilder
             <
                 TKey,
                 TValue,
                 ImmutableMap<TKey, TValue>,
-                ImmutableMapBuilder<TKey, TValue>
+                ImmutableEnumMapBuilder<TKey, TValue>
             > {
 
     /**
      * Constructs a new builder.
      */
-    public static <TKey, TValue> ImmutableMapBuilder<TKey, TValue> create() {
-        ImmutableMapBuilder<TKey, TValue> x = new ImmutableMapBuilder<TKey, TValue>();
+    public static <TKey extends Enum<TKey>, TValue>
+    ImmutableEnumMapBuilder<TKey, TValue> create(Class<TKey> keyClass) {
+        ImmutableEnumMapBuilder<TKey, TValue> x =
+            new ImmutableEnumMapBuilder<TKey, TValue>(keyClass);
         return x;
     }
 
-    private ImmutableMapBuilder() {
-        super(new LinkedHashMap<TKey, TValue>());
+    private ImmutableEnumMapBuilder(Class<TKey> keyClass) {
+        super(new EnumMap<TKey, TValue>(keyClass));
+
     }
 
     /**
@@ -80,7 +84,7 @@ extends AbstractMapBuilder
     }
 
     @Override
-    protected ImmutableMapBuilder<TKey, TValue> self() {
+    protected ImmutableEnumMapBuilder<TKey, TValue> self() {
         return this;
     }
 }

@@ -25,55 +25,73 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
+import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableMap;
 import com.googlecode.kevinarpe.papaya.testing.MoreAssertUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.testng.Assert.assertNotSame;
 import static org.testng.Assert.assertTrue;
 
-public class HashMapBuilderTest {
+public class HashBiMapBuilderTest {
 
-    private HashMapBuilder<String, Integer> classUnderTest;
+    private HashBiMapBuilder<String, Integer> classUnderTest;
+    private HashBiMapBuilder<String, String> classUnderTest2;
 
     @BeforeMethod
     public void beforeEachTestMethod() {
-        classUnderTest = HashMapBuilder.create();
+        classUnderTest = HashBiMapBuilder.create();
+        classUnderTest2 = HashBiMapBuilder.create();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // HashMapBuilder.build()
+    // HashBiMapBuilder.build()
     //
 
     @Test
     public void build_PassWithEmpty() {
-        HashMap<String, Integer> map = classUnderTest.build();
+        HashBiMap<String, Integer> map = classUnderTest.build();
         assertTrue(map.isEmpty());
-        HashMap<String, Integer> map2 = classUnderTest.build();
+        HashBiMap<String, Integer> map2 = classUnderTest.build();
         assertTrue(map2.isEmpty());
         assertNotSame(map, map2);
     }
 
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void build_FailWithDupeKey() {
+        classUnderTest2.put("abc", "abc");
+        classUnderTest2.put("def", "abc");
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void build_FailWithDupeValue() {
+        classUnderTest2.put("abc", "abc");
+        classUnderTest2.inverse().put("def", "abc");
+    }
+
+    // TODO: LAST: Expand to test other AbstractBiMap subclasses
     @DataProvider
     private static Object[][] _build_Pass_Data() {
         return new Object[][] {
             { ImmutableMap.of() },
             { ImmutableMap.of("abc", 123) },
             { ImmutableMap.of("abc", 123, "def", 456) },
+            { HashMapBuilder.<String, Integer>create().putOne(null, 123).build() },
+            { HashMapBuilder.<String, Integer>create().putOne("abc", null).build() },
+            { HashMapBuilder.<String, Integer>create().putOne(null, null).build() },
         };
     }
 
     @Test(dataProvider = "_build_Pass_Data")
     public void build_Pass(Map<String, Integer> inputMap) {
         classUnderTest.putAll(inputMap);
-        HashMap<String, Integer> map = classUnderTest.build();
+        HashBiMap<String, Integer> map = classUnderTest.build();
         MoreAssertUtils.INSTANCE.assertMapEquals(map, inputMap);
-        HashMap<String, Integer> map2 = classUnderTest.build();
+        HashBiMap<String, Integer> map2 = classUnderTest.build();
         assertNotSame(map, map2);
         MoreAssertUtils.INSTANCE.assertMapEquals(map2, inputMap);
     }

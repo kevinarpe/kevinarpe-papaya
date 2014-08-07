@@ -25,43 +25,56 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.googlecode.kevinarpe.papaya.testing.MoreAssertUtils;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.LinkedList;
+import java.util.Map;
 
 import static org.testng.Assert.assertNotSame;
+import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
-public class LinkedListBuilderTest {
+public class ImmutableEnumMapBuilderTest {
 
-    private LinkedListBuilder<String> classUnderTest;
+    private static enum Switch { ON, OFF };
+
+    private ImmutableEnumMapBuilder<Switch, Integer> classUnderTest;
 
     @BeforeMethod
     public void beforeEachTestMethod() {
-        classUnderTest = LinkedListBuilder.create();
+        classUnderTest = ImmutableEnumMapBuilder.create(Switch.class);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // LinkedListBuilder.build()
+    // ImmutableEnumMapBuilder.build()
     //
 
     @Test
     public void build_PassWithEmpty() {
-        LinkedList<String> list = classUnderTest.build();
-        assertTrue(list.isEmpty());
+        ImmutableMap<Switch, Integer> map = classUnderTest.build();
+        assertTrue(map.isEmpty());
+        ImmutableMap<Switch, Integer> map2 = classUnderTest.build();
+        assertSame(map, map2);
     }
 
-    @Test
-    public void build_Pass() {
-        ImmutableList<String> inputList = ImmutableList.of("abc", "def", "ghi", "jkl");
-        classUnderTest.addAll(inputList);
-        LinkedList<String> list = classUnderTest.build();
-        MoreAssertUtils.INSTANCE.assertListEquals(list, inputList);
-        LinkedList<String> list2 = classUnderTest.build();
-        assertNotSame(list2, list);
-        MoreAssertUtils.INSTANCE.assertListEquals(list2, inputList);
+    @DataProvider
+    private static Object[][] _build_Pass_Data() {
+        return new Object[][]{
+            {ImmutableMap.of(Switch.ON, 123)},
+            {ImmutableMap.of(Switch.ON, 123, Switch.OFF, 456)},
+        };
+    }
+
+    @Test(dataProvider = "_build_Pass_Data")
+    public void build_Pass(Map<Switch, Integer> inputMap) {
+        classUnderTest.putAll(inputMap);
+        ImmutableMap<Switch, Integer> map = classUnderTest.build();
+        MoreAssertUtils.INSTANCE.assertLinkedMapEquals(map, inputMap);
+        ImmutableMap<Switch, Integer> map2 = classUnderTest.build();
+        assertNotSame(map, map2);
+        MoreAssertUtils.INSTANCE.assertLinkedMapEquals(map2, inputMap);
     }
 }

@@ -50,6 +50,7 @@ import java.util.HashMap;
  * @see PropertiesBuilder
  */
 @FullyTested
+// TODO: Create LinkedHashBiMap
 public final class HashBiMapBuilder<TKey, TValue>
 extends AbstractBiMapBuilder
             <

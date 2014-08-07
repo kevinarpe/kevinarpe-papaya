@@ -27,43 +27,52 @@ package com.googlecode.kevinarpe.papaya.container.builder;
 
 import com.google.common.collect.ImmutableMap;
 import com.googlecode.kevinarpe.papaya.testing.MoreAssertUtils;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.Map;
 
-import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNotSame;
+import static org.testng.Assert.assertSame;
+import static org.testng.Assert.assertTrue;
 
 public class ImmutableMapBuilderTest {
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // ImmutableMapBuilder.create()
-    //
+    private ImmutableMapBuilder<String, Integer> classUnderTest;
 
-    @Test
-    public void create_Pass() {
-        ImmutableMapBuilder<String, String> x = ImmutableMapBuilder.create();
-        assertNotNull(x);
+    @BeforeMethod
+    public void beforeEachTestMethod() {
+        classUnderTest = ImmutableMapBuilder.create();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // ImmutableMapBuilder.build()
     //
 
+    @Test
+    public void build_PassWithEmpty() {
+        ImmutableMap<String, Integer> map = classUnderTest.build();
+        assertTrue(map.isEmpty());
+        ImmutableMap<String, Integer> map2 = classUnderTest.build();
+        assertSame(map, map2);
+    }
+
     @DataProvider
     private static Object[][] _build_Pass_Data() {
         return new Object[][] {
-            { ImmutableMap.of()},
-            { ImmutableMap.of("abc", 123)},
-            { ImmutableMap.of("abc", 123, "def", 456)},
+            { ImmutableMap.of("abc", 123) },
+            { ImmutableMap.of("abc", 123, "def", 456) },
         };
     }
 
     @Test(dataProvider = "_build_Pass_Data")
     public void build_Pass(Map<String, Integer> inputMap) {
-        ImmutableMapBuilder<String, Integer> classUnderTest = ImmutableMapBuilder.create();
         classUnderTest.putAll(inputMap);
         ImmutableMap<String, Integer> map = classUnderTest.build();
         MoreAssertUtils.INSTANCE.assertLinkedMapEquals(map, inputMap);
+        ImmutableMap<String, Integer> map2 = classUnderTest.build();
+        assertNotSame(map, map2);
+        MoreAssertUtils.INSTANCE.assertLinkedMapEquals(map2, inputMap);
     }
 }

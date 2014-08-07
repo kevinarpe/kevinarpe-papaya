@@ -27,7 +27,7 @@ package com.googlecode.kevinarpe.papaya.testing.testng;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.ObjectArrays;
-import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
+import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.container.builder.ArrayBuilder;
 import com.googlecode.kevinarpe.papaya.container.builder.ArrayListFactory;
@@ -64,10 +64,11 @@ implements TestNGPermutationBuilder {
 
     @Override
     public TestNGPermutationBuilder addParam(Object value, Object... moreValueArr) {
-        ObjectArgs.checkNotNull(value, "value");
-        ArrayArgs.checkElementsNotNull(moreValueArr, "moreValueArr");
+        ObjectArgs.checkNotNull(moreValueArr, "moreValueArr");
 
         List<Object> list = Lists.asList(value, moreValueArr);
+        CollectionArgs.checkElementsUnique(list, "Lists.asList(value, moreValueArr)");
+
         _paramValueListList.add(list);
         return this;
     }

@@ -49,7 +49,6 @@ import java.util.HashMap;
  * @see ImmutableMapBuilder
  * @see PropertiesBuilder
  */
-@FullyTested
 public final class EnumHashBiMapBuilder<TKey extends Enum<TKey>, TValue>
 extends AbstractBiMapBuilder
             <

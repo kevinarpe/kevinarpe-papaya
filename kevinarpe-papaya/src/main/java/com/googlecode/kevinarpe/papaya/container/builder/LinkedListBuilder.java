@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.Lists;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 import java.util.LinkedList;
 
@@ -44,6 +45,7 @@ import java.util.LinkedList;
  * @see ArrayListBuilder
  * @see ImmutableListBuilder
  */
+@FullyTested
 public final class LinkedListBuilder<TValue>
 extends AbstractListBuilder
             <

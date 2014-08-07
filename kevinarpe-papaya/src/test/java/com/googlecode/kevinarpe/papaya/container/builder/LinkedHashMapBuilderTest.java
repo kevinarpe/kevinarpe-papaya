@@ -27,44 +27,54 @@ package com.googlecode.kevinarpe.papaya.container.builder;
 
 import com.google.common.collect.ImmutableMap;
 import com.googlecode.kevinarpe.papaya.testing.MoreAssertUtils;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNotSame;
+import static org.testng.Assert.assertTrue;
 
 public class LinkedHashMapBuilderTest {
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // LinkedHashMapBuilder.create()
-    //
+    private LinkedHashMapBuilder<String, Integer> classUnderTest;
 
-    @Test
-    public void create_Pass() {
-        LinkedHashMapBuilder<String, String> x = LinkedHashMapBuilder.create();
-        assertNotNull(x);
+    @BeforeMethod
+    public void beforeEachTestMethod() {
+        classUnderTest = LinkedHashMapBuilder.create();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // LinkedHashMapBuilder.build()
     //
 
+    @Test
+    public void build_PassWithEmpty() {
+        LinkedHashMap<String, Integer> map = classUnderTest.build();
+        assertTrue(map.isEmpty());
+        LinkedHashMap<String, Integer> map2 = classUnderTest.build();
+        assertTrue(map2.isEmpty());
+        assertNotSame(map, map2);
+    }
+
     @DataProvider
     private static Object[][] _build_Pass_Data() {
         return new Object[][] {
-            { ImmutableMap.of()},
-            { ImmutableMap.of("abc", 123)},
-            { ImmutableMap.of("abc", 123, "def", 456)},
+            { ImmutableMap.of() },
+            { ImmutableMap.of("abc", 123) },
+            { ImmutableMap.of("abc", 123, "def", 456) },
         };
     }
 
     @Test(dataProvider = "_build_Pass_Data")
     public void build_Pass(Map<String, Integer> inputMap) {
-        LinkedHashMapBuilder<String, Integer> classUnderTest = LinkedHashMapBuilder.create();
         classUnderTest.putAll(inputMap);
         LinkedHashMap<String, Integer> map = classUnderTest.build();
         MoreAssertUtils.INSTANCE.assertLinkedMapEquals(map, inputMap);
+        LinkedHashMap<String, Integer> map2 = classUnderTest.build();
+        assertNotSame(map, map2);
+        MoreAssertUtils.INSTANCE.assertLinkedMapEquals(map2, inputMap);
     }
 }

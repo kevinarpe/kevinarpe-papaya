@@ -26,25 +26,22 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.ImmutableList;
+import com.googlecode.kevinarpe.papaya.testing.MoreAssertUtils;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNotSame;
 import static org.testng.Assert.assertTrue;
 
 public class ArrayListBuilderTest {
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // ArrayListBuilder.create()
-    //
+    private ArrayListBuilder<String> classUnderTest;
 
-    @Test
-    public void create_Pass() {
-        ArrayListBuilder<String> x = ArrayListBuilder.create();
-        assertNotNull(x);
+    @BeforeMethod
+    public void beforeEachTestMethod() {
+        classUnderTest = ArrayListBuilder.create();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,7 +50,6 @@ public class ArrayListBuilderTest {
 
     @Test
     public void build_PassWithEmpty() {
-        ArrayListBuilder<String> classUnderTest = ArrayListBuilder.create();
         ArrayList<String> list = classUnderTest.build();
         assertTrue(list.isEmpty());
     }
@@ -61,12 +57,11 @@ public class ArrayListBuilderTest {
     @Test
     public void build_Pass() {
         ImmutableList<String> inputList = ImmutableList.of("abc", "def", "ghi", "jkl");
-        ArrayListBuilder<String> classUnderTest = ArrayListBuilder.create();
         classUnderTest.addAll(inputList);
         ArrayList<String> list = classUnderTest.build();
-        assertEquals(list, inputList);
+        MoreAssertUtils.INSTANCE.assertListEquals(list, inputList);
         ArrayList<String> list2 = classUnderTest.build();
         assertNotSame(list2, list);
-        assertEquals(list2, inputList);
+        MoreAssertUtils.INSTANCE.assertListEquals(list2, inputList);
     }
 }

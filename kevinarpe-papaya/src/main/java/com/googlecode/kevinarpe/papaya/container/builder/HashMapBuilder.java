@@ -29,7 +29,6 @@ import com.google.common.collect.Maps;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Builds {@code HashMap} collections.
@@ -68,11 +67,7 @@ extends AbstractMapBuilder
     }
 
     private HashMapBuilder() {
-        this(new HashMap<TKey, TValue>());
-    }
-
-    HashMapBuilder(Map<TKey, TValue> map) {
-        super(map);
+        super(new HashMap<TKey, TValue>());
     }
 
     /**
