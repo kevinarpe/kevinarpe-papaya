@@ -31,6 +31,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.EnumMap;
 import java.util.Map;
 
 import static org.testng.Assert.assertNotSame;
@@ -63,18 +64,20 @@ public class ImmutableEnumMapBuilderTest {
     @DataProvider
     private static Object[][] _build_Pass_Data() {
         return new Object[][]{
-            {ImmutableMap.of(Switch.ON, 123)},
-            {ImmutableMap.of(Switch.ON, 123, Switch.OFF, 456)},
+            { ImmutableMap.of(Switch.ON, 123) },
+            { ImmutableMap.of(Switch.ON, 123, Switch.OFF, 456) },
+            { ImmutableMap.of(Switch.OFF, 456, Switch.ON, 123) },
         };
     }
 
     @Test(dataProvider = "_build_Pass_Data")
     public void build_Pass(Map<Switch, Integer> inputMap) {
-        classUnderTest.putAll(inputMap);
+        EnumMap<Switch, Integer> inputEnumMap = new EnumMap<Switch, Integer>(inputMap);
+        classUnderTest.putAll(inputEnumMap);
         ImmutableMap<Switch, Integer> map = classUnderTest.build();
-        MoreAssertUtils.INSTANCE.assertLinkedMapEquals(map, inputMap);
+        MoreAssertUtils.INSTANCE.assertEnumMapEquals(Switch.class, map, inputEnumMap);
         ImmutableMap<Switch, Integer> map2 = classUnderTest.build();
         assertNotSame(map, map2);
-        MoreAssertUtils.INSTANCE.assertLinkedMapEquals(map2, inputMap);
+        MoreAssertUtils.INSTANCE.assertEnumMapEquals(Switch.class, map2, inputEnumMap);
     }
 }

@@ -27,11 +27,13 @@ package com.googlecode.kevinarpe.papaya.container.builder;
 
 import com.google.common.collect.ForwardingList;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -97,7 +99,21 @@ implements ListBuilder<TValue, TList, TSelf> {
     protected abstract TSelf self();
 
     @Override
-    public final TSelf addMany(TValue... valueArr) {
+    public final TSelf addMany(TValue value, TValue... moreValueArr) {
+        ObjectArgs.checkNotNull(moreValueArr, "moreValueArr");
+
+        if (0 == moreValueArr.length) {
+            addMany(Collections.singleton(value));
+        }
+        else {
+            addMany(Lists.asList(value, moreValueArr));
+        }
+        TSelf x = self();
+        return x;
+    }
+
+    @Override
+    public final TSelf addMany(TValue[] valueArr) {
         ObjectArgs.checkNotNull(valueArr, "valueArr");
 
         if (0 != valueArr.length) {

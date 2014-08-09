@@ -25,7 +25,13 @@ package com.googlecode.kevinarpe.papaya.testing;
  * #L%
  */
 
+import com.google.common.collect.BiMap;
+
 import javax.annotation.Nullable;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -49,7 +55,7 @@ public interface IMoreAssertUtils {
     void assertListEquals(@Nullable List<TValue> actual, @Nullable List<? extends TValue> expected);
 
     /**
-     * Compares two lists for equality.  Nulls are handled correctly.  Methods
+     * Compares two lists for equality.  Null lists are handled correctly.  Methods
      * {@link List#equals(Object)} and {@link List#hashCode()} are also tested.
      *
      * @param actualList
@@ -85,7 +91,7 @@ public interface IMoreAssertUtils {
     void assertSetEquals(@Nullable Set<TValue> actual, @Nullable Set<? extends TValue> expected);
 
     /**
-     * Compares two sets for equality.  Nulls are handled correctly.  Methods
+     * Compares two sets for equality.  Null sets are handled correctly.  Methods
      * {@link Set#equals(Object)} and {@link Set#hashCode()} are also tested.
      * <p>
      * No assumptions are made about order of iteration.  For linked sets, see
@@ -125,11 +131,12 @@ public interface IMoreAssertUtils {
             @Nullable Set<TValue> actual, @Nullable Set<? extends TValue> expected);
 
     /**
-     * Compares two sets for equality.  Nulls are handled correctly.  Methods
+     * Compares two sets for equality.  Null sets are handled correctly.  Methods
      * {@link Set#equals(Object)} and {@link Set#hashCode()} are also tested.
      * <p>
      * Order of iteration is important in this test.  For non-linked sets, see
-     * {@link #assertSetEquals(Set, Set, String, Object...)}.
+     * {@link #assertSetEquals(Set, Set, String, Object...)}.  If unfamiliar with linked sets, see
+     * {@link LinkedHashSet}.
      *
      * @param actualSet
      *        may be {@code null} or empty
@@ -157,6 +164,53 @@ public interface IMoreAssertUtils {
             Object... formatArgArr);
 
     /**
+     * This is a convenience method to call
+     * {@link #assertEnumSetEquals(Class, Set, Set, String, Object...)} without an assert
+     * message prefix.
+     */
+    <TValue extends Enum<TValue>>
+    void assertEnumSetEquals(
+            Class<TValue> valueClass,
+            @Nullable Set<TValue> actualSet,
+            @Nullable Set<? extends TValue> expectedSet);
+
+    /**
+     * Compares two sets for equality.  Null sets are handled correctly.  Methods
+     * {@link Set#equals(Object)} and {@link Set#hashCode()} are also tested.
+     * <p>
+     * Order of iteration is important in this test; values must follow order of method
+     * {@link Enum#ordinal()}.  If unfamiliar with enum sets, see {@link EnumSet}.
+     *
+     * @param valueClass
+     *        enum class for values
+     * @param actualSet
+     *        may be {@code null} or empty
+     * @param expectedSet
+     *        may be {@code null} or empty
+     * @param messagePrefixFormat
+     *        assert message prefix: used as format for {@link String#format(String, Object...)}.
+     *        Must not be {@code null}, empty or only whitespace.
+     * @param formatArgArr
+     *        assert message prefix: used as arg array for {@link String#format(String, Object...)}.
+     *        Must not be {@code null}, but may be empty or contain {@code null} elements.
+     *
+     * @throws NullPointerException
+     *         if {@code valueClass}, {@code messagePrefixFormat}, or {@code formatArgArr} is
+     *         {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code messagePrefixFormat} is empty or only whitespace
+     * @throws AssertionError
+     *         if sets are not equal
+     */
+    <TValue extends Enum<TValue>>
+    void assertEnumSetEquals(
+            Class<TValue> valueClass,
+            @Nullable Set<TValue> actualSet,
+            @Nullable Set<? extends TValue> expectedSet,
+            String messagePrefixFormat,
+            Object... formatArgArr);
+
+    /**
      * This is a convenience method to call {@link #assertMapEquals(Map, Map, String, Object...)}
      * without an assert message prefix.
      */
@@ -166,7 +220,7 @@ public interface IMoreAssertUtils {
             @Nullable Map<? extends TKey, ? extends TValue> expectedMap);
 
     /**
-     * Compares two maps for equality.  Nulls are handled correctly.  Methods
+     * Compares two maps for equality.  Null maps are handled correctly.  Methods
      * {@link Map#equals(Object)} and {@link Map#hashCode()} are also tested.
      * <p>
      * No assumptions are made about order of iteration.  For linked maps, see
@@ -182,6 +236,13 @@ public interface IMoreAssertUtils {
      * @param formatArgArr
      *        assert message prefix: used as arg array for {@link String#format(String, Object...)}.
      *        Must not be {@code null}, but may be empty or contain {@code null} elements.
+     *
+     * @throws NullPointerException
+     *         if {@code messagePrefixFormat} or {@code formatArgArr} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code messagePrefixFormat} is empty or only whitespace
+     * @throws AssertionError
+     *         if maps are not equal
      */
     <TKey, TValue>
     void assertMapEquals(
@@ -200,11 +261,13 @@ public interface IMoreAssertUtils {
             @Nullable Map<? extends TKey, ? extends TValue> expectedMap);
 
     /**
-     * Compares two maps for equality.  Nulls are handled correctly.  Methods
+     * Compares two maps for equality.  Null maps are handled correctly.  Methods
      * {@link Map#equals(Object)} and {@link Map#hashCode()} are also tested.
      * <p>
-     * Order of iteration is important in this test.  For non-linked sets, see
-     * {@link #assertMapEquals(Map, Map, String, Object...)}.
+     * Order of iteration is important in this test.  For non-linked maps, see
+     * {@link #assertMapEquals(Map, Map, String, Object...)}.  If unfamiliar with linked maps, see
+     * {@link LinkedHashMap}.
+     *
      *
      * @param actualMap
      *        may be {@code null} or empty
@@ -216,11 +279,206 @@ public interface IMoreAssertUtils {
      * @param formatArgArr
      *        assert message prefix: used as arg array for {@link String#format(String, Object...)}.
      *        Must not be {@code null}, but may be empty or contain {@code null} elements.
+     *
+     * @throws NullPointerException
+     *         if {@code messagePrefixFormat} or {@code formatArgArr} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code messagePrefixFormat} is empty or only whitespace
+     * @throws AssertionError
+     *         if maps are not equal
      */
     <TKey, TValue>
     void assertLinkedMapEquals(
             @Nullable Map<TKey, TValue> actualMap,
             @Nullable Map<? extends TKey, ? extends TValue> expectedMap,
+            @Nullable String messagePrefixFormat,
+            Object... formatArgArr);
+
+    /**
+     * This is a convenience method to call
+     * {@link #assertEnumMapEquals(Class, Map, Map, String, Object...)} without an assert
+     * message prefix.
+     */
+    <TKey extends Enum<TKey>, TValue>
+    void assertEnumMapEquals(
+            Class<TKey> keyClass,
+            @Nullable Map<TKey, TValue> actualMap,
+            @Nullable Map<? extends TKey, ? extends TValue> expectedMap);
+
+    /**
+     * Compares two maps for equality.  Null maps are handled correctly.  Methods
+     * {@link Map#equals(Object)} and {@link Map#hashCode()} are also tested.
+     * <p>
+     * Order of iteration is important in this test; keys must follow order of method
+     * {@link Enum#ordinal()}.  If unfamiliar with enum maps, see {@link EnumMap}.
+     *
+     * @param keyClass
+     *        enum class for keys
+     * @param actualMap
+     *        may be {@code null} or empty
+     * @param expectedMap
+     *        may be {@code null} or empty
+     * @param messagePrefixFormat
+     *        assert message prefix: used as format for {@link String#format(String, Object...)}.
+     *        Must not be {@code null}, empty or only whitespace.
+     * @param formatArgArr
+     *        assert message prefix: used as arg array for {@link String#format(String, Object...)}.
+     *        Must not be {@code null}, but may be empty or contain {@code null} elements.
+     *
+     * @throws NullPointerException
+     *         if {@code keyClass}, {@code messagePrefixFormat}, or {@code formatArgArr} is
+     *         {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code messagePrefixFormat} is empty or only whitespace
+     * @throws AssertionError
+     *         if maps are not equal
+     */
+    <TKey extends Enum<TKey>, TValue>
+    void assertEnumMapEquals(
+            Class<TKey> keyClass,
+            @Nullable Map<TKey, TValue> actualMap,
+            @Nullable Map<? extends TKey, ? extends TValue> expectedMap,
+            @Nullable String messagePrefixFormat,
+            Object... formatArgArr);
+
+    /**
+     * This is a convenience method to call
+     * {@link #assertBiMapEquals(BiMap, BiMap, String, Object...)} without an assert message prefix.
+     */
+    <TKey, TValue>
+    void assertBiMapEquals(
+            @Nullable BiMap<TKey, TValue> actualBiMap,
+            @Nullable BiMap<? extends TKey, ? extends TValue> expectedBiMap);
+
+    /**
+     * Compares two bi-directional maps for equality.  Null maps are handled correctly.  Methods
+     * {@link BiMap#equals(Object)} and {@link BiMap#hashCode()} are also tested.
+     * <p>
+     * No assumptions are made about order of iteration.
+     *
+     * @param actualBiMap
+     *        may be {@code null} or empty
+     * @param expectedBiMap
+     *        may be {@code null} or empty
+     * @param messagePrefixFormat
+     *        assert message prefix: used as format for {@link String#format(String, Object...)}.
+     *        Must not be {@code null}, empty or only whitespace.
+     * @param formatArgArr
+     *        assert message prefix: used as arg array for {@link String#format(String, Object...)}.
+     *        Must not be {@code null}, but may be empty or contain {@code null} elements.
+     *
+     * @throws NullPointerException
+     *         if {@code messagePrefixFormat} or {@code formatArgArr} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code messagePrefixFormat} is empty or only whitespace
+     * @throws AssertionError
+     *         if maps are not equal
+     */
+    <TKey, TValue>
+    void assertBiMapEquals(
+            @Nullable BiMap<TKey, TValue> actualBiMap,
+            @Nullable BiMap<? extends TKey, ? extends TValue> expectedBiMap,
+            @Nullable String messagePrefixFormat,
+            Object... formatArgArr);
+
+    /**
+     * This is a convenience method to call
+     * {@link #assertEnumBiMapEquals(Class, Class, BiMap, BiMap, String, Object...)} without an
+     * assert message prefix.
+     */
+    <TKey extends Enum<TKey>, TValue extends Enum<TValue>>
+    void assertEnumBiMapEquals(
+            Class<TKey> keyClass,
+            Class<TValue> valueClass,
+            @Nullable BiMap<TKey, TValue> actualBiMap,
+            @Nullable BiMap<? extends TKey, ? extends TValue> expectedBiMap);
+
+    /**
+     * Compares two bi-directional maps for equality where keys and values are enums.  Null maps are
+     * handled correctly.  Methods {@link BiMap#equals(Object)} and {@link BiMap#hashCode()} are
+     * also tested.
+     * <p>
+     * Order of iteration is important in this test; both keys and values must follow order of
+     * respective {@link Enum#ordinal()} methods.  If unfamiliar with enum maps, see
+     * {@link EnumMap}.
+     *
+     * @param keyClass
+     *        enum class for keys
+     * @param valueClass
+     *        enum class for values
+     * @param actualBiMap
+     *        may be {@code null} or empty
+     * @param expectedBiMap
+     *        may be {@code null} or empty
+     * @param messagePrefixFormat
+     *        assert message prefix: used as format for {@link String#format(String, Object...)}.
+     *        Must not be {@code null}, empty or only whitespace.
+     * @param formatArgArr
+     *        assert message prefix: used as arg array for {@link String#format(String, Object...)}.
+     *        Must not be {@code null}, but may be empty or contain {@code null} elements.
+     *
+     * @throws NullPointerException
+     *         if {@code keyClass}, {@code valueClass}, {@code messagePrefixFormat}, or
+     *         {@code formatArgArr} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code messagePrefixFormat} is empty or only whitespace
+     * @throws AssertionError
+     *         if maps are not equal
+     */
+    <TKey extends Enum<TKey>, TValue extends Enum<TValue>>
+    void assertEnumBiMapEquals(
+            Class<TKey> keyClass,
+            Class<TValue> valueClass,
+            @Nullable BiMap<TKey, TValue> actualBiMap,
+            @Nullable BiMap<? extends TKey, ? extends TValue> expectedBiMap,
+            @Nullable String messagePrefixFormat,
+            Object... formatArgArr);
+
+    /**
+     * This is a convenience method to call
+     * {@link #assertEnumHashBiMapEquals(Class, BiMap, BiMap, String, Object...)} without an assert
+     * message prefix.
+     */
+    <TKey extends Enum<TKey>, TValue>
+    void assertEnumHashBiMapEquals(
+            Class<TKey> keyClass,
+            @Nullable BiMap<TKey, TValue> actualBiMap,
+            @Nullable BiMap<? extends TKey, ? extends TValue> expectedBiMap);
+
+    /**
+     * Compares two bi-directional maps for equality where keys are enums.  Null maps are handled
+     * correctly.  Methods {@link BiMap#equals(Object)} and {@link BiMap#hashCode()} are
+     * also tested.
+     * <p>
+     * Order of iteration is important in this test; keys must follow order of method
+     * {@link Enum#ordinal()}.  If unfamiliar with enum maps, see {@link EnumMap}.
+     *
+     * @param keyClass
+     *        enum class for keys
+     * @param actualBiMap
+     *        may be {@code null} or empty
+     * @param expectedBiMap
+     *        may be {@code null} or empty
+     * @param messagePrefixFormat
+     *        assert message prefix: used as format for {@link String#format(String, Object...)}.
+     *        Must not be {@code null}, empty or only whitespace.
+     * @param formatArgArr
+     *        assert message prefix: used as arg array for {@link String#format(String, Object...)}.
+     *        Must not be {@code null}, but may be empty or contain {@code null} elements.
+     *
+     * @throws NullPointerException
+     *         if {@code keyClass}, {@code messagePrefixFormat}, or {@code formatArgArr} is
+     *         {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code messagePrefixFormat} is empty or only whitespace
+     * @throws AssertionError
+     *         if maps are not equal
+     */
+    <TKey extends Enum<TKey>, TValue>
+    void assertEnumHashBiMapEquals(
+            Class<TKey> keyClass,
+            @Nullable BiMap<TKey, TValue> actualBiMap,
+            @Nullable BiMap<? extends TKey, ? extends TValue> expectedBiMap,
             @Nullable String messagePrefixFormat,
             Object... formatArgArr);
 }

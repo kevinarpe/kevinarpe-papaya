@@ -52,6 +52,9 @@ public class LinkedListBuilderTest {
     public void build_PassWithEmpty() {
         LinkedList<String> list = classUnderTest.build();
         assertTrue(list.isEmpty());
+        LinkedList<String> list2 = classUnderTest.build();
+        assertNotSame(list2, list);
+        MoreAssertUtils.INSTANCE.assertListEquals(list2, list);
     }
 
     @Test

@@ -26,7 +26,6 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.Iterators;
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.argument.ClassArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
@@ -38,7 +37,7 @@ import java.util.Map;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@FullyTested
+//@FullyTested
 final class MapBuilderUtils
     <
         TKey,
@@ -57,7 +56,23 @@ implements IMapBuilderUtils<TKey, TValue, TMap> {
             MinimalistMap<TKey, TValue> map,
             Class<TKey> keyClass,
             Class<TValue> valueClass,
+            TKey key,
+            TValue value,
             Object... keysAndValuesArr) {
+        ObjectArgs.checkNotNull(map, "map");
+
+        map.put(key, value);
+        if (0 != keysAndValuesArr.length) {
+            putMany(map, keyClass, valueClass, keysAndValuesArr);
+        }
+    }
+
+    @Override
+    public void putMany(
+            MinimalistMap<TKey, TValue> map,
+            Class<TKey> keyClass,
+            Class<TValue> valueClass,
+            Object[] keysAndValuesArr) {
         ObjectArgs.checkNotNull(map, "map");
         ClassArgs.checkNotGenericType(keyClass, "keyClass");
         ClassArgs.checkNotGenericType(valueClass, "valueClass");
@@ -92,6 +107,19 @@ implements IMapBuilderUtils<TKey, TValue, TMap> {
 
         Iterator<? extends TKey> keyIter = keyIterable.iterator();
         Iterator<? extends TValue> valueIter = valueIterable.iterator();
+
+        putMany(map, keyIter, valueIter);
+    }
+
+    @Override
+    public void putMany(
+            MinimalistMap<TKey, TValue> map,
+            Iterator<? extends TKey> keyIter,
+            Iterator<? extends TValue> valueIter) {
+        ObjectArgs.checkNotNull(map, "map");
+        ObjectArgs.checkNotNull(keyIter, "keyIter");
+        ObjectArgs.checkNotNull(valueIter, "valueIter");
+
         int count = 0;
         while (keyIter.hasNext() && valueIter.hasNext()) {
             ++count;
@@ -116,7 +144,23 @@ implements IMapBuilderUtils<TKey, TValue, TMap> {
     @Override
     public void putMany(
             MinimalistMap<TKey, TValue> map,
-            Map.Entry<? extends TKey, ? extends TValue>... entryArr) {
+            Map.Entry<? extends TKey, ? extends TValue> entry,
+            Map.Entry<? extends TKey, ? extends TValue>... moreEntryArr) {
+        ObjectArgs.checkNotNull(map, "map");
+        ObjectArgs.checkNotNull(entry, "entry");
+
+        TKey key = entry.getKey();
+        TValue value = entry.getValue();
+        map.put(key, value);
+        if (0 != moreEntryArr.length) {
+            putMany(map, moreEntryArr);
+        }
+    }
+
+    @Override
+    public void putMany(
+            MinimalistMap<TKey, TValue> map,
+            Map.Entry<? extends TKey, ? extends TValue>[] entryArr) {
         ObjectArgs.checkNotNull(map, "map");
         ArrayArgs.checkElementsNotNull(entryArr, "entryArr");
 
@@ -134,13 +178,24 @@ implements IMapBuilderUtils<TKey, TValue, TMap> {
         ObjectArgs.checkNotNull(map, "map");
         ObjectArgs.checkNotNull(entryIterable, "entryIterable");
 
-        int index = 0;
-        for (Map.Entry<? extends TKey, ? extends TValue> entry : entryIterable) {
+        Iterator<? extends Map.Entry<? extends TKey, ? extends TValue>> iter =
+            entryIterable.iterator();
+        putMany(map, iter);
+    }
+
+    @Override
+    public void putMany(
+            MinimalistMap<TKey, TValue> map,
+            Iterator<? extends Map.Entry<? extends TKey, ? extends TValue>> entryIter) {
+        ObjectArgs.checkNotNull(map, "map");
+        ObjectArgs.checkNotNull(entryIter, "entryIter");
+
+        for (int index = 0; entryIter.hasNext(); ++index) {
+            Map.Entry<? extends TKey, ? extends TValue> entry = entryIter.next();
             ObjectArgs.checkNotNull(entry, "entryIterable[" + index + "]");
             TKey key = entry.getKey();
             TValue value = entry.getValue();
             map.put(key, value);
-            ++index;
         }
     }
 }

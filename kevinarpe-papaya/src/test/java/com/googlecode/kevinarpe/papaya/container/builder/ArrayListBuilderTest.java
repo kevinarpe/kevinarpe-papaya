@@ -52,6 +52,9 @@ public class ArrayListBuilderTest {
     public void build_PassWithEmpty() {
         ArrayList<String> list = classUnderTest.build();
         assertTrue(list.isEmpty());
+        ArrayList<String> list2 = classUnderTest.build();
+        assertNotSame(list2, list);
+        MoreAssertUtils.INSTANCE.assertListEquals(list2, list);
     }
 
     @Test

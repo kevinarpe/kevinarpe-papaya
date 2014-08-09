@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -57,13 +58,28 @@ extends Map<TKey, TValue>, Builder<TMap> {
 
     TSelf putOne(TKey key, TValue value);
 
-    TSelf putMany(Class<TKey> keyClass, Class<TValue> valueClass, Object... keysAndValuesArr);
+    TSelf putMany(
+            Class<TKey> keyClass,
+            Class<TValue> valueClass,
+            TKey key,
+            TValue value,
+            Object... moreKeysAndValuesArr);
+
+    TSelf putMany(Class<TKey> keyClass, Class<TValue> valueClass, Object[] keysAndValuesArr);
 
     TSelf putMany(Iterable<? extends TKey> keyIterable, Iterable<? extends TValue> valueIterable);
 
-    TSelf putMany(Map.Entry<? extends TKey, ? extends TValue>... entryArr);
+    TSelf putMany(Iterator<? extends TKey> keyIter, Iterator<? extends TValue> valueIter);
+
+    TSelf putMany(
+            Map.Entry<? extends TKey, ? extends TValue> entry,
+            Map.Entry<? extends TKey, ? extends TValue>... moreEntryArr);
+
+    TSelf putMany(Map.Entry<? extends TKey, ? extends TValue>[] entryArr);
 
     TSelf putMany(Iterable<? extends Map.Entry<? extends TKey, ? extends TValue>> entryIterable);
+
+    TSelf putMany(Iterator<? extends Entry<? extends TKey, ? extends TValue>> entryIterator);
 
     TSelf putMany(Map<? extends TKey, ? extends TValue> map);
 }

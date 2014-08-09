@@ -53,31 +53,54 @@ extends Builder<TContainer> {
     /**
      * Adds many values to the builder.
      *
+     * @param value
+     *        may be {@code null} for many containers (except {@code ImmutableList}, etc.)
+     * @param moreValueArr
+     *        must not be {@code null}, but may contain {@code null} for many containers (except
+     *        {@code ImmutableList}, etc.)
+     *
+     * @return reference to self
+     *
+     * @throws NullPointerException
+     *         if {@code moreValueArr} is {@code null}
+     *
+     * @see #addMany(Object[])
+     * @see #addMany(Iterable)
+     * @see #addMany(Iterator)
+     */
+    TSelf addMany(TValue value, TValue... moreValueArr);
+
+    /**
+     * Adds many values to the builder.
+     *
      * @param valueArr
-     *        zero or more values to add; must not be {@code null}
+     *        zero or more values to add; must not be {@code null}, but may contain {@code null} for
+     *        many containers (except {@code ImmutableList}, etc.)
      *
      * @return reference to self
      *
      * @throws NullPointerException
      *         if {@code valueArr} is {@code null}
      *
+     * @see #addMany(Object, Object[])
      * @see #addMany(Iterable)
      * @see #addMany(Iterator)
      */
-    TSelf addMany(TValue... valueArr);
+    TSelf addMany(TValue[] valueArr);
 
     /**
      * Adds many values to the builder.
      *
      * @param valueIterable
-     *        zero or more values to add; must not be {@code null}
+     *        zero or more values to add; must not be {@code null}, but may contain {@code null} for
+     *        many containers (except {@code ImmutableList}, etc.)
      *
      * @return reference to self
      *
      * @throws NullPointerException
      *         if {@code valueIterable} is {@code null}
      *
-     * @see #addMany(Object[])
+     * @see #addMany(Object, Object[])
      * @see #addMany(Iterator)
      */
     TSelf addMany(Iterable<? extends TValue> valueIterable);
@@ -86,7 +109,8 @@ extends Builder<TContainer> {
      * Adds many values to the builder.
      *
      * @param valueIter
-     *        zero or more values to add; must not be {@code null}
+     *        zero or more values to add; must not be {@code null}, but may contain {@code null} for
+     *        many containers (except {@code ImmutableList}, etc.)
      *
      * @return reference to self
      *

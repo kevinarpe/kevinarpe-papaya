@@ -27,6 +27,7 @@ package com.googlecode.kevinarpe.papaya.container.builder;
 
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableBiMap;
+import com.google.common.collect.ImmutableMap;
 import com.googlecode.kevinarpe.papaya.testing.MoreAssertUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -35,30 +36,30 @@ import org.testng.annotations.Test;
 import java.util.Map;
 
 import static org.testng.Assert.assertNotSame;
+import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
-public class HashBiMapBuilderTest {
+public class ImmutableBiMapBuilderTest {
 
-    private HashBiMapBuilder<String, Integer> classUnderTest;
-    private HashBiMapBuilder<String, String> classUnderTest2;
+    private ImmutableBiMapBuilder<String, Integer> classUnderTest;
+    private ImmutableBiMapBuilder<String, String> classUnderTest2;
 
     @BeforeMethod
     public void beforeEachTestMethod() {
-        classUnderTest = HashBiMapBuilder.create();
-        classUnderTest2 = HashBiMapBuilder.create();
+        classUnderTest = ImmutableBiMapBuilder.create();
+        classUnderTest2 = ImmutableBiMapBuilder.create();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // HashBiMapBuilder.build()
+    // ImmutableBiMapBuilder.build()
     //
 
     @Test
     public void build_PassWithEmpty() {
-        HashBiMap<String, Integer> map = classUnderTest.build();
+        ImmutableBiMap<String, Integer> map = classUnderTest.build();
         assertTrue(map.isEmpty());
-        HashBiMap<String, Integer> map2 = classUnderTest.build();
-        assertTrue(map2.isEmpty());
-        assertNotSame(map, map2);
+        ImmutableBiMap<String, Integer> map2 = classUnderTest.build();
+        assertSame(map, map2);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -76,12 +77,8 @@ public class HashBiMapBuilderTest {
     @DataProvider
     private static Object[][] _build_Pass_Data() {
         return new Object[][] {
-            { ImmutableBiMap.of() },
-            { ImmutableBiMap.of("abc", 123) },
-            { ImmutableBiMap.of("abc", 123, "def", 456) },
-            { HashMapBuilder.create().putOne((String) null, 123).build() },
-            { HashMapBuilder.create().putOne("abc", (Integer) null).build() },
-            { HashMapBuilder.create().putOne((String) null, (Integer) null).build() },
+            { ImmutableMap.of("abc", 123) },
+            { ImmutableMap.of("abc", 123, "def", 456) },
         };
     }
 
@@ -89,9 +86,10 @@ public class HashBiMapBuilderTest {
     public void build_Pass(Map<String, Integer> inputMap) {
         HashBiMap<String, Integer> inputBiMap = HashBiMap.create(inputMap);
         classUnderTest.putAll(inputBiMap);
-        HashBiMap<String, Integer> map = classUnderTest.build();
+        classUnderTest.putAll(inputBiMap);
+        ImmutableBiMap<String, Integer> map = classUnderTest.build();
         MoreAssertUtils.INSTANCE.assertBiMapEquals(map, inputBiMap);
-        HashBiMap<String, Integer> map2 = classUnderTest.build();
+        ImmutableBiMap<String, Integer> map2 = classUnderTest.build();
         assertNotSame(map, map2);
         MoreAssertUtils.INSTANCE.assertBiMapEquals(map2, inputBiMap);
     }

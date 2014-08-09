@@ -26,22 +26,21 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.ImmutableSet;
+import com.googlecode.kevinarpe.papaya.testing.MoreAssertUtils;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNotSame;
+import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 public class ImmutableSetBuilderTest {
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // ImmutableSetBuilder.create()
-    //
+    private ImmutableSetBuilder<String> classUnderTest;
 
-    @Test
-    public void create_Pass() {
-        ImmutableSetBuilder<String> x = ImmutableSetBuilder.create();
-        assertNotNull(x);
+    @BeforeMethod
+    public void beforeEachTestMethod() {
+        classUnderTest = ImmutableSetBuilder.create();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,17 +49,20 @@ public class ImmutableSetBuilderTest {
 
     @Test
     public void build_PassWithEmpty() {
-        ImmutableSetBuilder<String> classUnderTest = ImmutableSetBuilder.create();
         ImmutableSet<String> set = classUnderTest.build();
         assertTrue(set.isEmpty());
+        ImmutableSet<String> set2 = classUnderTest.build();
+        assertSame(set2, set);
     }
 
     @Test
     public void build_Pass() {
         ImmutableSet<String> inputSet = ImmutableSet.of("abc", "def", "ghi", "jkl");
-        ImmutableSetBuilder<String> classUnderTest = ImmutableSetBuilder.create();
         classUnderTest.addAll(inputSet);
         ImmutableSet<String> set = classUnderTest.build();
-        assertEquals(set, inputSet);
+        MoreAssertUtils.INSTANCE.assertLinkedSetEquals(set, inputSet);
+        ImmutableSet<String> set2 = classUnderTest.build();
+        assertNotSame(set2, set);
+        MoreAssertUtils.INSTANCE.assertLinkedSetEquals(set2, inputSet);
     }
 }

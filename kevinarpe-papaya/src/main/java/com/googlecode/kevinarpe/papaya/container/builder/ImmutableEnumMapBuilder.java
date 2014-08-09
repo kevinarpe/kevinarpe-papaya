@@ -79,7 +79,7 @@ extends AbstractMapBuilder
      */
     @Override
     public ImmutableMap<TKey, TValue> build() {
-        ImmutableMap<TKey, TValue> x = ImmutableMap.copyOf(delegate());
+        ImmutableMap<TKey, TValue> x = Maps.immutableEnumMap(delegate());
         return x;
     }
 

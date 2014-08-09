@@ -25,8 +25,8 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
-import com.google.common.collect.HashBiMap;
-import com.google.common.collect.ImmutableBiMap;
+import com.google.common.collect.EnumHashBiMap;
+import com.google.common.collect.ImmutableMap;
 import com.googlecode.kevinarpe.papaya.testing.MoreAssertUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -37,62 +37,72 @@ import java.util.Map;
 import static org.testng.Assert.assertNotSame;
 import static org.testng.Assert.assertTrue;
 
-public class HashBiMapBuilderTest {
+public class EnumHashBiMapBuilderTest {
 
-    private HashBiMapBuilder<String, Integer> classUnderTest;
-    private HashBiMapBuilder<String, String> classUnderTest2;
+    private static enum Enum1 { A, B, C }
+
+    private EnumHashBiMapBuilder<Enum1, String> classUnderTest;
+    private EnumHashBiMapBuilder<Enum1, Enum1> classUnderTest2;
 
     @BeforeMethod
     public void beforeEachTestMethod() {
-        classUnderTest = HashBiMapBuilder.create();
-        classUnderTest2 = HashBiMapBuilder.create();
+        classUnderTest = EnumHashBiMapBuilder.create(Enum1.class);
+        classUnderTest2 = EnumHashBiMapBuilder.create(Enum1.class);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // HashBiMapBuilder.build()
+    // EnumHashBiMapBuilder.create()
+    //
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void create_FailWithNull() {
+        EnumHashBiMapBuilder.create((Class<Enum1>) null);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // EnumHashBiMapBuilder.build()
     //
 
     @Test
     public void build_PassWithEmpty() {
-        HashBiMap<String, Integer> map = classUnderTest.build();
+        EnumHashBiMap<Enum1, String> map = classUnderTest.build();
         assertTrue(map.isEmpty());
-        HashBiMap<String, Integer> map2 = classUnderTest.build();
+        EnumHashBiMap<Enum1, String> map2 = classUnderTest.build();
         assertTrue(map2.isEmpty());
         assertNotSame(map, map2);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void build_FailWithDupeKey() {
-        classUnderTest2.put("abc", "abc");
-        classUnderTest2.put("def", "abc");
+        classUnderTest2.put(Enum1.A, Enum1.A);
+        classUnderTest2.put(Enum1.B, Enum1.A);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void build_FailWithDupeValue() {
-        classUnderTest2.put("abc", "abc");
-        classUnderTest2.inverse().put("def", "abc");
+        classUnderTest2.put(Enum1.A, Enum1.A);
+        classUnderTest2.inverse().put(Enum1.B, Enum1.A);
     }
 
     @DataProvider
     private static Object[][] _build_Pass_Data() {
         return new Object[][] {
-            { ImmutableBiMap.of() },
-            { ImmutableBiMap.of("abc", 123) },
-            { ImmutableBiMap.of("abc", 123, "def", 456) },
-            { HashMapBuilder.create().putOne((String) null, 123).build() },
-            { HashMapBuilder.create().putOne("abc", (Integer) null).build() },
-            { HashMapBuilder.create().putOne((String) null, (Integer) null).build() },
+            { ImmutableMap.of() },
+            { ImmutableMap.of(Enum1.A, "abc") },
+            { ImmutableMap.of(Enum1.A, "abc", Enum1.B, "def") },
+            { HashMapBuilder.create().putOne(Enum1.A, (String) null).build() },
         };
     }
 
     @Test(dataProvider = "_build_Pass_Data")
-    public void build_Pass(Map<String, Integer> inputMap) {
-        HashBiMap<String, Integer> inputBiMap = HashBiMap.create(inputMap);
+    public void build_Pass(Map<Enum1, String> inputMap) {
+        EnumHashBiMap<Enum1, String> inputBiMap = EnumHashBiMap.create(Enum1.class);
+        inputBiMap.putAll(inputMap);
         classUnderTest.putAll(inputBiMap);
-        HashBiMap<String, Integer> map = classUnderTest.build();
-        MoreAssertUtils.INSTANCE.assertBiMapEquals(map, inputBiMap);
-        HashBiMap<String, Integer> map2 = classUnderTest.build();
+        EnumHashBiMap<Enum1, String> map = classUnderTest.build();
+        MoreAssertUtils.INSTANCE.assertEnumHashBiMapEquals(Enum1.class, map, inputBiMap);
+        EnumHashBiMap<Enum1, String> map2 = classUnderTest.build();
         assertNotSame(map, map2);
-        MoreAssertUtils.INSTANCE.assertBiMapEquals(map2, inputBiMap);
+        MoreAssertUtils.INSTANCE.assertEnumHashBiMapEquals(Enum1.class, map2, inputBiMap);
     }
 }

@@ -30,6 +30,7 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.container.ForwardingBiMap;
 
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -47,7 +48,7 @@ extends ForwardingBiMap<TKey, TValue>
 implements BiMapBuilder<TKey, TValue, TMap, TSelf> {
 
     private final BiMap<TKey, TValue> _biMap;
-    private final IMapBuilderUtils<TKey, TValue, TMap> _biMapBuilderUtils;
+    private final IMapBuilderUtils<TKey, TValue, TMap> _mapBuilderUtils;
     private final MinimalistMap<TKey, TValue> _minimalistMap;
 
     protected AbstractBiMapBuilder(BiMap<TKey, TValue> biMap) {
@@ -63,7 +64,7 @@ implements BiMapBuilder<TKey, TValue, TMap, TSelf> {
             MinimalistMap<TKey, TValue> minimalistMap) {
         super();
         _biMap = ObjectArgs.checkNotNull(biMap, "biMap");
-        _biMapBuilderUtils = ObjectArgs.checkNotNull(mapBuilderUtils, "mapBuilderUtils");
+        _mapBuilderUtils = ObjectArgs.checkNotNull(mapBuilderUtils, "mapBuilderUtils");
         _minimalistMap = ObjectArgs.checkNotNull(minimalistMap, "minimalistMap");
     }
 
@@ -85,9 +86,22 @@ implements BiMapBuilder<TKey, TValue, TMap, TSelf> {
     }
 
     @Override
+    public TSelf putMany(
+            Class<TKey> keyClass,
+            Class<TValue> valueClass,
+            TKey key,
+            TValue value,
+            Object... moreKeysAndValuesArr) {
+        _mapBuilderUtils.putMany(
+            _minimalistMap, keyClass, valueClass, key, value, moreKeysAndValuesArr);
+        TSelf x = self();
+        return x;
+    }
+
+    @Override
     public final TSelf putMany(
-            Class<TKey> keyClass, Class<TValue> valueClass, Object... keysAndValuesArr) {
-        _biMapBuilderUtils.putMany(_minimalistMap, keyClass, valueClass, keysAndValuesArr);
+            Class<TKey> keyClass, Class<TValue> valueClass, Object[] keysAndValuesArr) {
+        _mapBuilderUtils.putMany(_minimalistMap, keyClass, valueClass, keysAndValuesArr);
         TSelf x = self();
         return x;
     }
@@ -95,14 +109,30 @@ implements BiMapBuilder<TKey, TValue, TMap, TSelf> {
     @Override
     public final TSelf putMany(
             Iterable<? extends TKey> keyIterable, Iterable<? extends TValue> valueIterable) {
-        _biMapBuilderUtils.putMany(_minimalistMap, keyIterable, valueIterable);
+        _mapBuilderUtils.putMany(_minimalistMap, keyIterable, valueIterable);
         TSelf x = self();
         return x;
     }
 
     @Override
-    public final TSelf putMany(Map.Entry<? extends TKey, ? extends TValue>... entryArr) {
-        _biMapBuilderUtils.putMany(_minimalistMap, entryArr);
+    public TSelf putMany(Iterator<? extends TKey> keyIter, Iterator<? extends TValue> valueIter) {
+        _mapBuilderUtils.putMany(_minimalistMap, keyIter, valueIter);
+        TSelf x = self();
+        return x;
+    }
+
+    @Override
+    public TSelf putMany(
+            Entry<? extends TKey, ? extends TValue> entry,
+            Entry<? extends TKey, ? extends TValue>... moreEntryArr) {
+        _mapBuilderUtils.putMany(_minimalistMap, entry, moreEntryArr);
+        TSelf x = self();
+        return x;
+    }
+
+    @Override
+    public final TSelf putMany(Map.Entry<? extends TKey, ? extends TValue>[] entryArr) {
+        _mapBuilderUtils.putMany(_minimalistMap, entryArr);
         TSelf x = self();
         return x;
     }
@@ -110,7 +140,14 @@ implements BiMapBuilder<TKey, TValue, TMap, TSelf> {
     @Override
     public final TSelf putMany(
             Iterable<? extends Map.Entry<? extends TKey, ? extends TValue>> entryIterable) {
-        _biMapBuilderUtils.putMany(_minimalistMap, entryIterable);
+        _mapBuilderUtils.putMany(_minimalistMap, entryIterable);
+        TSelf x = self();
+        return x;
+    }
+
+    @Override
+    public TSelf putMany(Iterator<? extends Entry<? extends TKey, ? extends TValue>> entryIter) {
+        _mapBuilderUtils.putMany(_minimalistMap, entryIter);
         TSelf x = self();
         return x;
     }

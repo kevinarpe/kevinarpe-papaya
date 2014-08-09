@@ -30,40 +30,51 @@ import com.googlecode.kevinarpe.papaya.testing.MoreAssertUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.HashSet;
+import java.util.EnumSet;
 
 import static org.testng.Assert.assertNotSame;
 import static org.testng.Assert.assertTrue;
 
-public class HashSetBuilderTest {
+public class EnumSetBuilderTest {
 
-    private HashSetBuilder<String> classUnderTest;
+    private static enum Enum1 { A, B, C }
+
+    private EnumSetBuilder<Enum1> classUnderTest;
 
     @BeforeMethod
     public void beforeEachTestMethod() {
-        classUnderTest = HashSetBuilder.create();
+        classUnderTest = EnumSetBuilder.create(Enum1.class);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // HashSetBuilder.build()
+    // EnumSetBuilder.create()
+    //
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void create_FailWithNull() {
+        EnumSetBuilder.create((Class<Enum1>) null);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // EnumSetBuilder.build()
     //
 
     @Test
     public void build_PassWithEmpty() {
-        HashSet<String> set = classUnderTest.build();
+        EnumSet<Enum1> set = classUnderTest.build();
         assertTrue(set.isEmpty());
-        HashSet<String> set2 = classUnderTest.build();
+        EnumSet<Enum1> set2 = classUnderTest.build();
         assertNotSame(set2, set);
         MoreAssertUtils.INSTANCE.assertSetEquals(set2, set);
     }
 
     @Test
     public void build_Pass() {
-        ImmutableSet<String> inputSet = ImmutableSet.of("abc", "def", "ghi", "jkl");
+        ImmutableSet<Enum1> inputSet = ImmutableSet.of(Enum1.A, Enum1.B);
         classUnderTest.addAll(inputSet);
-        HashSet<String> set = classUnderTest.build();
+        EnumSet<Enum1> set = classUnderTest.build();
         MoreAssertUtils.INSTANCE.assertSetEquals(set, inputSet);
-        HashSet<String> set2 = classUnderTest.build();
+        EnumSet<Enum1> set2 = classUnderTest.build();
         assertNotSame(set2, set);
         MoreAssertUtils.INSTANCE.assertSetEquals(set2, inputSet);
     }

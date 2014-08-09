@@ -47,6 +47,7 @@ import static org.mockito.Mockito.verify;
 
 public class MapBuilderUtilsTest {
 
+    private List mockList;
     private static MinimalistMap<String, Integer> mockMinimalistMap;
     private MinimalistMap<List, Integer> mockMinimalistMap2;
     private MinimalistMap<String, List> mockMinimalistMap3;
@@ -62,6 +63,7 @@ public class MapBuilderUtilsTest {
 
     @BeforeMethod
     public void beforeEachTestMethod() {
+        mockList = MockitoUtils.INSTANCE.mockGenericInterface(List.class);
         beforeAllTests();
         mockMinimalistMap2 = MockitoUtils.INSTANCE.mockGenericInterface(MinimalistMap.class);
         mockMinimalistMap3 = MockitoUtils.INSTANCE.mockGenericInterface(MinimalistMap.class);
@@ -72,7 +74,101 @@ public class MapBuilderUtilsTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // MapBuilderUtils.putMany(MinimalistMap, Class, Class, Object...)
+    // MapBuilderUtils.putMany(MinimalistMap, Class, Class, Object, Object, Object[])
+    //
+
+    @DataProvider
+    private static Object[][] _putMany_Object_Object_ObjectArr_FailWithNull_Data() {
+        Object[][] x =
+            TestNGPermutationBuilderUtils.INSTANCE
+                .withNullableParam(mockMinimalistMap)
+                .addNullableParam(String.class)
+                .addNullableParam(Integer.class)
+                .addParam("abc")
+                .addParam(123)
+                .addNullableParam(new Object[0])
+                .build();
+        return x;
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+        dataProvider = "_putMany_Object_Object_ObjectArr_FailWithNull_Data")
+    public void putMany_Object_Object_ObjectArr_FailWithNull(
+            MinimalistMap<String, Integer> map,
+            Class<String> keyClass,
+            Class<Integer> valueClass,
+            String key,
+            Integer value,
+            Object[] keysAndValuesArr) {
+        classUnderTest.putMany(map, keyClass, valueClass, key, value, keysAndValuesArr);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void putMany_Object_Object_ObjectArr_FailWithGenericType() {
+        classUnderTest2.putMany(mockMinimalistMap2, List.class, Integer.class, mockList, 123);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void putMany_Object_Object_ObjectArr_FailWithGenericType2() {
+        classUnderTest3.putMany(mockMinimalistMap3, String.class, List.class, "abc", mockList);
+    }
+
+    @DataProvider
+    private static Object[][] _putMany_Object_Object_ObjectArr_FailWithOddLengthKeysAndValuesArr_Data() {
+        return new Object[][][] {
+            { new Object[] { "abc" } },
+            { { "abc", 123, "def" } },
+            { { "abc", 123, "def", 456, "ghi" } },
+        };
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class,
+        dataProvider = "_putMany_Object_Object_ObjectArr_FailWithOddLengthKeysAndValuesArr_Data")
+    public void putMany_Object_Object_ObjectArr_FailWithOddLengthKeysAndValuesArr(
+            Object[] keysAndValuesArr) {
+        classUnderTest.putMany(
+            mockMinimalistMap, String.class, Integer.class, "xyz", 789, keysAndValuesArr);
+    }
+
+    @DataProvider
+    private static Object[][] _putMany_Object_Object_ObjectArr_FailWithClassCastException_Data() {
+        return new Object[][][] {
+            { { "abc", "def" } },
+            { { 123, 456 } },
+            { { 123, "abc", } },
+            { { "abc", 123, 456, 789 } },
+            { { "abc", 123, "def", "ghi" } },
+            { { "abc", 123, 456, "def" } },
+        };
+    }
+
+    @Test(expectedExceptions = ClassCastException.class,
+        dataProvider = "_putMany_Object_Object_ObjectArr_FailWithClassCastException_Data")
+    public void putMany_Object_Object_ObjectArr_FailWithClassCastException(
+            Object[] keysAndValuesArr) {
+        classUnderTest.putMany(
+            mockMinimalistMap, String.class, Integer.class, "xyz", 789, keysAndValuesArr);
+    }
+
+    @DataProvider
+    private static Object[][] _putMany_Object_Object_ObjectArr_Pass_Data() {
+        return new Object[][][] {
+            { { } },
+            { { "abc", 123 } },
+            { { "abc", 123, "def", 456 } },
+        };
+    }
+
+    @Test(dataProvider = "_putMany_Object_Object_ObjectArr_Pass_Data")
+    public void putMany_Object_Object_ObjectArr_Pass(Object[] keysAndValuesArr) {
+        classUnderTest.putMany(
+            mockMinimalistMap, String.class, Integer.class, "xyz", 789, keysAndValuesArr);
+        verify(mockMinimalistMap, times(keysAndValuesArr.length / 2))
+            .put(anyString(), anyInt());
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // MapBuilderUtils.putMany(MinimalistMap, Class, Class, Object[])
     //
 
     @DataProvider
@@ -88,23 +184,13 @@ public class MapBuilderUtilsTest {
     }
 
     @Test(expectedExceptions = NullPointerException.class,
-            dataProvider = "_putMany_ObjectArr_FailWithNull_Data")
+        dataProvider = "_putMany_ObjectArr_FailWithNull_Data")
     public void putMany_ObjectArr_FailWithNull(
-            MinimalistMap<String, Integer> map,
-            Class<String> keyClass,
-            Class<Integer> valueClass,
-            Object[] keysAndValuesArr) {
+        MinimalistMap<String, Integer> map,
+        Class<String> keyClass,
+        Class<Integer> valueClass,
+        Object[] keysAndValuesArr) {
         classUnderTest.putMany(map, keyClass, valueClass, keysAndValuesArr);
-    }
-
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void putMany_ObjectArr_FailWithGenericType() {
-        classUnderTest2.putMany(mockMinimalistMap2, List.class, Integer.class);
-    }
-
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void putMany_ObjectArr_FailWithGenericType2() {
-        classUnderTest3.putMany(mockMinimalistMap3, String.class, List.class);
     }
 
     @DataProvider
@@ -155,6 +241,8 @@ public class MapBuilderUtilsTest {
         verify(mockMinimalistMap, times(keysAndValuesArr.length / 2))
             .put(anyString(), anyInt());
     }
+
+    // TODO: LAST
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // MapBuilderUtils.putMany(MinimalistMap, Iterable, Iterable)

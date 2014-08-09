@@ -31,9 +31,16 @@ import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+// TODO: Test me and add javadocs
 public class EnumFormatter2
 extends StatelessObject
 implements Formatter2 {
+
+    public static final EnumFormatter2 INSTANCE = new EnumFormatter2();
+
+    public EnumFormatter2() {
+        // Empty
+    }
 
     @Override
     public String format(Object value) {

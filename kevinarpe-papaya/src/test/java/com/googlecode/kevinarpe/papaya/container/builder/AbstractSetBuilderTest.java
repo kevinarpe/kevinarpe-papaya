@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 
 import static org.mockito.Matchers.anyCollectionOf;
 import static org.mockito.Matchers.anyString;
@@ -39,57 +39,57 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertSame;
 
-public class AbstractListBuilderTest {
+public class AbstractSetBuilderTest {
 
-    private static final class _AbstractListBuilder
-    extends AbstractListBuilder<String, List<String>, _AbstractListBuilder> {
+    private static final class _AbstractSetBuilder
+        extends AbstractSetBuilder<String, Set<String>, _AbstractSetBuilder> {
 
-        private _AbstractListBuilder(List<String> list) {
-            super(list);
+        private _AbstractSetBuilder(Set<String> set) {
+            super(set);
         }
 
         @Override
-        public List<String> build() {
+        public Set<String> build() {
             return delegate();
         }
 
         @Override
-        protected _AbstractListBuilder self() {
+        protected _AbstractSetBuilder self() {
             return this;
         }
     }
 
-    private List<String> mockList;
+    private Set<String> mockSet;
 
-    private _AbstractListBuilder classUnderTest;
+    private _AbstractSetBuilder classUnderTest;
 
     @BeforeMethod
     public void beforeEachTestMethod() {
-        mockList = MockitoUtils.INSTANCE.mockGenericInterface(List.class);
+        mockSet = MockitoUtils.INSTANCE.mockGenericInterface(Set.class);
 
-        classUnderTest = new _AbstractListBuilder(mockList);
+        classUnderTest = new _AbstractSetBuilder(mockSet);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractListBuilder.ctor()
+    // AbstractSetBuilder.ctor()
     //
 
     @Test(expectedExceptions = NullPointerException.class)
     public void ctor_FailWithNull() {
-        new _AbstractListBuilder((List<String>) null);
+        new _AbstractSetBuilder((Set<String>) null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractListBuilder.build()
+    // AbstractSetBuilder.build()
     //
 
     @Test
     public void build_Pass() {
-        assertSame(classUnderTest.build(), mockList);
+        assertSame(classUnderTest.build(), mockSet);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractListBuilder.addMany(Object, Object...)
+    // AbstractSetBuilder.addMany(Object, Object...)
     //
 
     @Test(expectedExceptions = NullPointerException.class)
@@ -100,11 +100,11 @@ public class AbstractListBuilderTest {
     @Test
     public void addMany_Object_ObjectArr_PassWithNotEmpty() {
         classUnderTest.addMany("abc", "def");
-        verify(mockList, never()).addAll(Arrays.asList("abc", "def"));
+        verify(mockSet, never()).addAll(Arrays.asList("abc", "def"));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractListBuilder.addMany(Object[])
+    // AbstractSetBuilder.addMany(Object[])
     //
 
     @Test(expectedExceptions = NullPointerException.class)
@@ -115,17 +115,17 @@ public class AbstractListBuilderTest {
     @Test
     public void addMany_ObjectArr_PassWithEmpty() {
         classUnderTest.addMany(new String[0]);
-        verify(mockList, never()).addAll(anyCollectionOf(String.class));
+        verify(mockSet, never()).addAll(anyCollectionOf(String.class));
     }
 
     @Test
     public void addMany_ObjectArr_PassWithNotEmpty() {
         classUnderTest.addMany(new String[] { "abc", "def" });
-        verify(mockList, never()).addAll(Arrays.asList("abc", "def"));
+        verify(mockSet, never()).addAll(Arrays.asList("abc", "def"));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractListBuilder.addMany(Iterable)
+    // AbstractSetBuilder.addMany(Iterable)
     //
 
     @Test(expectedExceptions = NullPointerException.class)
@@ -136,18 +136,18 @@ public class AbstractListBuilderTest {
     @Test
     public void addMany_Iterable_PassWithEmpty() {
         classUnderTest.addMany(Arrays.<String>asList());
-        verify(mockList, never()).add(anyString());
+        verify(mockSet, never()).add(anyString());
     }
 
     @Test
     public void addMany_Iterable_PassWithNonEmpty() {
         classUnderTest.addMany(Arrays.asList("abc", "def"));
-        verify(mockList).add("abc");
-        verify(mockList).add("def");
+        verify(mockSet).add("abc");
+        verify(mockSet).add("def");
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractListBuilder.addMany(Iterator)
+    // AbstractSetBuilder.addMany(Iterator)
     //
 
     @Test(expectedExceptions = NullPointerException.class)
@@ -158,13 +158,13 @@ public class AbstractListBuilderTest {
     @Test
     public void addMany_Iterator_PassWithEmpty() {
         classUnderTest.addMany(Arrays.<String>asList().iterator());
-        verify(mockList, never()).add(anyString());
+        verify(mockSet, never()).add(anyString());
     }
 
     @Test
     public void addMany_Iterator_PassWithNonEmpty() {
         classUnderTest.addMany(Arrays.asList("abc", "def").iterator());
-        verify(mockList).add("abc");
-        verify(mockList).add("def");
+        verify(mockSet).add("abc");
+        verify(mockSet).add("def");
     }
 }

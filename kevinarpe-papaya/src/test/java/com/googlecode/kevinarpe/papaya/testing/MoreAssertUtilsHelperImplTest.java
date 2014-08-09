@@ -37,7 +37,6 @@ import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -109,10 +108,9 @@ public class MoreAssertUtilsHelperImplTest {
                 @Override
                 public void run() {
                     classUnderTest.assertEqualsAndHashCodeCorrect(
-                        _EqualsAndHashCodeHelper.class,
+                        "dummy",
                         new _EqualsAndHashCodeHelper(EqualsNonNull.NO, EqualsNull.NO, HashCode.A),
-                        new _EqualsAndHashCodeHelper(EqualsNonNull.YES, EqualsNull.NO, HashCode.A),
-                        FORMAT, FORMAT_ARG_ARR);
+                        new _EqualsAndHashCodeHelper(EqualsNonNull.YES, EqualsNull.NO, HashCode.A), FORMAT, FORMAT_ARG_ARR);
                 }
             },
             PREFIX);
@@ -125,10 +123,9 @@ public class MoreAssertUtilsHelperImplTest {
                 @Override
                 public void run() {
                     classUnderTest.assertEqualsAndHashCodeCorrect(
-                        _EqualsAndHashCodeHelper.class,
+                        "dummy",
                         new _EqualsAndHashCodeHelper(EqualsNonNull.YES, EqualsNull.NO, HashCode.A),
-                        new _EqualsAndHashCodeHelper(EqualsNonNull.NO, EqualsNull.NO, HashCode.A),
-                        FORMAT, FORMAT_ARG_ARR);
+                        new _EqualsAndHashCodeHelper(EqualsNonNull.NO, EqualsNull.NO, HashCode.A), FORMAT, FORMAT_ARG_ARR);
                 }
             },
             PREFIX);
@@ -141,10 +138,9 @@ public class MoreAssertUtilsHelperImplTest {
                 @Override
                 public void run() {
                     classUnderTest.assertEqualsAndHashCodeCorrect(
-                        _EqualsAndHashCodeHelper.class,
+                        "dummy",
                         new _EqualsAndHashCodeHelper(EqualsNonNull.YES, EqualsNull.YES, HashCode.A),
-                        new _EqualsAndHashCodeHelper(EqualsNonNull.YES, EqualsNull.NO, HashCode.A),
-                        FORMAT, FORMAT_ARG_ARR);
+                        new _EqualsAndHashCodeHelper(EqualsNonNull.YES, EqualsNull.NO, HashCode.A), FORMAT, FORMAT_ARG_ARR);
                 }
             },
             PREFIX);
@@ -157,10 +153,9 @@ public class MoreAssertUtilsHelperImplTest {
                 @Override
                 public void run() {
                     classUnderTest.assertEqualsAndHashCodeCorrect(
-                        _EqualsAndHashCodeHelper.class,
+                        "dummy",
                         new _EqualsAndHashCodeHelper(EqualsNonNull.YES, EqualsNull.NO, HashCode.A),
-                        new _EqualsAndHashCodeHelper(EqualsNonNull.YES, EqualsNull.YES, HashCode.A),
-                        FORMAT, FORMAT_ARG_ARR);
+                        new _EqualsAndHashCodeHelper(EqualsNonNull.YES, EqualsNull.YES, HashCode.A), FORMAT, FORMAT_ARG_ARR);
                 }
             },
             PREFIX);
@@ -173,10 +168,9 @@ public class MoreAssertUtilsHelperImplTest {
                 @Override
                 public void run() {
                     classUnderTest.assertEqualsAndHashCodeCorrect(
-                        _EqualsAndHashCodeHelper.class,
+                        "dummy",
                         new _EqualsAndHashCodeHelper(EqualsNonNull.YES, EqualsNull.NO, HashCode.A),
-                        new _EqualsAndHashCodeHelper(EqualsNonNull.YES, EqualsNull.NO, HashCode.B),
-                        FORMAT, FORMAT_ARG_ARR);
+                        new _EqualsAndHashCodeHelper(EqualsNonNull.YES, EqualsNull.NO, HashCode.B), FORMAT, FORMAT_ARG_ARR);
                 }
             },
             PREFIX);
@@ -185,10 +179,9 @@ public class MoreAssertUtilsHelperImplTest {
     @Test
     public void assertEqualsAndHashCodeCorrect_Pass() {
         classUnderTest.assertEqualsAndHashCodeCorrect(
-            _EqualsAndHashCodeHelper.class,
+            "dummy",
             new _EqualsAndHashCodeHelper(EqualsNonNull.YES, EqualsNull.NO, HashCode.A),
-            new _EqualsAndHashCodeHelper(EqualsNonNull.YES, EqualsNull.NO, HashCode.A),
-            FORMAT, FORMAT_ARG_ARR);
+            new _EqualsAndHashCodeHelper(EqualsNonNull.YES, EqualsNull.NO, HashCode.A), FORMAT, FORMAT_ARG_ARR);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -202,7 +195,7 @@ public class MoreAssertUtilsHelperImplTest {
                 @Override
                 public void run() {
                     classUnderTest.assertNeitherNull(
-                        String.class, null, "abc", FORMAT, FORMAT_ARG_ARR);
+                        "String", null, "abc", FORMAT, FORMAT_ARG_ARR);
                 }
             },
             PREFIX);
@@ -215,7 +208,7 @@ public class MoreAssertUtilsHelperImplTest {
                 @Override
                 public void run() {
                     classUnderTest.assertNeitherNull(
-                        String.class, "abc", null, FORMAT, FORMAT_ARG_ARR);
+                        "String", "abc", null, FORMAT, FORMAT_ARG_ARR);
                 }
             },
             PREFIX);
@@ -223,7 +216,7 @@ public class MoreAssertUtilsHelperImplTest {
 
     @Test
     public void assertNeitherNull_Pass() {
-        classUnderTest.assertNeitherNull(String.class, "abc", "def", FORMAT, FORMAT_ARG_ARR);
+        classUnderTest.assertNeitherNull("String", "abc", "def", FORMAT, FORMAT_ARG_ARR);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -237,7 +230,7 @@ public class MoreAssertUtilsHelperImplTest {
                 @Override
                 public void run() {
                     classUnderTest.assertSameContainerSize(
-                        List.class, 3, 4, FORMAT, FORMAT_ARG_ARR);
+                        "List", 3, 4, FORMAT, FORMAT_ARG_ARR);
                 }
             },
             PREFIX);
@@ -245,7 +238,7 @@ public class MoreAssertUtilsHelperImplTest {
 
     @Test
     public void assertSameContainerSize_Pass() {
-        classUnderTest.assertSameContainerSize(List.class, 3, 3, FORMAT, FORMAT_ARG_ARR);
+        classUnderTest.assertSameContainerSize("List", 3, 3, FORMAT, FORMAT_ARG_ARR);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

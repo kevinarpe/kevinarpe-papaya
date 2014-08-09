@@ -29,6 +29,7 @@ import com.google.common.collect.ImmutableMap;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Builds {@code ImmutableMap} collections.
@@ -48,6 +49,9 @@ import java.util.LinkedHashMap;
  * @see LinkedHashMapBuilder
  * @see PropertiesBuilder
  */
+// TODO: If ImmutableMap rejects nulls, shall we do the same during building?
+// May need to create policy collections.  Then we can create a PolicyForwardingMap that can
+// reject null keys and values.
 @FullyTested
 public final class ImmutableMapBuilder<TKey, TValue>
 extends AbstractMapBuilder
@@ -82,5 +86,16 @@ extends AbstractMapBuilder
     @Override
     protected ImmutableMapBuilder<TKey, TValue> self() {
         return this;
+    }
+
+    @Override
+    public TValue put(TKey key, TValue value) {
+
+        return super.put(key, value);
+    }
+
+    @Override
+    public void putAll(Map<? extends TKey, ? extends TValue> map) {
+        super.putAll(map);
     }
 }

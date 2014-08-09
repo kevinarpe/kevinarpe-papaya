@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -41,7 +42,15 @@ public interface IMapBuilderUtils
             MinimalistMap<TKey, TValue> map,
             Class<TKey> keyClass,
             Class<TValue> valueClass,
+            TKey key,
+            TValue value,
             Object... keysAndValuesArr);
+
+    void putMany(
+            MinimalistMap<TKey, TValue> map,
+            Class<TKey> keyClass,
+            Class<TValue> valueClass,
+            Object[] keysAndValuesArr);
 
     void putMany(
             MinimalistMap<TKey, TValue> map,
@@ -50,9 +59,23 @@ public interface IMapBuilderUtils
 
     void putMany(
             MinimalistMap<TKey, TValue> map,
-            Map.Entry<? extends TKey, ? extends TValue>... entryArr);
+            Iterator<? extends TKey> keyIter,
+            Iterator<? extends TValue> valueIter);
+
+    void putMany(
+            MinimalistMap<TKey, TValue> map,
+            Map.Entry<? extends TKey, ? extends TValue> entry,
+            Map.Entry<? extends TKey, ? extends TValue>... moreEntryArr);
+
+    void putMany(
+            MinimalistMap<TKey, TValue> map,
+            Map.Entry<? extends TKey, ? extends TValue>[] entryArr);
 
     void putMany(
             MinimalistMap<TKey, TValue> map,
             Iterable<? extends Map.Entry<? extends TKey, ? extends TValue>> entryIterable);
+
+    void putMany(
+            MinimalistMap<TKey, TValue> map,
+            Iterator<? extends Map.Entry<? extends TKey, ? extends TValue>> entryIter);
 }

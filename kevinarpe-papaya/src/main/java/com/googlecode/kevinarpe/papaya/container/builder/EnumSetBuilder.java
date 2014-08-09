@@ -25,6 +25,9 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+
 import java.util.EnumSet;
 import java.util.HashSet;
 
@@ -42,6 +45,7 @@ import java.util.HashSet;
  * @see LinkedHashSetBuilder
  * @see ImmutableSetBuilder
  */
+@FullyTested
 public final class EnumSetBuilder<TValue extends Enum<TValue>>
 extends AbstractSetBuilder
             <
@@ -60,7 +64,7 @@ extends AbstractSetBuilder
     }
 
     private EnumSetBuilder(Class<TValue> valueClass) {
-        super(EnumSet.noneOf(valueClass));
+        super(EnumSet.noneOf(ObjectArgs.checkNotNull(valueClass, "valueClass")));
     }
 
     /**

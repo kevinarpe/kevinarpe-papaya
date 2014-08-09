@@ -57,7 +57,13 @@ implements ContainerBuilder<TValue, TValue[], ArrayBuilder<TValue>> {
     }
 
     @Override
-    public ArrayBuilder<TValue> addMany(TValue... valueArr) {
+    public ArrayBuilder<TValue> addMany(TValue value, TValue... moreValueArr) {
+        _arrayListBuilder.addMany(value, moreValueArr);
+        return this;
+    }
+
+    @Override
+    public ArrayBuilder<TValue> addMany(TValue[] valueArr) {
         _arrayListBuilder.addMany(valueArr);
         return this;
     }

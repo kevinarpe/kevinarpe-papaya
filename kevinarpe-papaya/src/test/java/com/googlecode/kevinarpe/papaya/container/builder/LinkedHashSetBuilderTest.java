@@ -26,24 +26,22 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.ImmutableSet;
+import com.googlecode.kevinarpe.papaya.testing.MoreAssertUtils;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.LinkedHashSet;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNotSame;
 import static org.testng.Assert.assertTrue;
 
 public class LinkedHashSetBuilderTest {
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // LinkedHashSetBuilder.create()
-    //
+    private LinkedHashSetBuilder<String> classUnderTest;
 
-    @Test
-    public void create_Pass() {
-        LinkedHashSetBuilder<String> x = LinkedHashSetBuilder.create();
-        assertNotNull(x);
+    @BeforeMethod
+    public void beforeEachTestMethod() {
+        classUnderTest = LinkedHashSetBuilder.create();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,17 +50,21 @@ public class LinkedHashSetBuilderTest {
 
     @Test
     public void build_PassWithEmpty() {
-        LinkedHashSetBuilder<String> classUnderTest = LinkedHashSetBuilder.create();
         LinkedHashSet<String> set = classUnderTest.build();
         assertTrue(set.isEmpty());
+        LinkedHashSet<String> set2 = classUnderTest.build();
+        assertNotSame(set2, set);
+        MoreAssertUtils.INSTANCE.assertSetEquals(set2, set);
     }
 
     @Test
     public void build_Pass() {
         ImmutableSet<String> inputSet = ImmutableSet.of("abc", "def", "ghi", "jkl");
-        LinkedHashSetBuilder<String> classUnderTest = LinkedHashSetBuilder.create();
         classUnderTest.addAll(inputSet);
         LinkedHashSet<String> set = classUnderTest.build();
-        assertEquals(set, inputSet);
+        MoreAssertUtils.INSTANCE.assertLinkedSetEquals(set, inputSet);
+        LinkedHashSet<String> set2 = classUnderTest.build();
+        assertNotSame(set2, set);
+        MoreAssertUtils.INSTANCE.assertLinkedSetEquals(set2, inputSet);
     }
 }

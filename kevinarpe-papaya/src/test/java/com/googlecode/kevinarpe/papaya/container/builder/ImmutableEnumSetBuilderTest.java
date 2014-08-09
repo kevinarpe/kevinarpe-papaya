@@ -26,45 +26,55 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import com.googlecode.kevinarpe.papaya.testing.MoreAssertUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.HashSet;
-
 import static org.testng.Assert.assertNotSame;
+import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
-public class HashSetBuilderTest {
+public class ImmutableEnumSetBuilderTest {
 
-    private HashSetBuilder<String> classUnderTest;
+    private static enum Enum1 { A, B, C }
+
+    private ImmutableEnumSetBuilder<Enum1> classUnderTest;
 
     @BeforeMethod
     public void beforeEachTestMethod() {
-        classUnderTest = HashSetBuilder.create();
+        classUnderTest = ImmutableEnumSetBuilder.create(Enum1.class);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // HashSetBuilder.build()
+    // ImmutableEnumSetBuilder.create()
+    //
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void create_FailWithNull() {
+        ImmutableEnumSetBuilder.create((Class<Enum1>) null);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableEnumSetBuilder.build()
     //
 
     @Test
     public void build_PassWithEmpty() {
-        HashSet<String> set = classUnderTest.build();
+        ImmutableSet<Enum1> set = classUnderTest.build();
         assertTrue(set.isEmpty());
-        HashSet<String> set2 = classUnderTest.build();
-        assertNotSame(set2, set);
-        MoreAssertUtils.INSTANCE.assertSetEquals(set2, set);
+        ImmutableSet<Enum1> set2 = classUnderTest.build();
+        assertSame(set2, set);
     }
 
     @Test
     public void build_Pass() {
-        ImmutableSet<String> inputSet = ImmutableSet.of("abc", "def", "ghi", "jkl");
+        ImmutableSet<Enum1> inputSet = Sets.immutableEnumSet(Enum1.A, Enum1.B);
         classUnderTest.addAll(inputSet);
-        HashSet<String> set = classUnderTest.build();
-        MoreAssertUtils.INSTANCE.assertSetEquals(set, inputSet);
-        HashSet<String> set2 = classUnderTest.build();
+        ImmutableSet<Enum1> set = classUnderTest.build();
+        MoreAssertUtils.INSTANCE.assertEnumSetEquals(Enum1.class, set, inputSet);
+        ImmutableSet<Enum1> set2 = classUnderTest.build();
         assertNotSame(set2, set);
-        MoreAssertUtils.INSTANCE.assertSetEquals(set2, inputSet);
+        MoreAssertUtils.INSTANCE.assertEnumSetEquals(Enum1.class, set2, inputSet);
     }
 }

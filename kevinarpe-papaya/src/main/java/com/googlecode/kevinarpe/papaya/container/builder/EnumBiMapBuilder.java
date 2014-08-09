@@ -27,8 +27,8 @@ package com.googlecode.kevinarpe.papaya.container.builder;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.EnumBiMap;
-import com.google.common.collect.HashBiMap;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 import java.util.HashMap;
 
@@ -50,6 +50,7 @@ import java.util.HashMap;
  * @see ImmutableMapBuilder
  * @see PropertiesBuilder
  */
+@FullyTested
 public final class EnumBiMapBuilder<TKey extends Enum<TKey>, TValue extends Enum<TValue>>
 extends AbstractBiMapBuilder
             <
@@ -69,7 +70,10 @@ extends AbstractBiMapBuilder
     }
 
     private EnumBiMapBuilder(Class<TKey> keyClass, Class<TValue> valueClass) {
-        this(EnumBiMap.create(keyClass, valueClass));
+        this(
+            EnumBiMap.create(
+                ObjectArgs.checkNotNull(keyClass, "keyClass"),
+                ObjectArgs.checkNotNull(valueClass, "valueClass")));
     }
 
     EnumBiMapBuilder(BiMap<TKey, TValue> map) {

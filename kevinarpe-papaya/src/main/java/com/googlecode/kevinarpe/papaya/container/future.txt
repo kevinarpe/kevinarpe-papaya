@@ -1,0 +1,21 @@
+x) UniqueList
+x) collections with policies for each method
+Collection<> examples:
+* null values
+* value not exist on remove
+* add value
+* change value
+* remove value
+* fixed size
+* increasing size only
+* decreasing size only
+* read-only
+Map<> examples:
+* null keys
+* null values
+* key does not exist on get
+* key does not exist on remove
+* key exists on put
+* add entry
+* change value
+* remove entry

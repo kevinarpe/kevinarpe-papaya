@@ -28,6 +28,7 @@ package com.googlecode.kevinarpe.papaya.container.builder;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableBiMap;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 import java.util.HashMap;
 
@@ -49,6 +50,7 @@ import java.util.HashMap;
  * @see ImmutableMapBuilder
  * @see PropertiesBuilder
  */
+@FullyTested
 public final class ImmutableBiMapBuilder<TKey, TValue>
 extends AbstractBiMapBuilder
             <

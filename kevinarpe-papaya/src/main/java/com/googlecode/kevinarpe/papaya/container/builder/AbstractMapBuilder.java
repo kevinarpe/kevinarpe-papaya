@@ -29,6 +29,7 @@ import com.google.common.collect.ForwardingMap;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -102,8 +103,21 @@ implements MapBuilder<TKey, TValue, TMap, TSelf> {
     }
 
     @Override
+    public TSelf putMany(
+            Class<TKey> keyClass,
+            Class<TValue> valueClass,
+            TKey key,
+            TValue value,
+            Object... moreKeysAndValuesArr) {
+        _mapBuilderUtils.putMany(
+            _minimalistMap, keyClass, valueClass, key, value, moreKeysAndValuesArr);
+        TSelf x = self();
+        return x;
+    }
+
+    @Override
     public final TSelf putMany(
-            Class<TKey> keyClass, Class<TValue> valueClass, Object... keysAndValuesArr) {
+            Class<TKey> keyClass, Class<TValue> valueClass, Object[] keysAndValuesArr) {
         _mapBuilderUtils.putMany(_minimalistMap, keyClass, valueClass, keysAndValuesArr);
         TSelf x = self();
         return x;
@@ -118,7 +132,23 @@ implements MapBuilder<TKey, TValue, TMap, TSelf> {
     }
 
     @Override
-    public final TSelf putMany(Map.Entry<? extends TKey, ? extends TValue>... entryArr) {
+    public TSelf putMany(Iterator<? extends TKey> keyIter, Iterator<? extends TValue> valueIter) {
+        _mapBuilderUtils.putMany(_minimalistMap, keyIter, valueIter);
+        TSelf x = self();
+        return x;
+    }
+
+    @Override
+    public TSelf putMany(
+            Entry<? extends TKey, ? extends TValue> entry,
+            Entry<? extends TKey, ? extends TValue>... moreEntryArr) {
+        _mapBuilderUtils.putMany(_minimalistMap, entry, moreEntryArr);
+        TSelf x = self();
+        return x;
+    }
+
+    @Override
+    public final TSelf putMany(Map.Entry<? extends TKey, ? extends TValue>[] entryArr) {
         _mapBuilderUtils.putMany(_minimalistMap, entryArr);
         TSelf x = self();
         return x;
@@ -128,6 +158,13 @@ implements MapBuilder<TKey, TValue, TMap, TSelf> {
     public final TSelf putMany(
             Iterable<? extends Map.Entry<? extends TKey, ? extends TValue>> entryIterable) {
         _mapBuilderUtils.putMany(_minimalistMap, entryIterable);
+        TSelf x = self();
+        return x;
+    }
+
+    @Override
+    public TSelf putMany(Iterator<? extends Entry<? extends TKey, ? extends TValue>> entryIter) {
+        _mapBuilderUtils.putMany(_minimalistMap, entryIter);
         TSelf x = self();
         return x;
     }

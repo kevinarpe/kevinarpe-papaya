@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.Sets;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -44,6 +45,7 @@ import java.util.LinkedHashSet;
  * @see LinkedHashSetBuilder
  * @see ImmutableSetBuilder
  */
+@FullyTested
 public final class LinkedHashSetBuilder<TValue>
 extends AbstractSetBuilder
             <

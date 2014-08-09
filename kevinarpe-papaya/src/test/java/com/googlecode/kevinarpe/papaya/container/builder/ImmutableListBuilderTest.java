@@ -31,6 +31,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertNotSame;
+import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 public class ImmutableListBuilderTest {
@@ -50,6 +51,8 @@ public class ImmutableListBuilderTest {
     public void build_PassWithEmpty() {
         ImmutableList<String> list = classUnderTest.build();
         assertTrue(list.isEmpty());
+        ImmutableList<String> list2 = classUnderTest.build();
+        assertSame(list2, list);
     }
 
     @Test
