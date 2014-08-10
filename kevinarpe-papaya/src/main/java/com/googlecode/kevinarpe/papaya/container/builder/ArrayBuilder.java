@@ -27,6 +27,7 @@ package com.googlecode.kevinarpe.papaya.container.builder;
 
 import com.google.common.collect.ForwardingList;
 import com.google.common.collect.ObjectArrays;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 import java.util.ArrayList;
@@ -36,7 +37,8 @@ import java.util.List;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class ArrayBuilder<TValue>
+@FullyTested
+public final class ArrayBuilder<TValue>
 extends ForwardingList<TValue>
 implements ContainerBuilder<TValue, TValue[], ArrayBuilder<TValue>> {
 
@@ -54,6 +56,10 @@ implements ContainerBuilder<TValue, TValue[], ArrayBuilder<TValue>> {
     private ArrayBuilder(Class<TValue> componentType) {
         _componentType = ObjectArgs.checkNotNull(componentType, "componentType");
         _arrayListBuilder = ArrayListBuilder.create();
+    }
+
+    public Class<TValue> getComponentType() {
+        return _componentType;
     }
 
     @Override

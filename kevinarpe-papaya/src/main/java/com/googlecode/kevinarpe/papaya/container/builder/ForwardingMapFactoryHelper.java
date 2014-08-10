@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -69,5 +70,25 @@ implements MapFactoryHelper<TKey, TValue, TMap> {
         MapFactoryHelper<TKey, TValue, TMap> delegate = delegate();
         TMap x = delegate.copyOf(entryIterable);
         return x;
+    }
+
+    @Override
+    public TMap copyOf(Class<TKey> keyClass, Class<TValue> valueClass, TKey key, TValue value, Object... keysAndValuesArr) {
+        return null;
+    }
+
+    @Override
+    public TMap copyOf(Iterator<? extends TKey> keyIter, Iterator<? extends TValue> valueIter) {
+        return null;
+    }
+
+    @Override
+    public TMap copyOf(Map.Entry<? extends TKey, ? extends TValue> entry, Map.Entry<? extends TKey, ? extends TValue>... entryArr) {
+        return null;
+    }
+
+    @Override
+    public TMap copyOf(Iterator<? extends Map.Entry<? extends TKey, ? extends TValue>> entryIter) {
+        return null;
     }
 }

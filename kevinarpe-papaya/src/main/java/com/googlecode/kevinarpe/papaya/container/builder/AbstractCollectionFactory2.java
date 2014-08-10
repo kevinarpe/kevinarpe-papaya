@@ -25,19 +25,22 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
-import java.util.Map;
+import java.util.Collection;
 
 /**
- * @author Kevin Connor ARPE (kevinarpe@gmail.com)
- */
-public interface MinimalistMapBuilderFactory
+* @author Kevin Connor ARPE (kevinarpe@gmail.com)
+*/
+public abstract class AbstractCollectionFactory2
     <
-        TKey,
         TValue,
-        TMap extends Map<TKey, TValue>,
-        TMinimalistMapBuilder extends MinimalistMapBuilder<TKey, TValue, TMap>
-    > {
+        TCollection extends Collection<TValue>,
+        TCollectionBuilder extends Builder<TCollection>
+    >
+extends AbstractContainerFactory2<TValue, TCollection, TCollectionBuilder>
+implements CollectionFactory2<TValue, TCollection, TCollectionBuilder> {
 
-    // TODO: Create 2nd method: newInstance(int initialCapacity)
-    TMinimalistMapBuilder newInstance();
+    protected AbstractCollectionFactory2(
+            MinimalistCollectionBuilderFactory<TValue, TCollection> builderFactory) {
+        super(builderFactory);
+    }
 }

@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  */
 
 import com.google.common.collect.Iterators;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.argument.ClassArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
@@ -37,7 +38,7 @@ import java.util.Map;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-//@FullyTested
+@FullyTested
 final class MapBuilderUtils
     <
         TKey,
@@ -60,6 +61,9 @@ implements IMapBuilderUtils<TKey, TValue, TMap> {
             TValue value,
             Object... keysAndValuesArr) {
         ObjectArgs.checkNotNull(map, "map");
+        ClassArgs.checkNotGenericType(keyClass, "keyClass");
+        ClassArgs.checkNotGenericType(valueClass, "valueClass");
+        ObjectArgs.checkNotNull(keysAndValuesArr, "keysAndValuesArr");
 
         map.put(key, value);
         if (0 != keysAndValuesArr.length) {

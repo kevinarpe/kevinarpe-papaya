@@ -25,19 +25,13 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
-import java.util.Map;
-
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public interface MinimalistMapBuilderFactory
-    <
-        TKey,
-        TValue,
-        TMap extends Map<TKey, TValue>,
-        TMinimalistMapBuilder extends MinimalistMapBuilder<TKey, TValue, TMap>
-    > {
+public interface MinimalistContainerBuilderFactory<TValue, TContainer> {
 
-    // TODO: Create 2nd method: newInstance(int initialCapacity)
-    TMinimalistMapBuilder newInstance();
+    MinimalistContainerBuilder<TValue, TContainer> newInstance();
+
+    // zero is allowed!
+    MinimalistContainerBuilder<TValue, TContainer> newInstanceWithCapacity(int initialCapacity);
 }

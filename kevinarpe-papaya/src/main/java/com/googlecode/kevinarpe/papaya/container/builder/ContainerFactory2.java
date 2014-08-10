@@ -46,7 +46,7 @@ import java.util.Iterator;
  * @see ListFactory
  * @see SetFactory
  */
-public interface ContainerFactory
+public interface ContainerFactory2
     <
         TValue,
         TContainer,
@@ -59,6 +59,19 @@ extends BuilderFactory<TContainerBuilder> {
      * shared copy may be returned, but for mutable collections ({@link ArrayList}, etc.), a new
      * instance always created and returned.
      */
+    TContainer of();
+    TContainer of(TValue v);
+    TContainer of(TValue v, TValue v2);
+    TContainer of(TValue v, TValue v2, TValue v3);
+    TContainer of(TValue v, TValue v2, TValue v3, TValue v4);
+    TContainer of(TValue v, TValue v2, TValue v3, TValue v4, TValue v5);
+    TContainer of(TValue v, TValue v2, TValue v3, TValue v4, TValue v5, TValue v6);
+    TContainer of(TValue v, TValue v2, TValue v3, TValue v4, TValue v5, TValue v6, TValue v7);
+    TContainer of(TValue v, TValue v2, TValue v3, TValue v4, TValue v5, TValue v6, TValue v7, TValue v8);
+    TContainer of(TValue v, TValue v2, TValue v3, TValue v4, TValue v5, TValue v6, TValue v7, TValue v8, TValue v9);
+    TContainer of(TValue v, TValue v2, TValue v3, TValue v4, TValue v5, TValue v6, TValue v7, TValue v8, TValue v9, TValue v10);
+    TContainer of(TValue v, TValue v2, TValue v3, TValue v4, TValue v5, TValue v6, TValue v7, TValue v8, TValue v9, TValue v10, TValue v11);
+    TContainer of(TValue v, TValue v2, TValue v3, TValue v4, TValue v5, TValue v6, TValue v7, TValue v8, TValue v9, TValue v10, TValue v11, TValue v12, TValue... moreValueArr);
 
     /**
      * Creates a new collection with one or more elements.
@@ -74,7 +87,7 @@ extends BuilderFactory<TContainerBuilder> {
      * @throws NullPointerException
      *         if {@code moreValueArr} is {@code null}
      */
-    TContainer copyOf(TValue value, TValue... moreValueArr);
+//    TContainer copyOf(TValue value, TValue... moreValueArr);
 
     /**
      * Creates a new collection with zero or more elements.

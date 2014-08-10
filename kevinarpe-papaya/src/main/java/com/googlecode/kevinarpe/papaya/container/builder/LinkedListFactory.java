@@ -30,6 +30,7 @@ import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -69,12 +70,17 @@ implements ListFactory<TValue, LinkedList<TValue>, LinkedListBuilder<TValue>> {
         return x;
     }
 
+    @Override
+    public LinkedList<TValue> copyOf(TValue value, TValue... moreValueArr) {
+        return null;
+    }
+
     /** {@inheritDoc} */
     @Override
-    public LinkedList<TValue> copyOf(TValue... elementArr) {
-        ObjectArgs.checkNotNull(elementArr, "elementArr");
+    public LinkedList<TValue> copyOf(TValue... moreValueArr) {
+        ObjectArgs.checkNotNull(moreValueArr, "elementArr");
 
-        LinkedList<TValue> x = Lists.newLinkedList(Arrays.asList(elementArr));
+        LinkedList<TValue> x = Lists.newLinkedList(Arrays.asList(moreValueArr));
         return x;
     }
 
@@ -85,5 +91,10 @@ implements ListFactory<TValue, LinkedList<TValue>, LinkedListBuilder<TValue>> {
 
         LinkedList<TValue> x = Lists.newLinkedList(iterable);
         return x;
+    }
+
+    @Override
+    public LinkedList<TValue> copyOf(Iterator<? extends TValue> iter) {
+        return null;
     }
 }

@@ -25,6 +25,8 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.Iterator;
 
 /**
@@ -54,19 +56,15 @@ extends Builder<TContainer> {
      * Adds many values to the builder.
      *
      * @param value
-     *        may be {@code null} for many containers (except {@code ImmutableList}, etc.)
+     *        may be {@code null} for many containers (except {@link ImmutableList}, etc.)
      * @param moreValueArr
-     *        must not be {@code null}, but may contain {@code null} for many containers (except
-     *        {@code ImmutableList}, etc.)
+     *        must not be {@code null}, but may be empty or contain {@code null} for many containers
+     *        (except {@link ImmutableList}, etc.)
      *
      * @return reference to self
      *
      * @throws NullPointerException
      *         if {@code moreValueArr} is {@code null}
-     *
-     * @see #addMany(Object[])
-     * @see #addMany(Iterable)
-     * @see #addMany(Iterator)
      */
     TSelf addMany(TValue value, TValue... moreValueArr);
 
@@ -74,17 +72,13 @@ extends Builder<TContainer> {
      * Adds many values to the builder.
      *
      * @param valueArr
-     *        zero or more values to add; must not be {@code null}, but may contain {@code null} for
-     *        many containers (except {@code ImmutableList}, etc.)
+     *        must not be {@code null}, but may be empty or contain {@code null} for many containers
+     *        (except {@link ImmutableList}, etc.)
      *
      * @return reference to self
      *
      * @throws NullPointerException
      *         if {@code valueArr} is {@code null}
-     *
-     * @see #addMany(Object, Object[])
-     * @see #addMany(Iterable)
-     * @see #addMany(Iterator)
      */
     TSelf addMany(TValue[] valueArr);
 
@@ -92,33 +86,27 @@ extends Builder<TContainer> {
      * Adds many values to the builder.
      *
      * @param valueIterable
-     *        zero or more values to add; must not be {@code null}, but may contain {@code null} for
-     *        many containers (except {@code ImmutableList}, etc.)
+     *        must not be {@code null}, but may be empty or contain {@code null} for many containers
+     *        (except {@link ImmutableList}, etc.)
      *
      * @return reference to self
      *
      * @throws NullPointerException
      *         if {@code valueIterable} is {@code null}
-     *
-     * @see #addMany(Object, Object[])
-     * @see #addMany(Iterator)
      */
     TSelf addMany(Iterable<? extends TValue> valueIterable);
 
     /**
-     * Adds many values to the builder.
+     * Adds many values to the builder.  The iterator is exhausted upon return.
      *
      * @param valueIter
-     *        zero or more values to add; must not be {@code null}, but may contain {@code null} for
-     *        many containers (except {@code ImmutableList}, etc.)
+     *        must not be {@code null}, but may be empty or contain {@code null} for many containers
+     *        (except {@link ImmutableList}, etc.)
      *
      * @return reference to self
      *
      * @throws NullPointerException
      *         if {@code valueIterable} is {@code null}
-     *
-     * @see #addMany(Iterator)
-     * @see #addMany(Iterable)
      */
     TSelf addMany(Iterator<? extends TValue> valueIter);
 }

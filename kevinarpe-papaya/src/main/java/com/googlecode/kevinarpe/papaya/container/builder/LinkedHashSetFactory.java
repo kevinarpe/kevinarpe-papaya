@@ -30,6 +30,7 @@ import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 /**
@@ -69,12 +70,17 @@ implements SetFactory<TValue, LinkedHashSet<TValue>, LinkedHashSetBuilder<TValue
         return x;
     }
 
+    @Override
+    public LinkedHashSet<TValue> copyOf(TValue value, TValue... moreValueArr) {
+        return null;
+    }
+
     /** {@inheritDoc} */
     @Override
-    public LinkedHashSet<TValue> copyOf(TValue... elementArr) {
-        ObjectArgs.checkNotNull(elementArr, "elementArr");
+    public LinkedHashSet<TValue> copyOf(TValue... moreValueArr) {
+        ObjectArgs.checkNotNull(moreValueArr, "elementArr");
 
-        LinkedHashSet<TValue> x = new LinkedHashSet<TValue>(Arrays.asList(elementArr));
+        LinkedHashSet<TValue> x = new LinkedHashSet<TValue>(Arrays.asList(moreValueArr));
         return x;
     }
 
@@ -85,5 +91,10 @@ implements SetFactory<TValue, LinkedHashSet<TValue>, LinkedHashSetBuilder<TValue
 
         LinkedHashSet<TValue> x = Sets.newLinkedHashSet(iterable);
         return x;
+    }
+
+    @Override
+    public LinkedHashSet<TValue> copyOf(Iterator<? extends TValue> iter) {
+        return null;
     }
 }

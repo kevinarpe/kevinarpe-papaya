@@ -30,6 +30,8 @@ import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
+import java.util.Iterator;
+
 /**
  * Creates {@code HashMapBuilder}s.
  *
@@ -67,6 +69,11 @@ implements SetFactory<TValue, ImmutableSet<TValue>, ImmutableSetBuilder<TValue>>
         return x;
     }
 
+    @Override
+    public ImmutableSet<TValue> copyOf(TValue value, TValue... moreValueArr) {
+        return null;
+    }
+
     /**
      * Immutable sets do not allow {@code null} elements.
      * <hr/>
@@ -76,10 +83,10 @@ implements SetFactory<TValue, ImmutableSet<TValue>, ImmutableSetBuilder<TValue>>
      *         if {@code collection} (or any element) is {@code null}
      */
     @Override
-    public ImmutableSet<TValue> copyOf(TValue... elementArr) {
-        ArrayArgs.checkElementsNotNull(elementArr, "elementArr");
+    public ImmutableSet<TValue> copyOf(TValue... moreValueArr) {
+        ArrayArgs.checkElementsNotNull(moreValueArr, "elementArr");
 
-        ImmutableSet<TValue> x = ImmutableSet.copyOf(elementArr);
+        ImmutableSet<TValue> x = ImmutableSet.copyOf(moreValueArr);
         return x;
     }
 
@@ -97,5 +104,10 @@ implements SetFactory<TValue, ImmutableSet<TValue>, ImmutableSetBuilder<TValue>>
 
         ImmutableSet<TValue> x = ImmutableSet.copyOf(iterable);
         return x;
+    }
+
+    @Override
+    public ImmutableSet<TValue> copyOf(Iterator<? extends TValue> iter) {
+        return null;
     }
 }

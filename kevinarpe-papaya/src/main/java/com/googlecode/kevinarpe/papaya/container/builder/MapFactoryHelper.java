@@ -30,6 +30,7 @@ import com.google.common.collect.ImmutableMap;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -59,16 +60,24 @@ public interface MapFactoryHelper
         TMap extends Map<TKey, TValue>
     > {
 
+    // TODO: Missing createEmpty() or of()
+
     /**
      * Casts keys and values from a variadic array and inserts into a new map.
      * <p>
      * This method cannot be used if {@code TKey} or {@code TValue} is a generic type, e.g.,
-     * {@link List}, because generic keys and values cannot be safely cast.
+     * {@link List}, because generic keys and values cannot be safely cast due to type erasure.
      *
      * @param keyClass
      *        class for key type
      * @param valueClass
      *        class for value type
+     * @param key
+     *        {@code null} may be allowed, depending on the map type, e.g., {@link HashMap} is OK,
+     *        but {@link ImmutableMap} is not
+     * @param value
+     *        {@code null} may be allowed, depending on the map type, e.g., {@link HashMap} is OK,
+     *        but {@link ImmutableMap} is not
      * @param keysAndValuesArr
      * <ul>
      *     <li>variadic array of keys and values (can be empty)</li>
@@ -93,7 +102,48 @@ public interface MapFactoryHelper
      *     <li>if a value cannot be safely cast to type {@code valueClass}</li>
      * </ul>
      */
-    TMap copyOf(Class<TKey> keyClass, Class<TValue> valueClass, Object... keysAndValuesArr);
+    TMap copyOf(
+            Class<TKey> keyClass,
+            Class<TValue> valueClass,
+            TKey key,
+            TValue value,
+            Object... keysAndValuesArr);
+
+    /**
+     * Casts keys and values from an array and inserts into a new map.
+     * <p>
+     * This method cannot be used if {@code TKey} or {@code TValue} is a generic type, e.g.,
+     * {@link List}, because generic keys and values cannot be safely cast.
+     *
+     * @param keyClass
+     *        class for key type
+     * @param valueClass
+     *        class for value type
+     * @param keysAndValuesArr
+     * <ul>
+     *     <li>array of keys and values (can be empty)</li>
+     *     <li>each <i>even</i> index has a key, e.g., [0], [2], [4]...</li>
+     *     <li>each <i>odd</i> index has a value, e.g., [1], [3], [5]...</li>
+     *     <li>{@code null}s may be allowed, depending on the map type,
+     *     e.g., {@link HashMap} is OK, but {@link ImmutableMap} is not</li>
+     * </ul>
+     *
+     * @return new map
+     *
+     * @throws NullPointerException
+     *         if {@code keyClass}, {@code valueClass}, or {@code keysAndValuesArr} is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *     <li>if {@code keyClass} or {@code valueClass} has generic type parameters</li>
+     *     <li>if length of {@code keysAndValuesArr} is not even</li>
+     * </ul>
+     * @throws ClassCastException
+     * <ul>
+     *     <li>if a key cannot be safely cast to type {@code keyClass}</li>
+     *     <li>if a value cannot be safely cast to type {@code valueClass}</li>
+     * </ul>
+     */
+    TMap copyOf(Class<TKey> keyClass, Class<TValue> valueClass, Object[] keysAndValuesArr);
 
     /**
      * Iterates keys and values and inserts into a new map.
@@ -127,11 +177,62 @@ public interface MapFactoryHelper
     TMap copyOf(Iterable<? extends TKey> keyIterable, Iterable<? extends TValue> valueIterable);
 
     /**
+     * Iterates keys and values and inserts into a new map.  Both iterators are exhausted
+     * upon return.
+     *
+     * @param keyIter
+     * <ul>
+     *     <li>iterator with keys (can be empty)</li>
+     *     <li>must have same size as {@code valueIter}</li>
+     *     <li>be careful not to use an iterator from a collection where iteration order is not
+     *     defined, e.g., {@link HashSet}</li>
+     * </ul>
+     * @param valueIter
+     * <ul>
+     *     <li>iterator with values (can be empty)</li>
+     *     <li>must have same size as {@code keyIter}</li>
+     *     <li>be careful not to use an iterator from a collection where iteration order is not
+     *     defined, e.g., {@link HashSet}</li>
+     * </ul>
+     *
+     * @return new map
+     *
+     * @throws NullPointerException
+     *         if {@code keyIter} or {@code valueIter} is {@code null}
+     * @throws IllegalArgumentException
+     *         if length of {@code keyIter} or {@code valueIter} is not equal
+     */
+    TMap copyOf(Iterator<? extends TKey> keyIter, Iterator<? extends TValue> valueIter);
+
+    /**
+     * Inserts entries into a new map.
+     *
+     * @param entry
+     *        must not be {@code null}, but {@code null} key or value may be allowed, depending on
+     *        the map type, e.g., {@link HashMap} is OK, but {@link ImmutableMap} is not
+     * @param entryArr
+     * <ul>
+     *     <li>array of map entries (can be empty)</li>
+     *     <li>entries may not be {@code null}, but {@code null} keys or values may be allowed,
+     *     depending on the map type, e.g., {@link HashMap} is OK, but {@link ImmutableMap}
+     *     is not</li>
+     * </ul>
+     *
+     * @return new map
+     *
+     * @throws NullPointerException
+     *         if {@code entry} or {@code entryArr} (or any element) is {@code null}
+     */
+    TMap copyOf(
+            Map.Entry<? extends TKey, ? extends TValue> entry,
+            Map.Entry<? extends TKey, ? extends TValue>... entryArr);
+
+    /**
      * Inserts entries into a new map.
      *
      * @param entryArr
      * <ul>
-     *     <li>variadic array of map entries (can be empty)</li>
+     *     <li>array of map entries (can be empty)</li>
      *     <li>entries may not be {@code null}, but {@code null} keys or values may be allowed,
      *     depending on the map type, e.g., {@link HashMap} is OK, but {@link ImmutableMap}
      *     is not</li>
@@ -142,7 +243,7 @@ public interface MapFactoryHelper
      * @throws NullPointerException
      *         if {@code entryArr} (or any element) is {@code null}
      */
-    TMap copyOf(Map.Entry<? extends TKey, ? extends TValue>... entryArr);
+    TMap copyOf(Map.Entry<? extends TKey, ? extends TValue>[] entryArr);
 
     /**
      * Iterates entries and inserts into a new map.
@@ -165,4 +266,22 @@ public interface MapFactoryHelper
      *         if {@code entryIterable} (or any element) is {@code null}
      */
     TMap copyOf(Iterable<? extends Map.Entry<? extends TKey, ? extends TValue>> entryIterable);
+
+    /**
+     * Iterates entries and inserts into a new map.  The iterator is exhausted upon return.
+     *
+     * @param entryIter
+     * <ul>
+     *     <li>iterator of map entries (can be empty)</li>
+     *     <li>entries may not be {@code null}, but {@code null} keys or values may be allowed,
+     *     depending on the map type, e.g., {@link HashMap} is OK, but {@link ImmutableMap}
+     *     is not</li>
+     * </ul>
+     *
+     * @return new map
+     *
+     * @throws NullPointerException
+     *         if {@code entryIter} (or any element) is {@code null}
+     */
+    TMap copyOf(Iterator<? extends Map.Entry<? extends TKey, ? extends TValue>> entryIter);
 }

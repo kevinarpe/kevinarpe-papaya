@@ -32,6 +32,7 @@ import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
 * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -50,12 +51,17 @@ implements ContainerFactory<TValue, TValue[], ArrayBuilder<TValue>> {
         _componentType = ObjectArgs.checkNotNull(componentType, "componentType");
     }
 
+    @Override
+    public TValue[] copyOf(TValue value, TValue... moreValueArr) {
+        return null;
+    }
+
     /** {@inheritDoc} */
     @Override
-    public TValue[] copyOf(TValue... elementArr) {
-        ObjectArgs.checkNotNull(elementArr, "elementArr");
+    public TValue[] copyOf(TValue... moreValueArr) {
+        ObjectArgs.checkNotNull(moreValueArr, "elementArr");
 
-        TValue[] x = Arrays.copyOf(elementArr, elementArr.length);
+        TValue[] x = Arrays.copyOf(moreValueArr, moreValueArr.length);
         return x;
     }
 
@@ -77,6 +83,11 @@ implements ContainerFactory<TValue, TValue[], ArrayBuilder<TValue>> {
             arr = list.toArray(arr);
             return arr;
         }
+    }
+
+    @Override
+    public TValue[] copyOf(Iterator<? extends TValue> iter) {
+        return null;
     }
 
     /** {@inheritDoc} */

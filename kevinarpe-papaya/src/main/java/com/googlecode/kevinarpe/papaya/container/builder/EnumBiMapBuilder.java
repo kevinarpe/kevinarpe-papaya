@@ -69,6 +69,7 @@ extends AbstractBiMapBuilder
         return x;
     }
 
+    // TODO: Provide access to component types?
     private EnumBiMapBuilder(Class<TKey> keyClass, Class<TValue> valueClass) {
         this(
             EnumBiMap.create(

@@ -91,10 +91,12 @@ implements TestNGPermutationBuilder {
         }
         final int size = _paramValueListList.size();
         final boolean isAllNullable = (nullableParamCount == size);
+        final boolean isAnyNullable = (nullableParamCount > 0);
         if (index == size - 1) {
             // If all params are nullable, do not add the first output array, as all values will be
             // non-null.  This leads to a rather non-obvious condition below.
-            if (!isAllNullable || !arrayBuilder.isEmpty()) {
+//            if (!isAllNullable || !arrayBuilder.isEmpty()) {
+            if (!isAnyNullable || !arrayBuilder.isEmpty()) {
                 Object[] outputArr0 = outputArrList.get(0);
                 arrayBuilder.add(outputArr0);
             }

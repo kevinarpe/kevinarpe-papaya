@@ -34,8 +34,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import static org.mockito.Mockito.verify;
@@ -112,7 +114,22 @@ public class MapFactoryHelperImplTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // MapFactoryHelperImpl.copyOf(Class, Class, Object...)
+    // MapFactoryHelperImpl.copyOf(Class, Class, Object, Object, Object...)
+    //
+
+    @Test
+    public void copyOf_Object_Object_ObjectArr_Pass() {
+        Object[] keysAndValuesArr = new Object[0];
+        HashMap<String, Integer> map =
+            classUnderTest.copyOf(String.class, Integer.class, "abc", 123, keysAndValuesArr);
+        assertSame(map, hashMap);
+        verify(mockIMapBuilderUtils)
+            .putMany(mockMinimalistMapBuilder, String.class, Integer.class, "abc", 123,
+                keysAndValuesArr);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // MapFactoryHelperImpl.copyOf(Class, Class, Object[])
     //
 
     @Test
@@ -130,7 +147,7 @@ public class MapFactoryHelperImplTest {
     //
 
     @Test
-    public void copyOf_Iterable_Pass() {
+    public void copyOf_Iterable_Iterable_Pass() {
         Collection<String> keyCollection = Lists.newArrayList();
         Collection<Integer> valueCollection = Lists.newArrayList();
         HashMap<String, Integer> map = classUnderTest.copyOf(keyCollection, valueCollection);
@@ -140,7 +157,35 @@ public class MapFactoryHelperImplTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // MapFactoryHelperImpl.copyOf(Map.Entry...)
+    // MapFactoryHelperImpl.copyOf(Iterator, Iterator)
+    //
+
+    @Test
+    public void copyOf_Iterator_Iterator_Pass() {
+        Iterator<String> keyIter = Lists.newArrayList("abc").iterator();
+        Iterator<Integer> valueIter = Lists.newArrayList(123).iterator();
+        HashMap<String, Integer> map = classUnderTest.copyOf(keyIter, valueIter);
+        assertSame(map, hashMap);
+        verify(mockIMapBuilderUtils).putMany(mockMinimalistMapBuilder, keyIter, valueIter);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // MapFactoryHelperImpl.copyOf(Map.Entry, Map.Entry...)
+    //
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void copyOf_MapEntry_MapEntryArr_Pass() {
+        Map.Entry<String, Integer> mapEntry =
+            new AbstractMap.SimpleEntry<String, Integer>("abc", 123);
+        Map.Entry<String, Integer>[] mapEntryArr = new Map.Entry[0];
+        HashMap<String, Integer> map = classUnderTest.copyOf(mapEntry, mapEntryArr);
+        assertSame(map, hashMap);
+        verify(mockIMapBuilderUtils).putMany(mockMinimalistMapBuilder, mapEntry, mapEntryArr);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // MapFactoryHelperImpl.copyOf(Map.Entry[])
     //
 
     @SuppressWarnings("unchecked")
@@ -162,5 +207,18 @@ public class MapFactoryHelperImplTest {
         HashMap<String, Integer> map = classUnderTest.copyOf(mapEntryCollection);
         assertSame(map, hashMap);
         verify(mockIMapBuilderUtils).putMany(mockMinimalistMapBuilder, mapEntryCollection);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // MapFactoryHelperImpl.copyOf(Iterator)
+    //
+
+    @Test
+    public void copyOf_MapEntryIterator_Pass() {
+        Collection<Map.Entry<String, Integer>> mapEntryCollection = Lists.newArrayList();
+        Iterator<Map.Entry<String, Integer>> iter = mapEntryCollection.iterator();
+        HashMap<String, Integer> map = classUnderTest.copyOf(iter);
+        assertSame(map, hashMap);
+        verify(mockIMapBuilderUtils).putMany(mockMinimalistMapBuilder, iter);
     }
 }

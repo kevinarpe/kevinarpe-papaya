@@ -37,6 +37,7 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -92,7 +93,7 @@ public class MapBuilderUtilsTest {
     }
 
     @Test(expectedExceptions = NullPointerException.class,
-        dataProvider = "_putMany_Object_Object_ObjectArr_FailWithNull_Data")
+            dataProvider = "_putMany_Object_Object_ObjectArr_FailWithNull_Data")
     public void putMany_Object_Object_ObjectArr_FailWithNull(
             MinimalistMap<String, Integer> map,
             Class<String> keyClass,
@@ -163,7 +164,7 @@ public class MapBuilderUtilsTest {
     public void putMany_Object_Object_ObjectArr_Pass(Object[] keysAndValuesArr) {
         classUnderTest.putMany(
             mockMinimalistMap, String.class, Integer.class, "xyz", 789, keysAndValuesArr);
-        verify(mockMinimalistMap, times(keysAndValuesArr.length / 2))
+        verify(mockMinimalistMap, times(1 + (keysAndValuesArr.length / 2)))
             .put(anyString(), anyInt());
     }
 
@@ -242,14 +243,12 @@ public class MapBuilderUtilsTest {
             .put(anyString(), anyInt());
     }
 
-    // TODO: LAST
-
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // MapBuilderUtils.putMany(MinimalistMap, Iterable, Iterable)
     //
 
     @DataProvider
-    private static Object[][] _putMany_Iterable_FailWithNull_Data() {
+    private static Object[][] _putMany_Iterable_Iterable_FailWithNull_Data() {
         Object[][] x =
             TestNGPermutationBuilderUtils.INSTANCE
                 .withNullableParam(mockMinimalistMap)
@@ -260,8 +259,8 @@ public class MapBuilderUtilsTest {
     }
 
     @Test(expectedExceptions = NullPointerException.class,
-            dataProvider = "_putMany_Iterable_FailWithNull_Data")
-    public void putMany_Iterable_FailWithNull(
+            dataProvider = "_putMany_Iterable_Iterable_FailWithNull_Data")
+    public void putMany_Iterable_Iterable_FailWithNull(
             MinimalistMap<String, Integer> map,
             Iterable<String> keyIterable,
             Iterable<Integer> valueIterable) {
@@ -269,13 +268,13 @@ public class MapBuilderUtilsTest {
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void putMany_Iterable_FailWithDifferentListSizes() {
+    public void putMany_Iterable_Iterable_FailWithDifferentListSizes() {
         classUnderTest.putMany(
             mockMinimalistMap, Lists.newArrayList("abc", "def"), Lists.newArrayList(123));
     }
 
     @DataProvider
-    private static Object[][] _putMany_Iterable_Pass_Data() {
+    private static Object[][] _putMany_Iterable_Iterable_Pass_Data() {
         return new Object[][] {
             { new ArrayList<String>(), new ArrayList<Integer>() },
             { Lists.newArrayList("abc"), Lists.newArrayList(123) },
@@ -283,15 +282,130 @@ public class MapBuilderUtilsTest {
         };
     }
 
-    @Test(dataProvider = "_putMany_Iterable_Pass_Data")
-    public void putMany_Iterable_Pass(
+    @Test(dataProvider = "_putMany_Iterable_Iterable_Pass_Data")
+    public void putMany_Iterable_Iterable_Pass(
             Collection<String> keyCollection, Collection<Integer> valueCollection) {
         classUnderTest.putMany(mockMinimalistMap, keyCollection, valueCollection);
         verify(mockMinimalistMap, times(keyCollection.size())).put(anyString(), anyInt());
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // MapBuilderUtils.putMany(MinimalistMap, Map.Entry...)
+    // MapBuilderUtils.putMany(MinimalistMap, Iterator, Iterator)
+    //
+
+    @DataProvider
+    private static Object[][] _putMany_Iterator_Iterator_FailWithNull_Data() {
+        Object[][] x =
+            TestNGPermutationBuilderUtils.INSTANCE
+                .withNullableParam(mockMinimalistMap)
+                .addNullableParam(new ArrayList<String>().iterator())
+                .addNullableParam(new ArrayList<Integer>().iterator())
+                .build();
+        return x;
+    }
+
+    @Test(expectedExceptions = NullPointerException.class,
+        dataProvider = "_putMany_Iterator_Iterator_FailWithNull_Data")
+    public void putMany_Iterator_Iterator_FailWithNull(
+            MinimalistMap<String, Integer> map,
+            Iterator<String> keyIterator,
+            Iterator<Integer> valueIterator) {
+        classUnderTest.putMany(map, keyIterator, valueIterator);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void putMany_Iterator_Iterator_FailWithDifferentListSizes() {
+        classUnderTest.putMany(
+            mockMinimalistMap,
+            Lists.newArrayList("abc", "def").iterator(),
+            Lists.newArrayList(123).iterator());
+    }
+
+    @DataProvider
+    private static Object[][] _putMany_Iterator_Iterator_Pass_Data() {
+        return new Object[][] {
+            { new ArrayList<String>(), new ArrayList<Integer>() },
+            { Lists.newArrayList("abc"), Lists.newArrayList(123) },
+            { Lists.newArrayList("abc", "def"), Lists.newArrayList(123, 456) },
+        };
+    }
+
+    @Test(dataProvider = "_putMany_Iterator_Iterator_Pass_Data")
+    public void putMany_Iterator_Iterator_Pass(
+            Collection<String> keyCollection, Collection<Integer> valueCollection) {
+        classUnderTest.putMany(
+            mockMinimalistMap, keyCollection.iterator(), valueCollection.iterator());
+        verify(mockMinimalistMap, times(keyCollection.size())).put(anyString(), anyInt());
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // MapBuilderUtils.putMany(MinimalistMap, Map.Entry, Map.Entry...)
+    //
+
+    @DataProvider
+    private static Object[][] _putMany_MapEntry_MapEntryArr_FailWithNull_Data() {
+        Object[][] x =
+            TestNGPermutationBuilderUtils.INSTANCE
+                .withNullableParam(mockMinimalistMap)
+                .addNullableParam(new AbstractMap.SimpleEntry<String, Integer>("abc", 123))
+                .addNullableParam(new Map.Entry[0])
+                .build();
+        return x;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test(expectedExceptions = NullPointerException.class,
+            dataProvider = "_putMany_MapEntry_MapEntryArr_FailWithNull_Data")
+    public void putMany_MapEntry_MapEntryArr_FailWithNull(
+            MinimalistMap<String, Integer> map,
+            Map.Entry<String, Integer> entry,
+            Map.Entry<String, Integer>[] entryArr) {
+        classUnderTest.putMany(map, entry, entryArr);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test(expectedExceptions = NullPointerException.class)
+    public void putMany_MapEntry_MapEntryArr_FailWithNullElement() {
+        classUnderTest.putMany(
+            mockMinimalistMap,
+            new AbstractMap.SimpleImmutableEntry<String, Integer>("abc", 123),
+            new AbstractMap.SimpleImmutableEntry<String, Integer>("abc", 123),
+            (Map.Entry<String, Integer>) null);
+    }
+
+    @SuppressWarnings("unchecked")
+    @DataProvider
+    private static Object[][] _putMany_MapEntry_MapEntryArr_Pass_Data() {
+        return new Object[][][] {
+            { new Map.Entry[0] },
+            {
+                new Map.Entry[]
+                    {
+                        new AbstractMap.SimpleImmutableEntry<String, Integer>("abc", 123),
+                    }
+            },
+            {
+                new Map.Entry[]
+                    {
+                        new AbstractMap.SimpleImmutableEntry<String, Integer>("abc", 123),
+                        new AbstractMap.SimpleImmutableEntry<String, Integer>("def", 456),
+                    }
+            },
+        };
+    }
+
+    @Test(dataProvider = "_putMany_MapEntry_MapEntryArr_Pass_Data")
+    public void putMany_MapEntry_MapEntryArr_Pass(
+            Map.Entry<? extends String, ? extends Integer>[] mapEntryArr) {
+        classUnderTest.putMany(
+            mockMinimalistMap,
+            new AbstractMap.SimpleEntry<String, Integer>("abc", 123),
+            mapEntryArr);
+        verify(mockMinimalistMap, times(1 + mapEntryArr.length)).put(anyString(), anyInt());
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // MapBuilderUtils.putMany(MinimalistMap, Map.Entry[])
     //
 
     @DataProvider
@@ -306,20 +420,17 @@ public class MapBuilderUtilsTest {
 
     @SuppressWarnings("unchecked")
     @Test(expectedExceptions = NullPointerException.class,
-            dataProvider = "_putMany_MapEntryArr_FailWithNull_Data")
+        dataProvider = "_putMany_MapEntryArr_FailWithNull_Data")
     public void putMany_MapEntryArr_FailWithNull(
-            MinimalistMap<String, Integer> map,
-            Map.Entry<String, Integer>[] entryArr) {
+            MinimalistMap<String, Integer> map, Map.Entry<String, Integer>[] entryArr) {
         classUnderTest.putMany(map, entryArr);
     }
 
     @SuppressWarnings("unchecked")
     @Test(expectedExceptions = NullPointerException.class)
     public void putMany_MapEntryArr_FailWithNullElement() {
-        classUnderTest.putMany(
-            mockMinimalistMap,
-            new AbstractMap.SimpleImmutableEntry<String, Integer>("abc", 123),
-            (Map.Entry<String, Integer>) null);
+        Map.Entry<String, Integer>[] arr = new Map.Entry[] { (Map.Entry<String, Integer>) null };
+        classUnderTest.putMany(mockMinimalistMap, arr);
     }
 
     @SuppressWarnings("unchecked")
@@ -376,11 +487,11 @@ public class MapBuilderUtilsTest {
     @SuppressWarnings("unchecked")
     @Test(expectedExceptions = NullPointerException.class)
     public void putMany_MapEntryIterable_FailWithNullElement() {
-        classUnderTest.putMany(
-            mockMinimalistMap,
+        ArrayList<? extends Map.Entry<String, Integer>> list =
             Lists.newArrayList(
                 new AbstractMap.SimpleImmutableEntry<String, Integer>("abc", 123),
-                (Map.Entry<String, Integer>) null));
+                (Map.Entry<String, Integer>) null);
+        classUnderTest.putMany(mockMinimalistMap, list);
     }
 
     @SuppressWarnings("unchecked")
@@ -404,6 +515,63 @@ public class MapBuilderUtilsTest {
     public void putMany_MapEntryIterable_Pass(
             Collection<? extends Map.Entry<String, Integer>> mapEntryCollection) {
         classUnderTest.putMany(mockMinimalistMap, mapEntryCollection);
+        verify(mockMinimalistMap, times(mapEntryCollection.size())).put(anyString(), anyInt());
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // MapBuilderUtils.putMany(MinimalistMap, Iterator)
+    //
+
+    @DataProvider
+    private static Object[][] _putMany_MapEntryIterator_FailWithNull_Data() {
+        Object[][] x =
+            TestNGPermutationBuilderUtils.INSTANCE
+                .withNullableParam(mockMinimalistMap)
+                .addNullableParam(new ArrayList<Map.Entry<String, Integer>>().iterator())
+                .build();
+        return x;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test(expectedExceptions = NullPointerException.class,
+            dataProvider = "_putMany_MapEntryIterator_FailWithNull_Data")
+    public void putMany_MapEntryIterator_FailWithNull(
+            MinimalistMap<String, Integer> map,
+            Iterator<Map.Entry<String, Integer>> entryIterator) {
+        classUnderTest.putMany(map, entryIterator);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test(expectedExceptions = NullPointerException.class)
+    public void putMany_MapEntryIterator_FailWithNullElement() {
+        ArrayList<? extends Map.Entry<String, Integer>> list =
+            Lists.newArrayList(
+                new AbstractMap.SimpleImmutableEntry<String, Integer>("abc", 123),
+                (Map.Entry<String, Integer>) null);
+        classUnderTest.putMany(mockMinimalistMap, list.iterator());
+    }
+
+    @SuppressWarnings("unchecked")
+    @DataProvider
+    private static Object[][] _putMany_MapEntryIterator_Pass_Data() {
+        return new Object[][] {
+            { new ArrayList<Map.Entry<String, Integer>>() },
+            {
+                Lists.newArrayList(
+                    new AbstractMap.SimpleImmutableEntry<String, Integer>("abc", 123)),
+            },
+            {
+                Lists.newArrayList(
+                    new AbstractMap.SimpleImmutableEntry<String, Integer>("abc", 123),
+                    new AbstractMap.SimpleImmutableEntry<String, Integer>("def", 456)),
+            },
+        };
+    }
+
+    @Test(dataProvider = "_putMany_MapEntryIterator_Pass_Data")
+    public void putMany_MapEntryIterator_Pass(
+            Collection<? extends Map.Entry<String, Integer>> mapEntryCollection) {
+        classUnderTest.putMany(mockMinimalistMap, mapEntryCollection.iterator());
         verify(mockMinimalistMap, times(mapEntryCollection.size())).put(anyString(), anyInt());
     }
 }

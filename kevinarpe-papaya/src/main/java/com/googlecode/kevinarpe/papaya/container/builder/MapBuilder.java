@@ -56,8 +56,28 @@ public interface MapBuilder
     >
 extends Map<TKey, TValue>, Builder<TMap> {
 
+    /**
+     * Puts one entry into the builder.
+     *
+     * @param key
+     *        may be {@code null} depending on underlying map implementation
+     * @param value
+     *        may be {@code null} depending on underlying map implementation
+     *
+     * @return reference to self
+     */
     TSelf putOne(TKey key, TValue value);
 
+    /**
+     *
+     * @param keyClass
+     *        type of keys
+     * @param valueClass
+     * @param key
+     * @param value
+     * @param moreKeysAndValuesArr
+     * @return
+     */
     TSelf putMany(
             Class<TKey> keyClass,
             Class<TValue> valueClass,

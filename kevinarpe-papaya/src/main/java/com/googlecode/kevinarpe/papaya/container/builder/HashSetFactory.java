@@ -30,6 +30,7 @@ import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * Creates {@code HashMapBuilder}s.
@@ -68,12 +69,17 @@ implements SetFactory<TValue, HashSet<TValue>, HashSetBuilder<TValue>> {
         return x;
     }
 
+    @Override
+    public HashSet<TValue> copyOf(TValue value, TValue... moreValueArr) {
+        return null;
+    }
+
     /** {@inheritDoc} */
     @Override
-    public HashSet<TValue> copyOf(TValue... elementArr) {
-        ObjectArgs.checkNotNull(elementArr, "elementArr");
+    public HashSet<TValue> copyOf(TValue... moreValueArr) {
+        ObjectArgs.checkNotNull(moreValueArr, "elementArr");
 
-        HashSet<TValue> x = Sets.newHashSet(elementArr);
+        HashSet<TValue> x = Sets.newHashSet(moreValueArr);
         return x;
     }
 
@@ -84,5 +90,10 @@ implements SetFactory<TValue, HashSet<TValue>, HashSetBuilder<TValue>> {
 
         HashSet<TValue> x = Sets.newHashSet(iterable);
         return x;
+    }
+
+    @Override
+    public HashSet<TValue> copyOf(Iterator<? extends TValue> iter) {
+        return null;
     }
 }

@@ -30,6 +30,8 @@ import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 
+import java.util.Iterator;
+
 /**
  * Creates {@code ImmutableListBuilder}s.
  *
@@ -67,6 +69,11 @@ implements ListFactory<TValue, ImmutableList<TValue>, ImmutableListBuilder<TValu
         return x;
     }
 
+    @Override
+    public ImmutableList<TValue> copyOf(TValue value, TValue... moreValueArr) {
+        return null;
+    }
+
     /**
      * Immutable lists do not allow {@code null} elements.
      * <hr/>
@@ -76,10 +83,10 @@ implements ListFactory<TValue, ImmutableList<TValue>, ImmutableListBuilder<TValu
      *         if {@code collection} (or any element) is {@code null}
      */
     @Override
-    public ImmutableList<TValue> copyOf(TValue... elementArr) {
-        ArrayArgs.checkElementsNotNull(elementArr, "elementArr");
+    public ImmutableList<TValue> copyOf(TValue... moreValueArr) {
+        ArrayArgs.checkElementsNotNull(moreValueArr, "elementArr");
 
-        ImmutableList<TValue> x = ImmutableList.copyOf(elementArr);
+        ImmutableList<TValue> x = ImmutableList.copyOf(moreValueArr);
         return x;
     }
 
@@ -98,5 +105,10 @@ implements ListFactory<TValue, ImmutableList<TValue>, ImmutableListBuilder<TValu
 
         ImmutableList<TValue> x = ImmutableList.copyOf(iterable);
         return x;
+    }
+
+    @Override
+    public ImmutableList<TValue> copyOf(Iterator<? extends TValue> iter) {
+        return null;
     }
 }

@@ -86,7 +86,7 @@ implements BiMapBuilder<TKey, TValue, TMap, TSelf> {
     }
 
     @Override
-    public TSelf putMany(
+    public final TSelf putMany(
             Class<TKey> keyClass,
             Class<TValue> valueClass,
             TKey key,
@@ -115,14 +115,14 @@ implements BiMapBuilder<TKey, TValue, TMap, TSelf> {
     }
 
     @Override
-    public TSelf putMany(Iterator<? extends TKey> keyIter, Iterator<? extends TValue> valueIter) {
+    public final TSelf putMany(Iterator<? extends TKey> keyIter, Iterator<? extends TValue> valueIter) {
         _mapBuilderUtils.putMany(_minimalistMap, keyIter, valueIter);
         TSelf x = self();
         return x;
     }
 
     @Override
-    public TSelf putMany(
+    public final TSelf putMany(
             Entry<? extends TKey, ? extends TValue> entry,
             Entry<? extends TKey, ? extends TValue>... moreEntryArr) {
         _mapBuilderUtils.putMany(_minimalistMap, entry, moreEntryArr);
@@ -146,7 +146,7 @@ implements BiMapBuilder<TKey, TValue, TMap, TSelf> {
     }
 
     @Override
-    public TSelf putMany(Iterator<? extends Entry<? extends TKey, ? extends TValue>> entryIter) {
+    public final TSelf putMany(Iterator<? extends Entry<? extends TKey, ? extends TValue>> entryIter) {
         _mapBuilderUtils.putMany(_minimalistMap, entryIter);
         TSelf x = self();
         return x;

@@ -25,10 +25,6 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #L%
  */
 
-import com.google.common.collect.Lists;
-import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.object.StatelessObject;
-
 import java.util.ArrayList;
 
 /**
@@ -46,8 +42,19 @@ import java.util.ArrayList;
  * @see ImmutableListFactory
  */
 public final class ArrayListFactory<TValue>
-extends StatelessObject
+extends AbstractCollectionFactory2<TValue, ArrayList<TValue>, ArrayListBuilder<TValue>>
 implements ListFactory<TValue, ArrayList<TValue>, ArrayListBuilder<TValue>> {
+
+    public static void main(String[] argArr) {
+        ArrayListFactory<String> x = ArrayListFactory.create();
+        ArrayList<String> y = x.of("abc");
+        int z = 0;
+    }
+
+    @Override
+    public ArrayList<TValue> copyOf(TValue value, TValue... moreValueArr) {
+        return null;
+    }
 
     /**
      * Constructs a new builder factory.
@@ -58,31 +65,15 @@ implements ListFactory<TValue, ArrayList<TValue>, ArrayListBuilder<TValue>> {
     }
 
     private ArrayListFactory() {
-        // Empty
+        super(
+            new MinimalistCollectionBuilderFactoryImpl<TValue, ArrayList<TValue>>(
+                ArrayList.class));
     }
 
     /** {@inheritDoc} */
     @Override
     public ArrayListBuilder<TValue> builder() {
         ArrayListBuilder<TValue> x = ArrayListBuilder.create();
-        return x;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ArrayList<TValue> copyOf(TValue... elementArr) {
-        ObjectArgs.checkNotNull(elementArr, "elementArr");
-
-        ArrayList<TValue> x = Lists.newArrayList(elementArr);
-        return x;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ArrayList<TValue> copyOf(Iterable<? extends TValue> iterable) {
-        ObjectArgs.checkNotNull(iterable, "iterable");
-
-        ArrayList<TValue> x = Lists.newArrayList(iterable);
         return x;
     }
 }

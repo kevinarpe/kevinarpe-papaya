@@ -36,6 +36,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 
 import static org.mockito.Mockito.verify;
@@ -119,7 +121,21 @@ public class AbstractBiMapBuilderTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractBiMapBuilder.putMany(Class, Class, Object...)
+    // AbstractBiMapBuilder.putMany(Class, Class, Object, Object, Object...)
+    //
+
+    @Test
+    public void putMany_Object_Object_ObjectArr_Pass() {
+        Object[] arr = new Object[] { "abc", 123 };
+        _AbstractBiMapBuilder x =
+            classUnderTest.putMany(String.class, Integer.class, "def", 456, arr);
+        assertSame(x, classUnderTest);
+        verify(mockMapBuilderUtils)
+            .putMany(mockMinimalistMap, String.class, Integer.class, "def", 456, arr);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // AbstractBiMapBuilder.putMany(Class, Class, Object[])
     //
 
     @Test
@@ -135,7 +151,7 @@ public class AbstractBiMapBuilderTest {
     //
 
     @Test
-    public void putMany_IterableIterable_Pass() {
+    public void putMany_Iterable_Iterable_Pass() {
         Iterable<String> keyIterable = Lists.newArrayList("abc");
         Iterable<Integer> valueIterable = Lists.newArrayList(123);
         _AbstractBiMapBuilder x = classUnderTest.putMany(keyIterable, valueIterable);
@@ -144,7 +160,35 @@ public class AbstractBiMapBuilderTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // AbstractBiMapBuilder.putMany(Map.Entry...)
+    // AbstractBiMapBuilder.putMany(Iterator, Iterator)
+    //
+
+    @Test
+    public void putMany_Iterator_Iterator_Pass() {
+        Iterator<String> keyIterator = Lists.newArrayList("abc").iterator();
+        Iterator<Integer> valueIterator = Lists.newArrayList(123).iterator();
+        _AbstractBiMapBuilder x = classUnderTest.putMany(keyIterator, valueIterator);
+        assertSame(x, classUnderTest);
+        verify(mockMapBuilderUtils).putMany(mockMinimalistMap, keyIterator, valueIterator);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // AbstractBiMapBuilder.putMany(Map.Entry, Map.Entry...)
+    //
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void putMany_MapEntry_MapEntryArr_Pass() {
+        Map.Entry<String, Integer> entry =
+            new AbstractMap.SimpleImmutableEntry<String, Integer>("abc", 123);
+        Map.Entry<String, Integer>[] entryArr = new Map.Entry[0];
+        _AbstractBiMapBuilder x = classUnderTest.putMany(entry, entryArr);
+        assertSame(x, classUnderTest);
+        verify(mockMapBuilderUtils).putMany(mockMinimalistMap, entry, entryArr);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // AbstractBiMapBuilder.putMany(Map.Entry[])
     //
 
     @SuppressWarnings("unchecked")
@@ -163,17 +207,38 @@ public class AbstractBiMapBuilderTest {
     @Test
     public void putMany_Iterable_Pass() {
         @SuppressWarnings("unchecked")
-        Iterable<Map.Entry<String, Integer>> entryIterable =
-            Lists.<Map.Entry<String, Integer>>newArrayList(
+        ArrayList<? extends Map.Entry<String, Integer>> list =
+            Lists.newArrayList(
                 new AbstractMap.SimpleImmutableEntry<String, Integer>("abc", 123));
-        _AbstractBiMapBuilder x = classUnderTest.putMany(entryIterable);
+        _AbstractBiMapBuilder x = classUnderTest.putMany(list);
         assertSame(x, classUnderTest);
-        verify(mockMapBuilderUtils).putMany(mockMinimalistMap, entryIterable);
+        verify(mockMapBuilderUtils).putMany(mockMinimalistMap, list);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // AbstractBiMapBuilder.putMany(Iterator)
+    //
+
+    @Test
+    public void putMany_Iterator_Pass() {
+        @SuppressWarnings("unchecked")
+        ArrayList<? extends Map.Entry<String, Integer>> list =
+            Lists.newArrayList(
+                new AbstractMap.SimpleImmutableEntry<String, Integer>("abc", 123));
+        Iterator<? extends Map.Entry<String, Integer>> iter = list.iterator();
+        _AbstractBiMapBuilder x = classUnderTest.putMany(iter);
+        assertSame(x, classUnderTest);
+        verify(mockMapBuilderUtils).putMany(mockMinimalistMap, iter);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // AbstractBiMapBuilder.putMany(Map)
     //
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void putMany_Map_FailWithNull() {
+        classUnderTest.putMany((Map<? extends String, ? extends Integer>) null);
+    }
 
     @Test
     public void putMany_Map_Pass() {

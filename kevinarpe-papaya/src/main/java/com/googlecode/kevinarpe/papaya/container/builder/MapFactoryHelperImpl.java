@@ -28,6 +28,7 @@ package com.googlecode.kevinarpe.papaya.container.builder;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -66,7 +67,22 @@ implements MapFactoryHelper<TKey, TValue, TMap> {
     }
 
     @Override
-    public TMap copyOf(Class<TKey> keyClass, Class<TValue> valueClass, Object... keysAndValuesArr) {
+    public TMap copyOf(
+            Class<TKey> keyClass,
+            Class<TValue> valueClass,
+            TKey key,
+            TValue value,
+            Object... keysAndValuesArr) {
+        MinimalistMapBuilder<TKey, TValue, TMap> mapBuilderHelper =
+            _minimalistmapBuilderFactory.newInstance();
+        _mapBuilderUtils.putMany(
+            mapBuilderHelper, keyClass, valueClass, key, value, keysAndValuesArr);
+        TMap map = mapBuilderHelper.getMap();
+        return map;
+    }
+
+    @Override
+    public TMap copyOf(Class<TKey> keyClass, Class<TValue> valueClass, Object[] keysAndValuesArr) {
         MinimalistMapBuilder<TKey, TValue, TMap> mapBuilderHelper =
             _minimalistmapBuilderFactory.newInstance();
         _mapBuilderUtils.putMany(mapBuilderHelper, keyClass, valueClass, keysAndValuesArr);
@@ -76,8 +92,7 @@ implements MapFactoryHelper<TKey, TValue, TMap> {
 
     @Override
     public final TMap copyOf(
-            Iterable<? extends TKey> keyIterable,
-            Iterable<? extends TValue> valueIterable) {
+            Iterable<? extends TKey> keyIterable, Iterable<? extends TValue> valueIterable) {
         MinimalistMapBuilder<TKey, TValue, TMap> mapBuilderHelper =
             _minimalistmapBuilderFactory.newInstance();
         _mapBuilderUtils.putMany(mapBuilderHelper, keyIterable, valueIterable);
@@ -86,7 +101,27 @@ implements MapFactoryHelper<TKey, TValue, TMap> {
     }
 
     @Override
-    public final TMap copyOf(Map.Entry<? extends TKey, ? extends TValue>... entryArr) {
+    public TMap copyOf(Iterator<? extends TKey> keyIter, Iterator<? extends TValue> valueIter) {
+        MinimalistMapBuilder<TKey, TValue, TMap> mapBuilderHelper =
+            _minimalistmapBuilderFactory.newInstance();
+        _mapBuilderUtils.putMany(mapBuilderHelper, keyIter, valueIter);
+        TMap map = mapBuilderHelper.getMap();
+        return map;
+    }
+
+    @Override
+    public TMap copyOf(
+            Map.Entry<? extends TKey, ? extends TValue> entry,
+            Map.Entry<? extends TKey, ? extends TValue>... entryArr) {
+        MinimalistMapBuilder<TKey, TValue, TMap> mapBuilderHelper =
+            _minimalistmapBuilderFactory.newInstance();
+        _mapBuilderUtils.putMany(mapBuilderHelper, entry, entryArr);
+        TMap map = mapBuilderHelper.getMap();
+        return map;
+    }
+
+    @Override
+    public final TMap copyOf(Map.Entry<? extends TKey, ? extends TValue>[] entryArr) {
         MinimalistMapBuilder<TKey, TValue, TMap> mapBuilderHelper =
             _minimalistmapBuilderFactory.newInstance();
         _mapBuilderUtils.putMany(mapBuilderHelper, entryArr);
@@ -100,6 +135,15 @@ implements MapFactoryHelper<TKey, TValue, TMap> {
         MinimalistMapBuilder<TKey, TValue, TMap> mapBuilderHelper =
             _minimalistmapBuilderFactory.newInstance();
         _mapBuilderUtils.putMany(mapBuilderHelper, entryIterable);
+        TMap map = mapBuilderHelper.getMap();
+        return map;
+    }
+
+    @Override
+    public TMap copyOf(Iterator<? extends Map.Entry<? extends TKey, ? extends TValue>> entryIter) {
+        MinimalistMapBuilder<TKey, TValue, TMap> mapBuilderHelper =
+            _minimalistmapBuilderFactory.newInstance();
+        _mapBuilderUtils.putMany(mapBuilderHelper, entryIter);
         TMap map = mapBuilderHelper.getMap();
         return map;
     }

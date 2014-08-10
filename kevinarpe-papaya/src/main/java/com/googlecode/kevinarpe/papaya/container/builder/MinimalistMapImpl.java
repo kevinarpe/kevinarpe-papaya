@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-class MinimalistMapImpl<TKey, TValue>
+final class MinimalistMapImpl<TKey, TValue>
 implements MinimalistMap<TKey, TValue> {
 
     private final Map<TKey, TValue> _map;
