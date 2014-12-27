@@ -26,7 +26,7 @@ package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
  */
 
 /**
- * Formats a value to a {code String}.  This interface is named {@code Formatter2} to prevent name
+ * Formats a value to a {@code String}.  This interface is named {@code Formatter2} to prevent name
  * clashes with existing classes named {@code Formatter}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)

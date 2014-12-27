@@ -25,7 +25,7 @@ package com.googlecode.kevinarpe.papaya.testing.logging.slf4j;
  * #L%
  */
 
-import com.google.common.collect.Iterators;
+import com.google.common.collect.ImmutableSet;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.object.StatelessObject;
 import org.slf4j.Marker;
@@ -128,7 +128,7 @@ implements Marker {
      */
     @Override
     public Iterator<Marker> iterator() {
-        Iterator<Marker> x = Iterators.emptyIterator();
+        Iterator<Marker> x = ImmutableSet.<Marker>of().iterator();
         return x;
     }
 
