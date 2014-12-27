@@ -132,7 +132,7 @@ public final class ObjectArgs {
      * @param ref
      *        an object reference
      * @param destClass
-     *        destination type after cast
+     *        class for destination type after cast
      * @param refArgName
      *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
      * @param destClassArgName
@@ -153,6 +153,12 @@ public final class ObjectArgs {
             T ref, Class<?> destClass, String refArgName, String destClassArgName) {
         checkNotNull(ref, refArgName);
         checkNotNull(destClass, destClassArgName);
+        _coreCheckInstanceOfType(ref, destClass, refArgName, destClassArgName);
+        return ref;
+    }
+
+    private static <T> void _coreCheckInstanceOfType(
+            T ref, Class<?> destClass, String refArgName, String destClassArgName) {
         // From the Javadoc for Class.isInstance():
         // Determines if the specified Object is assignment-compatible with the object represented
         // by this Class.
@@ -164,7 +170,6 @@ public final class ObjectArgs {
                 refArgName, refClass.getName(), destClass.getName(), w, w2);
             throw new ClassCastException(msg);
         }
-        return ref;
     }
 
     /**
@@ -178,16 +183,62 @@ public final class ObjectArgs {
     }
 
     /**
-     * This is a convenience method for {@link #checkInstanceOfType(Object, Class, String, String)}
-     * where the result is cast to type {@code TDest}.
+     * Tests if a reference can be safely cast to another type.  If you only have {@link Class}
+     * reference and not an object reference, see
+     * {@link #checkAssignableToType(Class, Class, String, String)}.  If you don't need to cast the
+     * value, see {@link #checkInstanceOfType(Object, Class, String, String)}.
+     * <p>
+     * Type cast rules are defined by {@link Class#isInstance(Object)}.
+     * <p>
+     * Examples of <b>valid</b> type casts:
+     * <pre>
+     * String str = "abc";
+     * CharSequence seq = str;  // OK
+     * CharSequence seq2 = (CharSequence) str;  // OK
+     * CharSequence seq3 = (CharSequence) ((Object) str);  // OK
+     * </pre>
+     * Examples of <b>invalid</b> type casts:
+     * <pre>
+     * String str = "abc";
+     * Long num = str;  // compile-time type check error
+     * Long num = (Long) str;  // compile-time type check error
+     * Long num = (Long) ((Object) str);  // throws ClassCastException at run-time
+     * </pre>
+     *
+     * @param ref
+     *        an object reference, including {@code null}
+     * @param clazz
+     *        class for destination type after cast
+     * @param refArgName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param clazzArgName
+     *        argument name for {@code clazz}, e.g., "strListClass" or "searchRegexClass"
+     * @param <TSrc>
+     *        source/input type
+     * @param <TDest>
+     *        destination/output type
+     *
+     * @return the validated object reference cast to type {@code TDest}
+     *
+     * @throws NullPointerException
+     *         if {@code clazz} is {@code null}
+     * @throws ClassCastException
+     *         if {@code ref} cannot be safely cast to type {@code clazz}
+     *
+     * @see #checkInstanceOfType(Object, Class, String, String)
+     * @see #checkAssignableToType(Class, Class, String, String)
      */
     public static <TSrc, TDest>
     TDest checkCast(TSrc ref, Class<TDest> clazz, String refArgName, String clazzArgName) {
-        checkInstanceOfType(ref, clazz, refArgName, clazzArgName);
+        checkNotNull(clazz, clazzArgName);
+        if (null == ref) {
+            return null;
+        }
+        _coreCheckInstanceOfType(ref, clazz, refArgName, clazzArgName);
         TDest x = clazz.cast(ref);
         return x;
     }
-    
+
     /**
      * This is a convenience method for
      * {@link #checkAssignableToType(Class, Class, String, String)}
@@ -209,9 +260,9 @@ public final class ObjectArgs {
      * {@link #checkInstanceOfType(Object, Class, String, String)}.
      * 
      * @param srcClass
-     *        source type before cast
+     *        class for source type before cast
      * @param destClass
-     *        destination type after cast
+     *        class for destination type after cast
      * @param srcClassArgName
      *        argument name for {@code srcClass},
      *        e.g., "strListClass" or "searchRegexClass"

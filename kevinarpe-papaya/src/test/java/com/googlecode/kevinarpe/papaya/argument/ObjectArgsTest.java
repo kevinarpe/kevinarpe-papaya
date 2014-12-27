@@ -219,6 +219,22 @@ public class ObjectArgsTest {
         }
     }
 
+    @Test
+    public void checkCast_PassWithNull() {
+        String nullString = null;
+        CharSequence nullCS =
+            ObjectArgs.checkCast(nullString, CharSequence.class, "nullString", "destClassArgName");
+        Assert.assertNull(nullCS);
+    }
+
+    @Test
+    public void checkCast_PassWithNull2() {
+        String nullString = null;
+        CharSequence nullCS =
+            ObjectArgs.checkCast(nullString, CharSequence.class, "nullString");
+        Assert.assertNull(nullCS);
+    }
+
     @Test(dataProvider = "checkInstanceOfType_FailWithInvalidDestClass_Data",
             expectedExceptions = ClassCastException.class)
     public void checkCast_FailWithInvalidDestClass(Object ref, Class<?> destClass) {
@@ -231,16 +247,14 @@ public class ObjectArgsTest {
         ObjectArgs.checkCast(ref, destClass, "refArgName");
     }
 
-    @Test(dataProvider = "checkInstanceOfType_FailWithNulls_Data",
-            expectedExceptions = NullPointerException.class)
-    public void checkCast_FailWithNulls(Object ref, Class<?> destClass) {
-        ObjectArgs.checkCast(ref, destClass, "refArgName", "destClassArgName");
+    @Test(expectedExceptions = NullPointerException.class)
+    public void checkCast_FailWithNulls() {
+        ObjectArgs.checkCast("abc", (Class<?>) null, "refArgName", "destClassArgName");
     }
 
-    @Test(dataProvider = "checkInstanceOfType_FailWithNulls_Data",
-            expectedExceptions = NullPointerException.class)
-    public void checkCast_FailWithNulls2(Object ref, Class<?> destClass) {
-        ObjectArgs.checkCast(ref, destClass, "refArgName");
+    @Test(expectedExceptions = NullPointerException.class)
+    public void checkCast_FailWithNulls2() {
+        ObjectArgs.checkCast("abc", (Class<?>) null, "refArgName");
     }
 
     ///////////////////////////////////////////////////////////////////////////

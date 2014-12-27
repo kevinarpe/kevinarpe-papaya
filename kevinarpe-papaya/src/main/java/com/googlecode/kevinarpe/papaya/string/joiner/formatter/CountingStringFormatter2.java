@@ -57,6 +57,15 @@ implements Formatter2 {
     private int _countOffset;
 
     /**
+     * This is a convenience constructor to call
+     * {@link #CountingStringFormatter2(String, Formatter2)} where {@code formatter} is
+     * {@link DefaultFormatter2#INSTANCE}.
+     */
+    public CountingStringFormatter2(String format) {
+        this(format, DefaultFormatter2.INSTANCE);
+    }
+
+    /**
      * Creates a new two phase formatter with a format string.
      * <ol>
      *     <li>Use {@code formatter} to convert a value to string</li>
@@ -95,7 +104,7 @@ implements Formatter2 {
     }
 
     CountingStringFormatter2(
-        String format, Formatter2 formatter, StringFormatterHelper stringFormatterHelper) {
+            String format, Formatter2 formatter, StringFormatterHelper stringFormatterHelper) {
         this(
             format,
             ObjectArgs.checkNotNull(formatter, "formatter"),
@@ -104,10 +113,10 @@ implements Formatter2 {
     }
 
     private CountingStringFormatter2(
-        String format,
-        Formatter2 formatter,
-        int firstCount,
-        StringFormatterHelper stringFormatterHelper) {
+            String format,
+            Formatter2 formatter,
+            int firstCount,
+            StringFormatterHelper stringFormatterHelper) {
         super(format);
         _formatter = formatter;
         _firstCount = firstCount;
