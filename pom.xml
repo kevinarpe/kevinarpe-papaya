@@ -365,9 +365,6 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                         <version>${maven-gpg-plugin.version}</version>
-                        <configuration>
-                            <executable>/usr/bin/gpgv1</executable>
-                        </configuration>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -375,6 +372,9 @@
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
+                                <configuration>
+                                    <executable>/usr/bin/gpgv1</executable>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
