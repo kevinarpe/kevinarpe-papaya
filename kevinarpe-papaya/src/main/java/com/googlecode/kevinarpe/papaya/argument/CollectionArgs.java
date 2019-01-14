@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ public final class CollectionArgs {
     }
     
     /**
-     * Tests if a {@link Collection} reference is not null and not empty (size >= 1).
+     * Tests if a {@link Collection} reference is not null and not empty ({@code size >= 1}).
      * Size is defined as the number of elements.
      * 
      * @param ref

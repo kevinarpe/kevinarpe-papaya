@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,7 +75,7 @@ extends TraversePathIterSettings, Iterable<File> {
 
     /**
      * Constructs a <b>new</b> iterable from the current, replacing the exception policy.  The
-     * default value is {@link #DEFAULT_EXCEPTION_POLICY}.
+     * default value is {@link TraversePathUtils#DEFAULT_EXCEPTION_POLICY}.
      *
      * @param exceptionPolicy
      *        how to handle exceptions thrown during directory listings.  Must not be {@code null}.
@@ -85,7 +85,7 @@ extends TraversePathIterSettings, Iterable<File> {
      * @throws NullPointerException
      *         if {@code exceptionPolicy} is {@code null}
      *
-     * @see #DEFAULT_EXCEPTION_POLICY
+     * @see TraversePathUtils#DEFAULT_EXCEPTION_POLICY
      * @see #withExceptionPolicy()
      */
     TraversePathIterable withExceptionPolicy(TraversePathExceptionPolicy exceptionPolicy);
@@ -219,7 +219,7 @@ extends TraversePathIterSettings, Iterable<File> {
      *     <li>{@link #withOptionalIteratePathFilter()}</li>
      *     <li>{@link #withOptionalIteratePathComparator()}</li>
      * </ul>
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      */
     @Override
@@ -236,7 +236,7 @@ extends TraversePathIterSettings, Iterable<File> {
      *     <li>{@link #withOptionalIteratePathFilter()}</li>
      *     <li>{@link #withOptionalIteratePathComparator()}</li>
      * </ul>
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      */
     @Override

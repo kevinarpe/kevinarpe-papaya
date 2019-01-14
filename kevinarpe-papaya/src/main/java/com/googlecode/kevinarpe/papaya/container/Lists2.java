@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.container;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,6 +66,7 @@ public final class Lists2 {
      * @see #newUnmodifiableListFromTwoOrMoreValues(Object, Object, Object[])
      * @see AbstractList
      */
+    @SafeVarargs
     public static <T> List<T> newUnmodifiableListFromOneOrMoreValues(
             final T value1, final T... valueArr) {
         ObjectArgs.checkNotNull(valueArr, "valueArr");
@@ -114,6 +115,7 @@ public final class Lists2 {
      * @see #newUnmodifiableListFromOneOrMoreValues(Object, Object[])
      * @see AbstractList
      */
+    @SafeVarargs
     public static <T> List<T> newUnmodifiableListFromTwoOrMoreValues(
             final T value1, final T value2, final T... valueArr) {
         ObjectArgs.checkNotNull(valueArr, "valueArr");

@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.testing.logging;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -108,9 +108,9 @@ implements Predicate<TLoggingEvent> {
 
     /**
      * Given a logging event, retrieve an attribute value and compare to allowed values.
-     * <hr/>
+     * <hr>
      * Inherited docs:
-     * <br/>
+     * <br>
      * {@inheritDoc}
      *
      * @throws NullPointerException

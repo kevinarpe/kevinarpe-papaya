@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ public class CharArrayArgs {
     /**
      * Tests if all values in an array are within specified range.
      * <p>
-     * Example: All values must be >= 3 and <= 7:
+     * Example: All values must be {@code >= 3 and <= 7}:
      * <br>{@code checkValueInsideRange(numbersArray, 3, 7, "numbersArray");}
      *
      * @param ref
@@ -82,7 +82,7 @@ public class CharArrayArgs {
     /**
      * Tests if all values in an array are within specified range.
      * <p>
-     * Example: All values must be >= 3 and <= 7:
+     * Example: All values must be {@code >= 3 and <= 7}:
      * <br>{@code checkValueInsideRange(numbersArray, 3, 7, "numbersArray");}
      *
      * @param ref
@@ -121,7 +121,7 @@ public class CharArrayArgs {
     /**
      * Tests if all values in an array are <b>not</b> within specified range.
      * <p>
-     * Example: All values must be <= 3 and >= 7:
+     * Example: All values must be {@code <= 3 and >= 7}:
      * <br>{@code checkValueInsideRange(numbersArray, 4, 6, "numbersArray");}
      *
      * @param ref
@@ -160,7 +160,7 @@ public class CharArrayArgs {
     /**
      * Tests if all values in an array are <b>not</b> within specified range.
      * <p>
-     * Example: All values must be <= 3 and >= 7:
+     * Example: All values must be {@code <= 3 and >= 7}:
      * <br>{@code checkValueInsideRange(numbersArray, 4, 6, "numbersArray");}
      *
      * @param ref

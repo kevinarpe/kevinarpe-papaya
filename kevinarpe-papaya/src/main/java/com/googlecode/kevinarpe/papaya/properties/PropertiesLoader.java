@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.properties;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -108,9 +108,9 @@ public interface PropertiesLoader {
      * @param mapBuilderFactory
      *        factory to build a {@code Map}
      * @param <TMap>
-     *        extends Map&lt;String, String>
+     *        {@code extends Map<String, String>}
      * @param <TMapBuilder>
-     *        extends MapBuilder&lt;TMap, String, String>
+     *        {@code extends MapBuilder<TMap, String, String>}
      *
      * @return new {@code TMap} instance
      *

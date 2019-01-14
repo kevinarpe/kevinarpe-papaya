@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ public interface PathFilter {
      *        filesystem path to test.  Not guaranteed to exist when this method is called.
      *
      * @param depth
-     *        number of levels below the parent directory.  Always >= 1.
+     *        number of levels below the parent directory.  Always {@code >= 1}.
      *
      * @return {@code true} to include in the path list or {@code false} to exclude
      *

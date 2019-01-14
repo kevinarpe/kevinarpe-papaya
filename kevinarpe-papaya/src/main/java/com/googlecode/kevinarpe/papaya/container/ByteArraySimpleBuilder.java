@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.container;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,12 +25,12 @@ package com.googlecode.kevinarpe.papaya.container;
  * #L%
  */
 
-import java.io.InputStream;
-import java.util.Arrays;
-
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ArrayArgs;
 import com.googlecode.kevinarpe.papaya.argument.IntArgs;
+
+import java.io.InputStream;
+import java.util.Arrays;
 
 /**
  * Very simple class to build a byte array: {@code byte[]}.  Use this class when reading bytes from

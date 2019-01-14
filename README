@@ -1,20 +1,11 @@
-Papaya: Utilities for Java 1.6+
+Papaya: Utilities for Java 1.8+
 ===============================
 
-Requires JDK 1.6 or higher.  All source code in this project is encoded
+Requires JDK 1.8 or higher.  All source code in this project is encoded
 as UTF-8.  Many of the tests make use of East Asian characters
 (Japanese, Chinese, etc.), so a font capable of displaying this test
 data may be necessary to read and edit the source code.
 
 Project page:
-  http://kevinarpe-papaya.googlecode.com
-
-Report a defect or feature request here:
-  http://code.google.com/p/kevinarpe-papaya/issues/entry
-
-For open-ended questions and discussion:
-  http://groups.google.com/group/kevinarpe-papaya
-
-Subscribe to project updates in your feed reader:
-  http://code.google.com/feeds/p/kevinarpe-papaya/updates/basic
+  https://github.com/kevinarpe/kevinarpe-papaya
 

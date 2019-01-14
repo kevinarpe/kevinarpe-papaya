@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.filesystem.compare;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -109,7 +109,7 @@ implements Comparator<File> {
     /**
      * Compares the priority of {@link FileType} for paths.  This priority is determined by the
      * list provided to the constructor.
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      *
      * @param path1
@@ -118,11 +118,11 @@ implements Comparator<File> {
      *        must not be {@code null}
      *
      * @return
-     * <li>
-     *     <ul>-1 if {@code path1} is less than {@code path2}</ul>
-     *     <ul>0 if {@code path1} is equal to {@code path2}</ul>
-     *     <ul>+1 if {@code path1} is greater than {@code path2}</ul>
-     * </li>
+     * <ul>
+     *     <li>-1 if {@code path1} is less than {@code path2}</li>
+     *     <li>0 if {@code path1} is equal to {@code path2}</li>
+     *     <li>+1 if {@code path1} is greater than {@code path2}</li>
+     * </ul>
      *
      * @throws NullPointerException
      *         if {@code path1} or {@code path2} is {@code null}
@@ -165,7 +165,7 @@ implements Comparator<File> {
     /**
      * Equates by the priority map of {@link FileType}s.  This priority is determined by the list
      * provided to the constructor.
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      */
     @Override
@@ -182,7 +182,7 @@ implements Comparator<File> {
     /**
      * Returns hash code of priority map of {@link FileType}s.  This priority is determined by the
      * list provided to the constructor.
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      */
     @Override

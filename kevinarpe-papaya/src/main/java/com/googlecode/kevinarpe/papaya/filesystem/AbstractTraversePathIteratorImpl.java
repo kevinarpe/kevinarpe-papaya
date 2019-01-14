@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -217,7 +217,7 @@ implements TraversePathIterator {
     /**
      * Tests if a next path exists for iteration.  The first call to this method is comparatively
      * more expensive than future calls.
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      *
      * @throws PathRuntimeException
@@ -233,7 +233,7 @@ implements TraversePathIterator {
 
     /**
      * Returns the next path in the iteration.
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      *
      * @throws NoSuchElementException

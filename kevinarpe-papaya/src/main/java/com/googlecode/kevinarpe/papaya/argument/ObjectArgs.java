@@ -6,7 +6,7 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,12 +46,11 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
  * With the exception of {@link PathArgs} (and possibly a few others), all methods throw unchecked
  * exceptions -- {@link RuntimeException} and its subclasses.  Most frequently,
  * {@link IllegalArgumentException} is thrown.
- * <p>
- * <pre>
- *     public void myMethod(List&lt;String> strList) {
+ * <pre>{@code
+ *     public void myMethod(List<String> strList) {
  *         this._strList = ObjectsArgs.checkNotNull(strList, "strList");
  *         // Do work here.
- *     }</pre>
+ *     }}</pre>
  * <b>Argument Names</b> ({@code argName}, {@code indexArgName}, {@code countArgName}, etc.)
  * <p>
  * Argument names should not be null, empty (""), or only whitespace ("   ").  This would undermine

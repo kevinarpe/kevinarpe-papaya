@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.testing.logging.slf4j;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,9 +60,9 @@ implements Marker {
 
     /**
      * Always returns {@link #NAME}.
-     * <hr/>
+     * <hr>
      * Inherited docs:
-     * <br/>
+     * <br>
      * {@inheritDoc}
      */
     @Override
@@ -72,9 +72,9 @@ implements Marker {
 
     /**
      * Always does nothing.
-     * <hr/>
+     * <hr>
      * Inherited docs:
-     * <br/>
+     * <br>
      * {@inheritDoc}
      */
     @Override
@@ -84,9 +84,9 @@ implements Marker {
 
     /**
      * Always does nothing and returns {@code false}.
-     * <hr/>
+     * <hr>
      * Inherited docs:
-     * <br/>
+     * <br>
      * {@inheritDoc}
      */
     @Override
@@ -96,9 +96,9 @@ implements Marker {
 
     /**
      * Always does nothing and returns {@code false}.
-     * <hr/>
+     * <hr>
      * Inherited docs:
-     * <br/>
+     * <br>
      * {@inheritDoc}
      */
     @Deprecated
@@ -109,9 +109,9 @@ implements Marker {
 
     /**
      * Always does nothing and returns {@code false}.
-     * <hr/>
+     * <hr>
      * Inherited docs:
-     * <br/>
+     * <br>
      * {@inheritDoc}
      */
     @Override
@@ -121,9 +121,9 @@ implements Marker {
 
     /**
      * Always returns an empty iterator.
-     * <hr/>
+     * <hr>
      * Inherited docs:
-     * <br/>
+     * <br>
      * {@inheritDoc}
      */
     @Override
@@ -134,9 +134,9 @@ implements Marker {
 
     /**
      * Always does nothing and returns {@code false}.
-     * <hr/>
+     * <hr>
      * Inherited docs:
-     * <br/>
+     * <br>
      * {@inheritDoc}
      */
     @Override
@@ -146,9 +146,9 @@ implements Marker {
 
     /**
      * Always does nothing and returns {@code false}.
-     * <hr/>
+     * <hr>
      * Inherited docs:
-     * <br/>
+     * <br>
      * {@inheritDoc}
      */
     @Override

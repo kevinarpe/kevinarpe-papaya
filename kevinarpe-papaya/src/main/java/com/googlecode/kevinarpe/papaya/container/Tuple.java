@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.container;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -81,7 +81,7 @@ public interface Tuple<TValue> {
      * Joins all elements in this tuple to a string.
      * <p>
      * Example: {@code "("abc", 123, 'Q', true, 456.789, ...}"}
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      */
     @Override
@@ -89,7 +89,7 @@ public interface Tuple<TValue> {
 
     /**
      * Must be correctly implemented to include all tuple elements.
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      */
     @Override
@@ -97,7 +97,7 @@ public interface Tuple<TValue> {
 
     /**
      * Must be correctly implemented to include all tuple elements.
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      */
     @Override

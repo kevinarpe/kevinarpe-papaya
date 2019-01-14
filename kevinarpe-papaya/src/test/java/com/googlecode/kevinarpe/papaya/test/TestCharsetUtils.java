@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.test;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,12 +25,12 @@ package com.googlecode.kevinarpe.papaya.test;
  * #L%
  */
 
+import com.google.common.collect.ImmutableList;
+import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
+
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Random;
-
-import com.google.common.collect.ImmutableList;
-import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 
 @NotFullyTested
 public final class TestCharsetUtils {

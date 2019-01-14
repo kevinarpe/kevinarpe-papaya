@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -340,7 +340,7 @@ public final class DirectoryListing {
      * Returns hash code of {@link #getDirPath()}, {@link #getChildPathList()}, and the {@link List}
      * class used.  This will differentiate between two instances of this class using a different
      * internal storage {@code List} class.
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      */
     @Override
@@ -354,7 +354,7 @@ public final class DirectoryListing {
      * Equates by {@link #getDirPath()}, {@link #getChildPathList()}, and the {@link List}
      * class used.  This will differentiate between two instances of this class using a different
      * internal storage {@code List} class.
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      */
     @Override

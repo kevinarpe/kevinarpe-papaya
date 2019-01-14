@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -5642,7 +5642,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "checkContainsObject_Fail_Data",
+    @Test(dataProvider = "checkContainsCharacter_Fail_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkContainsCharacter_Fail(char[] ref, char value) {
         ArrayArgs.checkContains(ref, value, "ref");
@@ -5690,7 +5690,7 @@ public class ArrayArgsTest {
         };
     }
     
-    @Test(dataProvider = "checkContainsObject_Fail_Data",
+    @Test(dataProvider = "checkContainsBoolean_Fail_Data",
             expectedExceptions = IllegalArgumentException.class)
     public void checkContainsBoolean_Fail(boolean[] ref, boolean value) {
         ArrayArgs.checkContains(ref, value, "ref");

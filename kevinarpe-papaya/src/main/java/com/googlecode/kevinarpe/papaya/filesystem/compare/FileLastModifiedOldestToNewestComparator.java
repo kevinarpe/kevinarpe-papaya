@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.filesystem.compare;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ implements Comparator<File> {
     /**
      * Compares the results of {@link File#lastModified()}  via
      * {@link Longs#compare(long, long)}.
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      *
      * @param path1
@@ -67,11 +67,11 @@ implements Comparator<File> {
      *        must not be {@code null}
      *
      * @return
-     * <li>
-     *     <ul>-1 if {@code path1} is less than {@code path2}</ul>
-     *     <ul>0 if {@code path1} is equal to {@code path2}</ul>
-     *     <ul>+1 if {@code path1} is greater than {@code path2}</ul>
-     * </li>
+     * <ul>
+     *     <li>-1 if {@code path1} is less than {@code path2}</li>
+     *     <li>0 if {@code path1} is equal to {@code path2}</li>
+     *     <li>+1 if {@code path1} is greater than {@code path2}</li>
+     * </ul>
      *
      * @throws NullPointerException
      *         if {@code path1} or {@code path2} is {@code null}

@@ -29,7 +29,7 @@ package com.googlecode.kevinarpe.papaya.jdk.properties;
  * #%L
  * This file is part of Papaya (JDK Derived Classes).
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya (JDK Derived Classes) is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 2 only as
@@ -150,7 +150,7 @@ implements JdkPropertiesLoader {
     /**
      * This class was copied 100% from the original JDK8 source code.  All copyrights remain
      * with Oracle.
-     * <hr/>
+     * <hr>
      * Read in a "logical line" from an InputStream/Reader, skip all comment
      * and blank lines and filter out those leading whitespace characters
      * (\u0020, \u0009 and \u000c) from the beginning of a "natural line".
@@ -292,7 +292,7 @@ implements JdkPropertiesLoader {
     /**
      * This method was copied 100% from the original JDK8 source code.  All copyrights remain
      * with Oracle.
-     * <hr/>
+     * <hr>
      * Converts encoded &#92;uxxxx to unicode chars
      * and changes special saved chars to their original forms
      */

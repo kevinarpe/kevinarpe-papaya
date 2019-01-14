@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.exception;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,16 +72,17 @@ extends IOException {
      *   <li>Imagine a utility method tries to make a directory...</li>
      *   <li>Where input path is {@code /home/user/abc/def}...</li>
      *   <li>But {@code /home/user/abc} exists as a file...</li>
-     *   <li>After failing to make the directory, the method might throw an exception where:</li>
-     *   <ol>
-     *     <li>Parameter {@code reason} is
-     *     {@link PathExceptionReason#PARENT_PATH_IS_NORMAL_FILE}</li>
-     *     <li>Parameter {@code path} is {@code /home/user/abc/def}</li>
-     *     <li>Parameter {@code optParentPath} is {@code /home/user/abc}</li>
-     *     <li>Parameter {@code message} is
-     *     {@code "Failed to make directory: '/home/user/abc/def'; Parent path is a file: '/home/user/abc'"}</li>
-     *     <li>Parameter {@code optCause} is {@code null}
-     *   </ol>
+     *   <li>After failing to make the directory, the method might throw an exception where:
+     *     <ol>
+     *       <li>Parameter {@code reason} is
+     *       {@link PathExceptionReason#PARENT_PATH_IS_NORMAL_FILE}</li>
+     *       <li>Parameter {@code path} is {@code /home/user/abc/def}</li>
+     *       <li>Parameter {@code optParentPath} is {@code /home/user/abc}</li>
+     *       <li>Parameter {@code message} is
+     *       {@code "Failed to make directory: '/home/user/abc/def'; Parent path is a file: '/home/user/abc'"}</li>
+     *       <li>Parameter {@code optCause} is {@code null}</li>
+     *     </ol>
+     *   </li>
      * </ol>
      * 
      * @param reason

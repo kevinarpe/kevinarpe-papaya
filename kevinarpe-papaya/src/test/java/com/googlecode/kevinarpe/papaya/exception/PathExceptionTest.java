@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.exception;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,15 +25,14 @@ package com.googlecode.kevinarpe.papaya.exception;
  * #L%
  */
 
-import java.io.File;
-import java.util.UUID;
-
+import com.google.common.testing.EqualsTester;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.google.common.testing.EqualsTester;
-import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import java.io.File;
+import java.util.UUID;
 
 public final class PathExceptionTest {
 

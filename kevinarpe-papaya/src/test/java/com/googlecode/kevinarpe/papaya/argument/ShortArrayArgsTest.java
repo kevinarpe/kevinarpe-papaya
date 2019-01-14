@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -715,11 +715,11 @@ public class ShortArrayArgsTest {
         return new Object[][] {
             { new short[] { (short) 1, (short) 2, (short) 3 }, (short) 2 },
             { new short[] { (short) 1, (short) 2, (short) 3 }, (short) 3 },
-            { new short[] { (short) 1, (short) 2, (short) 3 }, 4 },
+            { new short[] { (short) 1, (short) 2, (short) 3 }, (short) 4 },
             
-            { new short[] {(short) -1,(short) -2,(short) -3 },(short) -2 },
-            { new short[] {(short) -1,(short) -2,(short) -3 },(short) -1 },
-            { new short[] {(short) -1,(short) -2,(short) -3 }, (short) 0 },
+            { new short[] { (short) -1, (short) -2, (short) -3 }, (short) -2 },
+            { new short[] { (short) -1, (short) -2, (short) -3 }, (short) -1 },
+            { new short[] { (short) -1, (short) -2, (short) -3 }, (short) 0 },
         };
     }
     
@@ -801,13 +801,13 @@ public class ShortArrayArgsTest {
     @DataProvider
     public static Object[][] checkMaxValue_FailWithInvalidInput_Data() {
         return new Object[][] {
-            { new short[] { (short) 1, (short) 2, (short) 3 },(short) -1 },
+            { new short[] { (short) 1, (short) 2, (short) 3 }, (short) -1 },
             { new short[] { (short) 1, (short) 2, (short) 3 }, (short) 0 },
             { new short[] { (short) 1, (short) 2, (short) 3 }, (short) 1 },
             
-            { new short[] {(short) -1,(short) -2,(short) -3 },(short) -2 },
-            { new short[] {(short) -1,(short) -2,(short) -3 },(short) -3 },
-            { new short[] {(short) -1,(short) -2,(short) -3 }, -4 },
+            { new short[] { (short) -1,(short) -2, (short) -3 }, (short) -2 },
+            { new short[] { (short) -1,(short) -2, (short) -3 }, (short) -3 },
+            { new short[] { (short) -1,(short) -2, (short) -3 }, (short) -4 },
         };
     }
     
@@ -889,13 +889,13 @@ public class ShortArrayArgsTest {
     @DataProvider
     public static Object[][] checkExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
-            { new short[] { (short) 1, (short) 2, (short) 3 },(short) -1 },
+            { new short[] { (short) 1, (short) 2, (short) 3 }, (short) -1 },
             { new short[] { (short) 1, (short) 2, (short) 3 }, (short) 0 },
             { new short[] { (short) 1, (short) 2, (short) 3 }, (short) 1 },
             
-            { new short[] {(short) -1,(short) -2,(short) -3 },(short) -2 },
-            { new short[] {(short) -1,(short) -2,(short) -3 },(short) -3 },
-            { new short[] {(short) -1,(short) -2,(short) -3 }, -4 },
+            { new short[] { (short) -1, (short) -2, (short) -3 }, (short) -2 },
+            { new short[] { (short) -1, (short) -2, (short) -3 }, (short) -3 },
+            { new short[] { (short) -1, (short) -2, (short) -3 }, (short) -4 },
         };
     }
     

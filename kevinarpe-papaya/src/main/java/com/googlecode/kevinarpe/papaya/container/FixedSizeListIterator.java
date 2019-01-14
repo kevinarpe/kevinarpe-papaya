@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.container;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -88,7 +88,7 @@ extends ForwardingListIterator<TValue> {
 
     /**
      * This method is final to disable modify-by-inheritance.
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      */
     @Override
@@ -104,7 +104,7 @@ extends ForwardingListIterator<TValue> {
     /**
      * This method always throws {@link UnsupportedOperationException}.  Also, it is final to
      * disable modify-by-inheritance.
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      */
     @Override
@@ -115,7 +115,7 @@ extends ForwardingListIterator<TValue> {
     /**
      * This method always throws {@link UnsupportedOperationException}.  Also, it is final to
      * disable modify-by-inheritance.
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      */
     @Override

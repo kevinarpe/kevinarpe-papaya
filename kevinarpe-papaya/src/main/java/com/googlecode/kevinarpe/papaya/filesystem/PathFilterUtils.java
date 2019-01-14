@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.filesystem;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,8 +55,8 @@ public class PathFilterUtils {
      * As a special case, if the input list has exactly one element, it is returned unchanged.
      * <p>
      * {@code anyOf(Arrays.asList(filter1, filter2, filter3)).accept(path, depth)}
-     * <br/>is equivalent to...
-     * <br/>{@code filter1.accept(path, depth) || filter2.accept(path, depth) || filter3.accept(path, depth)}
+     * <br>is equivalent to...
+     * <br>{@code filter1.accept(path, depth) || filter2.accept(path, depth) || filter3.accept(path, depth)}
      *
      * @param pathFilterCollection
      *        collection of path filters to combine.  Must not be {@code null}, empty, or contain
@@ -107,8 +107,8 @@ public class PathFilterUtils {
      * As a special case, if the input list has exactly one element, it is returned unchanged.
      * <p>
      * {@code allOf(Arrays.asList(filter1, filter2, filter3)).accept(path, depth)}
-     * <br/>is equivalent to...
-     * <br/>{@code filter1.accept(path, depth) && filter2.accept(path, depth) && filter3.accept(path, depth)}
+     * <br>is equivalent to...
+     * <br>{@code filter1.accept(path, depth) && filter2.accept(path, depth) && filter3.accept(path, depth)}
      *
      * @param pathFilterCollection
      *        collection of path filters to combine.  Must not be {@code null}, empty, or contain

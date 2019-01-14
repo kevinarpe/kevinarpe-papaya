@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.process;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,11 +25,6 @@ package com.googlecode.kevinarpe.papaya.process;
  * #L%
  */
 
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
-import java.util.regex.Pattern;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
 import com.googlecode.kevinarpe.papaya.FuncUtils;
@@ -40,6 +35,11 @@ import com.googlecode.kevinarpe.papaya.appendable.AppendablePrintLineWithPrefix;
 import com.googlecode.kevinarpe.papaya.appendable.ByteAppendable;
 import com.googlecode.kevinarpe.papaya.argument.IntArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.util.regex.Pattern;
 
 /**
  * This simple class holds the settings for child process output streams (either STDOUT or STDERR)
@@ -153,34 +153,42 @@ public class ProcessOutputStreamSettings {
      *   <li>Pattern is "\n" (UNIX newline)</li>
      *   <li>Remaining text is ""</li>
      *   <li>Read #1: {@code "abc\ndef"}</li>
-     *   <ul>
-     *     <li>Prepend remaining text ({@code ""}): {@code "abc\ndef"}</li>
-     *     <li>Split to: {@code "abc"} and {@code "def"}</li>
-     *     <li>Write {@code "abc"} to char callback</li>
-     *     <li>Remaining text is {@code "def"}</li>
-     *   </ul>
+     *   <li>
+     *     <ul>
+     *       <li>Prepend remaining text ({@code ""}): {@code "abc\ndef"}</li>
+     *       <li>Split to: {@code "abc"} and {@code "def"}</li>
+     *       <li>Write {@code "abc"} to char callback</li>
+     *       <li>Remaining text is {@code "def"}</li>
+     *     </ul>
+     *   </li>
      *   <li>Read #2: {@code "\nghi\n"}</li>
-     *   <ul>
-     *     <li>Prepend remaining text ({@code "def"}): {@code "def\nghi\n"}</li>
-     *     <li>Split to: {@code "def"}, {@code "ghi"}, and {@code ""}</li>
-     *     <li>Write {@code "def"} to char callback</li>
-     *     <li>Then, write {@code "ghi"} to char callback</li>
-     *     <li>Remaining text is {@code ""}</li>
-     *   </ul>
+     *   <li>
+     *     <ul>
+     *       <li>Prepend remaining text ({@code "def"}): {@code "def\nghi\n"}</li>
+     *       <li>Split to: {@code "def"}, {@code "ghi"}, and {@code ""}</li>
+     *       <li>Write {@code "def"} to char callback</li>
+     *       <li>Then, write {@code "ghi"} to char callback</li>
+     *       <li>Remaining text is {@code ""}</li>
+     *     </ul>
+     *   </li>
      *   <li>Read #3: {@code "jkl"}</li>
-     *   <ul>
-     *     <li>Prepend remaining text ({@code ""}): {@code "jkl"}</li>
-     *     <li>Split to: {@code "jkl"}</li>
-     *     <li>Write nothing to char callback</li>
-     *     <li>Remaining text is {@code "jkl"}</li>
-     *   </ul>
+     *   <li>
+     *     <ul>
+     *       <li>Prepend remaining text ({@code ""}): {@code "jkl"}</li>
+     *       <li>Split to: {@code "jkl"}</li>
+     *       <li>Write nothing to char callback</li>
+     *       <li>Remaining text is {@code "jkl"}</li>
+     *     </ul>
+     *   </li>
      *   <li>Read #4: {@code "mno"}</li>
-     *   <ul>
-     *     <li>Prepend remaining text ({@code "jkl"}): {@code "jklmno"}</li>
-     *     <li>Split to: {@code "jklmno"}</li>
-     *     <li>Write nothing to char callback</li>
-     *     <li>Remaining text is {@code "jklmno"}</li>
-     *   </ul>
+     *   <li>
+     *     <ul>
+     *       <li>Prepend remaining text ({@code "jkl"}): {@code "jklmno"}</li>
+     *       <li>Split to: {@code "jklmno"}</li>
+     *       <li>Write nothing to char callback</li>
+     *       <li>Remaining text is {@code "jklmno"}</li>
+     *     </ul>
+     *   </li>
      *   <li>Child process terminates</li>
      *   <li>Write "jklmno" to char callback</li>
      * </ul>
@@ -379,17 +387,21 @@ public class ProcessOutputStreamSettings {
      * to access the accumulated data:
      * <ul>
      *   <li>STDOUT:</li>
-     *   <ul>
-     *     <li>{@link Process2#stdoutDataAsByteArr()}</li>
-     *     <li>{@link Process2#stdoutDataAsString()}</li>
-     *     <li>{@link Process2#stdoutDataAsString(Charset)}</li>
-     *   </ul>
+     *   <li>
+     *     <ul>
+     *       <li>{@link Process2#stdoutDataAsByteArr()}</li>
+     *       <li>{@link Process2#stdoutDataAsString()}</li>
+     *       <li>{@link Process2#stdoutDataAsString(Charset)}</li>
+     *     </ul>
+     *   </li>
      *   <li>STDERR:</li>
-     *   <ul>
-     *     <li>{@link Process2#stderrDataAsByteArr()}</li>
-     *     <li>{@link Process2#stderrDataAsString()}</li>
-     *     <li>{@link Process2#stderrDataAsString(Charset)}</li>
-     *   </ul>
+     *   <li>
+     *     <ul>
+     *       <li>{@link Process2#stderrDataAsByteArr()}</li>
+     *       <li>{@link Process2#stderrDataAsString()}</li>
+     *       <li>{@link Process2#stderrDataAsString(Charset)}</li>
+     *     </ul>
+     *   </li>
      * </ul>
      * A separate thread always is used by {@link Process2} to read STDOUT or STDERR.  Thus,
      * incoming data is appended to the callback from a different thread than that used to
@@ -497,17 +509,21 @@ public class ProcessOutputStreamSettings {
      * while the child process is running or after it has terminated:
      * <ul>
      *   <li>STDOUT:</li>
-     *   <ul>
-     *     <li>{@link Process2#stdoutDataAsByteArr()}</li>
-     *     <li>{@link Process2#stdoutDataAsString()}</li>
-     *     <li>{@link Process2#stdoutDataAsString(Charset)}</li>
-     *   </ul>
+     *   <li>
+     *     <ul>
+     *       <li>{@link Process2#stdoutDataAsByteArr()}</li>
+     *       <li>{@link Process2#stdoutDataAsString()}</li>
+     *       <li>{@link Process2#stdoutDataAsString(Charset)}</li>
+     *     </ul>
+     *   </li>
      *   <li>STDERR:</li>
-     *   <ul>
-     *     <li>{@link Process2#stderrDataAsByteArr()}</li>
-     *     <li>{@link Process2#stderrDataAsString()}</li>
-     *     <li>{@link Process2#stderrDataAsString(Charset)}</li>
-     *   </ul>
+     *   <li>
+     *     <ul>
+     *       <li>{@link Process2#stderrDataAsByteArr()}</li>
+     *       <li>{@link Process2#stderrDataAsString()}</li>
+     *       <li>{@link Process2#stderrDataAsString(Charset)}</li>
+     *     </ul>
+     *   </li>
      * </ul>
      * 
      * @param b

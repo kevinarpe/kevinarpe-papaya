@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.xml.xpath;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ public interface IXPathHelperUtils {
      *
      * @param xpathExpressionCompiler
      *        instance of {@link XPath}.
-     *        <br/>Example: {@code XPathFactory.newXPath()}
+     *        <br>Example: {@code XPathFactory.newXPath()}
      *
      * @return new instance that implements {@link XPathHelper}
      *

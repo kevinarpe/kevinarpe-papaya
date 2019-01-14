@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.appendable;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,11 +25,11 @@ package com.googlecode.kevinarpe.papaya.appendable;
  * #L%
  */
 
-import java.io.IOException;
-
 import com.googlecode.kevinarpe.papaya.container.ByteArraySimpleBuilder;
 import com.googlecode.kevinarpe.papaya.process.ProcessBuilder2;
 import com.googlecode.kevinarpe.papaya.process.ProcessOutputStreamSettings;
+
+import java.io.IOException;
 
 /**
  * This is a byte-based-version of {@link Appendable}, which is character-based.  If STDOUT or

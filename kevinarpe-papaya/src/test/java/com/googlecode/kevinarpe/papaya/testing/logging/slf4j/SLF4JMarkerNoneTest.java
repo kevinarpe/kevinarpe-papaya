@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.testing.logging.slf4j;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@ package com.googlecode.kevinarpe.papaya.testing.logging.slf4j;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.testing.logging.slf4j.SLF4JMarkerNone;
 import org.slf4j.Marker;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.compare;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,7 +78,7 @@ implements Comparator<String> {
     };
 
     /**
-     * @return opposite value, e.g., {@link #YES} -> {@link #NO} and {@link #NO} -> {@link #YES}
+     * @return opposite value, e.g., {@link #YES} to {@link #NO} and {@link #NO} to {@link #YES}
      */
     public CaseSensitive invert() {
         return (this == YES ? NO : YES);

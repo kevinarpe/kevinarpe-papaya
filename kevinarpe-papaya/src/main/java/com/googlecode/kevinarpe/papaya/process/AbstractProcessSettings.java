@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.process;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,16 +25,16 @@ package com.googlecode.kevinarpe.papaya.process;
  * #L%
  */
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.googlecode.kevinarpe.papaya.ObjectUtils;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is the shared base class for {@link ProcessBuilder2} and {@link Process2}.

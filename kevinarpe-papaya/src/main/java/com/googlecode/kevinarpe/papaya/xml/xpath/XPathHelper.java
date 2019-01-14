@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.xml.xpath;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,11 +33,11 @@ import javax.annotation.Nullable;
 
 /**
  * Helper methods to compile, evaluate, and cast the result of XPath expressions.
- * <p/>
+ * <p>
  * Unfortunately, the interfaces provided by Java are weak because they return null in many cases
  * or do not correctly define pre- or post-conditions.  You may consider this interface an
  * improvement over the standard Java classes and methods.
- * <p/>
+ * <p>
  * To instantiate an instance of this class, see {@link XPathHelperUtils}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)

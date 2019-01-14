@@ -1,8 +1,5 @@
 package com.googlecode.kevinarpe.papaya.argument;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.google.common.primitives.Booleans;
 import com.google.common.primitives.Bytes;
 import com.google.common.primitives.Chars;
@@ -13,11 +10,14 @@ import com.google.common.primitives.Longs;
 import com.google.common.primitives.Shorts;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
+import java.util.Arrays;
+import java.util.List;
+
 /*
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -170,7 +170,7 @@ public final class ArrayArgs {
     }
     
     /**
-     * Tests if an array reference is not null and not empty (size >= 1).
+     * Tests if an array reference is not null and not empty ({@code size >= 1}).
      * Length is defined as the number of elements.
      * 
      * @param ref

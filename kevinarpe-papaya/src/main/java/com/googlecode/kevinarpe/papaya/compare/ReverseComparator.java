@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.compare;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,7 +82,7 @@ implements Comparator<TValue> {
 
     /**
      * Inverts the result from the inner {@link Comparator} by multiplying by {@code -1}.
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      */
     @Override
@@ -92,7 +92,7 @@ implements Comparator<TValue> {
 
     /**
      * Correctly compares the inner {@link Comparator} references for equality.
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      */
     @Override
@@ -112,7 +112,7 @@ implements Comparator<TValue> {
 
     /**
      * Returns a string suitable for debugging.
-     * <hr/>
+     * <hr>
      * {@inheritDoc}
      */
     @Override

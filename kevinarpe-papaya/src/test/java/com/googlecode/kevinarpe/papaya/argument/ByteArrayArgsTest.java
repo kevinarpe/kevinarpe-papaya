@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -88,10 +88,10 @@ public class ByteArrayArgsTest {
                 { new byte[] { 4, (byte) 0, 5, 6 } },
                 { new byte[] { 4, 5, (byte) 0, 6 } },
                 { new byte[] { 4, 5, 6, (byte) 0 } },
-                { new byte[] {(byte) -1, (byte) 99, (byte) 101, (byte) 103 } },
-                { new byte[] { (byte) 99,(byte) -1, (byte) 101, (byte) 103 } },
-                { new byte[] {(byte) -1, (byte) 99, (byte) 101,(byte) -1, (byte) 103 } },
-                { new byte[] {(byte) -1, (byte) 99, (byte) 101, (byte) 103,(byte) -1 } },
+                { new byte[] { (byte) -1, (byte) 99, (byte) 101, (byte) 103 } },
+                { new byte[] { (byte) 99, (byte) -1, (byte) 101, (byte) 103 } },
+                { new byte[] { (byte) -1, (byte) 99, (byte) 101, (byte) -1, (byte) 103 } },
+                { new byte[] { (byte) -1, (byte) 99, (byte) 101, (byte) 103, (byte) -1 } },
                 { new byte[] { Byte.MIN_VALUE, (byte) 1, (byte) 2, (byte) 3 } },
                 { new byte[] { (byte) 1, Byte.MIN_VALUE, (byte) 2, (byte) 3 } },
                 { new byte[] { (byte) 1, (byte) 2, Byte.MIN_VALUE, (byte) 3 } },
@@ -144,13 +144,13 @@ public class ByteArrayArgsTest {
     public static Object[][] checkNotPositive_Pass_Data() {
         return new Object[][] {
                 { new byte[] { (byte) 0 } },
-                { new byte[] { (byte) 0,(byte) -1,(byte) -2,(byte) -3 } },
+                { new byte[] { (byte) 0, (byte) -1, (byte) -2, (byte) -3 } },
                 { new byte[] { -99 } },
-                { new byte[] { -99,(byte) -101,(byte) -103 } },
-                { new byte[] { Byte.MIN_VALUE, (byte) 0,(byte) -1,(byte) -2 } },
-                { new byte[] { (byte) 0, Byte.MIN_VALUE,(byte) -1,(byte) -2 } },
-                { new byte[] { (byte) 0,(byte) -1, Byte.MIN_VALUE,(byte) -2 } },
-                { new byte[] { (byte) 0,(byte) -1,(byte) -2, Byte.MIN_VALUE } },
+                { new byte[] { -99, (byte) -101, (byte) -103 } },
+                { new byte[] { Byte.MIN_VALUE, (byte) 0, (byte) -1, (byte) -2 } },
+                { new byte[] { (byte) 0, Byte.MIN_VALUE, (byte) -1, (byte) -2 } },
+                { new byte[] { (byte) 0, (byte) -1, Byte.MIN_VALUE, (byte) -2 } },
+                { new byte[] { (byte) 0, (byte) -1, (byte) -2, Byte.MIN_VALUE } },
         };
     }
     
@@ -231,11 +231,11 @@ public class ByteArrayArgsTest {
     @DataProvider
     public static Object[][] checkNegative_Pass_Data() {
         return new Object[][] {
-                { new byte[] {(byte) -1 } },
-                { new byte[] {(byte) -1,(byte) -2,(byte) -3 } },
+                { new byte[] { (byte) -1 } },
+                { new byte[] { (byte) -1, (byte) -2, (byte) -3 } },
                 { new byte[] { -99 } },
-                { new byte[] { -99,(byte) -101,(byte) -103 } },
-                { new byte[] { Byte.MIN_VALUE,(byte) -1 } },
+                { new byte[] { -99, (byte) -101, (byte) -103 } },
+                { new byte[] { Byte.MIN_VALUE, (byte) -1 } },
         };
     }
     
@@ -348,10 +348,10 @@ public class ByteArrayArgsTest {
     @DataProvider
     public static Object[][] checkNotNegative_FailWithNegativeInput_Data() {
         return new Object[][] {
-                { new byte[] {(byte) -1, 4, 5, 6 } },
-                { new byte[] { 4,(byte) -1, 5, 6 } },
-                { new byte[] { 4, 5,(byte) -1, 6 } },
-                { new byte[] { 4, 5, 6,(byte) -1 } },
+                { new byte[] { (byte) -1, 4, 5, 6 } },
+                { new byte[] { 4, (byte) -1, 5, 6 } },
+                { new byte[] { 4, 5, (byte) -1, 6 } },
+                { new byte[] { 4, 5, 6, (byte) -1 } },
                 { new byte[] { Byte.MIN_VALUE, (byte) 0, (byte) 1, (byte) 2 } },
                 { new byte[] { (byte) 0, Byte.MIN_VALUE, (byte) 1, (byte) 2 } },
                 { new byte[] { (byte) 0, (byte) 1, Byte.MIN_VALUE, (byte) 2 } },
@@ -403,15 +403,15 @@ public class ByteArrayArgsTest {
     @DataProvider
     public static Object[][] checkValueInsideRange_Pass_Data() {
         return new Object[][] {
-                { new byte[] { (byte) 1 },(byte) -1, (byte) 2 },
-                { new byte[] { (byte) 1 },(byte) -1, (byte) 1 },
+                { new byte[] { (byte) 1 }, (byte) -1, (byte) 2 },
+                { new byte[] { (byte) 1 }, (byte) -1, (byte) 1 },
                 { new byte[] { (byte) 1 }, (byte) 0, (byte) 1 },
                 { new byte[] { (byte) 1 }, (byte) 0, (byte) 2 },
                 { new byte[] { (byte) 1 }, (byte) 1, (byte) 1 },
                 { new byte[] { (byte) 1 }, (byte) 1, (byte) 2 },
                 
-                { new byte[] { (byte) 1, (byte) 0 },(byte) -1, (byte) 2 },
-                { new byte[] { (byte) 1, (byte) 0 },(byte) -1, (byte) 1 },
+                { new byte[] { (byte) 1, (byte) 0 }, (byte) -1, (byte) 2 },
+                { new byte[] { (byte) 1, (byte) 0 }, (byte) -1, (byte) 1 },
                 { new byte[] { (byte) 1, (byte) 0 }, (byte) 0, (byte) 1 },
                 { new byte[] { (byte) 1, (byte) 0 }, (byte) 0, (byte) 2 },
                 { new byte[] { (byte) 1 }, (byte) 1, (byte) 1 },
@@ -451,47 +451,47 @@ public class ByteArrayArgsTest {
     @DataProvider
     public static Object[][] checkValueInsideRange_FailWithInvalidInput_Data() {
         return new Object[][] {
-                { new byte[] { (byte) 1 },(byte) -1, (byte) 0 },
+                { new byte[] { (byte) 1 }, (byte) -1, (byte) 0 },
                 { new byte[] { (byte) 1 }, (byte) 0, (byte) 0 },
                 { new byte[] { (byte) 1 }, (byte) 2, (byte) 2 },
                 { new byte[] { (byte) 1 }, (byte) 2, (byte) 1 },
-                { new byte[] { (byte) 1 },(byte) -1,(byte) -2 },
-                { new byte[] { (byte) 1 },(byte) -2,(byte) -1 },
+                { new byte[] { (byte) 1 }, (byte) -1, (byte) -2 },
+                { new byte[] { (byte) 1 }, (byte) -2, (byte) -1 },
                 
-                { new byte[] {(byte) -1 }, (byte) 1, (byte) 0 },
-                { new byte[] {(byte) -1 }, (byte) 0, (byte) 0 },
-                { new byte[] {(byte) -1 },(byte) -2,(byte) -2 },
-                { new byte[] {(byte) -1 },(byte) -1,(byte) -2 },
-                { new byte[] {(byte) -1 }, (byte) 1, (byte) 2 },
-                { new byte[] {(byte) -1 }, (byte) 2, (byte) 1 },
+                { new byte[] { (byte) -1 }, (byte) 1, (byte) 0 },
+                { new byte[] { (byte) -1 }, (byte) 0, (byte) 0 },
+                { new byte[] { (byte) -1 }, (byte) -2, (byte) -2 },
+                { new byte[] { (byte) -1 }, (byte) -1, (byte) -2 },
+                { new byte[] { (byte) -1 }, (byte) 1, (byte) 2 },
+                { new byte[] { (byte) -1 }, (byte) 2, (byte) 1 },
                 
-                { new byte[] { (byte) 1, (byte) 1 },(byte) -1, (byte) 0 },
+                { new byte[] { (byte) 1, (byte) 1 }, (byte) -1, (byte) 0 },
                 { new byte[] { (byte) 1, (byte) 1 }, (byte) 0, (byte) 0 },
                 { new byte[] { (byte) 1, (byte) 1 }, (byte) 2, (byte) 2 },
                 { new byte[] { (byte) 1, (byte) 1 }, (byte) 2, (byte) 1 },
-                { new byte[] { (byte) 1, (byte) 1 },(byte) -1,(byte) -2 },
-                { new byte[] { (byte) 1, (byte) 1 },(byte) -2,(byte) -1 },
+                { new byte[] { (byte) 1, (byte) 1 }, (byte) -1, (byte) -2 },
+                { new byte[] { (byte) 1, (byte) 1 }, (byte) -2, (byte) -1 },
                 
-                { new byte[] {(byte) -1,(byte) -1 }, (byte) 1, (byte) 0 },
-                { new byte[] {(byte) -1,(byte) -1 }, (byte) 0, (byte) 0 },
-                { new byte[] {(byte) -1,(byte) -1 },(byte) -2,(byte) -2 },
-                { new byte[] {(byte) -1,(byte) -1 },(byte) -1,(byte) -2 },
-                { new byte[] {(byte) -1,(byte) -1 }, (byte) 1, (byte) 2 },
-                { new byte[] {(byte) -1,(byte) -1 }, (byte) 2, (byte) 1 },
+                { new byte[] { (byte) -1, (byte) -1 }, (byte) 1, (byte) 0 },
+                { new byte[] { (byte) -1, (byte) -1 }, (byte) 0, (byte) 0 },
+                { new byte[] { (byte) -1, (byte) -1 }, (byte) -2, (byte) -2 },
+                { new byte[] { (byte) -1, (byte) -1 }, (byte) -1, (byte) -2 },
+                { new byte[] { (byte) -1, (byte) -1 }, (byte) 1, (byte) 2 },
+                { new byte[] { (byte) -1, (byte) -1 }, (byte) 2, (byte) 1 },
                 
-                { new byte[] { (byte) 1, 5 },(byte) -1, (byte) 0 },
+                { new byte[] { (byte) 1, 5 }, (byte) -1, (byte) 0 },
                 { new byte[] { (byte) 1, 5 }, (byte) 0, (byte) 0 },
                 { new byte[] { (byte) 1, 5 }, (byte) 2, (byte) 2 },
                 { new byte[] { (byte) 1, 5 }, (byte) 2, (byte) 1 },
-                { new byte[] { (byte) 1, 5 },(byte) -1,(byte) -2 },
-                { new byte[] { (byte) 1, 5 },(byte) -2,(byte) -1 },
+                { new byte[] { (byte) 1, 5 }, (byte) -1, (byte) -2 },
+                { new byte[] { (byte) 1, 5 }, (byte) -2, (byte) -1 },
                 
-                { new byte[] {(byte) -1, -5 }, (byte) 1, (byte) 0 },
-                { new byte[] {(byte) -1, -5 }, (byte) 0, (byte) 0 },
-                { new byte[] {(byte) -1, -5 },(byte) -2,(byte) -2 },
-                { new byte[] {(byte) -1, -5 },(byte) -1,(byte) -2 },
-                { new byte[] {(byte) -1, -5 }, (byte) 1, (byte) 2 },
-                { new byte[] {(byte) -1, -5 }, (byte) 2, (byte) 1 },
+                { new byte[] { (byte) -1, -5 }, (byte) 1, (byte) 0 },
+                { new byte[] { (byte) -1, -5 }, (byte) 0, (byte) 0 },
+                { new byte[] { (byte) -1, -5 }, (byte) -2, (byte) -2 },
+                { new byte[] { (byte) -1, -5 }, (byte) -1, (byte) -2 },
+                { new byte[] { (byte) -1, -5 }, (byte) 1, (byte) 2 },
+                { new byte[] { (byte) -1, -5 }, (byte) 2, (byte) 1 },
         };
     }
     
@@ -541,15 +541,15 @@ public class ByteArrayArgsTest {
     @DataProvider
     public static Object[][] checkValueOutsideRange_Pass_Data() {
         return new Object[][] {
-                { new byte[] { (byte) 3 },(byte) -1, (byte) 2 },
-                { new byte[] { (byte) 3 },(byte) -1, (byte) 1 },
+                { new byte[] { (byte) 3 }, (byte) -1, (byte) 2 },
+                { new byte[] { (byte) 3 }, (byte) -1, (byte) 1 },
                 { new byte[] { (byte) 3 }, (byte) 0, (byte) 1 },
                 { new byte[] { (byte) 3 }, (byte) 0, (byte) 2 },
                 { new byte[] { (byte) 3 }, (byte) 1, (byte) 1 },
                 { new byte[] { (byte) 3 }, (byte) 1, (byte) 2 },
                 
-                { new byte[] { (byte) 3, (byte) 99 },(byte) -1, (byte) 2 },
-                { new byte[] { (byte) 3, (byte) 99 },(byte) -1, (byte) 1 },
+                { new byte[] { (byte) 3, (byte) 99 }, (byte) -1, (byte) 2 },
+                { new byte[] { (byte) 3, (byte) 99 }, (byte) -1, (byte) 1 },
                 { new byte[] { (byte) 3, (byte) 99 }, (byte) 0, (byte) 1 },
                 { new byte[] { (byte) 3, (byte) 99 }, (byte) 0, (byte) 2 },
                 { new byte[] { (byte) 3 }, (byte) 1, (byte) 1 },
@@ -589,45 +589,45 @@ public class ByteArrayArgsTest {
     @DataProvider
     public static Object[][] checkValueOutsideRange_FailWithInvalidInput_Data() {
         return new Object[][] {
-                { new byte[] { (byte) 0 },(byte) -1, (byte) 0 },
+                { new byte[] { (byte) 0 }, (byte) -1, (byte) 0 },
                 { new byte[] { (byte) 0 }, (byte) 0, (byte) 0 },
                 { new byte[] { (byte) 2 }, (byte) 2, (byte) 2 },
                 { new byte[] { (byte) 2 }, (byte) 2, (byte) 1 },
-                { new byte[] {(byte) -2 },(byte) -1,(byte) -2 },
-                { new byte[] {(byte) -2 },(byte) -2,(byte) -1 },
+                { new byte[] { (byte) -2 }, (byte) -1, (byte) -2 },
+                { new byte[] { (byte) -2 }, (byte) -2, (byte) -1 },
                 
                 { new byte[] { (byte) 1 }, (byte) 1, (byte) 0 },
                 { new byte[] { (byte) 0 }, (byte) 0, (byte) 0 },
-                { new byte[] {(byte) -2 },(byte) -2,(byte) -2 },
-                { new byte[] {(byte) -1 },(byte) -1,(byte) -2 },
+                { new byte[] { (byte) -2 }, (byte) -2, (byte) -2 },
+                { new byte[] { (byte) -1 }, (byte) -1, (byte) -2 },
                 { new byte[] { (byte) 1 }, (byte) 1, (byte) 2 },
                 { new byte[] { (byte) 1 }, (byte) 2, (byte) 1 },
                 
-                { new byte[] { (byte) 0, (byte) 0 },(byte) -1, (byte) 0 },
+                { new byte[] { (byte) 0, (byte) 0 }, (byte) -1, (byte) 0 },
                 { new byte[] { (byte) 0, (byte) 0 }, (byte) 0, (byte) 0 },
                 { new byte[] { (byte) 2, (byte) 2 }, (byte) 2, (byte) 2 },
                 { new byte[] { (byte) 2, (byte) 2 }, (byte) 2, (byte) 1 },
-                { new byte[] {(byte) -2,(byte) -2 },(byte) -1,(byte) -2 },
-                { new byte[] {(byte) -2,(byte) -2 },(byte) -2,(byte) -1 },
+                { new byte[] { (byte) -2, (byte) -2 }, (byte) -1, (byte) -2 },
+                { new byte[] { (byte) -2, (byte) -2 }, (byte) -2, (byte) -1 },
                 
                 { new byte[] { (byte) 1, (byte) 1 }, (byte) 1, (byte) 0 },
                 { new byte[] { (byte) 0, (byte) 0 }, (byte) 0, (byte) 0 },
-                { new byte[] {(byte) -2,(byte) -2 },(byte) -2,(byte) -2 },
-                { new byte[] {(byte) -1,(byte) -1 },(byte) -1,(byte) -2 },
+                { new byte[] { (byte) -2, (byte) -2 }, (byte) -2, (byte) -2 },
+                { new byte[] { (byte) -1, (byte) -1 }, (byte) -1, (byte) -2 },
                 { new byte[] { (byte) 1, (byte) 1 }, (byte) 1, (byte) 2 },
                 { new byte[] { (byte) 1, (byte) 1 }, (byte) 2, (byte) 1 },
                 
-                { new byte[] { (byte) 0,(byte) -1 },(byte) -1, (byte) 0 },
+                { new byte[] { (byte) 0, (byte) -1 }, (byte) -1, (byte) 0 },
                 { new byte[] { (byte) 0, (byte) 0 }, (byte) 0, (byte) 0 },
                 { new byte[] { (byte) 2, (byte) 2 }, (byte) 2, (byte) 2 },
                 { new byte[] { (byte) 2, (byte) 1 }, (byte) 2, (byte) 1 },
-                { new byte[] {(byte) -1,(byte) -2 },(byte) -1,(byte) -2 },
-                { new byte[] {(byte) -1,(byte) -2 },(byte) -2,(byte) -1 },
+                { new byte[] { (byte) -1, (byte) -2 }, (byte) -1, (byte) -2 },
+                { new byte[] { (byte) -1, (byte) -2 }, (byte) -2, (byte) -1 },
                 
                 { new byte[] { (byte) 0, (byte) 1 }, (byte) 1, (byte) 0 },
                 { new byte[] { (byte) 0, (byte) 0 }, (byte) 0, (byte) 0 },
-                { new byte[] {(byte) -2,(byte) -2 },(byte) -2,(byte) -2 },
-                { new byte[] {(byte) -1,(byte) -2 },(byte) -1,(byte) -2 },
+                { new byte[] { (byte) -2, (byte) -2 }, (byte) -2, (byte) -2 },
+                { new byte[] { (byte) -1, (byte) -2 }, (byte) -1, (byte) -2 },
                 { new byte[] { (byte) 2, (byte) 1 }, (byte) 1, (byte) 2 },
                 { new byte[] { (byte) 1, (byte) 2 }, (byte) 2, (byte) 1 },
         };
@@ -679,13 +679,13 @@ public class ByteArrayArgsTest {
     @DataProvider
     public static Object[][] checkMinValue_Pass_Data() {
         return new Object[][] {
-                { new byte[] { (byte) 1, (byte) 2, (byte) 3 },(byte) -1 },
+                { new byte[] { (byte) 1, (byte) 2, (byte) 3 }, (byte) -1 },
                 { new byte[] { (byte) 1, (byte) 2, (byte) 3 }, (byte) 0 },
                 { new byte[] { (byte) 1, (byte) 2, (byte) 3 }, (byte) 1 },
                 
-                { new byte[] {(byte) -1,(byte) -2,(byte) -3 },(byte) -3 },
-                { new byte[] {(byte) -1,(byte) -2,(byte) -3 }, (byte) -4 },
-                { new byte[] {(byte) -1,(byte) -2,(byte) -3 }, (byte) -5 },
+                { new byte[] { (byte) -1, (byte) -2, (byte) -3 }, (byte) -3 },
+                { new byte[] { (byte) -1, (byte) -2, (byte) -3 }, (byte) -4 },
+                { new byte[] { (byte) -1, (byte) -2, (byte) -3 }, (byte) -5 },
         };
     }
     
@@ -715,11 +715,11 @@ public class ByteArrayArgsTest {
         return new Object[][] {
             { new byte[] { (byte) 1, (byte) 2, (byte) 3 }, (byte) 2 },
             { new byte[] { (byte) 1, (byte) 2, (byte) 3 }, (byte) 3 },
-            { new byte[] { (byte) 1, (byte) 2, (byte) 3 }, 4 },
+            { new byte[] { (byte) 1, (byte) 2, (byte) 3 }, (byte) 4 },
             
-            { new byte[] {(byte) -1,(byte) -2,(byte) -3 },(byte) -2 },
-            { new byte[] {(byte) -1,(byte) -2,(byte) -3 },(byte) -1 },
-            { new byte[] {(byte) -1,(byte) -2,(byte) -3 }, (byte) 0 },
+            { new byte[] { (byte) -1, (byte) -2, (byte) -3 }, (byte) -2 },
+            { new byte[] { (byte) -1, (byte) -2, (byte) -3 }, (byte) -1 },
+            { new byte[] { (byte) -1, (byte) -2, (byte) -3 }, (byte) 0 },
         };
     }
     
@@ -771,9 +771,9 @@ public class ByteArrayArgsTest {
                 { new byte[] { (byte) 1, (byte) 2, (byte) 3 }, (byte) 4 },
                 { new byte[] { (byte) 1, (byte) 2, (byte) 3 }, (byte) 5 },
                 
-                { new byte[] {(byte) -1,(byte) -2,(byte) -3 },(byte) -1 },
-                { new byte[] {(byte) -1,(byte) -2,(byte) -3 }, (byte) 0 },
-                { new byte[] {(byte) -1,(byte) -2,(byte) -3 }, (byte) 1 },
+                { new byte[] { (byte) -1, (byte) -2, (byte) -3 }, (byte) -1 },
+                { new byte[] { (byte) -1, (byte) -2, (byte) -3 }, (byte) 0 },
+                { new byte[] { (byte) -1, (byte) -2, (byte) -3 }, (byte) 1 },
         };
     }
     
@@ -801,13 +801,13 @@ public class ByteArrayArgsTest {
     @DataProvider
     public static Object[][] checkMaxValue_FailWithInvalidInput_Data() {
         return new Object[][] {
-            { new byte[] { (byte) 1, (byte) 2, (byte) 3 },(byte) -1 },
+            { new byte[] { (byte) 1, (byte) 2, (byte) 3 }, (byte) -1 },
             { new byte[] { (byte) 1, (byte) 2, (byte) 3 }, (byte) 0 },
             { new byte[] { (byte) 1, (byte) 2, (byte) 3 }, (byte) 1 },
             
-            { new byte[] {(byte) -1,(byte) -2,(byte) -3 },(byte) -2 },
-            { new byte[] {(byte) -1,(byte) -2,(byte) -3 },(byte) -3 },
-            { new byte[] {(byte) -1,(byte) -2,(byte) -3 }, -4 },
+            { new byte[] { (byte) -1, (byte) -2, (byte) -3 }, (byte) -2 },
+            { new byte[] { (byte) -1, (byte) -2, (byte) -3 }, (byte) -3 },
+            { new byte[] { (byte) -1, (byte) -2, (byte) -3 }, (byte) -4 },
         };
     }
     
@@ -859,9 +859,9 @@ public class ByteArrayArgsTest {
             { new byte[] { (byte) 1, (byte) 1 }, (byte) 1 },
             { new byte[] { (byte) 1, (byte) 1, (byte) 1 }, (byte) 1 },
             
-            { new byte[] {(byte) -1 },(byte) -1 },
-            { new byte[] {(byte) -1,(byte) -1 },(byte) -1 },
-            { new byte[] {(byte) -1,(byte) -1,(byte) -1 },(byte) -1 },
+            { new byte[] { (byte) -1 }, (byte) -1 },
+            { new byte[] { (byte) -1, (byte) -1 }, (byte) -1 },
+            { new byte[] { (byte) -1, (byte) -1, (byte) -1 }, (byte) -1 },
         };
     }
     
@@ -889,13 +889,13 @@ public class ByteArrayArgsTest {
     @DataProvider
     public static Object[][] checkExactValue_FailWithInvalidInput_Data() {
         return new Object[][] {
-            { new byte[] { (byte) 1, (byte) 2, (byte) 3 },(byte) -1 },
+            { new byte[] { (byte) 1, (byte) 2, (byte) 3 }, (byte) -1 },
             { new byte[] { (byte) 1, (byte) 2, (byte) 3 }, (byte) 0 },
             { new byte[] { (byte) 1, (byte) 2, (byte) 3 }, (byte) 1 },
             
-            { new byte[] {(byte) -1,(byte) -2,(byte) -3 },(byte) -2 },
-            { new byte[] {(byte) -1,(byte) -2,(byte) -3 },(byte) -3 },
-            { new byte[] {(byte) -1,(byte) -2,(byte) -3 }, -4 },
+            { new byte[] { (byte) -1, (byte) -2, (byte) -3 }, (byte) -2 },
+            { new byte[] { (byte) -1, (byte) -2, (byte) -3 }, (byte) -3 },
+            { new byte[] { (byte) -1, (byte) -2, (byte) -3 }, (byte) -4 },
         };
     }
     
@@ -945,11 +945,11 @@ public class ByteArrayArgsTest {
         return new Object[][] {
             { new byte[] { (byte) 1 }, (byte) 2 },
             { new byte[] { (byte) 1, (byte) 1 }, (byte) 2 },
-            { new byte[] { (byte) 1, (byte) 1, (byte) 1 },(byte) -2 },
+            { new byte[] { (byte) 1, (byte) 1, (byte) 1 }, (byte) -2 },
             
-            { new byte[] {(byte) -1 },(byte) -2 },
-            { new byte[] {(byte) -1,(byte) -1 },(byte) -2 },
-            { new byte[] {(byte) -1,(byte) -1,(byte) -1 }, (byte) 2 },
+            { new byte[] { (byte) -1 }, (byte) -2 },
+            { new byte[] { (byte) -1, (byte) -1 }, (byte) -2 },
+            { new byte[] { (byte) -1, (byte) -1, (byte) -1 }, (byte) 2 },
         };
     }
     
@@ -981,9 +981,9 @@ public class ByteArrayArgsTest {
             { new byte[] { (byte) 1, (byte) 2, (byte) 3 }, (byte) 2 },
             { new byte[] { (byte) 1, (byte) 2, (byte) 3 }, (byte) 3 },
             
-            { new byte[] {(byte) -1,(byte) -2,(byte) -3 },(byte) -1 },
-            { new byte[] {(byte) -1,(byte) -2,(byte) -3 },(byte) -2 },
-            { new byte[] {(byte) -1,(byte) -2,(byte) -3 },(byte) -3 },
+            { new byte[] { (byte) -1, (byte) -2, (byte) -3 }, (byte) -1 },
+            { new byte[] { (byte) -1, (byte) -2, (byte) -3 }, (byte) -2 },
+            { new byte[] { (byte) -1, (byte) -2, (byte) -3 }, (byte) -3 },
         };
     }
     

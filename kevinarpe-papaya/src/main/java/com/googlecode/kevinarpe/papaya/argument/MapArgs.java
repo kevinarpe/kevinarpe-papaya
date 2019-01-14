@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,9 +25,9 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
-import java.util.Map;
-
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+
+import java.util.Map;
 
 /**
  * Static methods to check {@link Map} arguments.
@@ -131,7 +131,7 @@ public final class MapArgs {
      * <ul>
      *   <li>if {@code maxSize < 0}</li>
      *   <li>if number of elements in {@code ref} is outside allowed range</li>
-     * <ul>
+     * </ul>
      *
      * @see #checkSizeRange(Map, int, int, String)
      */
@@ -162,7 +162,7 @@ public final class MapArgs {
      * <ul>
      *   <li>if {@code exactSize < 0}</li>
      *   <li>if number of elements in {@code ref} is outside allowed range</li>
-     * <ul>
+     * </ul>
      *
      * @see #checkSizeRange(Map, int, int, String)
      */
@@ -175,7 +175,7 @@ public final class MapArgs {
     }
     
     /**
-     * Tests if a {@link Map} reference is not null and not empty (size >= 1).
+     * Tests if a {@link Map} reference is not null and not empty ({@code size >= 1}).
      * Size is defined as the number of key-value pairs.
      * 
      * @param ref

@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.process;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +25,6 @@ package com.googlecode.kevinarpe.papaya.process;
  * #L%
  */
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.regex.Pattern;
-
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.googlecode.kevinarpe.papaya.AbstractThreadWithException;
@@ -41,6 +34,13 @@ import com.googlecode.kevinarpe.papaya.appendable.ByteAppendable;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 import com.googlecode.kevinarpe.papaya.container.ByteArraySimpleBuilder;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.regex.Pattern;
 
 /**
  * Used by {@link Process2} to read STDOUT or STDERR streams from a child process.  Normally, there

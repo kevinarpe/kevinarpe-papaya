@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.properties;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,9 +45,9 @@ import java.util.List;
  * <p>
  * <ul>
  *     <li>There must be no duplicate key-value pairs.
- *     <br/>Example: {@code ("abc" -> "def")} and {@code ("abc" -> "def")}</li>
+ *     <br>Example: {@code ("abc" -> "def")} and {@code ("abc" -> "def")}</li>
  *     <li>There must be no duplicate keys.
- *     <br/>Example: {@code ("abc" -> "def")} and {@code ("abc" -> "ghi")}</li>
+ *     <br>Example: {@code ("abc" -> "def")} and {@code ("abc" -> "ghi")}</li>
  * </ul>
  * <p>
  * This is the default policy for instances of {@link PropertiesLoader} created with

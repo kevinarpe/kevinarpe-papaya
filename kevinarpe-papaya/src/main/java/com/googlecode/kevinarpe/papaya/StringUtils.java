@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -289,7 +289,7 @@ public final class StringUtils {
      *        input string reference to process
      * @param count
      *        number of chars to copy starting from first index.
-     *        Must be >= 0, and may be greater than input length
+     *        Must not be negative and may be greater than input length
      *
      * @return string reference created from leading chars
      *
@@ -324,7 +324,7 @@ public final class StringUtils {
      *        input string reference to process
      * @param count
      *        number of chars to copy starting from last index.
-     *        Must be >= 0, and may be greater than input length
+     *        Must not be negative and may be greater than input length
      *
      * @return string reference created from trailing chars
      *
@@ -620,10 +620,12 @@ public final class StringUtils {
      *   <li>text to process, usually a multiline block of text</li>
      *   <li>text is split and joined using {@link #NEW_LINE}</li>
      *   <li>if text ends with {@link #NEW_LINE}:</li>
-     *   <ul>
-     *     <li>final "phantom" empty line is ignored during processing</li>
-     *     <li>result will also end with {@link #NEW_LINE}</li>
-     *   </ul>
+     *   <li>
+     *     <ul>
+     *       <li>final "phantom" empty line is ignored during processing</li>
+     *       <li>result will also end with {@link #NEW_LINE}</li>
+     *     </ul>
+     *   </li>
      *   <li>must not be {@code null} or empty</li>
      * </ul>
      * @param optLinePrefix

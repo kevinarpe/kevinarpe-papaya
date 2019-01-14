@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.testing.logging.slf4j;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ package com.googlecode.kevinarpe.papaya.testing.logging.slf4j;
 import com.googlecode.kevinarpe.papaya.testing.logging.ILoggingEventAttribute;
 
 /**
- * This is a 'typedef' for ILoggingEventAttribute&lt;SLF4JLoggingEvent>.
+ * This is a 'typedef' for {@code ILoggingEventAttribute<SLF4JLoggingEvent>}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *

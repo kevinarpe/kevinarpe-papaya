@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,30 +33,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Kevin Connor ARPE (kevinarpe@gmail.com)
- */
-/**
- * Base class for all implementations of {@code MapBuilder}.  The underlying map is an instance of
- * {@link LinkedHashMap}.
- *
- * @author Kevin Connor ARPE (kevinarpe@gmail.com)
- *
- * @see ForwardingMap
- * @see MapBuilder
- * @see HashMapBuilder
- * @see LinkedHashMapBuilder
- * @see ImmutableMapBuilder
- * @see PropertiesBuilder
- */
-
-/**
  * Base class for all implementations of {@code ListBuilder}.  The underlying map is an instance of
  * {@link ArrayList}.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @param <TList>
- *        type of list to build: extends List&lt;TValue>
+ *        type of list to build: {@code extends List<TValue>}
  * @param <TValue>
  *        type of value for list elements
  *

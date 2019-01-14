@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.container.builder;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ import java.util.Set;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
  * @param <TSet>
- *        type of set to build: extends Set&lt;TValue>
+ *        type of set to build: {@code extends Set<TValue>}
  * @param <TValue>
  *        type of value for set elements
  *

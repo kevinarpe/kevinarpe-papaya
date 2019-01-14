@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -150,9 +150,9 @@ implements Formatter2 {
 
     /**
      * Increments the internal count only if no formatting exception is thrown.
-     * <hr/>
+     * <hr>
      * Inherited docs:
-     * <br/>
+     * <br>
      * {@inheritDoc}
      *
      * @throws IllegalArgumentException

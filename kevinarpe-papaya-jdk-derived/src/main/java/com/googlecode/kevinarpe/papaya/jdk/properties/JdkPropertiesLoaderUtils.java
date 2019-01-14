@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.jdk.properties;
  * #%L
  * This file is part of Papaya (JDK Derived Classes).
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya (JDK Derived Classes) is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 2 only as

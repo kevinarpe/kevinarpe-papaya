@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2014 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,13 +54,13 @@ implements Formatter2 {
     /**
      * Converts a path to a string.
      * <ul>
-     *     <li>{@code null} -> {@code "null"}</li>
-     *     <li>absolute path -> {@code "'/abs/path'"}</li>
-     *     <li>relative path -> {@code "'rel/path' -> '/a/b/c/rel/path'"}</li>
+     *     <li>{@code null} to {@code "null"}</li>
+     *     <li>absolute path to {@code "'/abs/path'"}</li>
+     *     <li>relative path to {@code "'rel/path' -> '/a/b/c/rel/path'"}</li>
      * </ul>
-     * <hr/>
+     * <hr>
      * Inherited docs:
-     * <br/>
+     * <br>
      * {@inheritDoc}
      *
      * @throws ClassCastException
