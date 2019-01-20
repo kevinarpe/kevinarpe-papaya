@@ -38,6 +38,44 @@ Might be helpful for multi-module release:
 http://onjavahell.blogspot.hk/2009/12/releasing-multi-module-project-using.html
 https://dev.c-ware.de/confluence/display/PUBLIC/Releasing+modules+of+a+multi-module+project+with+independent+version+numbers
 
+New instructions for 2019+
+===============
+* mvn clean install
+** Any compiler errors or failed/skipped tests must be cleaned-up.
+** Fix any Javadoc warnings.  Re-run as many times as necessary: mvn javadoc:javadoc
+* git commit -a
+* If necessary, merge branch back to master before release.
+** Example:
+*** git checkout master
+*** git merge --no-ff other-branch-name
+**** You will need to enter a commit/merge comment.
+* mvn clean deploy
+** This will do a SNAPSHOT build and deploy.
+** Check the SNAPSHOT build here: https://oss.sonatype.org/content/repositories/snapshots/com/googlecode/kevinarpe-papaya/kevinarpe-papaya/
+* mvn versions:set -DnewVersion=0.0.x
+** ... where x is version number.  If current pom.xml has 0.0.18-SNAPSHOT, then x=18
+* mvn clean deploy -P release
+* Login here: https://oss.sonatype.org/
+* Wait about 10-30 mins and this will be updated: https://search.maven.org/search?q=kevinarpe-papaya
+* git status
+** You will see all pom.xml files updated from the previous command 'mvn versions:set ...'
+* find . -name pom.xml  | xargs git add
+* git commit
+* git tag
+** ... show list of existing tags
+* git tag kevinarpe-papaya-parent-0.0.x
+** ... add tag for version x
+* git push --tags
+* mvn versions:set -DnewVersion=0.0.y-SNAPSHOT
+** ... where y=1+x
+* find . -name pom.xml  | xargs git add
+* git commit
+* git push
+* find . -name pom.xml.versionsBackup  | xargs rm --verbose
+** ... to cleanup temp files from the previous command 'mvn versions:set ...'
+
+Old instructions before 2019
+===============
 * mvn clean install
 ** Any compiler errors or failed/skipped tests must be cleaned-up.
 ** Fix any Javadoc warnings.  Re-run as many times as necessary: mvn javadoc:javadoc
