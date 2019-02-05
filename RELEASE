@@ -55,6 +55,7 @@ New instructions for 2019+
 * mvn versions:set -DnewVersion=0.0.x
 ** ... where x is version number.  If current pom.xml has 0.0.18-SNAPSHOT, then x=18
 * mvn clean deploy -P release
+** A password window will appear.  Retrieve password from here: $M2_HOME/conf/settings.xml
 * Login here: https://oss.sonatype.org/
 * Wait about 10-30 mins and this will be updated: https://search.maven.org/search?q=kevinarpe-papaya
 * git status
