@@ -26,9 +26,13 @@ package com.googlecode.kevinarpe.papaya.exception;
  */
 
 import com.google.common.base.Objects;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.annotation.NotFullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
+import javax.annotation.Nullable;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Arrays;
 
 /**
@@ -58,7 +62,9 @@ public final class ThrowableUtils {
      *
      * @throws NullPointerException if {@code includeStackTrace} is {@code null}
      */
-    public static int hashCode(Throwable throwable, IncludeStackTrace includeStackTrace) {
+    public static int
+    hashCode(@Nullable Throwable throwable, IncludeStackTrace includeStackTrace) {
+
         ObjectArgs.checkNotNull(includeStackTrace, "includeStackTrace");
 
         if (null == throwable) {
@@ -105,8 +111,9 @@ public final class ThrowableUtils {
      *
      * @throws NullPointerException if {@code includeStackTrace} is {@code null}
      */
-    public static boolean equals(
-            Throwable throwable1, Throwable throwable2, IncludeStackTrace includeStackTrace) {
+    public static boolean
+    equals(@Nullable Throwable throwable1, @Nullable Throwable throwable2, IncludeStackTrace includeStackTrace) {
+
         ObjectArgs.checkNotNull(includeStackTrace, "includeStackTrace");
 
         if (throwable1 == throwable2) {
@@ -142,8 +149,9 @@ public final class ThrowableUtils {
      * @throws NullPointerException
      *         if {@code throwable} is {@code null}
      */
-    @NotFullyTested
-    public static String toString(Throwable throwable) {
+    public static String
+    toString(Throwable throwable) {
+
         ObjectArgs.checkNotNull(throwable, "throwable");
         
         String x = String.format("%n\tgetMessage()='%s'", throwable.getMessage());
@@ -154,6 +162,29 @@ public final class ThrowableUtils {
             x = x.concat(String.format(",%n%sgetCause()='%s'", indent, cause));
         }
         x = x.concat(String.format("%n\t]"));
+        return x;
+    }
+
+    /**
+     * @param throwable
+     *        non-{@code null} Throwable reference
+     *
+     * @return output from {@link Throwable#printStackTrace()}
+     *
+     * @throws NullPointerException
+     *         if {@code throwable} is {@code null}
+     */
+    @FullyTested
+    public static String
+    toStringWithStackTrace(Throwable throwable) {
+
+        ObjectArgs.checkNotNull(throwable, "throwable");
+
+        // Ref: https://stackoverflow.com/a/1149712/257299
+        final StringWriter sw = new StringWriter();
+        final PrintWriter pw = new PrintWriter(sw);
+        throwable.printStackTrace(pw);
+        final String x = sw.toString();
         return x;
     }
 }

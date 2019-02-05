@@ -52,9 +52,12 @@
     <modules>
         <module>kevinarpe-papaya</module>
         <module>kevinarpe-papaya-joda-time</module>
+        <module>kevinarpe-papaya-slf4j</module>
         <module>kevinarpe-papaya-testing-log4j</module>
         <module>kevinarpe-papaya-testing-log4j-junit</module>
         <module>kevinarpe-papaya-testing-log4j-testng</module>
+        <module>kevinarpe-papaya-testing-logback</module>
+        <module>kevinarpe-papaya-testing-logback-testng</module>
         <module>kevinarpe-papaya-jdk-derived</module>
     </modules>
 
@@ -217,13 +220,13 @@
                     <configuration>
                         <signature>
                             <groupId>org.codehaus.mojo.signature</groupId>
-                            <artifactId>java16-sun</artifactId>
+                            <artifactId>java18</artifactId>
                             <version>1.0</version>
                         </signature>
                     </configuration>
                     <executions>
                         <execution>
-                            <id>check-java16-sun</id>
+                            <id>check-java18</id>
                             <phase>test</phase>
                             <goals>
                                 <goal>check</goal>
@@ -289,37 +292,35 @@
         </plugins>
     </reporting>
 
+    <!-- Intentional: Do not include 'scope' tags below.  Use in the child POMs.
+         Ref: https://stackoverflow.com/a/20750041/257299
+    -->
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.testng</groupId>
                 <artifactId>testng</artifactId>
                 <version>${testng.version}</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-all</artifactId>
                 <version>${mockito-all.version}</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.powermock</groupId>
                 <artifactId>powermock-module-testng</artifactId>
                 <version>${powermock.version}</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.powermock</groupId>
                 <artifactId>powermock-api-mockito</artifactId>
                 <version>${powermock.version}</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -330,7 +331,6 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava-testlib</artifactId>
                 <version>${guava.version}</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.google.code.findbugs</groupId>

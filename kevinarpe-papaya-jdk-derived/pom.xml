@@ -13,7 +13,7 @@
     <artifactId>kevinarpe-papaya-jdk-derived</artifactId>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
-    <description>Papaya for JDK Derived Classes: Utilities for Java 1.6+ written by Kevin Connor ARPE</description>
+    <description>Papaya for JDK Derived Classes: Utilities for Java 1.8+ written by Kevin Connor ARPE</description>
     <licenses>
         <license>
             <name>GNU GENERAL PUBLIC LICENSE, Version 2, June 1991</name>
@@ -68,10 +68,12 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava-testlib</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

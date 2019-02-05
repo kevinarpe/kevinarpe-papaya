@@ -25,6 +25,9 @@ package com.googlecode.kevinarpe.papaya.testing.logging;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.EmptyContainerAllowed;
+import com.googlecode.kevinarpe.papaya.annotation.ReadOnlyContainer;
+
 import java.util.List;
 
 /**
@@ -60,5 +63,8 @@ public interface CapturingLogger<TLoggingEvent> {
      *
      * @return list of logging events
      */
-    public List<TLoggingEvent> getLoggingEventList();
+    @EmptyContainerAllowed
+    @ReadOnlyContainer
+    List<TLoggingEvent>
+    getLoggingEventList();
 }

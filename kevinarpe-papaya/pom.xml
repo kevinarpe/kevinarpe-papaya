@@ -13,7 +13,7 @@
     <artifactId>kevinarpe-papaya</artifactId>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
-    <description>Papaya: Utilities for Java 1.6+ written by Kevin Connor ARPE</description>
+    <description>Papaya: Utilities for Java 1.8+ written by Kevin Connor ARPE</description>
 
     <build>
         <plugins>
@@ -61,18 +61,22 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-module-testng</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-api-mockito</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -81,6 +85,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava-testlib</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.google.code.findbugs</groupId>

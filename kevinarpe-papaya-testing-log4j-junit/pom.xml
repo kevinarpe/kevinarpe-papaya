@@ -13,7 +13,7 @@
     <artifactId>kevinarpe-papaya-testing-log4j-junit</artifactId>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
-    <description>Papaya for Testing Log4J with JUnit: Utilities for Java 1.6+ written by Kevin Connor ARPE</description>
+    <description>Papaya for Testing Log4J with JUnit: Utilities for Java 1.8+ written by Kevin Connor ARPE</description>
 
     <build>
         <plugins>
@@ -62,10 +62,6 @@
             <groupId>com.googlecode.kevinarpe-papaya</groupId>
             <artifactId>kevinarpe-papaya-testing-log4j</artifactId>
             <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

@@ -26,7 +26,9 @@ package com.googlecode.kevinarpe.papaya.testing.logging.log4j;
  */
 
 import com.google.common.collect.ImmutableList;
+import com.googlecode.kevinarpe.papaya.annotation.EmptyContainerAllowed;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.annotation.ReadOnlyContainer;
 import com.googlecode.kevinarpe.papaya.testing.logging.CapturingLogger;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
@@ -83,8 +85,10 @@ implements CapturingLogger<LoggingEvent> {
      * @see #removeMockAppender()
      * @see #getLoggingEventList()
      */
-    protected final void addMockAppender() {
-        Logger rootLogger = Logger.getRootLogger();
+    protected final void
+    addMockAppender() {
+
+        final Logger rootLogger = Logger.getRootLogger();
         rootLogger.addAppender(_mockAppender);
     }
 
@@ -99,25 +103,28 @@ implements CapturingLogger<LoggingEvent> {
      * @see #addMockAppender()
      * @see #getLoggingEventList()
      */
-    protected final void removeMockAppender() {
-        Logger rootLogger = Logger.getRootLogger();
+    protected final void
+    removeMockAppender() {
+
+        final Logger rootLogger = Logger.getRootLogger();
         rootLogger.removeAppender(_mockAppender);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
-    public final List<LoggingEvent> getLoggingEventList() {
-        ArgumentCaptor<LoggingEvent> argumentCaptor = ArgumentCaptor.forClass(LoggingEvent.class);
-        List<LoggingEvent> loggingEventList = null;
+    @EmptyContainerAllowed
+    @ReadOnlyContainer
+    public final List<LoggingEvent>
+    getLoggingEventList() {
+
+        final ArgumentCaptor<LoggingEvent> argumentCaptor = ArgumentCaptor.forClass(LoggingEvent.class);
         try {
             verify(_mockAppender, atLeastOnce()).doAppend(argumentCaptor.capture());
-            loggingEventList = argumentCaptor.getAllValues();
+            final List<LoggingEvent> x = argumentCaptor.getAllValues();
+            return x;
         }
         catch (Throwable ignore) {
-            loggingEventList = ImmutableList.of();
+            return ImmutableList.of();
         }
-        return loggingEventList;
     }
 }

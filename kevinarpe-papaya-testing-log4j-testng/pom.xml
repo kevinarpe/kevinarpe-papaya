@@ -13,7 +13,7 @@
     <artifactId>kevinarpe-papaya-testing-log4j-testng</artifactId>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
-    <description>Papaya for Testing Log4J with TestNG: Utilities for Java 1.6+ written by Kevin Connor ARPE</description>
+    <description>Papaya for Testing Log4J with TestNG: Utilities for Java 1.8+ written by Kevin Connor ARPE</description>
 
     <build>
         <plugins>
