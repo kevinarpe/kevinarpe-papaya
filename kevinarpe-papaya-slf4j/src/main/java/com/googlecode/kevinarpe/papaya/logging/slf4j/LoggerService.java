@@ -78,13 +78,13 @@ public interface LoggerService {
     void logThrowable(Logger logger,
                       LoggerLevel loggerLevel,
                       IncludeStackTrace includeStackTrace,
-                      String message,
-                      Throwable throwable);
+                      Throwable throwable,
+                      String message);
 
     /**
      * This is a convenience method to call
      * {@link com.googlecode.kevinarpe.papaya.string.MessageFormatter#format(String, Object...)}, then pass the result
-     * to {@link #logThrowable(Logger, LoggerLevel, IncludeStackTrace, String, Throwable)}.
+     * to {@link #logThrowable(Logger, LoggerLevel, IncludeStackTrace, Throwable, String)}.
      * <p>
      * The result of {@code MessageFormatter.format(...)} must not be empty or all whitespace.
      */
@@ -99,7 +99,7 @@ public interface LoggerService {
 
     /**
      * This is a convenience method to call
-     * {@link #logThrowable(Logger, LoggerLevel, IncludeStackTrace, String, Throwable)}
+     * {@link #logThrowable(Logger, LoggerLevel, IncludeStackTrace, Throwable, String)}
      * where {@code message} is {@link #DEFAULT_THROWABLE_MESSAGE}.
      */
     default void logThrowableWithDefaultMessage(Logger logger,
@@ -107,6 +107,6 @@ public interface LoggerService {
                                                 IncludeStackTrace includeStackTrace,
                                                 Throwable throwable) {
 
-        logThrowable(logger, loggerLevel, includeStackTrace, DEFAULT_THROWABLE_MESSAGE, throwable);
+        logThrowable(logger, loggerLevel, includeStackTrace, throwable, DEFAULT_THROWABLE_MESSAGE);
     }
 }

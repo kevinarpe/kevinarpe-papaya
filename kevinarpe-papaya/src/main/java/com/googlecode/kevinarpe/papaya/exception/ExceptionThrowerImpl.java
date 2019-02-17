@@ -60,7 +60,7 @@ implements ExceptionThrower {
                           @NullableElements
                           Object... argArr)
     throws TException {
-
+        @EmptyStringAllowed
         final String message = messageFormatter.format(format, argArr);
         final Constructor<TException> ctor = Classes.getConstructorOrThrow(exceptionClass, String.class);
         final TException x = Classes.newInstanceOrThrow(ctor, message);
@@ -79,7 +79,7 @@ implements ExceptionThrower {
                                  @NullableElements
                                  Object... argArr)
     throws TException {
-
+        @EmptyStringAllowed
         final String message = messageFormatter.format(format, argArr);
         final Constructor<TException> ctor = Classes.getConstructorOrThrow(exceptionClass, String.class, Throwable.class);
         final TException x = Classes.newInstanceOrThrow(ctor, message, cause);
@@ -96,7 +96,7 @@ implements ExceptionThrower {
                           @NullableElements
                           Object... argArr)
     throws TRuntimeException {
-
+        @EmptyStringAllowed
         final String message = messageFormatter.format(format, argArr);
         final Constructor<TRuntimeException> ctor = Classes.getConstructorOrThrow(exceptionClass, String.class);
         final TRuntimeException x = Classes.newInstanceOrThrow(ctor, message);
@@ -115,7 +115,7 @@ implements ExceptionThrower {
                                  @NullableElements
                                  Object... argArr)
     throws TRuntimeException {
-
+        @EmptyStringAllowed
         final String message = messageFormatter.format(format, argArr);
         final Constructor<TRuntimeException> ctor =
             Classes.getConstructorOrThrow(exceptionClass, String.class, Throwable.class);

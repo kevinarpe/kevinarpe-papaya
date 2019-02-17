@@ -56,7 +56,8 @@ implements ThrowableToStringService {
             return s;
         }
         else {
-            final String x = throwable.toString();
+            final StackTraceElement[] arr = throwable.getStackTrace();
+            final String x = throwable + " at " + arr[0];
             return x;
         }
     }

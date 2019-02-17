@@ -25,10 +25,9 @@ package com.googlecode.kevinarpe.papaya.exception;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.StringUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import static org.testng.Assert.*;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -51,6 +50,7 @@ public class ThrowableToStringServiceImplTest {
             Assert.assertTrue(s.contains(message));
             Assert.assertTrue(s.contains("toStringWithUniqueStackTrace_Pass"));
             Assert.assertTrue(s.contains(this.getClass().getSimpleName()));
+            Assert.assertTrue(s.contains(StringUtils.NEW_LINE));
         }
         try {
             throw e0;
@@ -58,8 +58,9 @@ public class ThrowableToStringServiceImplTest {
         catch (Exception e) {
             final String s = classUnderTest.toStringWithUniqueStackTrace(e);
             Assert.assertTrue(s.contains(message));
-            Assert.assertFalse(s.contains("toStringWithUniqueStackTrace_Pass"));
-            Assert.assertFalse(s.contains(this.getClass().getSimpleName()));
+            Assert.assertTrue(s.contains("toStringWithUniqueStackTrace_Pass"));
+            Assert.assertTrue(s.contains(this.getClass().getSimpleName()));
+            Assert.assertFalse(s.contains(StringUtils.NEW_LINE));
         }
     }
 }

@@ -108,8 +108,8 @@ implements LoggerService {
     public void logThrowable(Logger logger,
                              LoggerLevel loggerLevel,
                              IncludeStackTrace includeStackTrace,
-                             String message,
-                             Throwable throwable) {
+                             Throwable throwable,
+                             String message) {
 
         StringArgs.checkNotEmptyOrWhitespace(message, "message");
 
@@ -152,7 +152,7 @@ implements LoggerService {
                                        Object... argArr) {
 
         final String msg = messageFormatter.format(format, argArr);
-        logThrowable(logger, loggerLevel, includeStackTrace, msg, throwable);
+        logThrowable(logger, loggerLevel, includeStackTrace, throwable, msg);
     }
 
     private String

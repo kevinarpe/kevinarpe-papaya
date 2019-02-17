@@ -225,7 +225,7 @@ public class LoggerServiceImplTest {
                 }
                 catch (Exception e) {
                     classUnderTestWithMocks.logThrowable(
-                        mockLogger, loggerLevel, includeStackTrace, loggerLevel.name(), e);
+                        mockLogger, loggerLevel, includeStackTrace, e, loggerLevel.name());
 
                     final ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
 
@@ -303,7 +303,7 @@ public class LoggerServiceImplTest {
 
                     Exception e1 = null;
                     try {
-                        classUnderTestWithMocks.logThrowable(mockLogger, loggerLevel, includeStackTrace, message, e);
+                        classUnderTestWithMocks.logThrowable(mockLogger, loggerLevel, includeStackTrace, e, message);
                     }
                     catch (Exception e2) {
                         e1 = e2;
