@@ -33,6 +33,7 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.annotation.ReadOnlyContainer;
 import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.function.ThrowingFunction;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -51,7 +52,7 @@ public final class ImmutableFullEnumMap<TEnumKey extends Enum<TEnumKey>, TValue>
 extends ForwardingMap<TEnumKey, TValue>
 implements EnumMap2<TEnumKey, TValue> {
 
-    enum IsEmptyEnumAllowed {YES, NO}
+    public enum IsEmptyEnumAllowed { YES, NO }
 
     // Intentional: This Builder not strictly need to be an iface/impl,
     // but it reduces clutter in this class, and improved readability.
@@ -114,14 +115,19 @@ implements EnumMap2<TEnumKey, TValue> {
     }
 
     /**
+     * If you need to throw from {@code keyToValueFunc}, see: {@link #ofKeys2(Class, ThrowingFunction)}.
+     *
      * @param enumClass
      *        must contain one or more enum constants
      * @param keyToValueFunc
      *        maps key to value
+     *
      * @throws NullPointerException
      *         if any args is {@code null}
      * @throws IllegalArgumentException
      *         if {@code enumClass} has zero enum constants
+     *
+     * @see #ofKeys2(Class, ThrowingFunction)
      */
     public static <TEnumKey2 extends Enum<TEnumKey2>, TValue2>
     ImmutableFullEnumMap<TEnumKey2, TValue2>
@@ -147,10 +153,48 @@ implements EnumMap2<TEnumKey, TValue> {
     /**
      * @param enumClass
      *        must contain one or more enum constants
+     * @param keyToValueFunc
+     *        maps key to value (and may throw a checked exception)
+     *
+     * @throws NullPointerException
+     *         if any args is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code enumClass} has zero enum constants
+     *
+     * @see #ofKeys(Class, Function)
+     */
+    public static <TEnumKey2 extends Enum<TEnumKey2>, TValue2>
+    ImmutableFullEnumMap<TEnumKey2, TValue2>
+    ofKeys2(Class<TEnumKey2> enumClass,
+            ThrowingFunction<TEnumKey2, TValue2> keyToValueFunc)
+    throws Exception{
+
+        ObjectArgs.checkNotNull(enumClass, "enumClass");
+        ObjectArgs.checkNotNull(keyToValueFunc, "keyToValueFunc");
+
+        final ImmutableMap.Builder<TEnumKey2, TValue2> b = ImmutableMap.builder();
+        final TEnumKey2[] keyArr = enumClass.getEnumConstants();
+        for (final TEnumKey2 key : keyArr) {
+
+            final TValue2 value = keyToValueFunc.apply(key);
+            b.put(key, value);
+        }
+        final ImmutableMap<TEnumKey2, TValue2> z = b.build();
+        final ImmutableFullEnumMap<TEnumKey2, TValue2> x =
+            new ImmutableFullEnumMap<>(enumClass, z, IsEmptyEnumAllowed.NO);
+        return x;
+    }
+
+    /**
+     * If you need to throw from {@code valueToKeyFunc}, see: {@link #ofValues2(Class, Collection, ThrowingFunction)}.
+     *
+     * @param enumClass
+     *        must contain one or more enum constants
      * @param c
      *        non-empty collection of values where number of elements matches {@code enumClass.getEnumConstants()}
      * @param valueToKeyFunc
      *        maps value to key
+     *
      * @throws NullPointerException
      *         if any args is {@code null}
      * @throws IllegalArgumentException
@@ -160,12 +204,55 @@ implements EnumMap2<TEnumKey, TValue> {
      * </ul>
      *
      * @see Class#getEnumConstants()
+     * @see #ofValues2(Class, Collection, ThrowingFunction)
      */
     public static <TEnumKey2 extends Enum<TEnumKey2>, TValue2>
     ImmutableFullEnumMap<TEnumKey2, TValue2>
     ofValues(Class<TEnumKey2> enumClass,
              Collection<? extends TValue2> c,
              Function<TValue2, TEnumKey2> valueToKeyFunc) {
+
+        ObjectArgs.checkNotNull(enumClass, "enumClass");
+        CollectionArgs.checkNotEmptyAndElementsNotNull(c, "c");
+        ObjectArgs.checkNotNull(valueToKeyFunc, "valueToKeyFunc");
+
+        final ImmutableMap.Builder<TEnumKey2, TValue2> b = ImmutableMap.builder();
+        for (final TValue2 value : c) {
+
+            final TEnumKey2 key = valueToKeyFunc.apply(value);
+            b.put(key, value);
+        }
+        final ImmutableMap<TEnumKey2, TValue2> z = b.build();
+        final ImmutableFullEnumMap<TEnumKey2, TValue2> x =
+            new ImmutableFullEnumMap<>(enumClass, z, IsEmptyEnumAllowed.NO);
+        return x;
+    }
+
+    /**
+     * @param enumClass
+     *        must contain one or more enum constants
+     * @param c
+     *        non-empty collection of values where number of elements matches {@code enumClass.getEnumConstants()}
+     * @param valueToKeyFunc
+     *        maps value to key (and may throw a checked exception)
+     *
+     * @throws NullPointerException
+     *         if any args is {@code null}
+     * @throws IllegalArgumentException
+     * <ul>
+     *     <li>if {@code c} is empty or contains {@code null} values</li>
+     *     <li>if multiple values map to the same key</li>
+     * </ul>
+     *
+     * @see Class#getEnumConstants()
+     * @see #ofValues(Class, Collection, Function)
+     */
+    public static <TEnumKey2 extends Enum<TEnumKey2>, TValue2>
+    ImmutableFullEnumMap<TEnumKey2, TValue2>
+    ofValues2(Class<TEnumKey2> enumClass,
+              Collection<? extends TValue2> c,
+              ThrowingFunction<TValue2, TEnumKey2> valueToKeyFunc)
+    throws Exception{
 
         ObjectArgs.checkNotNull(enumClass, "enumClass");
         CollectionArgs.checkNotEmptyAndElementsNotNull(c, "c");

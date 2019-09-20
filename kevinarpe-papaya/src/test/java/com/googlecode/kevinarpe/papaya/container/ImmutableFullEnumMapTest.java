@@ -30,6 +30,8 @@ import com.google.common.collect.ImmutableMap;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
+
 /**
  * Note: Full coverage is achieved in conjunction with ImmutableFullEnumMapBuilderImplTest.
  *
@@ -61,7 +63,7 @@ public class ImmutableFullEnumMapTest {
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void ctor_FailWhenMissingKey() {
 
-        new ImmutableFullEnumMap<_Enum, String>(
+        new ImmutableFullEnumMap<>(
             _Enum.class, ImmutableMap.of(_Enum._2, "blah"), ImmutableFullEnumMap.IsEmptyEnumAllowed.NO);
     }
 
@@ -82,9 +84,35 @@ public class ImmutableFullEnumMapTest {
         final ImmutableMap<_Enum, String> map = ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def");
 
         final ImmutableFullEnumMap<_Enum, String> map2 =
-            ImmutableFullEnumMap.<_Enum, String>ofKeys(_Enum.class, e -> map.get(e));
+            ImmutableFullEnumMap.ofKeys(_Enum.class, e -> map.get(e));
 
         Assert.assertEquals(map2, map);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMapImpl.ofKeys2()
+    //
+
+    @Test
+    public void ofKeys2_Pass()
+    throws Exception {
+
+        final ImmutableMap<_Enum, String> map = ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def");
+
+        final ImmutableFullEnumMap<_Enum, String> map2 =
+            ImmutableFullEnumMap.ofKeys2(_Enum.class, e -> map.get(e));
+
+        Assert.assertEquals(map2, map);
+    }
+
+    @Test(expectedExceptions = IOException.class)
+    public void ofKeys2_FailWithIOException()
+    throws Exception {
+
+        final ImmutableFullEnumMap<_Enum, String> map2 =
+            ImmutableFullEnumMap.ofKeys2(_Enum.class, e -> { throw new IOException(); });
+
+        throw new Exception("Unreachable code");
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -97,9 +125,37 @@ public class ImmutableFullEnumMapTest {
         final ImmutableBiMap<String, _Enum> map = ImmutableBiMap.of("abc", _Enum._2, "def", _Enum._1);
 
         final ImmutableFullEnumMap<_Enum, String> map2 =
-            ImmutableFullEnumMap.<_Enum, String>ofValues(_Enum.class, map.keySet(), v -> map.get(v));
+            ImmutableFullEnumMap.ofValues(_Enum.class, map.keySet(), v -> map.get(v));
 
         Assert.assertEquals(map2, map.inverse());
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMapImpl.ofValues2()
+    //
+
+    @Test
+    public void ofValues2_Pass()
+    throws Exception {
+
+        final ImmutableBiMap<String, _Enum> map = ImmutableBiMap.of("abc", _Enum._2, "def", _Enum._1);
+
+        final ImmutableFullEnumMap<_Enum, String> map2 =
+            ImmutableFullEnumMap.ofValues2(_Enum.class, map.keySet(), v -> map.get(v));
+
+        Assert.assertEquals(map2, map.inverse());
+    }
+
+    @Test(expectedExceptions = IOException.class)
+    public void ofValues2_FailWithIOException()
+    throws Exception {
+
+        final ImmutableBiMap<String, _Enum> map = ImmutableBiMap.of("abc", _Enum._2, "def", _Enum._1);
+
+        final ImmutableFullEnumMap<_Enum, String> map2 =
+            ImmutableFullEnumMap.<_Enum, String>ofValues2(_Enum.class, map.keySet(), v -> { throw new IOException(); });
+
+        throw new Exception("Unreachable code");
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
