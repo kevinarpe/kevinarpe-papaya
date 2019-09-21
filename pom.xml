@@ -67,28 +67,28 @@
 
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
-        <maven-scm-provider-gitexe.version>1.11.1</maven-scm-provider-gitexe.version>
-        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-        <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
-        <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
-        <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
-        <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
-        <animal-sniffer-maven-plugin.version>1.17</animal-sniffer-maven-plugin.version>
-        <license-maven-plugin.version>1.16</license-maven-plugin.version>
-        <sonar-maven-plugin.version>3.6.0.1398</sonar-maven-plugin.version>
-        <maven-surefire-report-plugin.version>2.22.1</maven-surefire-report-plugin.version>
+        <maven-scm-provider-gitexe.version>1.11.2</maven-scm-provider-gitexe.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
+        <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
+        <maven-source-plugin.version>3.1.0</maven-source-plugin.version>
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <animal-sniffer-maven-plugin.version>1.18</animal-sniffer-maven-plugin.version>
+        <license-maven-plugin.version>2.0.0</license-maven-plugin.version>
+<!--        <sonar-maven-plugin.version>3.6.0.1398</sonar-maven-plugin.version>-->
+        <maven-surefire-report-plugin.version>2.22.2</maven-surefire-report-plugin.version>
         <maven-jxr-plugin.version>3.0.0</maven-jxr-plugin.version>
         <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
 
-        <testng.version>6.14.3</testng.version>
+        <testng.version>7.0.0</testng.version>
         <junit.version>4.12</junit.version>
         <mockito-all.version>1.10.19</mockito-all.version>
         <powermock.version>1.7.4</powermock.version>
-        <guava.version>27.0.1-jre</guava.version>
-        <joda-time.version>2.10.1</joda-time.version>
+        <guava.version>28.1-jre</guava.version>
+        <joda-time.version>2.10.4</joda-time.version>
         <jsr305.version>3.0.2</jsr305.version>
         <log4j.version>1.2.17</log4j.version>
-        <slf4j-api.version>1.7.25</slf4j-api.version>
+        <slf4j-api.version>1.7.28</slf4j-api.version>
         <logback-classic.version>1.2.3</logback-classic.version>
 
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
@@ -260,11 +260,11 @@
                         </execution>
                     </executions>
                 </plugin>
-                <plugin>
-                    <groupId>org.sonarsource.scanner.maven</groupId>
-                    <artifactId>sonar-maven-plugin</artifactId>
-                    <version>${sonar-maven-plugin.version}</version>
-                </plugin>
+<!--                <plugin>-->
+<!--                    <groupId>org.sonarsource.scanner.maven</groupId>-->
+<!--                    <artifactId>sonar-maven-plugin</artifactId>-->
+<!--                    <version>${sonar-maven-plugin.version}</version>-->
+<!--                </plugin>-->
             </plugins>
         </pluginManagement>
     </build>
