@@ -25,6 +25,19 @@ package com.googlecode.kevinarpe.papaya.process;
  * #L%
  */
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableList;
+import com.googlecode.kevinarpe.papaya.PathUtils;
+import com.googlecode.kevinarpe.papaya.appendable.AbstractSimplifiedAppendable;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.exception.InvalidExitValueException;
+import com.googlecode.kevinarpe.papaya.exception.TimeoutException;
+import com.googlecode.kevinarpe.papaya.test.TestAssertUtils;
+import com.googlecode.kevinarpe.papaya.test.TestCharsetUtils;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -41,23 +54,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
-
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableList;
-import com.googlecode.kevinarpe.papaya.PathUtils;
-import com.googlecode.kevinarpe.papaya.appendable.AbstractSimplifiedAppendable;
-import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.exception.InvalidExitValueException;
-import com.googlecode.kevinarpe.papaya.exception.TimeoutException;
-import com.googlecode.kevinarpe.papaya.process.Process2;
-import com.googlecode.kevinarpe.papaya.process.ProcessBuilder2;
-import com.googlecode.kevinarpe.papaya.process.ProcessOutputStreamSettings;
-import com.googlecode.kevinarpe.papaya.test.TestAssertUtils;
-import com.googlecode.kevinarpe.papaya.test.TestCharsetUtils;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -842,14 +838,16 @@ public class ProcessBuilder2_And_Process2_Test {
     
     @Test
     public void Process2_destroy_Pass()
-    throws IOException {
+    throws Exception {
         ProcessBuilder2 builder = _createBuilder();
         Process2 proc = builder.start();
         proc.destroy();
         try {
-            while (!proc.hasFinished()) {
-                System.out.println("Not yet destroyed");
+            for (int i = 1; !proc.hasFinished(); ++i) {
+                System.out.println(i + ": Not yet destroyed");
                 Thread.yield();
+                final int millis = 100;
+                Thread.sleep(millis);
             }
         }
         catch (IOException e) {
