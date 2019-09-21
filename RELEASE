@@ -50,7 +50,7 @@ New instructions for 2019+
 *** git merge --no-ff other-branch-name
 **** You will need to enter a commit/merge comment.
 * mvn clean deploy
-** This will do a SNAPSHOT build and deploy.
+** This will do a SNAPSHOT build and deploy.  Be patient; the upload can take five minutes!
 ** Check the SNAPSHOT build here: https://oss.sonatype.org/content/repositories/snapshots/com/googlecode/kevinarpe-papaya/
 * mvn versions:set -DnewVersion=0.0.x
 ** ... where x is version number.  If current pom.xml has 0.0.18-SNAPSHOT, then x=18
