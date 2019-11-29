@@ -12,6 +12,8 @@ import com.googlecode.kevinarpe.papaya.exception.ThrowableUtils;
 import com.googlecode.kevinarpe.papaya.string.MessageFormatter;
 import org.slf4j.Logger;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /*-
  * #%L
  * This file is part of Papaya.
@@ -41,6 +43,7 @@ import org.slf4j.Logger;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @FullyTested
+@ThreadSafe
 public final class LoggerServiceImpl
 implements LoggerService {
 

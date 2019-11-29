@@ -28,20 +28,23 @@ package com.googlecode.kevinarpe.papaya.exception;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
-import java.util.HashSet;
+import javax.annotation.concurrent.ThreadSafe;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @FullyTested
+@ThreadSafe
 public final class ThrowableToStringServiceImpl
 implements ThrowableToStringService {
 
-    private final HashSet<String> set;
+    private final Set<String> set;
 
     public ThrowableToStringServiceImpl() {
 
-        this.set = new HashSet<>();
+        this.set = ConcurrentHashMap.newKeySet();
     }
 
     /** {@inheritDoc} */

@@ -42,25 +42,20 @@ public class ThrowableToStringServiceImplTest {
         final String message = "blah";
         final Exception e0 = new Exception(message);
 
-        try {
-            throw e0;
-        }
-        catch (Exception e) {
-            final String s = classUnderTest.toStringWithUniqueStackTrace(e);
-            Assert.assertTrue(s.contains(message));
-            Assert.assertTrue(s.contains("toStringWithUniqueStackTrace_Pass"));
-            Assert.assertTrue(s.contains(this.getClass().getSimpleName()));
-            Assert.assertTrue(s.contains(StringUtils.NEW_LINE));
-        }
-        try {
-            throw e0;
-        }
-        catch (Exception e) {
-            final String s = classUnderTest.toStringWithUniqueStackTrace(e);
-            Assert.assertTrue(s.contains(message));
-            Assert.assertTrue(s.contains("toStringWithUniqueStackTrace_Pass"));
-            Assert.assertTrue(s.contains(this.getClass().getSimpleName()));
-            Assert.assertFalse(s.contains(StringUtils.NEW_LINE));
+        // This is a trick to all the same exception to be throw twice from same line number.
+        for (int i = 1; i <= 2; ++i) {
+
+            try {
+                throw e0;
+            }
+            catch (Exception e) {
+                final String s = classUnderTest.toStringWithUniqueStackTrace(e);
+                System.out.println(s);
+                Assert.assertTrue(s.contains(message));
+                Assert.assertTrue(s.contains("toStringWithUniqueStackTrace_Pass"));
+                Assert.assertTrue(s.contains(this.getClass().getSimpleName()));
+                Assert.assertEquals(s.contains(StringUtils.NEW_LINE), (1 == i));
+            }
         }
     }
 }

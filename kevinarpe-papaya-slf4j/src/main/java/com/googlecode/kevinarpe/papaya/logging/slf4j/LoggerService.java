@@ -29,12 +29,17 @@ import com.googlecode.kevinarpe.papaya.annotation.EmptyContainerAllowed;
 import com.googlecode.kevinarpe.papaya.annotation.NullableElements;
 import org.slf4j.Logger;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
  * Strangely, SLF4J does not provide an interface method to log by level parameter, e.g., "info" or "error".  This tiny
  * interface enhances SLF4J's {@link Logger}.
+ * <p>
+ * ThreadSafe?  Implementations must be thread-safe.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@ThreadSafe
 public interface LoggerService {
 
     /**

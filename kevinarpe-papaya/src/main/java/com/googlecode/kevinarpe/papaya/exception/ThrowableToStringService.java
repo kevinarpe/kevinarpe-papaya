@@ -25,9 +25,14 @@ package com.googlecode.kevinarpe.papaya.exception;
  * #L%
  */
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
+ * ThreadSafe?  Implementations must be thread-safe.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@ThreadSafe
 public interface ThrowableToStringService {
 
     /**
