@@ -61,7 +61,7 @@ New instructions for 2019+
 * git status
 ** You will see all pom.xml files updated from the previous command 'mvn versions:set ...'
 * find . -name pom.xml  | xargs git add
-* git commit
+* git commit --message 'Release'
 * git tag
 ** ... show list of existing tags
 * git tag kevinarpe-papaya-parent-0.0.x
@@ -70,10 +70,12 @@ New instructions for 2019+
 * mvn versions:set -DnewVersion=0.0.y-SNAPSHOT
 ** ... where y=1+x
 * find . -name pom.xml  | xargs git add
-* git commit
+* git commit --message 'Next version'
 * git push
 * find . -name pom.xml.versionsBackup  | xargs rm --verbose
 ** ... to cleanup temp files from the previous command 'mvn versions:set ...'
+* git status
+** ... should be all clean now.
 
 Old instructions before 2019
 ===============
