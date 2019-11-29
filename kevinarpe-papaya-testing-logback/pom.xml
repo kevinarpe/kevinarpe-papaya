@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.googlecode.kevinarpe-papaya</groupId>
         <artifactId>kevinarpe-papaya-parent</artifactId>
-        <version>0.0.23-SNAPSHOT</version>
+        <version>0.0.23</version>
     </parent>
     <artifactId>kevinarpe-papaya-testing-logback</artifactId>
     <name>${project.artifactId}</name>
