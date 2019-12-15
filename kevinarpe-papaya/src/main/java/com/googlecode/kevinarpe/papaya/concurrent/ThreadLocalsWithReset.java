@@ -26,9 +26,14 @@ package com.googlecode.kevinarpe.papaya.concurrent;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 
 /**
@@ -81,6 +86,54 @@ public final class ThreadLocalsWithReset {
             ThreadLocalWithReset.withInitialAndReset(
                 () -> new LinkedHashSet<>(),
                 (LinkedHashSet<TValue> z) -> z.clear());
+        return x;
+    }
+
+    public static <TValue extends Enum<TValue>>
+    ThreadLocalWithReset<EnumSet<TValue>>
+    newInstanceForEnumSet(Class<TValue> valueClass) {
+
+        ObjectArgs.checkNotNull(valueClass, "valueClass");
+
+        final ThreadLocalWithReset<EnumSet<TValue>> x =
+            ThreadLocalWithReset.withInitialAndReset(
+                () -> EnumSet.noneOf(valueClass),
+                (EnumSet<TValue> z) -> z.clear());
+        return x;
+    }
+
+    public static <TKey, TValue>
+    ThreadLocalWithReset<HashMap<TKey, TValue>>
+    newInstanceForHashMap() {
+
+        final ThreadLocalWithReset<HashMap<TKey, TValue>> x =
+            ThreadLocalWithReset.withInitialAndReset(
+                () -> new HashMap<>(),
+                (HashMap<TKey, TValue> z) -> z.clear());
+        return x;
+    }
+
+    public static <TKey, TValue>
+    ThreadLocalWithReset<LinkedHashMap<TKey, TValue>>
+    newInstanceForLinkedHashMap() {
+
+        final ThreadLocalWithReset<LinkedHashMap<TKey, TValue>> x =
+            ThreadLocalWithReset.withInitialAndReset(
+                () -> new LinkedHashMap<>(),
+                (LinkedHashMap<TKey, TValue> z) -> z.clear());
+        return x;
+    }
+
+    public static <TKey extends Enum<TKey>, TValue>
+    ThreadLocalWithReset<EnumMap<TKey, TValue>>
+    newInstanceForEnumMap(Class<TKey> keyClass) {
+
+        ObjectArgs.checkNotNull(keyClass, "keyClass");
+
+        final ThreadLocalWithReset<EnumMap<TKey, TValue>> x =
+            ThreadLocalWithReset.withInitialAndReset(
+                () -> new EnumMap<>(keyClass),
+                (EnumMap<TKey, TValue> z) -> z.clear());
         return x;
     }
 }

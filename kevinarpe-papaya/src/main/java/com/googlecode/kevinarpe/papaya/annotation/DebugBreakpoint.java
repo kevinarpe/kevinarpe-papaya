@@ -30,6 +30,15 @@ import java.lang.annotation.Target;
 
 /**
  * Use this annotation to hint about where to put debug breakpoints.
+ * <p>
+ * Example: <pre>{@code
+ * try {
+ *     ...
+ * }
+ * catch (Exception e) {
+ *     &#064;DebugBreakpoint
+ *     int dummy = 1;  // discard exception, but may be useful to set breakpoint here to inspect
+ * }}</pre>
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */

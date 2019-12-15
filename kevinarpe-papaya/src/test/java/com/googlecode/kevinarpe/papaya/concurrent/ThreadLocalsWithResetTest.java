@@ -28,7 +28,11 @@ package com.googlecode.kevinarpe.papaya.concurrent;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 
 /**
@@ -67,5 +71,43 @@ public class ThreadLocalsWithResetTest {
             ThreadLocalsWithReset.newInstanceForLinkedHashSet();
 
         ThreadLocalWithResetTest.test_Pass(classUnderTest, x -> x.isEmpty(), x -> x.add("abc"));
+    }
+
+    private enum _Enum { A, B }
+
+    @Test
+    public void newInstanceForEnumSet_Pass() {
+
+        final ThreadLocalWithReset<EnumSet<_Enum>> classUnderTest =
+            ThreadLocalsWithReset.newInstanceForEnumSet(_Enum.class);
+
+        ThreadLocalWithResetTest.test_Pass(classUnderTest, x -> x.isEmpty(), x -> x.add(_Enum.B));
+    }
+
+    @Test
+    public void newInstanceForHashMap_Pass() {
+
+        final ThreadLocalWithReset<HashMap<String, Integer>> classUnderTest =
+            ThreadLocalsWithReset.newInstanceForHashMap();
+
+        ThreadLocalWithResetTest.test_Pass(classUnderTest, x -> x.isEmpty(), x -> x.put("abc", 123));
+    }
+
+    @Test
+    public void newInstanceForLinkedHashMap_Pass() {
+
+        final ThreadLocalWithReset<LinkedHashMap<String, Integer>> classUnderTest =
+            ThreadLocalsWithReset.newInstanceForLinkedHashMap();
+
+        ThreadLocalWithResetTest.test_Pass(classUnderTest, x -> x.isEmpty(), x -> x.put("abc", 123));
+    }
+
+    @Test
+    public void newInstanceForEnumMap_Pass() {
+
+        final ThreadLocalWithReset<EnumMap<_Enum, Integer>> classUnderTest =
+            ThreadLocalsWithReset.newInstanceForEnumMap(_Enum.class);
+
+        ThreadLocalWithResetTest.test_Pass(classUnderTest, x -> x.isEmpty(), x -> x.put(_Enum.B, 123));
     }
 }

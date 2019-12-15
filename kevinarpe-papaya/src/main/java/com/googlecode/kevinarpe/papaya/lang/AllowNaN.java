@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.annotation;
+package com.googlecode.kevinarpe.papaya.lang;
 
 /*-
  * #%L
@@ -26,10 +26,9 @@ package com.googlecode.kevinarpe.papaya.annotation;
  */
 
 /**
- * Use this annotation to mark anything that is useful for debugging.  Often, IDEs will aggressively suggest to remove
- * unused or unnecessary items that are useful when debugging.
- *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see Float#NaN
+ * @see Double#NaN
  */
-public @interface Debug {
-}
+public enum AllowNaN { YES, NO }

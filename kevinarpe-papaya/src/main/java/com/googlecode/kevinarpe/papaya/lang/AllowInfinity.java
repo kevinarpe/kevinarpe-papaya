@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.annotation;
+package com.googlecode.kevinarpe.papaya.lang;
 
 /*-
  * #%L
@@ -26,10 +26,13 @@ package com.googlecode.kevinarpe.papaya.annotation;
  */
 
 /**
- * Use this annotation to mark anything that is useful for debugging.  Often, IDEs will aggressively suggest to remove
- * unused or unnecessary items that are useful when debugging.
+ * Includes both positive and negative infinity.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see Float#POSITIVE_INFINITY
+ * @see Float#NEGATIVE_INFINITY
+ * @see Double#POSITIVE_INFINITY
+ * @see Double#NEGATIVE_INFINITY
  */
-public @interface Debug {
-}
+public enum AllowInfinity { YES, NO }
