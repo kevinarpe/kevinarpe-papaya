@@ -11,11 +11,7 @@
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
     <description>Papaya Parent: Utilities for Java 1.8+ written by Kevin Connor ARPE</description>
-    <url>http://code.google.com/p/kevinarpe-papaya</url>
-    <issueManagement>
-        <system>code.google.com</system>
-        <url>http://code.google.com/p/kevinarpe-papaya/issues</url>
-    </issueManagement>
+    <url>https://github.com/kevinarpe/kevinarpe-papaya</url>
     <inceptionYear>2013</inceptionYear>
     <licenses>
         <license>
@@ -30,11 +26,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:https://code.google.com/p/kevinarpe-papaya/</connection>
-        <developerConnection>scm:git:https://code.google.com/p/kevinarpe-papaya/
-        </developerConnection>
-        <url>http://code.google.com/p/kevinarpe-papaya/source/browse</url>
-        <tag>kevinarpe-papaya-parent-0.0.19-SNAPSHOT</tag>
+        <connection>scm:git:git://github.com/kevinarpe/kevinarpe-papaya.git</connection>
+        <developerConnection>scm:git:git://github.com/kevinarpe/kevinarpe-papaya.git</developerConnection>
+        <url>https://github.com/kevinarpe/kevinarpe-papaya</url>
     </scm>
     <developers>
         <developer>
