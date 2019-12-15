@@ -25,13 +25,14 @@ package com.googlecode.kevinarpe.papaya.string.joiner.formatter;
  * #L%
  */
 
+import org.mockito.ArgumentMatchers;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
@@ -141,7 +142,7 @@ public class CountingStringFormatter2Test {
     @Test(expectedExceptions = RuntimeException.class)
     public void format_FailWhenFormatThrowsException() {
         RuntimeException aRuntimeException = new RuntimeException();
-        when(mockStringFormatterHelper.format(anyString(), anyString(), anyInt(), anyString()))
+        when(mockStringFormatterHelper.format(anyString(), anyString(), anyInt(), ArgumentMatchers.nullable(String.class)))
             .thenThrow(aRuntimeException);
         assertEquals(classUnderTest.getNextCount(), CountingStringFormatter2.DEFAULT_FIRST_COUNT);
         try {

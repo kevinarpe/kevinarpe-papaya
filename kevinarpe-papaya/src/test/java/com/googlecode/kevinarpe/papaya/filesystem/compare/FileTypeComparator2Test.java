@@ -35,7 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertSame;
 
