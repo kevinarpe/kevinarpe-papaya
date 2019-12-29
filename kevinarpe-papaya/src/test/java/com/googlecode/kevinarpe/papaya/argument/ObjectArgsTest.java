@@ -97,7 +97,24 @@ public class ObjectArgsTest {
     public void checkNotNull_FailWithNull(Object x, String argName) {
         ObjectArgs.checkNotNull(x, argName);
     }
-    
+
+    ///////////////////////////////////////////////////////////////////////////
+    // ObjectArgs.checkIsNull
+    //
+
+    @Test
+    public void checkIsNull_PassWithNull() {
+        ObjectArgs.checkIsNull(null, "dummyArgName");
+        ObjectArgs.checkIsNull(null, null);
+        ObjectArgs.checkIsNull(null, "");
+        ObjectArgs.checkIsNull(null, "   ");
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void checkIsNull_FailWithNonNull() {
+        ObjectArgs.checkIsNull("abc", "dummyArgName");
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // ObjectArgs.checkInstanceOfType
     //

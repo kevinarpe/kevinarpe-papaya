@@ -86,12 +86,38 @@ public final class ObjectArgs {
      *
      * @throws NullPointerException
      *         if {@code ref} is {@code null}
+     *         
+     * @see #checkIsNull(Object, String)
      */
     @FullyTested
     public static <T> T checkNotNull(T ref, String argName) {
         if (null == ref) {
             String w = StringArgs._getArgNameWarning(argName, "argName");
             throw new NullPointerException(String.format("Argument '%s' is null%s", argName, w));
+        }
+        return ref;
+    }
+
+    /**
+     * Tests if an object reference is {@code null}.
+     *
+     * @param ref
+     *        an object reference
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     *
+     * @return the validated object reference -- <b>always</b> {@code null}!
+     *
+     * @throws IllegalArgumentException
+     *         if {@code ref} is not {@code null}
+     *
+     * @see #checkNotNull(Object, String)
+     */
+    @FullyTested
+    public static <T> T checkIsNull(T ref, String argName) {
+        if (null != ref) {
+            String w = StringArgs._getArgNameWarning(argName, "argName");
+            throw new IllegalArgumentException(String.format("Argument '%s' is not null%s", argName, w));
         }
         return ref;
     }
