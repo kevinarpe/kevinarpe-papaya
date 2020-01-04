@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.container;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2020 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,13 +47,22 @@ import java.util.Set;
 public final class ImmutableFullEnumColumnTableBuilder<TEnumKey extends Enum<TEnumKey>, TValue> {
 
     public final Class<TEnumKey> enumKeyClass;
-    private int rowCount;
     private final ImmutableFullEnumMap<TEnumKey, ImmutableList.Builder<TValue>> builderMap;
 
+    /**
+     * Creates a new builder with zero rows.
+     * <p>
+     * To be clear, it is valid to build an empty table with zero rows.
+     *
+     * @param enumKeyClass
+     *        must have one or more enum constants
+     *
+     * @throws IllegalArgumentException
+     *         if {@code enumKeyClass} is an empty enum with zero constants
+     */
     public ImmutableFullEnumColumnTableBuilder(Class<TEnumKey> enumKeyClass) {
 
         this.enumKeyClass = ObjectArgs.checkNotNull(enumKeyClass, "enumKeyClass");
-        this.rowCount = 0;
         this.builderMap = ImmutableFullEnumMap.ofKeys(enumKeyClass, any -> ImmutableList.builder());
     }
 
@@ -69,7 +78,6 @@ public final class ImmutableFullEnumColumnTableBuilder<TEnumKey extends Enum<TEn
     put(Map<? extends TEnumKey, ? extends TValue> map) {
 
         _checkKeys(map.keySet());
-        ++rowCount;
 
         for (final Map.Entry<? extends TEnumKey, ? extends TValue> entry : map.entrySet()) {
 
@@ -99,15 +107,16 @@ public final class ImmutableFullEnumColumnTableBuilder<TEnumKey extends Enum<TEn
      * @return {@code this} for method chaining (builder pattern)
      *
      * @throws IllegalArgumentException
-     *         if keys of {@code multimap} do not match keys of {@link #enumKeyClass}
-     *         <br>if size of each sub-list of {@code multimap} do not match
+     *         <ul>
+     *             <li>if keys of {@code multimap} do not match keys of {@link #enumKeyClass}</li>
+     *             <li>if size of each sub-list of {@code multimap} do not match</li>
+     *         </ul>
      */
     public ImmutableFullEnumColumnTableBuilder<TEnumKey, TValue>
     putAll(Multimap<? extends TEnumKey, ? extends TValue> multimap) {
 
         _checkKeys(multimap.keySet());
-        final int columnSize = _getColumnSize(multimap);
-        rowCount += columnSize;
+        ImmutableColumnTableBuilder._checkColumnSize(multimap);
 
         final Map<? extends TEnumKey, ? extends Collection<? extends TValue>> map = multimap.asMap();
         for (final Map.Entry<? extends TEnumKey, ? extends Collection<? extends TValue>> entry : map.entrySet()) {
@@ -120,31 +129,10 @@ public final class ImmutableFullEnumColumnTableBuilder<TEnumKey extends Enum<TEn
         return this;
     }
 
-    private int
-    _getColumnSize(Multimap<? extends TEnumKey, ? extends TValue> multimap) {
-
-        TEnumKey key0 = null;
-        int columnSize = -1;
-        final Map<? extends TEnumKey, ? extends Collection<? extends TValue>> map = multimap.asMap();
-
-        for (final Map.Entry<? extends TEnumKey, ? extends Collection<? extends TValue>> entry : map.entrySet()) {
-
-            final TEnumKey key = entry.getKey();
-            final Collection<? extends TValue> c = entry.getValue();
-            if (-1 == columnSize) {
-                key0 = key;
-                columnSize = c.size();
-            }
-            else if (c.size() != columnSize) {
-                throw new IllegalArgumentException(String.format("Key [%s] has %d items, but key [%s] has %d items",
-                    key0, columnSize, key, c.size()));
-            }
-        }
-        return columnSize;
-    }
-
     /**
      * Builds a new instance of {@link ImmutableFullEnumColumnTable}.
+     * <p>
+     * To be clear, it is valid to build an empty table with zero rows.
      */
     public ImmutableFullEnumColumnTable<TEnumKey, TValue>
     build() {
@@ -152,7 +140,7 @@ public final class ImmutableFullEnumColumnTableBuilder<TEnumKey extends Enum<TEn
         final ImmutableFullEnumMap<TEnumKey, ImmutableList<TValue>> map =
             ImmutableFullEnumMap.ofKeys(builderMap.getEnumClass(), k -> builderMap.get(k).build());
 
-        final ImmutableFullEnumColumnTable<TEnumKey, TValue> x = new ImmutableFullEnumColumnTable<>(rowCount, map);
+        final ImmutableFullEnumColumnTable<TEnumKey, TValue> x = ImmutableFullEnumColumnTable.of(map);
         return x;
     }
 }

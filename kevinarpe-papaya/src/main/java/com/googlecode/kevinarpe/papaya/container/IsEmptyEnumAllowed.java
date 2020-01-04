@@ -1,6 +1,6 @@
-package com.googlecode.kevinarpe.papaya.testing;
+package com.googlecode.kevinarpe.papaya.container;
 
-/*
+/*-
  * #%L
  * This file is part of Papaya.
  * %%
@@ -26,30 +26,6 @@ package com.googlecode.kevinarpe.papaya.testing;
  */
 
 /**
- * For those projects that require full, static-free mocking capabilities, use this interface.
- * Else, the concrete implementation {@link TestClassFinderUtils} will suffice.
- *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public interface ITestClassFinderUtils {
-
-    /**
-     * Constructs a new instance of TestClassFinder.
-     *
-     * @return new instance
-     *
-     * @see #newFactory()
-     */
-    TestClassFinder newInstance();
-
-    /**
-     * Retrieves a TestClassFinderFactory.  As the default factory implementation is stateless, a
-     * global instance is always returned by this helper.  Unless an additional layer of indirection
-     * is required for mocking or testing, it is usually sufficient to call {@link #newInstance()}.
-     *
-     * @return factory instance
-     *
-     * @see #newInstance()
-     */
-    TestClassFinderFactory newFactory();
-}
+public enum IsEmptyEnumAllowed { YES, NO }

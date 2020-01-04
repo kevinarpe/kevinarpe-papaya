@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.primitives;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2020 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ package com.googlecode.kevinarpe.papaya.primitives;
 import com.google.common.math.DoubleMath;
 import com.google.common.primitives.Ints;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.lang.Floats2;
 
 /**
  * Methods "missing" from Google Guava's {@link com.google.common.primitives.Longs}.
@@ -43,13 +44,16 @@ public final class Longs2 {
      * Safely casts a double value to long.  Inspired by {@link Ints#checkedCast(long)} and friends.
      *
      * @param value
-     *        it is safe to pass a {@code float} value as this will be upcast without loss of precision
+     *        it is safe to pass a {@code float} value as this will be up-cast without loss of precision
      *        to a {@code double} value
      *
      * @throws IllegalArgumentException
-     *         if input value is not an integral value
+     *         if input value is not an integral value, e.g., {@link Double#NaN}, {@link Double#POSITIVE_INFINITY},
+     *         {@link Double#NEGATIVE_INFINITY}, {@code -4.5d}
      *
      * @see DoubleMath#isMathematicalInteger(double)
+     * @see Floats2#checkedCastFromInt(int)
+     * @see Ints#checkedCast(long)
      */
     public static long
     checkedCastFromDouble(final double value) {

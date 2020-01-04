@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.container;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2020 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -119,9 +119,7 @@ public class ImmutableFullEnumMapBuilderImplTest {
 
         classUnderTest.putAll(ImmutableMap.of());
 
-        final ImmutableFullEnumMap<_EmptyEnum, String> map =
-            classUnderTest.buildWhere(ImmutableFullEnumMap.IsEmptyEnumAllowed.YES);
-
+        final ImmutableFullEnumMap<_EmptyEnum, String> map = classUnderTest.buildWhere(IsEmptyEnumAllowed.YES);
         Assert.assertTrue(map.isEmpty());
     }
 
@@ -182,9 +180,7 @@ public class ImmutableFullEnumMapBuilderImplTest {
         final ImmutableFullEnumMapBuilderImpl<_EmptyEnum, String> classUnderTest =
             new ImmutableFullEnumMapBuilderImpl<>(_EmptyEnum.class);
 
-        final ImmutableFullEnumMap<_EmptyEnum, String> map =
-            classUnderTest.buildWhere(ImmutableFullEnumMap.IsEmptyEnumAllowed.YES);
-
+        final ImmutableFullEnumMap<_EmptyEnum, String> map = classUnderTest.buildWhere(IsEmptyEnumAllowed.YES);
         Assert.assertTrue(map.isEmpty());
     }
 
@@ -196,9 +192,7 @@ public class ImmutableFullEnumMapBuilderImplTest {
 
         classUnderTest.put(_Enum._1, "abc").put(_Enum._2, "def");
 
-        final ImmutableFullEnumMap<_Enum, String> map =
-            classUnderTest.buildWhere(ImmutableFullEnumMap.IsEmptyEnumAllowed.NO);
-
+        final ImmutableFullEnumMap<_Enum, String> map = classUnderTest.buildWhere(IsEmptyEnumAllowed.NO);
         Assert.assertEquals(2, map.size());
     }
 
@@ -209,7 +203,6 @@ public class ImmutableFullEnumMapBuilderImplTest {
             new ImmutableFullEnumMapBuilderImpl<>(_Enum.class);
 
         classUnderTest.put(_Enum._1, "abc");
-
-        classUnderTest.buildWhere(ImmutableFullEnumMap.IsEmptyEnumAllowed.NO);
+        classUnderTest.buildWhere(IsEmptyEnumAllowed.NO);
     }
 }

@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.container;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2020 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,15 +27,15 @@ package com.googlecode.kevinarpe.papaya.container;
 
 import com.google.common.collect.ImmutableList;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-import com.googlecode.kevinarpe.papaya.argument.IntArgs;
 import com.googlecode.kevinarpe.papaya.argument.MapArgs;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
 /**
  * A simple wrapper around {@link ImmutableFullEnumMap} and {@link ImmutableList} where each sub-list represents
- * column-wise data.  This structure guarantees each sub-list will have equal size.
+ * a column of data.  This data structure guarantees each sub-list will have equal size.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
@@ -45,44 +45,77 @@ import java.util.Map;
 @FullyTested
 public final class ImmutableFullEnumColumnTable<TEnumKey extends Enum<TEnumKey>, TValue> {
 
-    /** Be careful: This can be zero if each sub-list of {@link #keyToColumnListMap} is empty. */
-    public final int rowCount;
-
-    /** Each sub-list must have size equal to {@link #rowCount}. */
-    public final ImmutableFullEnumMap<TEnumKey, ImmutableList<TValue>> keyToColumnListMap;
-
     /**
-     * @param rowCount
-     *        may be zero if each sub-list of {@code keyToColumnListMap} is empty
+     * Creates a new instance without any copies.
      *
-     * @param keyToColumnListMap
-     *        each sub-list must have size equal to {@code rowCount}
+     * @param listMap
+     *        <ul>
+     *            <li>must not be empty -- a table must have at least one column</li>
+     *            <li>each sub-list must have equal size</li>
+     *            <li>all empty sub-lists is considered an empty table and will have {@link #rowCount} equal zero</li>
+     *        </ul>
      *
      * @throws IllegalArgumentException
-     *         if {@code rowCount} is invalid
+     *         if any two sub-lists have different size
+     *
+     * @see #copyOf(Map)
      */
-    public ImmutableFullEnumColumnTable(final int rowCount,
-                                        ImmutableFullEnumMap<TEnumKey, ? extends List<? extends TValue>>
-                                            keyToColumnListMap) {
+    public static <TEnumKey extends Enum<TEnumKey>, TValue>
+    ImmutableFullEnumColumnTable<TEnumKey, TValue>
+    of(ImmutableFullEnumMap<TEnumKey, ImmutableList<TValue>> listMap) {
 
-        this.rowCount = IntArgs.checkNotNegative(rowCount, "rowCount");
-        // In theory, ImmutableFullEnumMap allows empty when the enum has zero constants.  However, for a table,
-        // this makes no sense lah.
-        MapArgs.checkNotEmpty(keyToColumnListMap, "keyToColumnListMap");
+        final ImmutableFullEnumColumnTable<TEnumKey, TValue> x = new ImmutableFullEnumColumnTable<>(listMap);
+        return x;
+    }
 
-        for (final Map.Entry<TEnumKey, ? extends List<? extends TValue>> entry : keyToColumnListMap.entrySet()) {
+    /**
+     * Copies the map and each sub-list to create new instance.  To avoid copies, see: {@link #of(ImmutableFullEnumMap)}.
+     *
+     * @param listMap
+     *        <ul>
+     *            <li>must not be empty -- a table must have at least one column</li>
+     *            <li>each sub-list must have equal size</li>
+     *            <li>all empty sub-lists is considered an empty table and will have {@link #rowCount} equal zero</li>
+     *        </ul>
+     *
+     * @throws IllegalArgumentException
+     *         if any two sub-lists have different size
+     *
+     * @see #of(ImmutableFullEnumMap)
+     */
+    public static <TEnumKey extends Enum<TEnumKey>, TValue>
+    ImmutableFullEnumColumnTable<TEnumKey, TValue>
+    copyOf(Map<TEnumKey, ? extends List<? extends TValue>> listMap) {
 
-            final TEnumKey key = entry.getKey();
-            final List<? extends TValue> columnList = entry.getValue();
-            if (columnList.size() != rowCount) {
+        MapArgs.checkNotEmpty(listMap, "listMap");
+        @SuppressWarnings("unchecked")
+        final Class<TEnumKey> enumClass = (Class<TEnumKey>) listMap.keySet().iterator().next().getClass();
 
-                throw new IllegalArgumentException(String.format(
-                    "Argument 'rowCount' is %d, but key [%s] has %d items", rowCount, key, columnList.size()));
-            }
+        final EnumSet<TEnumKey> keySet = EnumSet.allOf(enumClass);
+        if (false == keySet.equals(listMap.keySet())) {
+
+            keySet.removeAll(listMap.keySet());
+            throw new IllegalArgumentException(String.format("Missing %d keys: %s", keySet.size(), keySet));
         }
-        this.keyToColumnListMap =
-            ImmutableFullEnumMap.ofKeys(
-                keyToColumnListMap.getEnumClass(),
-                k -> ImmutableList.copyOf(keyToColumnListMap.get(k)));
+        final ImmutableFullEnumMap<TEnumKey, ImmutableList<TValue>> listMap2 =
+            ImmutableFullEnumMap.ofKeys(enumClass,
+                k -> ImmutableList.copyOf(listMap.get(k)));
+
+        final ImmutableFullEnumColumnTable<TEnumKey, TValue> x = new ImmutableFullEnumColumnTable<>(listMap2);
+        return x;
+    }
+
+    /** Be careful: This can be zero if each sub-list of {@link #listMap} is empty. */
+    public final int rowCount;
+
+    /** Each sub-list is guaranteed to have size equal to {@link #rowCount}. */
+    public final ImmutableFullEnumMap<TEnumKey, ImmutableList<TValue>> listMap;
+
+    private ImmutableFullEnumColumnTable(ImmutableFullEnumMap<TEnumKey, ImmutableList<TValue>> listMap) {
+
+        // In theory, ImmutableFullEnumMap allows empty when the enum has zero constants.
+        // However, for a table, makes no sense lah.
+        this.listMap = MapArgs.checkNotEmpty(listMap, "listMap");
+        this.rowCount = ImmutableColumnTable._getRowCount(listMap);
     }
 }

@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.container;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2020 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,8 +51,6 @@ import java.util.function.Function;
 public final class ImmutableFullEnumMap<TEnumKey extends Enum<TEnumKey>, TValue>
 extends ForwardingMap<TEnumKey, TValue>
 implements EnumMap2<TEnumKey, TValue> {
-
-    public enum IsEmptyEnumAllowed { YES, NO }
 
     // Intentional: This Builder not strictly need to be an iface/impl,
     // but it reduces clutter in this class, and improved readability.

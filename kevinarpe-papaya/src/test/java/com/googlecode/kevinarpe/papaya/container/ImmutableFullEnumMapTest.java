@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.container;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2020 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,7 +54,7 @@ public class ImmutableFullEnumMapTest {
             new ImmutableFullEnumMap<>(
                 _Enum.class,
                 ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"),
-                ImmutableFullEnumMap.IsEmptyEnumAllowed.NO);
+                IsEmptyEnumAllowed.NO);
 
         Assert.assertEquals(map.get(_Enum._1), "def");
         Assert.assertEquals(map.get(_Enum._2), "abc");
@@ -63,15 +63,13 @@ public class ImmutableFullEnumMapTest {
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void ctor_FailWhenMissingKey() {
 
-        new ImmutableFullEnumMap<>(
-            _Enum.class, ImmutableMap.of(_Enum._2, "blah"), ImmutableFullEnumMap.IsEmptyEnumAllowed.NO);
+        new ImmutableFullEnumMap<>(_Enum.class, ImmutableMap.of(_Enum._2, "blah"), IsEmptyEnumAllowed.NO);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void ctor_FailWhenEmptyEnum() {
 
-        new ImmutableFullEnumMap<_EmptyEnum, String>(
-            _EmptyEnum.class, ImmutableMap.of(), ImmutableFullEnumMap.IsEmptyEnumAllowed.NO);
+        new ImmutableFullEnumMap<_EmptyEnum, String>(_EmptyEnum.class, ImmutableMap.of(), IsEmptyEnumAllowed.NO);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

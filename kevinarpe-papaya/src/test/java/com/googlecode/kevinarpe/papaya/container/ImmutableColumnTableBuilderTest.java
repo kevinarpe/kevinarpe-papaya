@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.container;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2020 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,110 +25,69 @@ package com.googlecode.kevinarpe.papaya.container;
  * #L%
  */
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import org.testng.annotations.Test;
-
-import static org.testng.Assert.*;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public class ImmutableColumnTableBuilderTest {
 
-    public static class ImmutableFullEnumColumnTableBuilderTest {
-
-        private enum _Enum { A, B }
-
-        @Test
-        public void ctor_passWhenEmptyTable() {
-
-            new ImmutableFullEnumColumnTableBuilder<>(_Enum.class).build();
-        }
-
-        @Test
-        public void put_passWhenNotEmptyTable() {
-
-            new ImmutableFullEnumColumnTableBuilder<>(_Enum.class)
-                .put(ImmutableMap.of(_Enum.A, "123", _Enum.B, "234"))
-                .build();
-        }
-
-        @Test
-        public void put_passWhenNotEmptyTable2() {
-
-            new ImmutableFullEnumColumnTableBuilder<>(_Enum.class)
-                .put(ImmutableMap.of(_Enum.B, "234", _Enum.A, "123"))
-                .build();
-        }
-
-        @Test(expectedExceptions = IllegalArgumentException.class)
-        public void put_failWhenMissingKey() {
-
-            new ImmutableFullEnumColumnTableBuilder<>(_Enum.class)
-                .put(ImmutableMap.of(_Enum.B, "234"));
-        }
-
-        @Test
-        public void putAll_pass() {
-
-            new ImmutableFullEnumColumnTableBuilder<>(_Enum.class)
-                .putAll(ImmutableListMultimap.of(
-                    _Enum.A, "123",
-                    _Enum.B, "234"))
-                .build();
-        }
-
-        @Test
-        public void putAll_pass2() {
-
-            new ImmutableFullEnumColumnTableBuilder<>(_Enum.class)
-                .putAll(ImmutableListMultimap.of(
-                    _Enum.A, "123",
-                    _Enum.A, "1234",
-                    _Enum.B, "234",
-                    _Enum.B, "2345"))
-                .build();
-        }
-
-        @Test(expectedExceptions = IllegalArgumentException.class)
-        public void putAll_failWhenColumnSizeNotMatch() {
-
-            new ImmutableFullEnumColumnTableBuilder<>(_Enum.class)
-                .putAll(ImmutableListMultimap.of(
-                    _Enum.A, "123",
-                    _Enum.A, "1234",
-                    _Enum.B, "234"))
-                .build();
-        }
-
-        @Test(expectedExceptions = IllegalArgumentException.class)
-        public void putAll_failWhenColumnSizeNotMatch2() {
-
-            new ImmutableFullEnumColumnTableBuilder<>(_Enum.class)
-                .putAll(ImmutableListMultimap.of(
-                    _Enum.A, "123",
-                    _Enum.B, "234",
-                    _Enum.B, "2345"))
-                .build();
-        }
-    }
+    ///////////////////////////////////////////////////////////////////////////
+    // ImmutableColumnTableBuilder.ctor(Set)
+    //
 
     @Test
-    public void ctor_passWhenEmptyTable() {
+    public void ctorSet_PassWhenEmptyTable() {
 
         new ImmutableColumnTableBuilder<String, String>(ImmutableSet.of("abc", "def")).build();
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void ctor_failWhenEmptyTable() {
+    public void ctorSet_FailWhenEmptyTable() {
 
         new ImmutableColumnTableBuilder<String, String>(ImmutableSet.of());
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+    // ImmutableColumnTableBuilder.ctor(List)
+    //
+
     @Test
-    public void put_passWhenNotEmptyTable() {
+    public void ctorList_PassWhenEmptyTable() {
+
+        new ImmutableColumnTableBuilder<String, String>(ImmutableList.of("abc", "def")).build();
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void ctorList_FailWhenEmptyTable() {
+
+        new ImmutableColumnTableBuilder<String, String>(ImmutableList.of());
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class,
+        expectedExceptionsMessageRegExp = "\\QFound 1 duplicate keys: [abc]\\E")
+    public void ctorList_FailWhenDuplicates() {
+
+        new ImmutableColumnTableBuilder<String, String>(ImmutableList.of("abc", "def", "abc"));
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class,
+        expectedExceptionsMessageRegExp = "\\QFound 3 duplicate keys: [abc, abc, def]\\E")
+    public void ctorList_FailWhenDuplicates2() {
+
+        new ImmutableColumnTableBuilder<String, String>(ImmutableList.of("abc", "def", "abc", "abc", "def"));
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // ImmutableColumnTableBuilder.put
+    //
+
+    @Test
+    public void put_PassWhenNotEmptyTable() {
 
         new ImmutableColumnTableBuilder<String, String>(ImmutableSet.of("abc", "def"))
             .put(ImmutableMap.of("abc", "123", "def", "234"))
@@ -136,7 +95,7 @@ public class ImmutableColumnTableBuilderTest {
     }
 
     @Test
-    public void put_passWhenNotEmptyTable2() {
+    public void put_PassWhenNotEmptyTable2() {
 
         new ImmutableColumnTableBuilder<String, String>(ImmutableSet.of("abc", "def"))
             .put(ImmutableMap.of("def", "234", "abc", "123"))
@@ -144,28 +103,32 @@ public class ImmutableColumnTableBuilderTest {
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void put_failWhenMissingKey() {
+    public void put_FailWhenMissingKey() {
 
         new ImmutableColumnTableBuilder<String, String>(ImmutableSet.of("abc", "def"))
             .put(ImmutableMap.of("def", "234"));
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void put_failWhenExtraKey() {
+    public void put_FailWhenExtraKey() {
 
         new ImmutableColumnTableBuilder<String, String>(ImmutableSet.of("abc", "def"))
             .put(ImmutableMap.of("def", "234", "abc", "123", "ghi", "387"));
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void put_failWhenMissingKeyAndExtraKey() {
+    public void put_FailWhenMissingKeyAndExtraKey() {
 
         new ImmutableColumnTableBuilder<String, String>(ImmutableSet.of("abc", "def"))
             .put(ImmutableMap.of("def", "234", "ghi", "387"));
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+    // ImmutableColumnTableBuilder.putAll
+    //
+
     @Test
-    public void putAll_pass() {
+    public void putAll_Pass() {
 
         new ImmutableColumnTableBuilder<String, String>(ImmutableSet.of("abc", "def"))
             .putAll(ImmutableListMultimap.of(
@@ -175,7 +138,7 @@ public class ImmutableColumnTableBuilderTest {
     }
 
     @Test
-    public void putAll_pass2() {
+    public void putAll_Pass2() {
 
         new ImmutableColumnTableBuilder<String, String>(ImmutableSet.of("abc", "def"))
             .putAll(ImmutableListMultimap.of(
@@ -187,7 +150,7 @@ public class ImmutableColumnTableBuilderTest {
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void putAll_failWhenMissingKey() {
+    public void putAll_FailWhenMissingKey() {
 
         new ImmutableColumnTableBuilder<String, String>(ImmutableSet.of("abc", "def"))
             .putAll(ImmutableListMultimap.of(
@@ -196,7 +159,7 @@ public class ImmutableColumnTableBuilderTest {
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void putAll_failWhenExtraKey() {
+    public void putAll_FailWhenExtraKey() {
 
         new ImmutableColumnTableBuilder<String, String>(ImmutableSet.of("abc", "def"))
             .putAll(ImmutableListMultimap.of(
@@ -207,7 +170,7 @@ public class ImmutableColumnTableBuilderTest {
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void putAll_failWhenMissingKeyAndExtraKey() {
+    public void putAll_FailWhenMissingKeyAndExtraKey() {
 
         new ImmutableColumnTableBuilder<String, String>(ImmutableSet.of("abc", "def"))
             .putAll(ImmutableListMultimap.of(
@@ -217,7 +180,7 @@ public class ImmutableColumnTableBuilderTest {
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void putAll_failWhenColumnSizeNotMatch() {
+    public void putAll_FailWhenColumnSizeNotMatch() {
 
         new ImmutableColumnTableBuilder<String, String>(ImmutableSet.of("abc", "def"))
             .putAll(ImmutableListMultimap.of(
@@ -227,7 +190,7 @@ public class ImmutableColumnTableBuilderTest {
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void putAll_failWhenColumnSizeNotMatch2() {
+    public void putAll_FailWhenColumnSizeNotMatch2() {
 
         new ImmutableColumnTableBuilder<String, String>(ImmutableSet.of("abc", "def"))
             .putAll(ImmutableListMultimap.of(
@@ -236,26 +199,30 @@ public class ImmutableColumnTableBuilderTest {
                 "def", "234"));
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+    // ImmutableColumnTableBuilder.allOf
+    //
+
     private enum _Enum { A, B }
 
     @Test
-    public void createFullEnum_passWhenEmpty() {
+    public void allOf_PassWhenEmpty() {
 
-        ImmutableColumnTableBuilder.createFullEnum(_Enum.class).build();
+        ImmutableColumnTableBuilder.allOf(_Enum.class).build();
     }
 
     @Test
-    public void createFullEnum_passWhenNotEmpty() {
+    public void allOf_PassWhenNotEmpty() {
 
-        ImmutableColumnTableBuilder.createFullEnum(_Enum.class)
+        ImmutableColumnTableBuilder.allOf(_Enum.class)
             .put(ImmutableMap.of(_Enum.A, "abc", _Enum.B, "def"))
             .build();
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void createFullEnum_failWhenMissingKey() {
+    public void allOf_FailWhenMissingKey() {
 
-        ImmutableColumnTableBuilder.createFullEnum(_Enum.class)
+        ImmutableColumnTableBuilder.allOf(_Enum.class)
             .put(ImmutableMap.of(_Enum.A, "abc"))
             .build();
     }

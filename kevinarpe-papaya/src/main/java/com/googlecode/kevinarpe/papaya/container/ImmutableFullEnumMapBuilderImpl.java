@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.container;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2020 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,13 +85,13 @@ implements ImmutableFullEnumMap.Builder<TEnumKey, TValue> {
     @Override
     public ImmutableFullEnumMap<TEnumKey, TValue>
     build() {
-        final ImmutableFullEnumMap<TEnumKey, TValue> x = buildWhere(ImmutableFullEnumMap.IsEmptyEnumAllowed.NO);
+        final ImmutableFullEnumMap<TEnumKey, TValue> x = buildWhere(IsEmptyEnumAllowed.NO);
         return x;
     }
 
     @Override
     public ImmutableFullEnumMap<TEnumKey, TValue>
-    buildWhere(ImmutableFullEnumMap.IsEmptyEnumAllowed isEmptyEnumAllowed) {
+    buildWhere(IsEmptyEnumAllowed isEmptyEnumAllowed) {
 
         final ImmutableFullEnumMap<TEnumKey, TValue> x = new ImmutableFullEnumMap<>(enumClass, map, isEmptyEnumAllowed);
         return x;

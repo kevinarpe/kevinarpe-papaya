@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.container;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2020 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,15 +26,16 @@ package com.googlecode.kevinarpe.papaya.container;
  */
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableListMultimap;
-import com.googlecode.kevinarpe.papaya.annotation.EmptyContainerAllowed;
+import com.google.common.collect.ImmutableMap;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-import com.googlecode.kevinarpe.papaya.argument.IntArgs;
-import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.argument.MapArgs;
+
+import java.util.List;
+import java.util.Map;
 
 /**
- * A simple wrapper around {@link ImmutableListMultimap} where each sub-list represents column-wise data.
- * This structure guarantees each sub-list will have equal size.
+ * A simple wrapper around {@link ImmutableMap} and {@link ImmutableList} where each sub-list represents a column of
+ * data.  This data structure guarantees each sub-list will have equal size.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
@@ -44,47 +45,96 @@ import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 @FullyTested
 public final class ImmutableColumnTable<TKey, TValue> {
 
-    /** Be careful: This can be zero if {@link #listMultimap} is empty. */
-    public final int rowCount;
-
-    /** Each sub-list must have size equal to {@link #rowCount}. */
-    @EmptyContainerAllowed
-    public final ImmutableListMultimap<TKey, TValue> listMultimap;
-
     /**
-     * @param rowCount
-     *        may be zero if {@code listMultimap} is empty
+     * Creates a new instance without any copies.
      *
-     * @param listMultimap
-     *        each sub-list must have size equal to {@code rowCount}
+     * @param listMap
+     *        <ul>
+     *            <li>must not be empty -- a table must have at least one column</li>
+     *            <li>each sub-list must have equal size</li>
+     *            <li>all empty sub-lists is considered an empty table and will have {@link #rowCount} equal zero</li>
+     *        </ul>
      *
      * @throws IllegalArgumentException
-     *         if {@code rowCount} is invalid
+     *         if any two sub-lists have different size
+     *
+     * @see #copyOf(Map)
      */
-    public ImmutableColumnTable(final int rowCount,
-                                @EmptyContainerAllowed
-                                ImmutableListMultimap<TKey, TValue> listMultimap) {
+    public static <TKey, TValue>
+    ImmutableColumnTable<TKey, TValue>
+    of(ImmutableMap<TKey, ImmutableList<TValue>> listMap) {
 
-        this.rowCount = IntArgs.checkNotNegative(rowCount, "rowCount");
-        this.listMultimap = ObjectArgs.checkNotNull(listMultimap, "listMultimap");
+        final ImmutableColumnTable<TKey, TValue> x = new ImmutableColumnTable<>(listMap);
+        return x;
+    }
 
-        if (listMultimap.isEmpty()) {
+    /**
+     * Copies the map and each sub-list to create new instance.  To avoid copies, see: {@link #of(ImmutableMap)}.
+     *
+     * @param listMap
+     *        <ul>
+     *            <li>must not be empty -- a table must have at least one column</li>
+     *            <li>each sub-list must have equal size</li>
+     *            <li>all empty sub-lists is considered an empty table and will have {@link #rowCount} equal zero</li>
+     *        </ul>
+     *
+     * @throws IllegalArgumentException
+     *         if any two sub-lists have different size
+     *
+     * @see #of(ImmutableMap)
+     */
+    public static <TKey, TValue>
+    ImmutableColumnTable<TKey, TValue>
+    copyOf(Map<? extends TKey, ? extends List<? extends TValue>> listMap) {
 
-            if (0 != rowCount) {
-                throw new IllegalArgumentException(
-                    "Argument 'rowCount' is zero but argument 'listMultimap' is not empty");
-            }
+        MapArgs.checkNotEmpty(listMap, "listMap");
+        final ImmutableMap.Builder<TKey, ImmutableList<TValue>> b = ImmutableMap.builder();
+        for (final Map.Entry<? extends TKey, ? extends List<? extends TValue>> entry : listMap.entrySet()) {
+
+            final TKey key = entry.getKey();
+            final List<? extends TValue> list = entry.getValue();
+            b.put(key, ImmutableList.copyOf(list));
         }
-        else {
-            for (final TKey key : listMultimap.keySet()) {
+        final ImmutableMap<TKey, ImmutableList<TValue>> listMap2 = b.build();
+        final ImmutableColumnTable<TKey, TValue> x = new ImmutableColumnTable<>(listMap2);
+        return x;
+    }
 
-                final ImmutableList<TValue> valueList = listMultimap.get(key);
-                if (valueList.size() != rowCount) {
+    /** Be careful: This can be zero if each sub-list of {@link #listMap} is empty. */
+    public final int rowCount;
 
+    /** Each sub-list is guaranteed to have size equal to {@link #rowCount}. */
+    public final ImmutableMap<TKey, ImmutableList<TValue>> listMap;
+
+    private ImmutableColumnTable(ImmutableMap<TKey, ImmutableList<TValue>> listMap) {
+
+        this.listMap = MapArgs.checkNotEmpty(listMap, "listMap");
+        this.rowCount = _getRowCount(listMap);
+    }
+
+    // Intentional: Package-private to be called from ImmutableFullEnumColumnTable.
+    static <TKey, TValue>
+    int _getRowCount(Map<TKey, ? extends List<? extends TValue>> listMap) {
+
+        TKey key0 = null;
+        int size0 = -1;
+        for (final Map.Entry<TKey, ? extends List<? extends TValue>> entry : listMap.entrySet()) {
+
+            final TKey key = entry.getKey();
+            final List<? extends TValue> list = entry.getValue();
+            if (null == key0) {
+                key0 = key;
+                size0 = list.size();
+            }
+            else {
+                final int size = list.size();
+                if (size != size0) {
                     throw new IllegalArgumentException(String.format(
-                        "Argument 'rowCount' is %d, but key [%s] has %d items", rowCount, key, valueList.size()));
+                        "Key [%s] has sub-list size %d, but key [%s] has sub-list size %d",
+                        key0, size0, key, size));
                 }
             }
         }
+        return size0;
     }
 }

@@ -4,7 +4,7 @@ package com.googlecode.kevinarpe.papaya.container;
  * #%L
  * This file is part of Papaya.
  * %%
- * Copyright (C) 2013 - 2019 Kevin Connor ARPE (kevinarpe@gmail.com)
+ * Copyright (C) 2013 - 2020 Kevin Connor ARPE (kevinarpe@gmail.com)
  * %%
  * Papaya is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,75 +25,126 @@ package com.googlecode.kevinarpe.papaya.container;
  * #L%
  */
 
-import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public class ImmutableColumnTableTest {
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void ctor_FailWhenNegativeRowCount() {
-
-        new ImmutableColumnTable<String, String>(-4, ImmutableListMultimap.of());
-    }
+    ///////////////////////////////////////////////////////////////////////////
+    // ImmutableColumnTable.of
+    //
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void ctor_FailWhenNegativeRowCount2() {
+    public void of_FailWhenZeroColumns() {
 
-        new ImmutableColumnTable<String, String>(-4, ImmutableListMultimap.of("abc", "def"));
+        ImmutableColumnTable.of(ImmutableMap.of());
     }
 
     @Test
-    public void ctor_PassWhenEmpty() {
+    public void of_PassWhenEmpty() {
 
-        new ImmutableColumnTable<String, String>(0, ImmutableListMultimap.of());
-    }
-
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void ctor_FailWhenEmpty() {
-
-        new ImmutableColumnTable<String, String>(5, ImmutableListMultimap.of());
-    }
-
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void ctor_FailWhenNotEmpty() {
-
-        new ImmutableColumnTable<String, String>(0, ImmutableListMultimap.of("abc", "def"));
+        ImmutableColumnTable.of(ImmutableMap.of("abc", ImmutableList.of()));
     }
 
     @Test
-    public void ctor_PassWhenNotEmpty() {
+    public void of_PassWhenNotEmpty() {
 
-        new ImmutableColumnTable<String, String>(2,
-            ImmutableListMultimap.of(
-                "abc", "123",
-                "abc", "456",
-                "def", "234",
-                "def", "567"));
+        ImmutableColumnTable.of(ImmutableMap.of("abc", ImmutableList.of("123")));
+    }
+
+    @Test
+    public void of_PassWhenNotEmpty2() {
+
+        ImmutableColumnTable.of(ImmutableMap.of(
+            "abc", ImmutableList.of("123", "456"),
+            "def", ImmutableList.of("456", "789")));
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void ctor_FailWhenNotEmpty2() {
+    public void of_FailWhenNotEmpty() {
 
-        new ImmutableColumnTable<String, String>(3,
-            ImmutableListMultimap.of(
-                "abc", "123",
-                "abc", "456",
-                "def", "234",
-                "def", "567"));
+        ImmutableColumnTable.of(ImmutableMap.of(
+            "abc", ImmutableList.of("123", "456"),
+            "def", ImmutableList.of("456")));
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void ctor_FailWhenNotEmpty3() {
+    public void of_FailWhenNotEmpty2() {
 
-        new ImmutableColumnTable<String, String>(3,
-            ImmutableListMultimap.of(
-                "abc", "123",
-                "abc", "456",
-                "abc", "789",
-                "def", "234",
-                "def", "567"));
+        ImmutableColumnTable.of(ImmutableMap.of(
+            "abc", ImmutableList.of("123"),
+            "def", ImmutableList.of("456", "789")));
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // ImmutableColumnTable.copyOf
+    //
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void copyOf_FailWhenZeroColumns() {
+
+        ImmutableColumnTable.copyOf(ImmutableMap.of());
+    }
+
+    @Test
+    public void copyOf_PassWhenEmpty() {
+
+        ImmutableColumnTable.copyOf(ImmutableMap.of("abc", ImmutableList.of()));
+    }
+
+    @Test
+    public void copyOf_PassWhenNotEmpty() {
+
+        ImmutableColumnTable.copyOf(ImmutableMap.of("abc", ImmutableList.of("123")));
+    }
+
+    @Test
+    public void copyOf_PassWhenNotEmpty2() {
+
+        ImmutableColumnTable.copyOf(ImmutableMap.of(
+            "abc", ImmutableList.of("123", "456"),
+            "def", ImmutableList.of("456", "789")));
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void copyOf_FailWhenNotEmpty() {
+
+        ImmutableColumnTable.copyOf(ImmutableMap.of(
+            "abc", ImmutableList.of("123", "456"),
+            "def", ImmutableList.of("456")));
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void copyOf_FailWhenNotEmpty2() {
+
+        ImmutableColumnTable.copyOf(ImmutableMap.of(
+            "abc", ImmutableList.of("123"),
+            "def", ImmutableList.of("456", "789")));
+    }
+
+    @Test
+    public void copyOf_PassWhenBaseType() {
+
+        ImmutableColumnTable.<Number, Number>copyOf(ImmutableMap.<Double, List<Double>>of(
+            1.5d, ImmutableList.of(123d, 456d),
+            2.5d, ImmutableList.of(456d, 789d)));
+
+        ImmutableColumnTable.<Double, Number>copyOf(ImmutableMap.<Double, List<Double>>of(
+            1.5d, ImmutableList.of(123d, 456d),
+            2.5d, ImmutableList.of(456d, 789d)));
+
+        ImmutableColumnTable.<Number, Double>copyOf(ImmutableMap.<Double, List<Double>>of(
+            1.5d, ImmutableList.of(123d, 456d),
+            2.5d, ImmutableList.of(456d, 789d)));
+
+        ImmutableColumnTable.<Double, Double>copyOf(ImmutableMap.<Double, List<Double>>of(
+            1.5d, ImmutableList.of(123d, 456d),
+            2.5d, ImmutableList.of(456d, 789d)));
     }
 }
