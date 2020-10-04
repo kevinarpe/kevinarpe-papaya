@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.function;
+package com.googlecode.kevinarpe.papaya.container;
 
 /*-
  * #%L
@@ -25,33 +25,7 @@ package com.googlecode.kevinarpe.papaya.function;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@FullyTested
-@FunctionalInterface
-public interface ThrowingRunnable {
-
-    void run()
-    throws Exception;
-
-    /**
-     * Creates a {@link Runnable} that wraps this instance and re-throws any exceptions using {@link RuntimeException}.
-     */
-    default Runnable
-    asRunnable() {
-
-        final Runnable x =
-            () -> {
-                try {
-                    run();
-                }
-                catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            };
-        return x;
-    }
-}
+public enum AreNullValuesAllowed {YES, NO}

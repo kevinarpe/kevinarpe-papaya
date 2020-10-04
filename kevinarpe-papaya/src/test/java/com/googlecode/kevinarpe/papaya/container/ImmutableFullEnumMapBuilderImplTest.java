@@ -29,6 +29,8 @@ import com.google.common.collect.ImmutableMap;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.Map;
+
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
@@ -37,6 +39,42 @@ public class ImmutableFullEnumMapBuilderImplTest {
     private enum _EmptyEnum {}
 
     private enum _Enum { _1, _2 }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMapBuilderImpl.getEnumClass()
+    //
+
+    @Test
+    public void getEnumClass_Pass() {
+
+        final ImmutableFullEnumMapBuilderImpl<_Enum, String> classUnderTest =
+            new ImmutableFullEnumMapBuilderImpl<>(_Enum.class);
+
+        Assert.assertSame(classUnderTest.getEnumClass(), _Enum.class);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMapBuilderImpl.getReadOnlyMap()
+    //
+
+    @Test
+    public void getReadOnlyMap_Pass() {
+
+        final ImmutableFullEnumMapBuilderImpl<_Enum, String> classUnderTest =
+            new ImmutableFullEnumMapBuilderImpl<>(_Enum.class);
+
+        Assert.assertSame(classUnderTest.getEnumClass(), _Enum.class);
+
+        final Map<_Enum, String> readOnlyMap = classUnderTest.getReadOnlyMap();
+
+        Assert.assertTrue(readOnlyMap.isEmpty());
+
+        classUnderTest.put(_Enum._1, "abc");
+
+        Assert.assertEquals(readOnlyMap, ImmutableMap.of(_Enum._1, "abc"));
+
+        Assert.assertThrows(() -> readOnlyMap.put(_Enum._2, "def"));
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // ImmutableFullEnumMapBuilderImpl.put()

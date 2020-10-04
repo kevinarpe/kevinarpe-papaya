@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.EmptyContainerAllowed;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 import java.util.Collection;
@@ -42,6 +43,7 @@ public final class CollectionArgs {
 
     // Disable default constructor
     private CollectionArgs() {
+        // Empty
     }
 
     /**
@@ -458,5 +460,53 @@ public final class CollectionArgs {
     TNeedle checkContains(Collection<THaystack> ref, TNeedle value, String collectionArgName) {
         ContainerArgs._checkContains(ref, "Collection", value, collectionArgName);
         return value;
+    }
+
+    /**
+     * Tests if a {@link Collection} reference is not null and each element is valid via {@code checkFunc}.
+     * An empty collection will always pass this test.
+     *
+     * @param ref
+     *        a collection reference
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param checkFunc
+     *        functor to check each collection element
+     *        <br>Ex: {@code ObjectArgs::checkNotNull} for {@link ObjectArgs#checkNotNull(Object, String)}
+     *
+     * @return the validated collection reference
+     *
+     * @throws NullPointerException
+     *         if {@code ref} or {@code checkFunc} is {@code null}
+     *
+     * @throws RuntimeException
+     *         if {@code checkFunc} throws for any collection element
+     */
+    @FullyTested
+    @EmptyContainerAllowed
+    public static <TValue, TCollection extends Collection<TValue>>
+    TCollection
+    checkElements(@EmptyContainerAllowed TCollection ref,
+                  String argName,
+                  ScalarCheck<TValue> checkFunc) {
+
+        ObjectArgs.checkNotNull(ref, argName);
+        ObjectArgs.checkNotNull(checkFunc, "checkFunc-for-" + argName);
+
+        final StringBuilder sb = new StringBuilder(String.valueOf(argName)).append('[');
+        final int sbLen = sb.length();
+        int i = 0;
+
+        for (final TValue value : ref) {
+
+            sb.append(i).append(']');
+            final String argName2 = sb.toString();
+            // Intentional: Leave alone prefix
+            sb.delete(sbLen, sb.length());
+
+            checkFunc.check(value, argName2);
+            ++i;
+        }
+        return ref;
     }
 }

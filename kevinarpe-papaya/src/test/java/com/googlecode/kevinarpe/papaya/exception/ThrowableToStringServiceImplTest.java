@@ -53,9 +53,23 @@ public class ThrowableToStringServiceImplTest {
                 System.out.println(s);
                 Assert.assertTrue(s.contains(message));
                 Assert.assertTrue(s.contains("toStringWithUniqueStackTrace_Pass"));
+                Assert.assertTrue(s.contains("[ID:1]"));
                 Assert.assertTrue(s.contains(this.getClass().getSimpleName()));
                 Assert.assertEquals(s.contains(StringUtils.NEW_LINE), (1 == i));
             }
+        }
+        try {
+            throw new Exception("dummy");
+        }
+        catch (Exception e) {
+
+            final String s = classUnderTest.toStringWithUniqueStackTrace(e);
+            System.out.println(s);
+            Assert.assertTrue(s.contains("dummy"));
+            Assert.assertTrue(s.contains("toStringWithUniqueStackTrace_Pass"));
+            Assert.assertTrue(s.contains("[ID:2]"));
+            Assert.assertTrue(s.contains(this.getClass().getSimpleName()));
+            Assert.assertTrue(s.contains(StringUtils.NEW_LINE));
         }
     }
 }

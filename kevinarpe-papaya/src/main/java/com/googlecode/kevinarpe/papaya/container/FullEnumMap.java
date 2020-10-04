@@ -25,39 +25,45 @@ package com.googlecode.kevinarpe.papaya.container;
  * #L%
  */
 
-import com.google.common.collect.ForwardingMap;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.googlecode.kevinarpe.papaya.annotation.EmptyContainerAllowed;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
+import com.googlecode.kevinarpe.papaya.argument.MapArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.container.policy.DoNotAllow;
+import com.googlecode.kevinarpe.papaya.container.policy.PolicyMap;
 import com.googlecode.kevinarpe.papaya.function.ThrowingFunction;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * This class a blend of {@link ImmutableMap} and {@link java.util.EnumMap}, but requires all enum keys to be present.
+ * This class a blend of {@link ImmutableMap} and {@link EnumMap}, but requires all enum keys to be present.
  * <p>
  * These maps are CPU and memory intensive to construct, but very fast to access data after construction.
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 @FullyTested
-public final class ImmutableFullEnumMap<TEnumKey extends Enum<TEnumKey>, TValue>
-extends ForwardingMap<TEnumKey, TValue>
+public final class FullEnumMap<TEnumKey extends Enum<TEnumKey>, TValue>
+extends PolicyMap<TEnumKey, TValue>
 implements EnumMap2<TEnumKey, TValue> {
 
     public interface Builder<TEnumKey2 extends Enum<TEnumKey2>, TValue2> {
 
         Class<TEnumKey2>
         getEnumClass();
+
+        AreNullValuesAllowed
+        areNullValuesAllowed();
 
         /**
          * @return read-only reference to underlying map used by builder
@@ -71,22 +77,25 @@ implements EnumMap2<TEnumKey, TValue> {
          * @param key
          *        must not be {@code null}
          * @param value
-         *        must not be {@code null}
+         *        may be {@code null} when {@link AreNullValuesAllowed#YES}
          *
          * @throws NullPointerException
-         *         if any arg is {@code null}
+         *         if {@code key} is {@code null}
+         *         <br>if {@code value} is {@code null} when {@link AreNullValuesAllowed#NO}
+         *
          * @throws IllegalArgumentException
          *         if {@code key} is already mapped to a value not equal to {@code value}
          */
         Builder<TEnumKey2, TValue2>
         put(TEnumKey2 key,
-            TValue2 value);
+            @Nullable TValue2 value);
 
         /**
          * Convenience method to iterate all pairs and calls {@link #put(Enum, Object)}.
          *
          * @throws NullPointerException
-         *         if any arg is {@code null}
+         *         if {@code map} or any key is {@code null}
+         *         <br>if any value is {@code null} when {@link AreNullValuesAllowed#NO}
          */
         Builder<TEnumKey2, TValue2>
         putAll(Map<TEnumKey2, ? extends TValue2> map);
@@ -95,7 +104,7 @@ implements EnumMap2<TEnumKey, TValue> {
          * Convenience method to call {@link #buildWhere(IsEmptyEnumAllowed)}
          * with {@link IsEmptyEnumAllowed#NO}.
          */
-        ImmutableFullEnumMap<TEnumKey2, TValue2>
+        FullEnumMap<TEnumKey2, TValue2>
         build();
 
         /**
@@ -106,7 +115,7 @@ implements EnumMap2<TEnumKey, TValue> {
          *         if {@code isEmptyEnumAllowed} is {@link IsEmptyEnumAllowed#NO}
          *         and enum ({@code TEnumKey2}) has zero values
          */
-        ImmutableFullEnumMap<TEnumKey2, TValue2>
+        FullEnumMap<TEnumKey2, TValue2>
         buildWhere(IsEmptyEnumAllowed isEmptyEnumAllowed);
     }
 
@@ -119,14 +128,17 @@ implements EnumMap2<TEnumKey, TValue> {
      */
     public static <TEnumKey2 extends Enum<TEnumKey2>, TValue2>
     Builder<TEnumKey2, TValue2>
-    builder(Class<TEnumKey2> enumClass) {
+    builder(Class<TEnumKey2> enumClass,
+            AreNullValuesAllowed areNullValuesAllowed) {
 
-        final ImmutableFullEnumMapBuilderImpl<TEnumKey2, TValue2> x = new ImmutableFullEnumMapBuilderImpl<>(enumClass);
+        final FullEnumMapBuilderImpl<TEnumKey2, TValue2> x =
+            new FullEnumMapBuilderImpl<>(enumClass, areNullValuesAllowed);
         return x;
     }
 
     /**
-     * If you need to throw from {@code keyToValueFunc}, see: {@link #ofKeys2(Class, ThrowingFunction)}.
+     * If you need to throw from {@code keyToValueFunc},
+     * see: {@link #ofKeys2(Class, AreNullValuesAllowed, ThrowingFunction)}.
      *
      * @param enumClass
      *        must contain one or more enum constants
@@ -138,31 +150,33 @@ implements EnumMap2<TEnumKey, TValue> {
      * @throws IllegalArgumentException
      *         if {@code enumClass} has zero enum constants
      *
-     * @see #ofKeys2(Class, ThrowingFunction)
+     * @see #ofKeys2(Class, AreNullValuesAllowed, ThrowingFunction)
      */
     public static <TEnumKey2 extends Enum<TEnumKey2>, TValue2>
-    ImmutableFullEnumMap<TEnumKey2, TValue2>
+    FullEnumMap<TEnumKey2, TValue2>
     ofKeys(Class<TEnumKey2> enumClass,
+           AreNullValuesAllowed areNullValuesAllowed,
            Function<TEnumKey2, TValue2> keyToValueFunc) {
 
         ObjectArgs.checkNotNull(enumClass, "enumClass");
         ObjectArgs.checkNotNull(keyToValueFunc, "keyToValueFunc");
 
-        final ImmutableMap.Builder<TEnumKey2, TValue2> b = ImmutableMap.builder();
+        final EnumMap<TEnumKey2, TValue2> map = new EnumMap<>(enumClass);
         final TEnumKey2[] keyArr = enumClass.getEnumConstants();
         for (final TEnumKey2 key : keyArr) {
 
             final TValue2 value = keyToValueFunc.apply(key);
-            b.put(key, value);
+            map.put(key, value);
         }
-        final ImmutableMap<TEnumKey2, TValue2> z = b.build();
-        final ImmutableFullEnumMap<TEnumKey2, TValue2> x =
-            new ImmutableFullEnumMap<>(enumClass, z, IsEmptyEnumAllowed.NO);
+        // Intentional: Never allow empty enums for this static factory method.
+        final FullEnumMap<TEnumKey2, TValue2> x =
+            new FullEnumMap<>(enumClass, areNullValuesAllowed, map, IsEmptyEnumAllowed.NO);
         return x;
     }
 
     /**
-     * If you do <b>not</b> need to throw from {@code keyToValueFunc}, see: {@link #ofKeys(Class, Function)}.
+     * If you do <b>not</b> need to throw from {@code keyToValueFunc},
+     * see: {@link #ofKeys(Class, AreNullValuesAllowed, Function)}.
      *
      * @param enumClass
      *        must contain one or more enum constants
@@ -174,32 +188,34 @@ implements EnumMap2<TEnumKey, TValue> {
      * @throws IllegalArgumentException
      *         if {@code enumClass} has zero enum constants
      *
-     * @see #ofKeys(Class, Function)
+     * @see #ofKeys(Class, AreNullValuesAllowed, Function)
      */
     public static <TEnumKey2 extends Enum<TEnumKey2>, TValue2>
-    ImmutableFullEnumMap<TEnumKey2, TValue2>
+    FullEnumMap<TEnumKey2, TValue2>
     ofKeys2(Class<TEnumKey2> enumClass,
+            AreNullValuesAllowed areNullValuesAllowed,
             ThrowingFunction<TEnumKey2, TValue2> keyToValueFunc)
     throws Exception{
 
         ObjectArgs.checkNotNull(enumClass, "enumClass");
         ObjectArgs.checkNotNull(keyToValueFunc, "keyToValueFunc");
 
-        final ImmutableMap.Builder<TEnumKey2, TValue2> b = ImmutableMap.builder();
+        final EnumMap<TEnumKey2, TValue2> map = new EnumMap<>(enumClass);
         final TEnumKey2[] keyArr = enumClass.getEnumConstants();
         for (final TEnumKey2 key : keyArr) {
 
             final TValue2 value = keyToValueFunc.apply(key);
-            b.put(key, value);
+            map.put(key, value);
         }
-        final ImmutableMap<TEnumKey2, TValue2> z = b.build();
-        final ImmutableFullEnumMap<TEnumKey2, TValue2> x =
-            new ImmutableFullEnumMap<>(enumClass, z, IsEmptyEnumAllowed.NO);
+        // Intentional: Never allow empty enums for this static factory method.
+        final FullEnumMap<TEnumKey2, TValue2> x =
+            new FullEnumMap<>(enumClass, areNullValuesAllowed, map, IsEmptyEnumAllowed.NO);
         return x;
     }
 
     /**
-     * If you need to throw from {@code valueToKeyFunc}, see: {@link #ofValues2(Class, Collection, ThrowingFunction)}.
+     * If you need to throw from {@code valueToKeyFunc},
+     * see: {@link #ofValues2(Class, AreNullValuesAllowed, Collection, ThrowingFunction)}.
      *
      * @param enumClass
      *        must contain one or more enum constants
@@ -217,11 +233,12 @@ implements EnumMap2<TEnumKey, TValue> {
      * </ul>
      *
      * @see Class#getEnumConstants()
-     * @see #ofValues2(Class, Collection, ThrowingFunction)
+     * @see #ofValues2(Class, AreNullValuesAllowed, Collection, ThrowingFunction)
      */
     public static <TEnumKey2 extends Enum<TEnumKey2>, TValue2>
-    ImmutableFullEnumMap<TEnumKey2, TValue2>
+    FullEnumMap<TEnumKey2, TValue2>
     ofValues(Class<TEnumKey2> enumClass,
+             AreNullValuesAllowed areNullValuesAllowed,
              Collection<? extends TValue2> c,
              Function<TValue2, TEnumKey2> valueToKeyFunc) {
 
@@ -229,20 +246,21 @@ implements EnumMap2<TEnumKey, TValue> {
         CollectionArgs.checkNotEmptyAndElementsNotNull(c, "c");
         ObjectArgs.checkNotNull(valueToKeyFunc, "valueToKeyFunc");
 
-        final ImmutableMap.Builder<TEnumKey2, TValue2> b = ImmutableMap.builder();
+        final EnumMap<TEnumKey2, TValue2> map = new EnumMap<>(enumClass);
         for (final TValue2 value : c) {
 
             final TEnumKey2 key = valueToKeyFunc.apply(value);
-            b.put(key, value);
+            map.put(key, value);
         }
-        final ImmutableMap<TEnumKey2, TValue2> z = b.build();
-        final ImmutableFullEnumMap<TEnumKey2, TValue2> x =
-            new ImmutableFullEnumMap<>(enumClass, z, IsEmptyEnumAllowed.NO);
+        // Intentional: Never allow empty enums for this static factory method.
+        final FullEnumMap<TEnumKey2, TValue2> x =
+            new FullEnumMap<>(enumClass, areNullValuesAllowed, map, IsEmptyEnumAllowed.NO);
         return x;
     }
 
     /**
-     * If you do <b>not</b> need to throw from {@code valueToKeyFunc}, see: {@link #ofValues(Class, Collection, Function)}.
+     * If you do <b>not</b> need to throw from {@code valueToKeyFunc},
+     * see: {@link #ofValues(Class, AreNullValuesAllowed, Collection, Function)}.
      *
      * @param enumClass
      *        must contain one or more enum constants
@@ -260,11 +278,12 @@ implements EnumMap2<TEnumKey, TValue> {
      * </ul>
      *
      * @see Class#getEnumConstants()
-     * @see #ofValues(Class, Collection, Function)
+     * @see #ofValues(Class, AreNullValuesAllowed, Collection, Function)
      */
     public static <TEnumKey2 extends Enum<TEnumKey2>, TValue2>
-    ImmutableFullEnumMap<TEnumKey2, TValue2>
+    FullEnumMap<TEnumKey2, TValue2>
     ofValues2(Class<TEnumKey2> enumClass,
+              AreNullValuesAllowed areNullValuesAllowed,
               Collection<? extends TValue2> c,
               ThrowingFunction<TValue2, TEnumKey2> valueToKeyFunc)
     throws Exception {
@@ -273,22 +292,19 @@ implements EnumMap2<TEnumKey, TValue> {
         CollectionArgs.checkNotEmptyAndElementsNotNull(c, "c");
         ObjectArgs.checkNotNull(valueToKeyFunc, "valueToKeyFunc");
 
-        final ImmutableMap.Builder<TEnumKey2, TValue2> b = ImmutableMap.builder();
+        final EnumMap<TEnumKey2, TValue2> map = new EnumMap<>(enumClass);
         for (final TValue2 value : c) {
 
             final TEnumKey2 key = valueToKeyFunc.apply(value);
-            b.put(key, value);
+            map.put(key, value);
         }
-        final ImmutableMap<TEnumKey2, TValue2> z = b.build();
-        final ImmutableFullEnumMap<TEnumKey2, TValue2> x =
-            new ImmutableFullEnumMap<>(enumClass, z, IsEmptyEnumAllowed.NO);
+        // Intentional: Never allow empty enums for this static factory method.
+        final FullEnumMap<TEnumKey2, TValue2> x =
+            new FullEnumMap<>(enumClass, areNullValuesAllowed, map, IsEmptyEnumAllowed.NO);
         return x;
     }
 
     /**
-     * Note: To construct an empty instance, please call the constructor,
-     * {@link #ImmutableFullEnumMap(Class, Map, IsEmptyEnumAllowed)}, directly with {@link IsEmptyEnumAllowed#YES}.
-     *
      * @param enumClass
      *        must not be {@code null} nor be empty
      * @param map
@@ -298,31 +314,28 @@ implements EnumMap2<TEnumKey, TValue> {
      *         if any args is {@code null}
      * @throws IllegalArgumentException
      *         if {@code map} is empty
-     *
-     * @see #ImmutableFullEnumMap(Class, Map, IsEmptyEnumAllowed)
      */
     public static <TEnumKey2 extends Enum<TEnumKey2>, TValue2>
-    ImmutableFullEnumMap<TEnumKey2, TValue2>
+    FullEnumMap<TEnumKey2, TValue2>
     copyOf(Class<TEnumKey2> enumClass,
+           AreNullValuesAllowed areNullValuesAllowed,
            Map<TEnumKey2, ? extends TValue2> map) {
 
-        final ImmutableFullEnumMap<TEnumKey2, TValue2> x =
-            // Intentional: Never allow empty enums for this static factory method.
-            new ImmutableFullEnumMap<>(enumClass, map, IsEmptyEnumAllowed.NO);
+        // Intentional: Never allow empty enums for this static factory method.
+        final FullEnumMap<TEnumKey2, TValue2> x =
+            new FullEnumMap<>(enumClass, areNullValuesAllowed, map, IsEmptyEnumAllowed.NO);
         return x;
     }
 
     private final Class<TEnumKey> enumClass;
-    private final ImmutableMap<TEnumKey, TValue> map;
 
     /**
-     * Iteration order follows enum iterator order like {@link java.util.EnumMap}.
+     * Iteration order follows enum iterator order like {@link EnumMap}.
      *
      * @param enumClass
      *        must not be {@code null} nor be empty
      * @param map
-     *        keys must be all enums and must not be {@code null}
-     *        <br>This argument may be empty if {@code isEmptyEnumAllowed} is {@link IsEmptyEnumAllowed#YES}.
+     *        keys must be all enums and must not be {@code null} nor be empty
      *
      * @throws NullPointerException
      *         if any args is {@code null}
@@ -330,24 +343,60 @@ implements EnumMap2<TEnumKey, TValue> {
      *         if {@code isEmptyEnumAllowed} is {@link IsEmptyEnumAllowed#NO}
      *         and enum ({@code TEnumKey2}) has zero values
      *
-     * @see #copyOf(Class, Map)
      * @see Maps#immutableEnumMap(Map)
      */
-    public ImmutableFullEnumMap(Class<TEnumKey> enumClass,
-                                @EmptyContainerAllowed Map<TEnumKey, ? extends TValue> map,
-                                IsEmptyEnumAllowed isEmptyEnumAllowed) {
+    public FullEnumMap(Class<TEnumKey> enumClass,
+                       AreNullValuesAllowed areNullValuesAllowed,
+                       @EmptyContainerAllowed
+                       Map<TEnumKey, ? extends TValue> map,
+                       IsEmptyEnumAllowed isEmptyEnumAllowed) {
+        super(
+            _createEnumMap(enumClass, map),
+            _createDoNotAllowSet(areNullValuesAllowed));
 
         this.enumClass = ObjectArgs.checkNotNull(enumClass, "enumClass");
-        ObjectArgs.checkNotNull(map, "map");
+        if (AreNullValuesAllowed.YES.equals(areNullValuesAllowed)) {
+
+            MapArgs.checkKeysNotNull(map, "map");
+        }
+        else {
+            MapArgs.checkKeysAndValuesNotNull(map, "map");
+        }
         ObjectArgs.checkNotNull(isEmptyEnumAllowed, "isEmptyEnumAllowed");
         _FullEnumMaps._assertAllKeysFound(enumClass, map, isEmptyEnumAllowed);
-        this.map = Maps.immutableEnumMap(map);
     }
 
-    @Override
-    protected Map<TEnumKey, TValue>
-    delegate() {
-        return map;
+    private static <TEnumKey2 extends Enum<TEnumKey2>, TValue2>
+    EnumMap<TEnumKey2, TValue2>
+    _createEnumMap(Class<TEnumKey2> enumClass,
+                   @EmptyContainerAllowed
+                   Map<TEnumKey2, ? extends TValue2> map) {
+
+        ObjectArgs.checkNotNull(enumClass, "enumClass");
+        ObjectArgs.checkNotNull(map, "map");
+
+        // Intentional: USE TWO STEP CONSTRUCTION!!!  This map might be empty.  Be careful.
+        final EnumMap<TEnumKey2, TValue2> enumMap = new EnumMap<>(enumClass);
+        enumMap.putAll(map);
+        return enumMap;
+    }
+
+    private static ImmutableSet<DoNotAllow>
+    _createDoNotAllowSet(AreNullValuesAllowed areNullValuesAllowed) {
+
+        ObjectArgs.checkNotNull(areNullValuesAllowed, "areNullValuesAllowed");
+
+        final ImmutableSet.Builder<DoNotAllow> b =
+            ImmutableSet.<DoNotAllow>builder()
+                .add(DoNotAllow.NullKey)
+                .add(DoNotAllow.Remove);
+
+        if (AreNullValuesAllowed.NO.equals(areNullValuesAllowed)) {
+
+            b.add(DoNotAllow.NullValue);
+        }
+        final ImmutableSet<DoNotAllow> x = b.build();
+        return x;
     }
 
     @Override
@@ -356,41 +405,35 @@ implements EnumMap2<TEnumKey, TValue> {
         return enumClass;
     }
 
-    /**
-     * {@inheritDoc}
-     * <hr>
-     * Override notes: Result is never {@code null}.
-     */
-    @Nonnull
+    /** {@inheritDoc} */
+    @Nullable
     @Override
     public TValue
     getByEnum(TEnumKey key) {
 
         ObjectArgs.checkNotNull(key, "key");
 
-        // Is null possible here?  Not sure, but be very careful.
         @Nullable
-        final TValue value = get(key);
-        if (null == value) {
-
-            if (containsKey(key)) {
-
-                throw new NullPointerException(
-                    "Internal error: Key [" + key + "] is mapped to a null value: How is this possible?");
-            }
-            else {
-                throw new NullPointerException("Failed to find mapping for key: [" + key + "]");
-            }
-        }
-        return value;
+        final TValue x = get(key);
+        return x;
     }
 
     /**
      * {@inheritDoc}
      * <hr>
-     * Override notes: Result is never {@code null}.
+     * Override notes: Return value is never {@code null}.
      */
     @Nonnull
+    @Override
+    public TValue
+    getByEnumOrThrow(TEnumKey key) {
+
+        final TValue x = EnumMap2.super.getByEnumOrThrow(key);
+        return x;
+    }
+
+    /** {@inheritDoc} */
+    @Nullable
     @Override
     public TValue
     getOrThrow(Object key) {
@@ -399,31 +442,13 @@ implements EnumMap2<TEnumKey, TValue> {
 
         @Nullable
         final TValue value = get(key);
-        // This is impossible, but check to be very careful.
-        if (null == value) {
-            if (containsKey(key)) {
-                throw new IllegalArgumentException("Key [" + key + "] is mapped to null");
-            }
-            else {
-                throw new IllegalArgumentException("Failed to find mapping for key: [" + key + "]");
-            }
+        // Be careful: If value is null, we cannot be sure if key is missing or key is mapped to null.
+        if (null != value || containsKey(key)) {
+            return value;
         }
-        return value;
-    }
-
-    /**
-     * Guaranteed to throw an exception and leave the map unmodified.
-     *
-     * @throws UnsupportedOperationException always
-     */
-    @Deprecated
-    @Nullable
-    @Override
-    public TValue
-    put(@Nullable TEnumKey key,
-        @Nullable TValue value) {
-
-        throw new UnsupportedOperationException();
+        else {
+            throw new IllegalArgumentException("Key [" + key + "] does not exist");
+        }
     }
 
     /**
@@ -448,19 +473,6 @@ implements EnumMap2<TEnumKey, TValue> {
     @Deprecated
     @Override
     public void
-    putAll(@EmptyContainerAllowed Map<? extends TEnumKey, ? extends TValue> map) {
-
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Guaranteed to throw an exception and leave the map unmodified.
-     *
-     * @throws UnsupportedOperationException always
-     */
-    @Deprecated
-    @Override
-    public void
     clear() {
 
         throw new UnsupportedOperationException();
@@ -472,20 +484,6 @@ implements EnumMap2<TEnumKey, TValue> {
      * @throws UnsupportedOperationException always
      */
     @Deprecated
-    @Override
-    public void
-    replaceAll(BiFunction<? super TEnumKey, ? super TValue, ? extends TValue> function) {
-
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Guaranteed to throw an exception and leave the map unmodified.
-     *
-     * @throws UnsupportedOperationException always
-     */
-    @Deprecated
-    @Nullable
     @Override
     public TValue
     putIfAbsent(@Nullable TEnumKey key,
@@ -514,88 +512,10 @@ implements EnumMap2<TEnumKey, TValue> {
      * @throws UnsupportedOperationException always
      */
     @Deprecated
-    @Nullable
-    @Override
-    public boolean
-    replace(@Nullable TEnumKey key,
-            @Nullable TValue oldValue,
-            @Nullable TValue newValue) {
-
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Guaranteed to throw an exception and leave the map unmodified.
-     *
-     * @throws UnsupportedOperationException always
-     */
-    @Deprecated
-    @Nullable
-    @Override
-    public TValue
-    replace(@Nullable TEnumKey key,
-            @Nullable TValue value) {
-
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Guaranteed to throw an exception and leave the map unmodified.
-     *
-     * @throws UnsupportedOperationException always
-     */
-    @Deprecated
-    @Nullable
     @Override
     public TValue
     computeIfAbsent(@Nullable TEnumKey key,
                     Function<? super TEnumKey, ? extends TValue> mappingFunction) {
-
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Guaranteed to throw an exception and leave the map unmodified.
-     *
-     * @throws UnsupportedOperationException always
-     */
-    @Deprecated
-    @Nullable
-    @Override
-    public TValue
-    computeIfPresent(@Nullable TEnumKey key,
-                     BiFunction<? super TEnumKey, ? super TValue, ? extends TValue> remappingFunction) {
-
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Guaranteed to throw an exception and leave the map unmodified.
-     *
-     * @throws UnsupportedOperationException always
-     */
-    @Deprecated
-    @Nullable
-    @Override
-    public TValue
-    compute(@Nullable TEnumKey key,
-            BiFunction<? super TEnumKey, ? super TValue, ? extends TValue> remappingFunction) {
-
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Guaranteed to throw an exception and leave the map unmodified.
-     *
-     * @throws UnsupportedOperationException always
-     */
-    @Deprecated
-    @Nullable
-    @Override
-    public TValue
-    merge(@Nullable TEnumKey key,
-          @Nullable TValue value,
-          BiFunction<? super TValue, ? super TValue, ? extends TValue> remappingFunction) {
 
         throw new UnsupportedOperationException();
     }

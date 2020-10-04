@@ -36,29 +36,31 @@ import java.util.function.Function;
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-public class ThreadLocalWithResetTest {
+public class ThrowingThreadLocalWithResetTest {
 
-    private ThreadLocalWithReset<ArrayList<String>> classUnderTest;
+    private ThrowingThreadLocalWithReset<ArrayList<String>> classUnderTest;
 
     @BeforeMethod
     public void beforeEachTest() {
 
         classUnderTest =
-            ThreadLocalWithReset.withInitialAndReset(
+            ThrowingThreadLocalWithReset.withInitialAndReset(
                 () -> new ArrayList<>(),
                 x -> x.clear());
     }
 
     @Test
-    public void pass() {
+    public void passWhenNotThrow()
+    throws Exception {
 
-        test_Pass(classUnderTest, x -> x.isEmpty(), x -> x.add("abc"));
+        test_PassWhenNotThrow(classUnderTest, x -> x.isEmpty(), x -> x.add("abc"));
     }
 
     public static <TValue>
-    void test_Pass(ThreadLocalWithReset<TValue> classUnderTest,
-                   Function<TValue, Boolean> isEmpty,
-                   Consumer<TValue> modify) {
+    void test_PassWhenNotThrow(ThrowingThreadLocalWithReset<TValue> classUnderTest,
+                               Function<TValue, Boolean> isEmpty,
+                               Consumer<TValue> modify)
+    throws Exception {
 
         final TValue c = classUnderTest.getAndReset();
         Assert.assertTrue(isEmpty.apply(c));
@@ -67,5 +69,43 @@ public class ThreadLocalWithResetTest {
         Assert.assertSame(c2, c);
         Assert.assertTrue(isEmpty.apply(c));
         Assert.assertTrue(isEmpty.apply(c2));
+    }
+
+    @Test(expectedExceptions = Exception.class)
+    public void
+    passWhenSupplierThrow()
+    throws Exception {
+
+        final Exception e = new Exception("e1");
+        final ThrowingThreadLocalWithReset<Object> x =
+            ThrowingThreadLocalWithReset.withInitialAndReset(
+                () -> { throw e; },
+                (any) -> {});
+        try {
+            x.getAndReset();
+        }
+        catch (Exception e2) {
+            Assert.assertSame(e2.getCause(), e);
+            throw e2;
+        }
+    }
+
+    @Test(expectedExceptions = Exception.class)
+    public void
+    passWhenResetThrow()
+    throws Exception {
+
+        final Exception e = new Exception("e1");
+        final ThrowingThreadLocalWithReset<Object> x =
+            ThrowingThreadLocalWithReset.withInitialAndReset(
+                () -> new Object(),
+                (any) -> { throw e; });
+        try {
+            x.getAndReset();
+        }
+        catch (Exception e2) {
+            Assert.assertSame(e2, e);
+            throw e2;
+        }
     }
 }

@@ -25,33 +25,36 @@ package com.googlecode.kevinarpe.papaya.function;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import java.util.function.Consumer;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@FullyTested
-@FunctionalInterface
-public interface ThrowingRunnable {
+public class ThrowingConsumerTest {
 
-    void run()
-    throws Exception;
+    @Test
+    public void asConsumer_PassWhenNotThrow() {
 
-    /**
-     * Creates a {@link Runnable} that wraps this instance and re-throws any exceptions using {@link RuntimeException}.
-     */
-    default Runnable
-    asRunnable() {
+        final ThrowingConsumer<String> tc = (String s) -> {};
+        final Consumer<String> c = tc.asConsumer();
+        c.accept("blah");
+    }
 
-        final Runnable x =
-            () -> {
-                try {
-                    run();
-                }
-                catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            };
-        return x;
+    @Test
+    public void asConsumer_PassWhenThrow() {
+
+        final Exception e = new Exception("dummy");
+        final ThrowingConsumer<String> tc = (String s) -> { throw e; };
+        final Consumer<String> c = tc.asConsumer();
+        try {
+            c.accept("blah");
+            throw new IllegalStateException("Unreachable code");
+        }
+        catch (Exception e2) {
+            Assert.assertSame(e2.getCause(), e);
+        }
     }
 }

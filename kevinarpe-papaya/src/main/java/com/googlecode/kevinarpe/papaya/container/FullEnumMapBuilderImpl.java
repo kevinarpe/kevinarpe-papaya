@@ -32,26 +32,30 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 // package-private
 @FullyTested
-final class ImmutableFullEnumMapBuilderImpl<TEnumKey extends Enum<TEnumKey>, TValue>
-implements ImmutableFullEnumMap.Builder<TEnumKey, TValue> {
+final class FullEnumMapBuilderImpl<TEnumKey extends Enum<TEnumKey>, TValue>
+implements FullEnumMap.Builder<TEnumKey, TValue> {
 
     private final Class<TEnumKey> enumClass;
-    // EnumMap iteration order is guaranteed to match order of Enum.ordinal().
+    private final AreNullValuesAllowed areNullValuesAllowed;
+    // EnumMap insertion order is guaranteed to be sorted by Enum.ordinal().
     private final EnumMap<TEnumKey, TValue> map;
 
     @Nullable
     private Map<TEnumKey, TValue> nullableReadOnlyMap;
 
     // package-private
-    ImmutableFullEnumMapBuilderImpl(Class<TEnumKey> enumClass) {
+    FullEnumMapBuilderImpl(Class<TEnumKey> enumClass,
+                           AreNullValuesAllowed areNullValuesAllowed) {
 
         this.enumClass = ObjectArgs.checkNotNull(enumClass, "enumClass");
+        this.areNullValuesAllowed = ObjectArgs.checkNotNull(areNullValuesAllowed, "areNullValuesAllowed");
         this.map = new EnumMap<>(enumClass);
     }
 
@@ -59,6 +63,12 @@ implements ImmutableFullEnumMap.Builder<TEnumKey, TValue> {
     public Class<TEnumKey>
     getEnumClass() {
         return enumClass;
+    }
+
+    @Override
+    public AreNullValuesAllowed
+    areNullValuesAllowed() {
+        return areNullValuesAllowed;
     }
 
     /** {@inheritDoc} */
@@ -75,16 +85,24 @@ implements ImmutableFullEnumMap.Builder<TEnumKey, TValue> {
     /** {@inheritDoc} */
     @Override
     public final
-    ImmutableFullEnumMap.Builder<TEnumKey, TValue>
-    put(TEnumKey key, TValue value) {
+    FullEnumMap.Builder<TEnumKey, TValue>
+    put(TEnumKey key, @Nullable TValue value) {
 
         ObjectArgs.checkNotNull(key, "key");
-        ObjectArgs.checkNotNull(value, "value");
+
+        if (AreNullValuesAllowed.NO.equals(areNullValuesAllowed)) {
+            ObjectArgs.checkNotNull(value, "value");
+        }
         @Nullable
-        final TValue prevValue = map.get(key);
-        if (null != prevValue && false == prevValue.equals(value)) {
+        final TValue oldValue = map.get(key);
+
+        // Be careful: If oldValue is null, we cannot be sure if key is missing or key is mapped to null.
+        if ((null != oldValue || map.containsKey(key))
+            &&
+            false == Objects.equals(oldValue, value)) {
+
             final String msg =
-                "Key '" + key.name() + "' cannot be mapped to multiple values: [" + prevValue + "] and [" + value + "]";
+                "Key '" + key.name() + "' cannot be mapped to multiple values: [" + oldValue + "] and [" + value + "]";
             throw new IllegalArgumentException(msg);
         }
         map.put(key, value);
@@ -94,7 +112,7 @@ implements ImmutableFullEnumMap.Builder<TEnumKey, TValue> {
     /** {@inheritDoc} */
     @Override
     public final
-    ImmutableFullEnumMap.Builder<TEnumKey, TValue>
+    FullEnumMap.Builder<TEnumKey, TValue>
     putAll(Map<TEnumKey, ? extends TValue> map) {
 
         ObjectArgs.checkNotNull(map, "map");
@@ -102,7 +120,13 @@ implements ImmutableFullEnumMap.Builder<TEnumKey, TValue> {
         for (final Map.Entry<TEnumKey, ? extends TValue> entry : map.entrySet()) {
 
             final TEnumKey key = entry.getKey();
+            @Nullable
             final TValue value = entry.getValue();
+
+            if (AreNullValuesAllowed.NO.equals(areNullValuesAllowed) && null == value) {
+
+                throw new NullPointerException("Key [" + key + "] is mapped to a null value");
+            }
             put(key, value);
         }
         return this;
@@ -110,20 +134,20 @@ implements ImmutableFullEnumMap.Builder<TEnumKey, TValue> {
 
     /** {@inheritDoc} */
     @Override
-    public final ImmutableFullEnumMap<TEnumKey, TValue>
+    public final FullEnumMap<TEnumKey, TValue>
     build() {
 
-        final ImmutableFullEnumMap<TEnumKey, TValue> x = buildWhere(IsEmptyEnumAllowed.NO);
+        final FullEnumMap<TEnumKey, TValue> x = buildWhere(IsEmptyEnumAllowed.NO);
         return x;
     }
 
     /** {@inheritDoc} */
     @Override
-    public final ImmutableFullEnumMap<TEnumKey, TValue>
+    public final FullEnumMap<TEnumKey, TValue>
     buildWhere(IsEmptyEnumAllowed isEmptyEnumAllowed) {
 
-        final ImmutableFullEnumMap<TEnumKey, TValue> x =
-            new ImmutableFullEnumMap<>(enumClass, map, isEmptyEnumAllowed);
+        final FullEnumMap<TEnumKey, TValue> x =
+            new FullEnumMap<>(enumClass, areNullValuesAllowed, map, isEmptyEnumAllowed);
         return x;
     }
 }

@@ -42,6 +42,23 @@ public interface ThrowableToStringService {
      * <p>
      * This method is useful to reduce log noise when an exception is throw, caught, and logged multiple times.
      * Usually, the full stack trace is only useful to see once in the log.
+     * <p>
+     * Example of first exception instance:
+     * <pre>{@code
+     * [ID:31] java.lang.Exception: blah
+     * 	at com.googlecode.kevinarpe.papaya.exception.ThrowableToStringServiceImplTest.toStringWithUniqueStackTrace_Pass(ThrowableToStringServiceImplTest.java:43)
+     * 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+     * 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+     * 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+     * 	at java.lang.reflect.Method.invoke(Method.java:498)
+     * 	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:134)
+     * 	...
+     * }</pre>
+     * <p>
+     * Example of second (and later) exception instance:
+     * <pre>{@code
+     * [ID:31] java.lang.Exception: blah at com.googlecode.kevinarpe.papaya.exception.ThrowableToStringServiceImplTest.toStringWithUniqueStackTrace_Pass(ThrowableToStringServiceImplTest.java:43)
+     * }</pre>
      *
      * @throws NullPointerException
      *         if {@code throwable} is {@code null}

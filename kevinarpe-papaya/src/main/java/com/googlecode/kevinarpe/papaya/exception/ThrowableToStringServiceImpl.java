@@ -27,10 +27,11 @@ package com.googlecode.kevinarpe.papaya.exception;
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.concurrent.ThreadLocalWithReset;
 
 import javax.annotation.concurrent.ThreadSafe;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -40,12 +41,19 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class ThrowableToStringServiceImpl
 implements ThrowableToStringService {
 
-    private final Set<String> set;
+    private final AtomicInteger atomicNextNumber;
+    private final ConcurrentHashMap<String, Integer> map;
 
     public ThrowableToStringServiceImpl() {
 
-        this.set = ConcurrentHashMap.newKeySet();
+        this.atomicNextNumber = new AtomicInteger(1);
+        this.map = new ConcurrentHashMap<>();
     }
+
+    private static final ThreadLocalWithReset<boolean[]> threadLocalBooleanRef =
+        ThreadLocalWithReset.withInitialAndReset(
+            () -> new boolean[1],
+            (boolean[] z) -> z[0] = false);
 
     /** {@inheritDoc} */
     @Override
@@ -54,14 +62,30 @@ implements ThrowableToStringService {
 
         ObjectArgs.checkNotNull(throwable, "throwable");
 
-        final String s = ThrowableUtils.toStringWithStackTrace(throwable);
-        if (set.add(s)) {
-            return s;
+        final String str = ThrowableUtils.toStringWithStackTrace(throwable);
+        final boolean[] isNewKeyRef = threadLocalBooleanRef.getAndReset();
+        final int num =
+            map.computeIfAbsent(str,
+                (any) -> {
+                    isNewKeyRef[0] = true;
+                    final int x = atomicNextNumber.getAndIncrement();
+                    return x;
+                });
+        if (isNewKeyRef[0]) {
+            final String x = _createPrefix(num) + str;
+            return x;
         }
         else {
             final StackTraceElement[] arr = throwable.getStackTrace();
-            final String x = throwable + " at " + arr[0];
+            final String x = _createPrefix(num) + throwable + " at " + arr[0];
             return x;
         }
+    }
+
+    private String
+    _createPrefix(final int num) {
+
+        final String x = "[ID:" + num + "] ";
+        return x;
     }
 }

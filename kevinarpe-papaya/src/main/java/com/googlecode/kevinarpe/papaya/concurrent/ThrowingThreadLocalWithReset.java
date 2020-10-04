@@ -27,49 +27,43 @@ package com.googlecode.kevinarpe.papaya.concurrent;
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import com.googlecode.kevinarpe.papaya.function.ThrowingConsumer;
+import com.googlecode.kevinarpe.papaya.function.ThrowingSupplier;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see ThreadLocalsWithReset
- * @see ThrowingThreadLocalWithReset
+ * @see ThreadLocalWithReset
  */
 @FullyTested
-public final class ThreadLocalWithReset<TValue> {
+public final class ThrowingThreadLocalWithReset<TValue> {
 
     /**
-     * If you need to throw from {@code supplier} or {@code reset}, see {@link ThrowingThreadLocalWithReset}.
-     *
-     * @see ThreadLocalsWithReset
-     *
-     * @throws NullPointerException
-     *         if {@code supplier} or {@code reset} is {@code null}
+     * If you do <b>not</b> need to throw from {@code supplier} or {@code reset}, see {@link ThreadLocalWithReset}.
      */
     public static <TValue2>
-    ThreadLocalWithReset<TValue2>
-    withInitialAndReset(Supplier<? extends TValue2> supplier,
-                        Consumer<? super TValue2> reset) {
+    ThrowingThreadLocalWithReset<TValue2>
+    withInitialAndReset(ThrowingSupplier<? extends TValue2> supplier,
+                        ThrowingConsumer<? super TValue2> reset) {
 
-        final ThreadLocalWithReset<TValue2> x = new ThreadLocalWithReset<>(supplier, reset);
+        final ThrowingThreadLocalWithReset<TValue2> x = new ThrowingThreadLocalWithReset<>(supplier, reset);
         return x;
     }
 
     private final ThreadLocal<TValue> threadLocal;
-    private final Consumer<? super TValue> reset;
+    private final ThrowingConsumer<? super TValue> reset;
 
-    private ThreadLocalWithReset(Supplier<? extends TValue> supplier,
-                                 Consumer<? super TValue> reset) {
-        // Paranoid
+    private ThrowingThreadLocalWithReset(ThrowingSupplier<? extends TValue> supplier,
+                                         ThrowingConsumer<? super TValue> reset) {
+
         ObjectArgs.checkNotNull(supplier, "supplier");
-        this.threadLocal = ThreadLocal.withInitial(supplier);
+        this.threadLocal = ThreadLocal.withInitial(supplier.asSupplier());
         this.reset = ObjectArgs.checkNotNull(reset, "reset");
     }
 
     public TValue
-    getAndReset() {
+    getAndReset()
+    throws Exception {
         final TValue value = threadLocal.get();
         reset.accept(value);
         return value;

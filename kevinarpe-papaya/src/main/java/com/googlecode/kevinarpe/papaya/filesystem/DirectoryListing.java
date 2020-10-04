@@ -213,7 +213,7 @@ public final class DirectoryListing {
         _childPathList.addAll(other._childPathList);
     }
 
-    // Package private for testing purposes.
+    // package-private for testing
     static List<File> _newInstance(
             ContainerFactory containerFactory, Class<? extends List> listClass) {
         try {

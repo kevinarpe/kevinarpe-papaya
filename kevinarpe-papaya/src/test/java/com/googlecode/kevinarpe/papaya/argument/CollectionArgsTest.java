@@ -896,4 +896,43 @@ public class CollectionArgsTest {
     public void checkContains_FailWithNullCollection() {
         CollectionArgs.checkContains((List<Object>) null, "abc", "ref");
     }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // CollectionArgs.checkElements
+    //
+
+    @Test(dataProvider = "checkElementsNotNull_Pass_Data")
+    public <T> void
+    checkElements_Pass(Collection<T> ref) {
+
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == CollectionArgs.checkElements(ref, "ref", ObjectArgs::checkNotNull));
+
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(ref == CollectionArgs.checkElements(ref, null, ObjectArgs::checkNotNull));
+        Assert.assertTrue(ref == CollectionArgs.checkElements(ref, "", ObjectArgs::checkNotNull));
+        Assert.assertTrue(ref == CollectionArgs.checkElements(ref, "   ", ObjectArgs::checkNotNull));
+    }
+
+    @Test(dataProvider = "checkElementsNotNull_FailWithNullElements_Data",
+        expectedExceptions = NullPointerException.class)
+    public <T> void
+    checkElements_FailWithNullElements(Collection<T> ref) {
+
+        CollectionArgs.checkElements(ref, "ref", ObjectArgs::checkNotNull);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void
+    checkElements_FailWithNullCollection() {
+
+        CollectionArgs.checkElements((Collection<Object>) null, "ref", ObjectArgs::checkNotNull);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void
+    checkElements_FailWithNullCheckFunc() {
+
+        CollectionArgs.checkElements(ImmutableList.<String>of(), "ref", (ScalarCheck<String>) null);
+    }
 }

@@ -44,7 +44,7 @@ public class ImmutableFullEnumMapTest {
     private enum _Enum { _1, _2 }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // ImmutableFullEnumMapImpl.ctor()
+    // ImmutableFullEnumMap.ctor()
     //
 
     @Test
@@ -66,6 +66,12 @@ public class ImmutableFullEnumMapTest {
         new ImmutableFullEnumMap<>(_Enum.class, ImmutableMap.of(_Enum._2, "blah"), IsEmptyEnumAllowed.NO);
     }
 
+    @Test
+    public void ctor_PassWhenEmptyEnum() {
+
+        new ImmutableFullEnumMap<_EmptyEnum, String>(_EmptyEnum.class, ImmutableMap.of(), IsEmptyEnumAllowed.YES);
+    }
+
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void ctor_FailWhenEmptyEnum() {
 
@@ -73,7 +79,7 @@ public class ImmutableFullEnumMapTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // ImmutableFullEnumMapImpl.ofKeys()
+    // ImmutableFullEnumMap.ofKeys()
     //
 
     @Test
@@ -88,7 +94,7 @@ public class ImmutableFullEnumMapTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // ImmutableFullEnumMapImpl.ofKeys2()
+    // ImmutableFullEnumMap.ofKeys2()
     //
 
     @Test
@@ -114,7 +120,7 @@ public class ImmutableFullEnumMapTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // ImmutableFullEnumMapImpl.ofValues()
+    // ImmutableFullEnumMap.ofValues()
     //
 
     @Test
@@ -129,7 +135,7 @@ public class ImmutableFullEnumMapTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // ImmutableFullEnumMapImpl.ofValues2()
+    // ImmutableFullEnumMap.ofValues2()
     //
 
     @Test
@@ -157,7 +163,7 @@ public class ImmutableFullEnumMapTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // ImmutableFullEnumMapImpl.builder()
+    // ImmutableFullEnumMap.builder()
     //
 
     @Test
@@ -173,7 +179,7 @@ public class ImmutableFullEnumMapTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // ImmutableFullEnumMapImpl.copyOf()
+    // ImmutableFullEnumMap.copyOf()
     //
 
     @Test
@@ -189,7 +195,7 @@ public class ImmutableFullEnumMapTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // ImmutableFullEnumMapImpl.getEnumClass()
+    // ImmutableFullEnumMap.getEnumClass()
     //
 
     @Test
@@ -208,5 +214,346 @@ public class ImmutableFullEnumMapTest {
             ImmutableFullEnumMap.copyOf(_EmptyEnum.class, ImmutableMap.of());
 
         Assert.assertEquals(map.getEnumClass(), _EmptyEnum.class);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMap.getByEnum()
+    //
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void getByEnum_FailWhenEmptyAndKeyIsNull() {
+
+        final ImmutableFullEnumMap<_EmptyEnum, String> map =
+            new ImmutableFullEnumMap<>(_EmptyEnum.class, ImmutableMap.of(), IsEmptyEnumAllowed.YES);
+
+        map.getByEnum(null);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void getByEnum_FailWhenNonEmptyAndKeyIsNull() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        map.getByEnum(null);
+    }
+
+    @Test
+    public void getByEnum_PassWhenNonEmpty() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        Assert.assertEquals(map.getByEnum(_Enum._1), "def");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMap.getByEnumOrThrow()
+    //
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void getByEnumOrThrow_FailWhenEmptyAndKeyIsNull() {
+
+        final ImmutableFullEnumMap<_EmptyEnum, String> map =
+            new ImmutableFullEnumMap<>(_EmptyEnum.class, ImmutableMap.of(), IsEmptyEnumAllowed.YES);
+
+        map.getByEnumOrThrow(null);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void getByEnumOrThrow_FailWhenNonEmptyAndKeyIsNull() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        map.getByEnumOrThrow(null);
+    }
+
+    @Test
+    public void getByEnumOrThrow_PassWhenNonEmpty() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        final String value = map.getByEnumOrThrow(_Enum._1);
+        Assert.assertEquals(value, "def");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMap.getByEnumOrDefault()
+    //
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void getByEnumOrDefault_FailWhenEmptyAndKeyIsNull() {
+
+        final ImmutableFullEnumMap<_EmptyEnum, String> map =
+            new ImmutableFullEnumMap<>(_EmptyEnum.class, ImmutableMap.of(), IsEmptyEnumAllowed.YES);
+
+        map.getByEnumOrDefault(null, "xyz");
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void getByEnumOrDefault_FailWhenNonEmptyAndKeyIsNull() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        map.getByEnumOrDefault(null, "xyz");
+    }
+
+    @Test
+    public void getByEnumOrDefault_PassWhenNonEmpty() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        Assert.assertEquals(map.getByEnumOrDefault(_Enum._1, "xyz"), "def");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMap.getOrThrow()
+    //
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void getOrThrow_FailWhenEmptyAndKeyIsNull() {
+
+        final ImmutableFullEnumMap<_EmptyEnum, String> map =
+            new ImmutableFullEnumMap<>(_EmptyEnum.class, ImmutableMap.of(), IsEmptyEnumAllowed.YES);
+
+        map.getOrThrow(null);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void getOrThrow_FailWhenEmptyAndKeyIsNonNull() {
+
+        final ImmutableFullEnumMap<_EmptyEnum, String> map =
+            new ImmutableFullEnumMap<>(_EmptyEnum.class, ImmutableMap.of(), IsEmptyEnumAllowed.YES);
+
+        final Object key = new Object();
+        map.getOrThrow(key);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void getOrThrow_FailWhenNonEmptyAndKeyIsNull() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        map.getOrThrow(null);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void getOrThrow_FailWhenNonEmptyAndKeyIsNonNull() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        final Object key = new Object();
+        map.getOrThrow(key);
+    }
+
+    @Test
+    public void getOrThrow_PassWhenNonEmpty() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        final String value = map.getOrThrow(_Enum._1);
+        Assert.assertEquals(value, "def");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMap.put(Object, Object)
+    //
+
+    @SuppressWarnings("deprecation")
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void put_AlwaysFail() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        // @SuppressWarnings("deprecation")
+        map.put(_Enum._1, "ghi");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMap.remove(Object)
+    //
+
+    @SuppressWarnings("deprecation")
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void remove_AlwaysFail() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        // @SuppressWarnings("deprecation")
+        map.remove(_Enum._1);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMap.putAll(Map)
+    //
+
+    @SuppressWarnings("deprecation")
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void putAll_AlwaysFail() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        // @SuppressWarnings("deprecation")
+        map.putAll(ImmutableMap.of());
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMap.clear()
+    //
+
+    @SuppressWarnings("deprecation")
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void clear_AlwaysFail() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        // @SuppressWarnings("deprecation")
+        map.clear();
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMap.replaceAll()
+    //
+
+    @SuppressWarnings("deprecation")
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void replaceAll_AlwaysFail() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        // @SuppressWarnings("deprecation")
+        map.replaceAll((any, any2) -> "ghi");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMap.putIfAbsent(Object, Object)
+    //
+
+    @SuppressWarnings("deprecation")
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void putIfAbsent_AlwaysFail() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        // @SuppressWarnings("deprecation")
+        map.putIfAbsent(_Enum._1, "ghi");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMap.remove(Object, Object)
+    //
+
+    @SuppressWarnings("deprecation")
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void removeKeyValue_AlwaysFail() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        // @SuppressWarnings("deprecation")
+        map.remove(_Enum._1, "ghi");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMap.replace(Object, Object, Object)
+    //
+
+    @SuppressWarnings("deprecation")
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void replace_AlwaysFail() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        // @SuppressWarnings("deprecation")
+        map.replace(_Enum._1, "ghi", "xyz");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMap.replace(Object, Object)
+    //
+
+    @SuppressWarnings("deprecation")
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void replace2_AlwaysFail() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        // @SuppressWarnings("deprecation")
+        map.replace(_Enum._1, "ghi");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMap.computeIfAbsent(Object, Function)
+    //
+
+    @SuppressWarnings("deprecation")
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void computeIfAbsent_AlwaysFail() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        // @SuppressWarnings("deprecation")
+        map.computeIfAbsent(_Enum._1, any -> "xyz");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMap.computeIfPresent(Object, BiFunction)
+    //
+
+    @SuppressWarnings("deprecation")
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void computeIfPresent_AlwaysFail() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        // @SuppressWarnings("deprecation")
+        map.computeIfPresent(_Enum._1, (any, any2) -> "xyz");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMap.compute(Object, BiFunction)
+    //
+
+    @SuppressWarnings("deprecation")
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void compute_AlwaysFail() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        // @SuppressWarnings("deprecation")
+        map.compute(_Enum._1, (any, any2) -> "xyz");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ImmutableFullEnumMap.merge(Object, Object, BiFunction)
+    //
+
+    @SuppressWarnings("deprecation")
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void merge_AlwaysFail() {
+
+        final ImmutableFullEnumMap<_Enum, String> map =
+            ImmutableFullEnumMap.copyOf(_Enum.class, ImmutableMap.of(_Enum._2, "abc", _Enum._1, "def"));
+
+        // @SuppressWarnings("deprecation")
+        map.merge(_Enum._1, "uvw", (any, any2) -> "xyz");
     }
 }

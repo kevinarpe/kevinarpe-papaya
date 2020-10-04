@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.function;
+package com.googlecode.kevinarpe.papaya.argument;
 
 /*-
  * #%L
@@ -25,33 +25,32 @@ package com.googlecode.kevinarpe.papaya.function;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@FullyTested
 @FunctionalInterface
-public interface ThrowingRunnable {
-
-    void run()
-    throws Exception;
+public interface ScalarCheck<TValue> {
 
     /**
-     * Creates a {@link Runnable} that wraps this instance and re-throws any exceptions using {@link RuntimeException}.
+     * @param value
+     *        a value to test
+     *        <br>might be {@code null}, but might also throw when {@code null}
+     *
+     * @param argName
+     *        argument name for {@code value}, e.g., "strListSize" or "searchRegexLength"
+     *
+     * @return the validated input value
+     *
+     * @throws RuntimeException
+     *         (including {@link NullPointerException}) when {@code value} is invalid
+     *
+     * @see CollectionArgs#checkElements(Collection, String, ScalarCheck)
+     * @see MapArgs#checkKeys(Map, String, ScalarCheck)
+     * @see MapArgs#checkValues(Map, String, ScalarCheck)
      */
-    default Runnable
-    asRunnable() {
-
-        final Runnable x =
-            () -> {
-                try {
-                    run();
-                }
-                catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            };
-        return x;
-    }
+    TValue check(@Nullable TValue value, String argName);
 }

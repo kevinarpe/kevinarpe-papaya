@@ -25,6 +25,8 @@ package com.googlecode.kevinarpe.papaya.container;
  * #L%
  */
 
+import javax.annotation.Nullable;
+import java.util.EnumMap;
 import java.util.Map;
 
 /**
@@ -33,6 +35,130 @@ import java.util.Map;
 public interface EnumMap2<TEnumKey extends Enum<TEnumKey>, TValue>
 extends Map<TEnumKey, TValue> {
 
+    /**
+     * Oddly, this is missing from {@link EnumMap}.
+     *
+     * @return enum class associated with this map
+     */
     Class<TEnumKey>
     getEnumClass();
+
+    /**
+     * {@inheritDoc}
+     * <hr>
+     * Override notes: If possible, prefer {@link #getByEnum(Enum)} or {@link #getOrThrow(Object)}.
+     */
+    @Override
+    TValue get(Object key);
+
+    /**
+     * If possible, please use {@link #getByEnumOrThrow(Enum)}.
+     * <p>
+     * This is a safer version of {@link #get(Object)} that throws when {@code key} is {@code null} or missing (unmapped).
+     *
+     * @param key
+     *        must be an instance of {@code TEnumKey}
+     *
+     * @throws NullPointerException
+     *         if {@code key} is {@code null}
+     * @throws IllegalArgumentException
+     *         if no mapping exists for {@code key}
+     *
+     * @see #getByEnum(Enum)
+     */
+    @Nullable
+    TValue
+    getOrThrow(Object key);
+
+    /**
+     * {@inheritDoc}
+     * <hr>
+     * Override notes: If possible, prefer {@link #getByEnumOrDefault(Enum, Object)}.
+     */
+    @Nullable
+    @Override
+    default TValue
+    getOrDefault(@Nullable Object key,
+                 @Nullable TValue defaultValue) {
+
+        return Map.super.getOrDefault(key, defaultValue);
+    }
+
+    /**
+     * If possible, please use {@link #getByEnumOrThrow(Enum)}.
+     * <p>
+     * This is a safer version of {@link #get(Object)}.
+     *
+     * @return value mapped to {@code key}
+     *         <br><b>Important:</b> Return value of {@code null} is ambiguous.  This may be the value mapped to
+     *         {@code key}, or an indicator that {@code key} does not exist.
+     *
+     * @throws NullPointerException
+     *         if {@code key} is {@code null}
+     *
+     * @see #getByEnumOrThrow(Enum)
+     * @see #getOrThrow(Object)
+     * @see #getByEnumOrDefault(Enum, Object)
+     */
+    @Nullable
+    TValue
+    getByEnum(TEnumKey key);
+
+    /**
+     * This is a safer version of {@link #get(Object)} that throws when {@code key} is {@code null} or missing (unmapped).
+     *
+     * @return value mapped to {@code key}, which may be {@code null}
+     *
+     * @throws NullPointerException
+     *         if {@code key} is {@code null}
+     * @throws IllegalArgumentException
+     *         if {@code key} is missing (unmapped)
+     *
+     * @see #getByEnum(Enum)
+     * @see #getOrThrow(Object)
+     * @see #getByEnumOrDefault(Enum, Object)
+     */
+    @Nullable
+    default TValue
+    getByEnumOrThrow(TEnumKey key) {
+
+        @Nullable
+        final TValue value = getByEnum(key);
+        // Be careful: If value is null, we cannot be sure if key is missing or key is mapped to null.
+        if (null != value || containsKey(key)) {
+            return value;
+        }
+        else {
+            throw new IllegalArgumentException("Key [" + key + "] does not exist");
+        }
+    }
+
+    /**
+     * This is a safer version of {@link #getOrDefault(Object, Object)}.
+     *
+     * @param defaultValue
+     *        value can be {@code null}
+     *
+     * @throws NullPointerException
+     *         if {@code key} is {@code null}
+     *
+     * @see #getByEnum(Enum)
+     * @see #getByEnumOrThrow(Enum)
+     * @see #getOrThrow(Object)
+     * @see #getOrDefault(Object, Object)
+     */
+    @Nullable
+    default TValue
+    getByEnumOrDefault(TEnumKey key,
+                       @Nullable TValue defaultValue) {
+        @Nullable
+        final TValue value = getByEnum(key);
+        // Be careful: If value is null, we cannot be sure if key is missing or key is mapped to null.
+        if (null != value || containsKey(key)) {
+            return value;
+        }
+        else {
+            return defaultValue;
+        }
+    }
 }

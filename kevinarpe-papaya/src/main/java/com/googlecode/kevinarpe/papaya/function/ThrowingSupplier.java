@@ -27,26 +27,31 @@ package com.googlecode.kevinarpe.papaya.function;
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
+import java.util.function.Supplier;
+
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see Supplier
  */
 @FullyTested
 @FunctionalInterface
-public interface ThrowingRunnable {
+public interface ThrowingSupplier<TValue> {
 
-    void run()
+    TValue get()
     throws Exception;
 
     /**
-     * Creates a {@link Runnable} that wraps this instance and re-throws any exceptions using {@link RuntimeException}.
+     * Creates a {@link Supplier} that wraps this instance and re-throws any exceptions using {@link RuntimeException}.
      */
-    default Runnable
-    asRunnable() {
+    default Supplier<TValue>
+    asSupplier() {
 
-        final Runnable x =
+        final Supplier<TValue> x =
             () -> {
                 try {
-                    run();
+                    final TValue z = get();
+                    return z;
                 }
                 catch (Exception e) {
                     throw new RuntimeException(e);

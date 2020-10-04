@@ -25,17 +25,15 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.google.common.collect.ImmutableMap;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.google.common.collect.ImmutableMap;
-import com.googlecode.kevinarpe.papaya.argument.MapArgs;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MapArgsTest {
 
@@ -668,5 +666,79 @@ public class MapArgsTest {
     @Test(expectedExceptions = NullPointerException.class)
     public <TKey, TValue> void checkNotEmptyAndKeysAndValuesNotNull_FailWithNullMap() {
         MapArgs.checkNotEmptyAndKeysAndValuesNotNull((Map<Object, Object>) null, "ref");
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // MapArgs.checkKeys
+    //
+
+    @Test(dataProvider = "checkKeysNotNull_Pass_Data")
+    public <TKey, TValue> void checkKeys_Pass(Map<TKey, TValue> ref) {
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == MapArgs.checkKeys(ref, "ref", ObjectArgs::checkNotNull));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(ref == MapArgs.checkKeys(ref, null, ObjectArgs::checkNotNull));
+        Assert.assertTrue(ref == MapArgs.checkKeys(ref, "", ObjectArgs::checkNotNull));
+        Assert.assertTrue(ref == MapArgs.checkKeys(ref, "   ", ObjectArgs::checkNotNull));
+    }
+
+    @Test(dataProvider = "checkKeysNotNull_FailWithNullKey_Data",
+        expectedExceptions = NullPointerException.class)
+    public <TKey, TValue>
+    void checkKeys_FailWithNullKey(Map<TKey, TValue> ref) {
+
+        MapArgs.checkKeys(ref, "ref", ObjectArgs::checkNotNull);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void
+    checkKeys_FailWithNullMap() {
+
+        MapArgs.checkKeys((Map<Object, Object>) null, "ref", ObjectArgs::checkNotNull);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void
+    checkKeys_FailWithNullCheckFunc() {
+
+        MapArgs.checkKeys(ImmutableMap.<String, Integer>of(), "ref", (ScalarCheck<String>) null);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // MapArgs.checkValues
+    //
+
+    @Test(dataProvider = "checkValuesNotNull_Pass_Data")
+    public <TKey, TValue>
+    void checkValues_Pass(Map<TKey, TValue> ref) {
+
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(ref == MapArgs.checkValues(ref, "ref", ObjectArgs::checkNotNull));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(ref == MapArgs.checkValues(ref, null, ObjectArgs::checkNotNull));
+        Assert.assertTrue(ref == MapArgs.checkValues(ref, "", ObjectArgs::checkNotNull));
+        Assert.assertTrue(ref == MapArgs.checkValues(ref, "   ", ObjectArgs::checkNotNull));
+    }
+
+    @Test(dataProvider = "checkValuesNotNull_FailWithNullValue_Data",
+        expectedExceptions = NullPointerException.class)
+    public <TKey, TValue>
+    void checkValues_FailWithNullValue(Map<TKey, TValue> ref) {
+
+        MapArgs.checkValues(ref, "ref", ObjectArgs::checkNotNull);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void
+    checkValues_FailWithNullMap() {
+
+        MapArgs.checkValues((Map<Object, Object>) null, "ref", ObjectArgs::checkNotNull);
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void
+    checkValues_FailWithNullCheckFunc() {
+
+        MapArgs.checkValues(ImmutableMap.<String, Integer>of(), "ref", (ScalarCheck<Integer>) null);
     }
 }

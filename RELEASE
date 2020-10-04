@@ -40,6 +40,8 @@ https://dev.c-ware.de/confluence/display/PUBLIC/Releasing+modules+of+a+multi-mod
 
 New instructions for 2019+
 ===============
+* Check JAVA_HOME is set to a version of JDK8.
+** Example: export JAVA_HOME=/home/kca/saveme/jdk1.8.0_231
 * mvn clean install
 ** Any compiler errors or failed/skipped tests must be cleaned-up.
 ** Fix any Javadoc warnings.  Re-run as many times as necessary: mvn javadoc:javadoc

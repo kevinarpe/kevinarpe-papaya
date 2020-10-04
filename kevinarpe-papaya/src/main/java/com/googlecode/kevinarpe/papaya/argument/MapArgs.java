@@ -25,8 +25,10 @@ package com.googlecode.kevinarpe.papaya.argument;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.EmptyContainerAllowed;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 /**
@@ -322,6 +324,105 @@ public final class MapArgs {
         checkNotEmpty(ref, argName);
         checkKeysNotNull(ref, argName);
         checkValuesNotNull(ref, argName);
+        return ref;
+    }
+
+    /**
+     * Tests if a map reference is not null and each key is valid via {@code keyCheckFunc}.
+     * An empty map will pass this test.
+     *
+     * @param ref
+     *        a map reference
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param keyCheckFunc
+     *        functor to check each map key
+     *        <br>Ex: {@code ObjectArgs::checkNotNull} for {@link ObjectArgs#checkNotNull(Object, String)}
+     *
+     * @return the validated map reference
+     *
+     * @throws NullPointerException
+     *         if {@code ref} or {@code keyCheckFunc} is {@code null}
+     *
+     * @throws RuntimeException
+     *         if {@code keyCheckFunc} throws for any map key
+     */
+    @FullyTested
+    @EmptyContainerAllowed
+    public static <TKey, TValue, TMap extends Map<TKey, TValue>>
+    TMap checkKeys(@EmptyContainerAllowed TMap ref,
+                   String argName,
+                   ScalarCheck<TKey> keyCheckFunc) {
+
+        ObjectArgs.checkNotNull(ref, argName);
+        ObjectArgs.checkNotNull(keyCheckFunc, "keyCheckFunc-for-" + argName);
+
+        final StringBuilder sb = new StringBuilder(String.valueOf(argName)).append(":Key#");
+        final int sbLen = sb.length();
+        int i = 0;
+
+        for (@Nullable final TKey key : ref.keySet()) {
+
+            sb.append(i);
+            final String argName2 = sb.toString();
+            // Intentional: Leave alone prefix
+            sb.delete(sbLen, sb.length());
+
+            keyCheckFunc.check(key, argName2);
+            ++i;
+        }
+        return ref;
+    }
+
+    /**
+     * Tests if a map reference is not null and each value is valid via {@code valueCheckFunc}.
+     * An empty map will pass this test.
+     *
+     * @param ref
+     *        a map reference
+     * @param argName
+     *        argument name for {@code ref}, e.g., "strList" or "searchRegex"
+     * @param valueCheckFunc
+     *        functor to check each map value
+     *        <br>Ex: {@code ObjectArgs::checkNotNull} for {@link ObjectArgs#checkNotNull(Object, String)}
+     *
+     * @return the validated map reference
+     *
+     * @throws NullPointerException
+     *         if {@code ref} or {@code valueCheckFunc} is {@code null}
+     *
+     * @throws RuntimeException
+     *         if {@code valueCheckFunc} throws for any map key
+     */
+    @FullyTested
+    @EmptyContainerAllowed
+    public static <TKey, TValue, TMap extends Map<TKey, TValue>>
+    TMap checkValues(@EmptyContainerAllowed TMap ref,
+                     String argName,
+                     ScalarCheck<TValue> valueCheckFunc) {
+
+        ObjectArgs.checkNotNull(ref, argName);
+        ObjectArgs.checkNotNull(valueCheckFunc, "valueCheckFunc-for-" + argName);
+
+        final StringBuilder sb = new StringBuilder(String.valueOf(argName)).append(":Key#");
+        final int sbLen = sb.length();
+        int i = 0;
+
+        for (Map.Entry<TKey, TValue> entry: ref.entrySet()) {
+
+            @Nullable
+            final TKey key = entry.getKey();
+            @Nullable
+            final TValue value = entry.getValue();
+
+            sb.append(i).append('[').append(key).append(']');
+            final String argName2 = sb.toString();
+            // Intentional: Leave alone prefix
+            sb.delete(sbLen, sb.length());
+
+            valueCheckFunc.check(value, argName2);
+            ++i;
+        }
         return ref;
     }
 }

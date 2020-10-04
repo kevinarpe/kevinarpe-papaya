@@ -27,26 +27,30 @@ package com.googlecode.kevinarpe.papaya.function;
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
+import java.util.function.Consumer;
+
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see Consumer
  */
 @FullyTested
 @FunctionalInterface
-public interface ThrowingRunnable {
+public interface ThrowingConsumer<TValue> {
 
-    void run()
+    void accept(TValue value)
     throws Exception;
 
     /**
-     * Creates a {@link Runnable} that wraps this instance and re-throws any exceptions using {@link RuntimeException}.
+     * Creates a {@link Consumer} that wraps this instance and re-throws any exceptions using {@link RuntimeException}.
      */
-    default Runnable
-    asRunnable() {
+    default Consumer<TValue>
+    asConsumer() {
 
-        final Runnable x =
-            () -> {
+        final Consumer<TValue> x =
+            (TValue value) -> {
                 try {
-                    run();
+                    accept(value);
                 }
                 catch (Exception e) {
                     throw new RuntimeException(e);

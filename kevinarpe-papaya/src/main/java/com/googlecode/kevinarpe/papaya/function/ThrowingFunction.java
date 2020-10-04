@@ -25,12 +25,39 @@ package com.googlecode.kevinarpe.papaya.function;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
+ *
+ * @see Function
  */
+@FullyTested
 @FunctionalInterface
-public interface ThrowingFunction<Input, Output> {
+public interface ThrowingFunction<TInput, TOutput> {
 
-    Output apply(Input input)
+    TOutput apply(TInput input)
     throws Exception;
+
+    /**
+     * Creates a {@link Consumer} that wraps this instance and re-throws any exceptions using {@link RuntimeException}.
+     */
+    default Function<TInput, TOutput>
+    asFunction() {
+
+        final Function<TInput, TOutput> x =
+            (TInput input) -> {
+                try {
+                    final TOutput z = apply(input);
+                    return z;
+                }
+                catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            };
+        return x;
+    }
 }

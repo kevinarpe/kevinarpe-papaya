@@ -25,33 +25,36 @@ package com.googlecode.kevinarpe.papaya.function;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import java.util.function.Function;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@FullyTested
-@FunctionalInterface
-public interface ThrowingRunnable {
+public class ThrowingFunctionTest {
 
-    void run()
-    throws Exception;
+    @Test
+    public void asFunction_PassWhenNotThrow() {
 
-    /**
-     * Creates a {@link Runnable} that wraps this instance and re-throws any exceptions using {@link RuntimeException}.
-     */
-    default Runnable
-    asRunnable() {
+        final ThrowingFunction<String, Integer> tf = (String s) -> 123;
+        final Function<String, Integer> f = tf.asFunction();
+        Assert.assertEquals(f.apply("blah"), Integer.valueOf(123));
+    }
 
-        final Runnable x =
-            () -> {
-                try {
-                    run();
-                }
-                catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            };
-        return x;
+    @Test
+    public void asFunction_PassWhenThrow() {
+
+        final Exception e = new Exception("dummy");
+        final ThrowingFunction<String, Integer> tf = (String s) -> { throw e; };
+        final Function<String, Integer> f = tf.asFunction();
+        try {
+            f.apply("blah");
+            throw new IllegalStateException("Unreachable code");
+        }
+        catch (Exception e2) {
+            Assert.assertSame(e2.getCause(), e);
+        }
     }
 }

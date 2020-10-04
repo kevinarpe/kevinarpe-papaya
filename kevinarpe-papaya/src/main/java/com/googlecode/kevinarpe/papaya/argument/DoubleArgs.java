@@ -1,5 +1,6 @@
 package com.googlecode.kevinarpe.papaya.argument;
 
+import com.google.common.math.DoubleMath;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 
 /*
@@ -223,6 +224,35 @@ public class DoubleArgs {
     public static double checkNotExactValue(
             double value, double exactValue, String argName) {
         ComparableArgs.checkNotExactValue(value, exactValue, argName);
+        return value;
+    }
+
+    /**
+     * Tests if {@code value} can be safely cast to {@code long} without any loss of precision.
+     *
+     * @param value
+     *        a value to test
+     * @param argName
+     *        argument name for {@code value}, e.g., {@code "hypotenuse"} or {@code "absoluteDifference"}
+     *
+     * @return the validated input value
+     *
+     * @throws IllegalArgumentException
+     *         if {@code value} is not a mathematical integer
+     *
+     * @see DoubleMath#isMathematicalInteger(double)
+     */
+    @FullyTested
+    public static double
+    checkMathematicalInteger(final double value, String argName) {
+
+        if (false == DoubleMath.isMathematicalInteger(value)) {
+
+            final String w = StringArgs._getArgNameWarning(argName, "argName");
+            throw new IllegalArgumentException(String.format(
+                "Argument '%s': Value is not a mathematical integer: %.17f%s",
+                argName, value, w));
+        }
         return value;
     }
 }

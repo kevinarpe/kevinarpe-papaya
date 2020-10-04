@@ -67,7 +67,7 @@ public class LoggerServiceImplTest {
     @BeforeMethod
     public void beforeEachTest() {
 
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         final ThrowableToStringServiceFactory throwableToStringServiceFactory = () -> mockThrowableToStringService;
 

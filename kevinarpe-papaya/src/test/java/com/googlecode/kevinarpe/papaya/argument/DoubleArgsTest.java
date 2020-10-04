@@ -422,4 +422,52 @@ public class DoubleArgsTest {
     public void checkNotExactValue_FailWithInvalidInput(double i, double value) {
         DoubleArgs.checkNotExactValue(i, value, "i");
     }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // DoubleArgs.checkMathematicalInteger
+    //
+
+    @DataProvider
+    private static Object[][]
+    checkMathematicalInteger_Pass_Data() {
+        return new Object[][] {
+            { 0.0d },
+            { 99.0d },
+            { -99.0d },
+            { (double) Long.MAX_VALUE },
+            { (double) Long.MIN_VALUE },
+        };
+    }
+
+    @Test(dataProvider = "checkMathematicalInteger_Pass_Data")
+    public void
+    checkMathematicalInteger_Pass(final double i) {
+
+        // Two steps here: (1) call the method, (2) assert the result
+        Assert.assertTrue(i == DoubleArgs.checkMathematicalInteger(i, "i"));
+        // Demonstrate argName can be anything ridiculous.
+        Assert.assertTrue(i == DoubleArgs.checkMathematicalInteger(i, null));
+        Assert.assertTrue(i == DoubleArgs.checkMathematicalInteger(i, ""));
+        Assert.assertTrue(i == DoubleArgs.checkMathematicalInteger(i, "   "));
+    }
+
+    @DataProvider
+    private static Object[][]
+    checkMathematicalInteger_FailWithInvalidInput_Data() {
+        return new Object[][] {
+            { 0.5d },
+            { -0.5d },
+            { Double.MIN_VALUE },
+            { -1.0d * Double.MIN_VALUE },
+        };
+    }
+
+    @Test(
+        dataProvider = "checkMathematicalInteger_FailWithInvalidInput_Data",
+        expectedExceptions = IllegalArgumentException.class)
+    public void
+    checkMathematicalInteger_FailWithInvalidInput(final double i) {
+
+        DoubleArgs.checkMathematicalInteger(i, "i");
+    }
 }

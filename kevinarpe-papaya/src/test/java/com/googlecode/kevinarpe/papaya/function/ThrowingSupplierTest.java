@@ -25,33 +25,36 @@ package com.googlecode.kevinarpe.papaya.function;
  * #L%
  */
 
-import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import java.util.function.Supplier;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
-@FullyTested
-@FunctionalInterface
-public interface ThrowingRunnable {
+public class ThrowingSupplierTest {
 
-    void run()
-    throws Exception;
+    @Test
+    public void asSupplier_PassWhenNotThrow() {
 
-    /**
-     * Creates a {@link Runnable} that wraps this instance and re-throws any exceptions using {@link RuntimeException}.
-     */
-    default Runnable
-    asRunnable() {
+        final ThrowingSupplier<String> tc = () -> "abc";
+        final Supplier<String> c = tc.asSupplier();
+        Assert.assertEquals(c.get(), "abc");
+    }
 
-        final Runnable x =
-            () -> {
-                try {
-                    run();
-                }
-                catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            };
-        return x;
+    @Test
+    public void asSupplier_PassWhenThrow() {
+
+        final Exception e = new Exception("dummy");
+        final ThrowingSupplier<String> tc = () -> { throw e; };
+        final Supplier<String> c = tc.asSupplier();
+        try {
+            c.get();
+            throw new IllegalStateException("Unreachable code");
+        }
+        catch (Exception e2) {
+            Assert.assertSame(e2.getCause(), e);
+        }
     }
 }
