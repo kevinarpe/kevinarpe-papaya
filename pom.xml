@@ -80,7 +80,7 @@
          |   [-Dtestng.dtd.http=true]
         -->
         <testng.version>7.1.0</testng.version>
-        <junit.version>4.13</junit.version>
+        <junit.version>4.13.1</junit.version>
         <mockito-core.version>3.5.13</mockito-core.version>
         <powermock.version>2.0.7</powermock.version>
         <guava.version>29.0-jre</guava.version>
