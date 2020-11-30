@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.primitives;
  */
 
 import com.google.common.math.DoubleMath;
+import com.googlecode.kevinarpe.papaya.lang.Longs2;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

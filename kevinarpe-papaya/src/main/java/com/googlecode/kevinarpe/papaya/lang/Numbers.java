@@ -31,7 +31,6 @@ import com.google.common.primitives.SignedBytes;
 import com.google.common.primitives.UnsignedBytes;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
-import com.googlecode.kevinarpe.papaya.primitives.Longs2;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

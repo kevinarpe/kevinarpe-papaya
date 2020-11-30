@@ -1,4 +1,4 @@
-package com.googlecode.kevinarpe.papaya.primitives;
+package com.googlecode.kevinarpe.papaya.lang;
 
 /*-
  * #%L
@@ -28,7 +28,6 @@ package com.googlecode.kevinarpe.papaya.primitives;
 import com.google.common.math.DoubleMath;
 import com.google.common.primitives.Ints;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
-import com.googlecode.kevinarpe.papaya.lang.Floats2;
 
 /**
  * Methods "missing" from Google Guava's {@link com.google.common.primitives.Longs}.
