@@ -53,6 +53,7 @@
         <module>kevinarpe-papaya-testing-logback</module>
         <module>kevinarpe-papaya-testing-logback-testng</module>
         <module>kevinarpe-papaya-jdk-derived</module>
+        <module>kevinarpe-papaya-google-chrome-dev-tools</module>
     </modules>
 
     <properties>
@@ -80,15 +81,16 @@
          |   [-Dtestng.dtd.http=true]
         -->
         <testng.version>7.1.0</testng.version>
-        <junit.version>4.13</junit.version>
-        <mockito-core.version>3.5.13</mockito-core.version>
-        <powermock.version>2.0.7</powermock.version>
-        <guava.version>29.0-jre</guava.version>
-        <joda-time.version>2.10.6</joda-time.version>
+        <junit.version>4.13.1</junit.version>
+        <mockito-core.version>3.6.28</mockito-core.version>
+        <powermock.version>2.0.9</powermock.version>
+        <guava.version>30.0-jre</guava.version>
+        <joda-time.version>2.10.8</joda-time.version>
         <jsr305.version>3.0.2</jsr305.version>
         <log4j.version>1.2.17</log4j.version>
         <slf4j-api.version>1.7.30</slf4j-api.version>
         <logback-classic.version>1.2.3</logback-classic.version>
+        <cdt-java-client.version>2.1.0</cdt-java-client.version>
 
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
     </properties>
@@ -350,6 +352,11 @@
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback-classic.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.kklisura.cdt</groupId>
+                <artifactId>cdt-java-client</artifactId>
+                <version>${cdt-java-client.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

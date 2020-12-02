@@ -87,9 +87,6 @@ extends List<T>, Set<T> {
     boolean addAll(@EmptyContainerAllowed Collection<? extends T> c);
 
     /**
-     * @see #addAll(Collection)
-     */
-    /**
      * {@inheritDoc}
      * <hr>
      * Override notes: See {@link #addAll(Collection)}

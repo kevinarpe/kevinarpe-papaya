@@ -59,10 +59,9 @@ public interface MessageFormatter {
      * @see MessageFormatters#formatNonEmptyOrWhitespace(MessageFormatter, String, Object...)
      */
     @EmptyStringAllowed
-    String
-    format(@EmptyStringAllowed
-           String format,
-           @EmptyContainerAllowed
-           @NullableElements
-           Object... argArr);
+    String format(@EmptyStringAllowed
+                  String format,
+                  @EmptyContainerAllowed
+                  @NullableElements
+                  Object... argArr);
 }

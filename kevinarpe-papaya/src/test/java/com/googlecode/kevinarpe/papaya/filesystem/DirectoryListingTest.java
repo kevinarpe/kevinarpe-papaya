@@ -518,7 +518,7 @@ public class DirectoryListingTest {
 
     private Comparator<File> _createMockComparator(final Comparator<File> comparator) {
         // We cannot spy withSeparator a final class with Mockito (or Powermock), so we fake a spy here.
-        // Create a mock, but delgate compare(T, T) calls to a real Comparator<T> instance.
+        // Create a mock, but delegate compare(T, T) calls to a real Comparator<T> instance.
         @SuppressWarnings("unchecked")
         Comparator<File> mockComparator = (Comparator<File>) Mockito.mock(Comparator.class);
         Mockito.when(mockComparator.compare(Mockito.any(File.class), Mockito.any(File.class)))
