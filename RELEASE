@@ -43,6 +43,8 @@ New instructions for 2019+
 * Check JAVA_HOME is set to a version of JDK8.
 ** Example: export JAVA_HOME=/home/kca/saveme/jdk1.8.0_261
             export PATH="$JAVA_HOME/bin:$PATH"
+* Below, you might use mvn.bash, instead of mvn, as it will correctly set JAVA_HOME
+  as JDK 8, instead of (default) JDK 11.  Remember: This library is still restricted to JDK 8.
 * mvn clean install
 ** Any compiler errors or failed/skipped tests must be cleaned-up.
 ** Fix any Javadoc warnings.  Re-run as many times as necessary: mvn javadoc:javadoc

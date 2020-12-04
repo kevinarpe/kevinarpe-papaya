@@ -28,6 +28,7 @@ package com.googlecode.kevinarpe.papaya.web.chrome_dev_tools;
 import com.github.kklisura.cdt.protocol.commands.DOM;
 import com.github.kklisura.cdt.protocol.commands.Input;
 import com.github.kklisura.cdt.protocol.types.input.DispatchKeyEventType;
+import com.googlecode.kevinarpe.papaya.function.ThrowingConsumer;
 import com.googlecode.kevinarpe.papaya.function.retry.RetryStrategyFactory;
 
 /**
@@ -63,7 +64,7 @@ public interface ChromeDevToolsInputService {
      *
      * @see Input#dispatchKeyEvent(DispatchKeyEventType, Integer, Double, String, String, String, String, String, Integer, Integer, Boolean, Boolean, Boolean, Integer)
      * @see DOM#focus()
-     * @see ChromeDevToolsDomQuerySelector#awaitQuerySelectorByIndexThenFocus(String, int, RetryStrategyFactory)
+     * @see ChromeDevToolsDomQuerySelector#awaitQuerySelectorByIndexThenRun(String, int, RetryStrategyFactory, ThrowingConsumer) 
      * @see ChromeDevToolsDomNode#focus()
      * @see ChromeDevToolsDomNode#awaitFocus(RetryStrategyFactory)
      */

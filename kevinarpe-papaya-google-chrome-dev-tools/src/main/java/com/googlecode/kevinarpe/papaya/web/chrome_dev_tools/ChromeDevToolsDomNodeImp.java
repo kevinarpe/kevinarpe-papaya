@@ -74,6 +74,15 @@ implements ChromeDevToolsDomNode {
         return chromeTab;
     }
 
+    @Override
+    public String
+    getOuterHTML()
+    throws Exception {
+
+        final String x = chromeTab.getData().dom.getOuterHTML(nodeId, null, null);
+        return x;
+    }
+
     /** {@inheritDoc} */
     @Override
     public ChromeDevToolsDomNode

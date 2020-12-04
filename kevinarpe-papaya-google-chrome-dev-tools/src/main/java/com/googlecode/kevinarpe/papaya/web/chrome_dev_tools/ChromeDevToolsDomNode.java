@@ -31,6 +31,7 @@ import com.github.kklisura.cdt.protocol.commands.Runtime;
 import com.github.kklisura.cdt.protocol.types.input.DispatchKeyEventType;
 import com.googlecode.kevinarpe.papaya.annotation.Blocking;
 import com.googlecode.kevinarpe.papaya.annotation.NonBlocking;
+import com.googlecode.kevinarpe.papaya.function.ThrowingConsumer;
 import com.googlecode.kevinarpe.papaya.function.retry.RetryStrategy;
 import com.googlecode.kevinarpe.papaya.function.retry.RetryStrategyFactory;
 
@@ -58,6 +59,10 @@ public interface ChromeDevToolsDomNode {
     ChromeDevToolsTab
     chromeTab();
 
+    @NonBlocking
+    String getOuterHTML()
+    throws Exception;
+
     /**
      * Focus on the DOM node.  This method calls {@link DOM#focus(Integer, Integer, String)} with {@link #nodeId()}.
      * <p>
@@ -70,7 +75,7 @@ public interface ChromeDevToolsDomNode {
      *         <br>if DOM node cannot accept focus ever or right
      *
      * @see #awaitFocus(RetryStrategyFactory)
-     * @see ChromeDevToolsDomQuerySelector#awaitQuerySelectorByIndexThenFocus(String, int, RetryStrategyFactory)
+     * @see ChromeDevToolsDomQuerySelector#awaitQuerySelectorByIndexThenRun(String, int, RetryStrategyFactory, ThrowingConsumer)
      */
     @NonBlocking
     ChromeDevToolsDomNode
@@ -81,7 +86,7 @@ public interface ChromeDevToolsDomNode {
      * This is a convenience method to call {@link #focus()} with a retry strategy.
      * <p>
      * In practice, it is safer to call
-     * {@link ChromeDevToolsDomQuerySelector#awaitQuerySelectorByIndexThenFocus(String, int, RetryStrategyFactory)},
+     * {@link ChromeDevToolsDomQuerySelector#awaitQuerySelectorByIndexThenRun(String, int, RetryStrategyFactory, ThrowingConsumer)},
      * as sometimes {@link #nodeId()} is not stable while the page DOM is modified with JavaScript.  If {@link #nodeId()}
      * has become invalid, no amount of retry will allow DOM node focus!
      *

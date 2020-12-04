@@ -30,6 +30,8 @@ import com.google.common.collect.ImmutableList;
 import com.googlecode.kevinarpe.papaya.annotation.Blocking;
 import com.googlecode.kevinarpe.papaya.annotation.EmptyContainerAllowed;
 import com.googlecode.kevinarpe.papaya.annotation.NonBlocking;
+import com.googlecode.kevinarpe.papaya.function.ThrowingConsumer;
+import com.googlecode.kevinarpe.papaya.function.ThrowingFunction;
 import com.googlecode.kevinarpe.papaya.function.count.CountMatcher;
 import com.googlecode.kevinarpe.papaya.function.count.ExactlyCountMatcher;
 import com.googlecode.kevinarpe.papaya.function.retry.RetryStrategy;
@@ -133,8 +135,11 @@ public interface ChromeDevToolsDomQuerySelector {
     throws Exception;
 
     /**
-     * This is a convenience method to call {@link #querySelectorExactlyOne(String)} with a retry strategy, then call
-     * {@link DOM#focus(Integer, Integer, String)} with selected node ID.
+     * This is a convenience method to call {@link #querySelectorExactlyOne(String)} with a retry strategy,
+     * then run {@code thenRun} with selected node.
+     *
+     * @param thenRun
+     *        Ex: {@code (ChromeDevToolsDomNode n) -> n.focus()}
      *
      * @return self for fluent interface / method chaining
      *
@@ -144,8 +149,30 @@ public interface ChromeDevToolsDomQuerySelector {
      */
     @Blocking
     ChromeDevToolsDomNode
-    awaitQuerySelectorExactlyOneThenFocus(String cssSelector,
-                                          RetryStrategyFactory retryStrategyFactory)
+    awaitQuerySelectorExactlyOneThenRun(String cssSelector,
+                                        RetryStrategyFactory retryStrategyFactory,
+                                        ThrowingConsumer<ChromeDevToolsDomNode> thenRun)
+    throws Exception;
+
+    /**
+     * This is a convenience method to call {@link #querySelectorExactlyOne(String)} with a retry strategy,
+     * then run {@code thenCall} with selected node and return result.
+     *
+     * @param thenCall
+     *        Ex: {@code (ChromeDevToolsDomNode n) -> n.getOuterHTML()}
+     *
+     * @return self for fluent interface / method chaining
+     *
+     * @throws Exception
+     *         if zero or more than one DOM nodes are selected
+     *         <br>or, thrown from {@link RetryStrategy#beforeRetry()}
+     */
+    @Blocking
+    <TValue>
+    TValue
+    awaitQuerySelectorExactlyOneThenCall(String cssSelector,
+                                         RetryStrategyFactory retryStrategyFactory,
+                                         ThrowingFunction<ChromeDevToolsDomNode, TValue> thenCall)
     throws Exception;
 
     /**
@@ -252,8 +279,8 @@ public interface ChromeDevToolsDomQuerySelector {
     throws Exception;
 
     /**
-     * This is a convenience method to call {@link #awaitQuerySelectorByIndexThenFocus(String, int, RetryStrategyFactory)}
-     * with a retry strategy, then call {@link DOM#focus(Integer, Integer, String)} with selected node ID.
+     * This is a convenience method to call {@link #awaitQuerySelectorByIndex(String, int, RetryStrategyFactory)},
+     * then call {@code thenRun} with selected node.
      *
      * @param cssSelector
      *        Ex: {@code "#input_text_username"}
@@ -263,6 +290,9 @@ public interface ChromeDevToolsDomQuerySelector {
      * @param index
      *        zero-based index to select DOM node from a list
      *
+     * @param thenRun
+     *        Ex: {@code (ChromeDevToolsDomNode n) -> n.focus()}
+     *
      * @return selected DOM node
      *
      * @throws Exception
@@ -270,8 +300,31 @@ public interface ChromeDevToolsDomQuerySelector {
      */
     @Blocking
     ChromeDevToolsDomNode
-    awaitQuerySelectorByIndexThenFocus(String cssSelector,
-                                       int index,
-                                       RetryStrategyFactory retryStrategyFactory)
+    awaitQuerySelectorByIndexThenRun(String cssSelector,
+                                     int index,
+                                     RetryStrategyFactory retryStrategyFactory,
+                                     ThrowingConsumer<ChromeDevToolsDomNode> thenRun)
+    throws Exception;
+
+    /**
+     * This is a convenience method to call {@link #awaitQuerySelectorByIndex(String, int, RetryStrategyFactory)},
+     * then run {@code thenCall} with selected node and return result.
+     *
+     * @param thenCall
+     *        Ex: {@code (ChromeDevToolsDomNode n) -> n.getOuterHTML()}
+     *
+     * @return self for fluent interface / method chaining
+     *
+     * @throws Exception
+     *         if zero or more than one DOM nodes are selected
+     *         <br>or, thrown from {@link RetryStrategy#beforeRetry()}
+     */
+    @Blocking
+    <TValue>
+    TValue
+    awaitQuerySelectorByIndexThenCall(String cssSelector,
+                                      int index,
+                                      RetryStrategyFactory retryStrategyFactory,
+                                      ThrowingFunction<ChromeDevToolsDomNode, TValue> thenCall)
     throws Exception;
 }

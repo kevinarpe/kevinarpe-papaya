@@ -37,6 +37,8 @@ import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 import com.googlecode.kevinarpe.papaya.exception.ExceptionThrower;
+import com.googlecode.kevinarpe.papaya.function.ThrowingConsumer;
+import com.googlecode.kevinarpe.papaya.function.ThrowingFunction;
 import com.googlecode.kevinarpe.papaya.function.ThrowingSupplier;
 import com.googlecode.kevinarpe.papaya.function.count.CountMatcher;
 import com.googlecode.kevinarpe.papaya.function.count.ExactlyCountMatcher;
@@ -179,39 +181,64 @@ implements ChromeDevToolsDomQuerySelector {
     @Blocking
     @Override
     public ChromeDevToolsDomNode
-    awaitQuerySelectorExactlyOneThenFocus(String cssSelector,
-                                          RetryStrategyFactory retryStrategyFactory)
+    awaitQuerySelectorExactlyOneThenRun(String cssSelector,
+                                        RetryStrategyFactory retryStrategyFactory,
+                                        ThrowingConsumer<ChromeDevToolsDomNode> thenRun)
     throws Exception {
 
         _expectExactlyOne();
         _assertAllSet();
 
         final ChromeDevToolsDomNode x =
-            _awaitQuerySelectorByIndexThenFocus(
+            _awaitQuerySelectorByIndexThenRun(
                 () -> awaitQuerySelectorExactlyOne(cssSelector, retryStrategyFactory),
-                () -> querySelectorExactlyOne(cssSelector));
+                () -> querySelectorExactlyOne(cssSelector),
+                thenRun);
+        return x;
+    }
+
+    /** {@inheritDoc} */
+    @Blocking
+    @Override
+    public <TValue>
+    TValue
+    awaitQuerySelectorExactlyOneThenCall(String cssSelector,
+                                         RetryStrategyFactory retryStrategyFactory,
+                                         ThrowingFunction<ChromeDevToolsDomNode, TValue> thenCall)
+    throws Exception {
+
+        _expectExactlyOne();
+        _assertAllSet();
+
+        final TValue x =
+            _awaitQuerySelectorByIndexThenCall(
+                () -> awaitQuerySelectorExactlyOne(cssSelector, retryStrategyFactory),
+                () -> querySelectorExactlyOne(cssSelector),
+                thenCall);
         return x;
     }
 
     /** {@inheritDoc} */
     @Blocking
     private ChromeDevToolsDomNode
-    _awaitQuerySelectorByIndexThenFocus(ThrowingSupplier<ChromeDevToolsDomNode> blockingAwaitDomNode,
-                                        ThrowingSupplier<ChromeDevToolsDomNode> nonBlockingGetDomNode)
+    _awaitQuerySelectorByIndexThenRun(ThrowingSupplier<ChromeDevToolsDomNode> blockingAwaitDomNode,
+                                      ThrowingSupplier<ChromeDevToolsDomNode> nonBlockingGetDomNode,
+                                      ThrowingConsumer<ChromeDevToolsDomNode> thenRun)
     throws Exception {
+
         @Blocking
         final ChromeDevToolsDomNode domNode = blockingAwaitDomNode.get();
         try {
             // Possible outcomes:
-            // (1) focus() succeeds
-            // (2) focus() fails/throws
-            // (2a) focus() throws ChromeDevToolsInvocationException: Could not find node with given id
-            //      Action: Again query select, then focus
-            // (2b) focus() throws ChromeDevToolsInvocationException: <another message>
+            // (1) accept() succeeds
+            // (2) accept() fails/throws
+            // (2a) accept() throws ChromeDevToolsInvocationException: Could not find node with given id
+            //      Action: Again query select, then call accept()
+            // (2b) accept() throws ChromeDevToolsInvocationException: <another message>
             //      Action: Rethrow
-            // (2c) focus() throws another exception type
+            // (2c) accept() throws another exception type
             //      Action: Do not catch
-            domNode.focus();
+            thenRun.accept(domNode);
             return domNode;
         }
         /*
@@ -235,8 +262,71 @@ at java.base/java.lang.Thread.run(Thread.java:834)
                 try {
                     @NonBlocking
                     final ChromeDevToolsDomNode domNode2 = nonBlockingGetDomNode.get();
-                    domNode2.focus();
+                    thenRun.accept(domNode2);
                     return domNode2;
+                }
+                catch (Exception e2) {
+                    e2.addSuppressed(e);
+                    throw e2;
+                }
+            }
+            else {
+                throw e;
+            }
+        }
+        catch (Exception e) {
+            // @DebugBreakpoint
+            throw e;
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Blocking
+    private <TValue>
+    TValue
+    _awaitQuerySelectorByIndexThenCall(ThrowingSupplier<ChromeDevToolsDomNode> blockingAwaitDomNode,
+                                       ThrowingSupplier<ChromeDevToolsDomNode> nonBlockingGetDomNode,
+                                       ThrowingFunction<ChromeDevToolsDomNode, TValue> thenCall)
+    throws Exception {
+
+        @Blocking
+        final ChromeDevToolsDomNode domNode = blockingAwaitDomNode.get();
+        try {
+            // Possible outcomes:
+            // (1) apply() succeeds
+            // (2) apply() fails/throws
+            // (2a) apply() throws ChromeDevToolsInvocationException: Could not find node with given id
+            //      Action: Again query select, then call apply()
+            // (2b) apply() throws ChromeDevToolsInvocationException: <another message>
+            //      Action: Rethrow
+            // (2c) apply() throws another exception type
+            //      Action: Do not catch
+            final TValue x = thenCall.apply(domNode);
+            return x;
+        }
+        /*
+com.github.kklisura.cdt.services.exceptions.ChromeDevToolsInvocationException: Could not find node with given id
+at com.github.kklisura.cdt.services.impl.ChromeDevToolsServiceImpl.invoke(ChromeDevToolsServiceImpl.java:172)
+at com.github.kklisura.cdt.services.invocation.CommandInvocationHandler.invoke(CommandInvocationHandler.java:87)
+at com.sun.proxy.$Proxy3.focus(Unknown Source)
+at com.googlecode.kevinarpe.papaya.web.chrome_dev_tools.ChromeDevToolsDomNodeImp.focus(ChromeDevToolsDomNodeImp.java:50)
+at com.googlecode.kevinarpe.papaya.web.chrome_dev_tools.ChromeDevToolsDomNodeImp.awaitFocus(ChromeDevToolsDomNodeImp.java:63)
+at com.kevinarpe.hkpl.web.HkplWebLoginServiceImp$1.onEvent(HkplWebLoginServiceImp.java:89)
+at com.kevinarpe.hkpl.web.HkplWebLoginServiceImp$1.onEvent(HkplWebLoginServiceImp.java:66)
+at com.github.kklisura.cdt.services.impl.ChromeDevToolsServiceImpl.lambda$handleEvent$1(ChromeDevToolsServiceImpl.java:306)
+at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+at java.base/java.lang.Thread.run(Thread.java:834)
+         */
+        catch (ChromeDevToolsInvocationException e) {
+            @Nullable
+            final String nullableMessage = e.getMessage();
+            if ("Could not find node with given id".equals(nullableMessage)) {
+                try {
+                    @NonBlocking
+                    final ChromeDevToolsDomNode domNode2 = nonBlockingGetDomNode.get();
+                    final TValue x = thenCall.apply(domNode);
+                    return x;
                 }
                 catch (Exception e2) {
                     e2.addSuppressed(e);
@@ -319,17 +409,39 @@ at java.base/java.lang.Thread.run(Thread.java:834)
     @Blocking
     @Override
     public ChromeDevToolsDomNode
-    awaitQuerySelectorByIndexThenFocus(String cssSelector,
-                                       final int index,
-                                       RetryStrategyFactory retryStrategyFactory)
+    awaitQuerySelectorByIndexThenRun(String cssSelector,
+                                     final int index,
+                                     RetryStrategyFactory retryStrategyFactory,
+                                     ThrowingConsumer<ChromeDevToolsDomNode> thenRun)
     throws Exception {
 
         _assertAllSet();
 
         final ChromeDevToolsDomNode x =
-            _awaitQuerySelectorByIndexThenFocus(
+            _awaitQuerySelectorByIndexThenRun(
                 () -> awaitQuerySelectorByIndex(cssSelector, index, retryStrategyFactory),
-                () -> querySelectorByIndex(cssSelector, index));
+                () -> querySelectorByIndex(cssSelector, index),
+                thenRun);
+        return x;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <TValue>
+    TValue
+    awaitQuerySelectorByIndexThenCall(String cssSelector,
+                                      final int index,
+                                      RetryStrategyFactory retryStrategyFactory,
+                                      ThrowingFunction<ChromeDevToolsDomNode, TValue> thenCall)
+    throws Exception {
+
+        _assertAllSet();
+
+        final TValue x =
+            _awaitQuerySelectorByIndexThenCall(
+                () -> awaitQuerySelectorByIndex(cssSelector, index, retryStrategyFactory),
+                () -> querySelectorByIndex(cssSelector, index),
+                thenCall);
         return x;
     }
 

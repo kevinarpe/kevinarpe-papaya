@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.web.chrome_dev_tools;
  * #L%
  */
 
+import com.github.kklisura.cdt.services.exceptions.ChromeServiceException;
 import com.github.kklisura.cdt.services.types.ChromeTab;
 import com.googlecode.kevinarpe.papaya.annotation.Blocking;
 import com.googlecode.kevinarpe.papaya.annotation.EmptyContainerAllowed;
@@ -32,12 +33,17 @@ import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.annotation.NonBlocking;
 import com.googlecode.kevinarpe.papaya.annotation.ReadOnlyContainer;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.concurrent.ThreadLocalWithReset;
+import com.googlecode.kevinarpe.papaya.concurrent.ThreadLocalsWithReset;
 import com.googlecode.kevinarpe.papaya.exception.ExceptionThrower;
+import com.googlecode.kevinarpe.papaya.function.count.CountMatcher;
 import com.googlecode.kevinarpe.papaya.function.retry.RetryService;
 import com.googlecode.kevinarpe.papaya.function.retry.RetryStrategyFactory;
 
 import javax.annotation.Nullable;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 /**
@@ -62,6 +68,85 @@ implements ChromeService2 {
         this.retryService = ObjectArgs.checkNotNull(retryService, "retryService");
 
         this.exceptionThrower = ObjectArgs.checkNotNull(exceptionThrower, "exceptionThrower");
+    }
+
+    /** {@inheritDoc} */
+    @Blocking
+    @Override
+    public void
+    closeChromeTabs(Chrome chrome,
+                    RetryStrategyFactory retryStrategyFactory,
+                    CountMatcher expectedCount,
+                    Predicate<ChromeTab> isMatch)
+    throws Exception {
+
+        @EmptyContainerAllowed
+        @ReadOnlyContainer
+        final Map<String, ChromeTab> matchedChromeTabIdMap = _getMatchedChromeTabIdMap(chrome, expectedCount, isMatch);
+        if (matchedChromeTabIdMap.isEmpty()) {
+            return;
+        }
+
+        for (final ChromeTab chromeTab : matchedChromeTabIdMap.values()) {
+
+            try {
+                chrome.chromeService.closeTab(chromeTab);
+            }
+            catch (Exception e) {
+                throw exceptionThrower.throwChainedCheckedException(Exception.class,
+                    e,
+                    "Failed to close Chrome tab: ID [%s], Title [%s], URL [%s]",
+                    chromeTab.getId(), chromeTab.getTitle(), chromeTab.getUrl());
+            }
+        }
+        // Finally, wait for the close to complete.
+        retryService.run(retryStrategyFactory,
+            () -> {
+                @EmptyContainerAllowed
+                @ReadOnlyContainer
+                final List<ChromeTab> chromeTabList2 = chrome.chromeService.getTabs();
+                for (final ChromeTab chromeTab : chromeTabList2) {
+
+                    if (matchedChromeTabIdMap.containsKey(chromeTab.getId())) {
+
+                        throw exceptionThrower.throwCheckedException(Exception.class,
+                            "Google Chrome tab is still open: ID [%s], Title [%s], URL [%s]",
+                            chromeTab.getId(), chromeTab.getTitle(), chromeTab.getUrl());
+                    }
+                }
+            });
+    }
+
+    private static final ThreadLocalWithReset<LinkedHashMap<String, ChromeTab>> threadLocalMatchedChromeTabIdMap =
+        ThreadLocalsWithReset.newInstanceForLinkedHashMap();
+
+    @EmptyContainerAllowed
+    @ReadOnlyContainer
+    private Map<String, ChromeTab>
+    _getMatchedChromeTabIdMap(Chrome chrome,
+                              CountMatcher expectedCount,
+                              Predicate<ChromeTab> isMatch)
+    throws Exception {
+
+        @EmptyContainerAllowed
+        final LinkedHashMap<String, ChromeTab> matchedChromeTabIdMap = threadLocalMatchedChromeTabIdMap.getAndReset();
+
+        @EmptyContainerAllowed
+        @ReadOnlyContainer
+        final List<ChromeTab> chromeTabList = chrome.chromeService.getTabs();
+        for (final ChromeTab chromeTab : chromeTabList) {
+
+            if (isMatch.test(chromeTab)) {
+
+                matchedChromeTabIdMap.put(chromeTab.getId(), chromeTab);
+            }
+        }
+        if (false == expectedCount.isMatch(matchedChromeTabIdMap.size())) {
+
+            throw exceptionThrower.throwCheckedException(Exception.class,
+                "Expected %s Google Chrome tab(s), but found %d tab(s)", expectedCount, matchedChromeTabIdMap.size());
+        }
+        return matchedChromeTabIdMap;
     }
 
     /** {@inheritDoc} */

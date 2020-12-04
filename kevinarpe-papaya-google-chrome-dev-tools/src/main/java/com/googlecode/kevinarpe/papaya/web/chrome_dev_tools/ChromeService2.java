@@ -29,6 +29,7 @@ import com.github.kklisura.cdt.services.ChromeService;
 import com.github.kklisura.cdt.services.types.ChromeTab;
 import com.googlecode.kevinarpe.papaya.annotation.Blocking;
 import com.googlecode.kevinarpe.papaya.annotation.NonBlocking;
+import com.googlecode.kevinarpe.papaya.function.count.CountMatcher;
 import com.googlecode.kevinarpe.papaya.function.retry.RetryStrategyFactory;
 
 import java.util.function.Predicate;
@@ -42,11 +43,7 @@ import java.util.function.Predicate;
 public interface ChromeService2 {
 
     /**
-     * Example matching {@link Predicate}: <pre>{@code
-     * (ChromeTab chromeTab) -> chromeTab.isPageType()
-     *                             &&
-     *                          "https://...".equals(chromeTab.getUrl());
-     * }</pre>
+     * Closes zero or more Chrome tabs matched by predicate.
      * <p>
      * Sample values for a {@link ChromeTab}: <pre>{@code
      *   description = ""
@@ -60,13 +57,58 @@ public interface ChromeService2 {
      *   webSocketDebuggerUrl = "ws://localhost:33883/devtools/page/01A4C3AE9C80B1CCC54D992A3A5CDB0C"
      * }</pre>
      *
+     * @param expectedCount
+     *        matcher for expected count of Chrome tabs matched by predicate
+     *
+     * @param isMatch
+     *        Example: <pre>{@code
+     * (ChromeTab chromeTab) -> chromeTab.isPageType()
+     *                             &&
+     *                          "https://...".equals(chromeTab.getUrl());
+     * }</pre>
+     *
      * @throws Exception
-     *         if zero or many tabs match the predicate {@code isMatch}
+     *         if number of Chrome tabs matched by predicate does not match {@code expectedCount}
+     *         <br>if any matched Chrome tab fails to close
+     */
+    @Blocking
+    void closeChromeTabs(Chrome chrome,
+                         RetryStrategyFactory retryStrategyFactory,
+                         CountMatcher expectedCount,
+                         Predicate<ChromeTab> isMatch)
+    throws Exception;
+
+    /**
+     * Finds a Chrome tab by matched predicate.  To wait for a Chrome tab to become available,
+     * see: {@link #awaitChromeTab(Chrome, RetryStrategyFactory, Predicate)}.
+     * <p>
+     * Sample values for a {@link ChromeTab}: <pre>{@code
+     *   description = ""
+     *   devtoolsFrontendUrl = "/devtools/inspector.html?ws=localhost:33883/devtools/page/01A4C3AE9C80B1CCC54D992A3A5CDB0C"
+     *   faviconUrl = "https://www.hkpl.gov.hk/common/favicon.ico"
+     *   id = "01A4C3AE9C80B1CCC54D992A3A5CDB0C"
+     *   parentId = null
+     *   title = "Hong Kong Public Libraries"
+     *   type = "page"
+     *   url = "https://www.hkpl.gov.hk/en/index.html"
+     *   webSocketDebuggerUrl = "ws://localhost:33883/devtools/page/01A4C3AE9C80B1CCC54D992A3A5CDB0C"
+     * }</pre>
+     *
+     * @param isMatch
+     *        Example: <pre>{@code
+     * (ChromeTab chromeTab) -> chromeTab.isPageType()
+     *                             &&
+     *                          "https://...".equals(chromeTab.getUrl());
+     * }</pre>
+     *
+     * @throws Exception
+     *         if not exactly one tab matches the predicate {@code isMatch}
+     *
+     * @see #awaitChromeTab(Chrome, RetryStrategyFactory, Predicate)
      */
     @NonBlocking
     ChromeDevToolsTab
-    findChromeTab(Chrome chrome,
-                  Predicate<ChromeTab> isMatch)
+    findChromeTab(Chrome chrome, Predicate<ChromeTab> isMatch)
     throws Exception;
 
     /**

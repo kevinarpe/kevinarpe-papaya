@@ -190,8 +190,9 @@ extends ChromeDevToolsTest {
         final String outputText =
             appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
                 .parentNodeIsDocument()
-                .awaitQuerySelectorExactlyOneThenFocus(
-                    "#" + INPUT_TEXT_ID, appContext().basicFiveSecondRetryStrategyFactory)
+                .awaitQuerySelectorExactlyOneThenRun(
+                    "#" + INPUT_TEXT_ID, appContext().basicFiveSecondRetryStrategyFactory,
+                    (ChromeDevToolsDomNode n) -> n.focus())
                 .sendKeys(inputText)
                 .evaluateJavaScriptExpressionWithDollarZero(
                     "$0.value",
@@ -222,8 +223,9 @@ extends ChromeDevToolsTest {
         // We need to be sure the page is fully rendered before we start testing.
         appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
             .parentNodeIsDocument()
-            .awaitQuerySelectorExactlyOneThenFocus(
-                "#" + INPUT_TEXT_ID, appContext().basicFiveSecondRetryStrategyFactory);
+            .awaitQuerySelectorExactlyOneThenRun(
+                "#" + INPUT_TEXT_ID, appContext().basicFiveSecondRetryStrategyFactory,
+                (ChromeDevToolsDomNode n) -> n.focus());
     }
 
     private String
@@ -346,13 +348,13 @@ extends ChromeDevToolsTest {
                 .parentNodeIsDocument()
                 .expectedCount(ExactlyCountMatcher.ONE)
                 .awaitQuerySelectorByIndex(
-                    "#" + INPUT_TEXT_ID, 0, appContext().basicFiveSecondRetryStrategyFactory);
+        "#" + INPUT_TEXT_ID, 0, appContext().basicFiveSecondRetryStrategyFactory);
 
         Assert.assertNotNull(domNode);
     }
 
     @Test
-    public void passWhenAwaitQuerySelectorByIndexThenFocus()
+    public void passWhenAwaitQuerySelectorByIndexThenRun()
     throws Exception {
 
         // @Blocking
@@ -362,8 +364,9 @@ extends ChromeDevToolsTest {
             appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
                 .parentNodeIsDocument()
                 .expectedCount(ExactlyCountMatcher.ONE)
-                .awaitQuerySelectorByIndexThenFocus(
-                    "#" + INPUT_TEXT_ID, 0, appContext().basicFiveSecondRetryStrategyFactory);
+                .awaitQuerySelectorByIndexThenRun(
+                    "#" + INPUT_TEXT_ID, 0, appContext().basicFiveSecondRetryStrategyFactory,
+                    (ChromeDevToolsDomNode n) -> n.focus());
 
         // Dummy: I need to assert *something* here...
         Assert.assertNotNull(domNode);

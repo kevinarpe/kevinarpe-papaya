@@ -45,10 +45,10 @@ public final class ChromeDevToolsAppContext {
     public final ChromeDevToolsInputService chromeDevToolsInputService;
     public final ChromeDevToolsRuntimeService chromeDevToolsRuntimeService;
     public final ChromeDevToolsTabFactory chromeDevToolsTabFactory;
+    public final ChromeService2 chromeService2;
     public final ChromeLauncherService chromeLauncherService;
     public final ChromeDevToolsDomNodeFactory chromeDevToolsDomNodeFactory;
     public final ChromeDevToolsDomQuerySelectorFactory chromeDevToolsDomQuerySelectorFactory;
-    public final ChromeService2 chromeService2;
 
     public ChromeDevToolsAppContext(MessageFormatter messageFormatter) {
 
@@ -70,7 +70,13 @@ public final class ChromeDevToolsAppContext {
 
         this.chromeDevToolsTabFactory = new ChromeDevToolsTabFactoryImp(retryService);
 
-        this.chromeLauncherService = new ChromeLauncherServiceImp(retryService, chromeDevToolsTabFactory);
+        this.chromeService2 =
+            new ChromeService2Imp(
+                chromeDevToolsTabFactory,
+                retryService,
+                exceptionThrower);
+
+        this.chromeLauncherService = new ChromeLauncherServiceImp(retryService, chromeDevToolsTabFactory, chromeService2);
 
         this.chromeDevToolsDomNodeFactory =
             new ChromeDevToolsDomNodeFactoryImp(
@@ -81,12 +87,6 @@ public final class ChromeDevToolsAppContext {
         this.chromeDevToolsDomQuerySelectorFactory =
             new ChromeDevToolsDomQuerySelectorFactoryImp(
                 chromeDevToolsDomNodeFactory,
-                retryService,
-                exceptionThrower);
-
-        this.chromeService2 =
-            new ChromeService2Imp(
-                chromeDevToolsTabFactory,
                 retryService,
                 exceptionThrower);
     }

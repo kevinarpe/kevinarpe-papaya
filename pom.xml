@@ -54,6 +54,7 @@
         <module>kevinarpe-papaya-testing-logback-testng</module>
         <module>kevinarpe-papaya-jdk-derived</module>
         <module>kevinarpe-papaya-google-chrome-dev-tools</module>
+        <module>kevinarpe-papaya-java-mail</module>
     </modules>
 
     <properties>
@@ -91,6 +92,8 @@
         <slf4j-api.version>1.7.30</slf4j-api.version>
         <logback-classic.version>1.2.3</logback-classic.version>
         <cdt-java-client.version>2.1.0</cdt-java-client.version>
+        <javax.mail.version>1.6.2</javax.mail.version>
+        <subethasmtp.version>5.2.7</subethasmtp.version>
 
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
     </properties>
@@ -357,6 +360,16 @@
                 <groupId>com.github.kklisura.cdt</groupId>
                 <artifactId>cdt-java-client</artifactId>
                 <version>${cdt-java-client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.mail</groupId>
+                <artifactId>javax.mail</artifactId>
+                <version>${javax.mail.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.davidmoten</groupId>
+                <artifactId>subethasmtp</artifactId>
+                <version>${subethasmtp.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

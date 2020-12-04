@@ -27,18 +27,21 @@ package com.googlecode.kevinarpe.papaya.web.chrome_dev_tools;
 
 import com.github.kklisura.cdt.launch.ChromeLauncher;
 import com.github.kklisura.cdt.services.ChromeService;
-import com.github.kklisura.cdt.services.exceptions.ChromeServiceException;
 import com.github.kklisura.cdt.services.types.ChromeTab;
 import com.googlecode.kevinarpe.papaya.annotation.Blocking;
 import com.googlecode.kevinarpe.papaya.annotation.EmptyContainerAllowed;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.annotation.ReadOnlyContainer;
-import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.concurrent.ThreadLocalWithReset;
+import com.googlecode.kevinarpe.papaya.concurrent.ThreadLocalsWithReset;
+import com.googlecode.kevinarpe.papaya.function.count.ExactlyCountMatcher;
 import com.googlecode.kevinarpe.papaya.function.retry.RetryService;
 import com.googlecode.kevinarpe.papaya.function.retry.RetryStrategyFactory;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * FullyTested?  Some code below is impossible to test in a deterministic manner.
@@ -52,14 +55,18 @@ implements ChromeLauncherService {
 
     private final RetryService retryService;
     private final ChromeDevToolsTabFactory chromeDevToolsTabFactory;
+    private final ChromeService2 chromeService2;
 
     public ChromeLauncherServiceImp(RetryService retryService,
-                                    ChromeDevToolsTabFactory chromeDevToolsTabFactory) {
+                                    ChromeDevToolsTabFactory chromeDevToolsTabFactory,
+                                    ChromeService2 chromeService2) {
 
         this.retryService = ObjectArgs.checkNotNull(retryService, "retryService");
 
         this.chromeDevToolsTabFactory =
             ObjectArgs.checkNotNull(chromeDevToolsTabFactory, "chromeDevToolsTabFactory");
+
+        this.chromeService2 = ObjectArgs.checkNotNull(chromeService2, "chromeService2");
     }
 
     /** {@inheritDoc} */
@@ -85,16 +92,24 @@ url = "chrome://newtab/"
 webSocketDebuggerUrl = "ws://localhost:33061/devtools/page/2F52C90173AE5996E0BD156A9E621E40"
         */
         @Blocking
-        final ChromeTab chromeTab0 = _awaitTab0(chromeService, retryStrategyFactory);
-        // Why create a new tab and close the original?  From time to time, the Page object is unable to navigate to
+        @EmptyContainerAllowed
+        @ReadOnlyContainer
+        final Map<String, ChromeTab> chromeTabIdMap = _awaitTabMap(chromeService, retryStrategyFactory);
+
+        // Why create a new tab and close the original(s)?  From time to time, the Page object is unable to navigate to
         // *any* URL.  All give navigation error: "net::ERR_ABORTED".  Google provides no hints.
         final ChromeTab chromeTab1 = chromeService.createTab();
-        chromeService.closeTab(chromeTab0);
 
         final ChromeDevToolsTab.Data data = new ChromeDevToolsTab.Data(chromeService, chromeTab1);
         final ChromeDevToolsTab chromeDevToolsTab = chromeDevToolsTabFactory.newInstance(data);
-        final Chrome x = new Chrome(chromeLauncher, isHeadless, chromeService, chromeDevToolsTab);
-        return x;
+        final Chrome chrome = new Chrome(chromeLauncher, isHeadless, chromeService, chromeDevToolsTab);
+
+        // To be clear: I have seen very rare cases where multiple(!) tabs exist in a new Google Chrome instance.
+        // I cannot reliably replicate this issue.  I saw it when running tests using Apache Maven command line build.
+        chromeService2.closeChromeTabs(chrome, retryStrategyFactory, new ExactlyCountMatcher(chromeTabIdMap.size()),
+            (ChromeTab chromeTab) -> chromeTabIdMap.containsKey(chromeTab.getId()));
+
+        return chrome;
     }
 
     @Blocking
@@ -112,10 +127,11 @@ webSocketDebuggerUrl = "ws://localhost:33061/devtools/page/2F52C90173AE5996E0BD1
             retryService.call(retryStrategyFactory,
                 () -> {
                     try {
-                        // @Blocking
-                        return chromeLauncher.launch(headless);
+                        @Blocking
+                        final ChromeService z = chromeLauncher.launch(headless);
+                        return z;
                     }
-                    catch (ChromeServiceException e) {
+                    catch (Exception e) {
                         // @DebugBreakpoint
                         throw e;
                     }
@@ -132,60 +148,31 @@ com.github.kklisura.cdt.launch.exceptions.ChromeProcessTimeoutException: Failed 
 	at com.github.kklisura.cdt.launch.ChromeLauncher.launch(ChromeLauncher.java:170)
 	at com.googlecode.kevinarpe.papaya.web.chrome_dev_tools.ChromeLauncherServiceImp.launchChrome(ChromeLauncherServiceImp.java:47)
 	at com.googlecode.kevinarpe.papaya.web.chrome_dev_tools.ChromeDevToolsRuntimeServiceTest.beforeEachTestMethod(ChromeDevToolsRuntimeServiceTest.java:25)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:134)
-	at org.testng.internal.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:63)
-	at org.testng.internal.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:348)
-	at org.testng.internal.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:302)
-	at org.testng.internal.TestInvoker.runConfigMethods(TestInvoker.java:695)
-	at org.testng.internal.TestInvoker.invokeMethod(TestInvoker.java:523)
-	at org.testng.internal.TestInvoker.invokeTestMethod(TestInvoker.java:173)
-	at org.testng.internal.MethodRunner.runInSequence(MethodRunner.java:46)
-	at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:816)
-	at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:146)
-	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
-	at java.util.ArrayList.forEach(ArrayList.java:1259)
-	at org.testng.TestRunner.privateRun(TestRunner.java:766)
-	at org.testng.TestRunner.run(TestRunner.java:587)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:384)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:378)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:337)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:286)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1187)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1109)
-	at org.testng.TestNG.runSuites(TestNG.java:1039)
-	at org.testng.TestNG.run(TestNG.java:1007)
-	at com.intellij.rt.testng.IDEARemoteTestNG.run(IDEARemoteTestNG.java:66)
-	at com.intellij.rt.testng.RemoteTestNGStarter.main(RemoteTestNGStarter.java:109)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at com.intellij.rt.execution.application.AppMainV2.main(AppMainV2.java:114)
  */
     }
 
+    private static final ThreadLocalWithReset<LinkedHashMap<String, ChromeTab>> threadLocalChromeTabIdMap =
+        ThreadLocalsWithReset.newInstanceForLinkedHashMap();
+
     @Blocking
-    private ChromeTab
-    _awaitTab0(ChromeService chromeService,
-               RetryStrategyFactory retryStrategyFactory)
+    @EmptyContainerAllowed
+    @ReadOnlyContainer
+    private Map<String, ChromeTab>
+    _awaitTabMap(ChromeService chromeService,
+                 RetryStrategyFactory retryStrategyFactory)
     throws Exception {
 
         @Blocking
         @EmptyContainerAllowed
         @ReadOnlyContainer
         final List<ChromeTab> chromeTabList = _awaitTabList(chromeService, retryStrategyFactory);
-        final int index = 0;
-        CollectionArgs.checkAccessIndex(chromeTabList, index, "chromeTabList", "index");
 
-        final ChromeTab chromeTab0 = chromeTabList.get(index);
-        return chromeTab0;
+        final LinkedHashMap<String, ChromeTab> chromeTabIdMap = threadLocalChromeTabIdMap.getAndReset();
+        for (final ChromeTab chromeTab : chromeTabList) {
+
+            chromeTabIdMap.put(chromeTab.getId(), chromeTab);
+        }
+        return chromeTabIdMap;
     }
 
     @Blocking
@@ -203,9 +190,10 @@ com.github.kklisura.cdt.launch.exceptions.ChromeProcessTimeoutException: Failed 
             retryService.call(retryStrategyFactory,
                 () -> {
                     try {
-                        return chromeService.getTabs();
+                        final List<ChromeTab> z = chromeService.getTabs();
+                        return z;
                     }
-                    catch (ChromeServiceException e) {
+                    catch (Exception e) {
                         // @DebugBreakpoint
                         throw e;
                     }
@@ -218,37 +206,6 @@ com.github.kklisura.cdt.services.exceptions.ChromeServiceException: Failed sendi
 	at com.github.kklisura.cdt.services.impl.ChromeServiceImpl.getTabs(ChromeServiceImpl.java:127)
 	at com.googlecode.kevinarpe.papaya.web.chrome_dev_tools.ChromeLauncherServiceImp.launchChrome(ChromeLauncherServiceImp.java:42)
 	at com.googlecode.kevinarpe.papaya.web.chrome_dev_tools.ChromeDevToolsRuntimeServiceTest.beforeEachTestMethod(ChromeDevToolsRuntimeServiceTest.java:24)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:134)
-	at org.testng.internal.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:63)
-	at org.testng.internal.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:348)
-	at org.testng.internal.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:302)
-	at org.testng.internal.TestInvoker.runConfigMethods(TestInvoker.java:695)
-	at org.testng.internal.TestInvoker.invokeMethod(TestInvoker.java:523)
-	at org.testng.internal.TestInvoker.invokeTestMethod(TestInvoker.java:173)
-	at org.testng.internal.MethodRunner.runInSequence(MethodRunner.java:46)
-	at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:816)
-	at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:146)
-	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
-	at java.util.ArrayList.forEach(ArrayList.java:1259)
-	at org.testng.TestRunner.privateRun(TestRunner.java:766)
-	at org.testng.TestRunner.run(TestRunner.java:587)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:384)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:378)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:337)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:286)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1187)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1109)
-	at org.testng.TestNG.runSuites(TestNG.java:1039)
-	at org.testng.TestNG.run(TestNG.java:1007)
-	at com.intellij.rt.testng.IDEARemoteTestNG.run(IDEARemoteTestNG.java:66)
-	at com.intellij.rt.testng.RemoteTestNGStarter.main(RemoteTestNGStarter.java:109)
 Caused by: java.net.ConnectException: Connection refused (Connection refused)
 	at java.net.PlainSocketImpl.socketConnect(Native Method)
 	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:476)
