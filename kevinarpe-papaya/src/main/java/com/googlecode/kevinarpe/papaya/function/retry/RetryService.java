@@ -28,9 +28,14 @@ package com.googlecode.kevinarpe.papaya.function.retry;
 import com.googlecode.kevinarpe.papaya.function.ThrowingRunnable;
 import com.googlecode.kevinarpe.papaya.function.ThrowingSupplier;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
+ * ThreadSafe?  Implementations must be thread-safe.
+ *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
+@ThreadSafe
 public interface RetryService {
 
     /**

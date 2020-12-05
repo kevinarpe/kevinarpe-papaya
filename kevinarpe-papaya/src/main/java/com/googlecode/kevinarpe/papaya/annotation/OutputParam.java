@@ -35,7 +35,7 @@ import java.lang.annotation.Target;
  *
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  *
- * @see OutputParams
+ * @see OutputParams#out(Object)
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PARAMETER})

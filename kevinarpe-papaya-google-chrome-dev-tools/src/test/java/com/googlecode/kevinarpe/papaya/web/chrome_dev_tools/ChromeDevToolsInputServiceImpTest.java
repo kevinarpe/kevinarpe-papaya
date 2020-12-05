@@ -25,10 +25,11 @@ package com.googlecode.kevinarpe.papaya.web.chrome_dev_tools;
  * #L%
  */
 
+import com.github.kklisura.cdt.protocol.commands.Input;
 import com.github.kklisura.cdt.protocol.types.input.DispatchKeyEventType;
+import org.mockito.Mockito;
+import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import static org.testng.Assert.*;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -38,13 +39,40 @@ import static org.testng.Assert.*;
 public class ChromeDevToolsInputServiceImpTest
 extends ChromeDevToolsTest {
 
-    @Test(expectedExceptions = Exception.class, expectedExceptionsMessageRegExp = "^.*Unsupported char.*$")
-    public void failWhenUnknownCharacter()
+    @Test(expectedExceptions = Exception.class, expectedExceptionsMessageRegExp = "^Internal error: Unsupported char.*$")
+    public void sendKeys_FailWhenUnknownCharacter()
     throws Exception {
 
         final String nulChar = "\u0000";
 
         appContext().chromeDevToolsInputService.sendKeys(
             chrome().chromeTab0.getData().input, DispatchKeyEventType.KEY_DOWN, nulChar);
+    }
+
+    @Test(expectedExceptions = Exception.class, expectedExceptionsMessageRegExp = "^Failed to send char.*$")
+    public void sendKeys_FailToSendChar()
+    throws Exception {
+
+        final Input mockChromeDevToolsInput = Mockito.mock(Input.class);
+        final DispatchKeyEventType type = DispatchKeyEventType.KEY_DOWN;
+        final ChromeDevToolsInputServiceImp._Data data = ChromeDevToolsInputServiceImp.charMap.get('Z');
+        final RuntimeException runtimeException = new RuntimeException("dummy");
+
+        Mockito.doThrow(runtimeException)
+            .when(mockChromeDevToolsInput)
+            .dispatchKeyEvent(type, data.nullableModifiers, data.nullableTimestamp,
+                data.nullableText, data.nullableUnmodifiedText, data.nullableKeyIdentifier, data.nullableCode,
+                data.nullableKey, data.nullableWindowsVirtualKeyCode, data.nullableNativeVirtualKeyCode,
+                data.nullableAutoRepeat, data.nullableIsKeypad, data.nullableIsSystemKey, data.nullableLocation);
+
+        try {
+            appContext().chromeDevToolsInputService.sendKeys(
+                mockChromeDevToolsInput, type, data.nullableText);
+        }
+        catch (Exception e) {
+
+            Assert.assertSame(e.getCause(), runtimeException);
+            throw e;
+        }
     }
 }

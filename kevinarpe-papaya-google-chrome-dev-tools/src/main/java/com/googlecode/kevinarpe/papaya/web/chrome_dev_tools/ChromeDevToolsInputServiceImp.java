@@ -46,7 +46,8 @@ import javax.annotation.Nullable;
 public final class ChromeDevToolsInputServiceImp
 implements ChromeDevToolsInputService {
 
-    private static final ImmutableMap<Character, _Data> charMap;
+    // package-private for testing
+    static final ImmutableMap<Character, _Data> charMap;
 
     private final ExceptionThrower exceptionThrower;
 
@@ -245,8 +246,28 @@ Print bool
         charMap = b.build();
     }
 
-    private static final class _Data {
+    // package-private for testing
+    static final class _Data {
 
+        /**
+         * @param text
+         *        Ex: {@code "Z"}
+         *
+         * @param unmodifiedText
+         *        Ex: {@code "z"}
+         *
+         * @param code
+         *        Ex: {@code "KeyZ"}
+         *
+         * @param key
+         *        Ex: {@code "Z"}
+         *
+         * @param windowsVirtualKeyCode
+         *        Ex: 90
+         *
+         * @param nativeVirtualKeyCode
+         *        Ex: 90
+         */
         private static _Data
         create(String text,
                String unmodifiedText,
@@ -262,59 +283,59 @@ Print bool
             return x;
         }
 
+        /** Ex: {@code null} */
         @Nullable
         public final Integer nullableModifiers;
+        /** Ex: {@code null} */
         @Nullable
         public final Double nullableTimestamp;
+        /** Ex: {@code "Z"} */
         @Nullable
         public final String nullableText;
+        /** Ex: {@code "z"} */
         @Nullable
         public final String nullableUnmodifiedText;
+        /** Ex: {@code null} */
         @Nullable
         public final String nullableKeyIdentifier;
+        /** Ex: {@code "KeyZ"} */
         @Nullable
         public final String nullableCode;
+        /** Ex: {@code "Z"} */
         @Nullable
         public final String nullableKey;
+        /** Ex: 90 */
         @Nullable
         public final Integer nullableWindowsVirtualKeyCode;
+        /** Ex: 90 */
         @Nullable
         public final Integer nullableNativeVirtualKeyCode;
+        /** Ex: {@code null} */
         @Nullable
         public final Boolean nullableAutoRepeat;
+        /** Ex: {@code null} */
         @Nullable
         public final Boolean nullableIsKeypad;
+        /** Ex: {@code null} */
         @Nullable
         public final Boolean nullableIsSystemKey;
+        /** Ex: {@code null} */
         @Nullable
         public final Integer nullableLocation;
 
-        private _Data(@Nullable
-                      Integer nullableModifiers,
-                      @Nullable
-                      Double nullableTimestamp,
-                      @Nullable
-                      String nullableText,
-                      @Nullable
-                      String nullableUnmodifiedText,
-                      @Nullable
-                      String nullableKeyIdentifier,
-                      @Nullable
-                      String nullableCode,
-                      @Nullable
-                      String nullableKey,
-                      @Nullable
-                      Integer nullableWindowsVirtualKeyCode,
-                      @Nullable
-                      Integer nullableNativeVirtualKeyCode,
-                      @Nullable
-                      Boolean nullableAutoRepeat,
-                      @Nullable
-                      Boolean nullableIsKeypad,
-                      @Nullable
-                      Boolean nullableIsSystemKey,
-                      @Nullable
-                      Integer nullableLocation) {
+        private _Data(@Nullable Integer nullableModifiers,
+                      @Nullable Double nullableTimestamp,
+                      @Nullable String nullableText,
+                      @Nullable String nullableUnmodifiedText,
+                      @Nullable String nullableKeyIdentifier,
+                      @Nullable String nullableCode,
+                      @Nullable String nullableKey,
+                      @Nullable Integer nullableWindowsVirtualKeyCode,
+                      @Nullable Integer nullableNativeVirtualKeyCode,
+                      @Nullable Boolean nullableAutoRepeat,
+                      @Nullable Boolean nullableIsKeypad,
+                      @Nullable Boolean nullableIsSystemKey,
+                      @Nullable Integer nullableLocation) {
 
             this.nullableModifiers = nullableModifiers;
             this.nullableTimestamp = nullableTimestamp;

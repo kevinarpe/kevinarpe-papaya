@@ -130,8 +130,7 @@ public interface ChromeDevToolsDomQuerySelector {
      */
     @Blocking
     ChromeDevToolsDomNode
-    awaitQuerySelectorExactlyOne(String cssSelector,
-                                 RetryStrategyFactory retryStrategyFactory)
+    awaitQuerySelectorExactlyOne(String cssSelector, RetryStrategyFactory retryStrategyFactory)
     throws Exception;
 
     /**
@@ -220,8 +219,7 @@ public interface ChromeDevToolsDomQuerySelector {
     @Blocking
     @EmptyContainerAllowed
     ImmutableList<ChromeDevToolsDomNode>
-    awaitQuerySelectorAll(String cssSelector,
-                          RetryStrategyFactory retryStrategyFactory)
+    awaitQuerySelectorAll(String cssSelector, RetryStrategyFactory retryStrategyFactory)
     throws Exception;
 
     /**

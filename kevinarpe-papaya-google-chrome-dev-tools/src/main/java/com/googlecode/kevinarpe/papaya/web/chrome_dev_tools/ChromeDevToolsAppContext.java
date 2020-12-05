@@ -29,6 +29,7 @@ import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.exception.ExceptionThrower;
 import com.googlecode.kevinarpe.papaya.exception.ExceptionThrowerImpl;
 import com.googlecode.kevinarpe.papaya.function.retry.BasicRetryStrategyImp;
+import com.googlecode.kevinarpe.papaya.function.retry.CollectionIndexMatcher;
 import com.googlecode.kevinarpe.papaya.function.retry.RetryService;
 import com.googlecode.kevinarpe.papaya.function.retry.RetryServiceImp;
 import com.googlecode.kevinarpe.papaya.function.retry.RetryStrategyFactory;
@@ -66,7 +67,10 @@ public final class ChromeDevToolsAppContext {
 
         this.chromeDevToolsRuntimeService = new ChromeDevToolsRuntimeServiceImp(exceptionThrower);
 
-        final RetryService retryService = new RetryServiceImp();
+        final RetryService retryService =
+            new RetryServiceImp(
+                // Intentional: Both the first and last are most interesting -- others: much less.
+                CollectionIndexMatcher.FIRST_AND_LAST_ONLY);
 
         this.chromeDevToolsTabFactory = new ChromeDevToolsTabFactoryImp(retryService);
 

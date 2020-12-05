@@ -26,20 +26,37 @@ package com.googlecode.kevinarpe.papaya.function.retry;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
+import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
+import com.googlecode.kevinarpe.papaya.concurrent.ThreadLocalWithReset;
+import com.googlecode.kevinarpe.papaya.concurrent.ThreadLocalsWithReset;
 import com.googlecode.kevinarpe.papaya.function.ThrowingRunnable;
 import com.googlecode.kevinarpe.papaya.function.ThrowingSupplier;
+
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.ThreadSafe;
+import java.util.ArrayList;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 // Scope: Global singleton
 @FullyTested
+@ThreadSafe
 public final class RetryServiceImp
 implements RetryService {
 
-    public RetryServiceImp() {
-        // Empty
+    private final CollectionIndexMatcher exceptionListIndexMatcher;
+
+    public RetryServiceImp(CollectionIndexMatcher exceptionListIndexMatcher) {
+
+        this.exceptionListIndexMatcher =
+            ObjectArgs.checkNotNull(exceptionListIndexMatcher, "exceptionListIndexMatcher");
     }
+
+    // This ThreadLocal is absolutely necessary to keep this impl thread-safe!
+    private static final ThreadLocalWithReset<ArrayList<Exception>> threadLocalExceptionList =
+        ThreadLocalsWithReset.newInstanceForArrayList();
 
     /** {@inheritDoc} */
     @Override
@@ -47,31 +64,18 @@ implements RetryService {
                     ThrowingRunnable runnable)
     throws Exception {
 
+        final ArrayList<Exception> exceptionList = threadLocalExceptionList.getAndReset();
         final RetryStrategy retryStrategy = retryStrategyFactory.newInstance();
-        while (true) {
 
+        while (true) {
             try {
                 runnable.run();
                 return;
             }
             catch (Exception e) {
-                if (false == retryStrategy.canRetry()) {
-                    throw e;
-                }
-            }
-            _beforeRetry(retryStrategy);
-        }
-    }
 
-    private void
-    _beforeRetry(RetryStrategy retryStrategy)
-    throws Exception {
-        try {
-            retryStrategy.beforeRetry();
-        }
-        catch (Exception e) {
-            // @DebugBreakpoint
-            throw e;
+                _catch(e, exceptionList, retryStrategy);
+            }
         }
     }
 
@@ -82,19 +86,101 @@ implements RetryService {
                 ThrowingSupplier<TValue> valueSupplier)
     throws Exception {
 
+        final ArrayList<Exception> exceptionList = threadLocalExceptionList.getAndReset();
         final RetryStrategy retryStrategy = retryStrategyFactory.newInstance();
-        while (true) {
 
+        while (true) {
             try {
                 final TValue x = valueSupplier.get();
                 return x;
             }
             catch (Exception e) {
-                if (false == retryStrategy.canRetry()) {
-                    throw e;
+
+                _catch(e, exceptionList, retryStrategy);
+            }
+        }
+    }
+
+    private void
+    _catch(Exception e,
+           ArrayList<Exception> exceptionList,
+           RetryStrategy retryStrategy)
+    throws Exception {
+
+        exceptionList.add(e);
+
+        if (retryStrategy.canRetry()) {
+
+            _beforeRetry(retryStrategy, exceptionList);
+        }
+        else {
+            throw _rethrowExceptions(exceptionList);
+        }
+    }
+
+    private void
+    _beforeRetry(RetryStrategy retryStrategy,
+                 ArrayList<Exception> exceptionList)
+    throws Exception {
+
+        try {
+            retryStrategy.beforeRetry();
+        }
+        catch (Exception e2) {
+
+            try {
+                throw _rethrowExceptions(exceptionList);
+            }
+            catch (Exception e3) {
+
+                e2.addSuppressed(e3);
+                throw e2;
+            }
+        }
+    }
+
+    private Exception
+    _rethrowExceptions(ArrayList<Exception> exceptionList)
+    throws Exception {
+
+        CollectionArgs.checkNotEmpty(exceptionList, "exceptionList");
+        @Nullable
+        final Exception nullableException = _tryGetException(exceptionList);
+        if (null != nullableException) {
+            throw nullableException;
+        }
+        else {
+            // Unreachable code in testing
+            final Exception e = new Exception("Internal error: Zero exceptions selected for rethrow -- RETHROW ALL");
+
+            for (final Exception e2 : exceptionList) {
+
+                e.addSuppressed(e2);
+            }
+            throw e;
+        }
+    }
+
+    @Nullable
+    private Exception
+    _tryGetException(ArrayList<Exception> exceptionList) {
+
+        final int size = exceptionList.size();
+        @Nullable
+        Exception nullableException = null;
+        for (int i = 0; i < size; ++i) {
+
+            if (exceptionListIndexMatcher.isMatch(i, size)) {
+
+                final Exception e = exceptionList.get(i);
+                if (null == nullableException) {
+                    nullableException = e;
+                }
+                else {
+                    nullableException.addSuppressed(e);
                 }
             }
-            _beforeRetry(retryStrategy);
         }
+        return nullableException;
     }
 }

@@ -52,20 +52,16 @@ public class ChromeDevToolsTest {
     public final void beforeEachTestMethod()
     throws Exception {
 
-        System.out.println("ChromeDevToolsTest.beforeEachTestMethod: BEGIN");
         this.appContext = new ChromeDevToolsAppContext(ThrowingMessageFormatterImpl.INSTANCE);
         this.chrome =
             appContext.chromeLauncherService.launchChrome(IsHeadless.YES, appContext.basicFiveSecondRetryStrategyFactory);
-        System.out.println("ChromeDevToolsTest.beforeEachTestMethod: END");
     }
 
     @AfterMethod
     public final void afterEachTestMethod()
     throws Exception {
 
-        System.out.println("ChromeDevToolsTest.afterEachTestMethod: BEGIN");
         this.chrome.chromeTab0.awaitClose(RetryStrategyFactory.NO_RETRY);
         this.chrome.close();
-        System.out.println("ChromeDevToolsTest.afterEachTestMethod: END");
     }
 }

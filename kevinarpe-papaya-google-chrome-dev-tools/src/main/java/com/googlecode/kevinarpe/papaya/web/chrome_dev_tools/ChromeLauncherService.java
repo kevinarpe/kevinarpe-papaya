@@ -55,7 +55,6 @@ public interface ChromeLauncherService {
      * @see Chrome#close()
      * @see ChromeDevToolsTabFactory#createTab(ChromeService)
      */
-    Chrome launchChrome(IsHeadless isHeadless,
-                        RetryStrategyFactory retryStrategyFactory)
+    Chrome launchChrome(IsHeadless isHeadless, RetryStrategyFactory retryStrategyFactory)
     throws Exception;
 }

@@ -72,14 +72,11 @@ implements ChromeLauncherService {
     /** {@inheritDoc} */
     @Override
     public Chrome
-    launchChrome(IsHeadless isHeadless,
-                 RetryStrategyFactory retryStrategyFactory)
+    launchChrome(IsHeadless isHeadless, RetryStrategyFactory retryStrategyFactory)
     throws Exception {
 
-//        final ChromeLauncherConfiguration clc = new ChromeLauncherConfiguration();
-        final ChromeLauncher chromeLauncher = new ChromeLauncher();
         @Blocking
-        final ChromeService chromeService = _awaitLaunch(chromeLauncher, isHeadless, retryStrategyFactory);
+        final _Launch launch = _awaitLaunch(isHeadless, retryStrategyFactory);
         /* Instance of ChromeTab:
 description = ""
 devtoolsFrontendUrl = "/devtools/inspector.html?ws=localhost:33061/devtools/page/2F52C90173AE5996E0BD156A9E621E40"
@@ -94,15 +91,15 @@ webSocketDebuggerUrl = "ws://localhost:33061/devtools/page/2F52C90173AE5996E0BD1
         @Blocking
         @EmptyContainerAllowed
         @ReadOnlyContainer
-        final Map<String, ChromeTab> chromeTabIdMap = _awaitTabMap(chromeService, retryStrategyFactory);
+        final Map<String, ChromeTab> chromeTabIdMap = _awaitTabMap(launch.chromeService, retryStrategyFactory);
 
         // Why create a new tab and close the original(s)?  From time to time, the Page object is unable to navigate to
         // *any* URL.  All give navigation error: "net::ERR_ABORTED".  Google provides no hints.
-        final ChromeTab chromeTab1 = chromeService.createTab();
+        final ChromeTab chromeTab1 = launch.chromeService.createTab();
 
-        final ChromeDevToolsTab.Data data = new ChromeDevToolsTab.Data(chromeService, chromeTab1);
+        final ChromeDevToolsTab.Data data = new ChromeDevToolsTab.Data(launch.chromeService, chromeTab1);
         final ChromeDevToolsTab chromeDevToolsTab = chromeDevToolsTabFactory.newInstance(data);
-        final Chrome chrome = new Chrome(chromeLauncher, isHeadless, chromeService, chromeDevToolsTab);
+        final Chrome chrome = new Chrome(launch.chromeLauncher, isHeadless, launch.chromeService, chromeDevToolsTab);
 
         // To be clear: I have seen very rare cases where multiple(!) tabs exist in a new Google Chrome instance.
         // I cannot reliably replicate this issue.  I saw it when running tests using Apache Maven command line build.
@@ -112,23 +109,36 @@ webSocketDebuggerUrl = "ws://localhost:33061/devtools/page/2F52C90173AE5996E0BD1
         return chrome;
     }
 
+    private static final class _Launch {
+
+        public final ChromeLauncher chromeLauncher;
+        public final ChromeService chromeService;
+
+        private _Launch(ChromeLauncher chromeLauncher, ChromeService chromeService) {
+
+            this.chromeLauncher = ObjectArgs.checkNotNull(chromeLauncher, "chromeLauncher");
+            this.chromeService = ObjectArgs.checkNotNull(chromeService, "chromeService");
+        }
+    }
+
     @Blocking
-    private ChromeService
-    _awaitLaunch(ChromeLauncher chromeLauncher,
-                 IsHeadless isHeadless,
-                 RetryStrategyFactory retryStrategyFactory)
+    private _Launch
+    _awaitLaunch(IsHeadless isHeadless, RetryStrategyFactory retryStrategyFactory)
     throws Exception {
 
         final boolean headless = IsHeadless.YES.equals(isHeadless);
         // user-data-dir=/tmp/cdt-user-data-dir10995086840762372025
 //        final ChromeArguments ca =  ChromeArguments.defaults(headless).userDataDir("/path-to-user-data-dir").build();
         @Blocking
-        final ChromeService x =
+        final _Launch x =
             retryService.call(retryStrategyFactory,
                 () -> {
+                    // Important: It is not safe to re-use instances of ChromeLauncher.
+                    final ChromeLauncher chromeLauncher = new ChromeLauncher();
                     try {
                         @Blocking
-                        final ChromeService z = chromeLauncher.launch(headless);
+                        final ChromeService chromeService = chromeLauncher.launch(headless);
+                        final _Launch z = new _Launch(chromeLauncher, chromeService);
                         return z;
                     }
                     catch (Exception e) {

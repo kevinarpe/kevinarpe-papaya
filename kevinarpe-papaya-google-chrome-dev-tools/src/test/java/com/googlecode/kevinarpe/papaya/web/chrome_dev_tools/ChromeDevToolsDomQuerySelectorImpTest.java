@@ -28,6 +28,7 @@ package com.googlecode.kevinarpe.papaya.web.chrome_dev_tools;
 import com.google.common.collect.ImmutableList;
 import com.googlecode.kevinarpe.papaya.annotation.Blocking;
 import com.googlecode.kevinarpe.papaya.annotation.DebugBreakpoint;
+import com.googlecode.kevinarpe.papaya.annotation.EmptyContainerAllowed;
 import com.googlecode.kevinarpe.papaya.exception.ExceptionThrower;
 import com.googlecode.kevinarpe.papaya.exception.ExceptionThrowerImpl;
 import com.googlecode.kevinarpe.papaya.function.ThrowingConsumer;
@@ -178,7 +179,7 @@ extends ChromeDevToolsTest {
     }
 
     @Test
-    public void passWhenParentNodeIsDocument()
+    public void parentNodeIsDocument_Pass()
     throws Exception {
 
         // @Blocking
@@ -242,7 +243,7 @@ extends ChromeDevToolsTest {
     }
 
     @Test
-    public void passWhenParentNodeIsBody()
+    public void parentNodeIsBody_Pass()
     throws Exception {
 
         // @Blocking
@@ -267,7 +268,278 @@ extends ChromeDevToolsTest {
     }
 
     @Test
-    public void passWhenQuerySelectorAll()
+    public void querySelectorExactlyOne_Pass()
+    throws Exception {
+
+        // @Blocking
+        _awaitAcceptDone();
+
+        final ChromeDevToolsDomNode domNode =
+            appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
+                .parentNodeIsDocument()
+                .expectedCount(ExactlyCountMatcher.ONE)
+                .querySelectorExactlyOne("#" + INPUT_TEXT_ID);
+
+        Assert.assertNotNull(domNode);
+    }
+
+    @Test
+    public void awaitQuerySelectorExactlyOne_Pass()
+    throws Exception {
+
+        // @Blocking
+        _awaitAcceptDone();
+
+        final ChromeDevToolsDomNode domNode =
+            appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
+                .parentNodeIsDocument()
+                .expectedCount(ExactlyCountMatcher.ONE)
+                .awaitQuerySelectorExactlyOne("#" + INPUT_TEXT_ID,
+                    appContext().basicFiveSecondRetryStrategyFactory);
+
+        Assert.assertNotNull(domNode);
+    }
+
+    @Test
+    public void awaitQuerySelectorExactlyOneThenRun_Pass()
+    throws Exception {
+
+        // @Blocking
+        _awaitAcceptDone();
+
+        final ChromeDevToolsDomNode domNode =
+            appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
+                .parentNodeIsDocument()
+                .expectedCount(ExactlyCountMatcher.ONE)
+                .awaitQuerySelectorExactlyOneThenRun("#" + INPUT_TEXT_ID,
+                    appContext().basicFiveSecondRetryStrategyFactory,
+                    (ChromeDevToolsDomNode n) -> n.focus());
+
+        Assert.assertNotNull(domNode);
+    }
+
+    @Test
+    public void awaitQuerySelectorExactlyOneThenRun_PassOnRetry()
+    throws Exception {
+
+        // @Blocking
+        _awaitAcceptDone();
+
+        final int[] indexRef = {-1};
+
+        final ChromeDevToolsDomNode domNode =
+            appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
+                .parentNodeIsDocument()
+                .expectedCount(ExactlyCountMatcher.ONE)
+                .awaitQuerySelectorExactlyOneThenRun("#" + INPUT_TEXT_ID,
+                    appContext().basicFiveSecondRetryStrategyFactory,
+
+                    (ChromeDevToolsDomNode n) -> {
+
+                        ++(indexRef[0]);
+
+                        switch (indexRef[0]) {
+                            case 0: {
+                                throw new Exception(ChromeDevToolsDomQuerySelectorImp.COULD_NOT_FIND_NODE_WITH_GIVEN_ID);
+                            }
+                            case 1: {
+                                n.focus();
+                                break;
+                            }
+                            default: {
+                                throw new IllegalStateException("Internal error: Missing switch case: " + indexRef[0]);
+                            }
+                        }
+                    });
+
+        Assert.assertNotNull(domNode);
+    }
+
+    @Test(expectedExceptions = Exception.class, expectedExceptionsMessageRegExp = "^always fail$")
+    public void awaitQuerySelectorExactlyOneThenRun_FailWhenRun()
+    throws Exception {
+
+        // @Blocking
+        _awaitAcceptDone();
+
+        appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
+            .parentNodeIsDocument()
+            .expectedCount(ExactlyCountMatcher.ONE)
+            .awaitQuerySelectorExactlyOneThenRun("#" + INPUT_TEXT_ID,
+                appContext().basicFiveSecondRetryStrategyFactory,
+
+                (ChromeDevToolsDomNode n) -> {
+                    throw new Exception("always fail");
+                });
+    }
+
+    @Test(expectedExceptions = Exception.class, expectedExceptionsMessageRegExp = "^always fail$")
+    public void awaitQuerySelectorExactlyOneThenRun_FailOnRetry()
+    throws Exception {
+
+        // @Blocking
+        _awaitAcceptDone();
+
+        final int[] indexRef = {-1};
+
+        try {
+            appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
+                .parentNodeIsDocument()
+                .expectedCount(ExactlyCountMatcher.ONE)
+                .awaitQuerySelectorExactlyOneThenRun("#" + INPUT_TEXT_ID,
+                    appContext().basicFiveSecondRetryStrategyFactory,
+
+                    (ChromeDevToolsDomNode n) -> {
+
+                        ++(indexRef[0]);
+
+                        switch (indexRef[0]) {
+                            case 0: {
+                                throw new Exception(ChromeDevToolsDomQuerySelectorImp.COULD_NOT_FIND_NODE_WITH_GIVEN_ID);
+                            }
+                            case 1: {
+                                throw new Exception("always fail");
+                            }
+                            default: {
+                                throw new IllegalStateException("Internal error: Missing switch case: " + indexRef[0]);
+                            }
+                        }
+                    });
+        }
+        catch (Exception e) {
+
+            @EmptyContainerAllowed
+            final Throwable[] suppressedArr = e.getSuppressed();
+            Assert.assertEquals(suppressedArr.length, 1);
+            Assert.assertEquals(suppressedArr[0].getMessage(),
+                ChromeDevToolsDomQuerySelectorImp.COULD_NOT_FIND_NODE_WITH_GIVEN_ID);
+
+            throw e;
+        }
+    }
+
+    @Test
+    public void awaitQuerySelectorExactlyOneThenCall_Pass()
+    throws Exception {
+
+        // @Blocking
+        _awaitAcceptDone();
+
+        final String outerHtml =
+            appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
+                .parentNodeIsDocument()
+                .expectedCount(ExactlyCountMatcher.ONE)
+                .awaitQuerySelectorExactlyOneThenCall("#" + INPUT_TEXT_ID,
+                    appContext().basicFiveSecondRetryStrategyFactory,
+                    (ChromeDevToolsDomNode n) -> n.getOuterHTML());
+
+        Assert.assertEquals(outerHtml,
+            "<input id=\"input_text\" type=\"text\" size=\"64\" autofocus=\"true\" style=\"font-family: monospace\">");
+    }
+
+    @Test
+    public void awaitQuerySelectorExactlyOneThenCall_PassOnRetry()
+    throws Exception {
+
+        // @Blocking
+        _awaitAcceptDone();
+
+        final int[] indexRef = {-1};
+
+        final String outerHtml =
+            appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
+                .parentNodeIsDocument()
+                .expectedCount(ExactlyCountMatcher.ONE)
+                .awaitQuerySelectorExactlyOneThenCall("#" + INPUT_TEXT_ID,
+                    appContext().basicFiveSecondRetryStrategyFactory,
+
+                    (ChromeDevToolsDomNode n) -> {
+
+                        ++(indexRef[0]);
+
+                        switch (indexRef[0]) {
+                            case 0: {
+                                throw new Exception(ChromeDevToolsDomQuerySelectorImp.COULD_NOT_FIND_NODE_WITH_GIVEN_ID);
+                            }
+                            case 1: {
+                                final String z = n.getOuterHTML();
+                                return z;
+                            }
+                            default: {
+                                throw new IllegalStateException("Internal error: Missing switch case: " + indexRef[0]);
+                            }
+                        }
+                    });
+
+        Assert.assertEquals(outerHtml,
+            "<input id=\"input_text\" type=\"text\" size=\"64\" autofocus=\"true\" style=\"font-family: monospace\">");
+    }
+
+    @Test(expectedExceptions = Exception.class, expectedExceptionsMessageRegExp = "^always fail$")
+    public void awaitQuerySelectorExactlyOneThenCall_FailWhenCall()
+    throws Exception {
+
+        // @Blocking
+        _awaitAcceptDone();
+
+        appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
+            .parentNodeIsDocument()
+            .expectedCount(ExactlyCountMatcher.ONE)
+            .awaitQuerySelectorExactlyOneThenCall("#" + INPUT_TEXT_ID,
+                appContext().basicFiveSecondRetryStrategyFactory,
+
+                (ChromeDevToolsDomNode n) -> {
+                    throw new Exception("always fail");
+                });
+    }
+
+    @Test(expectedExceptions = Exception.class, expectedExceptionsMessageRegExp = "^always fail$")
+    public void awaitQuerySelectorExactlyOneThenCall_FailOnRetry()
+    throws Exception {
+
+        // @Blocking
+        _awaitAcceptDone();
+
+        final int[] indexRef = {-1};
+
+        try {
+            appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
+                .parentNodeIsDocument()
+                .expectedCount(ExactlyCountMatcher.ONE)
+                .awaitQuerySelectorExactlyOneThenCall("#" + INPUT_TEXT_ID,
+                    appContext().basicFiveSecondRetryStrategyFactory,
+
+                    (ChromeDevToolsDomNode n) -> {
+
+                        ++(indexRef[0]);
+
+                        switch (indexRef[0]) {
+                            case 0: {
+                                throw new Exception(ChromeDevToolsDomQuerySelectorImp.COULD_NOT_FIND_NODE_WITH_GIVEN_ID);
+                            }
+                            case 1: {
+                                throw new Exception("always fail");
+                            }
+                            default: {
+                                throw new IllegalStateException("Internal error: Missing switch case: " + indexRef[0]);
+                            }
+                        }
+                    });
+        }
+        catch (Exception e) {
+
+            @EmptyContainerAllowed
+            final Throwable[] suppressedArr = e.getSuppressed();
+            Assert.assertEquals(suppressedArr.length, 1);
+            Assert.assertEquals(suppressedArr[0].getMessage(),
+                ChromeDevToolsDomQuerySelectorImp.COULD_NOT_FIND_NODE_WITH_GIVEN_ID);
+
+            throw e;
+        }
+    }
+
+    @Test
+    public void querySelectorAll_Pass()
     throws Exception {
 
         // @Blocking
@@ -283,8 +555,6 @@ extends ChromeDevToolsTest {
                 .querySelectorAll("#" + INPUT_TEXT_ID);
 
         Assert.assertEquals(domNodeList.size(), 1);
-
-
     }
 
     @Blocking
@@ -292,17 +562,19 @@ extends ChromeDevToolsTest {
     _awaitBodyNodeId()
     throws Exception {
 
-        @Blocking
-        final int x =
+        final ChromeDevToolsDomNode bodyDomNode =
             appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
-            .parentNodeIsDocument()
-            .awaitQuerySelectorExactlyOne("body", appContext().basicFiveSecondRetryStrategyFactory)
-            .nodeId();
+                .parentNodeIsDocument()
+                .awaitQuerySelectorExactlyOne("body", appContext().basicFiveSecondRetryStrategyFactory);
+
+        Assert.assertSame(bodyDomNode.chromeTab(), chrome().chromeTab0);
+        @Blocking
+        final int x = bodyDomNode.nodeId();
         return x;
     }
 
     @Test
-    public void passWhenAwaitQuerySelectorAll()
+    public void awaitQuerySelectorAll_Pass()
     throws Exception {
 
         // @Blocking
@@ -318,7 +590,7 @@ extends ChromeDevToolsTest {
     }
 
     @Test
-    public void passWhenQuerySelectorByIndex()
+    public void querySelectorByIndex_Pass()
     throws Exception {
 
         // @Blocking
@@ -337,7 +609,7 @@ extends ChromeDevToolsTest {
     }
 
     @Test
-    public void passWhenAwaitQuerySelectorByIndex()
+    public void awaitQuerySelectorByIndex_Pass()
     throws Exception {
 
         // @Blocking
@@ -354,7 +626,7 @@ extends ChromeDevToolsTest {
     }
 
     @Test
-    public void passWhenAwaitQuerySelectorByIndexThenRun()
+    public void awaitQuerySelectorByIndexThenRun_Pass()
     throws Exception {
 
         // @Blocking
@@ -376,25 +648,222 @@ extends ChromeDevToolsTest {
     }
 
     @Test
-    public void passWhenOtherStuff()
+    public void awaitQuerySelectorByIndexThenRun_PassOnRetry()
     throws Exception {
 
         // @Blocking
         _awaitAcceptDone();
 
-        // Ex: " !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
-        final String inputText = _createInputText();
+        final int[] indexRef = {-1};
 
-        final ChromeDevToolsDomNode buttonDomNode =
+        final ChromeDevToolsDomNode domNode =
             appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
                 .parentNodeIsDocument()
-                .awaitQuerySelectorExactlyOne(
-                    "#" + BUTTON_ID, appContext().basicFiveSecondRetryStrategyFactory);
+                .expectedCount(ExactlyCountMatcher.ONE)
+                .awaitQuerySelectorByIndexThenRun(
+                    "#" + INPUT_TEXT_ID, 0, appContext().basicFiveSecondRetryStrategyFactory,
 
-        // Dummy: I need to assert *something* here...
-        Assert.assertSame(buttonDomNode.chromeTab(), chrome().chromeTab0);
+                    (ChromeDevToolsDomNode n) -> {
 
-        buttonDomNode.awaitFocus(appContext().basicFiveSecondRetryStrategyFactory);
-        buttonDomNode.click();
+                        ++(indexRef[0]);
+
+                        switch (indexRef[0]) {
+                            case 0: {
+                                throw new Exception(ChromeDevToolsDomQuerySelectorImp.COULD_NOT_FIND_NODE_WITH_GIVEN_ID);
+                            }
+                            case 1: {
+                                n.focus();
+                                break;
+                            }
+                            default: {
+                                throw new IllegalStateException("Internal error: Missing switch case: " + indexRef[0]);
+                            }
+                        }
+                    });
+
+        Assert.assertNotNull(domNode);
+    }
+
+    @Test(expectedExceptions = Exception.class, expectedExceptionsMessageRegExp = "^always fail$")
+    public void awaitQuerySelectorByIndexThenRun_FailWhenRun()
+    throws Exception {
+
+        // @Blocking
+        _awaitAcceptDone();
+
+        appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
+            .parentNodeIsDocument()
+            .expectedCount(ExactlyCountMatcher.ONE)
+            .awaitQuerySelectorByIndexThenRun(
+                "#" + INPUT_TEXT_ID, 0, appContext().basicFiveSecondRetryStrategyFactory,
+
+                (ChromeDevToolsDomNode n) -> {
+                    throw new Exception("always fail");
+                });
+    }
+
+    @Test(expectedExceptions = Exception.class, expectedExceptionsMessageRegExp = "^always fail$")
+    public void awaitQuerySelectorByIndexThenRun_FailOnRetry()
+    throws Exception {
+
+        // @Blocking
+        _awaitAcceptDone();
+
+        final int[] indexRef = {-1};
+
+        try {
+            appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
+                .parentNodeIsDocument()
+                .expectedCount(ExactlyCountMatcher.ONE)
+                .awaitQuerySelectorByIndexThenRun(
+                    "#" + INPUT_TEXT_ID, 0, appContext().basicFiveSecondRetryStrategyFactory,
+
+                    (ChromeDevToolsDomNode n) -> {
+
+                        ++(indexRef[0]);
+
+                        switch (indexRef[0]) {
+                            case 0: {
+                                throw new Exception(ChromeDevToolsDomQuerySelectorImp.COULD_NOT_FIND_NODE_WITH_GIVEN_ID);
+                            }
+                            case 1: {
+                                throw new Exception("always fail");
+                            }
+                            default: {
+                                throw new IllegalStateException("Internal error: Missing switch case: " + indexRef[0]);
+                            }
+                        }
+                    });
+        }
+        catch (Exception e) {
+
+            @EmptyContainerAllowed
+            final Throwable[] suppressedArr = e.getSuppressed();
+            Assert.assertEquals(suppressedArr.length, 1);
+            Assert.assertEquals(suppressedArr[0].getMessage(),
+                ChromeDevToolsDomQuerySelectorImp.COULD_NOT_FIND_NODE_WITH_GIVEN_ID);
+
+            throw e;
+        }
+    }
+
+    @Test
+    public void awaitQuerySelectorByIndexThenCall_Pass()
+    throws Exception {
+
+        // @Blocking
+        _awaitAcceptDone();
+
+        final String outerHtml =
+            appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
+                .parentNodeIsDocument()
+                .expectedCount(ExactlyCountMatcher.ONE)
+                .awaitQuerySelectorByIndexThenCall(
+                    "#" + INPUT_TEXT_ID, 0, appContext().basicFiveSecondRetryStrategyFactory,
+                    (ChromeDevToolsDomNode n) -> n.getOuterHTML());
+
+        Assert.assertEquals(outerHtml,
+            "<input id=\"input_text\" type=\"text\" size=\"64\" autofocus=\"true\" style=\"font-family: monospace\">");
+    }
+
+    @Test
+    public void awaitQuerySelectorByIndexThenCall_PassOnRetry()
+    throws Exception {
+
+        // @Blocking
+        _awaitAcceptDone();
+
+        final int[] indexRef = {-1};
+
+        final String outerHtml =
+            appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
+                .parentNodeIsDocument()
+                .expectedCount(ExactlyCountMatcher.ONE)
+                .awaitQuerySelectorByIndexThenCall(
+                    "#" + INPUT_TEXT_ID, 0, appContext().basicFiveSecondRetryStrategyFactory,
+
+                    (ChromeDevToolsDomNode n) -> {
+
+                        ++(indexRef[0]);
+
+                        switch (indexRef[0]) {
+                            case 0: {
+                                throw new Exception(ChromeDevToolsDomQuerySelectorImp.COULD_NOT_FIND_NODE_WITH_GIVEN_ID);
+                            }
+                            case 1: {
+                                final String z = n.getOuterHTML();
+                                return z;
+                            }
+                            default: {
+                                throw new IllegalStateException("Internal error: Missing switch case: " + indexRef[0]);
+                            }
+                        }
+                    });
+
+        Assert.assertEquals(outerHtml,
+            "<input id=\"input_text\" type=\"text\" size=\"64\" autofocus=\"true\" style=\"font-family: monospace\">");
+    }
+
+    @Test(expectedExceptions = Exception.class, expectedExceptionsMessageRegExp = "^always fail$")
+    public void awaitQuerySelectorByIndexThenCall_FailWhenCall()
+    throws Exception {
+
+        // @Blocking
+        _awaitAcceptDone();
+
+        appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
+            .parentNodeIsDocument()
+            .expectedCount(ExactlyCountMatcher.ONE)
+            .awaitQuerySelectorByIndexThenCall(
+                "#" + INPUT_TEXT_ID, 0, appContext().basicFiveSecondRetryStrategyFactory,
+
+                (ChromeDevToolsDomNode n) -> {
+                    throw new Exception("always fail");
+                });
+    }
+
+    @Test(expectedExceptions = Exception.class, expectedExceptionsMessageRegExp = "^always fail$")
+    public void awaitQuerySelectorByIndexThenCall_FailOnRetry()
+    throws Exception {
+
+        // @Blocking
+        _awaitAcceptDone();
+
+        final int[] indexRef = {-1};
+
+        try {
+            appContext().chromeDevToolsDomQuerySelectorFactory.newInstance(chrome().chromeTab0)
+                .parentNodeIsDocument()
+                .expectedCount(ExactlyCountMatcher.ONE)
+                .awaitQuerySelectorByIndexThenCall(
+                    "#" + INPUT_TEXT_ID, 0, appContext().basicFiveSecondRetryStrategyFactory,
+
+                    (ChromeDevToolsDomNode n) -> {
+
+                        ++(indexRef[0]);
+
+                        switch (indexRef[0]) {
+                            case 0: {
+                                throw new Exception(ChromeDevToolsDomQuerySelectorImp.COULD_NOT_FIND_NODE_WITH_GIVEN_ID);
+                            }
+                            case 1: {
+                                throw new Exception("always fail");
+                            }
+                            default: {
+                                throw new IllegalStateException("Internal error: Missing switch case: " + indexRef[0]);
+                            }
+                        }
+                    });
+        }
+        catch (Exception e) {
+
+            @EmptyContainerAllowed
+            final Throwable[] suppressedArr = e.getSuppressed();
+            Assert.assertEquals(suppressedArr.length, 1);
+            Assert.assertEquals(suppressedArr[0].getMessage(),
+                ChromeDevToolsDomQuerySelectorImp.COULD_NOT_FIND_NODE_WITH_GIVEN_ID);
+
+            throw e;
+        }
     }
 }

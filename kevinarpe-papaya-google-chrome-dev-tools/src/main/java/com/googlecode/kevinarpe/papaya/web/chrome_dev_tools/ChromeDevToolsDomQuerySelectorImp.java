@@ -26,7 +26,6 @@ package com.googlecode.kevinarpe.papaya.web.chrome_dev_tools;
  */
 
 import com.github.kklisura.cdt.protocol.types.dom.Node;
-import com.github.kklisura.cdt.services.exceptions.ChromeDevToolsInvocationException;
 import com.google.common.collect.ImmutableList;
 import com.googlecode.kevinarpe.papaya.annotation.Blocking;
 import com.googlecode.kevinarpe.papaya.annotation.EmptyContainerAllowed;
@@ -197,26 +196,8 @@ implements ChromeDevToolsDomQuerySelector {
         return x;
     }
 
-    /** {@inheritDoc} */
-    @Blocking
-    @Override
-    public <TValue>
-    TValue
-    awaitQuerySelectorExactlyOneThenCall(String cssSelector,
-                                         RetryStrategyFactory retryStrategyFactory,
-                                         ThrowingFunction<ChromeDevToolsDomNode, TValue> thenCall)
-    throws Exception {
-
-        _expectExactlyOne();
-        _assertAllSet();
-
-        final TValue x =
-            _awaitQuerySelectorByIndexThenCall(
-                () -> awaitQuerySelectorExactlyOne(cssSelector, retryStrategyFactory),
-                () -> querySelectorExactlyOne(cssSelector),
-                thenCall);
-        return x;
-    }
+    // package-private for testing
+    static final String COULD_NOT_FIND_NODE_WITH_GIVEN_ID = "Could not find node with given id";
 
     /** {@inheritDoc} */
     @Blocking
@@ -255,10 +236,10 @@ at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecuto
 at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
 at java.base/java.lang.Thread.run(Thread.java:834)
          */
-        catch (ChromeDevToolsInvocationException e) {
+        catch (Exception e) {
             @Nullable
             final String nullableMessage = e.getMessage();
-            if ("Could not find node with given id".equals(nullableMessage)) {
+            if (COULD_NOT_FIND_NODE_WITH_GIVEN_ID.equals(nullableMessage)) {
                 try {
                     @NonBlocking
                     final ChromeDevToolsDomNode domNode2 = nonBlockingGetDomNode.get();
@@ -274,10 +255,27 @@ at java.base/java.lang.Thread.run(Thread.java:834)
                 throw e;
             }
         }
-        catch (Exception e) {
-            // @DebugBreakpoint
-            throw e;
-        }
+    }
+
+    /** {@inheritDoc} */
+    @Blocking
+    @Override
+    public <TValue>
+    TValue
+    awaitQuerySelectorExactlyOneThenCall(String cssSelector,
+                                         RetryStrategyFactory retryStrategyFactory,
+                                         ThrowingFunction<ChromeDevToolsDomNode, TValue> thenCall)
+    throws Exception {
+
+        _expectExactlyOne();
+        _assertAllSet();
+
+        final TValue x =
+            _awaitQuerySelectorByIndexThenCall(
+                () -> awaitQuerySelectorExactlyOne(cssSelector, retryStrategyFactory),
+                () -> querySelectorExactlyOne(cssSelector),
+                thenCall);
+        return x;
     }
 
     /** {@inheritDoc} */
@@ -318,14 +316,14 @@ at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecuto
 at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
 at java.base/java.lang.Thread.run(Thread.java:834)
          */
-        catch (ChromeDevToolsInvocationException e) {
+        catch (Exception e) {
             @Nullable
             final String nullableMessage = e.getMessage();
-            if ("Could not find node with given id".equals(nullableMessage)) {
+            if (COULD_NOT_FIND_NODE_WITH_GIVEN_ID.equals(nullableMessage)) {
                 try {
                     @NonBlocking
                     final ChromeDevToolsDomNode domNode2 = nonBlockingGetDomNode.get();
-                    final TValue x = thenCall.apply(domNode);
+                    final TValue x = thenCall.apply(domNode2);
                     return x;
                 }
                 catch (Exception e2) {
@@ -336,10 +334,6 @@ at java.base/java.lang.Thread.run(Thread.java:834)
             else {
                 throw e;
             }
-        }
-        catch (Exception e) {
-            // @DebugBreakpoint
-            throw e;
         }
     }
 

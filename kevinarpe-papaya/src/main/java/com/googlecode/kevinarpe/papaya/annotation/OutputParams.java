@@ -32,6 +32,14 @@ package com.googlecode.kevinarpe.papaya.annotation;
  */
 public final class OutputParams {
 
+    /**
+     * Use this at call site to mark a parameter as output parameter (will be modified by called function).
+     *
+     * @param value
+     *        to be modified by called function
+     *
+     * @return always {@code value}
+     */
     public static <T>
     T out(T value) {
         return value;
