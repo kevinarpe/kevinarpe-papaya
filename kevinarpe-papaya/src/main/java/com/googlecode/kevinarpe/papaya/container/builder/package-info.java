@@ -2,7 +2,7 @@
  * Classes for building containers.
  * <p>
  * This package is a part of the open-source
- * <a href="http://kevinarpe-papaya.googlecode.com">Papaya library</a>.
+ * <a href="https://github.com/kevinarpe/kevinarpe-papaya">Papaya library</a>.
  */
 package com.googlecode.kevinarpe.papaya.container.builder;
 
