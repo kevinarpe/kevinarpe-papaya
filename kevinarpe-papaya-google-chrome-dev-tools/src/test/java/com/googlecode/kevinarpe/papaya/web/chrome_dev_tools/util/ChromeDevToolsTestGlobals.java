@@ -25,8 +25,11 @@ package com.googlecode.kevinarpe.papaya.web.chrome_dev_tools.util;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.exception.ExceptionThrower;
+import com.googlecode.kevinarpe.papaya.exception.ExceptionThrowerImpl;
 import com.googlecode.kevinarpe.papaya.function.retry.BasicRetryStrategyImp;
 import com.googlecode.kevinarpe.papaya.function.retry.RetryStrategyFactory;
+import com.googlecode.kevinarpe.papaya.string.ThrowingMessageFormatterImpl;
 
 import java.time.Duration;
 
@@ -34,6 +37,9 @@ import java.time.Duration;
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
 public final class ChromeDevToolsTestGlobals {
+
+    public static final ExceptionThrower exceptionThrower =
+        new ExceptionThrowerImpl(ThrowingMessageFormatterImpl.INSTANCE);
 
     public static final RetryStrategyFactory retryStrategyFactoryOnceZeroSleep =
         BasicRetryStrategyImp.factoryBuilder()

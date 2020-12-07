@@ -47,10 +47,45 @@ import javax.annotation.Nullable;
 public final class ChromeDevToolsRuntimeServiceImp
 implements ChromeDevToolsRuntimeService {
 
+    // package-private for testing
+    interface ValueCastService {
+
+        <T> T cast(Class<T> valueClass, @Nullable Object obj)
+        throws Exception;
+    }
+
+    private static final class ValueCastServiceImp
+    implements ValueCastService {
+
+        private static final ValueCastServiceImp INSTANCE = new ValueCastServiceImp();
+
+        private ValueCastServiceImp() {
+            // Empty
+        }
+
+        @Override
+        public <T>
+        T cast(Class<T> valueClass, @Nullable Object obj)
+        throws Exception {
+
+            @Nullable
+            final T x = valueClass.cast(obj);
+            return x;
+        }
+    }
+
+    private final ValueCastService valueCastService;
     private final ExceptionThrower exceptionThrower;
 
     public ChromeDevToolsRuntimeServiceImp(ExceptionThrower exceptionThrower) {
 
+        this(ValueCastServiceImp.INSTANCE, exceptionThrower);
+    }
+
+    // package-private for testing
+    ChromeDevToolsRuntimeServiceImp(ValueCastService valueCastService, ExceptionThrower exceptionThrower) {
+
+        this.valueCastService = ObjectArgs.checkNotNull(valueCastService, "valueCastService");
         this.exceptionThrower = ObjectArgs.checkNotNull(exceptionThrower, "exceptionThrower");
     }
 
@@ -90,7 +125,7 @@ implements ChromeDevToolsRuntimeService {
 
         try {
             @Nullable
-            final TValue x = valueType.valueClass.cast(nullableValue);
+            final TValue x = valueCastService.cast(valueType.valueClass, nullableValue);
             return x;
         }
         catch (Exception e) {
@@ -162,7 +197,7 @@ implements ChromeDevToolsRuntimeService {
         catch (Exception e) {
             throw exceptionThrower.throwChainedCheckedException(Exception.class,
                 e,
-                "Failed to evaluate expression (%s.%s): [%s]",
+                "Failed to evaluate JavaScript expression (%s.%s): [%s]",
                 includeCommandLineAPI.getClass().getSimpleName(), includeCommandLineAPI.name(), javaScriptExpression);
         }
     }

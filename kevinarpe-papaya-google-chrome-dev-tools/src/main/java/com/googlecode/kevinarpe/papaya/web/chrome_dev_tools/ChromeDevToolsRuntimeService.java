@@ -46,7 +46,7 @@ public interface ChromeDevToolsRuntimeService {
      *
      * @param runtime
      *        instance of {@link Runtime} associated with a Chrome tab
-     *        <br>See: {@link ChromeDevToolsTab.Data#runtime}
+     *        <br>See: {@link ChromeDevToolsTab#getRuntime()}
      *
      * @param javaScriptExpression
      *        may require some experimentation to correctly return a value

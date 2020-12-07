@@ -46,7 +46,9 @@ extends ChromeDevToolsTest {
         final String nulChar = "\u0000";
 
         appContext().chromeDevToolsInputService.sendKeys(
-            chrome().chromeTab0.getData().input, DispatchKeyEventType.KEY_DOWN, nulChar);
+            chrome().chromeTab0.getInput(),
+            DispatchKeyEventType.KEY_DOWN,
+            nulChar);
     }
 
     @Test(expectedExceptions = Exception.class, expectedExceptionsMessageRegExp = "^Failed to send char.*$")

@@ -79,7 +79,7 @@ implements ChromeDevToolsDomNode {
     getOuterHTML()
     throws Exception {
 
-        final String x = chromeTab.getData().dom.getOuterHTML(nodeId, null, null);
+        final String x = chromeTab.getDOM().getOuterHTML(nodeId, null, null);
         return x;
     }
 
@@ -89,7 +89,7 @@ implements ChromeDevToolsDomNode {
     focus()
     throws Exception {
 
-        chromeTab.getData().dom.focus(nodeId, null, null);
+        chromeTab.getDOM().focus(nodeId, null, null);
         return this;
     }
 
@@ -111,7 +111,7 @@ implements ChromeDevToolsDomNode {
     sendKeys(String text)
     throws Exception {
 
-        inputService.sendKeys(chromeTab.getData().input, DispatchKeyEventType.KEY_DOWN, text);
+        inputService.sendKeys(chromeTab.getInput(), DispatchKeyEventType.KEY_DOWN, text);
         return this;
     }
 
@@ -124,17 +124,28 @@ implements ChromeDevToolsDomNode {
                                                       IsNullResultAllowed isNullResultAllowed)
     throws Exception {
 
-        chromeTab.getData().dom.setInspectedNode(nodeId);
+        chromeTab.getDOM().setInspectedNode(nodeId);
 
         @Nullable
         final TValue x =
             runtimeService.evaluateJavaScriptExpression(
-                chromeTab.getData().runtime,
+                chromeTab.getRuntime(),
                 javaScriptExpression,
                 IncludeCommandLineAPI.YES,
                 valueType,
                 isNullResultAllowed);
         return x;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ChromeDevToolsDomNode
+    runJavaScriptExpression(String javaScriptExpression)
+    throws Exception {
+
+        chromeTab.getDOM().setInspectedNode(nodeId);
+        runtimeService.runJavaScriptExpression(chromeTab.getRuntime(), javaScriptExpression, IncludeCommandLineAPI.YES);
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -146,13 +157,7 @@ implements ChromeDevToolsDomNode {
         // FUTURE: Consider an option to use...
         // https://chromedevtools.github.io/devtools-protocol/tot/Input/#method-dispatchMouseEvent
 
-        chromeTab.getData().dom.setInspectedNode(nodeId);
-
-        runtimeService.runJavaScriptExpression(
-            chromeTab.getData().runtime,
-            "$0.click()",
-            IncludeCommandLineAPI.YES);
-
+        runJavaScriptExpression("$0.click()");
         return this;
     }
 }

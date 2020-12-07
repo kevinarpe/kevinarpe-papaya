@@ -25,6 +25,14 @@ package com.googlecode.kevinarpe.papaya.web.chrome_dev_tools;
  * #L%
  */
 
+import com.github.kklisura.cdt.protocol.commands.DOM;
+import com.github.kklisura.cdt.protocol.commands.Input;
+import com.github.kklisura.cdt.protocol.commands.Page;
+import com.github.kklisura.cdt.protocol.commands.Runtime;
+import com.github.kklisura.cdt.protocol.types.dom.Node;
+import com.github.kklisura.cdt.services.ChromeDevToolsService;
+import com.github.kklisura.cdt.services.ChromeService;
+import com.github.kklisura.cdt.services.types.ChromeTab;
 import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.function.retry.RetryService;
@@ -40,19 +48,85 @@ import com.googlecode.kevinarpe.papaya.function.retry.RetryStrategyFactory;
 public final class ChromeDevToolsTabImp
 implements ChromeDevToolsTab {
 
-    private final Data data;
+    private final ChromeService chromeService;
+    private final ChromeTab chromeTab;
+    private final ChromeDevToolsService chromeDevToolsService;
+    private final Page page;
+    private final DOM dom;
+    private final Input input;
+    private final Runtime runtime;
     private final RetryService retryService;
 
-    public ChromeDevToolsTabImp(Data data, RetryService retryService) {
+    public ChromeDevToolsTabImp(ChromeService chromeService,
+                                ChromeTab chromeTab,
+                                RetryService retryService) {
 
-        this.data = ObjectArgs.checkNotNull(data, "chromeTab");
+        this.chromeService = ObjectArgs.checkNotNull(chromeService, "chromeService");
+        this.chromeTab = ObjectArgs.checkNotNull(chromeTab, "chromeTab");
+        this.chromeDevToolsService = chromeService.createDevToolsService(chromeTab);
+        this.page = this.chromeDevToolsService.getPage();
+        this.dom = this.chromeDevToolsService.getDOM();
+        this.input = this.chromeDevToolsService.getInput();
+        this.runtime = this.chromeDevToolsService.getRuntime();
         this.retryService = ObjectArgs.checkNotNull(retryService, "retryService");
     }
 
     @Override
-    public Data
-    getData() {
-        return data;
+    public ChromeService
+    getChromeService() {
+        return chromeService;
+    }
+
+    @Override
+    public ChromeTab
+    getChromeTab() {
+        return chromeTab;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ChromeDevToolsService
+    getChromeDevToolsService() {
+        return chromeDevToolsService;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Page
+    getPage() {
+        return page;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DOM
+    getDOM() {
+        return dom;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Input
+    getInput() {
+        return input;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Runtime
+    getRuntime() {
+        return runtime;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String
+    getDocumentOuterHTML()
+    throws Exception {
+
+        final Node documentNode = dom.getDocument();
+        final String html = dom.getOuterHTML(documentNode.getNodeId(), null, null);
+        return html;
     }
 
     /** {@inheritDoc} */
@@ -61,13 +135,13 @@ implements ChromeDevToolsTab {
     awaitClose(RetryStrategyFactory retryStrategyFactory)
     throws Exception {
 
-        data.chromeDevToolsService.close();
+        chromeDevToolsService.close();
         retryService.run(retryStrategyFactory,
             () -> {
-                if (false == data.chromeDevToolsService.isClosed()) {
+                if (false == chromeDevToolsService.isClosed()) {
                     throw new IllegalStateException("ChromeDevToolsService not yet closed for tab");
                 }
             });
-        data.chromeService.closeTab(data.chromeTab);
+        chromeService.closeTab(chromeTab);
     }
 }

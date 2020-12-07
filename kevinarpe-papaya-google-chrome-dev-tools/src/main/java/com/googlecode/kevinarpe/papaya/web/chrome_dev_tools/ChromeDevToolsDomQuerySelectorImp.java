@@ -469,7 +469,7 @@ at java.base/java.lang.Thread.run(Thread.java:834)
         try {
             @ReadOnlyContainer
             @EmptyContainerAllowed
-            final List<Integer> nodeIdList = chromeTab.getData().dom.querySelectorAll(parentNodeId2, cssSelector);
+            final List<Integer> nodeIdList = chromeTab.getDOM().querySelectorAll(parentNodeId2, cssSelector);
             return nodeIdList;
         }
         catch (Exception e) {
@@ -485,7 +485,7 @@ at java.base/java.lang.Thread.run(Thread.java:834)
         if (DOCUMENT_NODE_ID == parentNodeId) {
 
             // Note: This can throw a runtime exception.
-            final Node documentNode = chromeTab.getData().dom.getDocument();
+            final Node documentNode = chromeTab.getDOM().getDocument();
             final Integer x = documentNode.getNodeId();
             return x;
         }

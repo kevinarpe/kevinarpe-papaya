@@ -45,6 +45,7 @@ import org.testng.annotations.Test;
 import javax.annotation.concurrent.GuardedBy;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.regex.Pattern;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -208,7 +209,7 @@ extends ChromeDevToolsTest {
     _awaitAcceptDone()
     throws Exception {
 
-        chrome().chromeTab0.getData().page.navigate(testHttpServerUrl);
+        chrome().chromeTab0.getPage().navigate(testHttpServerUrl);
 
         synchronized (lock) {
             while (false == isAcceptDone) {
@@ -227,6 +228,45 @@ extends ChromeDevToolsTest {
             .awaitQuerySelectorExactlyOneThenRun(
                 "#" + INPUT_TEXT_ID, appContext().basicFiveSecondRetryStrategyFactory,
                 (ChromeDevToolsDomNode n) -> n.focus());
+
+        _assertDocumentOuterHTML();
+    }
+
+    /*
+RESPONSE_HTML:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Sample Web Page</title>
+</head>
+<body style="font-family: monospace">
+Input: <input id="input_text" type="text" size="64" autofocus="true" style="font-family: monospace">
+<br><button id="button" type="button">Click Me</button>
+</body>
+</html>
+--------------------------------
+html:
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
+    <title>Sample Web Page</title>
+</head>
+<body style="font-family: monospace">
+Input: <input id="input_text" type="text" size="64" autofocus="true" style="font-family: monospace">
+<br><button id="button" type="button">Click Me</button>
+
+
+</body></html>
+     */
+    private void _assertDocumentOuterHTML()
+    throws Exception {
+
+        final String html = chrome().chromeTab0.getDocumentOuterHTML();
+        // See comment above to understand why we need to remove all whitespace before assertEquals().
+        final Pattern whitespacePattern = Pattern.compile("\\s");
+        final String html2 = whitespacePattern.matcher(html).replaceAll("");
+        final String expectedHtml = whitespacePattern.matcher(RESPONSE_HTML).replaceAll("");
+        Assert.assertEquals(html2, expectedHtml);
     }
 
     private String

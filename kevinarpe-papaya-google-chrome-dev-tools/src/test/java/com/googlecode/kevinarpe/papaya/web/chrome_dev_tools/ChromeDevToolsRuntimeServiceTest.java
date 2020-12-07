@@ -41,7 +41,7 @@ extends ChromeDevToolsTest {
 
         final Number number =
             appContext().chromeDevToolsRuntimeService.evaluateJavaScriptExpression(
-                chrome().chromeTab0.getData().runtime,
+                chrome().chromeTab0.getRuntime(),
                 "1 + 2",
                 IncludeCommandLineAPI.NO,
                 ChromeDevToolsJavaScriptRemoteObjectType.NUMBER,
@@ -58,7 +58,7 @@ extends ChromeDevToolsTest {
     throws Exception {
 
         appContext().chromeDevToolsRuntimeService.evaluateJavaScriptExpression(
-            chrome().chromeTab0.getData().runtime,
+            chrome().chromeTab0.getRuntime(),
             "throw new Error(\"error_message\")",
             IncludeCommandLineAPI.NO,
             ChromeDevToolsJavaScriptRemoteObjectType.OBJECT,
@@ -72,7 +72,7 @@ extends ChromeDevToolsTest {
     throws Exception {
 
         appContext().chromeDevToolsRuntimeService.evaluateJavaScriptExpression(
-            chrome().chromeTab0.getData().runtime,
+            chrome().chromeTab0.getRuntime(),
             "1 + 2",
             IncludeCommandLineAPI.NO,
             ChromeDevToolsJavaScriptRemoteObjectType.STRING,
@@ -86,7 +86,7 @@ extends ChromeDevToolsTest {
     throws Exception {
 
         appContext().chromeDevToolsRuntimeService.evaluateJavaScriptExpression(
-            chrome().chromeTab0.getData().runtime,
+            chrome().chromeTab0.getRuntime(),
             "undefined",
             IncludeCommandLineAPI.NO,
             ChromeDevToolsJavaScriptRemoteObjectType.UNDEFINED,
@@ -98,7 +98,7 @@ extends ChromeDevToolsTest {
     throws Exception {
 
         appContext().chromeDevToolsRuntimeService.runJavaScriptExpression(
-            chrome().chromeTab0.getData().runtime,
+            chrome().chromeTab0.getRuntime(),
             "1 + 2",
             IncludeCommandLineAPI.NO);
     }
@@ -108,7 +108,7 @@ extends ChromeDevToolsTest {
     throws Exception {
 
         appContext().chromeDevToolsRuntimeService.runJavaScriptExpression(
-            chrome().chromeTab0.getData().runtime,
+            chrome().chromeTab0.getRuntime(),
             "throw new Error(\"error_message\")",
             IncludeCommandLineAPI.NO);
     }

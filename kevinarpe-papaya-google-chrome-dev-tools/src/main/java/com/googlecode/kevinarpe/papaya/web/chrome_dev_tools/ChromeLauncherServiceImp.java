@@ -97,8 +97,7 @@ webSocketDebuggerUrl = "ws://localhost:33061/devtools/page/2F52C90173AE5996E0BD1
         // *any* URL.  All give navigation error: "net::ERR_ABORTED".  Google provides no hints.
         final ChromeTab chromeTab1 = launch.chromeService.createTab();
 
-        final ChromeDevToolsTab.Data data = new ChromeDevToolsTab.Data(launch.chromeService, chromeTab1);
-        final ChromeDevToolsTab chromeDevToolsTab = chromeDevToolsTabFactory.newInstance(data);
+        final ChromeDevToolsTab chromeDevToolsTab = chromeDevToolsTabFactory.newInstance(launch.chromeService, chromeTab1);
         final Chrome chrome = new Chrome(launch.chromeLauncher, isHeadless, launch.chromeService, chromeDevToolsTab);
 
         // To be clear: I have seen very rare cases where multiple(!) tabs exist in a new Google Chrome instance.

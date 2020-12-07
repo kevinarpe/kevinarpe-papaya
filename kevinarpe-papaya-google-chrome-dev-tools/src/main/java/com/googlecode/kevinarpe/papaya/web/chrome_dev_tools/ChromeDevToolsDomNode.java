@@ -137,6 +137,8 @@ public interface ChromeDevToolsDomNode {
      * @throws Exception
      *         if the current node fails to be set as "inspected node"
      *         <br>if {@code javaScriptExpression} throws an exception, including due to syntax error
+     *
+     * @see #runJavaScriptExpression(String)
      */
     @Nullable
     <TValue>
@@ -146,8 +148,27 @@ public interface ChromeDevToolsDomNode {
     throws Exception;
 
     /**
-     * This is a convenience method to call
-     * {@link #evaluateJavaScriptExpressionWithDollarZero(String, ChromeDevToolsJavaScriptRemoteObjectType, IsNullResultAllowed)}
+     * Sets the "inspected node" ($0) as the current node ({@link #nodeId()}, then calls
+     * {@link ChromeDevToolsRuntimeService#runJavaScriptExpression(Runtime, String, IncludeCommandLineAPI)}.
+     *
+     * @param javaScriptExpression
+     *        may contain token {@code $0} which is an alias to the current (inspected) DOM node in Chrome DevTools
+     *
+     * @return self for fluent interface / method chaining
+     *
+     * @throws Exception
+     *         if the current node fails to be set as "inspected node"
+     *         <br>if {@code javaScriptExpression} throws an exception, including due to syntax error
+     *
+     * @see #click()
+     * @see #evaluateJavaScriptExpressionWithDollarZero(String, ChromeDevToolsJavaScriptRemoteObjectType, IsNullResultAllowed)
+     */
+    ChromeDevToolsDomNode
+    runJavaScriptExpression(String javaScriptExpression)
+    throws Exception;
+
+    /**
+     * This is a convenience method to call {@link #runJavaScriptExpression(String)}
      * where {@code javaScriptExpression} is {@code "$0.click()"}.
      *
      * @return self for fluent interface / method chaining

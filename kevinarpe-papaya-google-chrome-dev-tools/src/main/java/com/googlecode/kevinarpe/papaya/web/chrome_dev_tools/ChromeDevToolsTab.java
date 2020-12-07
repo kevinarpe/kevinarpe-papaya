@@ -33,7 +33,6 @@ import com.github.kklisura.cdt.services.ChromeDevToolsService;
 import com.github.kklisura.cdt.services.ChromeService;
 import com.github.kklisura.cdt.services.types.ChromeTab;
 import com.googlecode.kevinarpe.papaya.annotation.Blocking;
-import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.function.retry.BasicRetryStrategyImp;
 import com.googlecode.kevinarpe.papaya.function.retry.RetryStrategy;
 import com.googlecode.kevinarpe.papaya.function.retry.RetryStrategyFactory;
@@ -43,7 +42,48 @@ import com.googlecode.kevinarpe.papaya.function.retry.RetryStrategyFactory;
  */
 public interface ChromeDevToolsTab {
 
-    Data getData();
+    ChromeService
+    getChromeService();
+
+    ChromeTab
+    getChromeTab();
+
+    /**
+     * @see ChromeService#createDevToolsService(ChromeTab)
+     */
+    ChromeDevToolsService
+    getChromeDevToolsService();
+
+    /**
+     * @see ChromeDevToolsService#getPage()
+     */
+    Page
+    getPage();
+
+    /**
+     * @see ChromeDevToolsService#getDOM()
+     */
+    DOM
+    getDOM();
+
+    /**
+     * @see ChromeDevToolsService#getInput()
+     */
+    Input
+    getInput();
+
+    /**
+     * @see ChromeDevToolsService#getRuntime()
+     */
+    Runtime
+    getRuntime();
+
+    /**
+     * This is a convenience method to call:
+     * {@code getDOM().getOuterHTML(getDOM().getDocument().getNodeId(), null, null)}
+     */
+    String getDocumentOuterHTML()
+    throws Exception;
 
     /**
      * <ol>
@@ -63,30 +103,4 @@ public interface ChromeDevToolsTab {
     @Blocking
     void awaitClose(RetryStrategyFactory retryStrategyFactory)
     throws Exception;
-
-    /**
-     * @author Kevin Connor ARPE (kevinarpe@gmail.com)
-     */
-    public static final class Data {
-
-        public final ChromeService chromeService;
-        public final ChromeTab chromeTab;
-        public final ChromeDevToolsService chromeDevToolsService;
-        public final Page page;
-        public final DOM dom;
-        public final Input input;
-        public final Runtime runtime;
-
-        public Data(ChromeService chromeService,
-                    ChromeTab chromeTab) {
-
-            this.chromeService = ObjectArgs.checkNotNull(chromeService, "chromeService");
-            this.chromeTab = ObjectArgs.checkNotNull(chromeTab, "chromeTab");
-            this.chromeDevToolsService = chromeService.createDevToolsService(chromeTab);
-            this.page = this.chromeDevToolsService.getPage();
-            this.dom = this.chromeDevToolsService.getDOM();
-            this.input = this.chromeDevToolsService.getInput();
-            this.runtime = this.chromeDevToolsService.getRuntime();
-        }
-    }
 }

@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.web.chrome_dev_tools;
  */
 
 import com.github.kklisura.cdt.services.ChromeService;
+import com.github.kklisura.cdt.services.types.ChromeTab;
 
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
@@ -33,7 +34,7 @@ import com.github.kklisura.cdt.services.ChromeService;
 public interface ChromeDevToolsTabFactory {
 
     ChromeDevToolsTab
-    newInstance(ChromeDevToolsTab.Data data);
+    newInstance(ChromeService chromeService, ChromeTab chromeTab);
 
     ChromeDevToolsTab
     createTab(ChromeService chromeService);

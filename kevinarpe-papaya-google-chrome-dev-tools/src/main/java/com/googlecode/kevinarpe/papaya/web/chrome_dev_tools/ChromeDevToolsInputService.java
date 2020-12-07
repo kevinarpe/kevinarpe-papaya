@@ -46,7 +46,7 @@ public interface ChromeDevToolsInputService {
      * Protocol is complex and poorly documented.
      *
      * @param chromeDevToolsInput
-     *        See: {@link ChromeDevToolsTab.Data#input}
+     *        See: {@link ChromeDevToolsTab#getInput()}
      *
      * @param type
      *        usually {@link DispatchKeyEventType#KEY_DOWN}

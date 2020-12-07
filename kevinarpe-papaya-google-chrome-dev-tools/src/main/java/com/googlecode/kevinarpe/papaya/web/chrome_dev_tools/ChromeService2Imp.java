@@ -25,7 +25,6 @@ package com.googlecode.kevinarpe.papaya.web.chrome_dev_tools;
  * #L%
  */
 
-import com.github.kklisura.cdt.services.exceptions.ChromeServiceException;
 import com.github.kklisura.cdt.services.types.ChromeTab;
 import com.googlecode.kevinarpe.papaya.annotation.Blocking;
 import com.googlecode.kevinarpe.papaya.annotation.EmptyContainerAllowed;
@@ -157,8 +156,7 @@ implements ChromeService2 {
     throws Exception {
 
         final ChromeTab chromeTab = _findChromeTab(chrome, isMatch);
-        final ChromeDevToolsTab.Data data = new ChromeDevToolsTab.Data(chrome.chromeService, chromeTab);
-        final ChromeDevToolsTab x = chromeDevToolsTabFactory.newInstance(data);
+        final ChromeDevToolsTab x = chromeDevToolsTabFactory.newInstance(chrome.chromeService, chromeTab);
         return x;
     }
 

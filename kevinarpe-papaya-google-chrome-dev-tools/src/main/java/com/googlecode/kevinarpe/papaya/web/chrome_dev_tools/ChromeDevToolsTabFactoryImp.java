@@ -46,9 +46,9 @@ implements ChromeDevToolsTabFactory {
 
     @Override
     public ChromeDevToolsTab
-    newInstance(ChromeDevToolsTab.Data data) {
+    newInstance(ChromeService chromeService, ChromeTab chromeTab) {
 
-        final ChromeDevToolsTabImp x = new ChromeDevToolsTabImp(data, retryService);
+        final ChromeDevToolsTabImp x = new ChromeDevToolsTabImp(chromeService, chromeTab, retryService);
         return x;
     }
 
@@ -57,8 +57,7 @@ implements ChromeDevToolsTabFactory {
     createTab(ChromeService chromeService) {
 
         final ChromeTab chromeTab = chromeService.createTab();
-        final ChromeDevToolsTab.Data data = new ChromeDevToolsTab.Data(chromeService, chromeTab);
-        final ChromeDevToolsTabImp x = new ChromeDevToolsTabImp(data, retryService);
+        final ChromeDevToolsTabImp x = new ChromeDevToolsTabImp(chromeService, chromeTab, retryService);
         return x;
     }
 }
