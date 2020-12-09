@@ -58,7 +58,7 @@ extends AbstractCountMatcher {
     @Override
     protected int
     hash() {
-        final int x = Objects.hash(left.hashCode(), right.hashCode());
+        final int x = Objects.hash(this.getClass(), left, right);
         return x;
     }
 
@@ -75,7 +75,7 @@ extends AbstractCountMatcher {
     protected String
     describe() {
 
-        final String x = left.toString() + " or " + right.toString();
+        final String x = "(" + left.toString() + ") or (" + right.toString() + ")";
         return x;
     }
 }

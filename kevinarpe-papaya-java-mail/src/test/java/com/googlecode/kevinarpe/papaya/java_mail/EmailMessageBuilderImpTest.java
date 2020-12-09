@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.java_mail;
  * #L%
  */
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 import com.googlecode.kevinarpe.papaya.annotation.EmptyContainerAllowed;
@@ -872,5 +873,62 @@ public class EmailMessageBuilderImpTest {
             final String s = new String(byteArr, StandardCharsets.UTF_8);
             Assert.assertEquals(s, text);
         }
+    }
+
+    @Test
+    public void addToAddressSet_addAllToAddressSet_Pass() {
+
+        final JavaMailSession javaMailSession = _createJavaMailSession(AlwaysTrustSSL.YES, UsernameAndPassword.YES);
+
+        final EmailMessageAddress toEmailMessageAddress = EmailMessageAddress.fromEmailAddressOnly("to@gmail.com");
+        final EmailMessageAddress to2EmailMessageAddress = EmailMessageAddress.fromEmailAddressOnly("to2@gmail.com");
+        final EmailMessageAddress ccEmailMessageAddress = EmailMessageAddress.fromEmailAddressOnly("cc@gmail.com");
+        final EmailMessageAddress cc2EmailMessageAddress = EmailMessageAddress.fromEmailAddressOnly("cc2@gmail.com");
+        final EmailMessageAddress bccEmailMessageAddress = EmailMessageAddress.fromEmailAddressOnly("bcc@gmail.com");
+        final EmailMessageAddress bcc2EmailMessageAddress = EmailMessageAddress.fromEmailAddressOnly("bcc2@gmail.com");
+
+        final EmailMessageBuilder b = javaMailSession.emailMessageBuilder();
+
+        /// To:
+
+        Assert.assertEquals(b.addressSet(EmailMessageAddressListType.TO).size(), 0);
+
+        b.addToAddressSet(EmailMessageAddressListType.TO, toEmailMessageAddress);
+
+        Assert.assertEquals(b.addressSet(EmailMessageAddressListType.TO), ImmutableSet.of(toEmailMessageAddress));
+
+        b.addAllToAddressSet(EmailMessageAddressListType.TO,
+            ImmutableSet.of(to2EmailMessageAddress, toEmailMessageAddress));
+
+        Assert.assertEquals(b.addressSet(EmailMessageAddressListType.TO),
+            ImmutableSet.of(toEmailMessageAddress, to2EmailMessageAddress));
+
+        /// Cc:
+
+        Assert.assertEquals(b.addressSet(EmailMessageAddressListType.CC).size(), 0);
+
+        b.addToAddressSet(EmailMessageAddressListType.CC, ccEmailMessageAddress);
+
+        Assert.assertEquals(b.addressSet(EmailMessageAddressListType.CC), ImmutableSet.of(ccEmailMessageAddress));
+
+        b.addAllToAddressSet(EmailMessageAddressListType.CC,
+            ImmutableSet.of(cc2EmailMessageAddress, ccEmailMessageAddress));
+
+        Assert.assertEquals(b.addressSet(EmailMessageAddressListType.CC),
+            ImmutableSet.of(ccEmailMessageAddress, cc2EmailMessageAddress));
+
+        /// Bcc:
+
+        Assert.assertEquals(b.addressSet(EmailMessageAddressListType.BCC).size(), 0);
+
+        b.addToAddressSet(EmailMessageAddressListType.BCC, bccEmailMessageAddress);
+
+        Assert.assertEquals(b.addressSet(EmailMessageAddressListType.BCC), ImmutableSet.of(bccEmailMessageAddress));
+
+        b.addAllToAddressSet(EmailMessageAddressListType.BCC,
+            ImmutableSet.of(bcc2EmailMessageAddress, bccEmailMessageAddress));
+
+        Assert.assertEquals(b.addressSet(EmailMessageAddressListType.BCC),
+            ImmutableSet.of(bccEmailMessageAddress, bcc2EmailMessageAddress));
     }
 }

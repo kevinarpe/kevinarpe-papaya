@@ -25,6 +25,7 @@ package com.googlecode.kevinarpe.papaya.java_mail;
  * #L%
  */
 
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.IntArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
@@ -39,6 +40,7 @@ import java.util.Properties;
  * See: EmailMessageBuilderImpTest
  * @see JavaMailSessionBuilderFactory#INSTANCE
  */
+@FullyTested
 public final class JavaMailSessionBuilderImp
 implements JavaMailSessionBuilder {
 

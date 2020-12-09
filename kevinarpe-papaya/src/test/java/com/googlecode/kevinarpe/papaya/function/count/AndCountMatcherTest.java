@@ -70,9 +70,9 @@ public class AndCountMatcherTest {
 
         /// toString
 
-        Assert.assertEquals(min_and_max.toString(), "at least 3 and at most 5");
+        Assert.assertEquals(min_and_max.toString(), "(at least 3) and (at most 5)");
         Assert.assertEquals(min_and_max.toString(), min2_and_max.toString());
-        Assert.assertEquals(max_and_min.toString(), "at most 5 and at least 3");
+        Assert.assertEquals(max_and_min.toString(), "(at most 5) and (at least 3)");
         Assert.assertEquals(max_and_min.toString(), max2_and_min.toString());
     }
 

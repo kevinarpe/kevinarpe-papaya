@@ -45,9 +45,16 @@ public interface CountMatcher {
      * @param count
      *        number of items to match
      *
-     * @return true if {@code count} matches
+     * @return {@code true} if {@code count} matches
+     *
+     * @see #and(CountMatcher)
+     * @see #or(CountMatcher)
+     * @see #not()
      */
     boolean isMatch(int count);
+
+    @Override
+    int hashCode();
 
     /** {@inheritDoc} */
     @Override

@@ -28,8 +28,6 @@ package com.googlecode.kevinarpe.papaya.function.count;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.*;
-
 /**
  * @author Kevin Connor ARPE (kevinarpe@gmail.com)
  */
@@ -76,7 +74,7 @@ public class NotCountMatcherTest {
         /// toString
 
         Assert.assertEquals(min.toString(), "at least 5");
-        Assert.assertEquals(not_min.toString(), "not at least 5");
+        Assert.assertEquals(not_min.toString(), "not (at least 5)");
         Assert.assertEquals(not_not_min.toString(), "at least 5");
     }
 }

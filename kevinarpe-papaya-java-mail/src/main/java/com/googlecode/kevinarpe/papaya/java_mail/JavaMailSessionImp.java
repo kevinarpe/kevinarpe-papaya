@@ -26,6 +26,7 @@ package com.googlecode.kevinarpe.papaya.java_mail;
  */
 
 import com.googlecode.kevinarpe.papaya.annotation.Blocking;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 
 import javax.annotation.Nullable;
@@ -39,6 +40,7 @@ import java.util.Properties;
  *
  * @see JavaMailSessionBuilderFactory#INSTANCE
  */
+@FullyTested
 public final class JavaMailSessionImp
 implements JavaMailSession {
 

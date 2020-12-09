@@ -27,5 +27,6 @@ test-output/
 src/test/resources/generated/
 
 # Custom
+do_not_commit/
 kevinarpe-papaya/src/main/java/com/googlecode/kevinarpe/papaya/hacker_rank/
 

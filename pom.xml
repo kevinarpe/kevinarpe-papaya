@@ -55,6 +55,9 @@
         <module>kevinarpe-papaya-jdk-derived</module>
         <module>kevinarpe-papaya-google-chrome-dev-tools</module>
         <module>kevinarpe-papaya-java-mail</module>
+        <module>kevinarpe-papaya-jericho-html-parser</module>
+        <module>kevinarpe-papaya-jooq</module>
+        <module>kevinarpe-papaya-jooq-sqlite</module>
     </modules>
 
     <properties>
@@ -94,6 +97,9 @@
         <cdt-java-client.version>2.1.0</cdt-java-client.version>
         <javax.mail.version>1.6.2</javax.mail.version>
         <subethasmtp.version>5.2.7</subethasmtp.version>
+        <jericho-html.version>3.4</jericho-html.version>
+        <sqlite-jdbc.version>3.32.3.2</sqlite-jdbc.version>
+        <jooq.version>3.14.4</jooq.version>
 
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
     </properties>
@@ -370,6 +376,21 @@
                 <groupId>com.github.davidmoten</groupId>
                 <artifactId>subethasmtp</artifactId>
                 <version>${subethasmtp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.htmlparser.jericho</groupId>
+                <artifactId>jericho-html</artifactId>
+                <version>${jericho-html.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.xerial</groupId>
+                <artifactId>sqlite-jdbc</artifactId>
+                <version>${sqlite-jdbc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq</artifactId>
+                <version>${jooq.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

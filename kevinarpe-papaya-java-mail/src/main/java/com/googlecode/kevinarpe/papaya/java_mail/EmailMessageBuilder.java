@@ -33,6 +33,7 @@ import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 
 /**
@@ -63,6 +64,41 @@ public interface EmailMessageBuilder {
     EmailMessageBuilder
     address(EmailMessageAddressType addressType,
             @Nullable EmailMessageAddress nullableAddress);
+
+    /**
+     * Adds an email address to an address list.
+     * <p>
+     * Important: An email message must have at least one recipient in To:, Cc:, or Bcc: lists.
+     * <p>
+     * If more advanced collection operations are required for the address list,
+     * see: {@link #addressSet(EmailMessageAddressListType)}.
+     *
+     * @return self for fluent interface / method chaining
+     *
+     * @see #addAllToAddressSet(EmailMessageAddressListType, Collection)
+     */
+    EmailMessageBuilder
+    addToAddressSet(EmailMessageAddressListType addressListType,
+                    EmailMessageAddress address);
+
+    /**
+     * Adds all email addresses from a collection to an address list.
+     * <p>
+     * Important: An email message must have at least one recipient in To:, Cc:, or Bcc: lists.
+     * <p>
+     * If more advanced collection operations are required for the address list,
+     * see: {@link #addressSet(EmailMessageAddressListType)}.
+     *
+     * @return self for fluent interface / method chaining
+     *
+     * @throws IllegalArgumentException
+     *         if argument {@code nonEmptyAddressCollectionToAdd} is empty
+     *
+     * @see #addToAddressSet(EmailMessageAddressListType, EmailMessageAddress)
+     */
+    EmailMessageBuilder
+    addAllToAddressSet(EmailMessageAddressListType addressListType,
+                       Collection<? extends EmailMessageAddress> nonEmptyAddressCollectionToAdd);
 
     /**
      * Access an address set.  Callers may add or remove addresses from the set.

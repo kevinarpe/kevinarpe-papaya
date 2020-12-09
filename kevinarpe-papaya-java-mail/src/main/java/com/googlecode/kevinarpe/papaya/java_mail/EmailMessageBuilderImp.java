@@ -27,6 +27,8 @@ package com.googlecode.kevinarpe.papaya.java_mail;
 
 import com.google.common.collect.LinkedHashMultimap;
 import com.googlecode.kevinarpe.papaya.annotation.EmptyContainerAllowed;
+import com.googlecode.kevinarpe.papaya.annotation.FullyTested;
+import com.googlecode.kevinarpe.papaya.argument.CollectionArgs;
 import com.googlecode.kevinarpe.papaya.argument.ObjectArgs;
 import com.googlecode.kevinarpe.papaya.argument.StringArgs;
 import com.googlecode.kevinarpe.papaya.container.AreNullValuesAllowed;
@@ -44,6 +46,7 @@ import javax.mail.util.ByteArrayDataSource;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Optional;
@@ -53,6 +56,7 @@ import java.util.Optional;
  *
  * @see JavaMailSessionBuilderFactory#INSTANCE
  */
+@FullyTested
 public final class EmailMessageBuilderImp
 implements EmailMessageBuilder {
 
@@ -128,6 +132,30 @@ implements EmailMessageBuilder {
             @Nullable EmailMessageAddress nullableAddress) {
 
         addressTypeMap.put(addressType, Optional.ofNullable(nullableAddress));
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EmailMessageBuilder
+    addToAddressSet(EmailMessageAddressListType addressListType,
+                    EmailMessageAddress address) {
+
+        final LinkedHashSet<EmailMessageAddress> set = addressListTypeMap.getByEnum(addressListType);
+        set.add(address);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EmailMessageBuilder
+    addAllToAddressSet(EmailMessageAddressListType addressListType,
+                       Collection<? extends EmailMessageAddress> nonEmptyAddressCollectionToAdd) {
+
+        CollectionArgs.checkNotEmpty(nonEmptyAddressCollectionToAdd, "nonEmptyAddressCollectionToAdd");
+
+        final LinkedHashSet<EmailMessageAddress> set = addressListTypeMap.getByEnum(addressListType);
+        set.addAll(nonEmptyAddressCollectionToAdd);
         return this;
     }
 

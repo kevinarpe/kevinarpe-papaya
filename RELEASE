@@ -65,7 +65,7 @@ New instructions for 2019+
 * Wait about 10-30 mins and this will be updated: https://search.maven.org/search?q=kevinarpe-papaya
 * git status
 ** You will see all pom.xml files updated from the previous command 'mvn versions:set ...'
-* find . -name pom.xml  | xargs git add
+* find . -name pom.xml | xargs git add
 * git commit --message 'Release'
 * git tag
 ** ... show list of existing tags
@@ -74,10 +74,10 @@ New instructions for 2019+
 * git push --tags
 * mvn versions:set -DnewVersion=0.0.y-SNAPSHOT
 ** ... where y=1+x
-* find . -name pom.xml  | xargs git add
+* find . -name pom.xml | xargs git add
 * git commit --message 'Next version'
 * git push
-* find . -name pom.xml.versionsBackup  | xargs rm --verbose
+* find . -name pom.xml.versionsBackup | xargs rm --verbose
 ** ... to cleanup temp files from the previous command 'mvn versions:set ...'
 * git status
 ** ... should be all clean now.

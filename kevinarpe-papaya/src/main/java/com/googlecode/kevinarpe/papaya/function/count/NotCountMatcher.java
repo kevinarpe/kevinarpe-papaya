@@ -74,8 +74,7 @@ extends AbstractCountMatcher {
     @Override
     protected int
     hash() {
-        // The number "one" is arbitrary.
-        final int x = Objects.hash(delegate.hashCode(), 1);
+        final int x = Objects.hash(this.getClass(), delegate);
         return x;
     }
 
@@ -92,7 +91,7 @@ extends AbstractCountMatcher {
     protected String
     describe() {
 
-        final String x = "not " + delegate.toString();
+        final String x = "not (" + delegate.toString() + ")";
         return x;
     }
 }

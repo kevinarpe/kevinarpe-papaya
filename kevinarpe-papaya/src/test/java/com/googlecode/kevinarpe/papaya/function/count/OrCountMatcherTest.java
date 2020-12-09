@@ -70,9 +70,9 @@ public class OrCountMatcherTest {
 
         /// toString
 
-        Assert.assertEquals(min_or_max.toString(), "at least 5 or at most 3");
+        Assert.assertEquals(min_or_max.toString(), "(at least 5) or (at most 3)");
         Assert.assertEquals(min_or_max.toString(), min2_or_max.toString());
-        Assert.assertEquals(max_or_min.toString(), "at most 3 or at least 5");
+        Assert.assertEquals(max_or_min.toString(), "(at most 3) or (at least 5)");
         Assert.assertEquals(max_or_min.toString(), max2_or_min.toString());
     }
 
