@@ -84,7 +84,7 @@
          |   If you need to explicitly load the DTD from a http url, please do so by using the JVM argument
          |   [-Dtestng.dtd.http=true]
         -->
-        <testng.version>7.1.0</testng.version>
+        <testng.version>7.5.1</testng.version>
         <junit.version>4.13.1</junit.version>
         <mockito-core.version>3.6.28</mockito-core.version>
         <powermock.version>2.0.9</powermock.version>
