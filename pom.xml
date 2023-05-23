@@ -98,7 +98,7 @@
         <javax.mail.version>1.6.2</javax.mail.version>
         <subethasmtp.version>5.2.7</subethasmtp.version>
         <jericho-html.version>3.4</jericho-html.version>
-        <sqlite-jdbc.version>3.32.3.2</sqlite-jdbc.version>
+        <sqlite-jdbc.version>3.41.2.2</sqlite-jdbc.version>
         <jooq.version>3.14.4</jooq.version>
 
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
